@@ -3,7 +3,48 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.edurt.datacap</groupId>
     <artifactId>incubator-datacap</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>1.0.0.20221015</version>
-    <name>incubator-datacap</name>
+
+    <modules>
+        <module>configure</module>
+    </modules>
+
+    <name>DataCap(Incubator)</name>
+    <description>DataCap is integrated software for data transformation, integration and visualization.</description>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${plugin.maven.checkstyle.version}</version>
+                <configuration>
+                    <configLocation>configure/checks.xml</configLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>true</failsOnError>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
