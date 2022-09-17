@@ -18,6 +18,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
+        <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
     </properties>
 
     <build>
@@ -38,6 +39,27 @@
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
                         </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${plugin.maven.findbugs.version}</version>
+                <configuration>
+                    <effort>Low</effort>
+                    <threshold>Medium</threshold>
+                    <failOnError>true</failOnError>
+                    <includeTests>true</includeTests>
+                    <excludeFilterFile>configure/findbugs.xml</excludeFilterFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>run-findbugs</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
