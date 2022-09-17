@@ -39,3 +39,4 @@ tmp/
 
 # vscode #
 .vscode
+dist/datacap/
