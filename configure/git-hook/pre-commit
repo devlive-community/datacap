@@ -2,4 +2,4 @@
 
 printf "Code verification before submission"
 
-./mvnw clean checkstyle:checkstyle findbugs:findbugs -X
+./mvnw clean checkstyle:checkstyle findbugs:findbugs cobertura:cobertura -X
