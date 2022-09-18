@@ -1,9 +1,16 @@
 <template>
   <div>
-    <div style="margin-bottom: 10px;">
-    </div>
     <a-card title="Source List" size="small">
-      <template #extra></template>
+      <template #extra>
+        <a-tooltip>
+          <template #title>Create new source</template>
+          <a-button type="primary" shape="circle" size="small" @click="handlerCreateNew()">
+            <template #icon>
+              <plus-circle-outlined/>
+            </template>
+          </a-button>
+        </a-tooltip>
+      </template>
       <a-table size="middle" :loading="loading" :columns="headers" :data-source="columns">
         <template #bodyCell="{ column, text, record }">
           <template v-if="column.dataIndex === 'name'">
@@ -36,13 +43,16 @@
         </template>
       </a-table>
     </a-card>
+
+    <SourceInfoView v-if="visibleSourceInfo" :isVisible="visibleSourceInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
+import {PlusCircleOutlined} from '@ant-design/icons-vue';
 import {SourceService} from "@/services/SourceService";
-import {ResponseModel} from "@/model/ResponseModel";
+import SourceInfoView from "@/views/pages/admin/source/SourceInfo.vue";
 
 const headers = [
   {
@@ -118,13 +128,15 @@ const headers = [
 
 export default defineComponent({
   name: "SourceConsoleView",
-  components: {},
+  components: {SourceInfoView, PlusCircleOutlined},
   data()
   {
     return {
       headers,
       columns: [],
-      loading: false
+      loading: false,
+      visibleSourceInfo: false,
+      applyId: 0
     }
   },
   created()
@@ -143,6 +155,16 @@ export default defineComponent({
           }
           this.loading = false;
         })
+    },
+    handlerCreateNew()
+    {
+      this.visibleSourceInfo = true;
+    },
+    handlerCloseCreateNew(value: boolean)
+    {
+      this.visibleSourceInfo = value;
+      this.applyId = 0;
+      this.handlerInitialize();
     }
   }
 });
