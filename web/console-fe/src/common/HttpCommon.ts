@@ -69,4 +69,29 @@ export class HttpCommon
         });
     });
   }
+
+  delete(url: string): Promise<ResponseModel>
+  {
+    return new Promise((resolve) => {
+      axios.delete(url)
+        .then(result => {
+          const data = result.data;
+          const response: ResponseModel = {
+            code: data.code,
+            data: data.data,
+            message: data.message,
+            status: true
+          };
+          resolve(response);
+        }, error => {
+          message.error(error.message);
+          const response: ResponseModel = {
+            code: 0,
+            message: error.message,
+            status: false
+          };
+          resolve(response);
+        });
+    });
+  }
 }

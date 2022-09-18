@@ -12,33 +12,20 @@
         </a-tooltip>
       </template>
       <a-table size="middle" :loading="loading" :columns="headers" :data-source="columns">
-        <template #bodyCell="{ column, text, record }">
-          <template v-if="column.dataIndex === 'name'">
-            <a-tooltip placement="topLeft">
-              <template #title>{{ record.description }}</template>
-              {{ text }}
-            </a-tooltip>
-          </template>
-          <template v-if="column.dataIndex === 'description'">
-            <a-tooltip placement="topLeft">
-              <template #title>{{ text }}</template>
-              {{ text }}
-            </a-tooltip>
-          </template>
-          <template v-if="column.dataIndex === 'type'">
-            <a-tooltip placement="topRight">
-              <template #title>
-                <span v-if="text === 'SOURCE'">用于获取指定的数据源来获取该源数据</span>
-                <span v-if="text === 'TRANSFORM'">数据转换(或者称为数据处理)将数据进行转换等操作</span>
-                <span v-if="text === 'SINK'">用于将数据源获取到的数据写入到指定位置</span>
-              </template>
-              <a-tag v-if="text === 'SOURCE'" color="#2db7f5">{{ text }}</a-tag>
-              <a-tag v-if="text === 'TRANSFORM'" color="purple">{{ text }}</a-tag>
-              <a-tag v-if="text === 'SINK'" color="#108ee9">{{ text }}</a-tag>
-            </a-tooltip>
-          </template>
-          <template v-if="column.dataIndex === 'configure'">
-            <a-button type="link" @click="handlerShowConfigure(record.name, record.id)">{{ record.configures.length }}</a-button>
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'action'">
+            <a-space style="width: 100%">
+              <a-popconfirm title="Are you sure delete?" ok-text="Yes" cancel-text="No" @confirm="handlerDeleteRecord(record.id)">
+                <a-tooltip>
+                  <template #title>Delete</template>
+                  <a-button type="primary" danger shape="circle" size="small">
+                    <template #icon>
+                      <minus-outlined/>
+                    </template>
+                  </a-button>
+                </a-tooltip>
+              </a-popconfirm>
+            </a-space>
           </template>
         </template>
       </a-table>
@@ -50,9 +37,10 @@
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {PlusCircleOutlined} from '@ant-design/icons-vue';
+import {MinusOutlined, PlusCircleOutlined} from '@ant-design/icons-vue';
 import {SourceService} from "@/services/SourceService";
 import SourceInfoView from "@/views/pages/admin/source/SourceInfo.vue";
+import {message} from "ant-design-vue";
 
 const headers = [
   {
@@ -123,12 +111,18 @@ const headers = [
     dataIndex: 'createTime',
     key: 'createTime',
     ellipsis: true
+  },
+  {
+    title: 'Action',
+    name: 'action',
+    dataIndex: 'action',
+    key: 'action'
   }
 ];
 
 export default defineComponent({
   name: "SourceConsoleView",
-  components: {SourceInfoView, PlusCircleOutlined},
+  components: {SourceInfoView, PlusCircleOutlined, MinusOutlined},
   data()
   {
     return {
@@ -165,6 +159,17 @@ export default defineComponent({
       this.visibleSourceInfo = value;
       this.applyId = 0;
       this.handlerInitialize();
+    },
+    handlerDeleteRecord(id: number)
+    {
+      new SourceService()
+        .delete(id)
+        .then((response) => {
+          if (response.status) {
+            message.success("Delete successful");
+            this.handlerInitialize();
+          }
+        });
     }
   }
 });
