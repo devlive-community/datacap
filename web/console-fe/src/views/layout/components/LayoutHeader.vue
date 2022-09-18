@@ -7,15 +7,27 @@
         Home
       </router-link>
     </a-menu-item>
+    <a-sub-menu key="admin">
+      <template #icon>
+        <setting-outlined/>
+      </template>
+      <template #title>Admin</template>
+      <a-menu-item key="admin_source">
+        <router-link to="/admin/source">
+          <aim-outlined/>
+          Source
+        </router-link>
+      </a-menu-item>
+    </a-sub-menu>
   </a-menu>
 </template>
 
 <script>
-import {HomeFilled,} from '@ant-design/icons-vue';
+import {AimOutlined, HomeFilled, SettingOutlined} from '@ant-design/icons-vue';
 
 export default {
   name: "LayoutHeader",
-  components: {HomeFilled},
+  components: {HomeFilled, SettingOutlined, AimOutlined},
   computed: {}
 };
 </script>

@@ -22,6 +22,17 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
+    path: "/admin",
+    name: "admin",
+    component: LayoutContainer,
+    children: [
+      {
+        path: "source",
+        component: () => import("../views/pages/admin/source/SourceConsole.vue")
+      }
+    ]
+  },
+  {
     path: "/common",
     name: "common",
     children: [
