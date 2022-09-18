@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.service.impl;
 
+import io.edurt.datacap.server.adapter.PageRequestAdapter;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
@@ -29,7 +30,7 @@ public class SourceServiceImpl
     @Override
     public Response<PageEntity<SourceEntity>> getAll(int offset, int limit)
     {
-        Pageable pageable = PageRequest.of(offset, limit);
+        Pageable pageable = PageRequestAdapter.of(offset, limit);
         return Response.success(PageEntity.build(this.sourceRepository.findAll(pageable)));
     }
 
