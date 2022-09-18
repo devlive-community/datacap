@@ -20,10 +20,10 @@ export class HttpCommon
     }
   }
 
-  get(url: string): Promise<ResponseModel>
+  get(url: string, params?: any): Promise<ResponseModel>
   {
     return new Promise((resolve) => {
-      axios.get(url)
+      axios.get(url, { params: params })
         .then(result => {
           const data = result.data;
           const response: ResponseModel = {

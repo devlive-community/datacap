@@ -11,7 +11,8 @@
           </a-button>
         </a-tooltip>
       </template>
-      <a-table size="middle" :loading="loading" :columns="headers" :data-source="columns">
+      <a-table size="middle" :loading="loading" :columns="headers" :data-source="columns" :pagination="pagination"
+               @change="handlerTableChange($event)">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <a-space style="width: 100%">
@@ -41,84 +42,7 @@ import {MinusOutlined, PlusCircleOutlined} from '@ant-design/icons-vue';
 import {SourceService} from "@/services/SourceService";
 import SourceInfoView from "@/views/pages/admin/source/SourceInfo.vue";
 import {message} from "ant-design-vue";
-
-const headers = [
-  {
-    title: 'No',
-    name: 'id',
-    dataIndex: 'id',
-    key: 'id',
-  },
-  {
-    title: 'Name',
-    name: 'name',
-    dataIndex: 'name',
-    key: 'name',
-    ellipsis: true
-  },
-  {
-    title: 'Description',
-    name: 'description',
-    dataIndex: 'description',
-    key: 'description',
-    ellipsis: true
-  },
-  {
-    title: 'Protocol',
-    name: 'protocol',
-    dataIndex: 'protocol',
-    key: 'protocol',
-    ellipsis: true
-  },
-  {
-    title: 'Host',
-    name: 'host',
-    dataIndex: 'host',
-    key: 'host',
-    ellipsis: true
-  },
-  {
-    title: 'Port',
-    name: 'port',
-    dataIndex: 'port',
-    key: 'port',
-    ellipsis: true
-  },
-  {
-    title: 'User Name',
-    name: 'username',
-    dataIndex: 'username',
-    key: 'username',
-    ellipsis: true
-  },
-  {
-    title: 'Catalog',
-    name: 'catalog',
-    dataIndex: 'catalog',
-    key: 'catalog',
-    ellipsis: true
-  },
-  {
-    title: 'Database',
-    name: 'database',
-    dataIndex: 'database',
-    key: 'database',
-    ellipsis: true
-  },
-  {
-    title: 'Create Time',
-    name: 'createTime',
-    dataIndex: 'createTime',
-    key: 'createTime',
-    ellipsis: true
-  },
-  {
-    title: 'Action',
-    name: 'action',
-    dataIndex: 'action',
-    key: 'action'
-  }
-];
+import {headers} from "@/views/pages/admin/source/SourceColumn";
 
 export default defineComponent({
   name: "SourceConsoleView",
@@ -130,22 +54,31 @@ export default defineComponent({
       columns: [],
       loading: false,
       visibleSourceInfo: false,
-      applyId: 0
+      applyId: 0,
+      pagination: {
+        total: 0,
+        current: 1,
+        pageSize: 10,
+        showSizeChanger: true,
+        pageSizeOptions: ["10", "20", "50", "100"],
+        showTotal: (total: number) => `Total <${total}> Elements`
+      }
     }
   },
   created()
   {
-    this.handlerInitialize()
+    this.handlerInitialize(this.pagination.current, this.pagination.pageSize)
   },
   methods: {
-    handlerInitialize()
+    handlerInitialize(page: number, size: number)
     {
       this.loading = true;
       new SourceService()
-        .getSources()
+        .getSources(page, size)
         .then((response) => {
           if (response.status) {
             this.columns = response.data.content;
+            this.pagination.total = response.data.total;
           }
           this.loading = false;
         })
@@ -158,7 +91,7 @@ export default defineComponent({
     {
       this.visibleSourceInfo = value;
       this.applyId = 0;
-      this.handlerInitialize();
+      this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
     },
     handlerDeleteRecord(id: number)
     {
@@ -167,9 +100,15 @@ export default defineComponent({
         .then((response) => {
           if (response.status) {
             message.success("Delete successful");
-            this.handlerInitialize();
+            this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
           }
         });
+    },
+    handlerTableChange(pagination: any)
+    {
+      this.pagination.current = pagination.current;
+      this.pagination.pageSize = pagination.pageSize;
+      this.handlerInitialize(pagination.current, pagination.pageSize)
     }
   }
 });
