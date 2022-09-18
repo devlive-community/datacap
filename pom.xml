@@ -10,6 +10,7 @@
         <module>configure</module>
         <module>server</module>
         <module>web</module>
+        <module>spi</module>
     </modules>
 
     <name>DataCap(Incubator)</name>
