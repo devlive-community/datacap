@@ -9,6 +9,7 @@
     <modules>
         <module>configure</module>
         <module>server</module>
+        <module>web</module>
     </modules>
 
     <name>DataCap(Incubator)</name>
