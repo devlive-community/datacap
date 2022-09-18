@@ -28,9 +28,8 @@ public class DataJpaConfigure
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setDatabase(Database.MYSQL);
         jpaVendorAdapter.setShowSql(true);
-        jpaVendorAdapter.setGenerateDdl(false);
         jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL5Dialect");
-        jpaVendorAdapter.setGenerateDdl(true);
+        jpaVendorAdapter.setGenerateDdl(false);
         return jpaVendorAdapter;
     }
 
