@@ -11,6 +11,7 @@
         <module>server</module>
         <module>web</module>
         <module>spi</module>
+        <module>plugin</module>
     </modules>
 
     <name>DataCap(Incubator)</name>
@@ -63,6 +64,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.edurt.datacap</groupId>
+                <artifactId>datacap-spi</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
