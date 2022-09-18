@@ -6,9 +6,9 @@ const baseUrl = "/api/v1/source";
 
 export class SourceService
 {
-  getSources(): Promise<ResponseModel>
+  getSources(page: number, size: number): Promise<ResponseModel>
   {
-    return new HttpCommon().get(baseUrl);
+    return new HttpCommon().get(baseUrl, {page: page, size: size});
   }
 
   saveAndUpdate(configure: SourceModel): Promise<ResponseModel>
