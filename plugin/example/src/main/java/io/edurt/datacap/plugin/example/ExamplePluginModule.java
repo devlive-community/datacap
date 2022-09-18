@@ -1,14 +1,14 @@
 package io.edurt.datacap.plugin.example;
 
 import com.google.inject.multibindings.Multibinder;
-import io.edurt.datacap.spi.AbstractPlugin;
 import io.edurt.datacap.spi.Plugin;
-import io.edurt.datacap.spi.PluginEnum;
-import io.edurt.datacap.spi.PluginLoader;
+import io.edurt.datacap.spi.PluginDestination;
+import io.edurt.datacap.spi.PluginModule;
+import io.edurt.datacap.spi.PluginType;
 
-public class ExamplePluginLoader
-        extends AbstractPlugin
-        implements PluginLoader
+public class ExamplePluginModule
+        extends PluginModule
+        implements Plugin
 {
     @Override
     public String getName()
@@ -17,13 +17,13 @@ public class ExamplePluginLoader
     }
 
     @Override
-    public PluginEnum getType()
+    public PluginType getType()
     {
-        return PluginEnum.SOURCE;
+        return PluginType.SOURCE;
     }
 
     @Override
-    public AbstractPlugin getInstance()
+    public PluginModule getInstance()
     {
         return this;
     }
@@ -32,7 +32,7 @@ public class ExamplePluginLoader
     {
         Multibinder<String> module = Multibinder.newSetBinder(this.binder(), String.class);
         module.addBinding().toInstance(this.getClass().getSimpleName());
-        Multibinder<Plugin> plugin = Multibinder.newSetBinder(this.binder(), Plugin.class);
+        Multibinder<PluginDestination> plugin = Multibinder.newSetBinder(this.binder(), PluginDestination.class);
         plugin.addBinding().to(ExamplePlugin.class);
     }
 }

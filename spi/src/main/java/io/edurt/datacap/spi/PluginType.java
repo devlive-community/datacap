@@ -1,6 +1,6 @@
 package io.edurt.datacap.spi;
 
-public enum PluginEnum
+public enum PluginType
 {
     SOURCE,
     SINK

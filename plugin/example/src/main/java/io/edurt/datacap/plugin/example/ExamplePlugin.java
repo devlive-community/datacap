@@ -1,9 +1,9 @@
 package io.edurt.datacap.plugin.example;
 
-import io.edurt.datacap.spi.Plugin;
+import io.edurt.datacap.spi.PluginDestination;
 
 public class ExamplePlugin
-        implements Plugin
+        implements PluginDestination
 {
     @Override
     public void execute()
