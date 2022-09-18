@@ -2,5 +2,9 @@ package io.edurt.datacap.spi;
 
 public interface Plugin
 {
-    void execute();
+    String getName();
+
+    PluginType getType();
+
+    PluginModule getInstance();
 }

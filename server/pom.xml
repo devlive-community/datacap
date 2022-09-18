@@ -61,6 +61,11 @@
             <artifactId>findbugs</artifactId>
             <version>${findbugs.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin</groupId>
+            <artifactId>datacap-plugin-example</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
