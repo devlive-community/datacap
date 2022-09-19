@@ -1,0 +1,116 @@
+site_name: DataCap (incubator)
+site_url: https://databap.incubator.edurt.io/
+site_author: EdurtIO
+site_description: >-
+  DataCap is integrated software for data transformation, integration and visualization.
+repo_name: EdurtIO/incubator-datacap
+repo_url: https://github.com/EdurtIO/incubator-datacap
+edit_uri: "https://github.com/EdurtIO/incubator-datacap/blob/master/docs"
+
+copyright: Copyright &copy; 2022 EdurtIO
+
+theme:
+  name: material
+  custom_dir: overrides
+  icon:
+    logo: material/open-source-initiative
+  favicon: material/open-source-initiative
+
+  include_search_page: false
+  search_index_only: true
+
+  language: en
+  features:
+    - content.code.annotate
+    - content.tabs.link
+    - navigation.expand
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - content.tooltips
+
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  font:
+    text: Roboto
+    code: Roboto Mono
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/EdurtIO
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/qianmoQ/
+
+  consent:
+    title: Cookie consent
+    description: >-
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
+
+markdown_extensions:
+  - admonition
+  - abbr
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: EdurtIO
+      repo: incubator-datacap
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+use_directory_urls: false
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+      fallback_to_build_date: true
+  - git-authors
+
+nav:
+  - Home: index.md
+  - Plugin: guide/plugin.md

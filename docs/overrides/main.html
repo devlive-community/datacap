@@ -1,0 +1,66 @@
+{#-
+This file was automatically generated - do not edit
+-#}
+{% extends "base.html" %}
+{% block extrahead %}
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{ 'assets/stylesheets/main.82a244a8.min.css' | url }}" />
+{% endblock %}
+{% block announce %}
+  DataCap is started ... <i class="fa fa-heart" style="color: red;"></i>
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+<!-- Giscus -->
+<h2 id="__comments">{{ lang.t("meta.comments") }}</h2>
+<!-- Replace with generated snippet -->
+<script src="https://giscus.app/client.js"
+        data-repo="EdurtIO/incubator-datacap"
+        data-repo-id="R_kgDOIAzx4g"
+        data-category="Q&A"
+        data-category-id="DIC_kwDOIAzx4s4CRfmA"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+<!-- Reload on palette change -->
+<script>
+  var palette = __md_get("__palette")
+  if (palette && typeof palette.color === "object")
+    if (palette.color.scheme === "slate") {
+      var giscus = document.querySelector("script[src*=giscus]")
+      giscus.setAttribute("data-theme", "dark")
+    }
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    var ref = document.querySelector("[data-md-component=palette]")
+    ref.addEventListener("change", function () {
+      var palette = __md_get("__palette")
+      if (palette && typeof palette.color === "object") {
+        var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+        /* Instruct Giscus to change theme */
+        var frame = document.querySelector(".giscus-frame")
+        frame.contentWindow.postMessage(
+          { giscus: { setConfig: { theme } } },
+          "https://giscus.app"
+        )
+      }
+    })
+  })
+</script>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ 'assets/javascripts/bundle.39654835.min.js' | url }}"></script>
+{% endblock %}

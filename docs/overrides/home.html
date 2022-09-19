@@ -1,0 +1,51 @@
+{#-
+This file was automatically generated - do not edit
+-#}
+{% extends "main.html" %}
+{% block tabs %}
+{{ super() }}
+<style>
+  .md-header {
+    position: initial
+  }
+
+  .md-main__inner {
+    margin: 0
+  }
+
+  .md-content {
+    display: none
+  }
+
+  @media screen and (min-width:60em) {
+    .md-sidebar--secondary {
+      display: none
+    }
+  }
+
+  @media screen and (min-width:76.25em) {
+    .md-sidebar--primary {
+      display: none
+    }
+  }
+</style>
+<section class="mdx-container">
+  <div class="md-grid md-typeset">
+    <div class="mdx-hero">
+      <div class="mdx-hero__image">
+        <img src="assets/images/illustration.png" alt="" width="1659" height="1200" draggable="false">
+      </div>
+      <div class="mdx-hero__content">
+        <h1>Feel free to join us and contribute your code.</h1>
+        <h3 class="lead">DataCap is integrated software for data transformation, integration and visualization.</h3>
+        <a href="https://github.com/EdurtIO/incubator-datacap" target="_blank" title="Join Us On GitHub" class="md-button md-button--primary">
+          Join Us On GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+  <br />
+</section>
+{% endblock %}
+{% block content %}{% endblock %}
+{% block footer %}{% endblock %}
