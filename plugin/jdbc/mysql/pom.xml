@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>datacap-plugin-jdbc</artifactId>
+        <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+        <version>1.0.0.20221015</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>datacap-plugin-jdbc-mysql</artifactId>
+    <name>DataCap plugin for jdbc (mysql)</name>
+
+    <properties>
+        <mysql.version>8.0.28</mysql.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-spi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
+    </dependencies>
+</project>
