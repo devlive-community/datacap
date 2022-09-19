@@ -12,7 +12,7 @@ jobs:
           python-version: 3.x
       - run: cd docs/ && pip install git+https://${GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git
       - run: cd docs/ && pip install -r requirements.txt
-      - run: mkdocs gh-deploy --force
+      - run: cd docs/ && mkdocs gh-deploy --force
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
