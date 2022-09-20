@@ -17,7 +17,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean checkstyle:checkstyle -X
+      - run: ./mvnw clean install checkstyle:checkstyle -Dskip.npm -X
 
   before_checker_bugs:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean findbugs:findbugs -X
+      - run: ./mvnw clean install findbugs:findbugs -Dskip.npm -X
 
   before_checker_tests:
     runs-on: ubuntu-latest
@@ -48,4 +48,4 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean -Dfindbugs.skip -Dcheckstyle.skip -X
+      - run: ./mvnw clean install -Dfindbugs.skip -Dcheckstyle.skip -Dskip.npm -X

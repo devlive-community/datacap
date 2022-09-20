@@ -62,8 +62,8 @@
             <version>${findbugs.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.edurt.datacap.plugin</groupId>
-            <artifactId>datacap-plugin-example</artifactId>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-mysql</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

@@ -23,6 +23,7 @@
         <junit.version>4.13.2</junit.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <slf4j.version>1.7.36</slf4j.version>
+        <findbugs.version>3.0.1</findbugs.version>
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
         <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
@@ -80,6 +81,11 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>findbugs</artifactId>
+                <version>${findbugs.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
