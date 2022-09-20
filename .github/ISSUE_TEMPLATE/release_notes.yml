@@ -1,6 +1,8 @@
-name: Feature
-title: Feature xxx
-description: Suggest an idea
+name: Release notes
+title: Release notes for xxx
+description: New version released
+labels:
+  - release
 body:
   - type: checkboxes
     attributes:
@@ -11,25 +13,16 @@ body:
           required: true
   - type: checkboxes
     attributes:
-      label: I want to suggest an idea and checked that ...
-      description: Make sure that your request fulfills all of the following requirements. If one requirement cannot be satisfied, explain in detail why.
+      label: Affected Module
+      description: Which modules have been changed.
       options:
-        - label: ... to my best knowledge, my idea wouldn't break something for other users
-        - label: ... the documentation does not mention anything about my idea
-        - label: ... there are no open or closed issues that are related to my idea
+        - label: Server
+        - label: Web
+        - label: Plugin
+        - label: Other
   - type: textarea
     attributes:
-      label: Description
-      description: Please describe your idea in a reasonable amount of detail.
+      label: Release notes
+      description: List of release details of the current version
     validations:
       required: true
-  - type: textarea
-    attributes:
-      label: Use Cases
-      description: Please describe how your idea would benefit you and other users.
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Screenshots / Mockups
-      description: If applicable, provide mockups or screenshots. You can drag-and-drop images here, or link to external assets.

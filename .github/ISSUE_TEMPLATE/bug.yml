@@ -1,6 +1,8 @@
 name: Bug Report
 title: Bug report xxx
 description: Report a bug
+labels:
+  - bug
 body:
   - type: checkboxes
     attributes:

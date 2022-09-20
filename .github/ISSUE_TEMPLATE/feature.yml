@@ -1,6 +1,9 @@
 name: Feature
 title: Feature xxx
 description: Suggest an idea
+labels:
+  - feature
+  - enhancement
 body:
   - type: checkboxes
     attributes:
