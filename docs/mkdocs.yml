@@ -105,4 +105,5 @@ plugins:
 
 nav:
   - Home: index.md
-  - Plugin: guide/plugin.md
+  - Reference:
+    - Plugin: guide/plugin.md
