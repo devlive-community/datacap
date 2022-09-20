@@ -7,6 +7,12 @@
         Home
       </router-link>
     </a-menu-item>
+    <a-menu-item key="console">
+      <router-link to="/console/index">
+        <console-sql-outlined/>
+        Query
+      </router-link>
+    </a-menu-item>
     <a-sub-menu key="admin">
       <template #icon>
         <setting-outlined/>

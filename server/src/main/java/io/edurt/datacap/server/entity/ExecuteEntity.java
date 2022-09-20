@@ -9,7 +9,7 @@ import java.util.Map;
 @ToString
 public class ExecuteEntity
 {
-    private String pluginName;
+    private String name;
     private String content;
     private Map<String, Object> env;
 }
