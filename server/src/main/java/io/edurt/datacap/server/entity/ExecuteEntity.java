@@ -1,6 +1,5 @@
 package io.edurt.datacap.server.entity;
 
-import io.edurt.datacap.spi.model.Response;
 import lombok.Data;
 import lombok.ToString;
 

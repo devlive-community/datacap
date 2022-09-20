@@ -1,5 +1,6 @@
 package io.edurt.datacap.plugin.jdbc.mysql;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"},
+        justification = "I prefer to suppress these FindBugs warnings")
 public class MySQLProcessor
 {
     private final MySQLConnection connection;

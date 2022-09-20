@@ -1,7 +1,7 @@
 package io.edurt.datacap.server.service;
 
 import io.edurt.datacap.server.entity.ExecuteEntity;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(value = SpringRunner.class)
 @SpringBootTest
-class ExecuteServiceTest
+public class ExecuteServiceTest
 {
     @Autowired
     private ExecuteService executeService;
@@ -21,7 +21,7 @@ class ExecuteServiceTest
             @Sql(value = "classpath:schema/source.sql"),
             @Sql(value = "classpath:data/source.sql")
     })
-    void execute()
+    public void execute()
     {
         ExecuteEntity configure = new ExecuteEntity();
         configure.setPluginName("MySQL");
