@@ -1,0 +1,28 @@
+name: Release notes
+title: Release notes for xxx
+description: New version released
+labels:
+  - release
+body:
+  - type: checkboxes
+    attributes:
+      label: Contribution guidelines
+      description: Please read the contribution guidelines before proceeding.
+      options:
+        - label: I've read the [contribution guidelines](https://github.com/EdurtIO/incubator-datacap/blob/master/CONTRIBUTING.md) and wholeheartedly agree
+          required: true
+  - type: checkboxes
+    attributes:
+      label: Affected Module
+      description: Which modules have been changed.
+      options:
+        - label: Server
+        - label: Web
+        - label: Plugin
+        - label: Other
+  - type: textarea
+    attributes:
+      label: Release notes
+      description: List of release details of the current version
+    validations:
+      required: true

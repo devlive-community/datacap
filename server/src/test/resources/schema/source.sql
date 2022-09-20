@@ -11,5 +11,6 @@ create table if not exists source
     port        bigint       not null,
     protocol    varchar(255),
     username    varchar(255),
+    _type       varchar(100) not null,
     primary key (id)
 );

@@ -18,6 +18,7 @@ public class BaseParamTest
         source.setHost("localhost");
         source.setPort(3306);
         source.setProtocol(ProtocolEnum.HTTP);
+        source.setType("MySQL");
         return source;
     }
 
