@@ -33,14 +33,14 @@ public class ExecuteServiceImpl
     @Override
     public Response<Object> execute(ExecuteEntity configure)
     {
-        SourceEntity entity = this.sourceRepository.findByName(configure.getPluginName());
+        SourceEntity entity = this.sourceRepository.findByName(configure.getName());
         if (ObjectUtils.isEmpty(entity)) {
             return Response.failure(ServiceState.SOURCE_NOT_FOUND);
         }
 
         Optional<Plugin> pluginOptional = this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
                 .stream()
-                .filter(plugin -> plugin.getName().equalsIgnoreCase(configure.getPluginName()))
+                .filter(plugin -> plugin.getName().equalsIgnoreCase(entity.getType()))
                 .findFirst();
         if (!pluginOptional.isPresent()) {
             return Response.failure(ServiceState.PLUGIN_NOT_FOUND);

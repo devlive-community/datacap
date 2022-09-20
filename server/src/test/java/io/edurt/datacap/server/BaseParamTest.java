@@ -25,7 +25,7 @@ public class BaseParamTest
     public static ExecuteEntity builderExecute()
     {
         ExecuteEntity configure = new ExecuteEntity();
-        configure.setPluginName("MySQL");
+        configure.setName("MySQL");
         configure.setContent("SHOW DATABASES");
         return configure;
     }

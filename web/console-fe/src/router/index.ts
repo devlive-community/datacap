@@ -22,6 +22,18 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
+    path: "/console",
+    name: "console",
+    redirect: "/console/index",
+    component: LayoutContainer,
+    children: [
+      {
+        path: "index",
+        component: () => import("../views/pages/console/ConsoleOnline.vue")
+      }
+    ]
+  },
+  {
     path: "/admin",
     name: "admin",
     component: LayoutContainer,

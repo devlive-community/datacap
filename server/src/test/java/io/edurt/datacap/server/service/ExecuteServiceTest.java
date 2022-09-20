@@ -24,7 +24,7 @@ public class ExecuteServiceTest
     public void execute()
     {
         ExecuteEntity configure = new ExecuteEntity();
-        configure.setPluginName("MySQL");
+        configure.setName("MySQL");
         configure.setContent("SHOW TABLES");
         executeService.execute(configure);
     }

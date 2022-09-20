@@ -31,11 +31,8 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
-
       - run: |
-          ./mvnw clean install package -Dfindbugs.skip -Dcheckstyle.skip -DskipTests=true -X
+          ./mvnw clean install package -Dfindbugs.skip -Dcheckstyle.skip -DskipTests=true -Dskip.npm -X
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
