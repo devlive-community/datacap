@@ -1,6 +1,7 @@
 package io.edurt.datacap.server;
 
 import io.edurt.datacap.server.common.ProtocolEnum;
+import io.edurt.datacap.server.entity.ExecuteEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 
 public class BaseParamTest
@@ -18,5 +19,13 @@ public class BaseParamTest
         source.setPort(3306);
         source.setProtocol(ProtocolEnum.HTTP);
         return source;
+    }
+
+    public static ExecuteEntity builderExecute()
+    {
+        ExecuteEntity configure = new ExecuteEntity();
+        configure.setPluginName("MySQL");
+        configure.setContent("SHOW DATABASES");
+        return configure;
     }
 }
