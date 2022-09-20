@@ -1,3 +1,18 @@
+import {SourceModel} from "@/model/SourceModel";
+
+const emptySource: SourceModel = {
+  name: "",
+  description: "",
+  protocol: "",
+  host: "",
+  port: 0,
+  username: "",
+  password: "",
+  catalog: "",
+  database: "",
+  type: ""
+};
+
 const headers = [
   {
     title: 'No',
@@ -77,5 +92,6 @@ const headers = [
 ];
 
 export {
-  headers
+  headers,
+  emptySource
 }

@@ -42,7 +42,7 @@ import {MinusOutlined, PlusCircleOutlined} from '@ant-design/icons-vue';
 import {SourceService} from "@/services/SourceService";
 import SourceInfoView from "@/views/pages/admin/source/SourceInfo.vue";
 import {message} from "ant-design-vue";
-import {headers} from "@/views/pages/admin/source/SourceColumn";
+import {headers} from "@/views/pages/admin/source/SourceGenerate";
 
 export default defineComponent({
   name: "SourceConsoleView",

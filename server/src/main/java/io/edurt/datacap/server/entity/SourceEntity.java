@@ -42,6 +42,9 @@ public class SourceEntity
     @Column(name = "description")
     private String description;
 
+    @Column(name = "_type", nullable = false)
+    private String type;
+
     @Column(name = "protocol", unique = true, nullable = false, columnDefinition = "varchar default 'HTTP'")
     @Enumerated(EnumType.STRING)
     @NotNull(message = "The passed protocol cannot by empty")
