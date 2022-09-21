@@ -43,4 +43,13 @@ public class Response<T>
         response.status = false;
         return response;
     }
+
+    public static Response failure(ServiceState state, String message)
+    {
+        Response response = new Response();
+        response.code = state.getCode();
+        response.message = message;
+        response.status = false;
+        return response;
+    }
 }

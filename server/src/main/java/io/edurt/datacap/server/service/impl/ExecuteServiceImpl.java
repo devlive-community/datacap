@@ -56,6 +56,9 @@ public class ExecuteServiceImpl
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(configure.getContent());
         plugin.destroy();
-        return Response.success(response);
+        if (response.getIsSuccessful()) {
+            return Response.success(response);
+        }
+        return Response.failure(ServiceState.PLUGIN_EXECUTE_FAILED, response.getMessage());
     }
 }

@@ -25,33 +25,38 @@ public class MySQLProcessor
 
     public Response handlerExecute(String content)
     {
-        Response response = new Response();
-        try (Statement statement = this.connection.getConnection().createStatement();
-                ResultSet resultSet = statement.executeQuery(content)) {
-            List<String> headers = new ArrayList<>();
-            List<String> types = new ArrayList<>();
-            List<List<Object>> columns = new ArrayList<>();
-            boolean isPresent = true;
-            while (resultSet.next()) {
-                ResultSetMetaData metaData = resultSet.getMetaData();
-                int columnCount = metaData.getColumnCount();
-                List<Object> _columns = new ArrayList<>();
-                for (int i = 1; i <= columnCount; i++) {
-                    if (isPresent) {
-                        headers.add(metaData.getColumnName(i));
-                        types.add(metaData.getColumnTypeName(i));
+        Response response = this.connection.getResponse();
+        if (response.getIsConnected()) {
+            try (Statement statement = this.connection.getConnection().createStatement();
+                    ResultSet resultSet = statement.executeQuery(content)) {
+                List<String> headers = new ArrayList<>();
+                List<String> types = new ArrayList<>();
+                List<List<Object>> columns = new ArrayList<>();
+                boolean isPresent = true;
+                while (resultSet.next()) {
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    int columnCount = metaData.getColumnCount();
+                    List<Object> _columns = new ArrayList<>();
+                    for (int i = 1; i <= columnCount; i++) {
+                        if (isPresent) {
+                            headers.add(metaData.getColumnName(i));
+                            types.add(metaData.getColumnTypeName(i));
+                        }
+                        _columns.add(resultSet.getString(i));
                     }
-                    _columns.add(resultSet.getString(i));
+                    isPresent = false;
+                    columns.add(_columns);
                 }
-                isPresent = false;
-                columns.add(_columns);
+                response.setHeaders(headers);
+                response.setTypes(types);
+                response.setColumns(columns);
+                response.setIsSuccessful(Boolean.TRUE);
             }
-            response.setHeaders(headers);
-            response.setTypes(types);
-            response.setColumns(columns);
-        }
-        catch (SQLException ex) {
-            log.error("Execute content failed content {} exception {}", content);
+            catch (SQLException ex) {
+                log.error("Execute content failed content {} exception {}", content, ex);
+                response.setIsSuccessful(Boolean.FALSE);
+                response.setMessage(ex.getMessage());
+            }
         }
         return response;
     }

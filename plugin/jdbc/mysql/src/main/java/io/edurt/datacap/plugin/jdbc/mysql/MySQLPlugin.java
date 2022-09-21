@@ -9,6 +9,7 @@ public class MySQLPlugin
         implements Plugin
 {
     private MySQLConnection connection;
+    private Response response;
 
     @Override
     public String getName()
@@ -25,7 +26,8 @@ public class MySQLPlugin
     @Override
     public void connect(Configure configure)
     {
-        this.connection = new MySQLConnection(configure);
+        this.response = new Response();
+        this.connection = new MySQLConnection(configure, response);
         this.connection.openConnection();
     }
 

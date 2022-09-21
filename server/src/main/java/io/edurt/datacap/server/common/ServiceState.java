@@ -3,7 +3,8 @@ package io.edurt.datacap.server.common;
 public enum ServiceState
 {
     SOURCE_NOT_FOUND(1001, "Source does not exist"),
-    PLUGIN_NOT_FOUND(2001, "Plugin dose not exists");
+    PLUGIN_NOT_FOUND(2001, "Plugin dose not exists"),
+    PLUGIN_EXECUTE_FAILED(2002, "Plugin execute failed");
 
     private Integer code;
     private String value;
