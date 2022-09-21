@@ -26,7 +26,7 @@ public class BaseParamTest
     {
         ExecuteEntity configure = new ExecuteEntity();
         configure.setName("MySQL");
-        configure.setContent("SHOW DATABASES");
+        configure.setContent("SELECT * FROM information_schema.TABLES LIMIT 100");
         return configure;
     }
 }

@@ -1,6 +1,8 @@
 package io.edurt.datacap.server.service;
 
 import io.edurt.datacap.server.entity.ExecuteEntity;
+import org.apache.commons.lang3.ObjectUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class ExecuteServiceTest
     {
         ExecuteEntity configure = new ExecuteEntity();
         configure.setName("MySQL");
-        configure.setContent("SHOW TABLES");
-        executeService.execute(configure);
+        configure.setContent("SHOW DATABASES");
+        Assert.assertTrue(ObjectUtils.isNotEmpty(executeService.execute(configure)));
     }
 }

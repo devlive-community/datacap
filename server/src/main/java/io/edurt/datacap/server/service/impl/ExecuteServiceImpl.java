@@ -53,9 +53,13 @@ public class ExecuteServiceImpl
         _configure.setUsername(Optional.ofNullable(entity.getUsername()));
         _configure.setPassword(Optional.ofNullable(entity.getPassword()));
         _configure.setEnv(Optional.ofNullable(configure.getEnv()));
+        _configure.setFormat(configure.getFormat());
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(configure.getContent());
         plugin.destroy();
-        return Response.success(response);
+        if (response.getIsSuccessful()) {
+            return Response.success(response);
+        }
+        return Response.failure(ServiceState.PLUGIN_EXECUTE_FAILED, response.getMessage());
     }
 }

@@ -1,5 +1,6 @@
 package io.edurt.datacap.spi.model;
 
+import io.edurt.datacap.spi.FormatType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,5 @@ public class Configure
     private Optional<String> password = Optional.empty();
     private Optional<String> database = Optional.empty();
     private Optional<Map<String, Object>> env = Optional.empty();
+    private FormatType format = FormatType.NONE;
 }

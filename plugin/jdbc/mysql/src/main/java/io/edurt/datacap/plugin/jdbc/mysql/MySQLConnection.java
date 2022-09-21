@@ -1,6 +1,7 @@
 package io.edurt.datacap.plugin.jdbc.mysql;
 
 import io.edurt.datacap.spi.model.Configure;
+import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -17,11 +18,13 @@ public class MySQLConnection
     private static String DRIVER = "com.mysql.jdbc.Driver";
 
     private final Configure configure;
+    private final Response response;
     private Connection connection;
 
-    public MySQLConnection(Configure configure)
+    public MySQLConnection(Configure configure, Response response)
     {
         this.configure = configure;
+        this.response = response;
     }
 
     private String appendURL()
@@ -61,9 +64,12 @@ public class MySQLConnection
                 log.info("Connection username and password not present");
                 this.connection = DriverManager.getConnection(url);
             }
+            response.setIsConnected(Boolean.TRUE);
         }
         catch (SQLException | ClassNotFoundException ex) {
             log.error("Connection failed ", ex);
+            response.setIsConnected(Boolean.FALSE);
+            response.setMessage(ex.getMessage());
         }
         return this.connection;
     }
@@ -71,6 +77,16 @@ public class MySQLConnection
     public Connection getConnection()
     {
         return this.connection;
+    }
+
+    public Response getResponse()
+    {
+        return this.response;
+    }
+
+    public Configure getConfigure()
+    {
+        return this.configure;
     }
 
     public void destroy()
