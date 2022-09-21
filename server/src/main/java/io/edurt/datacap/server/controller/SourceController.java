@@ -52,4 +52,10 @@ public class SourceController
     {
         return this.sourceService.delete(id);
     }
+
+    @PostMapping(value = "test", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Response<Object> testConnection(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceEntity configure)
+    {
+        return this.sourceService.testConnection(configure);
+    }
 }

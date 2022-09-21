@@ -108,4 +108,18 @@ public class SourceControllerTest
                 .andReturn();
         log.info(mvcResult.getResponse().getContentAsString());
     }
+
+    @Test
+    public void testConnection()
+            throws Exception
+    {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/source/test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JSON.objectmapper.writeValueAsString(BaseParamTest.builderSource())))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+        log.info(mvcResult.getResponse().getContentAsString());
+    }
 }

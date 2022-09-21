@@ -1,8 +1,7 @@
 package io.edurt.datacap.server.service;
 
 import io.edurt.datacap.server.BaseParamTest;
-import io.edurt.datacap.server.common.ProtocolEnum;
-import io.edurt.datacap.server.entity.SourceEntity;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +23,11 @@ public class SourceServiceTest
     public void saveOrUpdate()
     {
         assertThat(this.sourceService.saveOrUpdate(BaseParamTest.builderSource()).getStatus());
+    }
+
+    @Test
+    public void testConnection()
+    {
+        Assert.assertNotNull(this.sourceService.testConnection(BaseParamTest.builderSource()));
     }
 }

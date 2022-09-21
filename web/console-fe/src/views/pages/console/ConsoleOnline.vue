@@ -4,12 +4,8 @@
       <a-card size="small">
         <template #title>
           <a-space :size="8">
-            <a-select v-model:value="applySource" size="small" style="width: 120px" :options="options2">
-              <template #suffixIcon>
-                <meh-outlined class="ant-select-suffix"/>
-              </template>
-            </a-select>
-            <a-button type="primary" size="small" @click="handlerRun()">Run</a-button>
+            <SourceSelectComponent @changeValue="handlerChangeValue($event)" />
+            <a-button type="primary" size="small" :disabled="!applySource" @click="handlerRun()">Run</a-button>
           </a-space>
         </template>
         <div id="editor-section" style="height: 300px"></div>
@@ -17,31 +13,31 @@
     </div>
     <div style="margin-top: 5px;">
       <a-card :loading="tableLoading" :body-style="{padding: '2px'}">
-        <SheetComponent :dataCfg="tableConfigure" :options="tableOptions" :showPagination="true" sheetType="table"/>
+        <SheetComponent :dataCfg="tableConfigure" :options="tableOptions" :showPagination="true" sheetType="table" />
       </a-card>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
-import * as monaco from "monaco-editor";
-import {message, SelectProps} from "ant-design-vue";
-import {ExecuteModel} from "@/model/ExecuteModel";
-import {ExecuteService} from "@/services/ExecuteService";
+import SourceSelectComponent from "@/components/source/SourceSelect.vue";
+import { ExecuteModel } from "@/model/ExecuteModel";
+import { ExecuteService } from "@/services/ExecuteService";
+import { SheetComponent } from "@antv/s2-vue";
 import "@antv/s2-vue/dist/style.min.css";
+import { message } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
-import {SheetComponent} from "@antv/s2-vue";
+import * as monaco from "monaco-editor";
+import { defineComponent, onMounted } from "vue";
+import { string } from "vue-types";
 
 let codeEditor!: monaco.editor.IStandaloneCodeEditor;
 
 export default defineComponent({
   name: "DashboardConsoleView",
-  components: {SheetComponent},
-  setup()
-  {
-    function initEditor()
-    {
+  components: { SheetComponent, SourceSelectComponent },
+  setup() {
+    function initEditor() {
       const container: HTMLElement = document.getElementById("editor-section") as HTMLElement;
       codeEditor = monaco.editor.create(container, {
         value: '',
@@ -59,26 +55,18 @@ export default defineComponent({
     onMounted(() => {
       initEditor();
     })
-    const options2 = ref<SelectProps['options']>([
-      {
-        value: '测试MySQL',
-        label: '测试MySQL',
-      },
-    ]);
-    return {options2}
+    return {}
   },
-  data()
-  {
+  data() {
     return {
-      applySource: '',
+      applySource: null || '',
       tableConfigure: {},
       tableOptions: {},
       tableLoading: false
     }
   },
   methods: {
-    handlerRun()
-    {
+    handlerRun() {
       this.tableLoading = true;
       const editorContainer: HTMLElement = this.$refs.editorContainer as HTMLElement;
       const configure: ExecuteModel = {
@@ -110,8 +98,11 @@ export default defineComponent({
             message.error(response.message);
           }
         }).finally(() => {
-        this.tableLoading = false;
-      })
+          this.tableLoading = false;
+        })
+    },
+    handlerChangeValue(value: string) {
+      this.applySource = value;
     }
   }
 });

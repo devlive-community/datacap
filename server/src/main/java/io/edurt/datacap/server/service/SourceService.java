@@ -11,4 +11,6 @@ public interface SourceService
     Response<PageEntity<SourceEntity>> getAll(int offset, int limit);
 
     Response<Long> delete(Long id);
+
+    Response<Object> testConnection(SourceEntity configure);
 }
