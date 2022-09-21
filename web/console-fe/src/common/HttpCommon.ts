@@ -30,7 +30,7 @@ export class HttpCommon
             code: data.code,
             data: data.data,
             message: data.message,
-            status: true
+            status: data.status
           };
           resolve(response);
         }, error => {
@@ -55,7 +55,7 @@ export class HttpCommon
             code: data.code,
             data: data.data,
             message: data.message,
-            status: true
+            status: data.status
           };
           resolve(response);
         }, error => {
@@ -80,7 +80,7 @@ export class HttpCommon
             code: data.code,
             data: data.data,
             message: data.message,
-            status: true
+            status: data.status
           };
           resolve(response);
         }, error => {
