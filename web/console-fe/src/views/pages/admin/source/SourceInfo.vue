@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model:visible="visible" :title="title" width="60%">
+  <a-modal v-model:visible="visible" :title="title" :footer="null" width="60%">
     <a-form :model="formState" :validate-messages="validateMessages"
             v-bind="layout" @finish="handlerSave($event)">
       <a-tabs v-model:activeKey="activeKey">
@@ -68,7 +68,6 @@
         </a-space>
       </a-form-item>
     </a-form>
-    <template #footer></template>
   </a-modal>
 </template>
 
