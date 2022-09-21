@@ -15,7 +15,7 @@ public class Response
 {
     private List<String> headers;
     private List<String> types;
-    private List<List<Object>> columns;
+    private List<Object> columns;
     private Boolean isConnected = Boolean.FALSE;
     private Boolean isSuccessful = Boolean.FALSE;
     private String message;

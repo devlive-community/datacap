@@ -27,7 +27,7 @@ public class ExecuteServiceTest
     {
         ExecuteEntity configure = new ExecuteEntity();
         configure.setName("MySQL");
-        configure.setContent("SHOW TABLES");
+        configure.setContent("SHOW DATABASES");
         Assert.assertTrue(ObjectUtils.isNotEmpty(executeService.execute(configure)));
     }
 }

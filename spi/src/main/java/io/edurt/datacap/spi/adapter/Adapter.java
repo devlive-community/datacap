@@ -1,9 +1,12 @@
-package io.edurt.datacap.plugin.jdbc.mysql;
+package io.edurt.datacap.spi.adapter;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.model.Response;
+import io.edurt.datacap.spi.record.RecordFactory;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -14,24 +17,20 @@ import java.util.List;
 @Slf4j
 @SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"},
         justification = "I prefer to suppress these FindBugs warnings")
-public class MySQLProcessor
+public abstract class Adapter
 {
-    private final MySQLConnection connection;
-
-    public MySQLProcessor(MySQLConnection connection)
+    private Object handlerFormatAdapterRecord(FormatType format, List<String> headers, List<Object> columns)
     {
-        this.connection = connection;
+        return RecordFactory.createRecord(format, headers, columns).convert();
     }
 
-    public Response handlerExecute(String content)
+    public Response handlerJDBCExecute(FormatType format, String content, Connection connection, Response response)
     {
-        Response response = this.connection.getResponse();
         if (response.getIsConnected()) {
-            try (Statement statement = this.connection.getConnection().createStatement();
-                    ResultSet resultSet = statement.executeQuery(content)) {
+            try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(content)) {
                 List<String> headers = new ArrayList<>();
                 List<String> types = new ArrayList<>();
-                List<List<Object>> columns = new ArrayList<>();
+                List<Object> columns = new ArrayList<>();
                 boolean isPresent = true;
                 while (resultSet.next()) {
                     ResultSetMetaData metaData = resultSet.getMetaData();
@@ -45,7 +44,7 @@ public class MySQLProcessor
                         _columns.add(resultSet.getString(i));
                     }
                     isPresent = false;
-                    columns.add(_columns);
+                    columns.add(handlerFormatAdapterRecord(format, headers, _columns));
                 }
                 response.setHeaders(headers);
                 response.setTypes(types);
@@ -53,7 +52,7 @@ public class MySQLProcessor
                 response.setIsSuccessful(Boolean.TRUE);
             }
             catch (SQLException ex) {
-                log.error("Execute content failed content {} exception {}", content, ex);
+                log.error("Execute content failed content {} exception ", content, ex);
                 response.setIsSuccessful(Boolean.FALSE);
                 response.setMessage(ex.getMessage());
             }

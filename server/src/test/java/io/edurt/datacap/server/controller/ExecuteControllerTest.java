@@ -2,6 +2,8 @@ package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.server.BaseParamTest;
 import io.edurt.datacap.server.common.JSON;
+import io.edurt.datacap.server.entity.ExecuteEntity;
+import io.edurt.datacap.spi.FormatType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +50,26 @@ public class ExecuteControllerTest
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/execute")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JSON.objectmapper.writeValueAsString(BaseParamTest.builderExecute())))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+        log.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    @SqlGroup(value = {
+            @Sql(value = "classpath:schema/source.sql"),
+            @Sql(value = "classpath:data/source.sql")
+    })
+    public void executeFormatJson()
+            throws Exception
+    {
+        ExecuteEntity entity = BaseParamTest.builderExecute();
+        entity.setFormat(FormatType.JSON);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/execute")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JSON.objectmapper.writeValueAsString(entity)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists())
                 .andDo(MockMvcResultHandlers.print())

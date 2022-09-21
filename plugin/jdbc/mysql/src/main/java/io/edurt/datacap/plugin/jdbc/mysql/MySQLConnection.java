@@ -84,6 +84,11 @@ public class MySQLConnection
         return this.response;
     }
 
+    public Configure getConfigure()
+    {
+        return this.configure;
+    }
+
     public void destroy()
     {
         if (ObjectUtils.isNotEmpty(this.connection)) {

@@ -2,9 +2,12 @@ package io.edurt.datacap.plugin.jdbc.mysql;
 
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
+import io.edurt.datacap.spi.adapter.Adapter;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MySQLPlugin
         implements Plugin
 {
@@ -34,8 +37,12 @@ public class MySQLPlugin
     @Override
     public Response execute(String content)
     {
-        MySQLProcessor processor = new MySQLProcessor(this.connection);
-        return processor.handlerExecute(content);
+        log.info("Execute plugin logic started");
+        response = this.connection.getResponse();
+        Adapter processor = new MySQLAdapter();
+        processor.handlerJDBCExecute(this.connection.getConfigure().getFormat(), content, this.connection.getConnection(), response);
+        log.info("Execute plugin logic end");
+        return response;
     }
 
     @Override

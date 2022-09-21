@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.entity;
 
+import io.edurt.datacap.spi.FormatType;
 import lombok.Data;
 import lombok.ToString;
 
@@ -12,4 +13,5 @@ public class ExecuteEntity
     private String name;
     private String content;
     private Map<String, Object> env;
+    private FormatType format = FormatType.NONE;
 }
