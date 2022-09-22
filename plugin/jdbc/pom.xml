@@ -15,5 +15,6 @@
 
     <modules>
         <module>mysql</module>
+        <module>clickhouse</module>
     </modules>
 </project>
