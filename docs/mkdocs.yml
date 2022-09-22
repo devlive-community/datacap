@@ -5,7 +5,7 @@ site_description: >-
   DataCap is integrated software for data transformation, integration and visualization.
 repo_name: EdurtIO/incubator-datacap
 repo_url: https://github.com/EdurtIO/incubator-datacap
-edit_uri: "https://github.com/EdurtIO/incubator-datacap/blob/master/docs"
+edit_uri: "https://github.com/EdurtIO/incubator-datacap/blob/master/docs/docs"
 
 copyright: Copyright &copy; 2022 EdurtIO
 
@@ -15,11 +15,9 @@ theme:
   icon:
     logo: material/open-source-initiative
   favicon: material/open-source-initiative
-
   include_search_page: false
   search_index_only: true
-
-  language: en
+  language: zh
   features:
     - content.code.annotate
     - content.tabs.link
@@ -33,7 +31,6 @@ theme:
     - search.share
     - search.suggest
     - content.tooltips
-
   palette:
     - scheme: default
       toggle:
@@ -43,7 +40,6 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
-
   font:
     text: Roboto
     code: Roboto Mono
@@ -53,7 +49,6 @@ extra:
       link: https://github.com/EdurtIO
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/qianmoQ/
-
 markdown_extensions:
   - admonition
   - abbr
@@ -95,15 +90,32 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
 use_directory_urls: false
-
 plugins:
+  - i18n:
+      default_language: zh
+      languages:
+        en: English
+        zh: 简体中文
+      nav_translations:
+        zh:
+          home: 主页
+          developer_guide: 开发指南
+          developer_guide_env: 开发环境
+          developer_guide_plugin: 插件
+        en:
+          home: Home
+          developer_guide: Developer guide
+          developer_guide_env: Development environment
+          developer_guide_plugin: Plugin
   - search
   - git-revision-date-localized:
       enable_creation_date: true
       fallback_to_build_date: true
+      type: date
   - git-authors
 
 nav:
-  - Home: index.md
-  - Reference:
-    - Plugin: guide/plugin.md
+  - home: index.md
+  - developer_guide:
+      - developer_guide_env: developer_guide/env.md
+      - developer_guide_plugin: developer_guide/plugin.md
