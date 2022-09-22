@@ -14,6 +14,7 @@
 
     <properties>
         <mysql.version>8.0.28</mysql.version>
+        <plugin.name>jdbc-mysql</plugin.name>
     </properties>
 
     <dependencies>
@@ -39,4 +40,46 @@
             <artifactId>logback-core</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>../../../server/src/main/plugins/${plugin.name}</outputDirectory>
+                    <excludes>
+                        <exclude>**/*.properties</exclude>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.yml</exclude>
+                        <exclude>static/**</exclude>
+                        <exclude>templates/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>../../../server/src/main/plugins/${plugin.name}</outputDirectory>
+                            <excludeTransitive>false</excludeTransitive>
+                            <includeArtifactIds>
+                                mysql-connector-java
+                            </includeArtifactIds>
+                            <stripVersion>false</stripVersion>
+                            <includeScope>runtime</includeScope>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

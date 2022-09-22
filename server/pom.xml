@@ -17,7 +17,6 @@
         <h2.version>2.1.214</h2.version>
         <findbugs.version>3.0.1</findbugs.version>
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
-        <assembly-plugin.version>3.1.1</assembly-plugin.version>
         <node.version>v16.10.0</node.version>
         <npm.version>7.19.1</npm.version>
     </properties>
@@ -64,6 +63,11 @@
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-mysql</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-clickhouse</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
@@ -116,7 +120,7 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>--legacy-peer-deps install</arguments>
                         </configuration>
                     </execution>
                     <execution>
