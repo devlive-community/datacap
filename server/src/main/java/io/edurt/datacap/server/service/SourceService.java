@@ -13,4 +13,6 @@ public interface SourceService
     Response<Long> delete(Long id);
 
     Response<Object> testConnection(SourceEntity configure);
+
+    Response<SourceEntity> getById(Long id);
 }

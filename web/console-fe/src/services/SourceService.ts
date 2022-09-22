@@ -9,8 +9,12 @@ export class SourceService {
     return new HttpCommon().get(baseUrl, { page: page, size: size });
   }
 
-  saveAndUpdate(configure: SourceModel): Promise<ResponseModel> {
-    return new HttpCommon().post(baseUrl, JSON.stringify(configure));
+  saveAndUpdate(configure: SourceModel, isUpdate: boolean): Promise<ResponseModel> {
+    if (isUpdate) {
+      return new HttpCommon().put(baseUrl, JSON.stringify(configure));
+    } else {
+      return new HttpCommon().post(baseUrl, JSON.stringify(configure));
+    }
   }
 
   delete(id: number): Promise<ResponseModel> {
@@ -19,5 +23,9 @@ export class SourceService {
 
   testConnection(configure: SourceModel): Promise<ResponseModel> {
     return new HttpCommon().post(baseUrl + '/test', JSON.stringify(configure));
+  }
+
+  getById(id: number): Promise<ResponseModel> {
+    return new HttpCommon().get(baseUrl + "/" + id);
   }
 }

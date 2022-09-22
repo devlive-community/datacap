@@ -79,4 +79,10 @@ public class SourceServiceImpl
         }
         return Response.failure(ServiceState.PLUGIN_EXECUTE_FAILED, response.getMessage());
     }
+
+    @Override
+    public Response<SourceEntity> getById(Long id)
+    {
+        return Response.success(this.sourceRepository.findById(id));
+    }
 }

@@ -1,6 +1,6 @@
 <template>
   <a-modal v-model:visible="visible" :title="title" :footer="null" width="60%">
-    <a-form :model="formState" :validate-messages="validateMessages" v-bind="layout" @finish="handlerSave($event)">
+    <a-form :model="formState" :validate-messages="validateMessages" v-bind="layout" @finish="handlerSave()">
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane key="type">
           <template #tab>
@@ -83,11 +83,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
 import { SourceModel } from "@/model/SourceModel";
 import { SourceService } from "@/services/SourceService";
-import { message } from "ant-design-vue";
 import { emptySource } from "@/views/pages/admin/source/SourceGenerate";
+import { message } from "ant-design-vue";
+import { defineComponent, reactive, ref } from "vue";
 
 export default defineComponent({
   name: "SourceInfoView",
@@ -112,11 +112,10 @@ export default defineComponent({
         range: '${label} must be between ${min} and ${max}',
       },
     };
-    const formState = reactive(emptySource);
+
     return {
       activeKey: ref('type'),
       validateMessages,
-      formState,
       layout
     };
   },
@@ -124,24 +123,34 @@ export default defineComponent({
   data() {
     return {
       title: '',
-      isCreated: true
+      isCreated: true,
+      isUpdate: false,
+      formState: {}
     }
   },
   created() {
     if (this.id <= 0) {
-      this.title = 'Create New Source'
+      this.title = 'Create New Source';
+      this.formState = reactive(emptySource);
     }
     else {
-      this.title = 'Modify Source'
+      this.title = 'Modify Source';
+      this.isUpdate = true;
+      new SourceService().getById(this.id)
+        .then(response => {
+          if (response.status) {
+            this.formState = reactive(response.data);
+          }
+        })
     }
   },
   methods: {
     handlerCancel() {
       this.visible = false;
     },
-    handlerSave(values: SourceModel) {
+    handlerSave() {
       new SourceService()
-        .saveAndUpdate(values)
+        .saveAndUpdate(this.formState as SourceModel, this.isUpdate)
         .then((response) => {
           if (response.status) {
             message.success("Create successful");
@@ -151,7 +160,7 @@ export default defineComponent({
     },
     handlerTest() {
       new SourceService()
-        .testConnection(this.formState)
+        .testConnection(this.formState as SourceModel)
         .then((response) => {
           if (response.status) {
             message.success("Test successful");
