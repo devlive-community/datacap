@@ -101,12 +101,12 @@ plugins:
           home: 主页
           developer_guide: 开发指南
           developer_guide_env: 开发环境
-          developer_guide_plugin: 插件
+          developer_guide_plugin: 添加插件
         en:
           home: Home
           developer_guide: Developer guide
           developer_guide_env: Development environment
-          developer_guide_plugin: Plugin
+          developer_guide_plugin: Add Plugin
   - search
   - git-revision-date-localized:
       enable_creation_date: true

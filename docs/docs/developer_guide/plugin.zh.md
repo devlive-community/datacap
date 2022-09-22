@@ -2,11 +2,11 @@
 icon: material/power-plug-outline
 ---
 
-When we need to integrate other plug-ins into this system, we can follow the steps in this document.
+当我们需要将其他插件集成到这个系统,我们可以遵循本文中的步骤。
 
-- Use the project to integrate the `spi` module
+- 使用项目集成 `spi` 模块
 
-Add the following dependencies to the project's `pom.xml` file
+在项目的 `pom.xml` 文件中添加以下依赖
 
 ```xml
 <dependency>
@@ -16,11 +16,11 @@ Add the following dependencies to the project's `pom.xml` file
 </dependency>
 ```
 
-- Create a plug-in loading module `ExamplePluginModule`
+- 创建一个插件加载模块 `ExamplePluginModule`
 
 !!! warning
 
-    `DATACAP-SPI_LAST_VERSION`  You are advised to change the value to the latest SPI version
+    `DATACAP-SPI_LAST_VERSION` 建议您将该值更改为最新的SPI的版本
 
 ```java
 public class ExamplePluginModule
@@ -55,11 +55,11 @@ public class ExamplePluginModule
 }
 ```
 
-`extends AbstractPluginModule` The module that marks the class as belonging to a plug-in
+`extends AbstractPluginModule` 该模块标志着类属于一个插件
 
-`implements PluginModule` Some metadata needed to implement the system plug-in
+`implements PluginModule` 一些元数据实现系统所需的插件
 
-- Next we need to build the plugin we use `ExamplePlugin`
+- 接下来我们需要构建插件 `ExamplePlugin`
 
 ```java
 public class ExamplePlugin
@@ -95,28 +95,28 @@ public class ExamplePlugin
 }
 ```
 
-`implements Plugin` Implement the plug-ins defined in the SPI system, and mark the content of the specific plug-in implementation.
+`implements Plugin` 实现SPI系统中定义的插件, 特定插件实现的内容。
 
 !!! note
 
-    `getName()` The unique name of the plug-in, the plug-in with the same name will only take effect if it is loaded first <br/>
-    `getType()` Types of plug-ins <br/>
-    `connect(Configure configure)` The connection-related information required by the plug-in in advance, such as the MySQL plug-in, this is the connection stage of MySQL. <br/>
-    `execute(String content)` Specific execution operation logic <br/>
-    `destroy()` For the final destruction of the plug-in, pay attention to the need to include the destruction of the information in the connection
+    `getName()` 插件的唯一名称,名称相同的插件只会生效第一次加载的 <br/>
+    `getType()` 插件的类型 <br/>
+    `connect(Configure configure)` 插件事先需要的连接相关信息，如MySQL插件，这就是MySQL的连接阶段。 <br/>
+    `execute(String content)` 特定的执行操作逻辑 <br/>
+    `destroy()` 对于插件的最终销毁，请注意需要在连接中包含信息的销毁
     
-- In the last step, we load and configure the plug-in
+- 在最后一步中，我们加载并配置插件
 
-Add the `META-INF` and `services` directories to the `resources` directory in the source directory.
+在 `resources` 源码目录下添加 `META-INF` 和 `services` 目录
 
 !!! warning
 
-    `services` needs to be in the `META-INF` directory
+    `services` 需要在 `resources` 目录中
 
-Create `io.edurt.datacap.spi.PluginModule` file
+创建 `io.edurt.datacap.spi.PluginModule` 文件
 
 ```java
 io.edurt.datacap.plugin.example.ExamplePluginModule
 ```
 
-The content of the file is the plug-in loading module after we define it.
+文件的内容是我们定义之后的插件加载模块。
