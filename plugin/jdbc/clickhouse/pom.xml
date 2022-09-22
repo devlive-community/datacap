@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>datacap-plugin-jdbc-mysql</artifactId>
-    <name>DataCap plugin for jdbc (MySQL)</name>
+    <artifactId>datacap-plugin-jdbc-clickhouse</artifactId>
+    <name>DataCap plugin for jdbc (ClickHouse)</name>
 
     <properties>
-        <mysql.version>8.0.28</mysql.version>
-        <plugin.name>jdbc-mysql</plugin.name>
+        <clickhouse-jdbc.version>0.3.2-patch9</clickhouse-jdbc.version>
+        <plugin.name>jdbc-clickhouse</plugin.name>
     </properties>
 
     <dependencies>
@@ -23,21 +23,13 @@
             <artifactId>datacap-spi</artifactId>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>${clickhouse-jdbc.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>findbugs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
         </dependency>
     </dependencies>
 
@@ -71,7 +63,7 @@
                             <outputDirectory>../../../server/src/main/plugins/${plugin.name}</outputDirectory>
                             <excludeTransitive>false</excludeTransitive>
                             <includeArtifactIds>
-                                mysql-connector-java
+                                clickhouse-jdbc
                             </includeArtifactIds>
                             <stripVersion>false</stripVersion>
                             <includeScope>runtime</includeScope>
