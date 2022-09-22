@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
+    "report": "vue-cli-service build --report",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -19,7 +20,8 @@
     "monaco-editor-webpack-plugin": "6.0.0",
     "nprogress": "^0.2.0",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "webpack-bundle-analyzer": "^4.6.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.4.0",
