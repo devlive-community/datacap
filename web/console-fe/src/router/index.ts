@@ -1,5 +1,5 @@
-import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
 import LayoutContainer from "@/views/layout/Layout.vue";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -58,13 +58,13 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 });
 
 router.beforeEach((to, from, next) => {
   if (to.matched.length === 0) {
-    next({name: "routerNotFound"})
+    next({ name: "routerNotFound" })
   }
   else {
     next()
