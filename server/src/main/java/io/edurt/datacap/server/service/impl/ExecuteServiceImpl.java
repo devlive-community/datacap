@@ -40,7 +40,7 @@ public class ExecuteServiceImpl
 
         Optional<Plugin> pluginOptional = this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
                 .stream()
-                .filter(plugin -> plugin.getName().equalsIgnoreCase(entity.getType()))
+                .filter(plugin -> plugin.name().equalsIgnoreCase(entity.getType()))
                 .findFirst();
         if (!pluginOptional.isPresent()) {
             return Response.failure(ServiceState.PLUGIN_NOT_FOUND);
