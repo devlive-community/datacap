@@ -5,9 +5,11 @@ import io.edurt.datacap.spi.model.Response;
 
 public interface Plugin
 {
-    String getName();
+    String name();
 
-    PluginType getType();
+    String description();
+
+    PluginType type();
 
     void connect(Configure configure);
 

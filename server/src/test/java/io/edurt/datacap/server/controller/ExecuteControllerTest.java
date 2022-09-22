@@ -26,6 +26,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @SpringBootTest
 @WebAppConfiguration
 @Slf4j
+@SqlGroup(value = {
+        @Sql(value = "classpath:schema/source.sql"),
+        @Sql(value = "classpath:data/source.sql")
+})
 public class ExecuteControllerTest
 {
     @Autowired
@@ -40,10 +44,6 @@ public class ExecuteControllerTest
     }
 
     @Test
-    @SqlGroup(value = {
-            @Sql(value = "classpath:schema/source.sql"),
-            @Sql(value = "classpath:data/source.sql")
-    })
     public void execute()
             throws Exception
     {
@@ -58,15 +58,12 @@ public class ExecuteControllerTest
     }
 
     @Test
-    @SqlGroup(value = {
-            @Sql(value = "classpath:schema/source.sql"),
-            @Sql(value = "classpath:data/source.sql")
-    })
     public void executeFormatJson()
             throws Exception
     {
         ExecuteEntity entity = BaseParamTest.builderExecute();
         entity.setFormat(FormatType.JSON);
+        entity.setName("MySQL1");
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/execute")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JSON.objectmapper.writeValueAsString(entity)))

@@ -32,7 +32,7 @@ public class MySQLPluginTestService
     public void test()
     {
         Set<Plugin> plugins = injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}));
-        Optional<Plugin> pluginOptional = plugins.stream().filter(v -> v.getName().equalsIgnoreCase("MySQL")).findFirst();
+        Optional<Plugin> pluginOptional = plugins.stream().filter(v -> v.name().equalsIgnoreCase("MySQL")).findFirst();
         if (pluginOptional.isPresent()) {
             Plugin plugin = pluginOptional.get();
             plugin.connect(configure);

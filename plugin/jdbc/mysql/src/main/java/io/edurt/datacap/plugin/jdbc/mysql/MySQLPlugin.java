@@ -15,13 +15,19 @@ public class MySQLPlugin
     private Response response;
 
     @Override
-    public String getName()
+    public String name()
     {
         return "MySQL";
     }
 
     @Override
-    public PluginType getType()
+    public String description()
+    {
+        return "Integrate MySQL data sources";
+    }
+
+    @Override
+    public PluginType type()
     {
         return PluginType.SOURCE;
     }

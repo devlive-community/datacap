@@ -1,6 +1,5 @@
 ---
 icon: material/power-plug-outline
-status: new
 ---
 
 When we need to integrate other plug-ins into this system, we can follow the steps in this document.

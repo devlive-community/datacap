@@ -9,13 +9,19 @@ public class ExamplePlugin
         implements Plugin
 {
     @Override
-    public String getName()
+    public String name()
     {
-        return null;
+        return "Example";
     }
 
     @Override
-    public PluginType getType()
+    public String description()
+    {
+        return "Example plugin";
+    }
+
+    @Override
+    public PluginType type()
     {
         return null;
     }

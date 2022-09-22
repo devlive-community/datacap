@@ -57,7 +57,7 @@ public class SourceServiceImpl
     {
         Optional<Plugin> pluginOptional = this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
                 .stream()
-                .filter(plugin -> plugin.getName().equalsIgnoreCase(configure.getType()))
+                .filter(plugin -> plugin.name().equalsIgnoreCase(configure.getType()))
                 .findFirst();
         if (!pluginOptional.isPresent()) {
             return Response.failure(ServiceState.PLUGIN_NOT_FOUND);
