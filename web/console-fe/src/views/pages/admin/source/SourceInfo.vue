@@ -12,7 +12,10 @@
             <a-row :gutter="[16,16]">
               <a-col :span="6" style="text-align: center;">
                 <a-radio-group v-model:value="formState.type">
-                  <a-radio-button value="MySQL">MySQL</a-radio-button>
+                  <a-space style="width: 100%">
+                    <a-radio-button value="MySQL">MySQL</a-radio-button>
+                    <a-radio-button value="ClickHouse">ClickHouse</a-radio-button>
+                  </a-space>
                 </a-radio-group>
               </a-col>
             </a-row>

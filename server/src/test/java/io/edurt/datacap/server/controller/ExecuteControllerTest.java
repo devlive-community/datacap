@@ -26,14 +26,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @SpringBootTest
 @WebAppConfiguration
 @Slf4j
-@SqlGroup(value = {
-        @Sql(value = "classpath:schema/source.sql"),
-        @Sql(value = "classpath:data/source.sql")
-})
+@SqlGroup(value = {@Sql(value = "classpath:schema/source.sql")})
 public class ExecuteControllerTest
 {
-    @Autowired
-    private ExecuteController executeController;
+    @Autowired private ExecuteController executeController;
 
     private MockMvc mockMvc;
 
@@ -47,13 +43,7 @@ public class ExecuteControllerTest
     public void execute()
             throws Exception
     {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/execute")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JSON.objectmapper.writeValueAsString(BaseParamTest.builderExecute())))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists())
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/execute").contentType(MediaType.APPLICATION_JSON).content(JSON.objectmapper.writeValueAsString(BaseParamTest.builderExecute()))).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.code").exists()).andDo(MockMvcResultHandlers.print()).andReturn();
         log.info(mvcResult.getResponse().getContentAsString());
     }
 
@@ -64,13 +54,7 @@ public class ExecuteControllerTest
         ExecuteEntity entity = BaseParamTest.builderExecute();
         entity.setFormat(FormatType.JSON);
         entity.setName("MySQL1");
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/execute")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JSON.objectmapper.writeValueAsString(entity)))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists())
-                .andDo(MockMvcResultHandlers.print())
-                .andReturn();
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/execute").contentType(MediaType.APPLICATION_JSON).content(JSON.objectmapper.writeValueAsString(entity))).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.code").exists()).andDo(MockMvcResultHandlers.print()).andReturn();
         log.info(mvcResult.getResponse().getContentAsString());
     }
 }
