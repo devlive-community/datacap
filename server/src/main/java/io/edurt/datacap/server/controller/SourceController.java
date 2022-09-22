@@ -58,4 +58,10 @@ public class SourceController
     {
         return this.sourceService.testConnection(configure);
     }
+
+    @GetMapping(value = "{id}")
+    public Response<SourceEntity> getInfo(@PathVariable(value = "id") Long id)
+    {
+        return this.sourceService.getById(id);
+    }
 }
