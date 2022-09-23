@@ -3,6 +3,7 @@ package io.edurt.datacap.server.service.impl;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
+import io.edurt.datacap.server.audit.AuditPlugin;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
 import io.edurt.datacap.server.entity.ExecuteEntity;
@@ -30,6 +31,7 @@ public class ExecuteServiceImpl
         this.sourceRepository = sourceRepository;
     }
 
+    @AuditPlugin
     @Override
     public Response<Object> execute(ExecuteEntity configure)
     {
