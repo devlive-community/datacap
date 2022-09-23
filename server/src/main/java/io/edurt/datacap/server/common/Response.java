@@ -13,7 +13,7 @@ public class Response<T>
 {
     private Boolean status;
     private Integer code;
-    private String message;
+    private Object message;
     private T data;
 
     public static Response success(Object data)
@@ -44,7 +44,7 @@ public class Response<T>
         return response;
     }
 
-    public static Response failure(ServiceState state, String message)
+    public static Response failure(ServiceState state, Object message)
     {
         Response response = new Response();
         response.code = state.getCode();
