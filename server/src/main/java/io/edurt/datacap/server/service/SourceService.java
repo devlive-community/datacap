@@ -2,7 +2,10 @@ package io.edurt.datacap.server.service;
 
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
+import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
+
+import java.util.List;
 
 public interface SourceService
 {
@@ -15,4 +18,6 @@ public interface SourceService
     Response<Object> testConnection(SourceEntity configure);
 
     Response<SourceEntity> getById(Long id);
+
+    Response<List<PluginEntity>> getPlugins();
 }

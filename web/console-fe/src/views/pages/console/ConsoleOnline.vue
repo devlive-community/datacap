@@ -5,7 +5,8 @@
         <template #title>
           <a-space :size="8">
             <SourceSelectComponent @changeValue="handlerChangeValue($event)" />
-            <a-button type="primary" size="small" :disabled="!applySource" @click="handlerRun()">Run</a-button>
+            <a-button type="primary" size="small" :loading="tableLoading" :disabled="!applySource" @click="handlerRun()">Run
+            </a-button>
           </a-space>
         </template>
         <div id="editor-section" style="height: 300px"></div>
@@ -29,7 +30,6 @@ import { message } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 import * as monaco from "monaco-editor";
 import { defineComponent, onMounted } from "vue";
-import { string } from "vue-types";
 
 let codeEditor!: monaco.editor.IStandaloneCodeEditor;
 
