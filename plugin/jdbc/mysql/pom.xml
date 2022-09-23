@@ -44,39 +44,22 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${assembly-plugin.version}</version>
                 <configuration>
-                    <outputDirectory>../../../server/src/main/plugins/${plugin.name}</outputDirectory>
-                    <excludes>
-                        <exclude>**/*.properties</exclude>
-                        <exclude>**/*.xml</exclude>
-                        <exclude>**/*.yml</exclude>
-                        <exclude>static/**</exclude>
-                        <exclude>templates/**</exclude>
-                    </excludes>
+                    <finalName>${plugin.name}</finalName>
+                    <descriptors>
+                        <descriptor>../../../configure/assembly/assembly-plugin.xml</descriptor>
+                    </descriptors>
+                    <outputDirectory>../../../dist/plugins/${plugin.name}</outputDirectory>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-dependencies</id>
+                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>single</goal>
                         </goals>
-                        <configuration>
-                            <outputDirectory>../../../server/src/main/plugins/${plugin.name}</outputDirectory>
-                            <excludeTransitive>false</excludeTransitive>
-                            <includeArtifactIds>
-                                mysql-connector-java
-                            </includeArtifactIds>
-                            <stripVersion>false</stripVersion>
-                            <includeScope>runtime</includeScope>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

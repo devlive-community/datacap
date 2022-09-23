@@ -2,6 +2,7 @@ package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
+import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 import io.edurt.datacap.server.service.SourceService;
 import io.edurt.datacap.server.validation.ValidationGroup;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController()
 @RequestMapping(value = "/api/v1/source")
@@ -63,5 +66,11 @@ public class SourceController
     public Response<SourceEntity> getInfo(@PathVariable(value = "id") Long id)
     {
         return this.sourceService.getById(id);
+    }
+
+    @GetMapping(value = "plugins")
+    public Response<List<PluginEntity>> getPlugins()
+    {
+        return this.sourceService.getPlugins();
     }
 }

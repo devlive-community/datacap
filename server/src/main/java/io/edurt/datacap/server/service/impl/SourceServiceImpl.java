@@ -7,17 +7,21 @@ import io.edurt.datacap.server.adapter.PageRequestAdapter;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
 import io.edurt.datacap.server.entity.PageEntity;
+import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 import io.edurt.datacap.server.repository.SourceRepository;
 import io.edurt.datacap.server.service.SourceService;
 import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
+import io.edurt.datacap.spi.PluginType;
 import io.edurt.datacap.spi.model.Configure;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SourceServiceImpl
@@ -84,5 +88,21 @@ public class SourceServiceImpl
     public Response<SourceEntity> getById(Long id)
     {
         return Response.success(this.sourceRepository.findById(id));
+    }
+
+    @Override
+    public Response<List<PluginEntity>> getPlugins()
+    {
+        List<PluginEntity> plugins = this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
+                .stream()
+                .filter(plugin -> plugin.type().equals(PluginType.SOURCE))
+                .map(plugin -> {
+                    PluginEntity entity = new PluginEntity();
+                    entity.setName(plugin.name());
+                    entity.setDescription(plugin.description());
+                    return entity;
+                })
+                .collect(Collectors.toList());
+        return Response.success(plugins);
     }
 }

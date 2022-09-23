@@ -28,4 +28,8 @@ export class SourceService {
   getById(id: number): Promise<ResponseModel> {
     return new HttpCommon().get(baseUrl + "/" + id);
   }
+
+  getPlugins(): Promise<ResponseModel> {
+    return new HttpCommon().get(baseUrl + "/plugins");
+  }
 }

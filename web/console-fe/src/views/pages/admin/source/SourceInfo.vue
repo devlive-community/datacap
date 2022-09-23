@@ -13,8 +13,8 @@
               <a-col :span="6" style="text-align: center;">
                 <a-radio-group v-model:value="formState.type">
                   <a-space style="width: 100%">
-                    <a-radio-button value="MySQL">MySQL</a-radio-button>
-                    <a-radio-button value="ClickHouse">ClickHouse</a-radio-button>
+                    <a-radio-button v-for="plugin in plugins" :value="plugin.name" v-bind:key="plugin.name">
+                      {{plugin.name}}</a-radio-button>
                   </a-space>
                 </a-radio-group>
               </a-col>
@@ -125,7 +125,8 @@ export default defineComponent({
       title: '',
       isCreated: true,
       isUpdate: false,
-      formState: {}
+      formState: {},
+      plugins: []
     }
   },
   created() {
@@ -136,15 +137,26 @@ export default defineComponent({
     else {
       this.title = 'Modify Source';
       this.isUpdate = true;
-      new SourceService().getById(this.id)
-        .then(response => {
-          if (response.status) {
-            this.formState = reactive(response.data);
-          }
-        })
     }
+    this.handlerInitialize();
   },
   methods: {
+    handlerInitialize() {
+      if (this.id > 0) {
+        new SourceService().getById(this.id)
+          .then(response => {
+            if (response.status) {
+              this.formState = reactive(response.data);
+            }
+          });
+      }
+      new SourceService().getPlugins()
+        .then(response => {
+          if (response.status) {
+            this.plugins = response.data;
+          }
+        });
+    },
     handlerCancel() {
       this.visible = false;
     },

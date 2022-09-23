@@ -5,10 +5,14 @@
         <template #title>
           <a-space :size="8">
             <SourceSelectComponent @changeValue="handlerChangeValue($event)" />
-            <a-button type="primary" size="small" :disabled="!applySource" @click="handlerRun()">Run</a-button>
+            <a-button type="primary" size="small" :loading="tableLoading" :disabled="!applySource"
+              @click="handlerRun()">Run
+            </a-button>
           </a-space>
         </template>
-        <div id="editor-section" style="height: 300px"></div>
+        <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
+          v-model:value="editorValue">
+        </MonacoEditor>
       </a-card>
     </div>
     <div style="margin-top: 5px;">
@@ -27,42 +31,19 @@ import { SheetComponent } from "@antv/s2-vue";
 import "@antv/s2-vue/dist/style.min.css";
 import { message } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
-import * as monaco from "monaco-editor";
-import { defineComponent, onMounted } from "vue";
-import { string } from "vue-types";
-
-let codeEditor!: monaco.editor.IStandaloneCodeEditor;
+import { defineComponent } from "vue";
+import MonacoEditor from 'monaco-editor-vue3';
 
 export default defineComponent({
   name: "DashboardConsoleView",
-  components: { SheetComponent, SourceSelectComponent },
-  setup() {
-    function initEditor() {
-      const container: HTMLElement = document.getElementById("editor-section") as HTMLElement;
-      codeEditor = monaco.editor.create(container, {
-        value: '',
-        language: 'sql',
-        theme: 'vs-dark',
-        fontSize: 15,
-        selectOnLineNumbers: true,
-        readOnly: false,
-        cursorStyle: 'line',
-        autoIndent: 'full',
-        quickSuggestionsDelay: 100
-      });
-    }
-
-    onMounted(() => {
-      initEditor();
-    })
-    return {}
-  },
+  components: { SheetComponent, SourceSelectComponent, MonacoEditor },
   data() {
     return {
       applySource: null || '',
       tableConfigure: {},
       tableOptions: {},
-      tableLoading: false
+      tableLoading: false,
+      editorValue: ''
     }
   },
   methods: {
@@ -71,7 +52,7 @@ export default defineComponent({
       const editorContainer: HTMLElement = this.$refs.editorContainer as HTMLElement;
       const configure: ExecuteModel = {
         name: this.applySource,
-        content: codeEditor.getValue(),
+        content: this.editorValue,
         format: "JSON"
       };
       new ExecuteService()

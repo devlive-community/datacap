@@ -20,26 +20,42 @@ export class HttpCommon {
     }
   }
 
+  handlerSuccessful(result: any): ResponseModel {
+    const data = result.data;
+    let message = data.message;
+    if (data.message instanceof Array) {
+      const messages = new Array();
+      data.message.forEach((element: { field: string; message: string; }) => {
+        messages.push(element.field + ': ' + element.message);
+      });
+      message = messages.join('\r\n');
+    }
+    const response: ResponseModel = {
+      code: data.code,
+      data: data.data,
+      message: message,
+      status: data.status
+    };
+    return response;
+  }
+
+  handlerFailed(error: any): ResponseModel {
+    const response: ResponseModel = {
+      code: 0,
+      message: error.message,
+      status: false
+    };
+    return response;
+  }
+
   get(url: string, params?: any): Promise<ResponseModel> {
     return new Promise((resolve) => {
       axios.get(url, { params: params })
         .then(result => {
-          const data = result.data;
-          const response: ResponseModel = {
-            code: data.code,
-            data: data.data,
-            message: data.message,
-            status: data.status
-          };
-          resolve(response);
+          resolve(this.handlerSuccessful(result));
         }, error => {
           message.error(error.message);
-          const response: ResponseModel = {
-            code: 0,
-            message: error.message,
-            status: false
-          };
-          resolve(response);
+          resolve(this.handlerFailed(error));
         });
     });
   }
@@ -48,22 +64,10 @@ export class HttpCommon {
     return new Promise((resolve) => {
       axios.post(url, data, configure)
         .then(result => {
-          const data = result.data;
-          const response: ResponseModel = {
-            code: data.code,
-            data: data.data,
-            message: data.message,
-            status: data.status
-          };
-          resolve(response);
+          resolve(this.handlerSuccessful(result));
         }, error => {
           message.error(error.message);
-          const response: ResponseModel = {
-            code: 0,
-            message: error.message,
-            status: false
-          };
-          resolve(response);
+          resolve(this.handlerFailed(error));
         });
     });
   }
@@ -72,22 +76,10 @@ export class HttpCommon {
     return new Promise((resolve) => {
       axios.put(url, data, configure)
         .then(result => {
-          const data = result.data;
-          const response: ResponseModel = {
-            code: data.code,
-            data: data.data,
-            message: data.message,
-            status: data.status
-          };
-          resolve(response);
+          resolve(this.handlerSuccessful(result));
         }, error => {
           message.error(error.message);
-          const response: ResponseModel = {
-            code: 0,
-            message: error.message,
-            status: false
-          };
-          resolve(response);
+          resolve(this.handlerFailed(error));
         });
     });
   }
@@ -96,22 +88,10 @@ export class HttpCommon {
     return new Promise((resolve) => {
       axios.delete(url)
         .then(result => {
-          const data = result.data;
-          const response: ResponseModel = {
-            code: data.code,
-            data: data.data,
-            message: data.message,
-            status: data.status
-          };
-          resolve(response);
+          resolve(this.handlerSuccessful(result));
         }, error => {
           message.error(error.message);
-          const response: ResponseModel = {
-            code: 0,
-            message: error.message,
-            status: false
-          };
-          resolve(response);
+          resolve(this.handlerFailed(error));
         });
     });
   }
