@@ -24,7 +24,7 @@
             <filtered>true</filtered>
         </fileSet>
         <fileSet>
-            <directory>src/main/plugins/*</directory>
+            <directory>src/main/plugins/</directory>
             <outputDirectory>plugins</outputDirectory>
             <fileMode>0755</fileMode>
             <lineEnding>unix</lineEnding>
@@ -63,6 +63,14 @@
         <fileSet>
             <directory>src/main/assembly/docs</directory>
             <outputDirectory>docs</outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>../dist/plugins</directory>
+            <outputDirectory>plugins</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
             <fileMode>0644</fileMode>
         </fileSet>
     </fileSets>

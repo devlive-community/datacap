@@ -2,7 +2,7 @@
     <id>plugin</id>
 
     <formats>
-        <format>dir</format>
+        <format>jar</format>
     </formats>
 
     <includeBaseDirectory>true</includeBaseDirectory>
