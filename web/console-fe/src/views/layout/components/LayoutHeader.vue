@@ -24,11 +24,17 @@
           Source
         </router-link>
       </a-menu-item>
+      <a-menu-item key="admin_history">
+        <router-link to="/admin/history">
+          <history-outlined />
+          History
+        </router-link>
+      </a-menu-item>
     </a-sub-menu>
   </a-menu>
 </template>
 
-<script>
+<script lang="ts">
 import {AimOutlined, HomeFilled, SettingOutlined} from '@ant-design/icons-vue';
 
 export default {

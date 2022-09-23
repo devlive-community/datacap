@@ -52,6 +52,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "source",
         component: () => import("../views/pages/admin/source/SourceConsole.vue")
+      },
+      {
+        path: "history",
+        component: () => import("../views/pages/console/ConsoleHistory.vue")
       }
     ]
   },
