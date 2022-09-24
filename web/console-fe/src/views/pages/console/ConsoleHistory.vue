@@ -12,11 +12,18 @@
                     </template>
                     <template v-if="column.dataIndex === 'action'">
                         <a-space style="width: 100%">
-                            <a-button :disabled="record.state === 'SUCCESS'" type="primary" shape="circle" size="small"
-                                @click="handlerShowError(record.message)">
+                            <a-button type="primary" shape="circle" size="small"
+                                @click="handlerShowContent(record.content)">
+                                <a-tooltip>
+                                    <template #title>SQL</template>
+                                    <eye-outlined />
+                                </a-tooltip>
+                            </a-button>
+                            <a-button :disabled="record.state === 'SUCCESS'" danger type="primary" shape="circle"
+                                size="small" @click="handlerShowError(record.message)">
                                 <a-tooltip>
                                     <template #title>Error</template>
-                                    <edit-outlined />
+                                    <warning-outlined />
                                 </a-tooltip>
                             </a-button>
                         </a-space>
@@ -25,9 +32,13 @@
             </a-table>
         </a-card>
     </div>
+
+    <ConsoleSQLComponent v-if="content" :isVisible="visibleContent" :content="content"
+        @close="handlerCloseContent($event)" />
 </template>
 
 <script lang="ts">
+import ConsoleSQLComponent from "@/components/ConsoleSQL.vue";
 import { AuditService } from "@/services/AuditService";
 import { headers } from "@/views/pages/console/ConsoleGenerate";
 import { Modal } from "ant-design-vue";
@@ -35,12 +46,14 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
     name: "ConsoleHistoryView",
-    components: {},
+    components: { ConsoleSQLComponent },
     data() {
         return {
             headers,
             columns: [],
             loading: false,
+            content: '',
+            visibleContent: false,
             pagination: {
                 total: 0,
                 current: 1,
@@ -77,6 +90,14 @@ export default defineComponent({
                 title: 'Error Message',
                 content: message,
             });
+        },
+        handlerShowContent(content: string) {
+            this.visibleContent = true;
+            this.content = content;
+        },
+        handlerCloseContent(value: boolean) {
+            this.visibleContent = value;
+            this.content = '';
         }
     }
 });
