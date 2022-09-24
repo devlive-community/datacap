@@ -31,6 +31,12 @@ const headers = [
         name: 'state',
         dataIndex: 'state',
         key: 'state'
+    },
+    {
+        title: 'Action',
+        name: 'action',
+        dataIndex: 'action',
+        key: 'action'
     }
 ];
 

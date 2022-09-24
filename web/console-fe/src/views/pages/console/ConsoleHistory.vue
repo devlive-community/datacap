@@ -10,6 +10,17 @@
                     <template v-if="column.dataIndex === 'state'">
                         <a-tag :color="record.state === 'SUCCESS' ? '#87d068' : '#f50'">{{record.state}}</a-tag>
                     </template>
+                    <template v-if="column.dataIndex === 'action'">
+                        <a-space style="width: 100%">
+                            <a-button :disabled="record.state === 'SUCCESS'" type="primary" shape="circle" size="small"
+                                @click="handlerShowError(record.message)">
+                                <a-tooltip>
+                                    <template #title>Error</template>
+                                    <edit-outlined />
+                                </a-tooltip>
+                            </a-button>
+                        </a-space>
+                    </template>
                 </template>
             </a-table>
         </a-card>
@@ -19,6 +30,7 @@
 <script lang="ts">
 import { AuditService } from "@/services/AuditService";
 import { headers } from "@/views/pages/console/ConsoleGenerate";
+import { Modal } from "ant-design-vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -59,6 +71,12 @@ export default defineComponent({
             this.pagination.current = pagination.current;
             this.pagination.pageSize = pagination.pageSize;
             this.handlerInitialize(pagination.current, pagination.pageSize)
+        },
+        handlerShowError(message: string) {
+            Modal.error({
+                title: 'Error Message',
+                content: message,
+            });
         }
     }
 });
