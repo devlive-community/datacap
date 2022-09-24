@@ -19,16 +19,16 @@ import java.util.List;
 @Slf4j
 @SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"},
         justification = "I prefer to suppress these FindBugs warnings")
-public abstract class Adapter
+public abstract class JdbcAdapter
 {
     private JdbcConnection jdbcConnection;
 
     @Deprecated
-    public Adapter()
+    public JdbcAdapter()
     {
     }
 
-    public Adapter(JdbcConnection jdbcConnection)
+    public JdbcAdapter(JdbcConnection jdbcConnection)
     {
         this.jdbcConnection = jdbcConnection;
     }
@@ -111,6 +111,8 @@ public abstract class Adapter
                 response.setMessage(ex.getMessage());
             }
         }
+        // It will be destroyed after the mission is closed
+        this.jdbcConnection.destroy();
         return response;
     }
 }
