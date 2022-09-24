@@ -13,6 +13,6 @@ const app = createApp(App);
 for (const i in icons) {
   app.component(i, icons[i]);
 }
-app.use(router)
-app.use(Antd)
+app.use(router);
+app.use(Antd);
 app.mount("#app");
