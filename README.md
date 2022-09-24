@@ -30,7 +30,7 @@ chmod 700 .git/hooks/*
 ---
 
 ![](https://visitor-badge.glitch.me/badge?page_id=incubator-datacap)
-[![](https://tokei.rs/b1/github/EdurtIO/dbm)](https://github.com/EdurtIO/incubator-datacap)
+[![](https://tokei.rs/b1/github/EdurtIO/incubator-datacap)](https://github.com/EdurtIO/incubator-datacap)
 ![version](https://img.shields.io/github/v/release/EdurtIO/incubator-datacap.svg)
 
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/EdurtIO/incubator-datacap/latest/total?style=flat-square)
