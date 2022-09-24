@@ -33,7 +33,7 @@
         </a-card>
     </div>
 
-    <ConsoleSQLComponent v-if="content" :isVisible="visibleContent" :content="content"
+    <ConsoleSQLComponent v-if="visibleContent" :isVisible="visibleContent" :content="content"
         @close="handlerCloseContent($event)" />
 </template>
 
