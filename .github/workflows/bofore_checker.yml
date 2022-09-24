@@ -41,28 +41,12 @@ jobs:
       - run: chmod 755 ./mvnw
       - run: ./mvnw clean install findbugs:findbugs -Dcheckstyle.skip -Dskip.npm -DskipTests=true -X
 
-  before_checker_tests:
-    runs-on: ubuntu-latest
-    needs:
-      - before_checker_loading
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Maven Checker Tests
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-      - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install -Dfindbugs.skip -Dcheckstyle.skip -Dskip.npm -X
-
   before_checker_package:
     runs-on: ubuntu-latest
     needs:
       - before_checker_loading
       - before_checker_style
       - before_checker_bugs
-      - before_checker_tests
     steps:
       - name: Checkout
         uses: actions/checkout@v3

@@ -1,4 +1,4 @@
-import {SourceModel} from "@/model/SourceModel";
+import { SourceModel } from "@/model/SourceModel";
 
 const emptySource: SourceModel = {
   name: "",
