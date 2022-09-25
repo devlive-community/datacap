@@ -1,5 +1,6 @@
 package io.edurt.datacap.spi.type.jdbc;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.model.Response;
 
 import java.sql.ResultSet;
@@ -8,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressFBWarnings(value = {"UC_USELESS_OBJECT"},
+        justification = "I prefer to suppress these FindBugs warnings")
 public class JdbcColumnConvert
 {
     private final ResultSet resultSet;
