@@ -1,7 +1,6 @@
 package io.edurt.datacap.server.repository;
 
 import io.edurt.datacap.server.BaseParamTest;
-import io.edurt.datacap.server.common.ProtocolEnum;
 import io.edurt.datacap.server.entity.SourceEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
