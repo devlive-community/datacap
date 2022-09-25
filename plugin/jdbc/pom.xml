@@ -16,5 +16,6 @@
     <modules>
         <module>mysql</module>
         <module>clickhouse</module>
+        <module>presto</module>
     </modules>
 </project>
