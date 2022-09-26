@@ -2,6 +2,7 @@ package io.edurt.datacap.server;
 
 import io.edurt.datacap.server.common.ProtocolEnum;
 import io.edurt.datacap.server.entity.ExecuteEntity;
+import io.edurt.datacap.server.entity.FormatEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 
 public class BaseParamTest
@@ -27,6 +28,13 @@ public class BaseParamTest
         ExecuteEntity configure = new ExecuteEntity();
         configure.setName("MySQL");
         configure.setContent("SELECT * FROM information_schema.TABLES LIMIT 100");
+        return configure;
+    }
+
+    public static FormatEntity builderFormat()
+    {
+        FormatEntity configure = new FormatEntity();
+        configure.setSql("select * from a left join b on a.id = b.id where a.name != 'test' group a.name order by b.age limit 10");
         return configure;
     }
 }
