@@ -2,6 +2,7 @@ package io.edurt.datacap.spi.adapter;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.FormatType;
+import io.edurt.datacap.spi.column.JdbcColumn;
 import io.edurt.datacap.spi.connection.JdbcConfigure;
 import io.edurt.datacap.spi.connection.JdbcConnection;
 import io.edurt.datacap.spi.model.Response;
@@ -42,11 +43,13 @@ public abstract class JdbcAdapter
     public Response handlerJDBCExecute(FormatType format, String content, Connection connection, Response response)
     {
         if (response.getIsConnected()) {
-            try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(content)) {
+            try (Statement statement = connection.createStatement();
+                    ResultSet resultSet = statement.executeQuery(content)) {
                 List<String> headers = new ArrayList<>();
                 List<String> types = new ArrayList<>();
                 List<Object> columns = new ArrayList<>();
                 boolean isPresent = true;
+                JdbcColumn jdbcColumn = new JdbcColumn(resultSet);
                 while (resultSet.next()) {
                     ResultSetMetaData metaData = resultSet.getMetaData();
                     int columnCount = metaData.getColumnCount();
@@ -56,7 +59,7 @@ public abstract class JdbcAdapter
                             headers.add(metaData.getColumnName(i));
                             types.add(metaData.getColumnTypeName(i));
                         }
-                        _columns.add(resultSet.getString(i));
+                        _columns.add(jdbcColumn.convert(metaData.getColumnTypeName(i), i));
                     }
                     isPresent = false;
                     columns.add(handlerFormatAdapterRecord(format, headers, _columns));
@@ -86,6 +89,7 @@ public abstract class JdbcAdapter
                 List<String> types = new ArrayList<>();
                 List<Object> columns = new ArrayList<>();
                 boolean isPresent = true;
+                JdbcColumn jdbcColumn = new JdbcColumn(resultSet);
                 while (resultSet.next()) {
                     ResultSetMetaData metaData = resultSet.getMetaData();
                     int columnCount = metaData.getColumnCount();
@@ -95,7 +99,7 @@ public abstract class JdbcAdapter
                             headers.add(metaData.getColumnName(i));
                             types.add(metaData.getColumnTypeName(i));
                         }
-                        _columns.add(resultSet.getString(i));
+                        _columns.add(jdbcColumn.convert(metaData.getColumnTypeName(i), i));
                     }
                     isPresent = false;
                     columns.add(handlerFormatAdapterRecord(configure.getFormat(), headers, _columns));
