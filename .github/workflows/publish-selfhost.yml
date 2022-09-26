@@ -1,10 +1,6 @@
 name: Publish Self Host
 
-on:
-  pull_request:
-    branch:
-      - 'master'
-  types: [ closed ]
+on: [pull_request]
 
 jobs:
   publish_package:
