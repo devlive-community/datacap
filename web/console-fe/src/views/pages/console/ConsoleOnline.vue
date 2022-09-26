@@ -7,7 +7,7 @@
             <SourceSelectComponent @changeValue="handlerChangeValue($event)" />
             <a-button type="primary" size="small" :loading="tableLoading" :disabled="!applySource"
               @click="handlerRun()">
-              <play-circle-outlined /> Run
+              <play-circle-outlined v-if="!tableLoading" /> Run
             </a-button>
             <a-button type="dashed" size="small" :disabled="!applySource" @click="handlerFormat()">
               <format-painter-outlined /> Format

@@ -1,4 +1,4 @@
-package io.edurt.datacap.spi.type.jdbc;
+package io.edurt.datacap.spi.column;
 
 public enum JdbcColumnType
 {
