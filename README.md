@@ -54,6 +54,7 @@ Here are some of the major database solutions that are supported:
 <p align="center">
   <a href="https://clickhouse.com" target="_blank"><img src="./shared/plugin/clickhouse.png" alt="ClickHouse" class="a" width="133" height="34" /></a>
   <a href="https://www.mysql.com" target="_blank"><img src="./shared/plugin/mysql.png" alt="MySQL" class="a" width="auto" height="50"/></a>
+  <a href="https://prestodb.io/" target="_blank"><img src="./shared/plugin/presto.png" alt="Presto" class="a" width="133" height="34" /></a>
 </p>
 
 ## Join Us
