@@ -6,7 +6,11 @@
           <a-space :size="8">
             <SourceSelectComponent @changeValue="handlerChangeValue($event)" />
             <a-button type="primary" size="small" :loading="tableLoading" :disabled="!applySource"
-              @click="handlerRun()">Run
+              @click="handlerRun()">
+              <play-circle-outlined v-if="!tableLoading" /> Run
+            </a-button>
+            <a-button type="dashed" size="small" :disabled="!applySource" @click="handlerFormat()">
+              <format-painter-outlined /> Format
             </a-button>
           </a-space>
         </template>
@@ -27,12 +31,13 @@
 import SourceSelectComponent from "@/components/source/SourceSelect.vue";
 import { ExecuteModel } from "@/model/ExecuteModel";
 import { ExecuteService } from "@/services/ExecuteService";
+import { FormatService } from "@/services/FormatService";
 import { SheetComponent } from "@antv/s2-vue";
 import "@antv/s2-vue/dist/style.min.css";
 import { message } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
-import { defineComponent } from "vue";
 import MonacoEditor from 'monaco-editor-vue3';
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "DashboardConsoleView",
@@ -84,6 +89,21 @@ export default defineComponent({
     },
     handlerChangeValue(value: string) {
       this.applySource = value;
+    },
+    handlerFormat() {
+      const configure = {
+        sql: this.editorValue
+      };
+      new FormatService()
+        .formatSql(configure)
+        .then((response) => {
+          if (response.status) {
+            this.editorValue = response.data;
+          }
+          else {
+            message.error(response.message);
+          }
+        });
     }
   }
 });

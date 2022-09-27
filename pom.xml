@@ -26,6 +26,7 @@
         <jackson.version>2.13.3</jackson.version>
         <logback.version>1.2.11</logback.version>
         <slf4j.version>1.7.36</slf4j.version>
+        <sql-formatter.version>2.0.3</sql-formatter.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <assembly-plugin.version>3.1.1</assembly-plugin.version>
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
@@ -106,6 +107,11 @@
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons-beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.vertical-blank</groupId>
+                <artifactId>sql-formatter</artifactId>
+                <version>${sql-formatter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

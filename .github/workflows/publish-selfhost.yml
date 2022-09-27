@@ -1,0 +1,42 @@
+name: Publish Self Host
+
+on: [pull_request]
+
+jobs:
+  publish_package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Chmod
+        run: chmod 755 ./mvnw
+      - name: Package
+        run: ./mvnw clean install package -Dfindbugs.skip -Dcheckstyle.skip -DskipTests=true -X
+      - name: Upload
+        uses: AEnterprise/rsync-deploy@v1.0
+        env:
+          DEPLOY_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
+          ARGS: -avz --delete --exclude='*.pyc'
+          SERVER_PORT: '22'
+          FOLDER: dist/datacap-release.tar.gz
+          SERVER_IP: ${{ secrets.SERVER_HOST }}
+          USERNAME: ${{ secrets.SERVER_USER_NAME }}
+          SERVER_DESTINATION: /root/app/
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER_NAME }}
+          key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          script: |
+            cd /root/app && cd datacap && sh ./bin/shutdown.sh
+            cd /root/app && rm -rf datacap
+            cd /root/app && tar -xvzf datacap-release.tar.gz
+            cd /root/app && chmod -R 777 datacap
+            cd /root/app && cd datacap && sh ./bin/shutdown.sh && sh ./bin/startup.sh
+            cd /root/app && rm -rf datacap-release.tar.gz
