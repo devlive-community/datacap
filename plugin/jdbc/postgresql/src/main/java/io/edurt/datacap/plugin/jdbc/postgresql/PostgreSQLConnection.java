@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.jdbc.pgsql;
+package io.edurt.datacap.plugin.jdbc.postgresql;
 
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class PgSQLConnection
+public class PostgreSQLConnection
 {
     private static String DRIVER = "com.pgsql.jdbc.Driver";
 
@@ -21,7 +21,7 @@ public class PgSQLConnection
     private final Response response;
     private Connection connection;
 
-    public PgSQLConnection(Configure configure, Response response)
+    public PostgreSQLConnection(Configure configure, Response response)
     {
         this.configure = configure;
         this.response = response;

@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.jdbc.pgsql;
+package io.edurt.datacap.plugin.jdbc.postgresql;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -11,14 +11,14 @@ import org.junit.Test;
 
 import java.util.Set;
 
-public class PgSQLPluginModuleTestService
+public class PostgreSQLPluginModuleTestService
 {
     private Injector injector;
 
     @Before
     public void before()
     {
-        this.injector = Guice.createInjector(new PgSQLPluginModule());
+        this.injector = Guice.createInjector(new PostgreSQLPluginModule());
     }
 
     @Test

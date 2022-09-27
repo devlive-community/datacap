@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.jdbc.pgsql;
+package io.edurt.datacap.plugin.jdbc.postgresql;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.util.Optional;
 import java.util.Set;
 
-public class PgSQLPluginTestService
+public class PostgreSQLPluginTestService
 {
     private Injector injector;
     private Configure configure;
@@ -20,7 +20,7 @@ public class PgSQLPluginTestService
     @Before
     public void before()
     {
-        injector = Guice.createInjector(new PgSQLPluginModule());
+        injector = Guice.createInjector(new PostgreSQLPluginModule());
         configure = new Configure();
         configure.setHost("localhost");
         configure.setPort(3306);

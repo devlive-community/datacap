@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.jdbc.pgsql;
+package io.edurt.datacap.plugin.jdbc.postgresql;
 
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
@@ -8,22 +8,22 @@ import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class PgSQLPlugin
+public class PostgreSQLPlugin
         implements Plugin
 {
-    private PgSQLConnection connection;
+    private PostgreSQLConnection connection;
     private Response response;
 
     @Override
     public String name()
     {
-        return "PgSQL";
+        return "PostgreSQL";
     }
 
     @Override
     public String description()
     {
-        return "Integrate PgSQL data sources";
+        return "Integrate PostgreSQL data sources";
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PgSQLPlugin
     public void connect(Configure configure)
     {
         this.response = new Response();
-        this.connection = new PgSQLConnection(configure, response);
+        this.connection = new PostgreSQLConnection(configure, response);
         this.connection.openConnection();
     }
 
@@ -45,7 +45,7 @@ public class PgSQLPlugin
     {
         log.info("Execute plugin logic started");
         response = this.connection.getResponse();
-        JdbcAdapter processor = new PgSQLAdapter();
+        JdbcAdapter processor = new PostgreSQLAdapter();
         processor.handlerJDBCExecute(this.connection.getConfigure().getFormat(), content, this.connection.getConnection(), response);
         log.info("Execute plugin logic end");
         return response;
