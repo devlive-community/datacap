@@ -10,6 +10,7 @@ export class SourceService {
   }
 
   saveAndUpdate(configure: SourceModel, isUpdate: boolean): Promise<ResponseModel> {
+    configure.protocol = 'HTTP';
     if (isUpdate) {
       return new HttpCommon().put(baseUrl, JSON.stringify(configure));
     } else {
@@ -22,6 +23,7 @@ export class SourceService {
   }
 
   testConnection(configure: SourceModel): Promise<ResponseModel> {
+    configure.protocol = 'HTTP';
     return new HttpCommon().post(baseUrl + '/test', JSON.stringify(configure));
   }
 

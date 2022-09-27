@@ -30,13 +30,13 @@
           <a-form-item :name="['name']" label="Name" :rules="[{ required: true }]">
             <a-input v-model:value="formState.name" />
           </a-form-item>
-          <a-form-item :name="['protocol']" label="Protocol" :rules="[{ required: true }]">
+          <!-- <a-form-item :name="['protocol']" label="Protocol" :rules="[{ required: true }]">
             <a-select ref="select" v-model:value="formState.protocol" style="width: 120px">
               <a-select-option value="HTTP">HTTP</a-select-option>
               <a-select-option value="HTTPS">HTTPS</a-select-option>
               <a-select-option value="SSH">SSH</a-select-option>
             </a-select>
-          </a-form-item>
+          </a-form-item> -->
           <a-form-item :name="['host']" label="Host" :rules="[{ required: true }]">
             <a-input v-model:value="formState.host" />
           </a-form-item>
