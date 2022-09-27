@@ -89,6 +89,11 @@
             <artifactId>datacap-plugin-jdbc-redis</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-postgresql</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
