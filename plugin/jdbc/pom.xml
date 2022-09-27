@@ -17,5 +17,6 @@
         <module>mysql</module>
         <module>clickhouse</module>
         <module>presto</module>
+        <module>pgsql</module>
     </modules>
 </project>
