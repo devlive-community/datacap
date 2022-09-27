@@ -18,5 +18,6 @@
         <module>clickhouse</module>
         <module>presto</module>
         <module>redis</module>
+        <module>trino</module>
     </modules>
 </project>
