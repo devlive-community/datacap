@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.util.Set;
 
-public class PostgreSQLPluginModuleTestService
+public class PostgreSQLPluginModuleTest
 {
     private Injector injector;
 
