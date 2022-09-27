@@ -1,6 +1,6 @@
 name: Publish Self Host
 
-on: [pull_request]
+on: [push]
 
 jobs:
   publish_package:

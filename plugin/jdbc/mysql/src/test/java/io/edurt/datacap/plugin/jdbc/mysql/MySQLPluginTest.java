@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.util.Optional;
 import java.util.Set;
 
-public class MySQLPluginTestService
+public class MySQLPluginTest
 {
     private Injector injector;
     private Configure configure;
@@ -32,11 +32,13 @@ public class MySQLPluginTestService
     public void test()
     {
         Set<Plugin> plugins = injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}));
-        Optional<Plugin> pluginOptional = plugins.stream().filter(v -> v.name().equalsIgnoreCase("MySQL")).findFirst();
+        Optional<Plugin> pluginOptional = plugins.stream()
+                .filter(v -> v.name().equalsIgnoreCase("MySQL"))
+                .findFirst();
         if (pluginOptional.isPresent()) {
             Plugin plugin = pluginOptional.get();
             plugin.connect(configure);
-            System.out.println(plugin.execute("SELECT * FROM bootstack.system_interface LIMIT 100"));
+            System.out.println(plugin.execute("SHOW DATABASES"));
             plugin.destroy();
         }
     }

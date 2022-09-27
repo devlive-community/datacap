@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.util.Set;
 
-public class MySQLPluginModuleTestService
+public class MySQLPluginModuleTest
 {
     private Injector injector;
 
