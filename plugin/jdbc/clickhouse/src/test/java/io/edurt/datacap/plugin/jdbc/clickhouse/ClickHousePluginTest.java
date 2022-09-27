@@ -34,7 +34,7 @@ public class ClickHousePluginTest
         if (pluginOptional.isPresent()) {
             Plugin plugin = pluginOptional.get();
             plugin.connect(configure);
-            System.out.println(plugin.execute("SELECT * FROM system.tables LIMIT 10"));
+            System.out.println(plugin.execute("SHOW DATABASES"));
             plugin.destroy();
         }
     }
