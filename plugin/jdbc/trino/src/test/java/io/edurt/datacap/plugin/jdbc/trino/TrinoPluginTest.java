@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.jdbc.mysql;
+package io.edurt.datacap.plugin.jdbc.trino;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.util.Optional;
 import java.util.Set;
 
-public class MySQLPluginTestService
+public class TrinoPluginTest
 {
     private Injector injector;
     private Configure configure;
@@ -20,23 +20,23 @@ public class MySQLPluginTestService
     @Before
     public void before()
     {
-        injector = Guice.createInjector(new MySQLPluginModule());
+        injector = Guice.createInjector(new TrinoPluginModule());
         configure = new Configure();
-        configure.setHost("localhost");
-        configure.setPort(3306);
-        configure.setUsername(Optional.of("root"));
-        configure.setPassword(Optional.of("12345678"));
+        configure.setHost("127.0.0.1");
+        configure.setPort(8080);
     }
 
     @Test
     public void test()
     {
         Set<Plugin> plugins = injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}));
-        Optional<Plugin> pluginOptional = plugins.stream().filter(v -> v.name().equalsIgnoreCase("MySQL")).findFirst();
+        Optional<Plugin> pluginOptional = plugins.stream()
+                .filter(v -> v.name().equalsIgnoreCase("Trino"))
+                .findFirst();
         if (pluginOptional.isPresent()) {
             Plugin plugin = pluginOptional.get();
             plugin.connect(configure);
-            System.out.println(plugin.execute("SELECT * FROM bootstack.system_interface LIMIT 100"));
+            System.out.println(plugin.execute("SHOW CATALOGS"));
             plugin.destroy();
         }
     }

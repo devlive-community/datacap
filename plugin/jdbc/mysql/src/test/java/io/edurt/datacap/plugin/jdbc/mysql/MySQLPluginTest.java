@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.jdbc.clickhouse;
+package io.edurt.datacap.plugin.jdbc.mysql;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.util.Optional;
 import java.util.Set;
 
-public class ClickHousePluginTest
+public class MySQLPluginTest
 {
     private Injector injector;
     private Configure configure;
@@ -20,17 +20,21 @@ public class ClickHousePluginTest
     @Before
     public void before()
     {
-        injector = Guice.createInjector(new ClickHousePluginModule());
+        injector = Guice.createInjector(new MySQLPluginModule());
         configure = new Configure();
-        configure.setHost("127.0.0.1");
-        configure.setPort(8123);
+        configure.setHost("localhost");
+        configure.setPort(3306);
+        configure.setUsername(Optional.of("root"));
+        configure.setPassword(Optional.of("12345678"));
     }
 
     @Test
     public void test()
     {
         Set<Plugin> plugins = injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}));
-        Optional<Plugin> pluginOptional = plugins.stream().filter(v -> v.name().equalsIgnoreCase("ClickHouse")).findFirst();
+        Optional<Plugin> pluginOptional = plugins.stream()
+                .filter(v -> v.name().equalsIgnoreCase("MySQL"))
+                .findFirst();
         if (pluginOptional.isPresent()) {
             Plugin plugin = pluginOptional.get();
             plugin.connect(configure);

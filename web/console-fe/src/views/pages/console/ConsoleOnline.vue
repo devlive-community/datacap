@@ -15,7 +15,7 @@
           </a-space>
         </template>
         <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
-          v-model:value="editorValue">
+          v-model:value="editorValue" @editorDidMount="handlerEditorDidMount($event)">
         </MonacoEditor>
       </a-card>
     </div>
@@ -32,10 +32,12 @@ import SourceSelectComponent from "@/components/source/SourceSelect.vue";
 import { ExecuteModel } from "@/model/ExecuteModel";
 import { ExecuteService } from "@/services/ExecuteService";
 import { FormatService } from "@/services/FormatService";
+import { LanguageService } from "@/services/LanguageService";
 import { SheetComponent } from "@antv/s2-vue";
 import "@antv/s2-vue/dist/style.min.css";
 import { message } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
+import * as monaco from 'monaco-editor';
 import MonacoEditor from 'monaco-editor-vue3';
 import { defineComponent } from "vue";
 
@@ -52,6 +54,20 @@ export default defineComponent({
     }
   },
   methods: {
+    handlerEditorDidMount(editor: any) {
+      const suggestions = new LanguageService().transSuggestions([]);
+      editor = monaco.languages.registerCompletionItemProvider("sql", {
+        provideCompletionItems(): any {
+          return {
+            suggestions: suggestions.map((item) => ({
+              ...item,
+              kind: item.icon ? monaco.languages.CompletionItemKind.Variable : null,
+            }))
+          };
+        },
+        triggerCharacters: ['.', ' '],
+      });
+    },
     handlerRun() {
       this.tableLoading = true;
       const editorContainer: HTMLElement = this.$refs.editorContainer as HTMLElement;

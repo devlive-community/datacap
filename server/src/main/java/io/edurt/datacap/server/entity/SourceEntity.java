@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.server.common.ProtocolEnum;
 import io.edurt.datacap.server.validation.ValidationGroup;
@@ -7,18 +8,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @ToString
@@ -72,4 +77,8 @@ public class SourceEntity
 
     @Column(name = "create_time", columnDefinition = "datetime default CURRENT_TIMESTAMP()")
     private Timestamp createTime;
+
+    @OneToMany(mappedBy = "plugin", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<PluginAuditEntity> pluginAudits;
 }

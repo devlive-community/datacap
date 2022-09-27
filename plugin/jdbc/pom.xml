@@ -19,5 +19,6 @@
         <module>presto</module>
         <module>postgresql</module>
         <module>redis</module>
+        <module>trino</module>
     </modules>
 </project>

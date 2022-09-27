@@ -1,13 +1,13 @@
-package io.edurt.datacap.plugin.jdbc.clickhouse;
+package io.edurt.datacap.plugin.jdbc.trino;
 
 import io.edurt.datacap.spi.connection.JdbcConfigure;
 import io.edurt.datacap.spi.connection.JdbcConnection;
 import io.edurt.datacap.spi.model.Response;
 
-public class ClickHouseConnection
+public class TrinoConnection
         extends JdbcConnection
 {
-    public ClickHouseConnection(JdbcConfigure jdbcConfigure, Response response)
+    public TrinoConnection(JdbcConfigure jdbcConfigure, Response response)
     {
         super(jdbcConfigure, response);
     }

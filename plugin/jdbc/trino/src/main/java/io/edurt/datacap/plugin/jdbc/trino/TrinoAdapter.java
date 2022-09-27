@@ -1,12 +1,12 @@
-package io.edurt.datacap.plugin.jdbc.mysql;
+package io.edurt.datacap.plugin.jdbc.trino;
 
 import io.edurt.datacap.spi.adapter.JdbcAdapter;
 import io.edurt.datacap.spi.connection.JdbcConnection;
 
-public class MySQLAdapter
+public class TrinoAdapter
         extends JdbcAdapter
 {
-    public MySQLAdapter(JdbcConnection jdbcConnection)
+    public TrinoAdapter(JdbcConnection jdbcConnection)
     {
         super(jdbcConnection);
     }
