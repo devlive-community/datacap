@@ -13,7 +13,7 @@ public class PostgreSQLPluginModule
     @Override
     public String getName()
     {
-        return "PgSQL";
+        return "PostgreSQL";
     }
 
     @Override
