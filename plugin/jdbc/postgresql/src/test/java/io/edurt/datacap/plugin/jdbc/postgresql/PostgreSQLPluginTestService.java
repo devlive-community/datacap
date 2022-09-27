@@ -23,7 +23,7 @@ public class PostgreSQLPluginTestService
         injector = Guice.createInjector(new PostgreSQLPluginModule());
         configure = new Configure();
         configure.setHost("localhost");
-        configure.setPort(3306);
+        configure.setPort(5432);
         configure.setUsername(Optional.of("root"));
         configure.setPassword(Optional.of("12345678"));
     }
