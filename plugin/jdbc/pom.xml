@@ -17,6 +17,7 @@
         <module>mysql</module>
         <module>clickhouse</module>
         <module>presto</module>
+        <module>postgresql</module>
         <module>redis</module>
         <module>trino</module>
     </modules>
