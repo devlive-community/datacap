@@ -32,7 +32,7 @@ public class PostgreSQLPluginTestService
     public void test()
     {
         Set<Plugin> plugins = injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}));
-        Optional<Plugin> pluginOptional = plugins.stream().filter(v -> v.name().equalsIgnoreCase("PgSQL")).findFirst();
+        Optional<Plugin> pluginOptional = plugins.stream().filter(v -> v.name().equalsIgnoreCase("PostgreSQL")).findFirst();
         if (pluginOptional.isPresent()) {
             Plugin plugin = pluginOptional.get();
             plugin.connect(configure);
