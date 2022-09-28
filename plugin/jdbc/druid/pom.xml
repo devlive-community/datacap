@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>datacap-plugin-jdbc</artifactId>
+        <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+        <version>1.0.0.20221015</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>datacap-plugin-jdbc-druid</artifactId>
+    <name>DataCap plugin for jdbc (Druid)</name>
+
+    <properties>
+        <avatica.version>1.22.0</avatica.version>
+        <plugin.name>jdbc-druid</plugin.name>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-spi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.calcite.avatica</groupId>
+            <artifactId>avatica</artifactId>
+            <version>${avatica.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.calcite.avatica</groupId>
+            <artifactId>avatica-core</artifactId>
+            <version>${avatica.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${assembly-plugin.version}</version>
+                <configuration>
+                    <finalName>${plugin.name}</finalName>
+                    <descriptors>
+                        <descriptor>../../../configure/assembly/assembly-plugin.xml</descriptor>
+                    </descriptors>
+                    <outputDirectory>../../../dist/plugins/${plugin.name}</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -20,5 +20,7 @@
         <module>postgresql</module>
         <module>redis</module>
         <module>trino</module>
+        <module>elasticsearch</module>
+        <module>druid</module>
     </modules>
 </project>

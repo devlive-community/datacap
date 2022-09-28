@@ -70,6 +70,11 @@
             <version>${findbugs.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-mysql</artifactId>
             <version>${project.version}</version>
@@ -97,6 +102,16 @@
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-postgresql</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-elasticsearch</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-druid</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
