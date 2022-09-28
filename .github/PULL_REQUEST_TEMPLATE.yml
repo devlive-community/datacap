@@ -1,8 +1,6 @@
-name: Release notes
-title: Release notes for xxx
-description: New version released
-labels:
-  - release
+name: Pull Request
+title: Pull Request for xxx
+description: Pull Request
 body:
   - type: checkboxes
     attributes:
@@ -23,7 +21,7 @@ body:
         - label: Other
   - type: textarea
     attributes:
-      label: Release notes
-      description: List of release details of the current version
+      label: To change the details
+      description: List of change details of the current pull request
     validations:
       required: true
