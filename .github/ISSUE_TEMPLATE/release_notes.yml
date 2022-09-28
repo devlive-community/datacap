@@ -19,6 +19,7 @@ body:
         - label: Server
         - label: Web
         - label: Plugin
+        - label: Docs
         - label: Other
   - type: textarea
     attributes:
