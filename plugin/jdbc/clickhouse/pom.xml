@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (ClickHouse)</name>
 
     <properties>
-        <clickhouse-jdbc.version>0.3.2-patch9</clickhouse-jdbc.version>
+        <clickhouse-jdbc.version>0.3.2-test3</clickhouse-jdbc.version>
         <plugin.name>jdbc-clickhouse</plugin.name>
     </properties>
 
