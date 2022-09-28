@@ -64,6 +64,9 @@ Here are some of the major database solutions that are supported:
             <a href="https://www.elastic.co/" target="_blank">
                 <img src="./shared/plugin/elasticsearch.svg" alt="ElasticSearch" width="50" height="50" />
             </a>
+            <a href="https://druid.apache.org/" target="_blank">
+                <img src="./shared/plugin/druid.jpg" alt="Druid" width="50" height="50" />
+            </a>
         </code> <br />
       </div>
     </div>
