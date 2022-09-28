@@ -58,6 +58,7 @@ Here are some of the major database solutions that are supported:
   <a href="https://redis.io/" target="_blank"><img src="./shared/plugin/redis.svg" alt="Redis" class="a" width="auto" height="40" /></a>
   <a href="https://www.postgresql.org/" target="_blank"><img src="./shared/plugin/postgresql.png" alt="PostgreSQL" class="a" width="auto" height="40" /></a>
   <a href="https://trino.io/" target="_blank"><img src="./shared/plugin/trino.jpg" alt="Trino" class="a" width="auto" height="50" /></a>
+  <a href="https://www.elastic.co/" target="_blank"><img src="./shared/plugin/elasticsearch.svg" alt="ElasticSearch" class="a" width="133" height="50" /></a>
 </p>
 
 ## Join Us
