@@ -23,7 +23,7 @@ chmod 700 .git/hooks/*
 
 ---
 
-DBM can query data from any SQL-speaking datastore or data engine (ClickHouse and more).
+DataCap can query data from any SQL-speaking datastore or data engine (ClickHouse, MySQL, Presto and more).
 
 Here are some of the major database solutions that are supported:
 
