@@ -19,6 +19,56 @@ chmod 700 .git/hooks/*
 
 ![GitHub Contributors Image](https://contrib.rocks/image?repo=EdurtIO/incubator-datacap)
 
+## Supported Databases
+
+---
+
+DBM can query data from any SQL-speaking datastore or data engine (ClickHouse and more).
+
+Here are some of the major database solutions that are supported:
+
+<div align="center">
+    <div align="center">
+        <div align="center">
+            <div align="center">
+            <div align="center">
+                <div align="center">
+                    <code>
+                        <a href="https://clickhouse.com" target="_blank">
+                            <img src="./shared/plugin/clickhouse.svg" alt="ClickHouse" width="50" height="50" />
+                        </a>
+                    </code> <br />
+                </div>
+                <code>
+                    <a href="https://www.mysql.com" target="_blank">
+                        <img src="./shared/plugin/mysql.svg" alt="MySQL" width="50" height="50"/>
+                    </a>
+                    <a href="https://prestodb.io/" target="_blank">
+                        <img src="./shared/plugin/presto.svg" alt="Presto" width="50" height="50"/>
+                    </a>
+                </code> <br />
+            </div>
+            <code>
+                <a href="https://redis.io/" target="_blank">
+                    <img src="./shared/plugin/redis.svg" alt="Redis" width="50" height="50"/>
+                </a>
+                <a href="https://www.postgresql.org/" target="_blank">
+                    <img src="./shared/plugin/postgresql.svg" alt="PostgreSQL" width="50" height="50"/>
+                </a>
+                <a href="https://trino.io/" target="_blank">
+                    <img src="./shared/plugin/trino.svg" alt="Trino" width="50" height="50"/>
+                </a>
+            </code> <br />
+        </div>
+        <code>
+            <a href="https://www.elastic.co/" target="_blank">
+                <img src="./shared/plugin/elasticsearch.svg" alt="ElasticSearch" width="50" height="50" />
+            </a>
+        </code> <br />
+      </div>
+    </div>
+</div>
+
 ## Stargazers over time
 
 ---
@@ -43,24 +93,6 @@ chmod 700 .git/hooks/*
 ![GitHub contributors](https://img.shields.io/github/contributors-anon/EdurtIO/incubator-datacap?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/EdurtIO/incubator-datacap?style=flat-square)
 
-## Supported Databases
-
----
-
-DBM can query data from any SQL-speaking datastore or data engine (ClickHouse and more).
-
-Here are some of the major database solutions that are supported:
-
-<p align="center">
-  <a href="https://clickhouse.com" target="_blank"><img src="./shared/plugin/clickhouse.png" alt="ClickHouse" class="a" width="133" height="34" /></a>
-  <a href="https://www.mysql.com" target="_blank"><img src="./shared/plugin/mysql.png" alt="MySQL" class="a" width="auto" height="50"/></a>
-  <a href="https://prestodb.io/" target="_blank"><img src="./shared/plugin/presto.png" alt="Presto" class="a" width="133" height="34" /></a>
-  <a href="https://redis.io/" target="_blank"><img src="./shared/plugin/redis.svg" alt="Redis" class="a" width="auto" height="40" /></a>
-  <a href="https://www.postgresql.org/" target="_blank"><img src="./shared/plugin/postgresql.png" alt="PostgreSQL" class="a" width="auto" height="40" /></a>
-  <a href="https://trino.io/" target="_blank"><img src="./shared/plugin/trino.jpg" alt="Trino" class="a" width="auto" height="50" /></a>
-  <a href="https://www.elastic.co/" target="_blank"><img src="./shared/plugin/elasticsearch.svg" alt="ElasticSearch" class="a" width="133" height="50" /></a>
-</p>
-
 ## Join Us
 
 ---
@@ -79,4 +111,4 @@ Open the DingTalk software and scan the following QR code to join
 
 ---
 
-[Extended documentation for DataCap](https://databap.incubator.edurt.io)
+[Extended documentation for DataCap](https://datacap.incubator.edurt.io)
