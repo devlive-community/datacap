@@ -8,18 +8,15 @@
               <appstore-outlined /> Type
             </span>
           </template>
-          <a-form-item :name="['type']" :rules="[{ required: true }]">
-            <a-row :gutter="[16,16]">
-              <a-col :span="6" style="text-align: center;">
-                <a-radio-group v-model:value="formState.type">
-                  <a-space style="width: 100%">
-                    <a-radio-button v-for="plugin in plugins" :value="plugin.name" v-bind:key="plugin.name">
-                      {{plugin.name}}</a-radio-button>
-                  </a-space>
-                </a-radio-group>
+          <a-radio-group v-model:value="formState.type">
+            <a-row :gutter="[16,8]">
+              <a-col v-for="plugin in plugins" :span="6" v-bind:key="plugin.name">
+                <a-radio-button :value="plugin.name">
+                  {{plugin.name}}
+                </a-radio-button>
               </a-col>
             </a-row>
-          </a-form-item>
+          </a-radio-group>
         </a-tab-pane>
         <a-tab-pane :disabled="!formState.type" key="configure">
           <template #tab>
@@ -71,7 +68,7 @@
           </a-form-item>
         </a-tab-pane>
       </a-tabs>
-      <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
+      <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }" style="margin-top: 20px; margin-bottom: -5px;">
         <a-space style="width: 100%">
           <a-button key="cancel" danger size="small" @click="handlerCancel()">Cancel</a-button>
           <a-button key="test" type="primary" size="small" @click="handlerTest()">Test</a-button>
