@@ -25,7 +25,7 @@ public class JdbcConnection
         this.openConnection();
     }
 
-    private String formatJdbcUrl()
+    protected String formatJdbcUrl()
     {
         StringBuffer buffer = new StringBuffer();
         buffer.append("jdbc:");
