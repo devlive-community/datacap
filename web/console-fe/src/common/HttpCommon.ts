@@ -7,7 +7,8 @@ axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 const configure = {
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  cancelToken: undefined
 }
 
 export class HttpCommon {
@@ -60,8 +61,9 @@ export class HttpCommon {
     });
   }
 
-  post(url: string, data = {}): Promise<ResponseModel> {
+  post(url: string, data = {}, cancelToken?: any): Promise<ResponseModel> {
     return new Promise((resolve) => {
+      configure.cancelToken = cancelToken;
       axios.post(url, data, configure)
         .then(result => {
           resolve(this.handlerSuccessful(result));

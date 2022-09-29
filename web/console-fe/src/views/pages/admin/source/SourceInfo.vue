@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model:visible="visible" :title="title" :footer="null" width="60%">
+  <a-modal v-model:visible="visible" :title="title" :footer="null" width="60%" :closable="false">
     <a-form :model="formState" :validate-messages="validateMessages" v-bind="layout" @finish="handlerSave()">
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane key="type">
@@ -70,8 +70,10 @@
       </a-tabs>
       <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }" style="margin-top: 20px; margin-bottom: -5px;">
         <a-space style="width: 100%">
-          <a-button key="cancel" danger size="small" @click="handlerCancel()">Cancel</a-button>
-          <a-button key="test" type="primary" size="small" @click="handlerTest()">Test</a-button>
+          <a-button key="cancel" danger size="small" :disabled="connectionLoading" @click="handlerCancel()">Cancel
+          </a-button>
+          <a-button key="test" type="primary" size="small" :loading="connectionLoading" @click="handlerTest()">Test
+          </a-button>
           <a-button key="submit" type="primary" size="small" :disabled="isCreated" html-type="submit">Save</a-button>
         </a-space>
       </a-form-item>
@@ -123,7 +125,8 @@ export default defineComponent({
       isCreated: true,
       isUpdate: false,
       formState: {},
-      plugins: []
+      plugins: [],
+      connectionLoading: false
     }
   },
   created() {
@@ -168,6 +171,7 @@ export default defineComponent({
         });
     },
     handlerTest() {
+      this.connectionLoading = true;
       new SourceService()
         .testConnection(this.formState as SourceModel)
         .then((response) => {
@@ -177,6 +181,8 @@ export default defineComponent({
           } else {
             message.error(response.message);
           }
+        }).finally(() => {
+          this.connectionLoading = false;
         });
     }
   },

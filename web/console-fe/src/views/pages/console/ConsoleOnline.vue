@@ -12,6 +12,10 @@
             <a-button type="dashed" size="small" :disabled="!applySource" @click="handlerFormat()">
               <format-painter-outlined /> Format
             </a-button>
+            <a-button type="primary" danger size="small" :disabled="!applySource || !tableLoading"
+              @click="handlerCancel()">
+              <format-painter-outlined /> Cancel
+            </a-button>
           </a-space>
         </template>
         <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
@@ -37,6 +41,7 @@ import { SheetComponent } from "@antv/s2-vue";
 import "@antv/s2-vue/dist/style.min.css";
 import { message } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
+import axios, { CancelTokenSource } from "axios";
 import * as monaco from 'monaco-editor';
 import MonacoEditor from 'monaco-editor-vue3';
 import { defineComponent } from "vue";
@@ -50,7 +55,8 @@ export default defineComponent({
       tableConfigure: {},
       tableOptions: {},
       tableLoading: false,
-      editorValue: ''
+      editorValue: '',
+      cancelToken: {} as CancelTokenSource
     }
   },
   methods: {
@@ -69,6 +75,7 @@ export default defineComponent({
       });
     },
     handlerRun() {
+      this.cancelToken = axios.CancelToken.source();
       this.tableLoading = true;
       const editorContainer: HTMLElement = this.$refs.editorContainer as HTMLElement;
       const configure: ExecuteModel = {
@@ -77,7 +84,7 @@ export default defineComponent({
         format: "JSON"
       };
       new ExecuteService()
-        .execute(configure)
+        .execute(configure, this.cancelToken.token)
         .then((response) => {
           if (response.status) {
             this.tableConfigure = {
@@ -120,6 +127,9 @@ export default defineComponent({
             message.error(response.message);
           }
         });
+    },
+    handlerCancel() {
+      this.cancelToken.cancel("Cancel query");
     }
   }
 });
