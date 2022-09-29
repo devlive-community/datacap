@@ -75,6 +75,10 @@
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-spi</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-mysql</artifactId>
             <version>${project.version}</version>
@@ -112,6 +116,16 @@
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-druid</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-kyuubi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-hive</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

@@ -8,6 +8,7 @@ import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
 @Slf4j
 public class MySQLPlugin
@@ -47,26 +48,29 @@ public class MySQLPlugin
             this.mySQLConnection = new MySQLConnection(this.jdbcConfigure, this.response);
         }
         catch (Exception ex) {
-            this.response.setIsSuccessful(Boolean.FALSE);
+            this.response.setIsConnected(Boolean.FALSE);
             this.response.setMessage(ex.getMessage());
-            throw new RuntimeException(ex);
         }
     }
 
     @Override
     public Response execute(String content)
     {
-        log.info("Execute mysql plugin logic started");
-        this.response = this.mySQLConnection.getResponse();
-        JdbcAdapter processor = new MySQLAdapter(this.mySQLConnection);
-        this.response = processor.handlerJDBCExecute(content);
-        log.info("Execute mysql plugin logic end");
+        if (ObjectUtils.isNotEmpty(this.mySQLConnection)) {
+            log.info("Execute mysql plugin logic started");
+            this.response = this.mySQLConnection.getResponse();
+            JdbcAdapter processor = new MySQLAdapter(this.mySQLConnection);
+            this.response = processor.handlerJDBCExecute(content);
+            log.info("Execute mysql plugin logic end");
+        }
         return this.response;
     }
 
     @Override
     public void destroy()
     {
-        this.mySQLConnection.destroy();
+        if (ObjectUtils.isNotEmpty(this.mySQLConnection)) {
+            this.mySQLConnection.destroy();
+        }
     }
 }
