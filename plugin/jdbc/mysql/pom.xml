@@ -21,6 +21,7 @@
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-spi</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
