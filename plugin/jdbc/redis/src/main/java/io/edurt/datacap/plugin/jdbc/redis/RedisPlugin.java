@@ -9,6 +9,7 @@ import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
 @Slf4j
 public class RedisPlugin
@@ -48,26 +49,29 @@ public class RedisPlugin
             this.jdbcConnection = new JdbcConnection(this.jdbcConfigure, this.response);
         }
         catch (Exception ex) {
-            this.response.setIsSuccessful(Boolean.FALSE);
+            this.response.setIsConnected(Boolean.FALSE);
             this.response.setMessage(ex.getMessage());
-            throw new RuntimeException(ex);
         }
     }
 
     @Override
     public Response execute(String content)
     {
-        log.info("Execute plugin logic started");
-        this.response = this.jdbcConnection.getResponse();
-        JdbcAdapter processor = new RedisAdapter(this.jdbcConnection);
-        this.response = processor.handlerJDBCExecute(content);
-        log.info("Execute plugin logic end");
+        if (ObjectUtils.isNotEmpty(this.jdbcConnection)) {
+            log.info("Execute plugin logic started");
+            this.response = this.jdbcConnection.getResponse();
+            JdbcAdapter processor = new RedisAdapter(this.jdbcConnection);
+            this.response = processor.handlerJDBCExecute(content);
+            log.info("Execute plugin logic end");
+        }
         return this.response;
     }
 
     @Override
     public void destroy()
     {
-        this.jdbcConnection.destroy();
+        if (ObjectUtils.isNotEmpty(this.jdbcConnection)) {
+            this.jdbcConnection.destroy();
+        }
     }
 }

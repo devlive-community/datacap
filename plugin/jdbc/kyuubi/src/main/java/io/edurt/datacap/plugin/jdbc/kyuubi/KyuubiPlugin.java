@@ -9,6 +9,7 @@ import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
 @Slf4j
 public class KyuubiPlugin
@@ -48,26 +49,29 @@ public class KyuubiPlugin
             this.connection = new JdbcConnection(this.jdbcConfigure, this.response);
         }
         catch (Exception ex) {
-            this.response.setIsSuccessful(Boolean.FALSE);
+            this.response.setIsConnected(Boolean.FALSE);
             this.response.setMessage(ex.getMessage());
-            throw new RuntimeException(ex);
         }
     }
 
     @Override
     public Response execute(String content)
     {
-        log.info("Execute kyuubi plugin logic started");
-        this.response = this.connection.getResponse();
-        JdbcAdapter processor = new KyuubiAdapter(this.connection);
-        this.response = processor.handlerJDBCExecute(content);
-        log.info("Execute kyuubi plugin logic end");
+        if (ObjectUtils.isNotEmpty(this.connection)) {
+            log.info("Execute kyuubi plugin logic started");
+            this.response = this.connection.getResponse();
+            JdbcAdapter processor = new KyuubiAdapter(this.connection);
+            this.response = processor.handlerJDBCExecute(content);
+            log.info("Execute kyuubi plugin logic end");
+        }
         return this.response;
     }
 
     @Override
     public void destroy()
     {
-        this.connection.destroy();
+        if (ObjectUtils.isNotEmpty(this.connection)) {
+            this.connection.destroy();
+        }
     }
 }

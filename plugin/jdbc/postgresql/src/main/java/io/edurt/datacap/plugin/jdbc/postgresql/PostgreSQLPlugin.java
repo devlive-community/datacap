@@ -8,6 +8,7 @@ import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
 @Slf4j
 public class PostgreSQLPlugin
@@ -47,26 +48,29 @@ public class PostgreSQLPlugin
             this.postgreSQLConnection = new PostgreSQLConnection(this.jdbcConfigure, this.response);
         }
         catch (Exception ex) {
-            this.response.setIsSuccessful(Boolean.FALSE);
+            this.response.setIsConnected(Boolean.FALSE);
             this.response.setMessage(ex.getMessage());
-            throw new RuntimeException(ex);
         }
     }
 
     @Override
     public Response execute(String content)
     {
-        log.info("Execute postgresql plugin logic started");
-        this.response = this.postgreSQLConnection.getResponse();
-        JdbcAdapter processor = new PostgreSQLAdapter(this.postgreSQLConnection);
-        this.response = processor.handlerJDBCExecute(content);
-        log.info("Execute postgresql plugin logic end");
+        if (ObjectUtils.isNotEmpty(this.postgreSQLConnection)) {
+            log.info("Execute postgresql plugin logic started");
+            this.response = this.postgreSQLConnection.getResponse();
+            JdbcAdapter processor = new PostgreSQLAdapter(this.postgreSQLConnection);
+            this.response = processor.handlerJDBCExecute(content);
+            log.info("Execute postgresql plugin logic end");
+        }
         return this.response;
     }
 
     @Override
     public void destroy()
     {
-        this.postgreSQLConnection.destroy();
+        if (ObjectUtils.isNotEmpty(this.postgreSQLConnection)) {
+            this.postgreSQLConnection.destroy();
+        }
     }
 }
