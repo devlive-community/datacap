@@ -70,6 +70,9 @@ Here are some of the major database solutions that are supported:
             <a href="https://kyuubi.apache.org/" target="_blank">
                 <img src="./shared/plugin/kyuubi.png" alt="Kyuubi" width="50" height="50" />
             </a>
+            <a href="https://hive.apache.org/" target="_blank">
+                <img src="./shared/plugin/hive.svg" alt="Hive" width="50" height="50" />
+            </a>
         </code> <br />
       </div>
     </div>

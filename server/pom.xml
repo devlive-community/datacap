@@ -123,6 +123,11 @@
             <artifactId>datacap-plugin-jdbc-kyuubi</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-hive</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

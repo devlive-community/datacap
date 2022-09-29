@@ -23,5 +23,6 @@
         <module>elasticsearch</module>
         <module>druid</module>
         <module>kyuubi</module>
+        <module>hive</module>
     </modules>
 </project>
