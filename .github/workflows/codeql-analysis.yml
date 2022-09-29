@@ -32,7 +32,7 @@ jobs:
           languages: ${{ matrix.language }}
 
       - run: |
-          ./mvnw clean install package -Dfindbugs.skip -Dcheckstyle.skip -DskipTests=true -Dskip.npm -X
+          ./mvnw clean install package -Dfindbugs.skip -Dcheckstyle.skip -DskipTests=true -Dskip.npm
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
