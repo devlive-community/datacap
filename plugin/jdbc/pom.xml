@@ -22,5 +22,6 @@
         <module>trino</module>
         <module>elasticsearch</module>
         <module>druid</module>
+        <module>kyuubi</module>
     </modules>
 </project>

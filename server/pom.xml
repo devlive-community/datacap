@@ -114,6 +114,11 @@
             <artifactId>datacap-plugin-jdbc-druid</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-kyuubi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

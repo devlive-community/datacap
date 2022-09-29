@@ -67,6 +67,9 @@ Here are some of the major database solutions that are supported:
             <a href="https://druid.apache.org/" target="_blank">
                 <img src="./shared/plugin/druid.jpg" alt="Druid" width="50" height="50" />
             </a>
+            <a href="https://kyuubi.apache.org/" target="_blank">
+                <img src="./shared/plugin/kyuubi.png" alt="Kyuubi" width="50" height="50" />
+            </a>
         </code> <br />
       </div>
     </div>
