@@ -14,7 +14,46 @@
             </a-button>
             <a-button type="primary" danger size="small" :disabled="!applySource || !tableLoading"
               @click="handlerCancel()">
-              <format-painter-outlined /> Cancel
+              <close-circle-outlined /> Cancel
+            </a-button>
+            <a-button v-if="response.data" type="link" size="small">
+              <a-popconfirm placement="bottom" :showCancel="false">
+                <clock-circle-outlined /> {{response.data.processor.elapsed}} ms
+                <template #okButton></template>
+                <template #icon></template>
+                <template #title>
+                  <div style="min-width: 300px;">
+                    <a-row :gutter="16">
+                      <a-col :span="12">
+                        <a-statistic :value="response.data.connection.elapsed" suffix="ms">
+                          <template #title>
+                            <span>Connection</span>
+                            <a-tooltip placement="right">
+                              <template #title>
+                                <span>Connection time!</span>
+                              </template>
+                              <question-circle-two-tone style="margin-left: 3px" />
+                            </a-tooltip>
+                          </template>
+                        </a-statistic>
+                      </a-col>
+                      <a-col :span="12">
+                        <a-statistic :value="response.data.processor.elapsed" suffix="ms">
+                          <template #title>
+                            <span>Execute</span>
+                            <a-tooltip placement="right">
+                              <template #title>
+                                <span>Execute time!</span>
+                              </template>
+                              <question-circle-two-tone style="margin-left: 3px" />
+                            </a-tooltip>
+                          </template>
+                        </a-statistic>
+                      </a-col>
+                    </a-row>
+                  </div>
+                </template>
+              </a-popconfirm>
             </a-button>
           </a-space>
         </template>
@@ -56,7 +95,8 @@ export default defineComponent({
       tableOptions: {},
       tableLoading: false,
       editorValue: '',
-      cancelToken: {} as CancelTokenSource
+      cancelToken: {} as CancelTokenSource,
+      response: {}
     }
   },
   methods: {
@@ -75,6 +115,7 @@ export default defineComponent({
       });
     },
     handlerRun() {
+      this.response = {};
       this.cancelToken = axios.CancelToken.source();
       this.tableLoading = true;
       const editorContainer: HTMLElement = this.$refs.editorContainer as HTMLElement;
@@ -87,6 +128,7 @@ export default defineComponent({
         .execute(configure, this.cancelToken.token)
         .then((response) => {
           if (response.status) {
+            this.response = response;
             this.tableConfigure = {
               fields: {
                 columns: response.data.headers
