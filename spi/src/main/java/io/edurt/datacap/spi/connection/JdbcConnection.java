@@ -1,12 +1,14 @@
 package io.edurt.datacap.spi.connection;
 
 import io.edurt.datacap.spi.model.Response;
+import io.edurt.datacap.spi.model.Time;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,7 +24,11 @@ public class JdbcConnection
     {
         this.jdbcConfigure = jdbcConfigure;
         this.response = response;
+        Time connectionTime = new Time();
+        connectionTime.setStart(new Date().getTime());
         this.openConnection();
+        connectionTime.setEnd(new Date().getTime());
+        this.response.setConnection(connectionTime);
     }
 
     protected String formatJdbcUrl()

@@ -19,4 +19,6 @@ public class Response
     private Boolean isConnected = Boolean.FALSE;
     private Boolean isSuccessful = Boolean.FALSE;
     private String message;
+    private Time connection;
+    private Time processor;
 }
