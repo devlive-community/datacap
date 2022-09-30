@@ -102,12 +102,20 @@ plugins:
           developer_guide: 开发指南
           developer_guide_env: 开发环境
           developer_guide_plugin: 添加插件
+          blog: 博客
+          2022: 2022
+          springboot-hive-jdbc-v2: sss
         en:
           home: Home
           developer_guide: Developer guide
           developer_guide_env: Development environment
           developer_guide_plugin: Add Plugin
+          blog: Blog
+          springboot-hive-jdbc-v2: sss
   - search
+  - blog:
+      archive: false
+      categories: false
   - git-revision-date-localized:
       enable_creation_date: true
       fallback_to_build_date: true
@@ -119,3 +127,5 @@ nav:
   - developer_guide:
       - developer_guide_env: developer_guide/env.md
       - developer_guide_plugin: developer_guide/plugin.md
+  - blog:
+    - blog/index.md
