@@ -31,6 +31,12 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
       - run: |
           ./mvnw clean install package -Dfindbugs.skip -Dcheckstyle.skip -DskipTests=true -Dskip.npm
 

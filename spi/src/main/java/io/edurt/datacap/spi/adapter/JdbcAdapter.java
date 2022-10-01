@@ -6,6 +6,7 @@ import io.edurt.datacap.spi.column.JdbcColumn;
 import io.edurt.datacap.spi.connection.JdbcConfigure;
 import io.edurt.datacap.spi.connection.JdbcConnection;
 import io.edurt.datacap.spi.model.Response;
+import io.edurt.datacap.spi.model.Time;
 import io.edurt.datacap.spi.record.RecordFactory;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +16,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -38,6 +40,8 @@ public class JdbcAdapter
     @Override
     public Response handlerJDBCExecute(String content)
     {
+        Time processorTime = new Time();
+        processorTime.setStart(new Date().getTime());
         Response response = this.jdbcConnection.getResponse();
         Connection connection = this.jdbcConnection.getConnection();
         JdbcConfigure configure = this.jdbcConnection.getConfigure();
@@ -73,6 +77,8 @@ public class JdbcAdapter
                 response.setMessage(ex.getMessage());
             }
         }
+        processorTime.setEnd(new Date().getTime());
+        response.setProcessor(processorTime);
         // It will be destroyed after the mission is closed
         this.jdbcConnection.destroy();
         return response;
