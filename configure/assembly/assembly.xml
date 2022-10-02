@@ -65,13 +65,12 @@
             <outputDirectory>docs</outputDirectory>
             <fileMode>0644</fileMode>
         </fileSet>
-<!--        <fileSet>-->
-<!--            <directory>../dist/plugins</directory>-->
-<!--            <outputDirectory>plugins</outputDirectory>-->
-<!--            <includes>-->
-<!--                <include>**/*</include>-->
-<!--            </includes>-->
-<!--            <fileMode>0644</fileMode>-->
-<!--        </fileSet>-->
+        <fileSet>
+            <directory>src/main/schema</directory>
+            <outputDirectory>schema</outputDirectory>
+            <fileMode>0755</fileMode>
+            <lineEnding>unix</lineEnding>
+            <filtered>true</filtered>
+        </fileSet>
     </fileSets>
 </assembly>
