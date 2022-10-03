@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (ElasticSearch)</name>
 
     <properties>
-        <x-pack-sql-jdbc.version>6.8.11</x-pack-sql-jdbc.version>
+        <x-pack-sql-jdbc.version>8.4.2</x-pack-sql-jdbc.version>
         <plugin.name>jdbc-elasticsearch</plugin.name>
     </properties>
 
