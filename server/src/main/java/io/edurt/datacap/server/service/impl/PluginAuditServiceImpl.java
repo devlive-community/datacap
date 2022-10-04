@@ -26,4 +26,10 @@ public class PluginAuditServiceImpl
         Pageable pageable = PageRequestAdapter.of(offset, limit);
         return Response.success(PageEntity.build(this.pluginAuditRepository.findAll(pageable)));
     }
+
+    @Override
+    public Response<Long> count()
+    {
+        return Response.success(this.pluginAuditRepository.count());
+    }
 }

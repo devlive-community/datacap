@@ -20,4 +20,6 @@ public interface SourceService
     Response<SourceEntity> getById(Long id);
 
     Response<List<PluginEntity>> getPlugins();
+
+    Response<Long> count();
 }

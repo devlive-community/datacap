@@ -105,4 +105,10 @@ public class SourceServiceImpl
                 .collect(Collectors.toList());
         return Response.success(plugins);
     }
+
+    @Override
+    public Response<Long> count()
+    {
+        return Response.success(this.sourceRepository.count());
+    }
 }

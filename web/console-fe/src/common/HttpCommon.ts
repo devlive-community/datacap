@@ -97,4 +97,8 @@ export class HttpCommon {
         });
     });
   }
+
+  getAxios() {
+    return axios;
+  }
 }
