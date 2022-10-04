@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS `audit_plugin`
 (
     `id`          bigint(20) NOT NULL AUTO_INCREMENT,
     `state`       varchar(255) COLLATE utf8_bin DEFAULT NULL,
-    `create_time` datetime                      DEFAULT CURRENT_TIMESTAMP,
-    `end_time`    datetime                      DEFAULT CURRENT_TIMESTAMP,
+    `create_time` datetime(5)                   DEFAULT CURRENT_TIMESTAMP,
+    `end_time`    datetime(5)                   DEFAULT CURRENT_TIMESTAMP,
     `plugin_id`   bigint(20) NOT NULL,
     `content`     text COLLATE utf8_bin,
     `message`     text COLLATE utf8_bin,
@@ -36,3 +36,8 @@ CREATE TABLE IF NOT EXISTS `source`
     PRIMARY KEY (`id`)
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='The storage is used to query the data connection source';
+
+-- If it already contains historical data, please use the following script to fix it
+ALTER TABLE `datacap`.`audit_plugin`
+    MODIFY COLUMN `create_time` timestamp(5) NULL DEFAULT CURRENT_TIMESTAMP(5),
+    MODIFY COLUMN `end_time` timestamp(5) NULL DEFAULT CURRENT_TIMESTAMP(5);

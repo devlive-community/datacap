@@ -44,10 +44,10 @@ public class PluginAuditEntity
     @Column(name = "message", unique = true)
     private String message;
 
-    @Column(name = "create_time", columnDefinition = "datetime default CURRENT_TIMESTAMP()")
+    @Column(name = "create_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
     private Timestamp createTime;
 
-    @Column(name = "end_time", columnDefinition = "datetime default CURRENT_TIMESTAMP()")
+    @Column(name = "end_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
     private Timestamp endTime;
 
     @ManyToOne
