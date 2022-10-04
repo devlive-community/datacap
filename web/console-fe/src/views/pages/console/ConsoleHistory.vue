@@ -3,6 +3,18 @@
         <a-card title="Plugin Audit" size="small">
             <a-table size="middle" :loading="loading" :columns="headers" :data-source="columns" :pagination="pagination"
                 @change="handlerTableChange($event)">
+                <template #headerCell="{ column }">
+                    <template v-if="column.key === 'elapsed'">
+                        <span>
+                            {{column.title}} &nbsp;
+                            <a-tooltip>
+                                <template #title>The value is expressed in milliseconds</template>
+                                <question-circle-outlined />
+                            </a-tooltip>
+                        </span>
+                    </template>
+                </template>
+
                 <template #bodyCell="{ column, record }">
                     <template v-if="column.dataIndex === 'plugin'">
                         {{record.plugin.name}}

@@ -44,14 +44,23 @@ public class PluginAuditEntity
     @Column(name = "message", unique = true)
     private String message;
 
-    @Column(name = "create_time", columnDefinition = "datetime default CURRENT_TIMESTAMP()")
+    @Column(name = "create_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
     private Timestamp createTime;
 
-    @Column(name = "end_time", columnDefinition = "datetime default CURRENT_TIMESTAMP()")
+    @Column(name = "end_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
     private Timestamp endTime;
+
+    @Column(name = "elapsed")
+    private Long elapsed;
 
     @ManyToOne
     @JoinColumn(name = "plugin_id")
     @JsonIncludeProperties(value = {"name", "type"})
     private SourceEntity plugin;
+
+    public void setEndTime(Timestamp endTime)
+    {
+        this.endTime = endTime;
+        this.elapsed = this.endTime.getTime() - this.createTime.getTime();
+    }
 }

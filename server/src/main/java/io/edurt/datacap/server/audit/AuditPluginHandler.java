@@ -11,10 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Aspect
 @Component
@@ -23,6 +25,7 @@ public class AuditPluginHandler
 {
     private final PluginAuditRepository pluginAuditRepository;
     private final SourceRepository sourceRepository;
+    private PluginAuditEntity pluginAudit;
 
     public AuditPluginHandler(PluginAuditRepository pluginAuditRepository, SourceRepository sourceRepository)
     {
@@ -30,11 +33,21 @@ public class AuditPluginHandler
         this.sourceRepository = sourceRepository;
     }
 
+    @Pointcut("@annotation(auditPlugin)")
+    public void cut(AuditPlugin auditPlugin)
+    {
+    }
+
+    @Before("cut(auditPlugin)")
+    public void doBefore(AuditPlugin auditPlugin)
+    {
+        this.pluginAudit = new PluginAuditEntity();
+        pluginAudit.setCreateTime(Timestamp.valueOf(LocalDateTime.now()));
+    }
+
     @AfterReturning(pointcut = "@annotation(auditPlugin)", returning = "jsonResult")
     public void doAfterReturning(JoinPoint joinPoint, AuditPlugin auditPlugin, Response jsonResult)
     {
-        PluginAuditEntity pluginAudit = new PluginAuditEntity();
-        pluginAudit.setCreateTime(Timestamp.from(Instant.now()));
         handlerPlugin(joinPoint, pluginAudit, jsonResult);
     }
 
@@ -54,7 +67,7 @@ public class AuditPluginHandler
                 SourceEntity sourceEntity = this.sourceRepository.findByName(executeEntity.getName());
                 pluginAudit.setPlugin(sourceEntity);
             }
-            pluginAudit.setEndTime(Timestamp.from(Instant.now()));
+            pluginAudit.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
             this.pluginAuditRepository.save(pluginAudit);
         }
         catch (Exception ex) {

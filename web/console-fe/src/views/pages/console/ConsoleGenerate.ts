@@ -27,6 +27,12 @@ const headers = [
         ellipsis: true
     },
     {
+        title: 'Elapsed',
+        name: 'elapsed',
+        dataIndex: 'elapsed',
+        key: 'elapsed'
+    },
+    {
         title: 'State',
         name: 'state',
         dataIndex: 'state',
