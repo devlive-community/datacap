@@ -7,4 +7,6 @@ import io.edurt.datacap.server.entity.PluginAuditEntity;
 public interface PluginAuditService
 {
     Response<PageEntity<PluginAuditEntity>> getAll(int offset, int limit);
+
+    Response<Long> count();
 }
