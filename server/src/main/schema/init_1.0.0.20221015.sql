@@ -36,8 +36,3 @@ CREATE TABLE IF NOT EXISTS `source`
     PRIMARY KEY (`id`)
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='The storage is used to query the data connection source';
-
--- If it already contains historical data, please use the following script to fix it
-ALTER TABLE `datacap`.`audit_plugin`
-    MODIFY COLUMN `create_time` timestamp(5) NULL DEFAULT CURRENT_TIMESTAMP(5),
-    MODIFY COLUMN `end_time` timestamp(5) NULL DEFAULT CURRENT_TIMESTAMP(5);
