@@ -96,13 +96,21 @@ export default defineComponent({
       tableLoading: false,
       editorValue: '',
       cancelToken: {} as CancelTokenSource,
-      response: {}
+      response: {},
+      editorInstance: {} as monaco.editor.ICodeEditor,
+      editorCompletionProvider: {} as monaco.IDisposable
+    }
+  },
+  unmounted() {
+    if (this.editorCompletionProvider) {
+      this.editorCompletionProvider.dispose();
     }
   },
   methods: {
     handlerEditorDidMount(editor: any) {
       const suggestions = new LanguageService().transSuggestions([]);
-      editor = monaco.languages.registerCompletionItemProvider("sql", {
+      this.editorInstance = editor;
+      this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
         provideCompletionItems(): any {
           return {
             suggestions: suggestions.map((item) => ({
