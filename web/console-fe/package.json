@@ -16,6 +16,7 @@
     "ant-design-vue": "^3.2.12",
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
+    "export-to-csv": "^0.2.1",
     "monaco-editor-vue3": "^0.1.6",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "nprogress": "^0.2.0",

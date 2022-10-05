@@ -64,6 +64,21 @@
     </div>
     <div style="margin-top: 5px;">
       <a-card :loading="tableLoading" :body-style="{padding: '2px'}">
+        <div v-if="tableConfigure.data" style="margin-bottom: 3px;">
+          <a-dropdown>
+            <template #overlay>
+              <a-menu @click="handlerExport()">
+                <a-menu-item key="export_csv">
+                  CSV
+                </a-menu-item>
+              </a-menu>
+            </template>
+            <a-button type="primary" size="small">
+              Export
+              <DownloadOutlined />
+            </a-button>
+          </a-dropdown>
+        </div>
         <SheetComponent :dataCfg="tableConfigure" :options="tableOptions" :showPagination="true" sheetType="table" />
       </a-card>
     </div>
@@ -81,6 +96,7 @@ import "@antv/s2-vue/dist/style.min.css";
 import { message } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 import axios, { CancelTokenSource } from "axios";
+import { ExportToCsv } from 'export-to-csv';
 import * as monaco from 'monaco-editor';
 import MonacoEditor from 'monaco-editor-vue3';
 import { defineComponent } from "vue";
@@ -88,21 +104,30 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "DashboardConsoleView",
   components: { SheetComponent, SourceSelectComponent, MonacoEditor },
+  unmounted() {
+    if (this.editorCompletionProvider) {
+      this.editorCompletionProvider.dispose();
+    }
+  },
   data() {
     return {
       applySource: null || '',
       tableConfigure: {},
       tableOptions: {},
+      tableColumns: [],
       tableLoading: false,
       editorValue: '',
       cancelToken: {} as CancelTokenSource,
-      response: {}
+      response: {},
+      editorInstance: {} as monaco.editor.ICodeEditor,
+      editorCompletionProvider: {} as monaco.IDisposable
     }
   },
   methods: {
     handlerEditorDidMount(editor: any) {
       const suggestions = new LanguageService().transSuggestions([]);
-      editor = monaco.languages.registerCompletionItemProvider("sql", {
+      this.editorInstance = editor;
+      this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
         provideCompletionItems(): any {
           return {
             suggestions: suggestions.map((item) => ({
@@ -129,6 +154,7 @@ export default defineComponent({
         .then((response) => {
           if (response.status) {
             this.response = response;
+            this.tableColumns = response.data.columns;
             this.tableConfigure = {
               fields: {
                 columns: response.data.headers
@@ -148,9 +174,10 @@ export default defineComponent({
           else {
             message.error(response.message);
           }
-        }).finally(() => {
-          this.tableLoading = false;
         })
+        .finally(() => {
+          this.tableLoading = false;
+        });
     },
     handlerChangeValue(value: string) {
       this.applySource = value;
@@ -172,6 +199,21 @@ export default defineComponent({
     },
     handlerCancel() {
       this.cancelToken.cancel("Cancel query");
+    },
+    handlerExport() {
+      const options = {
+        fieldSeparator: ',',
+        quoteStrings: '',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        useTextFile: false,
+        useBom: true,
+        filename: Date.parse(new Date().toString()).toString(),
+        useKeysAsHeaders: true
+      };
+      const csvExporter = new ExportToCsv(options);
+      csvExporter.generateCsv(this.tableColumns);
     }
   }
 });
