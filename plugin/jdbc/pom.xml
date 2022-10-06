@@ -24,5 +24,6 @@
         <module>druid</module>
         <module>kyuubi</module>
         <module>hive</module>
+        <module>kylin</module>
     </modules>
 </project>

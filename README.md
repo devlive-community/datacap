@@ -74,6 +74,11 @@ Here are some of the major database solutions that are supported:
                 <img src="./shared/plugin/hive.svg" alt="Hive" width="50" height="50" />
             </a>
         </code> <br />
+        <code>
+            <a href="https://kylin.apache.org" target="_blank">
+                <img src="./shared/plugin/kylin.png" alt="Kylin" width="50" height="50" />
+            </a>
+        </code> <br />
       </div>
     </div>
 </div>
