@@ -73,6 +73,7 @@ public class SourceServiceImpl
         _configure.setPort(configure.getPort());
         _configure.setUsername(Optional.ofNullable(configure.getUsername()));
         _configure.setPassword(Optional.ofNullable(configure.getPassword()));
+        _configure.setDatabase(Optional.ofNullable(configure.getDatabase()));
         _configure.setEnv(Optional.empty());
         _configure.setFormat(FormatType.JSON);
         plugin.connect(_configure);

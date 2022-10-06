@@ -54,6 +54,7 @@ public class ExecuteServiceImpl
         _configure.setPort(entity.getPort());
         _configure.setUsername(Optional.ofNullable(entity.getUsername()));
         _configure.setPassword(Optional.ofNullable(entity.getPassword()));
+        _configure.setDatabase(Optional.ofNullable(entity.getDatabase()));
         _configure.setEnv(Optional.ofNullable(configure.getEnv()));
         _configure.setFormat(configure.getFormat());
         plugin.connect(_configure);
