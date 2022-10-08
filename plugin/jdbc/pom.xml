@@ -25,5 +25,6 @@
         <module>kyuubi</module>
         <module>hive</module>
         <module>kylin</module>
+        <module>ignite</module>
     </modules>
 </project>

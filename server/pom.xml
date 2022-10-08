@@ -133,6 +133,11 @@
             <artifactId>datacap-plugin-jdbc-kylin</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-ignite</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
