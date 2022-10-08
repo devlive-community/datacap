@@ -78,6 +78,9 @@ Here are some of the major database solutions that are supported:
             <a href="https://kylin.apache.org" target="_blank">
                 <img src="./shared/plugin/kylin.png" alt="Kylin" width="50" height="50" />
             </a>
+            <a href="https://ignite.apache.org/" target="_blank">
+                <img src="./shared/plugin/ignite.png" alt="Ignite" width="50" height="50" />
+            </a>
         </code> <br />
       </div>
     </div>

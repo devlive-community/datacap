@@ -1,0 +1,99 @@
+name: Publish New Release
+
+on:
+  pull_request:
+    branch:
+      - 'master'
+  types: [ closed ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Read release version
+        id: package-version
+        run: |
+          VAR=$(./mvnw -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN -Dorg.slf4j.simpleLogger.log.org.apache.maven.plugins.help=INFO | tail -1)
+          echo "::set-output name=version::$VAR"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          tag_name: ${{ steps.package-version.outputs.version }}
+          release_name: ${{ steps.package-version.outputs.version }}
+          draft: false
+          prerelease: false
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.package-version.outputs.version }}
+
+  before_checker_loading:
+    runs-on: ubuntu-latest
+    needs:
+      - release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - run: echo 'Before checker loading'
+
+  before_checker_style:
+    runs-on: ubuntu-latest
+    needs:
+      - before_checker_loading
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Maven Checker Style
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - run: chmod 755 ./mvnw
+      - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dskip.npm -DskipTests=true
+
+  before_checker_bugs:
+    runs-on: ubuntu-latest
+    needs:
+      - before_checker_loading
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Maven Checker Bugs
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - run: chmod 755 ./mvnw
+      - run: ./mvnw clean install findbugs:findbugs -Dcheckstyle.skip -Dskip.npm -DskipTests=true
+
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+      - release
+      - before_checker_loading
+      - before_checker_style
+      - before_checker_bugs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Maven Checker Package
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - run: chmod 755 ./mvnw
+      - run: ./mvnw clean install package -Dfindbugs.skip -Dcheckstyle.skip -DskipTests=true
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ./dist/datacap-release.tar.gz
+          asset_name: datacap-${{ needs.release.outputs.version }}-release.tar.gz
+          asset_content_type: application/x-gzip
