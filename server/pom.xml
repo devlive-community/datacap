@@ -13,7 +13,7 @@
     <name>DataCap for server</name>
 
     <properties>
-        <mysql.version>8.0.28</mysql.version>
+        <mysql.version>8.0.30</mysql.version>
         <h2.version>2.1.214</h2.version>
         <findbugs.version>3.0.1</findbugs.version>
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>

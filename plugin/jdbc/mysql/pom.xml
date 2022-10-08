@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (MySQL)</name>
 
     <properties>
-        <mysql.version>8.0.28</mysql.version>
+        <mysql.version>8.0.30</mysql.version>
         <plugin.name>jdbc-mysql</plugin.name>
     </properties>
 
