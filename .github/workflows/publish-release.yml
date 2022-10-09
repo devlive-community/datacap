@@ -53,7 +53,7 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dskip.npm -DskipTests=true
+      - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dgpg.skip -Dskip.npm -DskipTests=true
 
   before_checker_bugs:
     runs-on: ubuntu-latest
@@ -68,7 +68,7 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install findbugs:findbugs -Dcheckstyle.skip -Dskip.npm -DskipTests=true
+      - run: ./mvnw clean install findbugs:findbugs -Dcheckstyle.skip -Dgpg.skip -Dskip.npm -DskipTests=true
 
   publish:
     runs-on: ubuntu-latest
@@ -86,7 +86,7 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install package -Dfindbugs.skip -Dcheckstyle.skip -DskipTests=true
+      - run: ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@master
