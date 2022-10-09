@@ -105,6 +105,11 @@ plugins:
           blog: 博客
           2022: 2022
           springboot-hive-jdbc-v2: sss
+          documentation: 文档
+          documentation_install: 安装
+          documentation_admin: 管理
+          documentation_admin_source: 数据源
+          documentation_admin_history: 历史
         en:
           home: Home
           developer_guide: Developer guide
@@ -112,6 +117,11 @@ plugins:
           developer_guide_plugin: Custom Plugin
           blog: Blog
           springboot-hive-jdbc-v2: sss
+          documentation: Documentation
+          documentation_install: Installation
+          documentation_admin: Admin
+          documentation_admin_source: Data Source
+          documentation_admin_history: History
   - search
   - blog:
       archive: false
@@ -124,6 +134,11 @@ plugins:
 
 nav:
   - home: index.md
+  - documentation:
+      - documentation_install: reference/get_started/install.md
+      - documentation_admin:
+        - documentation_admin_source: reference/admin/source.md
+        - documentation_admin_history: reference/admin/history.md
   - developer_guide:
       - developer_guide_env: developer_guide/env.md
       - developer_guide_plugin: developer_guide/plugin.md
