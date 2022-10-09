@@ -4,5 +4,5 @@ import io.edurt.datacap.spi.model.Response;
 
 public interface Adapter
 {
-    Response handlerJDBCExecute(String content);
+    Response handlerExecute(String content);
 }

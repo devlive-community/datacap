@@ -60,7 +60,7 @@ public class PostgreSQLPlugin
             log.info("Execute postgresql plugin logic started");
             this.response = this.postgreSQLConnection.getResponse();
             JdbcAdapter processor = new PostgreSQLAdapter(this.postgreSQLConnection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute postgresql plugin logic end");
         }
         return this.response;

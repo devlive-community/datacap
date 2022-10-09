@@ -38,7 +38,7 @@ public class JdbcAdapter
     }
 
     @Override
-    public Response handlerJDBCExecute(String content)
+    public Response handlerExecute(String content)
     {
         Time processorTime = new Time();
         processorTime.setStart(new Date().getTime());

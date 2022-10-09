@@ -60,7 +60,7 @@ public class MySQLPlugin
             log.info("Execute mysql plugin logic started");
             this.response = this.mySQLConnection.getResponse();
             JdbcAdapter processor = new MySQLAdapter(this.mySQLConnection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute mysql plugin logic end");
         }
         return this.response;

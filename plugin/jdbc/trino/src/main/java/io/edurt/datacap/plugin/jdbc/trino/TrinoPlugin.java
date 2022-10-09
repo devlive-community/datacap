@@ -60,7 +60,7 @@ public class TrinoPlugin
             log.info("Execute trino plugin logic started");
             this.response = this.trinoConnection.getResponse();
             JdbcAdapter processor = new TrinoAdapter(this.trinoConnection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute trino plugin logic end");
         }
         return this.response;

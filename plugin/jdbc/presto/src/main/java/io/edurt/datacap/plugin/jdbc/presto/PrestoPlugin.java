@@ -61,7 +61,7 @@ public class PrestoPlugin
             log.info("Execute plugin logic started");
             this.response = this.jdbcConnection.getResponse();
             JdbcAdapter processor = new PrestoAdapter(this.jdbcConnection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute plugin logic end");
         }
         return this.response;

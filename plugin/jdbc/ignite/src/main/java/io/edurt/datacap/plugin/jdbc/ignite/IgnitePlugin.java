@@ -61,7 +61,7 @@ public class IgnitePlugin
             log.info("Execute ignite plugin logic started");
             this.response = this.connection.getResponse();
             JdbcAdapter processor = new IgniteAdapter(this.connection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute ignite plugin logic end");
         }
         return this.response;

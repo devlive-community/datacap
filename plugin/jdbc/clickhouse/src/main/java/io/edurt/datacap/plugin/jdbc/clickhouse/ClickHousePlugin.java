@@ -60,7 +60,7 @@ public class ClickHousePlugin
             log.info("Execute clickhouse plugin logic started");
             this.response = this.clickHouseConnection.getResponse();
             JdbcAdapter processor = new ClickHouseAdapter(this.clickHouseConnection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute clickhouse plugin logic end");
         }
         return this.response;
