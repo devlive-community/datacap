@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS `audit_plugin`
 (
     `id`          bigint(20) NOT NULL AUTO_INCREMENT,
     `state`       varchar(255) COLLATE utf8_bin DEFAULT NULL,
-    `create_time` datetime(5)                   DEFAULT CURRENT_TIMESTAMP,
-    `end_time`    datetime(5)                   DEFAULT CURRENT_TIMESTAMP,
+    `create_time` datetime(5)                   DEFAULT CURRENT_TIMESTAMP(5),
+    `end_time`    datetime(5)                   DEFAULT CURRENT_TIMESTAMP(5),
     `plugin_id`   bigint(20) NOT NULL,
     `content`     text COLLATE utf8_bin,
     `message`     text COLLATE utf8_bin,

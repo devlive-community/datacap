@@ -1,6 +1,10 @@
 name: Publish docs via GitHub Pages
 
-on: push
+on:
+  pull_request:
+    branch:
+      - 'master'
+    types: [ closed ]
 
 jobs:
   deploy:
