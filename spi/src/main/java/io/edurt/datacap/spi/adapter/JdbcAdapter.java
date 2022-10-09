@@ -32,9 +32,9 @@ public class JdbcAdapter
         this.jdbcConnection = jdbcConnection;
     }
 
-    private Object handlerFormatAdapterRecord(FormatType format, List<String> headers, List<Object> columns)
+    private Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
     {
-        return FormatterFactory.createRecord(format, headers, columns).convert();
+        return FormatterFactory.createFormatter(format, headers, columns).formatter();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class JdbcAdapter
                         _columns.add(jdbcColumn.convert(metaData.getColumnTypeName(i), i));
                     }
                     isPresent = false;
-                    columns.add(handlerFormatAdapterRecord(configure.getFormat(), headers, _columns));
+                    columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
                 }
                 response.setHeaders(headers);
                 response.setTypes(types);

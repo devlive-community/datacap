@@ -14,7 +14,7 @@ public class JsonFormatter
     }
 
     @Override
-    public Object convert()
+    public Object formatter()
     {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode node = mapper.createObjectNode();

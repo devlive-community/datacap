@@ -13,5 +13,5 @@ public abstract class Formatter
         this.columns = columns;
     }
 
-    public abstract Object convert();
+    public abstract Object formatter();
 }

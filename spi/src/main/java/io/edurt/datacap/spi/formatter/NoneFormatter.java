@@ -12,7 +12,7 @@ public class NoneFormatter
     }
 
     @Override
-    public Object convert()
+    public Object formatter()
     {
         List<Object> values = new ArrayList<>();
         for (int i = 0; i < headers.size(); i++) {
