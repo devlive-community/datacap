@@ -101,7 +101,7 @@ plugins:
           home: 主页
           developer_guide: 开发指南
           developer_guide_env: 开发环境
-          developer_guide_plugin: 添加插件
+          developer_guide_plugin: 自定义插件
           blog: 博客
           2022: 2022
           springboot-hive-jdbc-v2: sss
@@ -109,7 +109,7 @@ plugins:
           home: Home
           developer_guide: Developer guide
           developer_guide_env: Development environment
-          developer_guide_plugin: Add Plugin
+          developer_guide_plugin: Custom Plugin
           blog: Blog
           springboot-hive-jdbc-v2: sss
   - search
