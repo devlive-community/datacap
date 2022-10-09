@@ -61,7 +61,7 @@ public class KylinPlugin
             log.info("Execute kylin plugin logic started");
             this.response = this.connection.getResponse();
             JdbcAdapter processor = new KylinAdapter(this.connection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute kylin plugin logic end");
         }
         return this.response;

@@ -61,7 +61,7 @@ public class HivePlugin
             log.info("Execute hive plugin logic started");
             this.response = this.connection.getResponse();
             JdbcAdapter processor = new HiveAdapter(this.connection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute hive plugin logic end");
         }
         return this.response;

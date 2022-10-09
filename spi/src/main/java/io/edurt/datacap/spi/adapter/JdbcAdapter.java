@@ -5,9 +5,9 @@ import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.column.JdbcColumn;
 import io.edurt.datacap.spi.connection.JdbcConfigure;
 import io.edurt.datacap.spi.connection.JdbcConnection;
+import io.edurt.datacap.spi.formatter.FormatterFactory;
 import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.spi.model.Time;
-import io.edurt.datacap.spi.record.RecordFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -32,13 +32,13 @@ public class JdbcAdapter
         this.jdbcConnection = jdbcConnection;
     }
 
-    private Object handlerFormatAdapterRecord(FormatType format, List<String> headers, List<Object> columns)
+    private Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
     {
-        return RecordFactory.createRecord(format, headers, columns).convert();
+        return FormatterFactory.createFormatter(format, headers, columns).formatter();
     }
 
     @Override
-    public Response handlerJDBCExecute(String content)
+    public Response handlerExecute(String content)
     {
         Time processorTime = new Time();
         processorTime.setStart(new Date().getTime());
@@ -64,7 +64,7 @@ public class JdbcAdapter
                         _columns.add(jdbcColumn.convert(metaData.getColumnTypeName(i), i));
                     }
                     isPresent = false;
-                    columns.add(handlerFormatAdapterRecord(configure.getFormat(), headers, _columns));
+                    columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
                 }
                 response.setHeaders(headers);
                 response.setTypes(types);

@@ -61,7 +61,7 @@ public class KyuubiPlugin
             log.info("Execute kyuubi plugin logic started");
             this.response = this.connection.getResponse();
             JdbcAdapter processor = new KyuubiAdapter(this.connection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute kyuubi plugin logic end");
         }
         return this.response;

@@ -16,7 +16,7 @@ jobs:
       - name: Chmod
         run: chmod 755 ./mvnw
       - name: Package
-        run: ./mvnw clean install package -Dfindbugs.skip -Dcheckstyle.skip -DskipTests=true
+        run: ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
       - name: Upload
         uses: AEnterprise/rsync-deploy@v1.0
         env:

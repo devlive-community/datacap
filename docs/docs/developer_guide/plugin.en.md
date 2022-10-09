@@ -2,35 +2,51 @@
 icon: material/power-plug-outline
 ---
 
-When we need to integrate other plug-ins into this system, we can follow the steps in this document.
+When we need to integrate other plugins into this system, we can follow the steps in this article.
 
-- Use the project to integrate the `spi` module
+!!! note
 
-Add the following dependencies to the project's `pom.xml` file
+    How custom plugins are used We use the Kylin plugin as an example
+
+#### Integrated `spi` module
+
+Add the following dependencies in the project's `pom.xml` file
 
 ```xml
+<!-- Add kylin jdbc related dependencies here -->
 <dependency>
     <groupId>io.edurt.datacap</groupId>
     <artifactId>datacap-spi</artifactId>
     <version>DATACAP-SPI_LAST_VERSION</version>
+    <scope>provided</scope>
 </dependency>
 ```
 
-- Create a plug-in loading module `ExamplePluginModule`
+`<build>` and `<properties>` The stage is generally in accordance with the rules
 
 !!! warning
 
-    `DATACAP-SPI_LAST_VERSION`  You are advised to change the value to the latest SPI version
+    `DATACAP-SPI_LAST_VERSION` It is recommended that you change this value to the latest SPI version
+
+#### Build Load Module (PluginModule)
 
 ```java
-public class ExamplePluginModule
+package io.edurt.datacap.plugin.jdbc.kylin;
+
+import com.google.inject.multibindings.Multibinder;
+import io.edurt.datacap.spi.AbstractPluginModule;
+import io.edurt.datacap.spi.Plugin;
+import io.edurt.datacap.spi.PluginModule;
+import io.edurt.datacap.spi.PluginType;
+
+public class KylinPluginModule
         extends AbstractPluginModule
         implements PluginModule
 {
     @Override
     public String getName()
     {
-        return "Example";
+        return "Kylin";
     }
 
     @Override
@@ -50,73 +66,158 @@ public class ExamplePluginModule
         Multibinder<String> module = Multibinder.newSetBinder(this.binder(), String.class);
         module.addBinding().toInstance(this.getClass().getSimpleName());
         Multibinder<Plugin> plugin = Multibinder.newSetBinder(this.binder(), Plugin.class);
-        plugin.addBinding().to(ExamplePlugin.class);
+        plugin.addBinding().to(KylinPlugin.class);
     }
 }
 ```
 
-`extends AbstractPluginModule` The module that marks the class as belonging to a plug-in
+`extends AbstractPluginModule` The module indicates that the class belongs to a plugin
 
-`implements PluginModule` Some metadata needed to implement the system plug-in
+`implements PluginModule` Some metadata implements the plug-ins required by the system
 
-- Next we need to build the plugin we use `ExamplePlugin`
+##### `configure()`
 
 ```java
-public class ExamplePlugin
+Multibinder<Plugin> plugin = Multibinder.newSetBinder(this.binder(), Plugin.class);
+plugin.addBinding().to(KylinPlugin.class);
+```
+
+The core here is that we want to bind and map the plugin we wrote into the system container
+
+#### Build Adapter
+
+```java
+package io.edurt.datacap.plugin.jdbc.kylin;
+
+import io.edurt.datacap.spi.adapter.JdbcAdapter;
+import io.edurt.datacap.spi.connection.JdbcConnection;
+
+public class KylinAdapter
+        extends JdbcAdapter
+{
+    public KylinAdapter(JdbcConnection jdbcConnection)
+    {
+        super(jdbcConnection);
+    }
+}
+```
+
+If there is no special configuration, just refer to the code to implement it, in `JdbcAdapter` we implement the specific JDBC conversion
+
+#### Build Plugin
+
+```java
+package io.edurt.datacap.plugin.jdbc.kylin;
+
+import io.edurt.datacap.spi.Plugin;
+import io.edurt.datacap.spi.PluginType;
+import io.edurt.datacap.spi.adapter.JdbcAdapter;
+import io.edurt.datacap.spi.connection.JdbcConfigure;
+import io.edurt.datacap.spi.connection.JdbcConnection;
+import io.edurt.datacap.spi.model.Configure;
+import io.edurt.datacap.spi.model.Response;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.ObjectUtils;
+
+@Slf4j
+public class KylinPlugin
         implements Plugin
 {
+    private JdbcConfigure jdbcConfigure;
+    private JdbcConnection connection;
+    private Response response;
+
     @Override
-    public String getName()
+    public String name()
     {
-        return null;
+        return "Kylin";
     }
 
     @Override
-    public PluginType getType()
+    public String description()
     {
-        return null;
+        return "Integrate Kylin data sources";
+    }
+
+    @Override
+    public PluginType type()
+    {
+        return PluginType.SOURCE;
     }
 
     @Override
     public void connect(Configure configure)
     {
+        try {
+            this.response = new Response();
+            this.jdbcConfigure = new JdbcConfigure();
+            BeanUtils.copyProperties(this.jdbcConfigure, configure);
+            this.jdbcConfigure.setJdbcDriver("org.apache.kylin.jdbc.Driver");
+            this.jdbcConfigure.setJdbcType("kylin");
+            this.connection = new JdbcConnection(this.jdbcConfigure, this.response);
+        }
+        catch (Exception ex) {
+            this.response.setIsConnected(Boolean.FALSE);
+            this.response.setMessage(ex.getMessage());
+        }
     }
 
     @Override
     public Response execute(String content)
     {
-        return null;
+        if (ObjectUtils.isNotEmpty(this.connection)) {
+            log.info("Execute kylin plugin logic started");
+            this.response = this.connection.getResponse();
+            JdbcAdapter processor = new KylinAdapter(this.connection);
+            this.response = processor.handlerExecute(content);
+            log.info("Execute kylin plugin logic end");
+        }
+        return this.response;
     }
 
     @Override
     public void destroy()
     {
+        if (ObjectUtils.isNotEmpty(this.connection)) {
+            this.connection.destroy();
+        }
     }
 }
 ```
 
-`implements Plugin` Implement the plug-ins defined in the SPI system, and mark the content of the specific plug-in implementation.
+`implements Plugin` Implement the plug-in defined in the SPI system, what the specific plug-in implements.
 
 !!! note
 
-    `getName()` The unique name of the plug-in, the plug-in with the same name will only take effect if it is loaded first <br/>
-    `getType()` Types of plug-ins <br/>
-    `connect(Configure configure)` The connection-related information required by the plug-in in advance, such as the MySQL plug-in, this is the connection stage of MySQL. <br/>
+    `name()` The plug-in has a unique name, and plug-ins with the same name will only take effect the first time they are loaded <br />
+    `type()` The type of plug-in <br />
+    `description()` The description of the plug-in<br />
+    `connect(Configure configure)` The plug-in needs connection information in advance, such as the Kylin plugin, which is the connection stage of Kylin (the system presets the JDBC connection method to use it directly). <br/>
     `execute(String content)` Specific execution operation logic <br/>
-    `destroy()` For the final destruction of the plug-in, pay attention to the need to include the destruction of the information in the connection
-    
-- In the last step, we load and configure the plug-in
+    `destroy()` For the final destruction of the plug-in, note that the destruction needs to include information in the connection
 
-Add the `META-INF` and `services` directories to the `resources` directory in the source directory.
+Note that in the `connect(Configure configure)` code we need to specify the driver and type of the connector, in the code we reset the `JdbcConfigure` that is, the specific JDBC configuration information
+The system will load it according to the specified driver, generate the format according to type as `jdbc:<type>xxxxxx` connection configuration, if it is a non-jdbc plug-in needs to implement the connection mode itself.
+
+In the `execute(String content)` stage we implement the system customization of the `JdbcAdapter` converter will automatically perform data assembly already packaged, etc., if it is a non-jdbc plug-in need to implement the converter itself.
+
+#### Build the SPI configuration plugin
+
+Add the `META-INF` and `services` directories under the `resources` source directory
 
 !!! warning
 
-    `services` needs to be in the `META-INF` directory
+    `services` Required in the `resources` directory
 
-Create `io.edurt.datacap.spi.PluginModule` file
+Create the `io.edurt.datacap.spi.PluginModule` file
 
 ```java
-io.edurt.datacap.plugin.example.ExamplePluginModule
+io.edurt.datacap.plugin.jdbc.kylin.KylinPluginModule
 ```
 
-The content of the file is the plug-in loading module after we define it.
+The contents of the file are the plug-in loading modules that we have defined.
+
+!!! warning
+
+    Unit tests of plug-ins can be tested with reference to plugins that have already been released

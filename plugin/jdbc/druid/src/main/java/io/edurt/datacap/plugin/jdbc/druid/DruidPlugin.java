@@ -60,7 +60,7 @@ public class DruidPlugin
             log.info("Execute druid plugin logic started");
             this.response = this.connection.getResponse();
             JdbcAdapter processor = new DruidAdapter(this.connection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute druid plugin logic end");
         }
         return this.response;

@@ -1,20 +1,20 @@
-package io.edurt.datacap.spi.record;
+package io.edurt.datacap.spi.formatter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;
 
-public class JsonRecord
-        extends Record
+public class JsonFormatter
+        extends Formatter
 {
-    protected JsonRecord(List<String> headers, List<Object> columns)
+    protected JsonFormatter(List<String> headers, List<Object> columns)
     {
         super(headers, columns);
     }
 
     @Override
-    public Object convert()
+    public Object formatter()
     {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode node = mapper.createObjectNode();

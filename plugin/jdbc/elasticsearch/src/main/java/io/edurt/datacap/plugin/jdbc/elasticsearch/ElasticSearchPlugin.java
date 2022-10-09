@@ -60,7 +60,7 @@ public class ElasticSearchPlugin
             log.info("Execute elasticsearch plugin logic started");
             this.response = this.connection.getResponse();
             JdbcAdapter processor = new ElasticSearchAdapter(this.connection);
-            this.response = processor.handlerJDBCExecute(content);
+            this.response = processor.handlerExecute(content);
             log.info("Execute elasticsearch plugin logic end");
         }
         return this.response;
