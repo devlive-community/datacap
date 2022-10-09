@@ -5,9 +5,9 @@ import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.column.JdbcColumn;
 import io.edurt.datacap.spi.connection.JdbcConfigure;
 import io.edurt.datacap.spi.connection.JdbcConnection;
+import io.edurt.datacap.spi.formatter.FormatterFactory;
 import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.spi.model.Time;
-import io.edurt.datacap.spi.record.RecordFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -34,7 +34,7 @@ public class JdbcAdapter
 
     private Object handlerFormatAdapterRecord(FormatType format, List<String> headers, List<Object> columns)
     {
-        return RecordFactory.createRecord(format, headers, columns).convert();
+        return FormatterFactory.createRecord(format, headers, columns).convert();
     }
 
     @Override
