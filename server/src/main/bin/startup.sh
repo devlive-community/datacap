@@ -39,7 +39,6 @@ job_runner_start_server() {
     printf "Server starting                        | %s\n" "$APPLICATION_NAME"
     cd "$HOME"
     nohup "$JAVA_HOME"/bin/java -classpath 'lib/*' "$APPLICATION_NAME" \
-        --logging.config="$HOME/configure/logback.xml" \
         --spring.config.location="$HOME/configure/" > /dev/null 2>&1 &
     sleep 5
     job_before_apply_server
