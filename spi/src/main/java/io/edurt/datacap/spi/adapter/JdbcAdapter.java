@@ -43,8 +43,8 @@ public class JdbcAdapter
         Time processorTime = new Time();
         processorTime.setStart(new Date().getTime());
         Response response = this.jdbcConnection.getResponse();
-        Connection connection = this.jdbcConnection.getConnection();
-        JdbcConfigure configure = this.jdbcConnection.getConfigure();
+        Connection connection = (Connection) this.jdbcConnection.getConnection();
+        JdbcConfigure configure = (JdbcConfigure) this.jdbcConnection.getConfigure();
         if (response.getIsConnected()) {
             try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(content)) {
                 List<String> headers = new ArrayList<>();

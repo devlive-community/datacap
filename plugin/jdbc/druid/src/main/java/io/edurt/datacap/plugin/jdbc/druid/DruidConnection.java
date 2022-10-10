@@ -19,7 +19,7 @@ public class DruidConnection
     @Override
     protected String formatJdbcUrl()
     {
-        JdbcConfigure jdbcConfigure = this.getConfigure();
+        JdbcConfigure jdbcConfigure = (JdbcConfigure) this.getConfigure();
         StringBuffer buffer = new StringBuffer();
         buffer.append("jdbc:");
         buffer.append(jdbcConfigure.getJdbcType());

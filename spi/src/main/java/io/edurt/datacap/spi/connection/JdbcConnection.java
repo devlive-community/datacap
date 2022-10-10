@@ -1,34 +1,27 @@
 package io.edurt.datacap.spi.connection;
 
 import io.edurt.datacap.spi.model.Response;
-import io.edurt.datacap.spi.model.Time;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class JdbcConnection
+        extends io.edurt.datacap.spi.connection.Connection
 {
-    private final JdbcConfigure jdbcConfigure;
-    private final Response response;
+    private JdbcConfigure jdbcConfigure;
+    private Response response;
     private Connection connection;
 
     public JdbcConnection(JdbcConfigure jdbcConfigure, Response response)
     {
-        this.jdbcConfigure = jdbcConfigure;
-        this.response = response;
-        Time connectionTime = new Time();
-        connectionTime.setStart(new Date().getTime());
-        this.openConnection();
-        connectionTime.setEnd(new Date().getTime());
-        this.response.setConnection(connectionTime);
+        super(jdbcConfigure, response);
     }
 
     protected String formatJdbcUrl()
@@ -56,9 +49,11 @@ public class JdbcConnection
         return buffer.toString();
     }
 
-    private Connection openConnection()
+    protected Connection openConnection()
     {
         try {
+            this.jdbcConfigure = (JdbcConfigure) getConfigure();
+            this.response = getResponse();
             Class.forName(this.jdbcConfigure.getJdbcDriver());
             String url = formatJdbcUrl();
             log.info("Connection driver {}", this.jdbcConfigure.getJdbcDriver());
@@ -79,21 +74,6 @@ public class JdbcConnection
             response.setMessage(ex.getMessage());
         }
         return this.connection;
-    }
-
-    public Connection getConnection()
-    {
-        return this.connection;
-    }
-
-    public Response getResponse()
-    {
-        return this.response;
-    }
-
-    public JdbcConfigure getConfigure()
-    {
-        return this.jdbcConfigure;
     }
 
     public void destroy()
