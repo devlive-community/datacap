@@ -26,5 +26,6 @@
         <module>hive</module>
         <module>kylin</module>
         <module>ignite</module>
+        <module>db2</module>
     </modules>
 </project>
