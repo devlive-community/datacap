@@ -81,6 +81,9 @@ Here are some of the major database solutions that are supported:
             <a href="https://ignite.apache.org/" target="_blank">
                 <img src="./shared/plugin/ignite.png" alt="Ignite" width="50" height="50" />
             </a>
+            <a href="https://www.ibm.com/db2/" target="_blank">
+                <img src="./shared/plugin/ibmdb2.png" alt="IBM DB2" width="45" height="45" />
+            </a>
         </code> <br />
       </div>
     </div>
