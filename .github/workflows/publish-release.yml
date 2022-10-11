@@ -81,12 +81,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Maven Checker Package
-        uses: actions/setup-java@v3
-        with:
-          java-version: '8'
-          distribution: 'temurin'
-      - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
+      - run: |
+          chmod 755 ./mvnw
+          wget -O /tmp/jdk-8u60-linux-x64.tar.gz http://software.cdn.ttxit.com/oracle/jdk-8u60-linux-x64.tar.gz
+          mkdir -p /opt/java/
+          tar -xzf /tmp/jdk-8u60-linux-x64.tar.gz -C /opt/java/
+          export JAVA_HOME=/opt/java/jdk1.8.0_60
+          export PATH=$JAVA_HOME/bin:$PATH
+          export CLASSPATH=.:$JAVA_HOME/bin/dt.jar:$JAVA_HOME/lib/tools.jar
+          java -version
+          ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@master
