@@ -107,6 +107,7 @@ plugins:
           springboot-hive-jdbc-v2: sss
           documentation: 文档
           documentation_install: 安装
+          documentation_query: 查询
           documentation_admin: 管理
           documentation_admin_source: 数据源
           documentation_admin_history: 历史
@@ -119,6 +120,7 @@ plugins:
           springboot-hive-jdbc-v2: sss
           documentation: Documentation
           documentation_install: Installation
+          documentation_query: Query
           documentation_admin: Admin
           documentation_admin_source: Data Source
           documentation_admin_history: History
@@ -136,6 +138,7 @@ nav:
   - home: index.md
   - documentation:
       - documentation_install: reference/get_started/install.md
+      - documentation_query: reference/get_started/query.md
       - documentation_admin:
         - documentation_admin_source: reference/admin/source.md
         - documentation_admin_history: reference/admin/history.md
