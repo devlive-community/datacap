@@ -107,9 +107,12 @@ plugins:
           springboot-hive-jdbc-v2: sss
           documentation: 文档
           documentation_install: 安装
+          documentation_query: 查询
           documentation_admin: 管理
           documentation_admin_source: 数据源
           documentation_admin_history: 历史
+          release: 发布日志
+          release_20221015: 1.0.0.20221015 (latest)
         en:
           home: Home
           developer_guide: Developer guide
@@ -119,9 +122,12 @@ plugins:
           springboot-hive-jdbc-v2: sss
           documentation: Documentation
           documentation_install: Installation
+          documentation_query: Query
           documentation_admin: Admin
           documentation_admin_source: Data Source
           documentation_admin_history: History
+          release: Release Note
+          release_20221015: 1.0.0.20221015 (latest)
   - search
   - blog:
       archive: false
@@ -131,16 +137,22 @@ plugins:
       fallback_to_build_date: true
       type: date
   - git-authors
+  - redirects:
+      redirect_maps:
+        release-latest.md: release/1.0.0.20221015.md
 
 nav:
   - home: index.md
   - documentation:
       - documentation_install: reference/get_started/install.md
+      - documentation_query: reference/get_started/query.md
       - documentation_admin:
         - documentation_admin_source: reference/admin/source.md
         - documentation_admin_history: reference/admin/history.md
   - developer_guide:
       - developer_guide_env: developer_guide/env.md
       - developer_guide_plugin: developer_guide/plugin.md
+  - release:
+      - release_20221015: release/1.0.0.20221015.md
   - blog:
     - blog/index.md
