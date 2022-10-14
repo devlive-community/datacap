@@ -35,7 +35,6 @@ node/
 #package-lock.json
 node_modules
 yarn.lock
-release/
 tmp/
 
 # vscode #
