@@ -41,7 +41,8 @@ public class JdbcColumn
         else if (columnType.equalsIgnoreCase(JdbcColumnType.BLOB.name())) {
             return resultSet.getBytes(columnIndex);
         }
-        else if (columnType.equalsIgnoreCase(JdbcColumnType.VARCHAR.name())) {
+        else if (columnType.equalsIgnoreCase(JdbcColumnType.VARCHAR.name())
+                || String.class.getSimpleName().equals(columnType)) {
             return resultSet.getString(columnIndex);
         }
         else if (columnType.equalsIgnoreCase(JdbcColumnType.BIT.name())) {
