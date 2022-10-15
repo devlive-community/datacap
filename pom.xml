@@ -4,7 +4,7 @@
     <groupId>io.edurt.datacap</groupId>
     <artifactId>incubator-datacap</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0.20221015</version>
+    <version>1.1.0.20221115-SNAPSHOT</version>
 
     <modules>
         <module>configure</module>
@@ -16,6 +16,7 @@
 
     <name>DataCap(Incubator)</name>
     <description>DataCap is integrated software for data transformation, integration and visualization.</description>
+    <url>https://datacap.incubator.edurt.io/</url>
 
     <scm>
         <url>https://datacap.edurt.io</url>
@@ -64,12 +65,12 @@
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <findbugs.version>3.0.1</findbugs.version>
         <jackson.version>2.13.4</jackson.version>
-        <logback.version>1.4.3</logback.version>
+        <logback.version>1.2.11</logback.version>
         <slf4j.version>1.7.36</slf4j.version>
         <sql-formatter.version>2.0.3</sql-formatter.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <assembly-plugin.version>3.1.1</assembly-plugin.version>
-        <plugin.maven.checkstyle.version>3.2.0</plugin.maven.checkstyle.version>
+        <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
         <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
         <plugin.maven.cobertura.version>2.7</plugin.maven.cobertura.version>
@@ -280,7 +281,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
@@ -290,11 +291,11 @@
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
