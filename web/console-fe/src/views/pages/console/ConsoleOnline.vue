@@ -163,9 +163,9 @@ export default defineComponent({
             };
             this.tableOptions = {
               width: editorContainer.offsetWidth - 8,
-              height: 340,
+              height: 640,
               pagination: {
-                pageSize: 10,
+                pageSize: 20,
                 current: 1,
               },
               showSeriesNumber: true,

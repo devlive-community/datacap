@@ -1,5 +1,7 @@
 CREATE DATABASE IF NOT EXISTS datacap;
 
+USE datacap;
+
 -- ----------------------------
 -- Table structure for audit_plugin
 -- ----------------------------
