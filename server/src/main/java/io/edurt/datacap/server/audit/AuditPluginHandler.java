@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Aspect
 @Component
@@ -64,8 +65,8 @@ public class AuditPluginHandler
             if (joinPoint.getArgs().length > 0) {
                 ExecuteEntity executeEntity = (ExecuteEntity) joinPoint.getArgs()[0];
                 pluginAudit.setContent(executeEntity.getContent());
-                SourceEntity sourceEntity = this.sourceRepository.findByName(executeEntity.getName());
-                pluginAudit.setPlugin(sourceEntity);
+                Optional<SourceEntity> sourceEntity = this.sourceRepository.findById(Long.valueOf(executeEntity.getName()));
+                pluginAudit.setPlugin(sourceEntity.get());
             }
             pluginAudit.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
             this.pluginAuditRepository.save(pluginAudit);

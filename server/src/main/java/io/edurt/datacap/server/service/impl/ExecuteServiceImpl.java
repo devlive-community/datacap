@@ -12,7 +12,6 @@ import io.edurt.datacap.server.repository.SourceRepository;
 import io.edurt.datacap.server.service.ExecuteService;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,11 +34,12 @@ public class ExecuteServiceImpl
     @Override
     public Response<Object> execute(ExecuteEntity configure)
     {
-        SourceEntity entity = this.sourceRepository.findByName(configure.getName());
-        if (ObjectUtils.isEmpty(entity)) {
+        Optional<SourceEntity> entityOptional = this.sourceRepository.findById(Long.valueOf(configure.getName()));
+        if (!entityOptional.isPresent()) {
             return Response.failure(ServiceState.SOURCE_NOT_FOUND);
         }
 
+        SourceEntity entity = entityOptional.get();
         Optional<Plugin> pluginOptional = this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
                 .stream()
                 .filter(plugin -> plugin.name().equalsIgnoreCase(entity.getType()))
