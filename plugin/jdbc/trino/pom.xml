@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (Trino)</name>
 
     <properties>
-        <trino.version>397</trino.version>
+        <trino.version>400</trino.version>
         <plugin.name>jdbc-trino</plugin.name>
     </properties>
 
