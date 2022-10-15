@@ -66,7 +66,7 @@
         <findbugs.version>3.0.1</findbugs.version>
         <jackson.version>2.13.4</jackson.version>
         <logback.version>1.2.11</logback.version>
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.3</slf4j.version>
         <sql-formatter.version>2.0.3</sql-formatter.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <assembly-plugin.version>3.1.1</assembly-plugin.version>
