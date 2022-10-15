@@ -1,37 +1,38 @@
 <template>
   <div>
     <a-layout-header>
-      <LayoutHeader />
+      <LayoutHeader @changeLanguage="setLangCondition($event)"/>
     </a-layout-header>
     <a-layout class="layout">
       <a-layout-content style="padding: 10px">
-        <LayoutContent />
+        <LayoutContent/>
       </a-layout-content>
     </a-layout>
-    <LayoutFooter />
+    <LayoutFooter/>
     <div style="float: right; margin-right: 60px;">
       <a-affix :offsetBottom="20">
         <a-dropdown placement="top">
           <a-button type="primary" shape="circle">
             <template #icon>
-              <github-outlined />
+              <github-outlined/>
             </template>
           </a-button>
           <template #overlay>
             <a-menu>
               <a-menu-item>
                 <a target="_blank" href="https://github.com/EdurtIO/incubator-datacap/fork">
-                  <fork-outlined /> Fork
+                  <img alt="GitHub forks" src="https://img.shields.io/github/forks/EdurtIO/incubator-datacap">
                 </a>
               </a-menu-item>
               <a-menu-item>
-                <a target="_blank" href="https://github.com/EdurtIO/incubator-datacap/stargazers">
-                  <fork-outlined /> Star
+                <a href="https://github.com/EdurtIO/incubator-datacap/stargazers">
+                  <img alt="GitHub stars" src="https://img.shields.io/github/stars/EdurtIO/incubator-datacap">
                 </a>
               </a-menu-item>
               <a-menu-item>
                 <a target="_blank" href="https://github.com/EdurtIO/incubator-datacap">
-                  <code-outlined /> GitHub
+                  <code-outlined/>
+                  GitHub
                 </a>
               </a-menu-item>
             </a-menu>
@@ -46,14 +47,25 @@
 import LayoutContent from "@/views/layout/components/LayoutContent.vue";
 import LayoutFooter from "@/views/layout/components/LayoutFooter.vue";
 import LayoutHeader from "@/views/layout/components/LayoutHeader.vue";
+import {useI18n} from 'vue-i18n';
 
 export default {
   name: "LayoutContainer",
-  components: { LayoutHeader, LayoutContent, LayoutFooter },
-  computed: {}
-};
+  components: {LayoutHeader, LayoutContent, LayoutFooter},
+  computed: {},
+  setup()
+  {
+    const {locale} = useI18n();
+    const setLangCondition = (v: string) => {
+      locale.value = v;
+    }
+    return {
+      setLangCondition
+    }
+  },
+  methods: {}
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
 </style>
