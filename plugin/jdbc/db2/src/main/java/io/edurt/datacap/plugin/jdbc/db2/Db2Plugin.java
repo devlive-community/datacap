@@ -20,6 +20,15 @@ public class Db2Plugin
     private Response response;
 
     @Override
+    public String validator()
+    {
+        return "SELECT\n" +
+                "  replace(SERVICE_LEVEL, 'DB2 v', '') AS version\n" +
+                "FROM\n" +
+                "  SYSIBMADM.ENV_INST_INFO";
+    }
+
+    @Override
     public String name()
     {
         return "DB2";

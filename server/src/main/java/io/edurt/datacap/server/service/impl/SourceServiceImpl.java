@@ -77,7 +77,7 @@ public class SourceServiceImpl
         _configure.setEnv(Optional.empty());
         _configure.setFormat(FormatType.JSON);
         plugin.connect(_configure);
-        io.edurt.datacap.spi.model.Response response = plugin.execute("SELECT 1");
+        io.edurt.datacap.spi.model.Response response = plugin.execute(plugin.validator());
         plugin.destroy();
         if (response.getIsSuccessful()) {
             return Response.success(response);
