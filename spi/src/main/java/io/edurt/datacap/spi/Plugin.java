@@ -5,6 +5,11 @@ import io.edurt.datacap.spi.model.Response;
 
 public interface Plugin
 {
+    default String validator()
+    {
+        return "SELECT version()";
+    }
+
     String name();
 
     String description();

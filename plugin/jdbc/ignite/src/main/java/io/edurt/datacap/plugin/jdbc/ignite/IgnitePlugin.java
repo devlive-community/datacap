@@ -20,6 +20,12 @@ public class IgnitePlugin
     private Response response;
 
     @Override
+    public String validator()
+    {
+        return "SELECT '-' AS version";
+    }
+
+    @Override
     public String name()
     {
         return "Ignite";
