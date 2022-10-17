@@ -78,6 +78,10 @@ public class SourceEntity
     @Column(name = "create_time", columnDefinition = "datetime default CURRENT_TIMESTAMP()")
     private Timestamp createTime;
 
+    // Add from 1.1.0.20221115
+    @Column(name = "_ssl", columnDefinition = "boolean default false")
+    private Boolean ssl;
+
     @OneToMany(mappedBy = "plugin", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PluginAuditEntity> pluginAudits;

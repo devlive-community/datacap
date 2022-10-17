@@ -55,6 +55,7 @@ public class ExecuteServiceImpl
         _configure.setUsername(Optional.ofNullable(entity.getUsername()));
         _configure.setPassword(Optional.ofNullable(entity.getPassword()));
         _configure.setDatabase(Optional.ofNullable(entity.getDatabase()));
+        _configure.setSsl(Optional.ofNullable(entity.getSsl()));
         _configure.setEnv(Optional.ofNullable(configure.getEnv()));
         _configure.setFormat(configure.getFormat());
         plugin.connect(_configure);

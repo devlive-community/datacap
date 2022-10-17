@@ -21,12 +21,12 @@
             <a-menu>
               <a-menu-item>
                 <a target="_blank" href="https://github.com/EdurtIO/incubator-datacap/fork">
-                  <img alt="GitHub forks" src="https://img.shields.io/github/forks/EdurtIO/incubator-datacap">
+                  Forks <img alt="GitHub forks" src="https://img.shields.io/github/forks/EdurtIO/incubator-datacap?color=%20&label=%20&logo=%20&style=flat">
                 </a>
               </a-menu-item>
               <a-menu-item>
                 <a href="https://github.com/EdurtIO/incubator-datacap/stargazers">
-                  <img alt="GitHub stars" src="https://img.shields.io/github/stars/EdurtIO/incubator-datacap">
+                  Stars <img alt="GitHub forks" src="https://img.shields.io/github/stars/EdurtIO/incubator-datacap?color=%20&label=%20&logo=%20&style=flat">
                 </a>
               </a-menu-item>
               <a-menu-item>

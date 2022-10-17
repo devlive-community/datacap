@@ -75,6 +75,7 @@ public class SourceServiceImpl
         _configure.setPassword(Optional.ofNullable(configure.getPassword()));
         _configure.setDatabase(Optional.ofNullable(configure.getDatabase()));
         _configure.setEnv(Optional.empty());
+        _configure.setSsl(Optional.ofNullable(configure.getSsl()));
         _configure.setFormat(FormatType.JSON);
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(plugin.validator());

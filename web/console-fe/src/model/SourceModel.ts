@@ -12,4 +12,5 @@ export interface SourceModel
   database: string;
   type: string;
   createTime?: number;
+  ssl?: boolean
 }
