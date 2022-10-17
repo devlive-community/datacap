@@ -69,7 +69,7 @@
         <slf4j.version>1.7.36</slf4j.version>
         <sql-formatter.version>2.0.3</sql-formatter.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <assembly-plugin.version>3.1.1</assembly-plugin.version>
+        <assembly-plugin.version>3.4.2</assembly-plugin.version>
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
         <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
