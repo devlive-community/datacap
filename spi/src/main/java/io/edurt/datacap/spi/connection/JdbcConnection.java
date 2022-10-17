@@ -37,13 +37,21 @@ public class JdbcConnection
             buffer.append("/");
             buffer.append(this.jdbcConfigure.getDatabase().get());
         }
+        if (this.jdbcConfigure.getSsl().isPresent()) {
+            buffer.append(String.format("?ssl=%s", this.jdbcConfigure.getSsl().get()));
+        }
         if (this.jdbcConfigure.getEnv().isPresent()) {
             Map<String, Object> env = this.jdbcConfigure.getEnv().get();
             List<String> flatEnv = env.entrySet()
                     .stream()
                     .map(value -> String.format("%s=%s", value.getKey(), value.getValue()))
                     .collect(Collectors.toList());
-            buffer.append("?");
+            if (!this.jdbcConfigure.getSsl().isPresent()) {
+                buffer.append("?");
+            }
+            else {
+                buffer.append("&");
+            }
             buffer.append(String.join("&", flatEnv));
         }
         return buffer.toString();

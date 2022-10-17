@@ -4,6 +4,7 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import io.edurt.datacap.server.adapter.PageRequestAdapter;
+import io.edurt.datacap.server.common.PluginCommon;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
 import io.edurt.datacap.server.entity.PageEntity;
@@ -59,10 +60,7 @@ public class SourceServiceImpl
     @Override
     public Response<Object> testConnection(SourceEntity configure)
     {
-        Optional<Plugin> pluginOptional = this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
-                .stream()
-                .filter(plugin -> plugin.name().equalsIgnoreCase(configure.getType()))
-                .findFirst();
+        Optional<Plugin> pluginOptional = PluginCommon.getPluginByName(this.injector, configure.getType());
         if (!pluginOptional.isPresent()) {
             return Response.failure(ServiceState.PLUGIN_NOT_FOUND);
         }
@@ -75,6 +73,7 @@ public class SourceServiceImpl
         _configure.setPassword(Optional.ofNullable(configure.getPassword()));
         _configure.setDatabase(Optional.ofNullable(configure.getDatabase()));
         _configure.setEnv(Optional.empty());
+        _configure.setSsl(Optional.ofNullable(configure.getSsl()));
         _configure.setFormat(FormatType.JSON);
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(plugin.validator());
