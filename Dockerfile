@@ -1,4 +1,4 @@
-FROM java:8
+FROM eclipse-temurin:8-jdk-focal
 MAINTAINER qianmoQ "shicheng@ttxit.com"
 
 # Add datacap
