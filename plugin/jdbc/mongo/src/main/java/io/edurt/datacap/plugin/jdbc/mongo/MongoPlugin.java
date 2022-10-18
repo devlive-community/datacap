@@ -45,7 +45,7 @@ public class MongoPlugin
             this.jdbcConfigure = new JdbcConfigure();
             BeanUtils.copyProperties(this.jdbcConfigure, configure);
             this.jdbcConfigure.setJdbcDriver("com.mongodb.jdbc.MongoDriver");
-            this.jdbcConfigure.setJdbcType("mongo");
+            this.jdbcConfigure.setJdbcType("mongodb");
             this.connection = new JdbcConnection(this.jdbcConfigure, this.response);
         }
         catch (Exception ex) {
