@@ -27,5 +27,6 @@
         <module>kylin</module>
         <module>ignite</module>
         <module>db2</module>
+        <module>mongo</module>
     </modules>
 </project>
