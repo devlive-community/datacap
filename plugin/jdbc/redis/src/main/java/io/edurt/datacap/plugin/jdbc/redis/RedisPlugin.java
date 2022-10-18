@@ -20,6 +20,12 @@ public class RedisPlugin
     private Response response;
 
     @Override
+    public String validator()
+    {
+        return "set app datacap";
+    }
+
+    @Override
     public String name()
     {
         return "Redis";

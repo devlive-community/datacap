@@ -26,14 +26,14 @@ import java.util.Objects;
 public class JdbcAdapter
         implements Adapter
 {
-    private JdbcConnection jdbcConnection;
+    protected JdbcConnection jdbcConnection;
 
     public JdbcAdapter(JdbcConnection jdbcConnection)
     {
         this.jdbcConnection = jdbcConnection;
     }
 
-    private Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
+    protected Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
     {
         return FormatterFactory.createFormatter(format, headers, columns).formatter();
     }
