@@ -11,13 +11,14 @@ import io.edurt.datacap.spi.model.Time;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"},
@@ -46,30 +47,51 @@ public class JdbcAdapter
         Connection connection = (Connection) this.jdbcConnection.getConnection();
         JdbcConfigure configure = (JdbcConfigure) this.jdbcConnection.getConfigure();
         if (response.getIsConnected()) {
-            try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(content)) {
+            try (PreparedStatement statement = connection.prepareStatement(content)) {
                 List<String> headers = new ArrayList<>();
                 List<String> types = new ArrayList<>();
                 List<Object> columns = new ArrayList<>();
-                boolean isPresent = true;
-                JdbcColumn jdbcColumn = new JdbcColumn(resultSet);
-                while (resultSet.next()) {
-                    ResultSetMetaData metaData = resultSet.getMetaData();
-                    int columnCount = metaData.getColumnCount();
-                    List<Object> _columns = new ArrayList<>();
-                    for (int i = 1; i <= columnCount; i++) {
-                        if (isPresent) {
-                            headers.add(metaData.getColumnName(i));
-                            types.add(metaData.getColumnTypeName(i));
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    boolean isPresent = true;
+                    JdbcColumn jdbcColumn = new JdbcColumn(resultSet);
+                    while (resultSet.next()) {
+                        ResultSetMetaData metaData = resultSet.getMetaData();
+                        int columnCount = metaData.getColumnCount();
+                        List<Object> _columns = new ArrayList<>();
+                        for (int i = 1; i <= columnCount; i++) {
+                            if (isPresent) {
+                                headers.add(metaData.getColumnName(i));
+                                types.add(metaData.getColumnTypeName(i));
+                            }
+                            _columns.add(jdbcColumn.convert(metaData.getColumnTypeName(i), i));
                         }
-                        _columns.add(jdbcColumn.convert(metaData.getColumnTypeName(i), i));
+                        isPresent = false;
+                        columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
                     }
-                    isPresent = false;
-                    columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
                 }
-                response.setHeaders(headers);
-                response.setTypes(types);
-                response.setColumns(columns);
-                response.setIsSuccessful(Boolean.TRUE);
+                catch (SQLException tryUpdateEx) {
+                    if (Objects.equals(tryUpdateEx.getSQLState(), "S1009")) {
+                        try {
+                            headers.add("result");
+                            types.add(Integer.class.getSimpleName());
+                            List<Object> _columns = new ArrayList<>();
+                            _columns.add(statement.executeUpdate());
+                            columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
+                        }
+                        catch (SQLException updateEx) {
+                            throw new SQLException(updateEx);
+                        }
+                    }
+                    else {
+                        throw new SQLException(tryUpdateEx);
+                    }
+                }
+                finally {
+                    response.setHeaders(headers);
+                    response.setTypes(types);
+                    response.setColumns(columns);
+                    response.setIsSuccessful(Boolean.TRUE);
+                }
             }
             catch (SQLException ex) {
                 log.error("Execute content failed content {} exception ", content, ex);

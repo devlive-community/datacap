@@ -99,6 +99,16 @@
             <a-input v-model:value="formState.password"/>
           </a-form-item>
         </a-tab-pane>
+        <a-tab-pane :disabled="!formState.type" key="ssl">
+          <template #tab>
+            <span>
+              <safety-outlined/> SSL
+            </span>
+          </template>
+          <a-form-item :name="['ssl']" label="SSL">
+            <a-switch v-model:checked="formState.ssl"/>
+          </a-form-item>
+        </a-tab-pane>
         <a-tab-pane :disabled="!formState.type" key="advanced">
           <template #tab>
             <span>
@@ -176,7 +186,7 @@ export default defineComponent({
     return {
       title: '',
       isUpdate: false,
-      formState: {},
+      formState: {} as SourceModel,
       plugins: [],
       testInfo: {} as TestInfo,
       connectionLoading: false,
