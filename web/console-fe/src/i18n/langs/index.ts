@@ -1,15 +1,7 @@
-import en from "@/i18n/langs/en";
-import zhCn from "@/i18n/langs/zhCn";
-import enGB from 'ant-design-vue/es/locale/en_GB';
-import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import en from "@/i18n/langs/en/index";
+import zhCn from "@/i18n/langs/zhCn/index";
 
 export default {
-  en: {
-    ...en,
-    ...enGB,
-  },
-  zh_cn: {
-    ...zhCn,
-    ...zhCN,
-  }
+  en: en,
+  zh_cn: zhCn
 }

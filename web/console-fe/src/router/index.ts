@@ -1,8 +1,9 @@
 import LayoutContainer from "@/views/layout/Layout.vue";
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import Common from "@/common/Common";
 
 NProgress.configure({
   easing: 'ease',
@@ -25,6 +26,9 @@ const routes: Array<RouteRecordRaw> = [
     name: "dashboard",
     redirect: "/dashboard/index",
     component: LayoutContainer,
+    meta: {
+      requireAuth: true,
+    },
     children: [
       {
         path: "index",
@@ -37,6 +41,9 @@ const routes: Array<RouteRecordRaw> = [
     name: "console",
     redirect: "/console/index",
     component: LayoutContainer,
+    meta: {
+      requireAuth: true,
+    },
     children: [
       {
         path: "index",
@@ -48,6 +55,9 @@ const routes: Array<RouteRecordRaw> = [
     path: "/admin",
     name: "admin",
     component: LayoutContainer,
+    meta: {
+      requireAuth: true,
+    },
     children: [
       {
         path: "source",
@@ -69,6 +79,22 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/common/NotFound.vue")
       }
     ]
+  },
+  {
+    path: "/auth",
+    name: "auth",
+    children: [
+      {
+        name: "signin",
+        path: "signin",
+        component: () => import("../views/pages/auth/AuthSignin.vue")
+      },
+      {
+        name: "signup",
+        path: "signup",
+        component: () => import("../views/pages/auth/AuthSignup.vue")
+      }
+    ]
   }
 ];
 
@@ -77,13 +103,30 @@ const router = createRouter({
   routes
 });
 
+const authRouterWith = '/auth/sign';
+
 router.beforeEach((to, from, next) => {
   NProgress.start();
   if (to.matched.length === 0) {
-    next({ name: "routerNotFound" })
+    next({name: "routerNotFound"})
   }
   else {
-    next();
+    if (to.meta.requireAuth) {
+      if (localStorage.getItem(Common.token)) {
+        next();
+      }
+      else {
+        next('/auth/signin');
+      }
+    }
+    else {
+      if (localStorage.getItem(Common.token) && to.path.startsWith(authRouterWith)) {
+        next('/');
+      }
+      else {
+        next();
+      }
+    }
   }
 })
 

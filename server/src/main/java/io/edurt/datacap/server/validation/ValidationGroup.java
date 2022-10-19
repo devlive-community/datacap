@@ -23,5 +23,9 @@ public interface ValidationGroup
         interface Delete
                 extends Crud
         {}
+
+        interface Auth
+                extends Crud
+        {}
     }
 }

@@ -1,27 +1,37 @@
-import { ResponseModel } from "@/model/ResponseModel";
-import { message } from "ant-design-vue";
+import {ResponseModel} from "@/model/ResponseModel";
+import {message} from "ant-design-vue";
 import axios from 'axios';
+import Common from "@/common/Common";
 
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
-const configure = {
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  cancelToken: undefined
-}
+export class HttpCommon
+{
+  private configure;
 
-export class HttpCommon {
-  constructor() {
+  constructor()
+  {
     if (process.env.NODE_ENV === 'development' ||
       window.location.hostname === 'localhost') {
       axios.defaults.baseURL = 'http://localhost:9096';
-    } else {
+    }
+    else {
       axios.defaults.baseURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+    }
+
+    const auth = JSON.parse(localStorage.getItem(Common.token) || '{}');
+    this.configure = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': auth.type + ' ' + auth.token
+      },
+      cancelToken: undefined,
+      params: undefined
     }
   }
 
-  handlerSuccessful(result: any): ResponseModel {
+  handlerSuccessful(result: any): ResponseModel
+  {
     const data = result.data;
     let message = data.message;
     if (data.message instanceof Array) {
@@ -40,7 +50,8 @@ export class HttpCommon {
     return response;
   }
 
-  handlerFailed(error: any): ResponseModel {
+  handlerFailed(error: any): ResponseModel
+  {
     const response: ResponseModel = {
       code: 0,
       message: error.message,
@@ -49,9 +60,11 @@ export class HttpCommon {
     return response;
   }
 
-  get(url: string, params?: any): Promise<ResponseModel> {
+  get(url: string, params?: any): Promise<ResponseModel>
+  {
     return new Promise((resolve) => {
-      axios.get(url, { params: params })
+      this.configure.params = params;
+      axios.get(url, this.configure)
         .then(result => {
           resolve(this.handlerSuccessful(result));
         }, error => {
@@ -61,10 +74,11 @@ export class HttpCommon {
     });
   }
 
-  post(url: string, data = {}, cancelToken?: any): Promise<ResponseModel> {
+  post(url: string, data = {}, cancelToken?: any): Promise<ResponseModel>
+  {
     return new Promise((resolve) => {
-      configure.cancelToken = cancelToken;
-      axios.post(url, data, configure)
+      this.configure.cancelToken = cancelToken;
+      axios.post(url, data, this.configure)
         .then(result => {
           resolve(this.handlerSuccessful(result));
         }, error => {
@@ -74,9 +88,10 @@ export class HttpCommon {
     });
   }
 
-  put(url: string, data = {}): Promise<ResponseModel> {
+  put(url: string, data = {}): Promise<ResponseModel>
+  {
     return new Promise((resolve) => {
-      axios.put(url, data, configure)
+      axios.put(url, data, this.configure)
         .then(result => {
           resolve(this.handlerSuccessful(result));
         }, error => {
@@ -86,9 +101,10 @@ export class HttpCommon {
     });
   }
 
-  delete(url: string): Promise<ResponseModel> {
+  delete(url: string): Promise<ResponseModel>
+  {
     return new Promise((resolve) => {
-      axios.delete(url)
+      axios.delete(url, this.configure)
         .then(result => {
           resolve(this.handlerSuccessful(result));
         }, error => {
@@ -98,7 +114,8 @@ export class HttpCommon {
     });
   }
 
-  getAxios() {
+  getAxios()
+  {
     return axios;
   }
 }
