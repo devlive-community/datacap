@@ -10,4 +10,9 @@ export class AuthService
   {
     return new HttpCommon().post(defaultAuth + '/signin', configure);
   }
+
+  signup(configure: AuthUser): Promise<ResponseModel>
+  {
+    return new HttpCommon().post(defaultAuth + '/signup', configure);
+  }
 }

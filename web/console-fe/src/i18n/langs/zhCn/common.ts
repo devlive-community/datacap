@@ -9,5 +9,6 @@ export default {
   login: '登录',
   logout: '注销',
   english: '英语',
-  chinese: '中文'
+  chinese: '中文',
+  register: '注册'
 }

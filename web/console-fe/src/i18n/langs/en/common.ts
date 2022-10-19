@@ -9,5 +9,6 @@ export default {
   login: 'Login',
   logout: 'Logout',
   english: 'English',
-  chinese: 'Chinese'
+  chinese: 'Chinese',
+  register: 'Register'
 }

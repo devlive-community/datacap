@@ -87,7 +87,12 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: "signin",
         path: "signin",
-        component: () => import("../views/pages/auth/AuthLogin.vue")
+        component: () => import("../views/pages/auth/AuthSignin.vue")
+      },
+      {
+        name: "signup",
+        path: "signup",
+        component: () => import("../views/pages/auth/AuthSignup.vue")
       }
     ]
   }
@@ -98,7 +103,7 @@ const router = createRouter({
   routes
 });
 
-const authRouter = '/auth/signin';
+const authRouterWith = '/auth/sign';
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
@@ -111,11 +116,11 @@ router.beforeEach((to, from, next) => {
         next();
       }
       else {
-        next(authRouter);
+        next('/auth/signin');
       }
     }
     else {
-      if (localStorage.getItem(Common.token) && to.path == authRouter) {
+      if (localStorage.getItem(Common.token) && to.path.startsWith(authRouterWith)) {
         next('/');
       }
       else {
