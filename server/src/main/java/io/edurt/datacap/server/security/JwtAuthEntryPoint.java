@@ -4,6 +4,7 @@ import io.edurt.datacap.server.common.JSON;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,11 @@ public class JwtAuthEntryPoint
             throws IOException
     {
         log.error("Unauthorized error: {}", authException.getMessage());
-        response.getWriter().print(JSON.toJSON(Response.failure(ServiceState.USER_UNAUTHORIZED)));
+        if (authException instanceof BadCredentialsException) {
+            response.getWriter().print(JSON.toJSON(Response.failure(ServiceState.USER_BAD_CREDENTIALS)));
+        }
+        else {
+            response.getWriter().print(JSON.toJSON(Response.failure(ServiceState.USER_UNAUTHORIZED)));
+        }
     }
 }

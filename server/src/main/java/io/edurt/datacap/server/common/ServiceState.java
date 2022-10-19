@@ -11,7 +11,8 @@ public enum ServiceState
     USER_NOT_FOUND(4001, "User dose not exists"),
     USER_ROLE_NOT_FOUND(4002, "User role dose not exists"),
     USER_UNAUTHORIZED(4003, "Insufficient current user permissions"),
-    USER_EXISTS(4004, "User exists");
+    USER_EXISTS(4004, "User exists"),
+    USER_BAD_CREDENTIALS(4005, "The account or password is incorrect");
 
     private Integer code;
     private String value;
