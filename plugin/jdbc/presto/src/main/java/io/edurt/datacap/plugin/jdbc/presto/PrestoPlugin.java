@@ -20,6 +20,14 @@ public class PrestoPlugin
     private Response response;
 
     @Override
+    public String validator()
+    {
+        return "SELECT node_version AS version\n" +
+                "FROM system.runtime.nodes\n" +
+                "LIMIT 1";
+    }
+
+    @Override
     public String name()
     {
         return "Presto";
