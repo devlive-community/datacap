@@ -10,7 +10,9 @@ import io.edurt.datacap.server.common.ServiceState;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
+import io.edurt.datacap.server.entity.UserEntity;
 import io.edurt.datacap.server.repository.SourceRepository;
+import io.edurt.datacap.server.security.UserDetailsService;
 import io.edurt.datacap.server.service.SourceService;
 import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
@@ -40,6 +42,7 @@ public class SourceServiceImpl
     @Override
     public Response<SourceEntity> saveOrUpdate(SourceEntity configure)
     {
+        configure.setUser(UserDetailsService.getUser());
         return Response.success(this.sourceRepository.save(configure));
     }
 
@@ -47,7 +50,8 @@ public class SourceServiceImpl
     public Response<PageEntity<SourceEntity>> getAll(int offset, int limit)
     {
         Pageable pageable = PageRequestAdapter.of(offset, limit);
-        return Response.success(PageEntity.build(this.sourceRepository.findAll(pageable)));
+        UserEntity user = UserDetailsService.getUser();
+        return Response.success(PageEntity.build(this.sourceRepository.findAllByUserOrPublishIsTrue(user, pageable)));
     }
 
     @Override
@@ -109,6 +113,6 @@ public class SourceServiceImpl
     @Override
     public Response<Long> count()
     {
-        return Response.success(this.sourceRepository.count());
+        return Response.success(this.sourceRepository.countByUserOrPublishIsTrue(UserDetailsService.getUser()));
     }
 }

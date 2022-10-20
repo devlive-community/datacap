@@ -36,3 +36,21 @@ CREATE TABLE IF NOT EXISTS `datacap`.`user_roles`
 INSERT INTO `datacap`.`user_roles` (`user_id`, `role_id`)
 VALUES (1, 1),
        (2, 2);
+
+ALTER TABLE `datacap`.`source`
+    ADD COLUMN `public` boolean default false;
+-- Set the openness of the previous version to public
+UPDATE `datacap`.`source`
+SET `public` = true;
+
+ALTER TABLE `datacap`.`source`
+    ADD COLUMN `user_id` bigint(20) NOT NULL;
+-- Example Set the user of the previous version as the administrator
+UPDATE `datacap`.`source`
+SET `user_id` = 1;
+
+ALTER TABLE `datacap`.`audit_plugin`
+    ADD COLUMN `user_id` bigint(20) NOT NULL;
+-- Example Set the user of the previous version as the administrator
+UPDATE `datacap`.`audit_plugin`
+SET `user_id` = 1;

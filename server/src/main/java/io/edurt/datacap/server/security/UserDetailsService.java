@@ -2,12 +2,15 @@ package io.edurt.datacap.server.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.edurt.datacap.server.entity.UserEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UserDetailsService
@@ -85,5 +88,20 @@ public class UserDetailsService
     public Long getId()
     {
         return id;
+    }
+
+    public static UserEntity getUser()
+    {
+        UserEntity userInfo = new UserEntity();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.nonNull(authentication)) {
+            Object principal = authentication.getPrincipal();
+            if (Objects.nonNull(principal)) {
+                UserDetailsService loginPrincipalUserInfo = (UserDetailsService) principal;
+                userInfo.setUsername(loginPrincipalUserInfo.getUsername());
+                userInfo.setId(loginPrincipalUserInfo.getId());
+            }
+        }
+        return userInfo;
     }
 }

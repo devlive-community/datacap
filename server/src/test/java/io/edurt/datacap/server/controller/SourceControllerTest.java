@@ -2,6 +2,7 @@ package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.server.BaseParamTest;
 import io.edurt.datacap.server.common.JSON;
+import io.edurt.datacap.server.controller.user.SourceController;
 import io.edurt.datacap.server.entity.SourceEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;

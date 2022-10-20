@@ -1,4 +1,4 @@
-package io.edurt.datacap.server.controller;
+package io.edurt.datacap.server.controller.user;
 
 import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;

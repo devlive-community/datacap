@@ -5,6 +5,7 @@ import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginAuditEntity;
 import io.edurt.datacap.server.repository.PluginAuditRepository;
+import io.edurt.datacap.server.security.UserDetailsService;
 import io.edurt.datacap.server.service.PluginAuditService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,12 @@ public class PluginAuditServiceImpl
     public Response<PageEntity<PluginAuditEntity>> getAll(int offset, int limit)
     {
         Pageable pageable = PageRequestAdapter.of(offset, limit);
-        return Response.success(PageEntity.build(this.pluginAuditRepository.findAll(pageable)));
+        return Response.success(PageEntity.build(this.pluginAuditRepository.findAllByUser(UserDetailsService.getUser(), pageable)));
     }
 
     @Override
     public Response<Long> count()
     {
-        return Response.success(this.pluginAuditRepository.count());
+        return Response.success(this.pluginAuditRepository.countByUser(UserDetailsService.getUser()));
     }
 }

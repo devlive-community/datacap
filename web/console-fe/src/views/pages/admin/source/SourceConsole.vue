@@ -6,32 +6,36 @@
           <template #title>Create new source</template>
           <a-button type="primary" shape="circle" size="small" @click="handlerCreateOrUpdate()">
             <template #icon>
-              <plus-circle-outlined />
+              <plus-circle-outlined/>
             </template>
           </a-button>
         </a-tooltip>
       </template>
       <a-table size="middle" :loading="loading" :columns="headers" :data-source="columns" :pagination="pagination"
-        @change="handlerTableChange($event)">
+               @change="handlerTableChange($event)">
         <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'public'">
+            <a-switch v-model:checked="record.public" disabled :checked-children="$t('common.public')" :un-checked-children="$t('common.private')"/>
+          </template>
+
           <template v-if="column.dataIndex === 'action'">
             <a-space style="width: 100%">
               <a-popconfirm title="Are you sure delete?" ok-text="Yes" cancel-text="No"
-                @confirm="handlerDeleteRecord(record.id)">
+                            @confirm="handlerDeleteRecord(record.id)">
                 <a-tooltip>
                   <template #title>Delete</template>
                   <a-button type="primary" danger shape="circle" size="small">
                     <template #icon>
-                      <minus-outlined />
+                      <minus-outlined/>
                     </template>
                   </a-button>
                 </a-tooltip>
               </a-popconfirm>
               <a-tooltip>
-                <template #title>Mofidy</template>
+                <template #title>{{ $t('common.modify') }}</template>
                 <a-button type="primary" shape="circle" size="small" @click="handlerCreateOrUpdate(record.id)">
                   <template #icon>
-                    <edit-outlined />
+                    <edit-outlined/>
                   </template>
                 </a-button>
               </a-tooltip>
@@ -42,24 +46,33 @@
     </a-card>
 
     <SourceInfoView v-if="visibleSourceInfo" :isVisible="visibleSourceInfo" :id="applyId"
-      @close="handlerCloseCreateNew($event)" />
+                    @close="handlerCloseCreateNew($event)"/>
   </div>
 </template>
 
 <script lang="ts">
-import { SourceService } from "@/services/SourceService";
-import { headers } from "@/views/pages/admin/source/SourceGenerate";
+import {SourceService} from "@/services/SourceService";
+import {createHeaders} from "@/views/pages/admin/source/SourceGenerate";
 import SourceInfoView from "@/views/pages/admin/source/SourceInfo.vue";
-import { MinusOutlined, PlusCircleOutlined } from '@ant-design/icons-vue';
-import { message } from "ant-design-vue";
-import { defineComponent } from "vue";
+import {MinusOutlined, PlusCircleOutlined} from '@ant-design/icons-vue';
+import {message} from "ant-design-vue";
+import {defineComponent} from "vue";
+import {useI18n} from 'vue-i18n';
 
 export default defineComponent({
   name: "SourceConsoleView",
-  components: { SourceInfoView, PlusCircleOutlined, MinusOutlined },
-  data() {
+  components: {SourceInfoView, PlusCircleOutlined, MinusOutlined},
+  setup()
+  {
+    const i18n = useI18n();
+    const headers = createHeaders(i18n);
     return {
-      headers,
+      headers
+    }
+  },
+  data()
+  {
+    return {
       columns: [],
       loading: false,
       visibleSourceInfo: false,
@@ -74,11 +87,13 @@ export default defineComponent({
       }
     }
   },
-  created() {
+  created()
+  {
     this.handlerInitialize(this.pagination.current, this.pagination.pageSize)
   },
   methods: {
-    handlerInitialize(page: number, size: number) {
+    handlerInitialize(page: number, size: number)
+    {
       this.loading = true;
       new SourceService()
         .getSources(page, size)
@@ -90,18 +105,21 @@ export default defineComponent({
           this.loading = false;
         })
     },
-    handlerCreateOrUpdate(value?: number) {
+    handlerCreateOrUpdate(value?: number)
+    {
       if (value) {
         this.applyId = value;
       }
       this.visibleSourceInfo = true;
     },
-    handlerCloseCreateNew(value: boolean) {
+    handlerCloseCreateNew(value: boolean)
+    {
       this.visibleSourceInfo = value;
       this.applyId = 0;
       this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
     },
-    handlerDeleteRecord(id: number) {
+    handlerDeleteRecord(id: number)
+    {
       new SourceService()
         .delete(id)
         .then((response) => {
@@ -111,7 +129,8 @@ export default defineComponent({
           }
         });
     },
-    handlerTableChange(pagination: any) {
+    handlerTableChange(pagination: any)
+    {
       this.pagination.current = pagination.current;
       this.pagination.pageSize = pagination.pageSize;
       this.handlerInitialize(pagination.current, pagination.pageSize)
