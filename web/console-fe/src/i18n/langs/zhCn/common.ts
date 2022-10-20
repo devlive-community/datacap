@@ -10,5 +10,18 @@ export default {
   logout: '注销',
   english: '英语',
   chinese: '中文',
-  register: '注册'
+  register: '注册',
+  no: '编号',
+  name: '名称',
+  description: '描述',
+  protocol: '协议',
+  host: '主机',
+  port: '端口',
+  catalog: 'Catalog',
+  database: '数据库',
+  createTime: '创建时间',
+  action: '操作',
+  public: '公开',
+  private: '私有',
+  modify: '修改'
 }

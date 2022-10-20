@@ -10,5 +10,18 @@ export default {
   logout: 'Logout',
   english: 'English',
   chinese: 'Chinese',
-  register: 'Register'
+  register: 'Register',
+  no: 'No',
+  name: 'Name',
+  description: 'Description',
+  protocol: 'protocol',
+  host: 'Host',
+  port: 'Port',
+  catalog: 'Catalog',
+  database: 'Database',
+  createTime: 'Create Time',
+  action: 'Action',
+  public: 'Public',
+  private: 'Private',
+  modify: 'Modify'
 }

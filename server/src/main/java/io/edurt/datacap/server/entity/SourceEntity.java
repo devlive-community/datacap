@@ -1,6 +1,8 @@
 package io.edurt.datacap.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.server.common.ProtocolEnum;
 import io.edurt.datacap.server.validation.ValidationGroup;
@@ -17,6 +19,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -85,4 +89,14 @@ public class SourceEntity
     @OneToMany(mappedBy = "plugin", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PluginAuditEntity> pluginAudits;
+
+    // Add from 1.1.0.20221115
+    @Column(name = "public", columnDefinition = "boolean default false")
+    @JsonProperty(value = "public")
+    private Boolean publish; // Public use or not
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIncludeProperties(value = {"id", "username"})
+    private UserEntity user;
 }

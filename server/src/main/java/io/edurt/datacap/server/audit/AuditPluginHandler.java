@@ -7,6 +7,7 @@ import io.edurt.datacap.server.entity.PluginAuditEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 import io.edurt.datacap.server.repository.PluginAuditRepository;
 import io.edurt.datacap.server.repository.SourceRepository;
+import io.edurt.datacap.server.security.UserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -68,6 +69,7 @@ public class AuditPluginHandler
                 Optional<SourceEntity> sourceEntity = this.sourceRepository.findById(Long.valueOf(executeEntity.getName()));
                 pluginAudit.setPlugin(sourceEntity.get());
             }
+            pluginAudit.setUser(UserDetailsService.getUser());
             pluginAudit.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
             this.pluginAuditRepository.save(pluginAudit);
         }

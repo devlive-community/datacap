@@ -58,6 +58,12 @@ public class PluginAuditEntity
     @JsonIncludeProperties(value = {"name", "type"})
     private SourceEntity plugin;
 
+    // Add from 1.1.0.20221115
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIncludeProperties(value = {"id", "username"})
+    private UserEntity user;
+
     public void setEndTime(Timestamp endTime)
     {
         this.endTime = endTime;
