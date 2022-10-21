@@ -1,9 +1,9 @@
 <template>
   <div>
-    <a-card title="Source List" size="small">
+    <a-card :title="$t('common.source')" size="small">
       <template #extra>
         <a-tooltip>
-          <template #title>Create new source</template>
+          <template #title>{{ $t('common.create') }}</template>
           <a-button type="primary" shape="circle" size="small" @click="handlerCreateOrUpdate()">
             <template #icon>
               <plus-circle-outlined/>
@@ -32,7 +32,7 @@
               <a-popconfirm title="Are you sure delete?" ok-text="Yes" cancel-text="No"
                             @confirm="handlerDeleteRecord(record.id)">
                 <a-tooltip>
-                  <template #title>Delete</template>
+                  <template #title>{{ $t('common.delete') }}</template>
                   <a-button type="primary" danger shape="circle" size="small" :disabled="currentUserId !== record.user.id">
                     <template #icon>
                       <minus-outlined/>
