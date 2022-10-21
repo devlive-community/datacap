@@ -1,6 +1,7 @@
 package io.edurt.datacap.server.handler;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import io.edurt.datacap.server.authorize.UserNotEqualsException;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
 import org.hibernate.exception.ConstraintViolationException;
@@ -55,5 +56,13 @@ public class HandlerRestful
         else {
             return Response.failure(ServiceState.REQUEST_VALID_ARGUMENT_LAYOUT);
         }
+    }
+
+    @ExceptionHandler({UserNotEqualsException.class})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Response<String> handlerUserNotEqualsException(UserNotEqualsException ex)
+    {
+        return Response.failure(ex.getMessage());
     }
 }

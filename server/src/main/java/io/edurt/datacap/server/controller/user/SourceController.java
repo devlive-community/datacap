@@ -4,9 +4,11 @@ import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
+import io.edurt.datacap.server.request.body.SharedSourceBody;
 import io.edurt.datacap.server.service.SourceService;
 import io.edurt.datacap.server.validation.ValidationGroup;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,5 +74,12 @@ public class SourceController
     public Response<List<PluginEntity>> getPlugins()
     {
         return this.sourceService.getPlugins();
+    }
+
+    @PreAuthorize(value = "@userAuthorize.validateUser(#configure)")
+    @PutMapping(value = "shared")
+    public Response<Object> shared(@RequestBody SharedSourceBody configure)
+    {
+        return this.sourceService.shared(configure);
     }
 }

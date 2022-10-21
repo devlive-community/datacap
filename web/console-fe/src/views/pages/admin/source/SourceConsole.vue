@@ -15,30 +15,31 @@
                @change="handlerTableChange($event)">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'public'">
-            <a-switch v-model:checked="record.public" disabled :checked-children="$t('common.public')" :un-checked-children="$t('common.private')"/>
+            <a-switch v-model:checked="record.public" :disabled="currentUserId !== record.user.id" :checked-children="$t('common.public')"
+                      :un-checked-children="$t('common.private')" @change="handlerShared(record.public, record.id)"/>
           </template>
 
           <template v-if="column.dataIndex === 'action'">
             <a-space style="width: 100%">
+              <a-tooltip>
+                <template #title>{{ $t('common.modify') }}</template>
+                <a-button type="primary" shape="circle" size="small" :disabled="currentUserId !== record.user.id" @click="handlerCreateOrUpdate(record.id)">
+                  <template #icon>
+                    <edit-outlined/>
+                  </template>
+                </a-button>
+              </a-tooltip>
               <a-popconfirm title="Are you sure delete?" ok-text="Yes" cancel-text="No"
                             @confirm="handlerDeleteRecord(record.id)">
                 <a-tooltip>
                   <template #title>Delete</template>
-                  <a-button type="primary" danger shape="circle" size="small">
+                  <a-button type="primary" danger shape="circle" size="small" :disabled="currentUserId !== record.user.id">
                     <template #icon>
                       <minus-outlined/>
                     </template>
                   </a-button>
                 </a-tooltip>
               </a-popconfirm>
-              <a-tooltip>
-                <template #title>{{ $t('common.modify') }}</template>
-                <a-button type="primary" shape="circle" size="small" @click="handlerCreateOrUpdate(record.id)">
-                  <template #icon>
-                    <edit-outlined/>
-                  </template>
-                </a-button>
-              </a-tooltip>
             </a-space>
           </template>
         </template>
@@ -58,6 +59,8 @@ import {MinusOutlined, PlusCircleOutlined} from '@ant-design/icons-vue';
 import {message} from "ant-design-vue";
 import {defineComponent} from "vue";
 import {useI18n} from 'vue-i18n';
+import Common from "@/common/Common";
+import {SharedSource} from "@/model/SharedSource";
 
 export default defineComponent({
   name: "SourceConsoleView",
@@ -66,8 +69,10 @@ export default defineComponent({
   {
     const i18n = useI18n();
     const headers = createHeaders(i18n);
+    const currentUserId = Common.getCurrentUserId();
     return {
-      headers
+      headers,
+      currentUserId
     }
   },
   data()
@@ -134,6 +139,21 @@ export default defineComponent({
       this.pagination.current = pagination.current;
       this.pagination.pageSize = pagination.pageSize;
       this.handlerInitialize(pagination.current, pagination.pageSize)
+    },
+    handlerShared(shared: boolean, sourceId: number)
+    {
+      const instance: SharedSource = {
+        public: shared,
+        sourceId: sourceId,
+        userId: this.currentUserId
+      };
+      new SourceService().shared(instance)
+        .then((response) => {
+          if (response.status) {
+            message.success("Successful");
+            this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
+          }
+        });
     }
   }
 });

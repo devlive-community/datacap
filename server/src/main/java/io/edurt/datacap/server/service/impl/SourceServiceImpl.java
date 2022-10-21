@@ -12,6 +12,8 @@ import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 import io.edurt.datacap.server.entity.UserEntity;
 import io.edurt.datacap.server.repository.SourceRepository;
+import io.edurt.datacap.server.repository.UserRepository;
+import io.edurt.datacap.server.request.body.SharedSourceBody;
 import io.edurt.datacap.server.security.UserDetailsService;
 import io.edurt.datacap.server.service.SourceService;
 import io.edurt.datacap.spi.FormatType;
@@ -31,11 +33,13 @@ public class SourceServiceImpl
         implements SourceService
 {
     private final SourceRepository sourceRepository;
+    private final UserRepository userRepository;
     private final Injector injector;
 
-    public SourceServiceImpl(SourceRepository sourceRepository, Injector injector)
+    public SourceServiceImpl(SourceRepository sourceRepository, UserRepository userRepository, Injector injector)
     {
         this.sourceRepository = sourceRepository;
+        this.userRepository = userRepository;
         this.injector = injector;
     }
 
@@ -114,5 +118,24 @@ public class SourceServiceImpl
     public Response<Long> count()
     {
         return Response.success(this.sourceRepository.countByUserOrPublishIsTrue(UserDetailsService.getUser()));
+    }
+
+    @Override
+    public Response<Object> shared(SharedSourceBody configure)
+    {
+        Optional<SourceEntity> sourceOptional = this.sourceRepository.findById(configure.getSourceId());
+        if (!sourceOptional.isPresent()) {
+            return Response.failure(ServiceState.SOURCE_NOT_FOUND);
+        }
+
+        Optional<UserEntity> userOptional = this.userRepository.findById(configure.getUserId());
+        if (!userOptional.isPresent()) {
+            return Response.failure(ServiceState.USER_NOT_FOUND);
+        }
+
+        SourceEntity source = sourceOptional.get();
+        source.setUser(userOptional.get());
+        source.setPublish(configure.getPublish());
+        return Response.success(this.sourceRepository.save(source));
     }
 }
