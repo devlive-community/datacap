@@ -23,5 +23,15 @@ export default {
   action: 'Action',
   public: 'Public',
   private: 'Private',
-  modify: 'Modify'
+  modify: 'Modify',
+  delete: 'Delete',
+  create: 'Create',
+  error: 'Error',
+  plugin: 'Plugin',
+  endTime: 'End Time',
+  state: 'State',
+  elapsed: 'Elapsed',
+  run: 'Run',
+  cancel: 'Cancel',
+  format: 'Format'
 }

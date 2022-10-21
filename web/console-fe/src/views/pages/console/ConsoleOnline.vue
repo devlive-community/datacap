@@ -8,16 +8,16 @@
             <a-button type="primary" size="small" :loading="tableLoading" :disabled="!applySource"
                       @click="handlerRun()">
               <play-circle-outlined v-if="!tableLoading"/>
-              Run
+              {{ $t('common.run') }}
             </a-button>
             <a-button type="dashed" size="small" :disabled="!applySource" @click="handlerFormat()">
               <format-painter-outlined/>
-              Format
+              {{ $t('common.format') }}
             </a-button>
             <a-button type="primary" danger size="small" :disabled="!applySource || !tableLoading"
                       @click="handlerCancel()">
               <close-circle-outlined/>
-              Cancel
+              {{ $t('common.cancel') }}
             </a-button>
             <a-button v-if="response.data" type="link" size="small">
               <a-popconfirm placement="bottom" :showCancel="false">
