@@ -1,10 +1,10 @@
 package io.edurt.datacap.server.controller.user;
 
+import io.edurt.datacap.server.body.SharedSourceBody;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
-import io.edurt.datacap.server.request.body.SharedSourceBody;
 import io.edurt.datacap.server.service.SourceService;
 import io.edurt.datacap.server.validation.ValidationGroup;
 import org.springframework.http.MediaType;

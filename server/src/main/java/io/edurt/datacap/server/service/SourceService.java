@@ -1,10 +1,10 @@
 package io.edurt.datacap.server.service;
 
+import io.edurt.datacap.server.body.SharedSourceBody;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
-import io.edurt.datacap.server.request.body.SharedSourceBody;
 
 import java.util.List;
 
