@@ -1,3 +1,9 @@
+const token = 'AuthToken';
+const getCurrentUserId = () => {
+  return JSON.parse(localStorage.getItem(token) || '{}').id;
+}
+
 export default {
-  token: 'AuthToken'
+  token: token,
+  getCurrentUserId: getCurrentUserId
 }
