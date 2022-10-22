@@ -28,5 +28,6 @@
         <module>ignite</module>
         <module>db2</module>
         <module>mongo</module>
+        <module>dremio</module>
     </modules>
 </project>

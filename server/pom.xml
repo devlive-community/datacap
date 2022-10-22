@@ -159,6 +159,11 @@
             <artifactId>datacap-plugin-jdbc-mongo</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-dremio</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
