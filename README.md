@@ -13,12 +13,6 @@ cp configure/git-hook/* .git/hooks
 chmod 700 .git/hooks/*
 ```
 
-## Contributors
-
----
-
-![GitHub Contributors Image](https://contrib.rocks/image?repo=EdurtIO/incubator-datacap)
-
 ## Supported Databases
 
 ---
@@ -71,6 +65,9 @@ Here are some of the major database solutions that are supported:
 </a>
 <a href="https://www.dremio.com/" target="_blank">
     <img src="assets/plugin/dremio.png" alt="Dremio" height="50" />
+</a>
+<a href="https://www.monetdb.org/" target="_blank">
+    <img src="assets/plugin/monetdb.png" alt="MonetDB" height="50" />
 </a>
 
 ## Stargazers over time
