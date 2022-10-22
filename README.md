@@ -13,12 +13,6 @@ cp configure/git-hook/* .git/hooks
 chmod 700 .git/hooks/*
 ```
 
-## Contributors
-
----
-
-![GitHub Contributors Image](https://contrib.rocks/image?repo=EdurtIO/incubator-datacap)
-
 ## Supported Databases
 
 ---
@@ -27,73 +21,54 @@ DataCap can query data from any SQL-speaking datastore or data engine (ClickHous
 
 Here are some of the major database solutions that are supported:
 
-<div align="center">
-    <div align="center">
-        <div align="center">
-            <div align="center">
-            <div align="center">
-                <div align="center">
-                    <code>
-                        <a href="https://clickhouse.com" target="_blank">
-                            <img src="./shared/plugin/clickhouse.svg" alt="ClickHouse" width="50" height="50" />
-                        </a>
-                    </code> <br />
-                </div>
-                <code>
-                    <a href="https://www.mysql.com" target="_blank">
-                        <img src="./shared/plugin/mysql.svg" alt="MySQL" width="50" height="50"/>
-                    </a>
-                    <a href="https://prestodb.io/" target="_blank">
-                        <img src="./shared/plugin/presto.svg" alt="Presto" width="50" height="50"/>
-                    </a>
-                </code> <br />
-            </div>
-            <code>
-                <a href="https://redis.io/" target="_blank">
-                    <img src="./shared/plugin/redis.svg" alt="Redis" width="50" height="50"/>
-                </a>
-                <a href="https://www.postgresql.org/" target="_blank">
-                    <img src="./shared/plugin/postgresql.svg" alt="PostgreSQL" width="50" height="50"/>
-                </a>
-                <a href="https://trino.io/" target="_blank">
-                    <img src="./shared/plugin/trino.svg" alt="Trino" width="50" height="50"/>
-                </a>
-            </code> <br />
-        </div>
-        <code>
-            <a href="https://www.elastic.co/" target="_blank">
-                <img src="./shared/plugin/elasticsearch.svg" alt="ElasticSearch" width="50" height="50" />
-            </a>
-            <a href="https://druid.apache.org/" target="_blank">
-                <img src="./shared/plugin/druid.jpg" alt="Druid" width="50" height="50" />
-            </a>
-            <a href="https://kyuubi.apache.org/" target="_blank">
-                <img src="./shared/plugin/kyuubi.png" alt="Kyuubi" width="50" height="50" />
-            </a>
-            <a href="https://hive.apache.org/" target="_blank">
-                <img src="./shared/plugin/hive.svg" alt="Hive" width="50" height="50" />
-            </a>
-        </code> <br />
-        <code>
-            <a href="https://kylin.apache.org" target="_blank">
-                <img src="./shared/plugin/kylin.png" alt="Kylin" width="50" height="50" />
-            </a>
-            <a href="https://ignite.apache.org/" target="_blank">
-                <img src="./shared/plugin/ignite.png" alt="Ignite" width="50" height="50" />
-            </a>
-            <a href="https://www.ibm.com/db2/" target="_blank">
-                <img src="./shared/plugin/ibmdb2.png" alt="IBM DB2" width="45" height="45" />
-            </a>
-            <a href="https://www.mongodb.com/" target="_blank">
-                <img src="./shared/plugin/mongodb.svg" alt="MongoDB" width="50" height="50" />
-            </a>
-            <a href="https://www.dremio.com/" target="_blank">
-                <img src="./shared/plugin/dremio.png" alt="Dremio" width="50" height="45" />
-            </a>
-        </code> <br />
-      </div>
-    </div>
-</div>
+<a href="https://clickhouse.com" target="_blank">
+    <img src="assets/plugin/clickhouse.png" alt="ClickHouse" height="50" />
+</a>
+<a href="https://www.mysql.com" target="_blank">
+    <img src="assets/plugin/mysql.png" alt="MySQL" height="50"/>
+</a>
+<a href="https://prestodb.io/" target="_blank">
+    <img src="assets/plugin/presto.png" alt="Presto" height="50"/>
+</a>
+<a href="https://redis.io/" target="_blank">
+    <img src="assets/plugin/redis.png" alt="Redis" height="50"/>
+</a>
+<a href="https://www.postgresql.org/" target="_blank">
+    <img src="assets/plugin/postgresql.png" alt="PostgreSQL" height="50"/>
+</a>
+<a href="https://trino.io/" target="_blank">
+    <img src="assets/plugin/trino.png" alt="Trino" height="50"/>
+</a>
+<a href="https://www.elastic.co/" target="_blank">
+    <img src="assets/plugin/elasticsearch.png" alt="ElasticSearch" height="50" />
+</a>
+<a href="https://druid.apache.org/" target="_blank">
+    <img src="assets/plugin/druid.png" alt="Druid" height="50" />
+</a>
+<a href="https://kyuubi.apache.org/" target="_blank">
+    <img src="assets/plugin/kyuubi.png" alt="Kyuubi" height="50"/>
+</a>
+<a href="https://hive.apache.org/" target="_blank">
+    <img src="assets/plugin/hive.png" alt="Hive" height="50" />
+</a>
+<a href="https://kylin.apache.org" target="_blank">
+    <img src="assets/plugin/kylin.png" alt="Kylin" height="50" />
+</a>
+<a href="https://ignite.apache.org/" target="_blank">
+    <img src="assets/plugin/ignite.png" alt="Ignite" height="50" />
+</a>
+<a href="https://www.ibm.com/db2/" target="_blank">
+    <img src="assets/plugin/ibmdb2.png" alt="IBM DB2" height="50" />
+</a>
+<a href="https://www.mongodb.com/" target="_blank">
+    <img src="assets/plugin/mongodb.png" alt="MongoDB" height="50" />
+</a>
+<a href="https://www.dremio.com/" target="_blank">
+    <img src="assets/plugin/dremio.png" alt="Dremio" height="50" />
+</a>
+<a href="https://www.monetdb.org/" target="_blank">
+    <img src="assets/plugin/monetdb.png" alt="MonetDB" height="50" />
+</a>
 
 ## Stargazers over time
 
@@ -125,7 +100,7 @@ Here are some of the major database solutions that are supported:
 
 Open the DingTalk software and scan the following QR code to join
 
-<img src="./shared/dingtalk.png" width="200px" height="250px"></img>
+<img src="assets/dingtalk.png" width="200px" height="250px"></img>
 
 ## Thank you
 
