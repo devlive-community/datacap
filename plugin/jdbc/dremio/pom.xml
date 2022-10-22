@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (Dremio)</name>
 
     <properties>
-        <dremio.version>20.1.0</dremio.version>
+        <dremio.version>20.1.0-202202061055110045-36733c65</dremio.version>
         <plugin.name>jdbc-dremio</plugin.name>
     </properties>
     <dependencies>
@@ -27,11 +27,9 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.dremio</groupId>
-            <artifactId>dremio-jdbc</artifactId>
+            <groupId>com.dremio.distribution</groupId>
+            <artifactId>dremio-jdbc-driver</artifactId>
             <version>${dremio.version}</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/jars/dremio-jdbc-driver-20.1.0-202202061055110045-36733c65.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -59,4 +57,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>dremio-free</id>
+            <url>https://maven.dremio.com/free/</url>
+        </repository>
+    </repositories>
 </project>
