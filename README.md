@@ -87,6 +87,9 @@ Here are some of the major database solutions that are supported:
             <a href="https://www.mongodb.com/" target="_blank">
                 <img src="./shared/plugin/mongodb.svg" alt="MongoDB" width="50" height="50" />
             </a>
+            <a href="https://www.dremio.com/" target="_blank">
+                <img src="./shared/plugin/dremio.png" alt="Dremio" width="50" height="45" />
+            </a>
         </code> <br />
       </div>
     </div>
