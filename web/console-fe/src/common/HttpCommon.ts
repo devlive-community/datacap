@@ -33,20 +33,27 @@ export class HttpCommon
   handlerSuccessful(result: any): ResponseModel
   {
     const data = result.data;
-    let message = data.message;
+    let messageData = data.message;
     if (data.message instanceof Array) {
       const messages = new Array();
       data.message.forEach((element: { field: string; message: string; }) => {
         messages.push(element.field + ': ' + element.message);
       });
-      message = messages.join('\r\n');
+      messageData = messages.join('\r\n');
     }
     const response: ResponseModel = {
       code: data.code,
       data: data.data,
-      message: message,
+      message: messageData,
       status: data.status
     };
+
+    // If the authorization key does not match, clear the local token reload page
+    if (response.code === 4003) {
+      message.error(response.message);
+      localStorage.removeItem(Common.token);
+      window.location.reload();
+    }
     return response;
   }
 
