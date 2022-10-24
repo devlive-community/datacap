@@ -52,6 +52,7 @@ public class SourceController
         return this.sourceService.getAll(start, end);
     }
 
+    @PreAuthorize(value = "@userAuthorize.validateSource(#id)")
     @DeleteMapping(value = "{id}")
     public Response<Long> delete(@PathVariable(value = "id") Long id)
     {

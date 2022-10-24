@@ -29,7 +29,7 @@
                   </template>
                 </a-button>
               </a-tooltip>
-              <a-popconfirm title="Are you sure delete?" ok-text="Yes" cancel-text="No"
+              <a-popconfirm title="Are you sure delete?" ok-text="Yes" cancel-text="No" :disabled="currentUserId !== record.user.id"
                             @confirm="handlerDeleteRecord(record.id)">
                 <a-tooltip>
                   <template #title>{{ $t('common.delete') }}</template>
