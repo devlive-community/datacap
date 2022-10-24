@@ -54,3 +54,15 @@ ALTER TABLE `datacap`.`audit_plugin`
 -- Example Set the user of the previous version as the administrator
 UPDATE `datacap`.`audit_plugin`
 SET `user_id` = 1;
+
+CREATE TABLE IF NOT EXISTS `datacap`.`snippet`
+(
+    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
+    `name`        varchar(255) DEFAULT NULL COMMENT ' ',
+    `description` varchar(255) DEFAULT NULL COMMENT ' ',
+    `code`        varchar(255) DEFAULT NULL COMMENT ' ',
+    `create_time` datetime(5)  DEFAULT CURRENT_TIMESTAMP(5),
+    `update_time` datetime(5)  DEFAULT CURRENT_TIMESTAMP(5),
+    `user_id`     bigint(20) NOT NULL,
+    PRIMARY KEY (`id`)
+) DEFAULT CHARSET = utf8;

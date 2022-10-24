@@ -66,6 +66,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "history",
         component: () => import("../views/pages/console/ConsoleHistory.vue")
+      },
+      {
+        path: "snippet",
+        component: () => import("../views/pages/admin/snippet/SnippetConsole.vue")
       }
     ]
   },
