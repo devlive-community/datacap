@@ -1,9 +1,7 @@
 name: Add contributors
 on:
   push:
-    branches:
-      - master
-      - develop
+    branches: [ "*" ]
 
 jobs:
   add-contributors:
