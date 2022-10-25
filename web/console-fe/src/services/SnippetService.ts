@@ -25,4 +25,9 @@ export class SnippetService
       return new HttpCommon().post(baseUrl, JSON.stringify(configure));
     }
   }
+
+  getById(id: number): Promise<ResponseModel>
+  {
+    return new HttpCommon().get(baseUrl + "/" + id);
+  }
 }

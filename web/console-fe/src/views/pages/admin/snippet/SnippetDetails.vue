@@ -1,5 +1,5 @@
 <template>
-  <a-drawer :title="$t('common.create') + $t('common.snippet')" :width="720" :closable="false"
+  <a-drawer :title="$t('common.create') + $t('common.snippet')" :width="720" :closable="false" :maskClosable="false"
             :visible="visible" :body-style="{ paddingBottom: '80px' }" :footer-style="{ textAlign: 'right' }">
     <a-form :model="snippetForm" :rules="rules" layout="vertical">
       <a-row :gutter="16">
@@ -37,8 +37,7 @@
   </a-drawer>
 </template>
 <script lang="ts">
-import {computed, defineComponent, reactive} from 'vue';
-import type {Rule} from 'ant-design-vue/es/form';
+import {defineComponent, reactive} from 'vue';
 import {Snippet} from "@/model/Snippet";
 import MonacoEditor from "monaco-editor-vue3";
 import {SnippetService} from "@/services/SnippetService";
@@ -54,46 +53,51 @@ export default defineComponent({
     },
     codeSnippet: {
       type: String,
-      default: () => ''
+      default: () => null
     },
     id: {
       type: Number,
       default: () => 0
     }
   },
-  setup()
+  data()
   {
-    const snippetForm = reactive<Snippet>({
-      name: '',
-      description: '',
-      code: ''
-    });
-
-    const rules: Record<string, Rule[]> = {
-      name: [{required: true, message: 'Please enter name'}],
-      description: [{required: true, message: 'Please enter description'}],
-      code: [{required: true, message: 'Please enter the code'}]
-    };
-
-    const disabled = computed(() => {
-      return !(snippetForm.name && snippetForm.description && snippetForm.code);
-    });
     return {
-      snippetForm,
-      rules,
-      disabled
-    };
+      isUpdate: false,
+      snippetForm: null as unknown as Snippet
+    }
   },
   created()
   {
-    this.snippetForm.code = this.codeSnippet;
+    this.isUpdate = this.id === 0 ? false : true;
+    this.handlerInitialize();
+    if (this.codeSnippet != null) {
+      this.snippetForm.code = this.codeSnippet;
+    }
   },
   methods: {
+    handlerInitialize()
+    {
+      if (this.id > 0) {
+        new SnippetService().getById(this.id)
+          .then(response => {
+            if (response.status) {
+              this.snippetForm = reactive<Snippet>(response.data);
+            }
+          });
+      }
+      else {
+        this.snippetForm = reactive<Snippet>({
+          name: '',
+          description: '',
+          code: ''
+        });
+      }
+    },
     handlerSave()
     {
-      const isUpdate = this.id === 0 ? false : true;
       new SnippetService()
-        .saveAndUpdate(this.snippetForm, isUpdate)
+        .saveAndUpdate(this.snippetForm, this.isUpdate)
         .then((response) => {
           if (response.status) {
             message.success("Create successful");

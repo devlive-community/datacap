@@ -43,4 +43,10 @@ public class SnippetServiceImpl
         this.snippetRepository.deleteById(id);
         return Response.success(id);
     }
+
+    @Override
+    public Response<SnippetEntity> getById(Long id)
+    {
+        return Response.success(this.snippetRepository.findById(id));
+    }
 }

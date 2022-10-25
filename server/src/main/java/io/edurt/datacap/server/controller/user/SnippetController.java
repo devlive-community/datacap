@@ -54,4 +54,10 @@ public class SnippetController
     {
         return this.snippetService.delete(id);
     }
+
+    @GetMapping(value = "{id}")
+    public Response<SnippetEntity> getInfo(@PathVariable(value = "id") Long id)
+    {
+        return this.snippetService.getById(id);
+    }
 }

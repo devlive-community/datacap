@@ -11,4 +11,6 @@ public interface SnippetService
     Response<PageEntity<SnippetEntity>> getAll(int offset, int limit);
 
     Response<Long> delete(Long id);
+
+    Response<SnippetEntity> getById(Long id);
 }

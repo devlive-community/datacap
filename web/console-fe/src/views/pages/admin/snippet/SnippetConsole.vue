@@ -9,6 +9,21 @@
           </template>
           <template v-if="column.dataIndex === 'action'">
             <a-space style="width: 100%">
+              <a-button type="primary" shape="circle" size="small"
+                        @click="handlerShowContent(record.code)">
+                <a-tooltip>
+                  <template #title>SQL</template>
+                  <eye-outlined/>
+                </a-tooltip>
+              </a-button>
+              <a-tooltip>
+                <template #title>{{ $t('common.modify') }}</template>
+                <a-button type="primary" shape="circle" size="small" :disabled="currentUserId !== record.user.id" @click="handlerCreateOrUpdate(record.id)">
+                  <template #icon>
+                    <edit-outlined/>
+                  </template>
+                </a-button>
+              </a-tooltip>
               <a-popconfirm title="Are you sure delete?" ok-text="Yes" cancel-text="No" :disabled="currentUserId !== record.user.id"
                             @confirm="handlerDeleteRecord(record.id)">
                 <a-tooltip>
@@ -25,10 +40,18 @@
         </template>
       </a-table>
     </a-card>
+
+    <ConsoleSQLComponent v-if="visibleContent" :isVisible="visibleContent" :content="content"
+                         @close="handlerCloseContent($event)"/>
+
+    <SnippetDetails v-if="visibleSnippetInfo" :isVisible="visibleSnippetInfo" :id="applyId"
+                    @close="handlerCloseCreateNew()"/>
   </div>
 </template>
 
 <script lang="ts">
+import ConsoleSQLComponent from "@/components/ConsoleSQL.vue";
+import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
 import {message} from "ant-design-vue";
 import {defineComponent} from "vue";
 import {useI18n} from 'vue-i18n';
@@ -38,6 +61,7 @@ import {SnippetService} from "@/services/SnippetService";
 
 export default defineComponent({
   name: "SnippetConsoleView",
+  components: {ConsoleSQLComponent, SnippetDetails},
   setup()
   {
     const i18n = useI18n();
@@ -54,6 +78,9 @@ export default defineComponent({
       columns: [],
       loading: false,
       applyId: 0,
+      visibleSnippetInfo: false,
+      content: '',
+      visibleContent: false,
       pagination: {
         total: 0,
         current: 1,
@@ -98,6 +125,29 @@ export default defineComponent({
       this.pagination.current = pagination.current;
       this.pagination.pageSize = pagination.pageSize;
       this.handlerInitialize(pagination.current, pagination.pageSize)
+    },
+    handlerShowContent(content: string)
+    {
+      this.visibleContent = true;
+      this.content = content;
+    },
+    handlerCloseContent(value: boolean)
+    {
+      this.visibleContent = value;
+      this.content = '';
+    },
+    handlerCreateOrUpdate(value?: number)
+    {
+      if (value) {
+        this.applyId = value;
+      }
+      this.visibleSnippetInfo = true;
+    },
+    handlerCloseCreateNew()
+    {
+      this.visibleSnippetInfo = false;
+      this.applyId = 0;
+      this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
     }
   }
 });
