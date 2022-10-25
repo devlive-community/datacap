@@ -1,7 +1,7 @@
 <template>
   <a-drawer :title="$t('common.create') + $t('common.snippet')" :width="720" :closable="false" :maskClosable="false"
             :visible="visible" :body-style="{ paddingBottom: '80px' }" :footer-style="{ textAlign: 'right' }">
-    <a-form :model="snippetForm" :rules="rules" layout="vertical">
+    <a-form :model="snippetForm" layout="vertical">
       <a-row :gutter="16">
         <a-col :span="12">
           <a-form-item has-feedback :label="$t('common.name')" name="name">

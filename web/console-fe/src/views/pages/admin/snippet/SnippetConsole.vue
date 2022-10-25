@@ -5,7 +5,7 @@
                @change="handlerTableChange($event)">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'username'">
-            <a-avatar style="background-color: #87d068">{{ record.user.username }}</a-avatar>
+            <a-avatar style="background-color: #87d068;">{{ record.user.username }}</a-avatar>
           </template>
           <template v-if="column.dataIndex === 'action'">
             <a-space style="width: 100%">
