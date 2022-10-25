@@ -1,9 +1,12 @@
 <template>
   <div>
-    <a-card :title="$t('common.source')" size="small">
+    <a-card :title="$t('common.snippet')" size="small">
       <a-table size="middle" :loading="loading" :columns="headers" :data-source="columns" :pagination="pagination"
                @change="handlerTableChange($event)">
         <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'username'">
+            <a-avatar style="background-color: #87d068">{{ record.user.username }}</a-avatar>
+          </template>
           <template v-if="column.dataIndex === 'action'">
             <a-space style="width: 100%">
               <a-popconfirm title="Are you sure delete?" ok-text="Yes" cancel-text="No" :disabled="currentUserId !== record.user.id"
@@ -35,7 +38,6 @@ import {SnippetService} from "@/services/SnippetService";
 
 export default defineComponent({
   name: "SnippetConsoleView",
-  components: {},
   setup()
   {
     const i18n = useI18n();

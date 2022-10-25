@@ -35,6 +35,13 @@ const createHeaders = (i18n: any) => {
       ellipsis: true
     },
     {
+      title: i18n.t('common.updateTime'),
+      name: 'updateTime',
+      dataIndex: 'updateTime',
+      key: 'updateTime',
+      ellipsis: true
+    },
+    {
       title: i18n.t('common.action'),
       name: 'action',
       dataIndex: 'action',

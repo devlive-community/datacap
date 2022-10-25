@@ -34,5 +34,7 @@ export default {
   run: 'Run',
   cancel: 'Cancel',
   format: 'Format',
-  snippet: 'Snippet'
+  snippet: 'Snippet',
+  submit: 'Submit',
+  updateTime: 'Update Time'
 }

@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS `datacap`.`snippet`
     `name`        varchar(255) DEFAULT NULL COMMENT ' ',
     `description` varchar(255) DEFAULT NULL COMMENT ' ',
     `code`        varchar(255) DEFAULT NULL COMMENT ' ',
-    `create_time` datetime(5)  DEFAULT CURRENT_TIMESTAMP(5),
-    `update_time` datetime(5)  DEFAULT CURRENT_TIMESTAMP(5),
+    `create_time` timestamp    DEFAULT CURRENT_TIMESTAMP,
+    `update_time` timestamp    DEFAULT CURRENT_TIMESTAMP,
     `user_id`     bigint(20) NOT NULL,
     PRIMARY KEY (`id`)
 ) DEFAULT CHARSET = utf8;
