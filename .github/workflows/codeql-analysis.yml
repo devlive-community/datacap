@@ -2,9 +2,9 @@ name: "Analysis java code"
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "*" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "develop" ]
   schedule:
     - cron: '41 18 * * 1'
 

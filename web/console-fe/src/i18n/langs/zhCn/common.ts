@@ -33,5 +33,8 @@ export default {
   elapsed: '消耗',
   run: '运行',
   cancel: '取消',
-  format: '格式化'
+  format: '格式化',
+  snippet: '片段',
+  submit: '提交',
+  updateTime: "更新时间"
 }

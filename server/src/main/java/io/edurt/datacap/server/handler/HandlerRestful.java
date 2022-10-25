@@ -63,6 +63,6 @@ public class HandlerRestful
     @ResponseBody
     public Response<String> handlerUserNotEqualsException(UserNotEqualsException ex)
     {
-        return Response.failure(ex.getMessage());
+        return Response.failure(ServiceState.USER_UNAUTHORIZED);
     }
 }

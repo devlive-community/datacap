@@ -33,5 +33,8 @@ export default {
   elapsed: 'Elapsed',
   run: 'Run',
   cancel: 'Cancel',
-  format: 'Format'
+  format: 'Format',
+  snippet: 'Snippet',
+  submit: 'Submit',
+  updateTime: 'Update Time'
 }

@@ -31,6 +31,12 @@
             {{ $t('common.history') }}
           </router-link>
         </a-menu-item>
+        <a-menu-item key="admin_snippet">
+          <router-link to="/admin/snippet">
+            <code-outlined/>
+            {{ $t('common.snippet') }}
+          </router-link>
+        </a-menu-item>
       </a-sub-menu>
     </a-menu>
     <a-menu theme="dark" mode="horizontal" :style="{lineHeight: '64px', float: 'right'}">

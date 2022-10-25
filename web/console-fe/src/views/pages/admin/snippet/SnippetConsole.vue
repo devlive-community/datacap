@@ -1,26 +1,21 @@
 <template>
   <div>
-    <a-card :title="$t('common.source')" size="small">
-      <template #extra>
-        <a-tooltip>
-          <template #title>{{ $t('common.create') }}</template>
-          <a-button type="primary" shape="circle" size="small" @click="handlerCreateOrUpdate()">
-            <template #icon>
-              <plus-circle-outlined/>
-            </template>
-          </a-button>
-        </a-tooltip>
-      </template>
+    <a-card :title="$t('common.snippet')" size="small">
       <a-table size="middle" :loading="loading" :columns="headers" :data-source="columns" :pagination="pagination"
                @change="handlerTableChange($event)">
         <template #bodyCell="{ column, record }">
-          <template v-if="column.dataIndex === 'public'">
-            <a-switch v-model:checked="record.public" :disabled="currentUserId !== record.user.id" :checked-children="$t('common.public')"
-                      :un-checked-children="$t('common.private')" @change="handlerShared(record.public, record.id)"/>
+          <template v-if="column.dataIndex === 'username'">
+            <a-avatar style="background-color: #87d068;">{{ record.user.username }}</a-avatar>
           </template>
-
           <template v-if="column.dataIndex === 'action'">
             <a-space style="width: 100%">
+              <a-button type="primary" shape="circle" size="small"
+                        @click="handlerShowContent(record.code)">
+                <a-tooltip>
+                  <template #title>SQL</template>
+                  <eye-outlined/>
+                </a-tooltip>
+              </a-button>
               <a-tooltip>
                 <template #title>{{ $t('common.modify') }}</template>
                 <a-button type="primary" shape="circle" size="small" :disabled="currentUserId !== record.user.id" @click="handlerCreateOrUpdate(record.id)">
@@ -46,25 +41,27 @@
       </a-table>
     </a-card>
 
-    <SourceInfoView v-if="visibleSourceInfo" :isVisible="visibleSourceInfo" :id="applyId"
-                    @close="handlerCloseCreateNew($event)"/>
+    <ConsoleSQLComponent v-if="visibleContent" :isVisible="visibleContent" :content="content"
+                         @close="handlerCloseContent($event)"/>
+
+    <SnippetDetails v-if="visibleSnippetInfo" :isVisible="visibleSnippetInfo" :id="applyId"
+                    @close="handlerCloseCreateNew()"/>
   </div>
 </template>
 
 <script lang="ts">
-import {SourceService} from "@/services/SourceService";
-import {createHeaders} from "@/views/pages/admin/source/SourceGenerate";
-import SourceInfoView from "@/views/pages/admin/source/SourceInfo.vue";
-import {MinusOutlined, PlusCircleOutlined} from '@ant-design/icons-vue';
+import ConsoleSQLComponent from "@/components/ConsoleSQL.vue";
+import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
 import {message} from "ant-design-vue";
 import {defineComponent} from "vue";
 import {useI18n} from 'vue-i18n';
 import Common from "@/common/Common";
-import {SharedSource} from "@/model/SharedSource";
+import {createHeaders} from "@/views/pages/admin/snippet/SnippetGenerate";
+import {SnippetService} from "@/services/SnippetService";
 
 export default defineComponent({
-  name: "SourceConsoleView",
-  components: {SourceInfoView, PlusCircleOutlined, MinusOutlined},
+  name: "SnippetConsoleView",
+  components: {ConsoleSQLComponent, SnippetDetails},
   setup()
   {
     const i18n = useI18n();
@@ -80,8 +77,10 @@ export default defineComponent({
     return {
       columns: [],
       loading: false,
-      visibleSourceInfo: false,
       applyId: 0,
+      visibleSnippetInfo: false,
+      content: '',
+      visibleContent: false,
       pagination: {
         total: 0,
         current: 1,
@@ -100,8 +99,8 @@ export default defineComponent({
     handlerInitialize(page: number, size: number)
     {
       this.loading = true;
-      new SourceService()
-        .getSources(page, size)
+      new SnippetService()
+        .getSnippets(page, size)
         .then((response) => {
           if (response.status) {
             this.columns = response.data.content;
@@ -110,22 +109,9 @@ export default defineComponent({
           this.loading = false;
         })
     },
-    handlerCreateOrUpdate(value?: number)
-    {
-      if (value) {
-        this.applyId = value;
-      }
-      this.visibleSourceInfo = true;
-    },
-    handlerCloseCreateNew(value: boolean)
-    {
-      this.visibleSourceInfo = value;
-      this.applyId = 0;
-      this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
-    },
     handlerDeleteRecord(id: number)
     {
-      new SourceService()
+      new SnippetService()
         .delete(id)
         .then((response) => {
           if (response.status) {
@@ -140,20 +126,28 @@ export default defineComponent({
       this.pagination.pageSize = pagination.pageSize;
       this.handlerInitialize(pagination.current, pagination.pageSize)
     },
-    handlerShared(shared: boolean, sourceId: number)
+    handlerShowContent(content: string)
     {
-      const instance: SharedSource = {
-        public: shared,
-        sourceId: sourceId,
-        userId: this.currentUserId
-      };
-      new SourceService().shared(instance)
-        .then((response) => {
-          if (response.status) {
-            message.success("Successful");
-            this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
-          }
-        });
+      this.visibleContent = true;
+      this.content = content;
+    },
+    handlerCloseContent(value: boolean)
+    {
+      this.visibleContent = value;
+      this.content = '';
+    },
+    handlerCreateOrUpdate(value?: number)
+    {
+      if (value) {
+        this.applyId = value;
+      }
+      this.visibleSnippetInfo = true;
+    },
+    handlerCloseCreateNew()
+    {
+      this.visibleSnippetInfo = false;
+      this.applyId = 0;
+      this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
     }
   }
 });

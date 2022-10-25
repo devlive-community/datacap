@@ -19,6 +19,10 @@
               <close-circle-outlined/>
               {{ $t('common.cancel') }}
             </a-button>
+            <a-button v-if="tableConfigure.data" type="primary" size="small" @click="handlerCreateSnippet()">
+              <plus-outlined/>
+              {{ $t('common.snippet') }}
+            </a-button>
             <a-button v-if="response.data" type="link" size="small">
               <a-popconfirm placement="bottom" :showCancel="false">
                 <clock-circle-outlined/>
@@ -86,6 +90,10 @@
         <SheetComponent :dataCfg="tableConfigure" :options="tableOptions" :showPagination="true" sheetType="table"/>
       </a-card>
     </div>
+
+    <SnippetDetails v-if="snippetDetails" :isVisible="snippetDetails"
+                    :codeSnippet="editorValue" @close="handlerCloseSnippetDetails($event)">
+    </SnippetDetails>
   </div>
 </template>
 
@@ -104,10 +112,11 @@ import {ExportToCsv} from 'export-to-csv';
 import * as monaco from 'monaco-editor';
 import MonacoEditor from 'monaco-editor-vue3';
 import {defineComponent} from "vue";
+import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
 
 export default defineComponent({
   name: "DashboardConsoleView",
-  components: {SheetComponent, SourceSelectComponent, MonacoEditor},
+  components: {SnippetDetails, SheetComponent, SourceSelectComponent, MonacoEditor},
   unmounted()
   {
     if (this.editorCompletionProvider) {
@@ -126,7 +135,8 @@ export default defineComponent({
       cancelToken: {} as CancelTokenSource,
       response: {},
       editorInstance: {} as monaco.editor.ICodeEditor,
-      editorCompletionProvider: {} as monaco.IDisposable
+      editorCompletionProvider: {} as monaco.IDisposable,
+      snippetDetails: false
     }
   },
   methods: {
@@ -153,7 +163,6 @@ export default defineComponent({
       this.cancelToken = axios.CancelToken.source();
       this.tableLoading = true;
       const editorContainer: HTMLElement = this.$refs.editorContainer as HTMLElement;
-      console.log(this.applySource)
       const configure: ExecuteModel = {
         name: this.applySource,
         content: this.editorValue,
@@ -183,6 +192,7 @@ export default defineComponent({
           }
           else {
             message.error(response.message);
+            this.tableConfigure = {};
           }
         })
         .finally(() => {
@@ -228,6 +238,14 @@ export default defineComponent({
       };
       const csvExporter = new ExportToCsv(options);
       csvExporter.generateCsv(this.tableColumns);
+    },
+    handlerCreateSnippet()
+    {
+      this.snippetDetails = true;
+    },
+    handlerCloseSnippetDetails(value: boolean)
+    {
+      this.snippetDetails = value;
     }
   }
 });

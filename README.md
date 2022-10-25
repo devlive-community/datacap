@@ -21,54 +21,56 @@ DataCap can query data from any SQL-speaking datastore or data engine (ClickHous
 
 Here are some of the major database solutions that are supported:
 
-<a href="https://clickhouse.com" target="_blank">
-    <img src="assets/plugin/clickhouse.png" alt="ClickHouse" height="50" />
-</a>
-<a href="https://www.mysql.com" target="_blank">
-    <img src="assets/plugin/mysql.png" alt="MySQL" height="50"/>
-</a>
-<a href="https://prestodb.io/" target="_blank">
-    <img src="assets/plugin/presto.png" alt="Presto" height="50"/>
-</a>
-<a href="https://redis.io/" target="_blank">
-    <img src="assets/plugin/redis.png" alt="Redis" height="50"/>
-</a>
-<a href="https://www.postgresql.org/" target="_blank">
-    <img src="assets/plugin/postgresql.png" alt="PostgreSQL" height="50"/>
-</a>
-<a href="https://trino.io/" target="_blank">
-    <img src="assets/plugin/trino.png" alt="Trino" height="50"/>
-</a>
-<a href="https://www.elastic.co/" target="_blank">
-    <img src="assets/plugin/elasticsearch.png" alt="ElasticSearch" height="50" />
-</a>
-<a href="https://druid.apache.org/" target="_blank">
-    <img src="assets/plugin/druid.png" alt="Druid" height="50" />
-</a>
-<a href="https://kyuubi.apache.org/" target="_blank">
-    <img src="assets/plugin/kyuubi.png" alt="Kyuubi" height="50"/>
-</a>
-<a href="https://hive.apache.org/" target="_blank">
-    <img src="assets/plugin/hive.png" alt="Hive" height="50" />
-</a>
-<a href="https://kylin.apache.org" target="_blank">
-    <img src="assets/plugin/kylin.png" alt="Kylin" height="50" />
-</a>
-<a href="https://ignite.apache.org/" target="_blank">
-    <img src="assets/plugin/ignite.png" alt="Ignite" height="50" />
-</a>
-<a href="https://www.ibm.com/db2/" target="_blank">
-    <img src="assets/plugin/ibmdb2.png" alt="IBM DB2" height="50" />
-</a>
-<a href="https://www.mongodb.com/" target="_blank">
-    <img src="assets/plugin/mongodb.png" alt="MongoDB" height="50" />
-</a>
-<a href="https://www.dremio.com/" target="_blank">
-    <img src="assets/plugin/dremio.png" alt="Dremio" height="50" />
-</a>
-<a href="https://www.monetdb.org/" target="_blank">
-    <img src="assets/plugin/monetdb.png" alt="MonetDB" height="50" />
-</a>
+<p align="center">
+    <a href="https://clickhouse.com" target="_blank">
+        <img src="assets/plugin/clickhouse.png" alt="ClickHouse" height="50" />
+    </a>
+    <a href="https://www.mysql.com" target="_blank">
+        <img src="assets/plugin/mysql.png" alt="MySQL" height="50"/>
+    </a>
+    <a href="https://prestodb.io/" target="_blank">
+        <img src="assets/plugin/presto.png" alt="Presto" height="50"/>
+    </a>
+    <a href="https://redis.io/" target="_blank">
+        <img src="assets/plugin/redis.png" alt="Redis" height="50"/>
+    </a>
+    <a href="https://www.postgresql.org/" target="_blank">
+        <img src="assets/plugin/postgresql.png" alt="PostgreSQL" height="50"/>
+    </a>
+    <a href="https://trino.io/" target="_blank">
+        <img src="assets/plugin/trino.png" alt="Trino" height="50"/>
+    </a>
+    <a href="https://www.elastic.co/" target="_blank">
+        <img src="assets/plugin/elasticsearch.png" alt="ElasticSearch" height="50" />
+    </a>
+    <a href="https://druid.apache.org/" target="_blank">
+        <img src="assets/plugin/druid.png" alt="Druid" height="50" />
+    </a>
+    <a href="https://kyuubi.apache.org/" target="_blank">
+        <img src="assets/plugin/kyuubi.png" alt="Kyuubi" height="50"/>
+    </a>
+    <a href="https://hive.apache.org/" target="_blank">
+        <img src="assets/plugin/hive.png" alt="Hive" height="50" />
+    </a>
+    <a href="https://kylin.apache.org" target="_blank">
+        <img src="assets/plugin/kylin.png" alt="Kylin" height="50" />
+    </a>
+    <a href="https://ignite.apache.org/" target="_blank">
+        <img src="assets/plugin/ignite.png" alt="Ignite" height="50" />
+    </a>
+    <a href="https://www.ibm.com/db2/" target="_blank">
+        <img src="assets/plugin/ibmdb2.png" alt="IBM DB2" height="50" />
+    </a>
+    <a href="https://www.mongodb.com/" target="_blank">
+        <img src="assets/plugin/mongodb.png" alt="MongoDB" height="50" />
+    </a>
+    <a href="https://www.dremio.com/" target="_blank">
+        <img src="assets/plugin/dremio.png" alt="Dremio" height="50" />
+    </a>
+    <a href="https://www.monetdb.org/" target="_blank">
+        <img src="assets/plugin/monetdb.png" alt="MonetDB" height="50" />
+    </a>
+</p>
 
 ## Stargazers over time
 
