@@ -16,14 +16,18 @@
                   <eye-outlined/>
                 </a-tooltip>
               </a-button>
-              <a-tooltip>
-                <template #title>{{ $t('common.modify') }}</template>
-                <a-button type="primary" shape="circle" size="small" :disabled="currentUserId !== record.user.id" @click="handlerCreateOrUpdate(record.id)">
-                  <template #icon>
-                    <edit-outlined/>
-                  </template>
-                </a-button>
-              </a-tooltip>
+              <a-button type="primary" shape="circle" size="small" :disabled="currentUserId !== record.user.id" @click="handlerCreateOrUpdate(record.id)">
+                <a-tooltip>
+                  <template #title>{{ $t('common.modify') }}</template>
+                  <edit-outlined/>
+                </a-tooltip>
+              </a-button>
+              <a-button shape="circle" size="small" @click="handlerGoConsoleIndex(record.id)">
+                <a-tooltip>
+                  <template #title>{{ $t('common.quote') }}</template>
+                  <aim-outlined/>
+                </a-tooltip>
+              </a-button>
               <a-popconfirm title="Are you sure delete?" ok-text="Yes" cancel-text="No" :disabled="currentUserId !== record.user.id"
                             @confirm="handlerDeleteRecord(record.id)">
                 <a-tooltip>
@@ -58,6 +62,7 @@ import {useI18n} from 'vue-i18n';
 import Common from "@/common/Common";
 import {createHeaders} from "@/views/pages/admin/snippet/SnippetGenerate";
 import {SnippetService} from "@/services/SnippetService";
+import router from "@/router";
 
 export default defineComponent({
   name: "SnippetConsoleView",
@@ -148,6 +153,10 @@ export default defineComponent({
       this.visibleSnippetInfo = false;
       this.applyId = 0;
       this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
+    },
+    handlerGoConsoleIndex(id: number)
+    {
+      router.push('/console/index?id=' + id + '&from=snippet');
     }
   }
 });

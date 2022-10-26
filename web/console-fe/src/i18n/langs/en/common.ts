@@ -36,5 +36,6 @@ export default {
   format: 'Format',
   snippet: 'Snippet',
   submit: 'Submit',
-  updateTime: 'Update Time'
+  updateTime: 'Update Time',
+  quote: 'Quote'
 }
