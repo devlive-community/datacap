@@ -36,5 +36,6 @@ export default {
   format: '格式化',
   snippet: '片段',
   submit: '提交',
-  updateTime: "更新时间"
+  updateTime: '更新时间',
+  quote: '引用'
 }

@@ -113,6 +113,8 @@ import * as monaco from 'monaco-editor';
 import MonacoEditor from 'monaco-editor-vue3';
 import {defineComponent} from "vue";
 import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
+import {useRouter} from "vue-router";
+import {SnippetService} from "@/services/SnippetService";
 
 export default defineComponent({
   name: "DashboardConsoleView",
@@ -139,7 +141,29 @@ export default defineComponent({
       snippetDetails: false
     }
   },
+  created()
+  {
+    this.handlerInitialize();
+  },
   methods: {
+    handlerInitialize()
+    {
+      const router = useRouter();
+      if (router.currentRoute?.value?.query) {
+        const id = router.currentRoute.value.query.id as unknown as number;
+        const from = router.currentRoute.value.query.from;
+        if (id && from) {
+          if (from === 'snippet') {
+            new SnippetService().getById(id)
+              .then((response) => {
+                if (response.status) {
+                  this.editorValue = response.data.code;
+                }
+              });
+          }
+        }
+      }
+    },
     handlerEditorDidMount(editor: any)
     {
       const suggestions = new LanguageService().transSuggestions([]);

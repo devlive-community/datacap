@@ -72,6 +72,10 @@ Here are some of the major database solutions that are supported:
     </a>
 </p>
 
+## Contributors
+
+---
+
 ## Stargazers over time
 
 ---

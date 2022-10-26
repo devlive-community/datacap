@@ -46,6 +46,7 @@ const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
+        name: 'ConsoleIndex',
         path: "index",
         component: () => import("../views/pages/console/ConsoleOnline.vue")
       }
