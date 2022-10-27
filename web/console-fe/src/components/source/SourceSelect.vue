@@ -4,7 +4,7 @@
       <template #suffixIcon>
         <meh-outlined class="ant-select-suffix"/>
       </template>
-      <a-select-option v-for="column in columns" :value="column.id" v-bind:key="column.id">
+      <a-select-option v-for="column in columns" :value="column.id + ':' + column.type" v-bind:key="column.id">
         {{ column.name }}
       </a-select-option>
     </a-select>
