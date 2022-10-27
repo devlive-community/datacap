@@ -8,7 +8,7 @@ const i18n = createI18n({
   globalInjection: true,
   legacy: false,
   locale: localStorage.getItem('lang') || language.split('-')[0] || 'en',
-  messages,
+  messages
 });
 
 export default i18n

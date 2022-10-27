@@ -66,7 +66,7 @@
           </a-space>
         </template>
         <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
-                      v-model:value="editorValue" @editorDidMount="handlerEditorDidMount($event)">
+                      v-model:value="editorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
         </MonacoEditor>
       </a-card>
     </div>
@@ -156,7 +156,7 @@ export default defineComponent({
           if (from === 'snippet') {
             new SnippetService().getById(id)
               .then((response) => {
-                if (response.status) {
+                if (response.status && response.data?.code) {
                   this.editorValue = response.data.code;
                 }
               });
@@ -164,9 +164,9 @@ export default defineComponent({
         }
       }
     },
-    handlerEditorDidMount(editor: any)
+    handlerEditorDidMount(editor: any, language: string)
     {
-      const suggestions = new LanguageService().transSuggestions([]);
+      const suggestions = new LanguageService().transSuggestions([], language);
       this.editorInstance = editor;
       this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
         provideCompletionItems(): any
@@ -225,7 +225,10 @@ export default defineComponent({
     },
     handlerChangeValue(value: string)
     {
-      this.applySource = value;
+      const idAndType = value.split(':');
+      this.applySource = idAndType[0];
+      this.editorCompletionProvider.dispose();
+      this.handlerEditorDidMount(this.editorInstance, idAndType[1]);
     },
     handlerFormat()
     {

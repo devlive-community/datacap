@@ -22,7 +22,7 @@
         <url>https://datacap.edurt.io</url>
         <connection>scm:git:git://github.com/EdurtIO/incubator-datacap.git</connection>
         <developerConnection>scm:git:git@github.com:EdurtIO/incubator-datacap.git</developerConnection>
-        <tag>datacap,database,clickhouse,mysql,postgresql,kylin</tag>
+        <tag>datacap,database,clickhouse,mysql,postgresql,kylin,db2,dremio,druid,elasticsearch,hive,ignite,kyuubi,monetdb,mongo,presto,trino</tag>
     </scm>
 
     <licenses>
