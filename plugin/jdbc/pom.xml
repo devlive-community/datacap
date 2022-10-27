@@ -30,5 +30,6 @@
         <module>mongo</module>
         <module>dremio</module>
         <module>monetdb</module>
+        <module>phoenix</module>
     </modules>
 </project>
