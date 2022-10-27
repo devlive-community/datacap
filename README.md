@@ -13,6 +13,14 @@ cp configure/git-hook/* .git/hooks
 chmod 700 .git/hooks/*
 ```
 
+## Contributors
+
+---
+
+<a href="https://github.com/EdurtIO/incubator-datacap/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=EdurtIO/incubator-datacap" />
+</a>
+
 ## Supported Databases
 
 ---
@@ -115,54 +123,3 @@ Open the DingTalk software and scan the following QR code to join
 ---
 
 [Extended documentation for DataCap](https://datacap.incubator.edurt.io)
-
-## Contributors
-
-<table>
-<tr>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/qianmoQ>
-            <img src=https://avatars.githubusercontent.com/u/20521442?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=qianmoQ/>
-            <br />
-            <sub style="font-size:14px"><b>qianmoQ</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/mlboy>
-            <img src=https://avatars.githubusercontent.com/u/1733903?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=mlboy/>
-            <br />
-            <sub style="font-size:14px"><b>mlboy</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/javalover123>
-            <img src=https://avatars.githubusercontent.com/u/9191388?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=javalover123/>
-            <br />
-            <sub style="font-size:14px"><b>javalover123</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/pan3793>
-            <img src=https://avatars.githubusercontent.com/u/26535726?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=Cheng Pan/>
-            <br />
-            <sub style="font-size:14px"><b>Cheng Pan</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/GtoCm>
-            <img src=https://avatars.githubusercontent.com/u/78474735?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=GtoCm/>
-            <br />
-            <sub style="font-size:14px"><b>GtoCm</b></sub>
-        </a>
-    </td>
-    <td align="center" style="word-wrap: break-word; width: 150.0; height: 150.0">
-        <a href=https://github.com/shuangzishuai>
-            <img src=https://avatars.githubusercontent.com/u/32678536?v=4 width="100;"  style="border-radius:50%;align-items:center;justify-content:center;overflow:hidden;padding-top:10px" alt=shuai/>
-            <br />
-            <sub style="font-size:14px"><b>shuai</b></sub>
-        </a>
-    </td>
-</tr>
-</table>
-
----
