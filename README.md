@@ -80,6 +80,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://phoenix.apache.org/" target="_blank">
         <img src="assets/plugin/phoenix.png" alt="Phoenix" height="50" />
+    </a>&nbsp;
+    <a href="https://www.h2database.com/html/main.html" target="_blank">
+        <img src="assets/plugin/h2.png" alt="H2" height="50" />
     </a>
 </p>
 

@@ -31,5 +31,6 @@
         <module>dremio</module>
         <module>monetdb</module>
         <module>phoenix</module>
+        <module>h2</module>
     </modules>
 </project>
