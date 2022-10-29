@@ -13,14 +13,6 @@ cp configure/git-hook/* .git/hooks
 chmod 700 .git/hooks/*
 ```
 
-## Contributors
-
----
-
-<a href="https://github.com/EdurtIO/incubator-datacap/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=EdurtIO/incubator-datacap" />
-</a>
-
 ## Supported Databases
 
 ---
@@ -129,3 +121,11 @@ Open the DingTalk software and scan the following QR code to join
 ---
 
 [Extended documentation for DataCap](https://datacap.incubator.edurt.io)
+
+## Contributors
+
+---
+
+<a href="https://github.com/EdurtIO/incubator-datacap/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=EdurtIO/incubator-datacap" />
+</a>

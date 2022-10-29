@@ -4,7 +4,7 @@
       <LayoutHeader @changeLanguage="setLangCondition($event)"/>
     </a-layout-header>
     <a-layout class="layout">
-      <a-layout-content style="padding: 10px">
+      <a-layout-content style="padding: 10px; background-color: #ffffff;">
         <LayoutContent/>
       </a-layout-content>
     </a-layout>

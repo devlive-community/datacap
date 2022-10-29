@@ -1,96 +1,108 @@
 <template>
   <div class="home">
-    <div ref="editorContainer">
-      <a-card size="small">
-        <template #title>
-          <a-space :size="8">
-            <SourceSelectComponent @changeValue="handlerChangeValue($event)"/>
-            <a-button type="primary" size="small" :loading="tableLoading" :disabled="!applySource"
-                      @click="handlerRun()">
-              <play-circle-outlined v-if="!tableLoading"/>
-              {{ $t('common.run') }}
-            </a-button>
-            <a-button type="dashed" size="small" :disabled="!applySource" @click="handlerFormat()">
-              <format-painter-outlined/>
-              {{ $t('common.format') }}
-            </a-button>
-            <a-button type="primary" danger size="small" :disabled="!applySource || !tableLoading"
-                      @click="handlerCancel()">
-              <close-circle-outlined/>
-              {{ $t('common.cancel') }}
-            </a-button>
-            <a-button v-if="tableConfigure.data" type="primary" size="small" @click="handlerCreateSnippet()">
-              <plus-outlined/>
-              {{ $t('common.snippet') }}
-            </a-button>
-            <a-button v-if="response.data" type="link" size="small">
-              <a-popconfirm placement="bottom" :showCancel="false">
-                <clock-circle-outlined/>
-                {{ response.data.processor.elapsed }} ms
-                <template #okButton></template>
-                <template #icon></template>
-                <template #title>
-                  <div style="min-width: 300px;">
-                    <a-row :gutter="16">
-                      <a-col :span="12">
-                        <a-statistic :value="response.data.connection.elapsed" suffix="ms">
-                          <template #title>
-                            <span>Connection</span>
-                            <a-tooltip placement="right">
+    <a-row>
+      <a-col :span="4">
+        <a-card size="small" bodyStyle="padding: 2px;">
+          <template #title>
+            <a-space :size="8">
+              <SourceSelectComponent @changeValue="handlerChangeValue($event)"/>
+            </a-space>
+          </template>
+          <DatabaseTree v-if="applySource" :id="applySource" :type="applySourceType"></DatabaseTree>
+        </a-card>
+      </a-col>
+      <a-col :span="20">
+        <div ref="editorContainer">
+          <a-card size="small" bodyStyle="padding: 2px;" style="margin-left: 2px">
+            <template #title>
+              <a-space :size="8">
+                <a-button type="primary" size="small" :loading="tableLoading" :disabled="!applySource"
+                          @click="handlerRun()">
+                  <play-circle-outlined v-if="!tableLoading"/>
+                  {{ $t('common.run') }}
+                </a-button>
+                <a-button type="dashed" size="small" :disabled="!applySource" @click="handlerFormat()">
+                  <format-painter-outlined/>
+                  {{ $t('common.format') }}
+                </a-button>
+                <a-button type="primary" danger size="small" :disabled="!applySource || !tableLoading"
+                          @click="handlerCancel()">
+                  <close-circle-outlined/>
+                  {{ $t('common.cancel') }}
+                </a-button>
+                <a-button v-if="tableConfigure.data" type="primary" size="small" @click="handlerCreateSnippet()">
+                  <plus-outlined/>
+                  {{ $t('common.snippet') }}
+                </a-button>
+                <a-button v-if="response.data" type="link" size="small">
+                  <a-popconfirm placement="bottom" :showCancel="false">
+                    <clock-circle-outlined/>
+                    {{ response.data.processor.elapsed }} ms
+                    <template #okButton></template>
+                    <template #icon></template>
+                    <template #title>
+                      <div style="min-width: 300px;">
+                        <a-row :gutter="16">
+                          <a-col :span="12">
+                            <a-statistic :value="response.data.connection.elapsed" suffix="ms">
                               <template #title>
-                                <span>Connection time!</span>
+                                <span>Connection</span>
+                                <a-tooltip placement="right">
+                                  <template #title>
+                                    <span>Connection time!</span>
+                                  </template>
+                                  <question-circle-two-tone style="margin-left: 3px"/>
+                                </a-tooltip>
                               </template>
-                              <question-circle-two-tone style="margin-left: 3px"/>
-                            </a-tooltip>
-                          </template>
-                        </a-statistic>
-                      </a-col>
-                      <a-col :span="12">
-                        <a-statistic :value="response.data.processor.elapsed" suffix="ms">
-                          <template #title>
-                            <span>Execute</span>
-                            <a-tooltip placement="right">
+                            </a-statistic>
+                          </a-col>
+                          <a-col :span="12">
+                            <a-statistic :value="response.data.processor.elapsed" suffix="ms">
                               <template #title>
-                                <span>Execute time!</span>
+                                <span>Execute</span>
+                                <a-tooltip placement="right">
+                                  <template #title>
+                                    <span>Execute time!</span>
+                                  </template>
+                                  <question-circle-two-tone style="margin-left: 3px"/>
+                                </a-tooltip>
                               </template>
-                              <question-circle-two-tone style="margin-left: 3px"/>
-                            </a-tooltip>
-                          </template>
-                        </a-statistic>
-                      </a-col>
-                    </a-row>
-                  </div>
-                </template>
-              </a-popconfirm>
-            </a-button>
-          </a-space>
-        </template>
-        <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
-                      v-model:value="editorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
-        </MonacoEditor>
-      </a-card>
-    </div>
-    <div style="margin-top: 5px;">
-      <a-card :loading="tableLoading" :body-style="{padding: '2px'}">
-        <div v-if="tableConfigure.data" style="margin-bottom: 3px;">
-          <a-dropdown>
-            <template #overlay>
-              <a-menu @click="handlerExport()">
-                <a-menu-item key="export_csv">
-                  CSV
-                </a-menu-item>
-              </a-menu>
+                            </a-statistic>
+                          </a-col>
+                        </a-row>
+                      </div>
+                    </template>
+                  </a-popconfirm>
+                </a-button>
+              </a-space>
             </template>
-            <a-button type="primary" size="small">
-              Export
-              <DownloadOutlined/>
-            </a-button>
-          </a-dropdown>
+            <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
+                          v-model:value="editorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
+            </MonacoEditor>
+            <div style="margin-top: 5px;">
+              <a-card :loading="tableLoading" :body-style="{padding: '2px'}">
+                <div v-if="tableConfigure.data" style="margin-bottom: 3px;">
+                  <a-dropdown>
+                    <template #overlay>
+                      <a-menu @click="handlerExport()">
+                        <a-menu-item key="export_csv">
+                          CSV
+                        </a-menu-item>
+                      </a-menu>
+                    </template>
+                    <a-button type="primary" size="small">
+                      Export
+                      <DownloadOutlined/>
+                    </a-button>
+                  </a-dropdown>
+                </div>
+                <SheetComponent :dataCfg="tableConfigure" :options="tableOptions" :showPagination="true" sheetType="table"/>
+              </a-card>
+            </div>
+          </a-card>
         </div>
-        <SheetComponent :dataCfg="tableConfigure" :options="tableOptions" :showPagination="true" sheetType="table"/>
-      </a-card>
-    </div>
-
+      </a-col>
+    </a-row>
     <SnippetDetails v-if="snippetDetails" :isVisible="snippetDetails"
                     :codeSnippet="editorValue" @close="handlerCloseSnippetDetails($event)">
     </SnippetDetails>
@@ -115,10 +127,11 @@ import {defineComponent} from "vue";
 import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
 import {useRouter} from "vue-router";
 import {SnippetService} from "@/services/SnippetService";
+import DatabaseTree from "@/components/common/DatabaseTree.vue";
 
 export default defineComponent({
   name: "DashboardConsoleView",
-  components: {SnippetDetails, SheetComponent, SourceSelectComponent, MonacoEditor},
+  components: {DatabaseTree, SnippetDetails, SheetComponent, SourceSelectComponent, MonacoEditor},
   unmounted()
   {
     if (this.editorCompletionProvider) {
@@ -129,6 +142,7 @@ export default defineComponent({
   {
     return {
       applySource: null || '',
+      applySourceType: '',
       tableConfigure: {},
       tableOptions: {},
       tableColumns: [],
@@ -205,7 +219,7 @@ export default defineComponent({
               data: response.data.columns
             };
             this.tableOptions = {
-              width: editorContainer.offsetWidth - 8,
+              width: editorContainer.offsetWidth - 15,
               height: 340,
               pagination: {
                 pageSize: 10,
@@ -227,6 +241,7 @@ export default defineComponent({
     {
       const idAndType = value.split(':');
       this.applySource = idAndType[0];
+      this.applySourceType = idAndType[1];
       this.editorCompletionProvider.dispose();
       this.handlerEditorDidMount(this.editorInstance, idAndType[1]);
     },
