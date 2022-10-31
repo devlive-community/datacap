@@ -66,3 +66,6 @@ CREATE TABLE IF NOT EXISTS `datacap`.`snippet`
     `user_id`     bigint(20) NOT NULL,
     PRIMARY KEY (`id`)
 ) DEFAULT CHARSET = utf8;
+
+ALTER TABLE `datacap`.`source`
+    ADD COLUMN `configure` text;

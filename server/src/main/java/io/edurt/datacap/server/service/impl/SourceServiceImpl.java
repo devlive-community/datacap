@@ -5,6 +5,7 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import io.edurt.datacap.server.adapter.PageRequestAdapter;
 import io.edurt.datacap.server.body.SharedSourceBody;
+import io.edurt.datacap.server.common.JSON;
 import io.edurt.datacap.server.common.PluginCommon;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
@@ -46,6 +47,7 @@ public class SourceServiceImpl
     @Override
     public Response<SourceEntity> saveOrUpdate(SourceEntity configure)
     {
+        configure.setConfigure(JSON.toJSON(configure.getConfigures()));
         configure.setUser(UserDetailsService.getUser());
         return Response.success(this.sourceRepository.save(configure));
     }
@@ -80,7 +82,7 @@ public class SourceServiceImpl
         _configure.setUsername(Optional.ofNullable(configure.getUsername()));
         _configure.setPassword(Optional.ofNullable(configure.getPassword()));
         _configure.setDatabase(Optional.ofNullable(configure.getDatabase()));
-        _configure.setEnv(Optional.empty());
+        _configure.setEnv(Optional.ofNullable(configure.getConfigures()));
         _configure.setSsl(Optional.ofNullable(configure.getSsl()));
         _configure.setFormat(FormatType.JSON);
         plugin.connect(_configure);

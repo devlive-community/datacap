@@ -31,7 +31,7 @@ export class SourceService
   testConnection(configure: SourceModel): Promise<ResponseModel>
   {
     configure.protocol = 'HTTP';
-    return new HttpCommon().post(baseUrl + '/test', JSON.stringify(configure));
+    return new HttpCommon().post(baseUrl + '/test', configure);
   }
 
   getById(id: number): Promise<ResponseModel>

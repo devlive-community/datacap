@@ -80,7 +80,8 @@
                           v-model:value="editorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
             </MonacoEditor>
             <div style="margin-top: 5px;">
-              <a-card :loading="tableLoading" :body-style="{padding: '2px'}">
+              <a-empty v-if="!tableConfigure.data && !tableLoading"/>
+              <a-card v-else :loading="tableLoading" :body-style="{padding: '2px'}">
                 <div v-if="tableConfigure.data" style="margin-bottom: 3px;">
                   <a-dropdown>
                     <template #overlay>

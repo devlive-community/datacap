@@ -10,7 +10,8 @@ const emptySource: SourceModel = {
   password: "",
   catalog: "",
   database: "",
-  type: ""
+  type: "",
+  configures: {}
 };
 
 const createHeaders = (i18n: any) => {

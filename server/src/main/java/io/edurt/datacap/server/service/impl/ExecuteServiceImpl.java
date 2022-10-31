@@ -51,7 +51,7 @@ public class ExecuteServiceImpl
         _configure.setPassword(Optional.ofNullable(entity.getPassword()));
         _configure.setDatabase(Optional.ofNullable(entity.getDatabase()));
         _configure.setSsl(Optional.ofNullable(entity.getSsl()));
-        _configure.setEnv(Optional.ofNullable(configure.getEnv()));
+        _configure.setEnv(Optional.ofNullable(entity.getConfigures()));
         _configure.setFormat(configure.getFormat());
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(configure.getContent());

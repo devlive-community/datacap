@@ -38,7 +38,7 @@
                 </template>
               </a-avatar>
             </template>
-            <template #description>Database</template>
+            <template #description>{{ $t('common.source') }}</template>
           </a-card-meta>
         </a-card>
       </a-col>
@@ -50,7 +50,7 @@
         <a-tab-pane key="type" style="text-align: center;">
           <template #tab>
             <span>
-              <appstore-outlined/> Type
+              <appstore-outlined/> {{ $t('common.source') }}
             </span>
           </template>
           <a-radio-group v-model:value="formState.type">
@@ -66,10 +66,10 @@
         <a-tab-pane :disabled="!formState.type" key="configure">
           <template #tab>
             <span>
-              <setting-outlined/> Configure
+              <setting-outlined/> {{ $t('common.configure') }}
             </span>
           </template>
-          <a-form-item :name="['name']" label="Name" :rules="[{ required: true }]">
+          <a-form-item :name="['name']" :label="$t('common.name')" :rules="[{ required: true }]">
             <a-input v-model:value="formState.name"/>
           </a-form-item>
           <!-- <a-form-item :name="['protocol']" label="Protocol" :rules="[{ required: true }]">
@@ -79,32 +79,25 @@
               <a-select-option value="SSH">SSH</a-select-option>
             </a-select>
           </a-form-item> -->
-          <a-form-item :name="['host']" label="Host" :rules="[{ required: true }]">
+          <a-form-item :name="['host']" :label="$t('common.host')" :rules="[{ required: true }]">
             <a-input v-model:value="formState.host"/>
           </a-form-item>
-          <a-form-item :name="['port']" label="Port" :rules="[{type: 'number', min: 0, max: 65535}]">
+          <a-form-item :name="['port']" :label="$t('common.port')" :rules="[{type: 'number', min: 0, max: 65535}]">
             <a-input-number v-model:value="formState.port"/>
           </a-form-item>
         </a-tab-pane>
         <a-tab-pane :disabled="!formState.type" key="authorization">
           <template #tab>
             <span>
-              <lock-outlined/> Authorization
+              <lock-outlined/> {{ $t('common.authorization') }}
             </span>
           </template>
-          <a-form-item :name="['username']" label="UserName">
+          <a-form-item :name="['username']" :label="$t('common.username')">
             <a-input v-model:value="formState.username"/>
           </a-form-item>
-          <a-form-item :name="['password']" label="Password">
+          <a-form-item :name="['password']" :label="$t('common.password')">
             <a-input v-model:value="formState.password"/>
           </a-form-item>
-        </a-tab-pane>
-        <a-tab-pane :disabled="!formState.type" key="ssl">
-          <template #tab>
-            <span>
-              <safety-outlined/> SSL
-            </span>
-          </template>
           <a-form-item :name="['ssl']" label="SSL">
             <a-switch v-model:checked="formState.ssl"/>
           </a-form-item>
@@ -112,24 +105,63 @@
         <a-tab-pane :disabled="!formState.type" key="advanced">
           <template #tab>
             <span>
-              <group-outlined/> Advanced
+              <group-outlined/> {{ $t('common.advanced') }}
             </span>
           </template>
-          <a-form-item :name="['catalog']" label="Catalog">
+          <a-form-item :name="['catalog']" :label="$t('common.catalog')">
             <a-input v-model:value="formState.catalog"/>
           </a-form-item>
-          <a-form-item :name="['database']" label="Database">
+          <a-form-item :name="['database']" :label="$t('common.database')">
             <a-input v-model:value="formState.database"/>
+          </a-form-item>
+        </a-tab-pane>
+        <a-tab-pane :disabled="!formState.type" key="custom">
+          <template #tab>
+            <span>
+              <inbox-outlined/> {{ $t('common.custom') }}
+            </span>
+          </template>
+          <a-form-item style="margin-bottom: 10px;">
+            <a-button size="small" type="primary" shape="circle" @click="handlerPlusConfigure()">
+              <PlusOutlined/>
+            </a-button>
+          </a-form-item>
+          <a-form-item v-for="(element, index) in configure" :key="index" style="margin-bottom: 5px;">
+            <a-row :gutter="24">
+              <a-col :span="12">
+                <a-form-item :label="$t('common.field')" :name="['configure', index, 'field']"
+                             :key="['configure', index, 'field']" style="margin-bottom: 5px;">
+                  <a-input v-model:value="element.field"></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :span="10">
+                <a-form-item :label="$t('common.value')" :name="['configure', index, 'value']"
+                             :key="['configure', index, 'value']" style="margin-bottom: 5px;">
+                  <a-input v-model:value="element.value"></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :span="2">
+                <a-form-item style="margin-bottom: 5px;">
+                  <a-button size="small" type="primary" shape="circle" danger @click="handlerMinusConfigure(element)">
+                    <MinusCircleOutlined/>
+                  </a-button>
+                </a-form-item>
+              </a-col>
+            </a-row>
           </a-form-item>
         </a-tab-pane>
       </a-tabs>
       <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }" style="margin-top: 20px; margin-bottom: -5px;">
         <a-space style="width: 100%">
-          <a-button key="cancel" danger size="small" :disabled="connectionLoading" @click="handlerCancel()">Cancel
+          <a-button key="cancel" danger size="small" :disabled="connectionLoading" @click="handlerCancel()">
+            {{ $t('common.cancel') }}
           </a-button>
-          <a-button key="test" type="primary" size="small" :loading="connectionLoading" @click="handlerTest()">Test
+          <a-button key="test" type="primary" size="small" :loading="connectionLoading" @click="handlerTest()">
+            {{ $t('common.test') }}
           </a-button>
-          <a-button key="submit" type="primary" size="small" :disabled="!testInfo.connected" html-type="submit">Save</a-button>
+          <a-button key="submit" type="primary" size="small" :disabled="!testInfo.connected" html-type="submit">
+            {{ $t('common.save') }}
+          </a-button>
         </a-space>
       </a-form-item>
     </a-form>
@@ -142,6 +174,8 @@ import {SourceService} from "@/services/SourceService";
 import {emptySource} from "@/views/pages/admin/source/SourceGenerate";
 import {message} from "ant-design-vue";
 import {defineComponent, reactive, ref} from "vue";
+import {Configure} from "@/model/Configure";
+import {Arrays} from "@/common/Arrays";
 
 interface TestInfo
 {
@@ -190,6 +224,7 @@ export default defineComponent({
       plugins: [],
       testInfo: {} as TestInfo,
       connectionLoading: false,
+      configure: [] as Configure[]
     }
   },
   created()
@@ -212,6 +247,15 @@ export default defineComponent({
           .then(response => {
             if (response.status) {
               this.formState = reactive(response.data);
+              if (response.data.configures) {
+                Object.keys(response.data.configures).forEach((value) => {
+                  const configure: Configure = {
+                    field: value,
+                    value: response.data.configures[value]
+                  };
+                  this.configure.push(configure);
+                });
+              }
             }
           });
       }
@@ -228,8 +272,9 @@ export default defineComponent({
     },
     handlerSave()
     {
+      this.formState.configures = Arrays.arrayToObject(this.configure);
       new SourceService()
-        .saveAndUpdate(this.formState as SourceModel, this.isUpdate)
+        .saveAndUpdate(this.formState, this.isUpdate)
         .then((response) => {
           if (response.status) {
             message.success("Create successful");
@@ -240,8 +285,9 @@ export default defineComponent({
     handlerTest()
     {
       this.connectionLoading = true;
+      this.formState.configures = Arrays.arrayToObject(this.configure);
       new SourceService()
-        .testConnection(this.formState as SourceModel)
+        .testConnection(this.formState)
         .then((response) => {
           this.testInfo.percent = 100;
           if (response.status) {
@@ -256,6 +302,18 @@ export default defineComponent({
         .finally(() => {
           this.connectionLoading = false;
         });
+    },
+    handlerPlusConfigure()
+    {
+      const configure: Configure = {field: '', value: ''};
+      this.configure.push(configure);
+    },
+    handlerMinusConfigure(configure: Configure)
+    {
+      const index = this.configure.indexOf(configure);
+      if (index !== -1) {
+        this.configure.splice(index, 1);
+      }
     }
   },
   computed: {
