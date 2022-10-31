@@ -49,11 +49,11 @@ export class TreeService
         dataType: 'table'
       };
     }
-    const applyTable = table ? table : exists[0];
-    const column = this.getColumnTree(element, applyTable.children);
-    if (column) {
-      applyTable.children.push(column);
-    }
+    // const applyTable = table ? table : exists[0];
+    // const column = this.getColumnTree(element, applyTable.children);
+    // if (column) {
+    //   applyTable.children.push(column);
+    // }
     return table;
   }
 
