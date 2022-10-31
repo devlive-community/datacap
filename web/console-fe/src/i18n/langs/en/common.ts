@@ -37,5 +37,10 @@ export default {
   snippet: 'Snippet',
   submit: 'Submit',
   updateTime: 'Update Time',
-  quote: 'Quote'
+  quote: 'Quote',
+  configure: 'Configure',
+  advanced: 'Advanced',
+  authorization: 'Authorization',
+  test: 'Test',
+  save: 'Save'
 }

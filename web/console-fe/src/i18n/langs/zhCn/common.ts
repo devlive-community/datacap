@@ -37,5 +37,10 @@ export default {
   snippet: '片段',
   submit: '提交',
   updateTime: '更新时间',
-  quote: '引用'
+  quote: '引用',
+  configure: '配置',
+  advanced: '高级',
+  authorization: '授权',
+  test: '测试',
+  save: '保存'
 }
