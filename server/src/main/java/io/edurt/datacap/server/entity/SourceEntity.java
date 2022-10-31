@@ -1,14 +1,17 @@
 package io.edurt.datacap.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.server.common.JSON;
 import io.edurt.datacap.server.common.ProtocolEnum;
 import io.edurt.datacap.server.validation.ValidationGroup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,17 +26,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "source")
+@JsonIgnoreProperties(value = {"configure"})
 @org.hibernate.annotations.Table(appliesTo = "source", comment = "The storage is used to query the data connection source")
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
         justification = "I prefer to suppress these FindBugs warnings")
@@ -95,8 +101,31 @@ public class SourceEntity
     @JsonProperty(value = "public")
     private Boolean publish; // Public use or not
 
+    @Column(name = "configure")
+    @JsonProperty(value = "configure")
+    private String configure;
+
+    @Transient
+    private Map<String, Object> configures;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIncludeProperties(value = {"id", "username"})
     private UserEntity user;
+
+    public void setConfigure(String configure)
+    {
+        this.configure = configure;
+        if (StringUtils.isNotEmpty(configure)) {
+            this.setConfigures(JSON.toMap(this.configure));
+        }
+    }
+
+    public Map<String, Object> getConfigures()
+    {
+        if (StringUtils.isNotEmpty(this.configure)) {
+            this.setConfigures(JSON.toMap(this.configure));
+        }
+        return configures;
+    }
 }

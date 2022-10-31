@@ -42,5 +42,8 @@ export default {
   advanced: '高级',
   authorization: '授权',
   test: '测试',
-  save: '保存'
+  save: '保存',
+  custom: '自定义',
+  field: '属性',
+  value: '值'
 }

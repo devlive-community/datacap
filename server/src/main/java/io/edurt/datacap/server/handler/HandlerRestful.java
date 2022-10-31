@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import io.edurt.datacap.server.authorize.UserNotEqualsException;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class HandlerRestful
 {
@@ -50,6 +52,7 @@ public class HandlerRestful
     @ResponseBody
     public Response<String> handlerConstraintViolationException(HttpMessageNotReadableException ex)
     {
+        log.error("", ex);
         if (ex.getCause() instanceof InvalidFormatException) {
             return Response.failure(ServiceState.REQUEST_VALID_ARGUMENT_FORMAT);
         }

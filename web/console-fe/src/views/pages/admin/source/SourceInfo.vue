@@ -98,13 +98,6 @@
           <a-form-item :name="['password']" :label="$t('common.password')">
             <a-input v-model:value="formState.password"/>
           </a-form-item>
-        </a-tab-pane>
-        <a-tab-pane :disabled="!formState.type" key="ssl">
-          <template #tab>
-            <span>
-              <safety-outlined/> SSL
-            </span>
-          </template>
           <a-form-item :name="['ssl']" label="SSL">
             <a-switch v-model:checked="formState.ssl"/>
           </a-form-item>
@@ -120,6 +113,41 @@
           </a-form-item>
           <a-form-item :name="['database']" :label="$t('common.database')">
             <a-input v-model:value="formState.database"/>
+          </a-form-item>
+        </a-tab-pane>
+        <a-tab-pane :disabled="!formState.type" key="custom">
+          <template #tab>
+            <span>
+              <inbox-outlined/> {{ $t('common.custom') }}
+            </span>
+          </template>
+          <a-form-item style="margin-bottom: 10px;">
+            <a-button size="small" type="primary" shape="circle" @click="handlerPlusConfigure()">
+              <PlusOutlined/>
+            </a-button>
+          </a-form-item>
+          <a-form-item v-for="(element, index) in configure" :key="index" style="margin-bottom: 5px;">
+            <a-row :gutter="24">
+              <a-col :span="12">
+                <a-form-item :label="$t('common.field')" :name="['configure', index, 'field']"
+                             :key="['configure', index, 'field']" style="margin-bottom: 5px;">
+                  <a-input v-model:value="element.field"></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :span="10">
+                <a-form-item :label="$t('common.value')" :name="['configure', index, 'value']"
+                             :key="['configure', index, 'value']" style="margin-bottom: 5px;">
+                  <a-input v-model:value="element.value"></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :span="2">
+                <a-form-item style="margin-bottom: 5px;">
+                  <a-button size="small" type="primary" shape="circle" danger @click="handlerMinusConfigure(element)">
+                    <MinusCircleOutlined/>
+                  </a-button>
+                </a-form-item>
+              </a-col>
+            </a-row>
           </a-form-item>
         </a-tab-pane>
       </a-tabs>
@@ -146,6 +174,8 @@ import {SourceService} from "@/services/SourceService";
 import {emptySource} from "@/views/pages/admin/source/SourceGenerate";
 import {message} from "ant-design-vue";
 import {defineComponent, reactive, ref} from "vue";
+import {Configure} from "@/model/Configure";
+import {Arrays} from "@/common/Arrays";
 
 interface TestInfo
 {
@@ -194,6 +224,7 @@ export default defineComponent({
       plugins: [],
       testInfo: {} as TestInfo,
       connectionLoading: false,
+      configure: [] as Configure[]
     }
   },
   created()
@@ -216,6 +247,15 @@ export default defineComponent({
           .then(response => {
             if (response.status) {
               this.formState = reactive(response.data);
+              if (response.data.configures) {
+                Object.keys(response.data.configures).forEach((value) => {
+                  const configure: Configure = {
+                    field: value,
+                    value: response.data.configures[value]
+                  };
+                  this.configure.push(configure);
+                });
+              }
             }
           });
       }
@@ -232,8 +272,9 @@ export default defineComponent({
     },
     handlerSave()
     {
+      this.formState.configures = Arrays.arrayToObject(this.configure);
       new SourceService()
-        .saveAndUpdate(this.formState as SourceModel, this.isUpdate)
+        .saveAndUpdate(this.formState, this.isUpdate)
         .then((response) => {
           if (response.status) {
             message.success("Create successful");
@@ -244,8 +285,9 @@ export default defineComponent({
     handlerTest()
     {
       this.connectionLoading = true;
+      this.formState.configures = Arrays.arrayToObject(this.configure);
       new SourceService()
-        .testConnection(this.formState as SourceModel)
+        .testConnection(this.formState)
         .then((response) => {
           this.testInfo.percent = 100;
           if (response.status) {
@@ -260,6 +302,18 @@ export default defineComponent({
         .finally(() => {
           this.connectionLoading = false;
         });
+    },
+    handlerPlusConfigure()
+    {
+      const configure: Configure = {field: '', value: ''};
+      this.configure.push(configure);
+    },
+    handlerMinusConfigure(configure: Configure)
+    {
+      const index = this.configure.indexOf(configure);
+      if (index !== -1) {
+        this.configure.splice(index, 1);
+      }
     }
   },
   computed: {

@@ -42,5 +42,8 @@ export default {
   advanced: 'Advanced',
   authorization: 'Authorization',
   test: 'Test',
-  save: 'Save'
+  save: 'Save',
+  custom: 'Custom',
+  field: 'Field',
+  value: 'Value'
 }
