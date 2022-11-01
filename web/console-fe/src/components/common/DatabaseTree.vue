@@ -1,7 +1,7 @@
 <template>
-  <div style="min-height: 703px;">
+  <div style="max-height: 703px; max-width: 200px; overflow: auto;">
     <a-skeleton v-if="loading" active/>
-    <a-tree v-else :height="703" :tree-data="treeData" loading="true">
+    <a-tree v-else :tree-data="treeData" loading="true">
       <template #title="{ database, table, value, dataType }">
         <a-button size="small" type="text" @click="handlerCopy(database, table, value, dataType)">{{ value }}</a-button>
       </template>
