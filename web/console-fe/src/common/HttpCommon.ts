@@ -54,6 +54,9 @@ export class HttpCommon
       localStorage.removeItem(Common.token);
       window.location.reload();
     }
+    if (response.code === 5000) {
+      message.error(response.message);
+    }
     return response;
   }
 

@@ -45,5 +45,7 @@ export default {
   save: '保存',
   custom: '自定义',
   field: '属性',
-  value: '值'
+  value: '值',
+  profile: '资料',
+  contribution: 'Contribution'
 }

@@ -42,19 +42,14 @@
     <a-menu theme="dark" mode="horizontal" :style="{lineHeight: '64px', float: 'right'}">
       <a-sub-menu key="language">
         <template #icon>
-          <a-dropdown placement="bottom">
-            <template #overlay>
-              <a-menu style="margin-top: 5px;">
-                <a-menu-item key="en" @click="handlerChangeLang('en')">
-                  {{ $t('common.english') }}
-                </a-menu-item>
-                <a-menu-item key="zhCN" @click="handlerChangeLang('zh_cn')">
-                  {{ $t('common.chinese') }}
-                </a-menu-item>
-              </a-menu>
-            </template>
-            <translation-outlined/>
-          </a-dropdown>
+          <a-select v-model:value="language" style="width: 120px" size="small" @change="handlerChangeLang">
+            <a-select-option value="en">
+              {{ $t('common.english') }}
+            </a-select-option>
+            <a-select-option value="zh_cn">
+              {{ $t('common.chinese') }}
+            </a-select-option>
+          </a-select>
         </template>
       </a-sub-menu>
       <a-sub-menu>
@@ -62,7 +57,15 @@
           <a-dropdown placement="bottomRight">
             <template #overlay>
               <a-menu style="margin-top: 5px;">
+                <a-menu-item key="profile">
+                  <router-link to="/profile/index">
+                    <user-outlined/>
+                    {{ $t('common.profile') }}
+                  </router-link>
+                </a-menu-item>
+                <a-menu-divider></a-menu-divider>
                 <a-menu-item @click="handlerLogout">
+                  <logout-outlined/>
                   {{ $t('common.logout') }}
                 </a-menu-item>
               </a-menu>
@@ -96,8 +99,10 @@ export default defineComponent({
       localStorage.removeItem(Common.token);
       router.push('/auth/signin')
     }
+    const language = 'zh_cn';
     return {
       username,
+      language,
       handlerLogout
     }
   },

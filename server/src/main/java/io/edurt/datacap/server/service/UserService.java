@@ -9,4 +9,6 @@ public interface UserService
     Response<UserEntity> saveOrUpdate(UserEntity configure);
 
     Response<JwtResponse> authenticate(UserEntity configure);
+
+    Response<UserEntity> info(Long userId);
 }

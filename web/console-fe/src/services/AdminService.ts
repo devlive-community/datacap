@@ -1,15 +1,23 @@
-import { HttpCommon } from "@/common/HttpCommon";
+import {HttpCommon} from "@/common/HttpCommon";
 
-const pluginHistoryCount = "/api/v1/audit/plugin/admin/count";
+const pluginHistoryAdmin = "/api/v1/audit/plugin/admin";
 const sourceCount = "/api/v1/source/admin/count";
 
-export class AdminService {
+export class AdminService
+{
 
-  getSourceCount() {
+  getSourceCount()
+  {
     return new HttpCommon().get(sourceCount);
   }
 
-  getPluginHistoryCount() {
-    return new HttpCommon().get(pluginHistoryCount);
+  getPluginHistoryCount()
+  {
+    return new HttpCommon().get(pluginHistoryAdmin + '/count');
+  }
+
+  getUserContribution()
+  {
+    return new HttpCommon().get(pluginHistoryAdmin + '/contribution');
   }
 }

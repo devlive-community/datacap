@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,5 +68,14 @@ public class HandlerRestful
     public Response<String> handlerUserNotEqualsException(UserNotEqualsException ex)
     {
         return Response.failure(ServiceState.USER_UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({NoHandlerFoundException.class})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Response<Object> handlerNoHandlerFoundException(NoHandlerFoundException ex)
+    {
+        log.error("", ex);
+        return Response.failure(ServiceState.REQUEST_EXCEPTION, ex.getMessage());
     }
 }

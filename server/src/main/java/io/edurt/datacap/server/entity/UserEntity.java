@@ -1,6 +1,7 @@
 package io.edurt.datacap.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.server.validation.ValidationGroup;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ import java.util.Set;
         })
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
         justification = "I prefer to suppress these FindBugs warnings")
+@JsonIgnoreProperties(value = {"password"})
 public class UserEntity
 {
     @Id

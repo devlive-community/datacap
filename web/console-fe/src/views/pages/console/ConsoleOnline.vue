@@ -76,9 +76,14 @@
                 </a-button>
               </a-space>
             </template>
-            <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
-                          v-model:value="editorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
-            </MonacoEditor>
+            <a-tabs v-model:activeKey="activeKey" type="editable-card" @edit="handlerPlusEditor" @change="handlerChangeEditor" size="small">
+              <a-tab-pane v-for="editor in editors" :key="editor.key" :tab="editor.title" :closable="editor.closable">
+                <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
+                              :key="activeKey.value" @change="handlerChangeEditorValue"
+                              v-model:value="activeEditorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
+                </MonacoEditor>
+              </a-tab-pane>
+            </a-tabs>
             <div style="margin-top: 5px;">
               <a-empty v-if="!tableConfigure.data && !tableLoading"/>
               <a-card v-else :loading="tableLoading" :body-style="{padding: '2px'}">
@@ -105,7 +110,7 @@
       </a-col>
     </a-row>
     <SnippetDetails v-if="snippetDetails" :isVisible="snippetDetails"
-                    :codeSnippet="editorValue" @close="handlerCloseSnippetDetails($event)">
+                    :codeSnippet="activeEditorValue" @close="handlerCloseSnippetDetails($event)">
     </SnippetDetails>
   </div>
 </template>
@@ -124,11 +129,18 @@ import axios, {CancelTokenSource} from "axios";
 import {ExportToCsv} from 'export-to-csv';
 import * as monaco from 'monaco-editor';
 import MonacoEditor from 'monaco-editor-vue3';
-import {defineComponent} from "vue";
+import {defineComponent, ref} from "vue";
 import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
 import {useRouter} from "vue-router";
 import {SnippetService} from "@/services/SnippetService";
 import DatabaseTree from "@/components/common/DatabaseTree.vue";
+
+const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
+  {title: 'Editor', key: '1', closable: false}
+]);
+const activeKey = ref(editors.value[0].key);
+const editorMap = new Map<string, monaco.editor.ICodeEditor>();
+const editorValueMap = new Map<string, string>();
 
 export default defineComponent({
   name: "DashboardConsoleView",
@@ -148,12 +160,14 @@ export default defineComponent({
       tableOptions: {},
       tableColumns: [],
       tableLoading: false,
-      editorValue: '',
       cancelToken: {} as CancelTokenSource,
       response: {},
-      editorInstance: {} as monaco.editor.ICodeEditor,
       editorCompletionProvider: {} as monaco.IDisposable,
-      snippetDetails: false
+      snippetDetails: false,
+      activeEditorValue: '',
+      editors,
+      activeKey,
+      editorValueMap
     }
   },
   created()
@@ -172,17 +186,29 @@ export default defineComponent({
             new SnippetService().getById(id)
               .then((response) => {
                 if (response.status && response.data?.code) {
-                  this.editorValue = response.data.code;
+                  this.activeEditorValue = response.data.code;
                 }
               });
           }
         }
       }
     },
-    handlerEditorDidMount(editor: any, language: string)
+    handlerEditorDidMount(editor: any, language: string, newEditor?: string)
     {
+      try {
+        this.editorCompletionProvider.dispose();
+      }
+      catch (e) {
+        console.log(e);
+      }
       const suggestions = new LanguageService().transSuggestions([], language);
-      this.editorInstance = editor;
+      if (newEditor) {
+        editorMap.set(newEditor, editor);
+      }
+      else {
+        editorMap.set(activeKey.value, editor);
+      }
+      editorValueMap.set(activeKey.value, '');
       this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
         provideCompletionItems(): any
         {
@@ -204,7 +230,7 @@ export default defineComponent({
       const editorContainer: HTMLElement = this.$refs.editorContainer as HTMLElement;
       const configure: ExecuteModel = {
         name: this.applySource,
-        content: this.editorValue,
+        content: this.activeEditorValue,
         format: "JSON"
       };
       new ExecuteService()
@@ -244,18 +270,18 @@ export default defineComponent({
       this.applySource = idAndType[0];
       this.applySourceType = idAndType[1];
       this.editorCompletionProvider.dispose();
-      this.handlerEditorDidMount(this.editorInstance, idAndType[1]);
+      this.handlerEditorDidMount(editorMap.get(activeKey.value), idAndType[1]);
     },
     handlerFormat()
     {
       const configure = {
-        sql: this.editorValue
+        sql: this.activeEditorValue
       };
       new FormatService()
         .formatSql(configure)
         .then((response) => {
           if (response.status) {
-            this.editorValue = response.data;
+            this.activeEditorValue = response.data;
           }
           else {
             message.error(response.message);
@@ -289,6 +315,45 @@ export default defineComponent({
     handlerCloseSnippetDetails(value: boolean)
     {
       this.snippetDetails = value;
+    },
+    handlerPlusEditor(targetKey: string | MouseEvent, action: string)
+    {
+      if (action === 'add') {
+        activeKey.value = 'newTab' + activeKey.value + 1;
+        editors.value.push({title: 'New Tab', key: activeKey.value});
+        editorValueMap.set(activeKey.value, '');
+        this.handlerEditorDidMount(null, this.applySourceType, activeKey.value);
+        this.activeEditorValue = editorValueMap.get(activeKey.value) as string;
+      }
+      else {
+        let lastIndex = 0;
+        editors.value.forEach((editor, i) => {
+          if (editor.key === targetKey) {
+            lastIndex = i - 1;
+          }
+        });
+        editors.value = editors.value.filter(editor => editor.key !== targetKey);
+        if (editors.value.length && activeKey.value === targetKey) {
+          if (lastIndex >= 0) {
+            activeKey.value = editors.value[lastIndex].key;
+          }
+          else {
+            activeKey.value = editors.value[0].key;
+          }
+        }
+        editorMap.delete(targetKey as string);
+        editorValueMap.delete(targetKey as string);
+        this.handlerChangeEditor(activeKey.value);
+
+      }
+    },
+    handlerChangeEditor(targetKey: string)
+    {
+      this.activeEditorValue = editorValueMap.get(targetKey) as string;
+    },
+    handlerChangeEditorValue(value: string)
+    {
+      editorValueMap.set(activeKey.value, value);
     }
   }
 });

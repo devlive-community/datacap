@@ -45,5 +45,7 @@ export default {
   save: 'Save',
   custom: 'Custom',
   field: 'Field',
-  value: 'Value'
+  value: 'Value',
+  profile: 'Profile',
+  contribution: 'Contribution'
 }
