@@ -110,7 +110,7 @@
       </a-col>
     </a-row>
     <SnippetDetails v-if="snippetDetails" :isVisible="snippetDetails"
-                    :codeSnippet="editorValue" @close="handlerCloseSnippetDetails($event)">
+                    :codeSnippet="activeEditorValue" @close="handlerCloseSnippetDetails($event)">
     </SnippetDetails>
   </div>
 </template>

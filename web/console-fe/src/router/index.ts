@@ -91,6 +91,10 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: 'index',
             component: () => import("../views/pages/profile/ProfileIndex.vue")
+          },
+          {
+            path: 'public',
+            component: () => import("../views/pages/profile/ProfilePublic.vue")
           }
         ]
       }

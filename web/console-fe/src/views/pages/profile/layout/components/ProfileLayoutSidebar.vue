@@ -8,6 +8,17 @@
           </template>
           <template #description>{{ username }}</template>
         </a-card-meta>
+        <a-divider></a-divider>
+        <a-menu style="width: 199px; margin-left: -24px;">
+          <a-menu-item key="public">
+            <template #icon>
+              <profile-outlined/>
+            </template>
+            <router-link to="/profile/public">
+              {{ $t('setting.profile') }}
+            </router-link>
+          </a-menu-item>
+        </a-menu>
       </a-card>
     </template>
   </a-card>

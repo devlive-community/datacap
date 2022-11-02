@@ -83,4 +83,13 @@ public class UserServiceImpl
                 .collect(Collectors.toList());
         return Response.success(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
     }
+
+    @Override
+    public Response<UserEntity> info(Long userId)
+    {
+        if (ObjectUtils.isEmpty(userId)) {
+            userId = UserDetailsService.getUser().getId();
+        }
+        return Response.success(this.userRepository.findById(userId).get());
+    }
 }
