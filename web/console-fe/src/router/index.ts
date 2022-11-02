@@ -4,6 +4,7 @@ import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Common from "@/common/Common";
+import ProfileLayout from "@/views/pages/profile/layout/ProfileLayout.vue";
 
 NProgress.configure({
   easing: 'ease',
@@ -71,6 +72,27 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "snippet",
         component: () => import("../views/pages/admin/snippet/SnippetConsole.vue")
+      }
+    ]
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    redirect: '/profile/index',
+    component: LayoutContainer,
+    meta: {
+      requireAuth: true
+    },
+    children: [
+      {
+        path: '',
+        component: ProfileLayout,
+        children: [
+          {
+            path: 'index',
+            component: () => import("../views/pages/profile/ProfileIndex.vue")
+          }
+        ]
       }
     ]
   },

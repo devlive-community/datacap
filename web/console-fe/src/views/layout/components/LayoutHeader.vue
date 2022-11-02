@@ -62,7 +62,15 @@
           <a-dropdown placement="bottomRight">
             <template #overlay>
               <a-menu style="margin-top: 5px;">
+                <a-menu-item key="profile" >
+                  <router-link to="/profile/index">
+                    <user-outlined/>
+                    {{ $t('common.profile') }}
+                  </router-link>
+                </a-menu-item>
+                <a-menu-divider></a-menu-divider>
                 <a-menu-item @click="handlerLogout">
+                  <logout-outlined />
                   {{ $t('common.logout') }}
                 </a-menu-item>
               </a-menu>
