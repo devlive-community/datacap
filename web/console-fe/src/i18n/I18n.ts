@@ -7,6 +7,12 @@ const i18n = createI18n({
   fallbackLocale: 'zh_cn',
   globalInjection: true,
   legacy: false,
+  // [intlify] Fall back to translate 'hello' key with 'en' locale.
+  silentFallbackWarn: true,
+  fallbackWarn: false,
+  // [intlify] Not found 'hello' key in 'en' locale messages.
+  silentTranslationWarn: true,
+  missingWarn: false,
   locale: localStorage.getItem('lang') || language.split('-')[0] || 'en',
   messages
 });

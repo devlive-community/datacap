@@ -1,37 +1,39 @@
 <template>
   <a-drawer :title="$t('common.create') + $t('common.snippet')" :width="720" :closable="false" :maskClosable="false"
             :visible="visible" :body-style="{ paddingBottom: '80px' }" :footer-style="{ textAlign: 'right' }">
-    <a-form :model="snippetForm" layout="vertical">
-      <a-row :gutter="16">
-        <a-col :span="12">
-          <a-form-item has-feedback :label="$t('common.name')" name="name">
-            <a-input v-model:value="snippetForm.name"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="24">
-          <a-form-item has-feedback :label="$t('common.description')" name="description">
-            <a-textarea v-model:value="snippetForm.description" :rows="4"/>
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16">
-        <a-col :span="24">
-          <a-form-item has-feedback :label="$t('common.snippet')" name="code">
-            <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
-                          v-model:value="snippetForm.code">
-            </MonacoEditor>
-          </a-form-item>
-        </a-col>
-      </a-row>
-    </a-form>
+   <a-spin :spinning="loading">
+     <a-form :model="snippetForm" layout="vertical">
+       <a-row :gutter="16">
+         <a-col :span="12">
+           <a-form-item has-feedback :label="$t('common.name')" name="name">
+             <a-input v-model:value="snippetForm.name"/>
+           </a-form-item>
+         </a-col>
+         <a-col :span="12">
+         </a-col>
+       </a-row>
+       <a-row :gutter="16">
+         <a-col :span="24">
+           <a-form-item has-feedback :label="$t('common.description')" name="description">
+             <a-textarea v-model:value="snippetForm.description" :rows="4"/>
+           </a-form-item>
+         </a-col>
+       </a-row>
+       <a-row :gutter="16">
+         <a-col :span="24">
+           <a-form-item has-feedback :label="$t('common.snippet')" name="code">
+             <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
+                           v-model:value="snippetForm.code">
+             </MonacoEditor>
+           </a-form-item>
+         </a-col>
+       </a-row>
+     </a-form>
+   </a-spin>
     <template #extra>
       <a-space>
         <a-button @click="handlerCancel()">{{ $t('common.cancel') }}</a-button>
-        <a-button type="primary" @click="handlerSave()" :disabled="disabled">{{ $t('common.submit') }}</a-button>
+        <a-button type="primary" @click="handlerSave()">{{ $t('common.submit') }}</a-button>
       </a-space>
     </template>
   </a-drawer>
@@ -64,34 +66,37 @@ export default defineComponent({
   {
     return {
       isUpdate: false,
-      snippetForm: null as unknown as Snippet
+      snippetForm: null as unknown as Snippet,
+      loading: false
     }
   },
   created()
   {
+    this.snippetForm = reactive<Snippet>({
+      name: '',
+      description: '',
+      code: ''
+    });
     this.isUpdate = this.id === 0 ? false : true;
     this.handlerInitialize();
-    if (this.codeSnippet != null) {
-      this.snippetForm.code = this.codeSnippet;
-    }
   },
   methods: {
     handlerInitialize()
     {
       if (this.id > 0) {
+        this.loading = true;
         new SnippetService().getById(this.id)
           .then(response => {
             if (response.status) {
               this.snippetForm = reactive<Snippet>(response.data);
             }
+          })
+          .finally(() => {
+            this.loading = false;
           });
       }
-      else {
-        this.snippetForm = reactive<Snippet>({
-          name: '',
-          description: '',
-          code: ''
-        });
+      if (this.codeSnippet != null) {
+        this.snippetForm.code = this.codeSnippet;
       }
     },
     handlerSave()
