@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `datacap`.`snippet`
     `id`          bigint(20) NOT NULL AUTO_INCREMENT,
     `name`        varchar(255) DEFAULT NULL COMMENT ' ',
     `description` varchar(255) DEFAULT NULL COMMENT ' ',
-    `code`        varchar(255) DEFAULT NULL COMMENT ' ',
+    `code`        text         DEFAULT NULL COMMENT ' ',
     `create_time` timestamp    DEFAULT CURRENT_TIMESTAMP,
     `update_time` timestamp    DEFAULT CURRENT_TIMESTAMP,
     `user_id`     bigint(20) NOT NULL,

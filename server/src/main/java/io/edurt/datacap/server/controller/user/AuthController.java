@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.controller.user;
 
+import io.edurt.datacap.server.body.AuthBody;
 import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.UserEntity;
@@ -23,14 +24,20 @@ public class AuthController
     }
 
     @PostMapping("/signin")
-    public Response<JwtResponse> authenticateUser(@RequestBody @Validated(ValidationGroup.Crud.Auth.class) UserEntity configure)
+    public Response<JwtResponse> authenticateUser(@RequestBody @Validated(ValidationGroup.Crud.Auth.class) AuthBody configure)
     {
-        return this.userService.authenticate(configure);
+        UserEntity user = new UserEntity();
+        user.setUsername(configure.getUsername());
+        user.setPassword(configure.getPassword());
+        return this.userService.authenticate(user);
     }
 
     @PostMapping("/signup")
-    public Response<?> registerUser(@RequestBody @Validated(ValidationGroup.Crud.Create.class) UserEntity configure)
+    public Response<?> registerUser(@RequestBody @Validated(ValidationGroup.Crud.Create.class) AuthBody configure)
     {
-        return this.userService.saveOrUpdate(configure);
+        UserEntity user = new UserEntity();
+        user.setUsername(configure.getUsername());
+        user.setPassword(configure.getPassword());
+        return this.userService.saveOrUpdate(user);
     }
 }
