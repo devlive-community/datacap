@@ -95,6 +95,10 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: 'public',
             component: () => import("../views/pages/profile/ProfilePublic.vue")
+          },
+          {
+            path: 'security',
+            component: () => import("../views/pages/profile/ProfileSecurity.vue")
           }
         ]
       }

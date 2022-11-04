@@ -4,7 +4,9 @@
       <a-card :bodyStyle="{'text-align': 'center'}">
         <a-card-meta>
           <template #title>
-            <a-avatar style="background-color: #87d068">{{ username }}</a-avatar>
+            <router-link to="/profile/index">
+              <a-avatar style="background-color: #87d068">{{ username }}</a-avatar>
+            </router-link>
           </template>
           <template #description>{{ username }}</template>
         </a-card-meta>
@@ -16,6 +18,14 @@
             </template>
             <router-link to="/profile/public">
               {{ $t('setting.profile') }}
+            </router-link>
+          </a-menu-item>
+          <a-menu-item key="security">
+            <template #icon>
+              <security-scan-outlined/>
+            </template>
+            <router-link to="/profile/security">
+              {{ $t('setting.security') }}
             </router-link>
           </a-menu-item>
         </a-menu>

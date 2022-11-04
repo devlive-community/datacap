@@ -7,7 +7,7 @@
       <a-spin :spinning="loading">
         <a-layout style="background-color: #ffffff">
           <a-layout-content>
-            <a-form :model="formState" v-bind="layout" @finish="onFinish">
+            <a-form :model="formState" v-bind="layout">
               <a-form-item :name="['name']" :label="$t('common.username')">
                 <span>{{ formState.username }}</span>
               </a-form-item>

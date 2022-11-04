@@ -13,6 +13,8 @@ public enum ServiceState
     USER_UNAUTHORIZED(4003, "Insufficient current user permissions"),
     USER_EXISTS(4004, "User exists"),
     USER_BAD_CREDENTIALS(4005, "The account or password is incorrect"),
+    USER_PASSWORD_INCORRECT(4006, "The user password is incorrect"),
+    USER_PASSWORD_DIFFERENT(4007, "Two passwords are different"),
     REQUEST_EXCEPTION(5000, "The request is abnormal");
 
     private Integer code;
