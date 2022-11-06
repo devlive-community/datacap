@@ -5,7 +5,7 @@
         <ProfileLayoutSidebar></ProfileLayoutSidebar>
       </a-layout-sider>
       <a-layout style="margin-left: 10px;">
-        <a-layout-content>
+        <a-layout-content style="background: #ffffff;">
           <ProfileLayoutContent></ProfileLayoutContent>
         </a-layout-content>
       </a-layout>

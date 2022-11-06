@@ -4,6 +4,7 @@ import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginAuditEntity;
 import io.edurt.datacap.server.itransient.ContributionHistory;
+import io.edurt.datacap.server.itransient.ContributionRadar;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface PluginAuditService
     Response<Long> count();
 
     Response<List<ContributionHistory>> getAllContribution();
+
+    Response<List<ContributionRadar>> getContributionRadar();
 }

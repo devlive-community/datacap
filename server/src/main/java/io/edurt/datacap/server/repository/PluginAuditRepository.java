@@ -49,4 +49,11 @@ public interface PluginAuditRepository
             "  ) AS tbr ON tbl._date = tbr.create_time\n" +
             "GROUP BY tbl._date", nativeQuery = true)
     List<Map<String, Object>> selectContributionByUserId(Long id);
+
+    @Query(value = "SELECT count(1) AS dataOfCount, s.name AS dataOfLabel\n" +
+            "FROM audit_plugin AS ap\n" +
+            "LEFT JOIN source AS s ON ap.plugin_id = s.id\n" +
+            "WHERE date_sub(curdate(), interval 7 day) <= date(ap.create_time)\n" +
+            "GROUP BY s._type", nativeQuery = true)
+    List<Map<String, Object>> selectRadarByUserId(Long id);
 }
