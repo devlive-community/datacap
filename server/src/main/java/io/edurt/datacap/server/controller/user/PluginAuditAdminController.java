@@ -2,6 +2,7 @@ package io.edurt.datacap.server.controller.user;
 
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.itransient.ContributionHistory;
+import io.edurt.datacap.server.itransient.ContributionRadar;
 import io.edurt.datacap.server.service.PluginAuditService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +31,11 @@ public class PluginAuditAdminController
     public Response<List<ContributionHistory>> contribution()
     {
         return this.pluginAuditService.getAllContribution();
+    }
+
+    @GetMapping(value = "radar")
+    public Response<List<ContributionRadar>> radar()
+    {
+        return this.pluginAuditService.getContributionRadar();
     }
 }

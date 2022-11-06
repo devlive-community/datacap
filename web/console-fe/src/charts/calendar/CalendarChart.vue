@@ -6,7 +6,6 @@ import {defineComponent, PropType} from "vue";
 import {Chart, IGroup, registerShape} from "@antv/g2";
 import {RangePoint, ShapeInfo} from "@antv/g2/lib/interface";
 import {ShapeCfg} from "@antv/g-base/src/types";
-import {Data} from "@antv/s2";
 import {Calendar} from "@/charts/calendar/Calendar";
 
 export default defineComponent({
@@ -46,33 +45,6 @@ export default defineComponent({
             group.addShape('path', {
               attrs
             });
-            const dat = cfg.data as Data;
-            if (dat.lastWeek) {
-              const linePath = [
-                ['M', points[2].x, points[2].y],
-                ['L', points[3].x, points[3].y]
-              ];
-              // Add the right border for the last week's polygon
-              group.addShape('path', {
-                attrs: {
-                  path: this.parsePath(linePath),
-                  lineWidth: 4,
-                  stroke: '#404040'
-                }
-              });
-              if (dat.lastDay) {
-                group.addShape('path', {
-                  attrs: {
-                    path: this.parsePath([
-                      ['M', points[1].x, points[1].y],
-                      ['L', points[2].x, points[2].y]
-                    ]),
-                    lineWidth: 2,
-                    stroke: '#404040'
-                  }
-                });
-              }
-            }
             return group;
           }
         });
@@ -109,7 +81,7 @@ export default defineComponent({
         });
         chart.coordinate().reflect('y');
         chart.polygon().position('week*day*date')
-          .color('count', '#BAE7FF-#1890FF-#0050B3')
+          .color('count', '#F0F0F2-#6bd08d-#023915')
           .shape('boundary-polygon');
         chart.interaction('element-active');
         chart.render();

@@ -6,14 +6,17 @@ import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginAuditEntity;
 import io.edurt.datacap.server.entity.UserEntity;
 import io.edurt.datacap.server.itransient.ContributionHistory;
+import io.edurt.datacap.server.itransient.ContributionRadar;
 import io.edurt.datacap.server.repository.PluginAuditRepository;
 import io.edurt.datacap.server.security.UserDetailsService;
 import io.edurt.datacap.server.service.PluginAuditService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PluginAuditServiceImpl
@@ -56,5 +59,23 @@ public class PluginAuditServiceImpl
             contributions.add(contribution);
         });
         return Response.success(contributions);
+    }
+
+    @Override
+    public Response<List<ContributionRadar>> getContributionRadar()
+    {
+        UserEntity user = UserDetailsService.getUser();
+        List<ContributionRadar> contributionRadars = new ArrayList<>();
+        List<Map<String, Object>> list = this.pluginAuditRepository.selectRadarByUserId(user.getId());
+        Long count = list.stream().mapToLong(v -> Long.valueOf(String.valueOf(v.get("dataOfCount")))).sum();
+        list.forEach(v -> {
+            ContributionRadar radar = new ContributionRadar();
+            radar.setLabel(String.valueOf(v.get("dataOfLabel")));
+            radar.setCount(Long.valueOf(String.valueOf(v.get("dataOfCount"))));
+            BigDecimal bigDecimal = new BigDecimal(Double.valueOf(radar.getCount()) / Double.valueOf(count));
+            radar.setPercentage(bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() * 100.0);
+            contributionRadars.add(radar);
+        });
+        return Response.success(contributionRadars);
     }
 }

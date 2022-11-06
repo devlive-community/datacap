@@ -20,4 +20,9 @@ export class AdminService
   {
     return new HttpCommon().get(pluginHistoryAdmin + '/contribution');
   }
+
+  getUserContributionRadar()
+  {
+    return new HttpCommon().get(pluginHistoryAdmin + '/radar');
+  }
 }
