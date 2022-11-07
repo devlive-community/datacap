@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +73,10 @@ public class PluginAuditServiceImpl
             ContributionRadar radar = new ContributionRadar();
             radar.setLabel(String.valueOf(v.get("dataOfLabel")));
             radar.setCount(Long.valueOf(String.valueOf(v.get("dataOfCount"))));
-            BigDecimal bigDecimal = new BigDecimal(Double.valueOf(radar.getCount()) / Double.valueOf(count));
-            radar.setPercentage(bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() * 100.0);
+            BigDecimal left = new BigDecimal(radar.getCount());
+            BigDecimal right = new BigDecimal(count);
+            BigDecimal divide = left.divide(right, 2, RoundingMode.HALF_UP);
+            radar.setPercentage(Float.valueOf(divide.toString()) * 100);
             contributionRadars.add(radar);
         });
         return Response.success(contributionRadars);

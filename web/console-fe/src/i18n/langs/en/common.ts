@@ -47,5 +47,6 @@ export default {
   field: 'Field',
   value: 'Value',
   profile: 'Profile',
-  contribution: 'Contribution'
+  contribution: 'Contribution',
+  about: 'About'
 }

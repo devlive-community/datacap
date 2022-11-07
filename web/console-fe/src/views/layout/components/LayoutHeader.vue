@@ -38,6 +38,11 @@
           </router-link>
         </a-menu-item>
       </a-sub-menu>
+      <a-menu-item key="about">
+        <router-link to="/common/about">
+          <info-circle-outlined/>&nbsp; {{ $t('common.about') }}
+        </router-link>
+      </a-menu-item>
     </a-menu>
     <a-menu theme="dark" mode="horizontal" :style="{lineHeight: '64px', float: 'right'}">
       <a-sub-menu key="language">

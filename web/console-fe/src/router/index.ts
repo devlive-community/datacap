@@ -112,6 +112,17 @@ const routes: Array<RouteRecordRaw> = [
         name: "routerNotFound",
         path: "not_found",
         component: () => import("../views/common/NotFound.vue")
+      },
+      {
+        name: "about",
+        path: "about",
+        component: LayoutContainer,
+        children: [
+          {
+            path: '',
+            component: () => import("../views/common/CommonAbout.vue")
+          }
+        ]
       }
     ]
   },
