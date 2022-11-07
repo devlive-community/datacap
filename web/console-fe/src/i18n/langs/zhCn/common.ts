@@ -47,5 +47,6 @@ export default {
   field: '属性',
   value: '值',
   profile: '资料',
-  contribution: 'Contribution'
+  contribution: 'Contribution',
+  about: '关于'
 }

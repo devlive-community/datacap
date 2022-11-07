@@ -13,5 +13,5 @@ public class ContributionRadar
 {
     private Long count;
     private String label;
-    private Double percentage;
+    private Float percentage;
 }
