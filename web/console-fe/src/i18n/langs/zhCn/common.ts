@@ -48,5 +48,6 @@ export default {
   value: '值',
   profile: '资料',
   contribution: 'Contribution',
-  about: '关于'
+  about: '关于',
+  feedback: '反馈意见'
 }
