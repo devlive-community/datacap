@@ -219,7 +219,7 @@ export default defineComponent({
             }))
           };
         },
-        triggerCharacters: ['.', ' '],
+        triggerCharacters: ['.'],
       });
     },
     handlerRun()
@@ -319,7 +319,7 @@ export default defineComponent({
     handlerPlusEditor(targetKey: string | MouseEvent, action: string)
     {
       if (action === 'add') {
-        activeKey.value = 'newTab' + activeKey.value + 1;
+        activeKey.value = 'newTab' + activeKey.value + Date.parse(new Date().toString());
         editors.value.push({title: 'New Tab', key: activeKey.value});
         editorValueMap.set(activeKey.value, '');
         this.handlerEditorDidMount(null, this.applySourceType, activeKey.value);

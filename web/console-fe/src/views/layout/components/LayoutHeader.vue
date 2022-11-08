@@ -44,19 +44,15 @@
         </router-link>
       </a-menu-item>
     </a-menu>
-    <a-menu theme="dark" mode="horizontal" :style="{lineHeight: '64px', float: 'right'}">
-      <a-sub-menu key="language">
-        <template #icon>
-          <a-select v-model:value="language" style="width: 120px" size="small" @change="handlerChangeLang">
-            <a-select-option value="en">
-              {{ $t('common.english') }}
-            </a-select-option>
-            <a-select-option value="zh_cn">
-              {{ $t('common.chinese') }}
-            </a-select-option>
-          </a-select>
-        </template>
-      </a-sub-menu>
+    <a-menu theme="dark" mode="horizontal" :style="{lineHeight: '64px', float: 'right', 'margin-right': '-50px'}">
+      <a-menu-item key="feedback" style="background-color: transparent;">
+        <a-tooltip color="#108ee9">
+          <template #title>{{ $t('common.feedback') }}</template>
+          <a target="_blank" href="https://github.com/EdurtIO/incubator-datacap/issues/new/choose">
+            <question-circle-outlined/>
+          </a>
+        </a-tooltip>
+      </a-menu-item>
       <a-sub-menu>
         <template #icon>
           <a-dropdown placement="bottomRight">
@@ -79,6 +75,23 @@
           </a-dropdown>
         </template>
       </a-sub-menu>
+      <a-dropdown>
+        <a-sub-menu key="language">
+          <template #icon>
+            <translation-outlined/>
+          </template>
+        </a-sub-menu>
+        <template #overlay>
+          <a-menu :style="{'margin-right': '10px'}">
+            <a-menu-item @click="handlerChangeLang('en')">
+              <span role="img" aria-label="USA">🇺🇸</span>&nbsp;&nbsp;{{ $t('common.english') }}
+            </a-menu-item>
+            <a-menu-item @click="handlerChangeLang('zh_cn')">
+              <span role="img" aria-label="China">🇨🇳</span>&nbsp;&nbsp;{{ $t('common.chinese') }}
+            </a-menu-item>
+          </a-menu>
+        </template>
+      </a-dropdown>
     </a-menu>
   </div>
 </template>
