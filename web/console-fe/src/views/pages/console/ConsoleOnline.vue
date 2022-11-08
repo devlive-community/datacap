@@ -219,7 +219,7 @@ export default defineComponent({
             }))
           };
         },
-        triggerCharacters: ['.', ' '],
+        triggerCharacters: ['.'],
       });
     },
     handlerRun()
