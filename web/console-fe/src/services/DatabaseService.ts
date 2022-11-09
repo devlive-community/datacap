@@ -2,7 +2,7 @@ export class DatabaseService
 {
   sql(type: string): string
   {
-    let sql = '';
+    let sql = undefined;
     switch (type.toLowerCase()) {
       case 'clickhouse':
         sql = `
