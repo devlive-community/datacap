@@ -75,6 +75,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://www.h2database.com/html/main.html" target="_blank">
         <img src="assets/plugin/h2.png" alt="H2" height="50" />
+    </a>&nbsp;
+    <a href="https://www.microsoft.com/sql-server" target="_blank">
+        <img src="assets/plugin/sqlserver.svg" alt="SqlServer" height="60" />
     </a>
 </p>
 

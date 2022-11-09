@@ -21,6 +21,7 @@ import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
 import io.edurt.datacap.spi.model.Configure;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -81,7 +82,8 @@ public class SourceServiceImpl
         _configure.setPort(configure.getPort());
         _configure.setUsername(Optional.ofNullable(configure.getUsername()));
         _configure.setPassword(Optional.ofNullable(configure.getPassword()));
-        _configure.setDatabase(Optional.ofNullable(configure.getDatabase()));
+        Optional<String> _database = StringUtils.isNotEmpty(configure.getDatabase()) ? Optional.ofNullable(configure.getDatabase()) : Optional.empty();
+        _configure.setDatabase(_database);
         _configure.setEnv(Optional.ofNullable(configure.getConfigures()));
         _configure.setSsl(Optional.ofNullable(configure.getSsl()));
         _configure.setFormat(FormatType.JSON);

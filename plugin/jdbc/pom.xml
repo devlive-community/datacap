@@ -32,5 +32,6 @@
         <module>monetdb</module>
         <module>phoenix</module>
         <module>h2</module>
+        <module>sqlserver</module>
     </modules>
 </project>

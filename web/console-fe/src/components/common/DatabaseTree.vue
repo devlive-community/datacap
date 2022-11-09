@@ -51,25 +51,31 @@ export default defineComponent({
     handlerInitialize()
     {
       this.treeData = [];
-      this.loading = true;
+      const sql = new DatabaseService().sql(this.type);
       const configure: ExecuteModel = {
         name: this.id,
-        content: new DatabaseService().sql(this.type),
+        content: sql,
         format: "JSON"
       };
-      new ExecuteService()
-        .execute(configure, null)
-        .then((response) => {
-          if (response.status) {
-            this.treeData = new TreeService().getTree(response);
-          }
-          else {
-            message.error(response.message);
-          }
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      if (sql) {
+        this.loading = true;
+        new ExecuteService()
+          .execute(configure, null)
+          .then((response) => {
+            if (response.status) {
+              this.treeData = new TreeService().getTree(response);
+            }
+            else {
+              message.error(response.message);
+            }
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }
+      else {
+        message.error('Not Supported!')
+      }
     },
     handlerCopy(database: string, table: string, value: string, dataType: string)
     {

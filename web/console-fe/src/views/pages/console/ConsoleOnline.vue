@@ -282,6 +282,7 @@ export default defineComponent({
         .then((response) => {
           if (response.status) {
             this.activeEditorValue = response.data;
+            editorValueMap.set(activeKey.value, this.activeEditorValue);
           }
           else {
             message.error(response.message);

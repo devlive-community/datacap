@@ -11,6 +11,7 @@ import io.edurt.datacap.server.repository.SourceRepository;
 import io.edurt.datacap.server.service.ExecuteService;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -49,7 +50,8 @@ public class ExecuteServiceImpl
         _configure.setPort(entity.getPort());
         _configure.setUsername(Optional.ofNullable(entity.getUsername()));
         _configure.setPassword(Optional.ofNullable(entity.getPassword()));
-        _configure.setDatabase(Optional.ofNullable(entity.getDatabase()));
+        Optional<String> _database = StringUtils.isNotEmpty(entity.getDatabase()) ? Optional.ofNullable(entity.getDatabase()) : Optional.empty();
+        _configure.setDatabase(_database);
         _configure.setSsl(Optional.ofNullable(entity.getSsl()));
         _configure.setEnv(Optional.ofNullable(entity.getConfigures()));
         _configure.setFormat(configure.getFormat());
