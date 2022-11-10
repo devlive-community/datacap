@@ -78,6 +78,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://www.microsoft.com/sql-server" target="_blank">
         <img src="assets/plugin/sqlserver.svg" alt="SqlServer" height="60" />
+    </a>&nbsp;
+    <a href="https://www.oracle.com/" target="_blank">
+        <img src="assets/plugin/oracle.png" alt="Oracle" height="50" />
     </a>
 </p>
 
