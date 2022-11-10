@@ -204,11 +204,11 @@ export default defineComponent({
       const suggestions = new LanguageService().transSuggestions([], language);
       if (newEditor) {
         editorMap.set(newEditor, editor);
+        editorValueMap.set(activeKey.value, '');
       }
       else {
         editorMap.set(activeKey.value, editor);
       }
-      editorValueMap.set(activeKey.value, '');
       this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
         provideCompletionItems(): any
         {
