@@ -1,4 +1,6 @@
-const releaseNote20221015 = `
+import {ReleaseNote} from "@/views/common/release/ReleaseNote";
+
+const content = `
 #### General
 - Building SPI supports multiple data sources
 - Supports web visualization based on Vue architecture
@@ -21,6 +23,13 @@ const releaseNote20221015 = `
 - Support IBM DB2
 `;
 
+const releaseNote: ReleaseNote = {
+  content: content,
+  latest: false,
+  time: "2022-10-15",
+  version: "1.0.0"
+};
+
 export default {
-  releaseNote20221015
+  releaseNote
 }

@@ -1,16 +1,9 @@
-!!! note
+import {ReleaseNote} from "@/views/common/release/ReleaseNote";
 
-    The current release involves several major updates. The following link is [**Roadmap**](https://github.com/orgs/EdurtIO/projects/1)
+const content = `
+> The current release involves several major updates. The following link is [**Roadmap**](https://github.com/orgs/EdurtIO/projects/1)
 
-:tada: :tada: :tada: :tada: :tada: :tada: **DataCap is released** :tada: :tada: :tada: :tada: :tada: :tada:
-
-| Release Version  | Release Time |
-|:----------------:|:------------:|
-| `1.1.0.20221115` | `2022-11-15` |
-
-#### :simple-spinnaker: General
-
----
+#### General
 
 - Replace plugin name to id
 - Support for internationalization [issues-82](https://github.com/EdurtIO/incubator-datacap/pull/82)
@@ -32,13 +25,9 @@
 
 #### SPI
 
----
-
 - Add custom validator
 
-#### :material-power-plug-outline: Plugins
-
----
+#### Plugins
 
 - Support MongoDB
 - Support Dremio
@@ -49,37 +38,24 @@
 
 #### Redis
 
----
-
 - Fix cannot init RedisConnection [issues-71](https://github.com/EdurtIO/incubator-datacap/issues/71)
 
 #### ElasticSearch
 
----
-
-- Update version to `7.10.0`
+- Update version to \`7.10.0\`
 
 #### Kyuubi
 
----
+- Bump Kyuubi \`1.6.0-incubating\`
+`;
 
-- Bump Kyuubi `1.6.0-incubating`
+const releaseNote: ReleaseNote = {
+  content: content,
+  latest: true,
+  time: "2022-11-15",
+  version: "1.1.0"
+};
 
-#### Thank you
-
---- 
-
-!!! danger
-
-    Many thanks to the following contributors for contributing to the source code of this release
-
-    In no particular order
-
-| GitHub ID |
-|:---------:|
-|@pan3793|
-|@javalover123|
-|@shuangzishuai|
-|@GtoCm|
-|@why198852|
-| @qianmoQ  |
+export default {
+  releaseNote
+}
