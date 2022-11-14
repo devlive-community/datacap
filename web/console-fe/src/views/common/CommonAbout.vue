@@ -4,15 +4,15 @@
       <a-alert message="Release Notes" type="info" show-icon/>
     </template>
     <a-timeline :reverse="true">
-      <a-timeline-item>
+      <a-timeline-item v-for="releaseNote of ReleaseNotes.releaseNotes" v-bind:key="releaseNote.version">
         <template #dot>
-          <check-circle-two-tone spin two-tone-color="#52c41a"/>
+          <check-circle-two-tone :spin="releaseNote.latest" two-tone-color="#52c41a"/>
         </template>
         <p>
-          <a-tag>1.0.0</a-tag>
-          <clock-circle-two-tone/>&nbsp;2022-10-15
+          <a-tag>{{ releaseNote.version }}</a-tag>
+          <clock-circle-two-tone/>&nbsp;{{ releaseNote.time }}
         </p>
-        <vue-markdown-it :source="releaseNote20221015"/>
+        <vue-markdown-it :source="releaseNote.content"/>
       </a-timeline-item>
     </a-timeline>
   </a-card>
@@ -20,7 +20,7 @@
 <script lang="ts">
 import VueMarkdownIt from 'vue3-markdown-it';
 import 'highlight.js/styles/monokai.css';
-import releaseNotes from "@/views/common/release/Release20221015";
+import ReleaseNotes from "@/views/common/release/ReleaseNotes";
 
 export default {
   components: {
@@ -28,9 +28,8 @@ export default {
   },
   setup()
   {
-    const releaseNote20221015 = releaseNotes.releaseNote20221015
     return {
-      releaseNote20221015
+      ReleaseNotes
     }
   }
 }

@@ -1,3 +1,7 @@
+!!! note
+
+    低版本MySQL需要设置 `useOldAliasMetadataBehavior` 参数来支持数据库表列表。
+
 当我们第一次使用系统或需要添加新的数据源时，点击顶部菜单 `Admin` -> `Source` 此时会跳转到数据源管理页面，它的布局如下
 
 ![img.png](../../assets/admin/source/img.png)

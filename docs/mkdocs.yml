@@ -113,8 +113,10 @@ plugins:
           documentation_database_mysql: MySQL
           documentation_database_clickhouse: ClickHouse
           documentation_database_kylin: Kylin
+          documentation_database_oracle: Oracle
           release: 发布日志
-          release_20221015: 1.0.0.20221015 (latest)
+          release_20221015: 1.0.0.20221015
+          release_20221115: 1.1.0.20221115 (latest)
         en:
           home: Home
           developer_guide: Developer guide
@@ -130,8 +132,10 @@ plugins:
           documentation_database_mysql: MySQL
           documentation_database_clickhouse: ClickHouse
           documentation_database_kylin: Kylin
+          documentation_database_oracle: Oracle
           release: Release Note
-          release_20221015: 1.0.0.20221015 (latest)
+          release_20221015: 1.0.0.20221015
+          release_20221115: 1.1.0.20221115 (latest)
   - search
   - blog:
       archive: false
@@ -143,7 +147,7 @@ plugins:
   - git-authors
   - redirects:
       redirect_maps:
-        release-latest.md: release/1.0.0.20221015.md
+        release-latest.md: release/1.1.0.20221115.md
 
 nav:
   - home: index.md
@@ -155,10 +159,12 @@ nav:
         - documentation_database_mysql: reference/database/mysql.md
         - documentation_database_clickhouse: reference/database/clickhouse.md
         - documentation_database_kylin: reference/database/kylin.md
+        - documentation_database_oracle: reference/database/oracle.md
   - developer_guide:
       - developer_guide_env: developer_guide/env.md
       - developer_guide_plugin: developer_guide/plugin.md
   - release:
+      - release_20221115: release/1.1.0.20221115.md
       - release_20221015: release/1.0.0.20221015.md
   - blog:
     - blog/index.md
