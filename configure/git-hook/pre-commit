@@ -4,4 +4,4 @@ printf "Code verification before submission starting\n"
 
 ./mvnw clean install checkstyle:checkstyle findbugs:findbugs -Dskip.npm -DskipTests=true -Dgpg.skip -Dorg.slf4j.simpleLogger.defaultLogLevel=error
 
-printf "\nCode verification before submission successful"
+printf "\nCode verification before submission successful\n\n"

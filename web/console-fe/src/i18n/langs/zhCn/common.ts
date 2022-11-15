@@ -49,5 +49,6 @@ export default {
   profile: '资料',
   contribution: 'Contribution',
   about: '关于',
-  feedback: '反馈意见'
+  feedback: '反馈意见',
+  column: '列'
 }

@@ -3,7 +3,7 @@
 commit_msg=$(cat "$1")
 
 email=$(git config user.email)
-msg_re="^(\[Feature\]|\[Fix\]|\[Docs\]|\[Refactor\]|\[Test\]|\[Workflow\]|\[Build\]|\[Ci\]|\[Env\]|\[Release\]|\[Api\]|\[Web\]|\[Core\]|\[Spi\]|\[Plugin\])(\(.+\))?: .{1,100}"
+msg_re="^(\[Feature\]|\[Fix\]|\[Docs\]|\[Refactor\]|\[Test\]|\[Workflow\]|\[Build\]|\[Ci\]|\[Env\]|\[Release\]|\[Api\]|\[Web\]|\[Core\]|\[Spi\]|\[Plugin\])(\(.+\))? .{1,100}"
 
 if [[ ! $commit_msg =~ $msg_re ]]; then
     printf "Invalid commit message submission format. Please use the correct format：\
