@@ -49,5 +49,6 @@ export default {
   profile: 'Profile',
   contribution: 'Contribution',
   about: 'About',
-  feedback: 'Feedback'
+  feedback: 'Feedback',
+  column: 'Column'
 }

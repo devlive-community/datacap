@@ -30,7 +30,7 @@
                   <close-circle-outlined/>
                   {{ $t('common.cancel') }}
                 </a-button>
-                <a-button v-if="tableConfigure.data" type="primary" size="small" @click="handlerCreateSnippet()">
+                <a-button v-if="tableConfigure" type="primary" size="small" @click="handlerCreateSnippet()">
                   <plus-outlined/>
                   {{ $t('common.snippet') }}
                 </a-button>
@@ -85,24 +85,9 @@
               </a-tab-pane>
             </a-tabs>
             <div style="margin-top: 5px;">
-              <a-empty v-if="!tableConfigure.data && !tableLoading"/>
+              <a-empty v-if="!tableConfigure && !tableLoading"/>
               <a-card v-else :loading="tableLoading" :body-style="{padding: '2px'}">
-                <div v-if="tableConfigure.data" style="margin-bottom: 3px;">
-                  <a-dropdown>
-                    <template #overlay>
-                      <a-menu @click="handlerExport()">
-                        <a-menu-item key="export_csv">
-                          CSV
-                        </a-menu-item>
-                      </a-menu>
-                    </template>
-                    <a-button type="primary" size="small">
-                      Export
-                      <DownloadOutlined/>
-                    </a-button>
-                  </a-dropdown>
-                </div>
-                <SheetComponent :dataCfg="tableConfigure" :options="tableOptions" :showPagination="true" sheetType="table"/>
+                <BasicTableComponent v-if="tableConfigure" :configure="tableConfigure"></BasicTableComponent>
               </a-card>
             </div>
           </a-card>
@@ -121,12 +106,10 @@ import {ExecuteModel} from "@/model/ExecuteModel";
 import {ExecuteService} from "@/services/ExecuteService";
 import {FormatService} from "@/services/FormatService";
 import {LanguageService} from "@/services/LanguageService";
-import {SheetComponent} from "@antv/s2-vue";
 import "@antv/s2-vue/dist/style.min.css";
 import {message} from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 import axios, {CancelTokenSource} from "axios";
-import {ExportToCsv} from 'export-to-csv';
 import * as monaco from 'monaco-editor';
 import MonacoEditor from 'monaco-editor-vue3';
 import {defineComponent, ref} from "vue";
@@ -134,6 +117,8 @@ import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
 import {useRouter} from "vue-router";
 import {SnippetService} from "@/services/SnippetService";
 import DatabaseTree from "@/components/common/DatabaseTree.vue";
+import {TableConfigure} from "@/components/table/TableConfigure";
+import BasicTableComponent from "@/components/table/ BasicTable.vue";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
   {title: 'Editor', key: '1', closable: false}
@@ -144,7 +129,7 @@ const editorValueMap = new Map<string, string>();
 
 export default defineComponent({
   name: "DashboardConsoleView",
-  components: {DatabaseTree, SnippetDetails, SheetComponent, SourceSelectComponent, MonacoEditor},
+  components: {BasicTableComponent, DatabaseTree, SnippetDetails, SourceSelectComponent, MonacoEditor},
   unmounted()
   {
     if (this.editorCompletionProvider) {
@@ -156,7 +141,7 @@ export default defineComponent({
     return {
       applySource: null || '',
       applySourceType: '',
-      tableConfigure: {},
+      tableConfigure: null as TableConfigure,
       tableOptions: {},
       tableColumns: [],
       tableLoading: false,
@@ -224,6 +209,7 @@ export default defineComponent({
     },
     handlerRun()
     {
+      this.tableConfigure = null;
       this.response = {};
       this.cancelToken = axios.CancelToken.source();
       this.tableLoading = true;
@@ -238,26 +224,18 @@ export default defineComponent({
         .then((response) => {
           if (response.status) {
             this.response = response;
-            this.tableColumns = response.data.columns;
-            this.tableConfigure = {
-              fields: {
-                columns: response.data.headers
-              },
-              data: response.data.columns
-            };
-            this.tableOptions = {
-              width: editorContainer.offsetWidth - 15,
+            const tConfigure: TableConfigure = {
+              headers: response.data.headers,
+              columns: response.data.columns,
               height: 340,
-              pagination: {
-                pageSize: 10,
-                current: 1,
-              },
-              showSeriesNumber: true,
-            }
+              width: editorContainer.offsetWidth - 16,
+              showSeriesNumber: false
+            };
+            this.tableConfigure = tConfigure;
           }
           else {
             message.error(response.message);
-            this.tableConfigure = {};
+            this.tableConfigure = null;
           }
         })
         .finally(() => {
@@ -292,22 +270,6 @@ export default defineComponent({
     handlerCancel()
     {
       this.cancelToken.cancel("Cancel query");
-    },
-    handlerExport()
-    {
-      const options = {
-        fieldSeparator: ',',
-        quoteStrings: '',
-        decimalSeparator: '.',
-        showLabels: true,
-        showTitle: false,
-        useTextFile: false,
-        useBom: true,
-        filename: Date.parse(new Date().toString()).toString(),
-        useKeysAsHeaders: true
-      };
-      const csvExporter = new ExportToCsv(options);
-      csvExporter.generateCsv(this.tableColumns);
     },
     handlerCreateSnippet()
     {
