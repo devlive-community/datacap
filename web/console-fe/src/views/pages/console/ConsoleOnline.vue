@@ -86,7 +86,7 @@
             </a-tabs>
             <div style="margin-top: 5px;">
               <a-empty v-if="!tableConfigure && !tableLoading"/>
-              <a-card v-else :loading="tableLoading" :body-style="{padding: '2px'}">
+              <a-card v-else :loading="tableLoading" :body-style="{padding: 0}">
                 <BasicTableComponent v-if="tableConfigure" :configure="tableConfigure"></BasicTableComponent>
               </a-card>
             </div>
@@ -106,7 +106,6 @@ import {ExecuteModel} from "@/model/ExecuteModel";
 import {ExecuteService} from "@/services/ExecuteService";
 import {FormatService} from "@/services/FormatService";
 import {LanguageService} from "@/services/LanguageService";
-import "@antv/s2-vue/dist/style.min.css";
 import {message} from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 import axios, {CancelTokenSource} from "axios";
@@ -118,7 +117,7 @@ import {useRouter} from "vue-router";
 import {SnippetService} from "@/services/SnippetService";
 import DatabaseTree from "@/components/common/DatabaseTree.vue";
 import {TableConfigure} from "@/components/table/TableConfigure";
-import BasicTableComponent from "@/components/table/ BasicTable.vue";
+import BasicTableComponent from "@/components/table/BasicTable.vue";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
   {title: 'Editor', key: '1', closable: false}
