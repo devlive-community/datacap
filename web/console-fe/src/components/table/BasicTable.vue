@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :bodyStyle="{padding: 0, 'min-height': 0}" size="small">
+    <a-card :bodyStyle="{padding: 0, 'min-height': 0}" :headStyle="{padding: 0}" size="small">
       <template #title>
         <a-button size="small" type="primary" @click="columnDrawerVisible = true" style="margin-right: 10px;">
           <column-width-outlined/>
@@ -36,33 +36,32 @@
           </template>
           <a-checkbox-group v-model:value="visibleColumns" style="width: 100%">
             <a-row>
-              <a-col :span="8" v-for="tag in configure.headers" v-bind:key="tag">
-                <a-checkbox :value="tag">{{ tag }}</a-checkbox>
+              <a-col :span="8" v-for="columnDef in columnDefs" v-bind:key="columnDef.headerName">
+                <a-checkbox :value="columnDef">{{ columnDef.headerName }}</a-checkbox>
               </a-col>
             </a-row>
           </a-checkbox-group>
         </a-drawer>
+        <ag-grid-vue :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}"
+          class="ag-theme-balham" :columnDefs="columnDefs" :rowData="configure.columns">
+        </ag-grid-vue>
       </template>
-      <SheetComponent
-        :dataCfg="dataCfg"
-        :options="options"
-        :showPagination="true"
-        :sheetType="'table'"/>
     </a-card>
   </div>
 </template>
 
 <script lang="ts">
-import {SheetComponent} from "@antv/s2-vue";
-import '@antv/s2-vue/dist/style.min.css';
 import {defineComponent} from "vue";
 import {TableConfigure} from "@/components/table/TableConfigure";
-import {S2DataConfig, S2Options} from "@antv/s2";
 import {ExportToCsv} from "export-to-csv";
+import {AgGridVue} from "ag-grid-vue3";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-balham.css";
+import {ColumnDef} from "@/components/table/ColumnDef";
 
 export default defineComponent({
   name: "BasicTableComponent",
-  components: {SheetComponent},
+  components: {AgGridVue},
   props: {
     configure: {
       type: TableConfigure,
@@ -76,31 +75,29 @@ export default defineComponent({
   data()
   {
     return {
-      dataCfg: null as S2DataConfig,
-      options: null as S2Options,
       columnDrawerVisible: false,
-      visibleColumns: []
+      visibleColumns: [],
+      columnDefs: []
     }
   },
   methods: {
     handlerInitialize()
     {
-      this.visibleColumns = this.configure.headers;
-      this.dataCfg = {
-        fields: {
-          columns: this.configure.headers
-        },
-        data: this.configure.columns
-      };
-      this.options = {
-        width: this.configure.width,
-        height: this.configure.height,
-        showSeriesNumber: this.configure.showSeriesNumber
-      };
+      this.configure.headers.forEach(header => {
+        const columnDef: ColumnDef = {
+          headerName: header,
+          field: header,
+          resizable: true,
+          sortable: true,
+          filter: true
+        };
+        this.columnDefs.push(columnDef)
+      });
+      this.visibleColumns = this.columnDefs;
     },
     handlerApplyColumn()
     {
-      this.dataCfg.fields.columns = this.visibleColumns;
+      this.columnDefs = this.visibleColumns;
       this.columnDrawerVisible = false;
     },
     handlerExport()
