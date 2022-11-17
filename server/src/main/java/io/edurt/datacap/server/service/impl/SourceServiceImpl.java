@@ -107,7 +107,7 @@ public class SourceServiceImpl
     {
         List<PluginEntity> plugins = this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
                 .stream()
-                .filter(plugin -> plugin.type().equals(PluginType.SOURCE))
+                .filter(plugin -> plugin.type().equals(PluginType.JDBC))
                 .map(plugin -> {
                     PluginEntity entity = new PluginEntity();
                     entity.setName(plugin.name());

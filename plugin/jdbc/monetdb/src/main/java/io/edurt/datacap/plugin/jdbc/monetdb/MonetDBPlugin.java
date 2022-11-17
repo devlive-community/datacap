@@ -34,7 +34,7 @@ public class MonetDBPlugin
     @Override
     public PluginType type()
     {
-        return PluginType.SOURCE;
+        return PluginType.JDBC;
     }
 
     @Override

@@ -34,7 +34,7 @@ public class KylinPlugin
     @Override
     public PluginType type()
     {
-        return PluginType.SOURCE;
+        return PluginType.JDBC;
     }
 
     @Override

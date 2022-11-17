@@ -14,6 +14,7 @@
 
     <properties>
         <guice.version>5.1.0</guice.version>
+        <okhttp.version>4.9.2</okhttp.version>
     </properties>
 
     <dependencies>
@@ -45,6 +46,11 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
         </dependency>
     </dependencies>
 </project>

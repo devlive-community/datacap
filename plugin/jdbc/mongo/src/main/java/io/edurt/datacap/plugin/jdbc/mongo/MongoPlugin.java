@@ -34,7 +34,7 @@ public class MongoPlugin
     @Override
     public PluginType type()
     {
-        return PluginType.SOURCE;
+        return PluginType.JDBC;
     }
 
     @Override

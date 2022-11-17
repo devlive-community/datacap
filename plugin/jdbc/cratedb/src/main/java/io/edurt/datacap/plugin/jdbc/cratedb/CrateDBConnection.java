@@ -21,7 +21,6 @@ public class CrateDBConnection
     {
         JdbcConfigure jdbcConfigure = (JdbcConfigure) this.getConfigure();
         StringBuffer buffer = new StringBuffer();
-//        buffer.append("jdbc:");
         buffer.append(jdbcConfigure.getJdbcType());
         buffer.append("://");
         buffer.append(jdbcConfigure.getHost());
