@@ -5,6 +5,16 @@
         <a-button size="small" type="primary" @click="columnDrawerVisible = true" style="margin-right: 10px;">
           <column-width-outlined/>
         </a-button>
+        <a-tooltip :title="$t('tooltip.pageShow')">
+          <a-switch v-model:checked="isPage" size="small" style="margin-right: 10px;" @change="handlerChange">
+            <template #checkedChildren>
+              <check-outlined/>
+            </template>
+            <template #unCheckedChildren>
+              <close-outlined/>
+            </template>
+          </a-switch>
+        </a-tooltip>
         <a-dropdown style="margin-right: 10px;">
           <template #overlay>
             <a-menu @click="handlerExport()">
@@ -42,7 +52,7 @@
             </a-row>
           </a-checkbox-group>
         </a-drawer>
-        <ag-grid-vue :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}"
+        <ag-grid-vue :key="timestamp" :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}" :pagination="isPage"
                      class="ag-theme-datacap" :columnDefs="columnDefs" :rowData="configure.columns" :gridOptions="gridOptions">
         </ag-grid-vue>
       </template>
@@ -60,6 +70,7 @@ import "./ag-theme-datacap.css";
 import {createDefaultOptions} from "./TableGridOptions";
 import {useI18n} from "vue-i18n";
 import {TableColumnDef} from "@/components/table/TableColumnDef";
+import {getTimestamp} from "@/common/DateCommon";
 
 export default defineComponent({
   name: "BasicTableComponent",
@@ -74,8 +85,10 @@ export default defineComponent({
   {
     const i18n = useI18n();
     const gridOptions = createDefaultOptions(i18n);
+    const timestamp = getTimestamp();
     return {
-      gridOptions
+      gridOptions,
+      timestamp
     }
   },
   created()
@@ -87,7 +100,8 @@ export default defineComponent({
     return {
       columnDrawerVisible: false,
       visibleColumns: [],
-      columnDefs: []
+      columnDefs: [],
+      isPage: true
     }
   },
   methods: {
@@ -122,6 +136,10 @@ export default defineComponent({
       };
       const csvExporter = new ExportToCsv(options);
       csvExporter.generateCsv(this.configure.columns);
+    },
+    handlerChange()
+    {
+      this.timestamp = getTimestamp();
     }
   }
 });
