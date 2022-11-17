@@ -19,7 +19,7 @@ public class MongoPluginModule
     @Override
     public PluginType getType()
     {
-        return PluginType.SOURCE;
+        return PluginType.JDBC;
     }
 
     @Override

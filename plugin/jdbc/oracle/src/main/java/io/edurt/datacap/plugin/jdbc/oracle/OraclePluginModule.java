@@ -19,7 +19,7 @@ public class OraclePluginModule
     @Override
     public PluginType getType()
     {
-        return PluginType.SOURCE;
+        return PluginType.JDBC;
     }
 
     @Override

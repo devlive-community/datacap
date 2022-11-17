@@ -17,5 +17,6 @@
     <modules>
         <module>example</module>
         <module>jdbc</module>
+        <module>http</module>
     </modules>
 </project>

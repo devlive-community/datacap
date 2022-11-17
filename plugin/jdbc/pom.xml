@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
     <artifactId>datacap-plugin-jdbc</artifactId>
     <groupId>io.edurt.datacap.plugin.jdbc</groupId>
-    <name>DataCap plugin for jdbc</name>
+    <name>DataCap plugin for (JDBC)</name>
 
     <modules>
         <module>mysql</module>
