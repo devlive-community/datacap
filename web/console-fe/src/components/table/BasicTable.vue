@@ -43,7 +43,7 @@
           </a-checkbox-group>
         </a-drawer>
         <ag-grid-vue :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}"
-          class="ag-theme-balham" :columnDefs="columnDefs" :rowData="configure.columns">
+                     class="ag-theme-datacap" :columnDefs="columnDefs" :rowData="configure.columns" :gridOptions="gridOptions">
         </ag-grid-vue>
       </template>
     </a-card>
@@ -56,8 +56,10 @@ import {TableConfigure} from "@/components/table/TableConfigure";
 import {ExportToCsv} from "export-to-csv";
 import {AgGridVue} from "ag-grid-vue3";
 import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-balham.css";
-import {ColumnDef} from "@/components/table/ColumnDef";
+import "./ag-theme-datacap.css";
+import {createDefaultOptions} from "./TableGridOptions";
+import {useI18n} from "vue-i18n";
+import {TableColumnDef} from "@/components/table/TableColumnDef";
 
 export default defineComponent({
   name: "BasicTableComponent",
@@ -66,6 +68,14 @@ export default defineComponent({
     configure: {
       type: TableConfigure,
       default: () => null
+    }
+  },
+  setup()
+  {
+    const i18n = useI18n();
+    const gridOptions = createDefaultOptions(i18n);
+    return {
+      gridOptions
     }
   },
   created()
@@ -84,12 +94,9 @@ export default defineComponent({
     handlerInitialize()
     {
       this.configure.headers.forEach(header => {
-        const columnDef: ColumnDef = {
+        const columnDef: TableColumnDef = {
           headerName: header,
-          field: header,
-          resizable: true,
-          sortable: true,
-          filter: true
+          field: header
         };
         this.columnDefs.push(columnDef)
       });
