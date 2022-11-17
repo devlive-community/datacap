@@ -81,6 +81,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://www.oracle.com/" target="_blank">
         <img src="assets/plugin/oracle.png" alt="Oracle" height="50" />
+    </a>&nbsp;
+    <a href="https://crate.io/" target="_blank">
+        <img src="assets/plugin/cratedb.png" alt="CrateDB" height="50" />
     </a>
 </p>
 

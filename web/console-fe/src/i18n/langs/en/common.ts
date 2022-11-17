@@ -50,5 +50,6 @@ export default {
   contribution: 'Contribution',
   about: 'About',
   feedback: 'Feedback',
-  column: 'Column'
+  column: 'Column',
+  page: 'Paging'
 }

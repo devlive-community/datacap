@@ -34,5 +34,6 @@
         <module>h2</module>
         <module>sqlserver</module>
         <module>oracle</module>
+        <module>cratedb</module>
     </modules>
 </project>
