@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.server.common.JSON;
-import io.edurt.datacap.server.common.ProtocolEnum;
 import io.edurt.datacap.server.validation.ValidationGroup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,9 +58,8 @@ public class SourceEntity
     private String type;
 
     @Column(name = "protocol", unique = true, nullable = false, columnDefinition = "varchar default 'HTTP'")
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "The passed protocol cannot by empty")
-    private ProtocolEnum protocol;
+    private String protocol;
 
     @Column(name = "host", unique = true, nullable = false)
     @NotEmpty(message = "The passed host cannot by empty")

@@ -7,6 +7,7 @@ import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SourceService
 {
@@ -20,7 +21,7 @@ public interface SourceService
 
     Response<SourceEntity> getById(Long id);
 
-    Response<List<PluginEntity>> getPlugins();
+    Response<Map<String, List<PluginEntity>>> getPlugins();
 
     Response<Long> count();
 

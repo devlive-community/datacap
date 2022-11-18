@@ -53,14 +53,17 @@
               <appstore-outlined/> {{ $t('common.source') }}
             </span>
           </template>
-          <a-radio-group v-model:value="formState.type">
-            <a-row :gutter="[16,8]">
-              <a-col v-for="plugin in plugins" :span="6" v-bind:key="plugin.name">
-                <a-radio-button :value="plugin.name">
-                  {{ plugin.name }}
-                </a-radio-button>
-              </a-col>
-            </a-row>
+          <a-radio-group v-if="plugins" v-model:value="formState.type">
+            <div v-for="key in Object.keys(plugins)" v-bind:key="key">
+              <a-divider orientation="left">{{ key }}</a-divider>
+              <a-row :gutter="[16,8]">
+                <a-col v-for="plugin in plugins[key]" :span="6" v-bind:key="plugin.name">
+                  <a-radio-button :value="plugin.name + ' ' + plugin.type">
+                    {{ plugin.name }}
+                  </a-radio-button>
+                </a-col>
+              </a-row>
+            </div>
           </a-radio-group>
         </a-tab-pane>
         <a-tab-pane :disabled="!formState.type" key="configure">
@@ -176,6 +179,7 @@ import {message} from "ant-design-vue";
 import {defineComponent, reactive, ref} from "vue";
 import {Configure} from "@/model/Configure";
 import {Arrays} from "@/common/Arrays";
+import {clone} from 'lodash'
 
 interface TestInfo
 {
@@ -221,7 +225,7 @@ export default defineComponent({
       title: '',
       isUpdate: false,
       formState: {} as SourceModel,
-      plugins: [],
+      plugins: null,
       testInfo: {} as TestInfo,
       connectionLoading: false,
       configure: [] as Configure[]
@@ -247,6 +251,7 @@ export default defineComponent({
           .then(response => {
             if (response.status) {
               this.formState = reactive(response.data);
+              this.formState.type = this.formState.type + ' ' + this.formState.protocol;
               if (response.data.configures) {
                 Object.keys(response.data.configures).forEach((value) => {
                   const configure: Configure = {
@@ -273,8 +278,12 @@ export default defineComponent({
     handlerSave()
     {
       this.formState.configures = Arrays.arrayToObject(this.configure);
+      const applyConfigure = clone(this.formState);
+      const temp = clone(this.formState.type).split(' ');
+      applyConfigure.type = temp[0];
+      applyConfigure.protocol = temp[1];
       new SourceService()
-        .saveAndUpdate(this.formState, this.isUpdate)
+        .saveAndUpdate(applyConfigure, this.isUpdate)
         .then((response) => {
           if (response.status) {
             message.success("Create successful");
@@ -286,8 +295,12 @@ export default defineComponent({
     {
       this.connectionLoading = true;
       this.formState.configures = Arrays.arrayToObject(this.configure);
+      const applyConfigure = clone(this.formState);
+      const temp = clone(this.formState.type).split(' ');
+      applyConfigure.type = temp[0];
+      applyConfigure.protocol = temp[1];
       new SourceService()
-        .testConnection(this.formState)
+        .testConnection(applyConfigure)
         .then((response) => {
           this.testInfo.percent = 100;
           if (response.status) {
