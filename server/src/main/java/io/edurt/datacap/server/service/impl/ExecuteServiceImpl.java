@@ -39,7 +39,7 @@ public class ExecuteServiceImpl
         }
 
         SourceEntity entity = entityOptional.get();
-        Optional<Plugin> pluginOptional = PluginCommon.getPluginByName(this.injector, entity.getType());
+        Optional<Plugin> pluginOptional = PluginCommon.getPluginByNameAndType(this.injector, entity.getType(), entity.getProtocol());
         if (!pluginOptional.isPresent()) {
             return Response.failure(ServiceState.PLUGIN_NOT_FOUND);
         }

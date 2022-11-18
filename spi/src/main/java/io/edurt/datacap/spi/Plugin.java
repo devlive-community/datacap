@@ -7,7 +7,7 @@ public interface Plugin
 {
     default String validator()
     {
-        return "SELECT version()";
+        return "SELECT version() AS version";
     }
 
     String name();

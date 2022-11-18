@@ -9,4 +9,5 @@ public class PluginEntity
 {
     private String name;
     private String description;
+    private String type;
 }

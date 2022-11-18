@@ -2,6 +2,7 @@ import {HttpCommon} from "@/common/HttpCommon";
 import {ResponseModel} from "@/model/ResponseModel";
 import {SourceModel} from "@/model/SourceModel";
 import {SharedSource} from "@/model/SharedSource";
+import {isEmpty} from "lodash";
 
 const baseUrl = "/api/v1/source";
 
@@ -14,7 +15,7 @@ export class SourceService
 
   saveAndUpdate(configure: SourceModel, isUpdate: boolean): Promise<ResponseModel>
   {
-    configure.protocol = 'HTTP';
+    configure.protocol = isEmpty(configure.protocol) ? 'HTTP' : configure.protocol;
     if (isUpdate) {
       return new HttpCommon().put(baseUrl, JSON.stringify(configure));
     }
@@ -30,7 +31,7 @@ export class SourceService
 
   testConnection(configure: SourceModel): Promise<ResponseModel>
   {
-    configure.protocol = 'HTTP';
+    configure.protocol = isEmpty(configure.protocol) ? 'HTTP' : configure.protocol;
     return new HttpCommon().post(baseUrl + '/test', configure);
   }
 

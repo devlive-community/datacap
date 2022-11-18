@@ -19,6 +19,7 @@
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
     "export-to-csv": "^0.2.1",
+    "lodash": "^4.17.21",
     "monaco-editor-vue3": "^0.1.6",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "nprogress": "^0.2.0",
@@ -30,6 +31,7 @@
     "webpack-bundle-analyzer": "^4.6.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.189",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",

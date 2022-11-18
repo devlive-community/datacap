@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 @RequestMapping(value = "/api/v1/source")
@@ -72,7 +73,7 @@ public class SourceController
     }
 
     @GetMapping(value = "plugins")
-    public Response<List<PluginEntity>> getPlugins()
+    public Response<Map<String, List<PluginEntity>>> getPlugins()
     {
         return this.sourceService.getPlugins();
     }

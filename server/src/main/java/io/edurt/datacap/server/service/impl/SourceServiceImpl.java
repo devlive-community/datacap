@@ -19,16 +19,18 @@ import io.edurt.datacap.server.security.UserDetailsService;
 import io.edurt.datacap.server.service.SourceService;
 import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
-import io.edurt.datacap.spi.PluginType;
 import io.edurt.datacap.spi.model.Configure;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class SourceServiceImpl
@@ -71,7 +73,7 @@ public class SourceServiceImpl
     @Override
     public Response<Object> testConnection(SourceEntity configure)
     {
-        Optional<Plugin> pluginOptional = PluginCommon.getPluginByName(this.injector, configure.getType());
+        Optional<Plugin> pluginOptional = PluginCommon.getPluginByNameAndType(this.injector, configure.getType(), configure.getProtocol());
         if (!pluginOptional.isPresent()) {
             return Response.failure(ServiceState.PLUGIN_NOT_FOUND);
         }
@@ -103,19 +105,24 @@ public class SourceServiceImpl
     }
 
     @Override
-    public Response<List<PluginEntity>> getPlugins()
+    public Response<Map<String, List<PluginEntity>>> getPlugins()
     {
-        List<PluginEntity> plugins = this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
+        Map<String, List<PluginEntity>> pluginMap = new ConcurrentHashMap<>();
+        this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
                 .stream()
-                .filter(plugin -> plugin.type().equals(PluginType.JDBC))
-                .map(plugin -> {
+                .forEach(plugin -> {
                     PluginEntity entity = new PluginEntity();
                     entity.setName(plugin.name());
                     entity.setDescription(plugin.description());
-                    return entity;
-                })
-                .collect(Collectors.toList());
-        return Response.success(plugins);
+                    entity.setType(plugin.type().name());
+                    List<PluginEntity> plugins = pluginMap.get(plugin.type().name());
+                    if (ObjectUtils.isEmpty(plugins)) {
+                        plugins = new ArrayList<>();
+                    }
+                    plugins.add(entity);
+                    pluginMap.put(plugin.type().name(), plugins);
+                });
+        return Response.success(pluginMap);
     }
 
     @Override

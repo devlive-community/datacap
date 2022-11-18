@@ -20,4 +20,13 @@ public class PluginCommon
                 .findFirst();
         return pluginOptional;
     }
+
+    public static Optional<Plugin> getPluginByNameAndType(Injector injector, String pluginName, String pluginType)
+    {
+        Optional<Plugin> pluginOptional = injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
+                .stream()
+                .filter(plugin -> plugin.name().equalsIgnoreCase(pluginName) && plugin.type().name().equalsIgnoreCase(pluginType))
+                .findFirst();
+        return pluginOptional;
+    }
 }
