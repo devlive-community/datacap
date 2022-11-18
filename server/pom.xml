@@ -195,6 +195,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-dm</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.edurt.datacap.plugin.http</groupId>
             <artifactId>datacap-plugin-http-cratedb</artifactId>
             <version>${project.version}</version>

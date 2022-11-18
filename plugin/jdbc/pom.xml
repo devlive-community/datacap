@@ -35,5 +35,6 @@
         <module>sqlserver</module>
         <module>oracle</module>
         <module>cratedb</module>
+        <module>dm</module>
     </modules>
 </project>

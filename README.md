@@ -84,6 +84,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://crate.io/" target="_blank">
         <img src="assets/plugin/cratedb.png" alt="CrateDB" height="50" />
+    </a>&nbsp;
+    <a href="https://www.dameng.com/DM8.html" target="_blank">
+        <img src="assets/plugin/dameng.png" alt="DaMeng" height="50" />
     </a>
 </p>
 
