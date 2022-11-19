@@ -15,5 +15,6 @@
 
     <modules>
         <module>cratedb</module>
+        <module>clickhouse</module>
     </modules>
 </project>

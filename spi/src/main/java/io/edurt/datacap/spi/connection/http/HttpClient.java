@@ -5,7 +5,6 @@ import io.edurt.datacap.spi.connection.HttpConfigure;
 import io.edurt.datacap.spi.connection.HttpConnection;
 import okhttp3.ConnectionPool;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -23,7 +22,6 @@ public class HttpClient
     private static final int SOCKET_TIME_OUT = 20000;
     private static final int MAX_IDLE_CONNECTIONS = 30;
     private static final long KEEP_ALLIVE_TIME = 60000L;
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static volatile HttpClient httpClient;
     private final OkHttpClient okHttpClient;
     private final HttpConfigure configure;
@@ -79,7 +77,7 @@ public class HttpClient
 
     private String post()
     {
-        RequestBody requestBody = RequestBody.create(JSON, configure.getJsonBody());
+        RequestBody requestBody = RequestBody.create(configure.getMediaType(), configure.getJsonBody());
         HttpUrl.Builder builder = HttpUrl.parse(httpConnection.formatJdbcUrl()).newBuilder();
 
         // Adding Path Parameters

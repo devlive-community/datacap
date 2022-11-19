@@ -5,6 +5,10 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import java.net.ConnectException;
+
+import static com.google.common.base.Preconditions.checkArgument;
+
 public class HttpRetryInterceptor
         implements Interceptor
 {
@@ -35,9 +39,14 @@ public class HttpRetryInterceptor
             }
         }
         catch (Exception e) {
-            while (count < configure.getRetry()) {
-                count++;
-                response = retry(chain);
+            if (e instanceof ConnectException) {
+                checkArgument(false, e.getMessage());
+            }
+            else {
+                while (count < configure.getRetry()) {
+                    count++;
+                    response = retry(chain);
+                }
             }
         }
         return response;

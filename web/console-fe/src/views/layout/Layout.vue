@@ -8,8 +8,8 @@
         <LayoutContent/>
       </a-layout-content>
     </a-layout>
-    <LayoutFooter/>
     <LayoutAffix></LayoutAffix>
+    <LayoutFooter/>
   </div>
 </template>
 
