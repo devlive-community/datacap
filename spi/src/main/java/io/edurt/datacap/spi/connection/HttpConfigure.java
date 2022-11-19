@@ -6,6 +6,7 @@ import io.edurt.datacap.spi.model.Configure;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import okhttp3.MediaType;
 
 import java.util.Map;
 
@@ -24,4 +25,5 @@ public class HttpConfigure
     private Boolean autoConnected = Boolean.FALSE;
     private Map<String, String> params;
     private String jsonBody;
+    private MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
 }
