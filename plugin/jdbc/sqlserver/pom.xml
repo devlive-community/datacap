@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (SqlServer)</name>
 
     <properties>
-        <sqlserver.version>11.2.1.jre8</sqlserver.version>
+        <sqlserver.version>12.1.0.jre8-preview</sqlserver.version>
         <plugin.name>jdbc-sqlserver</plugin.name>
     </properties>
 
