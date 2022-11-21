@@ -75,7 +75,7 @@
         <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
         <plugin.maven.cobertura.version>2.7</plugin.maven.cobertura.version>
         <plugin.maven.dependency.version>3.0.1</plugin.maven.dependency.version>
-        <plugin.maven.source.version>2.2.1</plugin.maven.source.version>
+        <plugin.maven.source.version>3.2.1</plugin.maven.source.version>
         <plugin.maven.javadoc.version>2.10.4</plugin.maven.javadoc.version>
         <plugin.maven.gpg.version>1.6</plugin.maven.gpg.version>
         <plugin.maven.nexus.version>1.6</plugin.maven.nexus.version>
