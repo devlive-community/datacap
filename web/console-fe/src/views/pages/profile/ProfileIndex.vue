@@ -5,7 +5,7 @@
         {{ $t('common.contribution') }}
       </template>
       <div :style="{ background: '#fff', minHeight: '150px' }">
-        <CalendarChart v-if="summary.contribution.length > 0" :data="summary.contribution"></CalendarChart>
+        <CalendarChart :configure="summary.contributionConfigure"></CalendarChart>
       </div>
     </a-card>
     <a-row :gutter="16" style="margin-top: 10px;">
@@ -15,7 +15,7 @@
             {{ $t('profile.radar7Days') }}
           </template>
           <div>
-            <RadarChart v-if="summary.contributionRadar.length > 0" :data="summary.contributionRadar"></RadarChart>
+            <RadarChart :configure="summary.radarConfigure"></RadarChart>
           </div>
         </a-card>
       </a-col>
@@ -28,6 +28,8 @@ import CalendarChart from "@/charts/calendar/CalendarChart.vue";
 import {AdminService} from "@/services/AdminService";
 import RadarChart from "@/charts/radar/RadarChart.vue";
 import {HttpCommon} from "@/common/HttpCommon";
+import {CalendarConfigure} from "@/charts/calendar/CalendarConfigure";
+import {RadarConfigure} from "@/charts/radar/RadarConfigure";
 
 export default defineComponent({
   components: {RadarChart, CalendarChart},
@@ -36,8 +38,8 @@ export default defineComponent({
     return {
       loading: false,
       summary: {
-        contribution: [],
-        contributionRadar: []
+        contributionConfigure: CalendarConfigure,
+        radarConfigure: RadarConfigure
       }
     }
   },
@@ -54,10 +56,14 @@ export default defineComponent({
       axios.all([adminService.getUserContribution(), adminService.getUserContributionRadar()])
         .then(axios.spread((contribution, contributionRadar) => {
           if (contribution.status) {
-            this.summary.contribution = contribution.data;
+            const contributionConfigure = new CalendarConfigure();
+            contributionConfigure.data = contribution.data;
+            this.summary.contributionConfigure = contributionConfigure;
           }
           if (contributionRadar.status) {
-            this.summary.contributionRadar = contributionRadar.data;
+            const radarConfigure = new RadarConfigure();
+            radarConfigure.data = contributionRadar.data;
+            this.summary.radarConfigure = radarConfigure;
           }
         }))
         .finally(() => {
