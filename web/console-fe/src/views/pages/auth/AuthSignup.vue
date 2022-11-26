@@ -1,83 +1,165 @@
 <template>
   <div class="main">
-    <a-row :gutter="[8,8]">
-      <a-col :span="8"/>
-      <a-col :span="8">
-        <a-result :title="'DataCap ' + $t('common.register')">
-          <template #icon>
-            <smile-twoTone/>
-          </template>
-          <template #extra>
-            <a-alert v-if="formState.message" :message="formState.message" type="error" show-icon style="margin-bottom: 10px;"/>
-            <a-form :model="formState" name="basic" :label-col="{ span: 6 }"
-                    :wrapper-col="{ span: 16 }" @finish="handlerAuthSignup">
-              <a-form-item :label="$t('common.username')" name="username"
-                           :rules="[{ required: true, message: $t('required.username') }]">
-                <a-input v-model:value="formState.username"/>
-              </a-form-item>
-              <a-form-item :label="$t('common.password')" name="password"
-                           :rules="[{ required: true, message: $t('required.password') }]">
-                <a-input-password v-model:value="formState.password"/>
-              </a-form-item>
-              <a-form-item :wrapper-col="{ offset: 6, span: 16 }">
-                <a-button :disabled="disabled" :loading="formState.loading" type="primary" html-type="submit">{{ $t('common.register') }}</a-button>
-                <a-button type="dashed" style="margin-left: 10px;" @click="handlerGoSignin">{{ $t('common.login') }}</a-button>
-              </a-form-item>
-            </a-form>
-          </template>
-        </a-result>
-      </a-col>
-      <a-col :span="8"/>
-    </a-row>
+    <Result>
+      <template #title>
+        <Avatar icon="ios-person" size="64" style="background-color: #87d068"/>
+      </template>
+      <template #desc>
+        {{ $t('common.register') }}
+      </template>
+      <template #actions>
+        <div class="datacap-register">
+          <Login ref="form" @on-submit="handlerSubmit">
+            <UserName name="username"/>
+            <Poptip trigger="focus" placement="right" width="240">
+              <Password name="password" :rules="passwordRule" :placeholder="$t('signup.passwordSizeEquals')" @on-change="handlerChangePassword"/>
+              <template #content>
+                <div class="datacap-register-tip">
+                  <div class="datacap-register-tip-title" :class="passwordTip.class">
+                    强度：{{ passwordTip.strong }}
+                  </div>
+                  <Progress :percent="passwordTip.percent" hide-info :stroke-width="6" :stroke-color="passwordTip.color"/>
+                  <div class="datacap-register-tip-desc">
+                    {{ $t('signup.passwordSizeTip') }}
+                  </div>
+                </div>
+              </template>
+            </Poptip>
+            <Password name="passwordConfirm" :rules="passwordConfirmRule" placeholder="确认密码"/>
+            <Submit>{{ $t('common.register') }}</Submit>
+            <Button style="width: 100%; margin-top: 5px;" type="dashed" @click="handlerGoSignIn">{{ $t('common.login') }}</Button>
+          </Login>
+        </div>
+      </template>
+    </Result>
   </div>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, reactive} from 'vue';
-import {AuthUser} from "@/model/AuthUser";
+import {defineComponent} from 'vue';
 import {AuthService} from "@/services/AuthService";
-import Common from "@/common/Common";
 import router from "@/router";
-import {message} from "ant-design-vue";
+import {AuthUser} from "@/model/AuthUser";
 
 export default defineComponent({
-  setup()
+  data()
   {
-    const formState = reactive<AuthUser>({
-      username: '',
-      password: ''
-    });
-
-    const disabled = computed(() => {
-      return !(formState.username && formState.password);
-    });
-
-    const handlerAuthSignup = (values: any) => {
-      formState.loading = true;
-      new AuthService().signup(values)
-        .then(response => {
-          if (response.status) {
-            message.success('Success');
-            router.push('/auth/signin');
-          }
-          else {
-            formState.message = response.message;
-          }
-        })
-        .finally(() => {
-          formState.loading = undefined;
-        });
+    const validatePassCheck = (rule, value, callback) => {
+      // @ts-ignore
+      if (value !== this.$refs.form.formValidate.password) {
+        callback(new Error('两次输入的密码不匹配！'));
+      }
+      else {
+        callback();
+      }
     };
+    return {
+      passwordRule: [
+        {
+          required: true, message: '密码不能为空！', trigger: 'change'
+        },
+        {
+          min: 6, message: '密码不能少于6位！', trigger: 'change'
+        }
+      ],
+      passwordConfirmRule: [
+        {
+          required: true, message: '确认密码不能为空！', trigger: 'change'
+        },
+        {validator: validatePassCheck, trigger: 'change'}
+      ],
+      passwordLen: 0
+    }
+  },
+  computed: {
+    passwordTip()
+    {
+      let strong = '强';
+      let className = 'strong';
+      let percent = this.passwordLen > 10 ? 10 : this.passwordLen;
+      let color = '#19be6b';
 
-    const handlerGoSignin = () => {
+      if (this.passwordLen < 6) {
+        strong = '太短';
+        className = 'low';
+        color = '#ed4014';
+      }
+      else if (this.passwordLen < 10) {
+        strong = '中';
+        className = 'medium';
+        color = '#ff9900';
+      }
+      return {
+        strong,
+        class: 'datacap-register-tip-' + (this.passwordLen < 6 ? 'low' : (this.passwordLen < 10 ? 'medium' : 'strong')),
+        percent: percent * 10,
+        color
+      }
+    }
+  },
+  methods: {
+    handlerChangePassword(val)
+    {
+      this.passwordLen = val.length;
+    },
+    handlerSubmit(valid, {username, password, passwordConfirm})
+    {
+      if (valid) {
+        const authUser: AuthUser = {
+          username: username,
+          password: password
+        }
+        new AuthService().signup(authUser)
+          .then(response => {
+            if (response.status) {
+              router.push('/auth/signin');
+            }
+            else {
+              this.$Message.error(response.message);
+            }
+          });
+      }
+    },
+    handlerGoSignIn()
+    {
       router.push('/auth/signin');
     }
-    return {
-      formState,
-      disabled,
-      handlerAuthSignup,
-      handlerGoSignin
-    };
-  },
+  }
 });
 </script>
+<style>
+.datacap-register {
+  width: 400px;
+  margin: 0 auto !important;
+}
+
+.datacap-register .ivu-poptip, .datacap-register .ivu-poptip-rel {
+  display: block;
+}
+
+.datacap-register-tip {
+  text-align: left;
+}
+
+.datacap-register-tip-low {
+  color: #ed4014;
+}
+
+.datacap-register-tip-medium {
+  color: #ff9900;
+}
+
+.datacap-register-tip-strong {
+  color: #19be6b;
+}
+
+.datacap-register-tip-title {
+  font-size: 14px;
+}
+
+.datacap-register-tip-desc {
+  white-space: initial;
+  font-size: 14px;
+  margin-top: 6px;
+}
+</style>

@@ -1,104 +1,99 @@
 <template>
-  <div :style="{ clear: 'both' }">
-    <a-menu theme="dark" mode="horizontal" :style="{lineHeight: '64px', float: 'left', width: '60%'}">
-      <a-menu-item>DataCap(incubator)</a-menu-item>
-      <a-menu-item key="dashboard">
-        <router-link to="/">
-          <home-filled/>
-          {{ $t('common.home') }}
-        </router-link>
-      </a-menu-item>
-      <a-menu-item key="console">
-        <router-link to="/console/index">
-          <console-sql-outlined/>
-          {{ $t('common.query') }}
-        </router-link>
-      </a-menu-item>
-      <a-sub-menu key="admin">
-        <template #icon>
-          <setting-outlined/>
-        </template>
-        <template #title>{{ $t('common.admin') }}</template>
-        <a-menu-item key="admin_source">
-          <router-link to="/admin/source">
-            <aim-outlined/>
-            {{ $t('common.source') }}
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="admin_history">
-          <router-link to="/admin/history">
-            <history-outlined/>
-            {{ $t('common.history') }}
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="admin_snippet">
-          <router-link to="/admin/snippet">
-            <code-outlined/>
-            {{ $t('common.snippet') }}
-          </router-link>
-        </a-menu-item>
-      </a-sub-menu>
-      <a-menu-item key="about">
-        <router-link to="/common/about">
-          <info-circle-outlined/>&nbsp; {{ $t('common.about') }}
-        </router-link>
-      </a-menu-item>
-    </a-menu>
-    <a-menu theme="dark" mode="horizontal" :style="{lineHeight: '64px', float: 'right', 'margin-right': '-50px'}">
-      <a-menu-item key="feedback" style="background-color: transparent;">
-        <a-tooltip color="#108ee9">
-          <template #title>{{ $t('common.feedback') }}</template>
-          <a target="_blank" href="https://github.com/EdurtIO/incubator-datacap/issues/new/choose">
-            <question-circle-outlined/>
-          </a>
-        </a-tooltip>
-      </a-menu-item>
-      <a-sub-menu>
-        <template #icon>
-          <a-dropdown placement="bottomRight">
-            <template #overlay>
-              <a-menu style="margin-top: 5px;">
-                <a-menu-item key="profile">
-                  <router-link to="/profile/index">
-                    <user-outlined/>
-                    {{ $t('common.profile') }}
-                  </router-link>
-                </a-menu-item>
-                <a-menu-divider></a-menu-divider>
-                <a-menu-item @click="handlerLogout">
-                  <logout-outlined/>
-                  {{ $t('common.logout') }}
-                </a-menu-item>
-              </a-menu>
+  <div>
+    <Header>
+      <Menu mode="horizontal" theme="dark" active-name="dashboard">
+        <div class="layout-logo">
+          <div class="layout-logo logo-text">
+            DataCap
+          </div>
+        </div>
+        <div class="layout-nav">
+          <MenuItem name="dashboard" to="/">
+            <Icon type="ios-navigate"></Icon>
+            {{ $t('common.home') }}
+          </MenuItem>
+          <MenuItem name="console" to="/console/index">
+            <Icon type="md-browsers"/>
+            {{ $t('common.query') }}
+          </MenuItem>
+          <Submenu name="admin">
+            <template #title>
+              <Icon type="ios-hammer"/>
+              {{ $t('common.admin') }}&nbsp;
             </template>
-            <a-avatar style="background-color: #87d068">{{ username }}</a-avatar>
-          </a-dropdown>
-        </template>
-      </a-sub-menu>
-      <a-dropdown>
-        <a-sub-menu key="language">
-          <template #icon>
-            <translation-outlined/>
-          </template>
-        </a-sub-menu>
-        <template #overlay>
-          <a-menu :style="{'margin-right': '10px'}">
-            <a-menu-item @click="handlerChangeLang('en')">
-              <span role="img" aria-label="USA">🇺🇸</span>&nbsp;&nbsp;{{ $t('common.english') }}
-            </a-menu-item>
-            <a-menu-item @click="handlerChangeLang('zh_cn')">
-              <span role="img" aria-label="China">🇨🇳</span>&nbsp;&nbsp;{{ $t('common.chinese') }}
-            </a-menu-item>
-          </a-menu>
-        </template>
-      </a-dropdown>
-    </a-menu>
+            <MenuGroup :title="$t('common.default')">
+              <MenuItem name="admin_source" to="/admin/source">
+                <Icon type="md-appstore"/>
+                {{ $t('common.source') }}
+              </MenuItem>
+              <MenuItem name="admin_snippet" to="/admin/snippet">
+                <Icon type="ios-barcode"/>
+                {{ $t('common.snippet') }}
+              </MenuItem>
+            </MenuGroup>
+            <MenuGroup :title="$t('common.history')">
+              <MenuItem name="admin_history" to="/admin/history">
+                <Icon type="ios-book"/>
+                {{ $t('common.history') }}
+              </MenuItem>
+            </MenuGroup>
+          </Submenu>
+          <MenuItem name="about" to="/common/about">
+            <Icon type="md-information-circle"/>
+            {{ $t('common.about') }}
+          </MenuItem>
+        </div>
+        <div :style="{lineHeight: '64px', float: 'right', 'margin-right': '10px'}">
+          <MenuItem name="feedback" target="_blank" to="https://github.com/EdurtIO/incubator-datacap/issues/new/choose">
+            <Tooltip placement="top">
+              <Icon type="md-help-circle"/>
+              <template #t></template>
+              <template #content>
+                {{ $t('common.feedback') }}
+              </template>
+            </Tooltip>
+          </MenuItem>
+          <Submenu name="language">
+            <template #title>
+              <Icon type="md-infinite"/>
+              {{ $t('common.language') }}&nbsp;
+            </template>
+            <MenuGroup :title="$t('common.default')">
+              <MenuItem name="language_en" @click="handlerChangeLang('en')">
+                <span>🇺🇸</span>&nbsp;&nbsp;{{ $t('common.english') }}
+              </MenuItem>
+              <MenuItem name="language_zh" @click="handlerChangeLang('zh_cn')">
+                <span>🇨🇳</span>&nbsp;&nbsp;{{ $t('common.chinese') }}
+              </MenuItem>
+            </MenuGroup>
+          </Submenu>
+          <Submenu name="profile">
+            <template #title>
+              <Avatar size="large" style="background-color: #87d068">
+                {{ username }}
+              </Avatar>&nbsp;
+            </template>
+            <MenuGroup :title="$t('common.profile')">
+              <MenuItem name="profile_index" to="/profile/index">
+                <Icon type="md-contact"/>
+                {{ $t('common.profile') }}
+              </MenuItem>
+            </MenuGroup>
+            <MenuGroup :title="$t('common.advanced')">
+              <MenuItem name="advanced_logout" @click="handlerLogout()">
+                <Icon type="md-log-out"/>
+                {{ $t('common.logout') }}
+              </MenuItem>
+            </MenuGroup>
+          </Submenu>
+        </div>
+      </Menu>
+    </Header>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {AimOutlined, HomeFilled, SettingOutlined} from '@ant-design/icons-vue';
 import Common from "@/common/Common";
 import {AuthResponse} from "@/model/AuthResponse";
 import router from "@/router";
@@ -124,7 +119,6 @@ export default defineComponent({
       handlerLogout
     }
   },
-  components: {HomeFilled, SettingOutlined, AimOutlined},
   computed: {},
   methods: {
     handlerChangeLang(language: string)
@@ -135,4 +129,35 @@ export default defineComponent({
 });
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped></style>
+<style scoped>
+.layout-logo {
+  width: 100px;
+  height: 30px;
+  background: #5b6270;
+  border-radius: 3px;
+  float: left;
+  position: relative;
+  top: 15px;
+  left: 20px;
+  margin-right: 40px;
+}
+
+.layout-logo .logo-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 80px;
+  color: #F5F5F5;
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: 600;
+  height: 63px;
+}
+
+.layout-nav {
+  margin: 0 auto;
+}
+</style>

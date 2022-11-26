@@ -49,7 +49,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'ConsoleIndex',
         path: "index",
-        component: () => import("../views/pages/console/ConsoleOnline.vue")
+        component: () => import("../views/pages/query/QueryHome.vue")
       }
     ]
   },
@@ -63,15 +63,15 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "source",
-        component: () => import("../views/pages/admin/source/SourceConsole.vue")
+        component: () => import("../views/pages/admin/source/SourceAdmin.vue")
       },
       {
         path: "history",
-        component: () => import("../views/pages/console/ConsoleHistory.vue")
+        component: () => import("../views/pages/query/QueryHistory.vue")
       },
       {
         path: "snippet",
-        component: () => import("../views/pages/admin/snippet/SnippetConsole.vue")
+        component: () => import("../views/pages/admin/snippet/SnippetAdmin.vue")
       }
     ]
   },
@@ -107,6 +107,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/common",
     name: "common",
+    component: LayoutContainer,
     children: [
       {
         name: "routerNotFound",
@@ -114,9 +115,13 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/common/NotFound.vue")
       },
       {
+        name: "routerNotAuthorized",
+        path: "not_authorized",
+        component: () => import("../views/common/NotAuthorized.vue")
+      },
+      {
         name: "about",
         path: "about",
-        component: LayoutContainer,
         children: [
           {
             path: '',

@@ -1,18 +1,13 @@
 <template>
-  <div style="max-height: 703px; max-width: 200px; overflow: auto;">
-    <a-skeleton v-if="loading" active/>
-    <a-tree v-else :tree-data="treeData" loading="true">
-      <template #title="{ database, table, value, dataType }">
-        <a-button size="small" type="text" @click="handlerCopy(database, table, value, dataType)">{{ value }}</a-button>
-      </template>
-    </a-tree>
+  <div style="max-height: 500px; max-width: 200px; overflow: auto;">
+    <SkeletonItem v-if="loading" :animated="true" type="rect" size="large" style="width: 165px;"/>
+    <Tree v-else :data="treeData" :render="renderContent"/>
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, watch} from "vue";
+import {defineComponent, resolveComponent, watch} from "vue";
 import {ExecuteModel} from "@/model/ExecuteModel";
 import {ExecuteService} from "@/services/ExecuteService";
-import {message} from "ant-design-vue";
 import {DatabaseService} from "@/services/DatabaseService";
 import {TreeService} from "@/services/TreeService";
 import {TreeData} from "@/model/TreeData";
@@ -48,6 +43,26 @@ export default defineComponent({
     );
   },
   methods: {
+    renderContent(h, {data})
+    {
+      return h('span',
+        {
+          style: {
+            display: 'inline-block',
+            width: '100%'
+          }
+        },
+        [
+          h(resolveComponent('Ellipsis'), {
+            text: data.title,
+            length: 15,
+            tooltip: true,
+            onClick: () => {
+              this.handlerCopy(data.database, data.table, data.value, data.dataType);
+            }
+          })
+        ]);
+    },
     handlerInitialize()
     {
       this.treeData = [];
@@ -66,7 +81,7 @@ export default defineComponent({
               this.treeData = new TreeService().getTree(response);
             }
             else {
-              message.error(response.message);
+              // // message.error(response.message);
             }
           })
           .finally(() => {
@@ -74,7 +89,7 @@ export default defineComponent({
           });
       }
       else {
-        message.error('Not Supported!')
+        // // message.error('Not Supported!')
       }
     },
     handlerCopy(database: string, table: string, value: string, dataType: string)
@@ -91,7 +106,7 @@ export default defineComponent({
           text = database + '.' + table + '.' + value;
           break
       }
-      toClipboard(text).finally(() => message.success('Copy successful!'));
+      toClipboard(text).finally(() => this.$Message.success('Copy successful!'));
     }
   }
 });

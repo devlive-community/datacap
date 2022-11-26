@@ -51,5 +51,7 @@ export default {
   about: '关于',
   feedback: '反馈意见',
   column: '列',
-  isPage: '分页'
+  isPage: '分页',
+  default: '默认',
+  language: '语言'
 }

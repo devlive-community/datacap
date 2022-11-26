@@ -1,13 +1,10 @@
 <template>
   <div>
-    <a-select v-model:value="applySource" size="small" style="width: 160px" @change="handlerChangeValue($event)">
-      <template #suffixIcon>
-        <meh-outlined class="ant-select-suffix"/>
-      </template>
-      <a-select-option v-for="column in columns" :value="column.id + ':' + column.type" v-bind:key="column.id">
+    <Select v-model="applySource" style="width: 160px" @on-change="handlerChangeValue">
+      <Option v-for="column in columns" :value="column.id + ':' + column.type" v-bind:key="column.id">
         {{ column.name }}
-      </a-select-option>
-    </a-select>
+      </Option>
+    </Select>
   </div>
 </template>
 
@@ -16,8 +13,7 @@ import {SourceService} from "@/services/SourceService";
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "SourceSelectComponent",
-  components: {},
+  name: "SourceSelect",
   data()
   {
     return {

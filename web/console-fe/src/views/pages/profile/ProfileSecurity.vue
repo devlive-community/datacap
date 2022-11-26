@@ -1,58 +1,51 @@
 <template>
-  <a-layout-content>
-    <a-card>
+  <div>
+    <Card style="width:100%; minHeight: 150px;">
       <template #title>
         {{ $t('setting.security') }}
       </template>
-      <a-spin :spinning="loading">
-        <a-layout style="background-color: #ffffff">
-          <a-layout-content>
-            <a-form :model="formState" v-bind="layout">
-              <a-form-item :name="['password']" :label="$t('common.password')">
-                <a-button type="link" style="float: right;" @click="handlerShowModal('password')">
-                  {{ $t('setting.changePassword') }}
-                </a-button>
-              </a-form-item>
-            </a-form>
-          </a-layout-content>
-          <a-layout-sider style="background-color: #ffffff; margin-left: 60px;">
-          </a-layout-sider>
-        </a-layout>
-      </a-spin>
-    </a-card>
-    <a-modal v-if="changePasswordVisible" v-model:visible="changePasswordVisible"
-             :closable="false" :mask-closable="false"
-             :title="$t('setting.changePassword')">
-      <a-form :model="formState" :label-col="{ span: 5 }">
-        <a-form-item :label="$t('setting.oldPassword')" name="oldPassword">
-          <a-input type="password" v-model:value="formState.oldPassword"/>
-        </a-form-item>
-        <a-form-item :label="$t('setting.newPassword')" name="newPassword">
-          <a-input type="password" v-model:value="formState.newPassword"/>
-        </a-form-item>
-        <a-form-item :label="$t('setting.confirmPassword')" name="confirmPassword">
-          <a-input type="password" v-model:value="formState.confirmPassword"/>
-        </a-form-item>
-      </a-form>
+      <Spin fix v-if="loading"/>
+      <div v-else>
+        <Layout>
+          <Layout>
+            <Content class="content" style="padding: 0 80px 0 40px;">
+              <Form :label-width="80">
+                <FormItem :label="$t('common.password')">
+                  <Button type="text" style="float: right;" @click="handlerShowModal('password')">
+                    {{ $t('setting.changePassword') }}
+                  </Button>
+                </FormItem>
+              </Form>
+            </Content>
+          </Layout>
+        </Layout>
+      </div>
+    </Card>
+    <Modal v-if="changePasswordVisible" v-model="changePasswordVisible" :title="$t('setting.changePassword')" :closable="false" :mask-closable="false">
+      <Form ref="formCustom" :model="formState" :label-width="80">
+        <FormItem :label="$t('setting.oldPassword')" prop="oldPassword">
+          <Input type="password" v-model="formState.oldPassword"></Input>
+        </FormItem>
+        <FormItem :label="$t('setting.newPassword')" name="newPassword">
+          <Input type="password" v-model="formState.newPassword"></Input>
+        </FormItem>
+        <FormItem :label="$t('setting.confirmPassword')" name="confirmPassword">
+          <Input type="password" v-model="formState.confirmPassword"></Input>
+        </FormItem>
+      </Form>
       <template #footer>
-        <a-button danger @click="handlerCloseModal('password')">{{ $t('common.cancel') }}</a-button>
-        <a-button type="primary" :loading="loading" @click="handlerChangePassword()">{{ $t('common.save') }}</a-button>
+        <Button danger @click="handlerCloseModal('password')">{{ $t('common.cancel') }}</Button>
+        <Button type="primary" :loading="loading" @click="handlerChangePassword()">{{ $t('common.save') }}</Button>
       </template>
-    </a-modal>
-  </a-layout-content>
+    </Modal>
+  </div>
 </template>
 <script lang="ts">
 import {defineComponent, reactive} from 'vue';
 import UserService from "@/services/UserService";
 import {UserPassword} from "@/model/UserPassword";
-import {message} from "ant-design-vue";
 import Common from "@/common/Common";
 import router from "@/router";
-
-const layout = {
-  labelCol: {span: 8},
-  wrapperCol: {span: 16},
-};
 
 export default defineComponent({
   setup()
@@ -70,8 +63,7 @@ export default defineComponent({
   {
     return {
       changePasswordVisible: false,
-      loading: false,
-      layout
+      loading: false
     }
   },
   methods: {
@@ -93,13 +85,13 @@ export default defineComponent({
       UserService.changePassword(this.formState)
         .then((response) => {
           if (response.status) {
-            message.success('Success');
+            // message.success('Success');
             localStorage.removeItem(Common.token);
             this.changePasswordVisible = false;
             router.push('/auth/signin');
           }
           else {
-            message.error(response.message);
+            this.$Message.error(response.message);
           }
         })
         .finally(() => {
@@ -109,3 +101,8 @@ export default defineComponent({
   }
 });
 </script>
+<style scoped>
+.content {
+  background-color: #FFFFFF;
+}
+</style>

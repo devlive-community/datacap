@@ -51,5 +51,7 @@ export default {
   about: 'About',
   feedback: 'Feedback',
   column: 'Column',
-  page: 'Paging'
+  page: 'Paging',
+  default: 'Default',
+  language: 'Language'
 }

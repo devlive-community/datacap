@@ -2,19 +2,21 @@ import {createApp} from "vue";
 import App from "./App.vue";
 import router from "./router";
 
-import Antd from "ant-design-vue";
-import "ant-design-vue/dist/antd.css";
+import ViewUIPlus from 'view-ui-plus';
+import 'view-ui-plus/dist/styles/viewuiplus.css';
 
-import * as Icons from "@ant-design/icons-vue";
+import VMdPreview from '@kangc/v-md-editor/lib/preview';
+import '@kangc/v-md-editor/lib/style/preview.css';
+import githubTheme from '@kangc/v-md-editor/lib/theme/github';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+
+VMdPreview.use(githubTheme);
+
 import i18n from "@/i18n/I18n";
 
-const icons: any = Icons;
-
 const app = createApp(App);
-for (const i in icons) {
-  app.component(i, icons[i]);
-}
 app.use(router);
-app.use(Antd);
+app.use(ViewUIPlus);
 app.use(i18n);
+app.use(VMdPreview);
 app.mount("#app");

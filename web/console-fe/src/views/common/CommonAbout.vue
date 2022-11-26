@@ -1,31 +1,33 @@
 <template>
-  <a-card size="small" :bodyStyle="{ padding: '20px'}">
-    <template #title>
-      <a-alert message="Release Notes" type="info" show-icon/>
-    </template>
-    <a-timeline :reverse="true">
-      <a-timeline-item v-for="releaseNote of ReleaseNotes.releaseNotes" v-bind:key="releaseNote.version">
+  <div>
+    <Alert type="success" banner show-icon>Released Note</Alert>
+    <Timeline pending class="datacap-release-note">
+      <TimelineItem :color="releaseNote.latest ? 'blue' : 'green'"
+                    v-for="releaseNote of ReleaseNotes.releaseNotes" v-bind:key="releaseNote.version">
         <template #dot>
-          <check-circle-two-tone :spin="releaseNote.latest" two-tone-color="#52c41a"/>
+          <Icon :type="releaseNote.latest ? 'md-trophy' : 'md-archive'" :size="20"></Icon>
         </template>
-        <p>
-          <a-tag>{{ releaseNote.version }}</a-tag>
-          <clock-circle-two-tone/>&nbsp;{{ releaseNote.time }}
-        </p>
-        <vue-markdown-it :source="releaseNote.content"/>
-      </a-timeline-item>
-    </a-timeline>
-  </a-card>
+        <div style="margin-top: -5px;">
+          <p class="time">
+            <Space>
+              <Tag :color="releaseNote.latest ? 'primary' : 'success'">{{ releaseNote.version }}</Tag>
+              <Tag type="border" :color="releaseNote.latest ? 'primary' : 'success'">{{ releaseNote.time }}</Tag>
+              <Time :time="releaseNote.time"/>
+            </Space>
+          </p>
+          <p class="content">
+            <v-md-preview :text="releaseNote.content"/>
+          </p>
+        </div>
+      </TimelineItem>
+    </Timeline>
+  </div>
 </template>
 <script lang="ts">
-import VueMarkdownIt from 'vue3-markdown-it';
 import 'highlight.js/styles/monokai.css';
 import ReleaseNotes from "@/views/common/release/ReleaseNotes";
 
 export default {
-  components: {
-    VueMarkdownIt
-  },
   setup()
   {
     return {
@@ -34,3 +36,17 @@ export default {
   }
 }
 </script>
+<style scoped>
+.datacap-release-note {
+  padding: 20px;
+}
+
+.time {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.content {
+  padding-left: 5px;
+}
+</style>

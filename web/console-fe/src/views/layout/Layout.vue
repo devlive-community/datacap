@@ -1,15 +1,11 @@
 <template>
-  <div>
-    <a-layout-header>
+  <div class="layout">
+    <Layout>
       <LayoutHeader @changeLanguage="setLangCondition($event)"/>
-    </a-layout-header>
-    <a-layout class="layout">
-      <a-layout-content style="padding: 10px; background-color: #ffffff;">
-        <LayoutContent/>
-      </a-layout-content>
-    </a-layout>
-    <LayoutAffix></LayoutAffix>
-    <LayoutFooter/>
+      <LayoutContent style="background-color: #FFFFFF; padding: 12px; min-height: 500px"/>
+      <LayoutFooter/>
+      <LayoutAffix/>
+    </Layout>
   </div>
 </template>
 
@@ -22,8 +18,7 @@ import LayoutAffix from "@/views/layout/components/LayoutAffix.vue";
 
 export default {
   name: "LayoutContainer",
-  components: {LayoutAffix, LayoutHeader, LayoutContent, LayoutFooter},
-  computed: {},
+  components: {LayoutHeader, LayoutFooter, LayoutContent, LayoutAffix},
   setup()
   {
     const {locale} = useI18n();
@@ -33,10 +28,19 @@ export default {
     return {
       setLangCondition
     }
-  },
-  methods: {}
+  }
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
+.layout {
+  background: #f5f7f9;
+  position: relative;
+  overflow: hidden;
+}
+
+.layout-topMiddleBottom .ivu-menu-light {
+  background: none;
+  color: #fff
+}
 </style>

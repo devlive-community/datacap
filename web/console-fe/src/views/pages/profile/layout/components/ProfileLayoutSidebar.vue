@@ -1,48 +1,37 @@
 <template>
-  <a-card>
-    <template #cover>
-      <a-card :bodyStyle="{'text-align': 'center'}">
-        <a-card-meta>
-          <template #title>
-            <router-link to="/profile/index">
-              <a-avatar style="background-color: #87d068">{{ username }}</a-avatar>
-            </router-link>
-          </template>
-          <template #description>{{ username }}</template>
-        </a-card-meta>
-        <a-divider></a-divider>
-        <a-menu style="width: 199px; margin-left: -24px;">
-          <a-menu-item key="public">
-            <template #icon>
-              <profile-outlined/>
-            </template>
-            <router-link to="/profile/public">
-              {{ $t('setting.profile') }}
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="security">
-            <template #icon>
-              <security-scan-outlined/>
-            </template>
-            <router-link to="/profile/security">
-              {{ $t('setting.security') }}
-            </router-link>
-          </a-menu-item>
-        </a-menu>
-      </a-card>
-    </template>
-  </a-card>
+  <div style="padding: 0 0 15px 15px;">
+    <Card dis-hover>
+      <template #title>
+        <div class="datacap-profile-header">
+          <router-link to="/profile/index">
+            <Avatar style="background-color: #87d068">
+              {{ username }}
+            </Avatar>&nbsp;
+          </router-link>
+          <p style="margin-top: 5px;">{{ username }}</p>
+        </div>
+      </template>
+      <Menu style="width: 184px; margin-left: -16px;">
+        <MenuItem name="setting" to="/profile/public">
+          <Icon type="ios-cog"/>
+          {{ $t('setting.profile') }}
+        </MenuItem>
+        <MenuItem name="security" to="/profile/security">
+          <Icon type="ios-lock"/>
+          {{ $t('setting.security') }}
+        </MenuItem>
+      </Menu>
+    </Card>
+  </div>
 </template>
 
 <script lang="ts">
 import Common from "@/common/Common";
 import {AuthResponse} from "@/model/AuthResponse";
-
 import {defineComponent} from "vue";
 
 export default defineComponent({
   name: "ProfileLayoutSidebar",
-  components: {},
   setup()
   {
     let username;
@@ -56,3 +45,8 @@ export default defineComponent({
   }
 });
 </script>
+<style scoped>
+.datacap-profile-header {
+  text-align: center;
+}
+</style>
