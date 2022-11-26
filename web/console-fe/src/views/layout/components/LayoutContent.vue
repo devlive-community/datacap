@@ -1,14 +1,12 @@
 <template>
-  <transition name="fade" mode="out-in">
-    <router-view></router-view>
-  </transition>
+  <router-view></router-view>
 </template>
 
 <script>
 export default {
-  name: "LayoutContent",
-  computed: {}
+  name: "LayoutContent"
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped></style>
+<style scoped>
+</style>

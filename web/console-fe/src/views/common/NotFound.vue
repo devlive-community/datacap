@@ -1,9 +1,13 @@
 <template>
-  <a-result status="404" title="404" sub-title="Sorry, the page you visited does not exist.">
-    <template #extra>
-      <a-button type="primary">
-        <router-link to="/">Back Home</router-link>
-      </a-button>
-    </template>
-  </a-result>
+  <div>
+    <Result type="error" title="404" style="margin-top: 30px;">
+      <template #desc>
+        Sorry, the page you visited does not exist. <br/>
+        <br/>
+        <Button type="primary" to="/" icon="md-home">
+          Back Home
+        </Button>
+      </template>
+    </Result>
+  </div>
 </template>

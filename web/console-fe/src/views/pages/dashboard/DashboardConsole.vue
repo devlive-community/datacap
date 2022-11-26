@@ -1,51 +1,58 @@
 <template>
   <div class="home">
-    <div style="">
-      <a-row :gutter="16">
-        <a-col :span="6">
-          <a-card :loading="summaryLoading" :bodyStyle="{'text-align': 'center'}">
-            <a-statistic :value="count.source" :value-style="{ color: '#3f8600' }">
-              <template #title>
-                <span>Source Count</span>
-                <a-tooltip placement="right">
-                  <template #title>
-                    <span>Statistics on the total number of access data sources</span>
-                  </template>
-                  <question-circle-two-tone style="margin-left: 5px" />
-                </a-tooltip>
-              </template>
-            </a-statistic>
-          </a-card>
-        </a-col>
-        <a-col :span="6">
-          <a-card :loading="summaryLoading" :bodyStyle="{'text-align': 'center'}">
-            <a-statistic :value="count.history" :value-style="{ color: '#3f8600' }">
-              <template #title>
-                <span>History Count</span>
-                <a-tooltip placement="right">
-                  <template #title>
-                    <span>Statistics The total number of query histories of access data sources</span>
-                  </template>
-                  <question-circle-two-tone style="margin-left: 5px" />
-                </a-tooltip>
-              </template>
-            </a-statistic>
-          </a-card>
-        </a-col>
-      </a-row>
-    </div>
+    <Row :gutter="16">
+      <Col span="6">
+        <Card class="content-center">
+          <NumberInfo>
+            <template #title>
+              Source Count
+              <Tooltip>
+                <template #content>
+                  <div style="white-space: normal;">
+                    Statistics on the total number of access data sources
+                  </div>
+                </template>
+                <Icon type="md-help-circle"/>
+              </Tooltip>
+            </template>
+            <template #total>
+              <Numeral :value="count.source" format="0,0"/>
+            </template>
+          </NumberInfo>
+        </Card>
+      </Col>
+      <Col span="6">
+        <Card class="content-center">
+          <NumberInfo>
+            <template #title>
+              History Count
+              <Tooltip>
+                <template #content>
+                  <div style="white-space: normal;">
+                    Statistics The total number of query histories of access data sources
+                  </div>
+                </template>
+                <Icon type="md-help-circle"/>
+              </Tooltip>
+            </template>
+            <template #total>
+              <Numeral :value="count.history" format="0,0"/>
+            </template>
+          </NumberInfo>
+        </Card>
+      </Col>
+    </Row>
   </div>
 </template>
-
 <script lang="ts">
-import { HttpCommon } from "@/common/HttpCommon";
-import { AdminService } from "@/services/AdminService";
-import { defineComponent } from "vue";
+import {HttpCommon} from "@/common/HttpCommon";
+import {AdminService} from "@/services/AdminService";
+import {defineComponent} from "vue";
 
 export default defineComponent({
   name: "DashboardConsoleView",
-  components: {},
-  data() {
+  data()
+  {
     return {
       summaryLoading: false,
       count: {
@@ -54,11 +61,13 @@ export default defineComponent({
       }
     }
   },
-  created() {
+  created()
+  {
     this.handlerInitialize()
   },
   methods: {
-    handlerInitialize() {
+    handlerInitialize()
+    {
       this.summaryLoading = true;
       const adminService = new AdminService();
       const axios = new HttpCommon().getAxios();
@@ -71,9 +80,14 @@ export default defineComponent({
             this.count.history = pluginHistoryCount.data;
           }
         })).finally(() => {
-          this.summaryLoading = false;
-        });
+        this.summaryLoading = false;
+      });
     }
   }
 });
 </script>
+<style scoped>
+.content-center {
+  text-align: center;
+}
+</style>

@@ -70,7 +70,7 @@ public class SecurityConfigure
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/", "/**/*.js", "/**/*.css", "/api/auth/**").permitAll()
+                .antMatchers("/", "/**/*.js", "/**/*.css", "/api/auth/**", "/fonts/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }

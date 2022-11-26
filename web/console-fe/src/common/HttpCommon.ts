@@ -1,5 +1,4 @@
 import {ResponseModel} from "@/model/ResponseModel";
-import {message} from "ant-design-vue";
 import axios from 'axios';
 import Common from "@/common/Common";
 
@@ -50,12 +49,12 @@ export class HttpCommon
 
     // If the authorization key does not match, clear the local token reload page
     if (response.code === 4003) {
-      message.error(response.message);
+      // this.$Message.error(response.message);
       localStorage.removeItem(Common.token);
       window.location.reload();
     }
     if (response.code === 5000) {
-      message.error(response.message);
+      // message.error(response.message);
     }
     return response;
   }
@@ -78,7 +77,7 @@ export class HttpCommon
         .then(result => {
           resolve(this.handlerSuccessful(result));
         }, error => {
-          message.error(error.message);
+          // message.error(error.message);
           resolve(this.handlerFailed(error));
         });
     });
@@ -92,7 +91,7 @@ export class HttpCommon
         .then(result => {
           resolve(this.handlerSuccessful(result));
         }, error => {
-          message.error(error.message);
+          // message.error(error.message);
           resolve(this.handlerFailed(error));
         });
     });
@@ -105,7 +104,7 @@ export class HttpCommon
         .then(result => {
           resolve(this.handlerSuccessful(result));
         }, error => {
-          message.error(error.message);
+          // message.error(error.message);
           resolve(this.handlerFailed(error));
         });
     });
@@ -118,7 +117,7 @@ export class HttpCommon
         .then(result => {
           resolve(this.handlerSuccessful(result));
         }, error => {
-          message.error(error.message);
+          // message.error(error.message);
           resolve(this.handlerFailed(error));
         });
     });

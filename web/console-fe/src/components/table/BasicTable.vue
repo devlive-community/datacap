@@ -1,65 +1,46 @@
 <template>
   <div>
-    <a-card :bodyStyle="{padding: 0, 'min-height': 0}" :headStyle="{padding: 0}" size="small">
-      <template #title>
-        <a-button size="small" type="primary" @click="columnDrawerVisible = true" style="margin-right: 10px;">
-          <column-width-outlined/>
-        </a-button>
-        <a-tooltip :title="$t('tooltip.pageShow')">
-          <a-switch v-model:checked="isPage" size="small" style="margin-right: 10px;" @change="handlerChange">
-            <template #checkedChildren>
-              <check-outlined/>
-            </template>
-            <template #unCheckedChildren>
-              <close-outlined/>
-            </template>
-          </a-switch>
-        </a-tooltip>
-        <a-dropdown style="margin-right: 10px;">
-          <template #overlay>
-            <a-menu @click="handlerExport()">
-              <a-menu-item key="export_csv">
-                CSV
-              </a-menu-item>
-            </a-menu>
+    <Card :padding="5">
+      <Button size="small" type="primary" @click="columnDrawerVisible = true" icon="md-list" style="margin-right: 10px;"/>
+      <Tooltip :content="$t('tooltip.pageShow')">
+        <Switch v-model="isPage" size="small" style="margin-right: 10px;" @change="handlerChange">
+          <template #open>
+            <Icon type="md-check"></Icon>
           </template>
-          <a-button type="primary" size="small">
-            Export
-            <DownloadOutlined/>
-          </a-button>
-        </a-dropdown>
-        <a-drawer v-if="columnDrawerVisible" :title="$t('common.column')" placement="right" :closable="false" :mask-closable="false"
-                  :visible="columnDrawerVisible" :getContainer="false" :headerStyle="{padding: '10px'}"
-                  :keyboard="false" :style="{ position: 'absolute' }">
-          <template #extra>
-            <a-button size="small" shape="circle" type="primary" style="margin-right: 10px;"
-                      danger @click="columnDrawerVisible = false">
-              <template #icon>
-                <close-circle-outlined/>
-              </template>
-            </a-button>
-            <a-button size="small" shape="circle" type="primary" @click="handlerApplyColumn()">
-              <template #icon>
-                <save-outlined/>
-              </template>
-            </a-button>
+          <template #close>
+            <Icon type="md-close"></Icon>
           </template>
-          <a-checkbox-group v-model:value="visibleColumns" style="width: 100%">
-            <a-row>
-              <a-col :span="8" v-for="columnDef in columnDefs" v-bind:key="columnDef.headerName">
-                <a-checkbox :value="columnDef">{{ columnDef.headerName }}</a-checkbox>
-              </a-col>
-            </a-row>
-          </a-checkbox-group>
-        </a-drawer>
-        <ag-grid-vue :key="timestamp" :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}" :pagination="isPage"
-                     class="ag-theme-datacap" :columnDefs="columnDefs" :rowData="configure.columns" :gridOptions="gridOptions">
-        </ag-grid-vue>
-      </template>
-    </a-card>
+        </Switch>
+      </Tooltip>
+      <Dropdown style="margin-right: 10px;">
+        <Button type="primary" size="small">
+          Export
+          <Icon type="md-download"/>
+        </Button>
+        <template #list>
+          <DropdownMenu>
+            <DropdownItem @click="handlerExport()">CSV</DropdownItem>
+          </DropdownMenu>
+        </template>
+      </Dropdown>
+      <ag-grid-vue :key="timestamp" :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}" :pagination="isPage"
+                   class="ag-theme-datacap" :columnDefs="columnDefs" :rowData="configure.columns" :gridOptions="gridOptions">
+      </ag-grid-vue>
+      <Drawer v-if="columnDrawerVisible" :title="$t('common.column')" placement="right" :mask-closable="false"
+              v-model="columnDrawerVisible" :style="{ position: 'absolute' }">
+        <template #close>
+          <Button size="small" shape="circle" type="error" style="margin-right: 10px;" icon="md-close" @click="columnDrawerVisible = false"/>
+          <Button size="small" shape="circle" type="primary" icon="md-document" @click="handlerApplyColumn()"/>
+        </template>
+        <CheckboxGroup v-model="visibleColumns" style="width: 100%">
+          <Checkbox v-for="columnDef in columnDefs" v-bind:key="columnDef.headerName" :label="columnDef">
+            {{ columnDef.headerName }}
+          </Checkbox>
+        </CheckboxGroup>
+      </Drawer>
+    </Card>
   </div>
 </template>
-
 <script lang="ts">
 import {defineComponent} from "vue";
 import {TableConfigure} from "@/components/table/TableConfigure";

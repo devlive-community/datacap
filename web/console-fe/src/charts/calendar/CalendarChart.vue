@@ -1,7 +1,8 @@
 <template>
   <div :style="{width: configure.width, height: configure.height}"
        id="calendarContainer">
-    <a-empty v-if="!configure.data"/>
+    <Result v-if="!configure.data" type="warning">
+    </Result>
   </div>
 </template>
 <script lang="ts">

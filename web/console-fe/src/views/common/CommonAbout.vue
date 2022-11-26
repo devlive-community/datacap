@@ -1,21 +1,17 @@
 <template>
-  <a-card size="small" :bodyStyle="{ padding: '20px'}">
-    <template #title>
-      <a-alert message="Release Notes" type="info" show-icon/>
-    </template>
-    <a-timeline :reverse="true">
-      <a-timeline-item v-for="releaseNote of ReleaseNotes.releaseNotes" v-bind:key="releaseNote.version">
-        <template #dot>
-          <check-circle-two-tone :spin="releaseNote.latest" two-tone-color="#52c41a"/>
-        </template>
-        <p>
-          <a-tag>{{ releaseNote.version }}</a-tag>
-          <clock-circle-two-tone/>&nbsp;{{ releaseNote.time }}
+  <div>
+    <Timeline pending class="datacap-release-note">
+      <TimelineItem v-for="releaseNote of ReleaseNotes.releaseNotes" v-bind:key="releaseNote.version">
+        <p class="time">
+          <Tag :color="releaseNote.latest ? 'primary' : 'default'">{{ releaseNote.version }}</Tag>
+          <Tag color="default">{{ releaseNote.time }}</Tag>
         </p>
-        <vue-markdown-it :source="releaseNote.content"/>
-      </a-timeline-item>
-    </a-timeline>
-  </a-card>
+        <p class="content">
+          <vue-markdown-it :source="releaseNote.content"/>
+        </p>
+      </TimelineItem>
+    </Timeline>
+  </div>
 </template>
 <script lang="ts">
 import VueMarkdownIt from 'vue3-markdown-it';
@@ -34,3 +30,17 @@ export default {
   }
 }
 </script>
+<style scoped>
+.datacap-release-note {
+  padding: 20px;
+}
+
+.time {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.content {
+  padding-left: 5px;
+}
+</style>

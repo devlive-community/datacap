@@ -6,9 +6,8 @@
 
 <script>
 export default {
-  name: "ProfileLayoutContent",
-  computed: {}
+  name: "ProfileLayoutContent"
 };
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped></style>
+<style scoped>
+</style>

@@ -1,26 +1,30 @@
 <template>
-  <a-layout-content>
-    <a-card size="small" :loading="loading">
-      <template #title>
-        {{ $t('common.contribution') }}
-      </template>
-      <div :style="{ background: '#fff', minHeight: '150px' }">
-        <CalendarChart :configure="summary.contributionConfigure"></CalendarChart>
-      </div>
-    </a-card>
-    <a-row :gutter="16" style="margin-top: 10px;">
-      <a-col :span="8">
-        <a-card size="small" :loading="loading">
+  <div>
+    <Row :gutter="16">
+      <Col span="24">
+        <Card style="width:100%">
+          <template #title>
+            {{ $t('common.contribution') }}
+          </template>
+          <div :style="{ background: '#fff', minHeight: '150px' }">
+            <Spin fix v-if="loading"/>
+            <CalendarChart v-else :configure="summary.contributionConfigure"></CalendarChart>
+          </div>
+        </Card>
+      </Col>
+      <Col span="8" style="margin-top: 10px;">
+        <Card style="width:100%">
           <template #title>
             {{ $t('profile.radar7Days') }}
           </template>
-          <div>
-            <RadarChart :configure="summary.radarConfigure"></RadarChart>
+          <div :style="{ minHeight: '150px' }">
+            <Spin fix v-if="loading"/>
+            <RadarChart v-else :configure="summary.radarConfigure"></RadarChart>
           </div>
-        </a-card>
-      </a-col>
-    </a-row>
-  </a-layout-content>
+        </Card>
+      </Col>
+    </Row>
+  </div>
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue';
@@ -32,7 +36,7 @@ import {CalendarConfigure} from "@/charts/calendar/CalendarConfigure";
 import {RadarConfigure} from "@/charts/radar/RadarConfigure";
 
 export default defineComponent({
-  components: {RadarChart, CalendarChart},
+  components: {CalendarChart, RadarChart},
   data()
   {
     return {

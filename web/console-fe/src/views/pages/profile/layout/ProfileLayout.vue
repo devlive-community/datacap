@@ -1,15 +1,15 @@
 <template>
   <div>
-    <a-layout style="background: #ffffff;">
-      <a-layout-sider width="200" style="background: #ffffff;">
-        <ProfileLayoutSidebar></ProfileLayoutSidebar>
-      </a-layout-sider>
-      <a-layout style="margin-left: 10px;">
-        <a-layout-content style="background: #ffffff;">
-          <ProfileLayoutContent></ProfileLayoutContent>
-        </a-layout-content>
-      </a-layout>
-    </a-layout>
+    <Layout class="content">
+      <Layout class="content" style="padding-top: 15px;">
+        <Sider hide-trigger class="content">
+          <ProfileLayoutSidebar/>
+        </Sider>
+        <Layout class="content" :style="{padding: '0 12px 12px'}">
+          <ProfileLayoutContent/>
+        </Layout>
+      </Layout>
+    </Layout>
   </div>
 </template>
 
@@ -19,11 +19,11 @@ import ProfileLayoutContent from "@/views/pages/profile/layout/components/Profil
 
 export default {
   name: "ProfileLayout",
-  components: {ProfileLayoutContent, ProfileLayoutSidebar},
-  computed: {},
-  methods: {}
+  components: {ProfileLayoutSidebar, ProfileLayoutContent},
 }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
+.content {
+  background-color: #FFFFFF;
+}
 </style>
