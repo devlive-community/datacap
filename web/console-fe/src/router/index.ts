@@ -107,6 +107,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/common",
     name: "common",
+    component: LayoutContainer,
     children: [
       {
         name: "routerNotFound",
@@ -116,7 +117,6 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: "about",
         path: "about",
-        component: LayoutContainer,
         children: [
           {
             path: '',
