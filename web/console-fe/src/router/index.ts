@@ -115,6 +115,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/common/NotFound.vue")
       },
       {
+        name: "routerNotAuthorized",
+        path: "not_authorized",
+        component: () => import("../views/common/NotAuthorized.vue")
+      },
+      {
         name: "about",
         path: "about",
         children: [
