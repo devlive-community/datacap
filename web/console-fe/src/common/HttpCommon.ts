@@ -67,6 +67,9 @@ export class HttpCommon
       message: error.message,
       status: false
     };
+    if (error.code === 'ERR_NETWORK') {
+      router.push("/common/not_network");
+    }
     return response;
   }
 
