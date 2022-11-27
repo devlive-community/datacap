@@ -295,6 +295,11 @@ export default defineComponent({
     {
       editorValueMap.set(activeKey.value, value);
     }
+  },
+  // Prevents errors from affecting other components
+  errorCaptured(err: Error, vm)
+  {
+    return false;
   }
 });
 </script>

@@ -4,7 +4,9 @@
       <Menu mode="horizontal" theme="dark" active-name="dashboard">
         <div class="layout-logo">
           <div class="layout-logo logo-text">
-            DataCap
+            <Badge :text="version" :offset="[14, -12]">
+              DataCap
+            </Badge>
           </div>
         </div>
         <div class="layout-nav">
@@ -47,7 +49,6 @@
           <MenuItem name="feedback" target="_blank" to="https://github.com/EdurtIO/incubator-datacap/issues/new/choose">
             <Tooltip placement="top">
               <Icon type="md-help-circle"/>
-              <template #t></template>
               <template #content>
                 {{ $t('common.feedback') }}
               </template>
@@ -97,9 +98,12 @@ import {defineComponent} from "vue";
 import Common from "@/common/Common";
 import {AuthResponse} from "@/model/AuthResponse";
 import router from "@/router";
+import {Badge, MenuItem} from "view-ui-plus";
+import config from '../../../../package.json';
 
 export default defineComponent({
   name: "LayoutHeader",
+  components: {Badge, MenuItem},
   setup()
   {
     let username;
@@ -113,13 +117,14 @@ export default defineComponent({
       router.push('/auth/signin')
     }
     const language = 'zh_cn';
+    const version = config.version;
     return {
       username,
       language,
+      version,
       handlerLogout
     }
   },
-  computed: {},
   methods: {
     handlerChangeLang(language: string)
     {
@@ -159,5 +164,9 @@ export default defineComponent({
 
 .layout-nav {
   margin: 0 auto;
+}
+
+.badge-count {
+  top: 1px;
 }
 </style>

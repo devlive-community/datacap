@@ -11,6 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "sourceMap": true,
+    "resolveJsonModule": true,
     // Property '...' has no initializer and is not definitely assigned in the constructor
     "strictPropertyInitialization": false,
     "baseUrl": ".",
