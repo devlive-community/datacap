@@ -1,12 +1,6 @@
 <template>
   <div>
     <Card style="width:100%" :title="$t('common.history')">
-      <template #extra>
-        <Tooltip>
-          <template #content>{{ $t('common.create') }}</template>
-          <Button type="primary" shape="circle" icon="md-add" size="small" @click="handlerCreateOrUpdate()"/>
-        </Tooltip>
-      </template>
       <Table :loading="loading" :columns="headers" :data="data.content">
         <template #plugin="{ row }">
           <Ellipsis :text="row.plugin.name" :height="25" tooltip/>
