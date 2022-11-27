@@ -116,6 +116,7 @@ plugins:
           documentation_database_oracle: Oracle
           documentation_v120: 1.2.0-SNAPSHOT
           documentation_v120_plugin_cratedb: CrateDB
+          documentation_v120_plugin_tdengine: TDengine
           release: 发布日志
           release_20221015: 1.0.0.20221015
           release_20221115: 1.1.0.20221115 (latest)
@@ -137,6 +138,7 @@ plugins:
           documentation_database_oracle: Oracle
           documentation_v120: 1.2.0-SNAPSHOT
           documentation_v120_plugin_cratedb: CrateDB
+          documentation_v120_plugin_tdengine: TDengine
           release: Release Note
           release_20221015: 1.0.0.20221015
           release_20221115: 1.1.0.20221115 (latest)
@@ -162,6 +164,7 @@ nav:
       - documentation_database:
         - documentation_v120:
           - documentation_v120_plugin_cratedb: reference/plugin/v120/cratedb.md
+          - documentation_v120_plugin_tdengine: reference/plugin/v120/tdengine.md
         - documentation_database_mysql: reference/database/mysql.md
         - documentation_database_clickhouse: reference/database/clickhouse.md
         - documentation_database_kylin: reference/database/kylin.md

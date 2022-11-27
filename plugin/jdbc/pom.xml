@@ -36,5 +36,6 @@
         <module>oracle</module>
         <module>cratedb</module>
         <module>dm</module>
+        <module>tdengine</module>
     </modules>
 </project>

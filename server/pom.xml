@@ -209,6 +209,11 @@
             <artifactId>datacap-plugin-http-clickhouse</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-tdengine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
