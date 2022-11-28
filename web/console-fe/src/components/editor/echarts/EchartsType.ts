@@ -1,4 +1,5 @@
 export enum EchartsType
 {
-  LINE = ('line')
+  LINE = ('line'),
+  BAR = ('bar')
 }
