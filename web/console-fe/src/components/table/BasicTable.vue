@@ -23,6 +23,8 @@
           </DropdownMenu>
         </template>
       </Dropdown>
+      <Button size="small" icon="md-pie" @click="handlerVisualization(true)">
+      </Button>
       <ag-grid-vue :key="timestamp" :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}" :pagination="isPage"
                    class="ag-theme-datacap" :columnDefs="columnDefs" :rowData="configure.columns" :gridOptions="gridOptions">
       </ag-grid-vue>
@@ -38,6 +40,8 @@
           </Checkbox>
         </CheckboxGroup>
       </Drawer>
+      <EchartsEditor v-if="visualizationDrawerVisible" :isVisible="visualizationDrawerVisible"
+                     @close="handlerVisualization(false)" :configure="visualizationConfigure"></EchartsEditor>
     </Card>
   </div>
 </template>
@@ -52,10 +56,12 @@ import {createDefaultOptions} from "./TableGridOptions";
 import {useI18n} from "vue-i18n";
 import {TableColumnDef} from "@/components/table/TableColumnDef";
 import {getTimestamp} from "@/common/DateCommon";
+import EchartsEditor from "@/components/editor/echarts/EchartsEditor.vue";
+import {EchartsConfigure} from "@/components/editor/echarts/EchartsConfigure";
 
 export default defineComponent({
   name: "BasicTableComponent",
-  components: {AgGridVue},
+  components: {EchartsEditor, AgGridVue},
   props: {
     configure: {
       type: TableConfigure,
@@ -80,6 +86,8 @@ export default defineComponent({
   {
     return {
       columnDrawerVisible: false,
+      visualizationDrawerVisible: false,
+      visualizationConfigure: EchartsConfigure,
       visibleColumns: [],
       columnDefs: [],
       isPage: true
@@ -121,6 +129,19 @@ export default defineComponent({
     handlerChange()
     {
       this.timestamp = getTimestamp();
+    },
+    handlerVisualization(isOpen: boolean)
+    {
+      if (isOpen) {
+        this.visualizationConfigure = new EchartsConfigure();
+        this.visualizationConfigure.headers = this.configure.headers;
+        this.visualizationConfigure.types = this.configure.types;
+        this.visualizationConfigure.columns = this.configure.columns;
+        this.visualizationDrawerVisible = true;
+      }
+      else {
+        this.visualizationDrawerVisible = false;
+      }
     }
   }
 });
