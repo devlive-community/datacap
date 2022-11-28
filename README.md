@@ -90,6 +90,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://tdengine.com/" target="_blank">
         <img src="assets/plugin/tdengine.png" alt="TDengine" height="50" />
+    </a>&nbsp;
+    <a href="https://impala.apache.org/" target="_blank">
+        <img src="assets/plugin/impala.png" alt="Impala" height="50" />
     </a>
 </p>
 

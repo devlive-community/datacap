@@ -37,5 +37,6 @@
         <module>cratedb</module>
         <module>dm</module>
         <module>tdengine</module>
+        <module>impala</module>
     </modules>
 </project>
