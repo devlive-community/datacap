@@ -10,13 +10,19 @@
         </template>
         <template #right>
           <Form label-position="left" :label-width="50">
+            <FormItem label="Type" style="margin-left: 10px;">
+              <RadioGroup v-model="chartConfigure.type" @on-change="handlerChangeValue('series')">
+                <Radio :label="chartType.LINE">Line</Radio>
+                <Radio :label="chartType.BAR">Bar</Radio>
+              </RadioGroup>
+            </FormItem>
             <div class="demo-split-pane">
               <Collapse v-model="collapseValue">
                 <Panel name="xAxis">
                   xAxis
                   <template #content>
                     <FormItem label="Value">
-                      <Select v-model="defaultConfigure.xAxis" @on-change="handlerChangeValue('x')">
+                      <Select v-model="defaultConfigure.xAxis" @on-change="handlerChangeValue('series')">
                         <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
                       </Select>
                     </FormItem>
@@ -78,6 +84,9 @@ import {FormItem} from "view-ui-plus";
 import {isEmpty} from "lodash";
 import {EchartsConfigure} from "@/components/editor/echarts/EchartsConfigure";
 import EchartsPreview from "@/components/editor/echarts/EchartsPreview.vue";
+import {EchartsType} from "@/components/editor/echarts/EchartsType";
+
+const chartType = EchartsType;
 
 export default defineComponent({
   name: 'EchartsEditor',
@@ -103,7 +112,8 @@ export default defineComponent({
         yAxis: '',
         series: ''
       },
-      chartConfigure: null
+      chartConfigure: ChartConfigure,
+      chartType: chartType
     }
   },
   created()
@@ -127,6 +137,7 @@ export default defineComponent({
       else if (type === 'series') {
         const series: SeriesConfigure = new SeriesConfigure();
         series.data = getValueByKey(this.defaultConfigure.series, this.configure.columns);
+        series.type = this.chartConfigure.type;
         this.chartConfigure.series = [];
         this.chartConfigure.series.push(series);
       }
