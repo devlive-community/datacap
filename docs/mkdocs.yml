@@ -114,7 +114,7 @@ plugins:
           documentation_database_clickhouse: ClickHouse
           documentation_database_kylin: Kylin
           documentation_database_oracle: Oracle
-          documentation_v120: 1.2.0-SNAPSHOT
+          documentation_v120: 1.2.0
           documentation_v120_plugin_cratedb: CrateDB
           documentation_v120_plugin_tdengine: TDengine
           documentation_v120_plugin_impala: Impala
@@ -140,7 +140,7 @@ plugins:
           documentation_database_clickhouse: ClickHouse
           documentation_database_kylin: Kylin
           documentation_database_oracle: Oracle
-          documentation_v120: 1.2.0-SNAPSHOT
+          documentation_v120: 1.2.0
           documentation_v120_plugin_cratedb: CrateDB
           documentation_v120_plugin_tdengine: TDengine
           documentation_v120_plugin_impala: Impala

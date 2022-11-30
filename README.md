@@ -93,6 +93,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://impala.apache.org/" target="_blank">
         <img src="assets/plugin/impala.png" alt="Impala" height="50" />
+    </a>&nbsp;
+    <a href="https://www.oceanbase.com/" target="_blank">
+        <img src="assets/plugin/oceanbase.png" alt="OceanBase" height="50" />
     </a>
 </p>
 
