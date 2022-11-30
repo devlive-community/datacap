@@ -1,9 +1,11 @@
 import {ReleaseNote} from "@/views/common/release/ReleaseNote";
 import Release20221115 from "@/views/common/release/Release20221115";
 import Release20221015 from "@/views/common/release/Release20221015";
+import Release120 from "@/views/common/release/Release120";
 
 const releaseNotes: ReleaseNote[] = [];
-releaseNotes.push(Release20221115.releaseNote,
+releaseNotes.push(Release120.releaseNote,
+  Release20221115.releaseNote,
   Release20221015.releaseNote);
 
 export default {
