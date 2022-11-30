@@ -14,57 +14,47 @@ hide:
 </style>
 
 <div class="font-center">
-当前 <code>DataCap</code> 发布最新版本 <img src="https://img.shields.io/github/v/release/EdurtIO/incubator-datacap.svg" />. 了解更多的细节请查看 <a href="/release-latest.html">发布说明</a>.
+The current Trino release is version <img src="https://img.shields.io/github/v/release/EdurtIO/incubator-datacap.svg" />. Learn more details from the <a href="/release-latest.html">release notes</a>.
 </div>
 
 <div class="grid cards" markdown style="margin-top: 30px; padding: 50px;">
 
-- :fontawesome-brands-app-store-ios: __Mac package__
+- :fontawesome-brands-app-store-ios: __Server packages__
 
     ---
 
-    查看 [datacap](./reference/get_started/install.md) 完整的安装说明。
+    Utilize the `.tar.gz` package to manually deploy. See [Installation datacap](./reference/get_started/install.md) for complete install instructions.
 
     <br />
 
-    [下载最新版](https://github.com/EdurtIO/incubator-datacap/releases/latest){ .md-button .md-button-primary }
-
-- :fontawesome-brands-windows: __Windows package__
-
-    ---
-
-    查看 [datacap](./reference/get_started/install.md) 完整的安装说明。
-
-    <br />
-
-    [下载最新版](https://github.com/EdurtIO/incubator-datacap/releases/latest){ .md-button .md-button-primary }
+    [datacap-server-1.2.0.tar.gz](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-server/1.2.0/datacap-server-1.2.0-release.tar.gz){ .md-button .md-button-primary }
 
 - :material-more: __More package__
 
     ---
 
-    查看 [源代码编译](./reference/get_started/install.md#the-source-code-to-install) 完整的安装说明。
+    See [The source code to install](./reference/get_started/install.md#the-source-code-to-install) for complete install instructions.
 
     <br />
 
-    [源代码](https://github.com/EdurtIO/incubator-datacap){ .md-button .md-button-primary }
+    [Source Code](https://github.com/EdurtIO/incubator-datacap){ .md-button .md-button-primary }
 
 </div>
 
 <div class="grid cards" markdown style="padding: 0 50px 30px 50px;">
 
-- __社区资源__
+- __Community resources__
 
     ---
 
     * **Chat On Slack**: [edurtio.slack.com](https://edurtio.slack.com/archives/C02EU2YM2N8)
     * **Issues**: [GitHub issues](https://github.com/EdurtIO/incubator-datacap/issues)
-    * **钉钉**: [16160001608]()
+    * **DingTalk**: [16160001608]()
 
-- __获取帮助__
+- __Getting help__
 
     ---
 
-    如果你需要帮助使用或运行datacap, 请提交一个问题到 [Slack](https://edurtio.slack.com/archives/C02EU2YM2N8). 请在datacap [提交](https://github.com/EdurtIO/incubator-datacap/issues/new/choose)或查找问题.
+    If you need help using or running dbm, please ask a question on [Slack](https://edurtio.slack.com/archives/C02EU2YM2N8). Please [report](https://github.com/EdurtIO/incubator-datacap/issues/new/choose) any issue you find with dbm.
 
 </div>

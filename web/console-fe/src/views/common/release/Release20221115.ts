@@ -51,7 +51,7 @@ const content = `
 
 const releaseNote: ReleaseNote = {
   content: content,
-  latest: true,
+  latest: false,
   time: "2022-11-15",
   version: "1.1.0"
 };
