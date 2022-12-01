@@ -3,21 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>incubator-datacap</artifactId>
-        <groupId>io.edurt.datacap</groupId>
+        <artifactId>datacap-plugin</artifactId>
+        <groupId>io.edurt.datacap.plugin</groupId>
         <version>1.3.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>datacap-plugin</artifactId>
-    <groupId>io.edurt.datacap.plugin</groupId>
-    <version>1.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>DataCap for plugin</name>
+    <artifactId>datacap-plugin-native</artifactId>
+    <groupId>io.edurt.datacap.plugin.natived</groupId>
+    <name>DataCap plugin for (Native)</name>
 
     <modules>
-        <module>example</module>
-        <module>jdbc</module>
-        <module>http</module>
-        <module>native</module>
+        <module>redis</module>
     </modules>
 </project>
