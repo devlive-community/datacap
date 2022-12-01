@@ -224,6 +224,11 @@
             <artifactId>datacap-plugin-jdbc-oceanbase</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.natived</groupId>
+            <artifactId>datacap-plugin-native-redis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
