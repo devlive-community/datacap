@@ -15,6 +15,7 @@ public enum ServiceState
     USER_BAD_CREDENTIALS(4005, "The account or password is incorrect"),
     USER_PASSWORD_INCORRECT(4006, "The user password is incorrect"),
     USER_PASSWORD_DIFFERENT(4007, "Two passwords are different"),
+    USER_NAME_EQUALS(4008, "Cannot be the same as the old user name"),
     REQUEST_EXCEPTION(5000, "The request is abnormal");
 
     private Integer code;

@@ -2,7 +2,7 @@
   <div>
     <Card style="width:100%; minHeight: 150px;">
       <template #title>
-        {{ $t('setting.security') }}
+        {{ $t('setting.accountSetting') }}
       </template>
       <Spin fix v-if="loading"/>
       <div v-else>
@@ -10,6 +10,11 @@
           <Layout>
             <Content class="content" style="padding: 0 80px 0 40px;">
               <Form :label-width="80">
+                <FormItem :label="$t('common.username')">
+                  <Button type="text" style="float: right;" @click="changeUsername = true">
+                    {{ $t('setting.changeUsername') }}
+                  </Button>
+                </FormItem>
                 <FormItem :label="$t('common.password')">
                   <Button type="text" style="float: right;" @click="handlerShowModal('password')">
                     {{ $t('setting.changePassword') }}
@@ -38,6 +43,7 @@
         <Button type="primary" :loading="loading" @click="handlerChangePassword()">{{ $t('common.save') }}</Button>
       </template>
     </Modal>
+    <ChangeUsername v-if="changeUsername" :isVisible="changeUsername" @close="changeUsername = false"/>
   </div>
 </template>
 <script lang="ts">
@@ -46,8 +52,10 @@ import UserService from "@/services/UserService";
 import {UserPassword} from "@/model/UserPassword";
 import Common from "@/common/Common";
 import router from "@/router";
+import ChangeUsername from "@/views/pages/profile/components/ChangeUsername.vue";
 
 export default defineComponent({
+  components: {ChangeUsername},
   setup()
   {
     const formState = reactive<UserPassword>({
@@ -63,6 +71,7 @@ export default defineComponent({
   {
     return {
       changePasswordVisible: false,
+      changeUsername: false,
       loading: false
     }
   },

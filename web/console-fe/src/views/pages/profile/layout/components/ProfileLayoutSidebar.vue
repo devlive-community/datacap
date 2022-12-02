@@ -16,9 +16,9 @@
           <Icon type="ios-cog"/>
           {{ $t('setting.profile') }}
         </MenuItem>
-        <MenuItem name="security" to="/profile/security">
-          <Icon type="ios-lock"/>
-          {{ $t('setting.security') }}
+        <MenuItem name="security" to="/profile/account">
+          <Icon type="ios-contact"/>
+          {{ $t('setting.accountSetting') }}
         </MenuItem>
       </Menu>
     </Card>

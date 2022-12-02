@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.service.impl;
 
+import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
 import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
@@ -109,6 +110,25 @@ public class UserServiceImpl
             return Response.failure(ServiceState.USER_PASSWORD_DIFFERENT);
         }
         user.setPassword(encoder.encode(configure.getNewPassword()));
+        this.userRepository.save(user);
+        return Response.success(user.getId());
+    }
+
+    @Override
+    public Response<Long> changeUsername(UserNameBody configure)
+    {
+        Optional<UserEntity> userOptional = this.userRepository.findById(UserDetailsService.getUser().getId());
+        if (!userOptional.isPresent()) {
+            return Response.failure(ServiceState.USER_NOT_FOUND);
+        }
+        UserEntity user = userOptional.get();
+        if (!encoder.matches(configure.getPassword(), user.getPassword())) {
+            return Response.failure(ServiceState.USER_PASSWORD_INCORRECT);
+        }
+        if (configure.getNewUsername().equals(user.getUsername())) {
+            return Response.failure(ServiceState.USER_NAME_EQUALS);
+        }
+        user.setUsername(configure.getNewUsername());
         this.userRepository.save(user);
         return Response.success(user.getId());
     }
