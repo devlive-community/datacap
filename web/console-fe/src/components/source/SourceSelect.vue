@@ -2,7 +2,9 @@
   <div>
     <Select v-model="applySource" style="width: 160px" @on-change="handlerChangeValue">
       <Option v-for="column in columns" :value="column.id + ':' + column.type" v-bind:key="column.id">
-        {{ column.name }}
+        <Tooltip transfer :content="column.type">
+          {{ column.name }}
+        </Tooltip>
       </Option>
     </Select>
   </div>
