@@ -39,5 +39,6 @@
         <module>tdengine</module>
         <module>impala</module>
         <module>oceanbase</module>
+        <module>neo4j</module>
     </modules>
 </project>
