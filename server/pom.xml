@@ -229,6 +229,11 @@
             <artifactId>datacap-plugin-native-redis</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+            <artifactId>datacap-plugin-jdbc-neo4j</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

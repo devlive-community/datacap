@@ -97,8 +97,8 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import("../views/pages/profile/ProfilePublic.vue")
           },
           {
-            path: 'security',
-            component: () => import("../views/pages/profile/ProfileSecurity.vue")
+            path: 'account',
+            component: () => import("../views/pages/profile/ProfileAccount.vue")
           }
         ]
       }

@@ -12,6 +12,7 @@
         <module>web</module>
         <module>spi</module>
         <module>plugin</module>
+        <module>common</module>
     </modules>
 
     <name>DataCap(Incubator)</name>
@@ -98,6 +99,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.edurt.datacap.common</groupId>
+                <artifactId>datacap-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>

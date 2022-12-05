@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.controller.user;
 
+import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.UserEntity;
@@ -33,5 +34,11 @@ public class UserController
     public Response<Long> changePassword(@Validated @RequestBody UserPasswordBody configure)
     {
         return this.userService.changePassword(configure);
+    }
+
+    @PutMapping(value = "changeUsername")
+    public Response<Long> changeUsername(@Validated @RequestBody UserNameBody configure)
+    {
+        return this.userService.changeUsername(configure);
     }
 }

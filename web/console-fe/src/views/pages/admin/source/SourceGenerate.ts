@@ -23,6 +23,7 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.name'),
       key: 'name',
+      slot: 'name',
       ellipsis: true
     },
     {
@@ -38,6 +39,7 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.host'),
       key: 'host',
+      slot: 'host',
       ellipsis: true
     },
     {

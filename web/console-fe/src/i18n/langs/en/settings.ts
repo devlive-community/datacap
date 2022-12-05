@@ -4,5 +4,8 @@ export default {
   changePassword: 'Change the password',
   oldPassword: 'Old password',
   newPassword: 'New password',
-  confirmPassword: 'Confirm password'
+  confirmPassword: 'Confirm password',
+  accountSetting: 'Account Setting',
+  changeUsername: 'Change the username',
+  newUsername: 'New username'
 }

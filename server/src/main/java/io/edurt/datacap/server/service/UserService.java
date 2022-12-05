@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.service;
 
+import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
 import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
@@ -14,4 +15,6 @@ public interface UserService
     Response<UserEntity> info(Long userId);
 
     Response<Long> changePassword(UserPasswordBody configure);
+
+    Response<Long> changeUsername(UserNameBody configure);
 }

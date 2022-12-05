@@ -2,19 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>datacap-plugin-native</artifactId>
-        <groupId>io.edurt.datacap.plugin.natived</groupId>
+        <groupId>io.edurt.datacap.plugin.jdbc</groupId>
+        <artifactId>datacap-plugin-jdbc</artifactId>
         <version>1.3.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>datacap-plugin-native-redis</artifactId>
-    <name>DataCap plugin for native (Redis)</name>
+    <artifactId>datacap-plugin-jdbc-neo4j</artifactId>
+    <name>DataCap plugin for jdbc (Neo4j)</name>
 
     <properties>
-        <redis.version>3.6.3</redis.version>
-        <plugin.name>native-redis</plugin.name>
+        <neo4j.version>4.0.6</neo4j.version>
+        <plugin.name>jdbc-neo4j</plugin.name>
     </properties>
 
     <dependencies>
@@ -24,17 +24,24 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.edurt.datacap.common</groupId>
-            <artifactId>datacap-common</artifactId>
-        </dependency>
-        <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
         </dependency>
         <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>${redis.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-jdbc-driver</artifactId>
+            <version>${neo4j.version}</version>
         </dependency>
     </dependencies>
 
