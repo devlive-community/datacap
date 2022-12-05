@@ -8,6 +8,12 @@
         </Tooltip>
       </template>
       <Table :loading="loading" :columns="headers" :data="data.content">
+        <template #name="{ row }">
+          <Ellipsis :text="row.name" :length="8" tooltip transfer/>
+        </template>
+        <template #host="{ row }">
+          <Ellipsis :text="row.host" :length="8" tooltip transfer/>
+        </template>
         <template #public="{ row }">
           <Switch v-model="row.public" :disabled="currentUserId !== row.user.id" @on-change="handlerShared(row.public, row.id)"/>
         </template>
