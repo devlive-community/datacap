@@ -1,5 +1,6 @@
 package io.edurt.datacap.plugin.natived.redis;
 
+import io.edurt.datacap.common.OptionalUtils;
 import io.edurt.datacap.spi.connection.Connection;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
@@ -33,7 +34,13 @@ public class RedisConnection
             this.response = getResponse();
             log.info("Connection url {}", formatJdbcUrl());
             this.jedis = new Jedis(this.configure.getHost(), this.configure.getPort());
-            this.jedis.clientId();
+            if (OptionalUtils.isNotEmpty(this.configure.getUsername()) && OptionalUtils.isNotEmpty(this.configure.getPassword())) {
+                this.jedis.auth(this.configure.getUsername().get(), this.configure.getPassword().get());
+            }
+            if (OptionalUtils.isNotEmpty(this.configure.getPassword())) {
+                this.jedis.auth(this.configure.getPassword().get());
+            }
+            this.jedis.ping("DataCap");
             response.setIsConnected(Boolean.TRUE);
         }
         catch (Exception ex) {
