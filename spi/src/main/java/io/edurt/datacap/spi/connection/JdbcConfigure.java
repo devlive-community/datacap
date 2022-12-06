@@ -16,4 +16,5 @@ public class JdbcConfigure
 {
     private String jdbcDriver;
     private String jdbcType;
+    private Boolean isAppendChar = Boolean.TRUE;
 }

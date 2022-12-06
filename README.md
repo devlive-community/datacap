@@ -99,6 +99,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://neo4j.com/" target="_blank">
         <img src="assets/plugin/neo4j.png" alt="Neo4j" height="50" />
+    </a>&nbsp;
+    <a href="https://iotdb.apache.org/" target="_blank">
+        <img src="assets/plugin/iotdb.png" alt="IoTDB" height="50" />
     </a>
 </p>
 

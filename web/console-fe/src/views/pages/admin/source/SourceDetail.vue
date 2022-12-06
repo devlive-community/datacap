@@ -35,10 +35,11 @@
           <TabPane :label="$t('common.source')" name="type" icon="md-apps">
             <RadioGroup v-if="plugins" v-model="formState.type" type="button">
               <div v-for="key in Object.keys(plugins)" v-bind:key="key">
-                <Divider orientation="left">{{ key }}</Divider>
+                <Divider orientation="left">{{ key }} ({{ plugins[key].length }})</Divider>
                 <Space wrap :size="[8, 16]">
-                  <Radio v-for="plugin in plugins[key]" :label="plugin.name + ' ' + plugin.type"
-                         v-bind:key="plugin.name"/>
+                  <Tooltip v-for="plugin in plugins[key]" :content="plugin.description" transfer v-bind:key="plugin.name">
+                    <Radio :label="plugin.name + ' ' + plugin.type"/>
+                  </Tooltip>
                 </Space>
               </div>
             </RadioGroup>
