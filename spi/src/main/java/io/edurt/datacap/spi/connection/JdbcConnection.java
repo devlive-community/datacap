@@ -52,7 +52,9 @@ public class JdbcConnection
                 buffer.append("?");
             }
             else {
-                buffer.append("&");
+                if (this.jdbcConfigure.getIsAppendChar()) {
+                    buffer.append("&");
+                }
             }
             buffer.append(String.join("&", flatEnv));
         }
@@ -78,7 +80,7 @@ public class JdbcConnection
             }
             response.setIsConnected(Boolean.TRUE);
         }
-        catch (SQLException | ClassNotFoundException ex) {
+        catch (SQLException | ClassNotFoundException | NoClassDefFoundError ex) {
             log.error("Connection failed ", ex);
             response.setIsConnected(Boolean.FALSE);
             response.setMessage(ex.getMessage());
