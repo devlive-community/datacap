@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card style="width:100%" :title="$t('common.history')">
-      <Table :loading="loading" :columns="headers" :data="data.content">
+      <Table :loading="loading" :columns="headers" :data="data.content" @on-sort-change="handlerSort">
         <template #plugin="{ row }">
           <Ellipsis :text="row.plugin.name" :height="25" tooltip/>
         </template>
@@ -41,7 +41,10 @@ import {useI18n} from 'vue-i18n';
 import {defineComponent} from "vue";
 import {ResponsePage} from "@/model/ResponsePage";
 import SqlDetail from "@/components/sql/SqlDetail.vue";
+import {Filter} from "@/model/Filter";
+import {Order} from "@/model/Order";
 
+const filter: Filter = new Filter();
 export default defineComponent({
   name: "QueryHistory",
   components: {SqlDetail},
@@ -50,7 +53,8 @@ export default defineComponent({
     const i18n = useI18n();
     const headers = createHeaders(i18n);
     return {
-      headers
+      headers,
+      filter
     }
   },
   data()
@@ -69,14 +73,14 @@ export default defineComponent({
   },
   created()
   {
-    this.handlerInitialize(this.pagination.current, this.pagination.pageSize)
+    this.handlerInitialize(this.filter)
   },
   methods: {
-    handlerInitialize(page: number, size: number)
+    handlerInitialize(filter: Filter)
     {
       this.loading = true;
       new AuditService()
-        .getPluginAudits(page, size)
+        .getPluginAudits(filter)
         .then((response) => {
           if (response.status) {
             this.data = response.data;
@@ -99,7 +103,9 @@ export default defineComponent({
     {
       this.pagination.current = pagination.current;
       this.pagination.pageSize = pagination.pageSize;
-      this.handlerInitialize(pagination.current, pagination.pageSize)
+      this.filter.page = pagination.current;
+      this.filter.size = pagination.pageSize;
+      this.handlerInitialize(this.filter);
     },
     handlerShowError(message: string)
     {
@@ -114,6 +120,20 @@ export default defineComponent({
     {
       this.visibleContent = value;
       this.content = '';
+    },
+    handlerSort(column: { key: string, order: string })
+    {
+      const order: Order = {
+        column: column.key,
+        order: column.order
+      }
+      if (!this.filter.orders) {
+        this.filter.orders = new Array<Order>();
+      }
+      // distinct
+      this.filter.orders = this.filter.orders.filter(value => value.column !== column.key);
+      this.filter.orders.push(order);
+      this.handlerInitialize(this.filter);
     }
   }
 });
