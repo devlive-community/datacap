@@ -21,4 +21,6 @@ public interface PluginAuditService
     Response<List<ContributionHistory>> getAllContribution();
 
     Response<List<ContributionRadar>> getContributionRadar();
+
+    Response<PluginAuditEntity> getById(Long id);
 }

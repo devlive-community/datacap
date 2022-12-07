@@ -3,7 +3,7 @@
     <Card style="width:100%" :title="$t('common.history')">
       <Table :loading="loading" :columns="headers" :data="data.content" @on-sort-change="handlerSort">
         <template #plugin="{ row }">
-          <Ellipsis :text="row.plugin.name" :height="25" tooltip/>
+          <Ellipsis :text="row.plugin.name" :height="25" tooltip transfer/>
         </template>
         <template #elapsed="{ row }">
           <Tooltip :content="$t('tooltip.elapsedMillisecond')" transfer>
@@ -19,7 +19,10 @@
               <Button shape="circle" type="info" size="small" icon="md-eye" @click="handlerShowContent(row.content)"/>
             </Tooltip>
             <Tooltip :content="$t('common.error')" transfer>
-              <Button :disabled="row.state === 'SUCCESS'" shape="circle" type="error" size="small" icon="md-pin" @click="handlerShowError(row.message)"/>
+              <Button :disabled="row.state === 'SUCCESS'" shape="circle" type="error" size="small" icon="md-warning" @click="handlerShowError(row.message)"/>
+            </Tooltip>
+            <Tooltip :content="$t('common.quote')" transfer>
+              <Button shape="circle" type="dashed" size="small" icon="md-pin" @click="handlerGoConsoleIndex(row.id)"/>
             </Tooltip>
           </Space>
         </template>
@@ -43,6 +46,7 @@ import {ResponsePage} from "@/model/ResponsePage";
 import SqlDetail from "@/components/sql/SqlDetail.vue";
 import {Filter} from "@/model/Filter";
 import {Order} from "@/model/Order";
+import router from "@/router";
 
 const filter: Filter = new Filter();
 export default defineComponent({
@@ -134,6 +138,10 @@ export default defineComponent({
       this.filter.orders = this.filter.orders.filter(value => value.column !== column.key);
       this.filter.orders.push(order);
       this.handlerInitialize(this.filter);
+    },
+    handlerGoConsoleIndex(id: number)
+    {
+      router.push('/console/index?id=' + id + '&from=history');
     }
   }
 });

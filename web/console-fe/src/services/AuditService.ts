@@ -10,4 +10,9 @@ export class AuditService
   {
     return new HttpCommon().post(pluginAudit, filter);
   }
+
+  getById(id: number): Promise<ResponseModel>
+  {
+    return new HttpCommon().get(pluginAudit + "/" + id);
+  }
 }

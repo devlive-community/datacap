@@ -6,6 +6,7 @@ import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginAuditEntity;
 import io.edurt.datacap.server.service.PluginAuditService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +36,11 @@ public class PluginAuditController
     public Response<PageEntity<PluginAuditEntity>> getAllByFilter(@RequestBody FilterBody filter)
     {
         return this.pluginAuditService.getAllByFilter(filter);
+    }
+
+    @GetMapping(value = "{id}")
+    public Response<PluginAuditEntity> getInfo(@PathVariable(value = "id") Long id)
+    {
+        return this.pluginAuditService.getById(id);
     }
 }

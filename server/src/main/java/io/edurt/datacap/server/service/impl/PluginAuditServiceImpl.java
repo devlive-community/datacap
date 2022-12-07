@@ -113,4 +113,10 @@ public class PluginAuditServiceImpl
         });
         return Response.success(contributionRadars);
     }
+
+    @Override
+    public Response<PluginAuditEntity> getById(Long id)
+    {
+        return Response.success(this.pluginAuditRepository.findById(id));
+    }
 }
