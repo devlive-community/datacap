@@ -1,6 +1,5 @@
 package io.edurt.datacap.server.body;
 
-import io.edurt.datacap.server.itransient.SqlConfigure;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
