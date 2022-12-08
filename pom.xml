@@ -13,6 +13,9 @@
         <module>spi</module>
         <module>plugin</module>
         <module>common</module>
+        <module>dist</module>
+        <module>docs</module>
+        <module>assets</module>
     </modules>
 
     <name>DataCap(Incubator)</name>
