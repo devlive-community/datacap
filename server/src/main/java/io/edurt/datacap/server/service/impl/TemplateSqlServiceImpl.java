@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 public class TemplateSqlServiceImpl
         implements TemplateSqlService
 {
-    private final String regex = "\\$\\{\\s*\\S*\\}";
+    private static String regex = "\\$\\{\\s*\\S*\\}";
 
     private final TemplateSqlRepository templateSqlRepository;
     private final SourceRepository sourceRepository;

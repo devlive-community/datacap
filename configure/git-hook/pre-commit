@@ -3,5 +3,3 @@
 printf "Code verification before submission starting\n"
 
 ./mvnw clean install checkstyle:checkstyle findbugs:findbugs -Dskip.npm -DskipTests=true -Dgpg.skip
-
-printf "\nCode verification before submission successful\n\n"
