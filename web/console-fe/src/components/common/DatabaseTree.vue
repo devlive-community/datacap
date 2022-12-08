@@ -6,12 +6,11 @@
 </template>
 <script lang="ts">
 import {defineComponent, resolveComponent, watch} from "vue";
-import {ExecuteModel} from "@/model/ExecuteModel";
-import {ExecuteService} from "@/services/ExecuteService";
-import {DatabaseService} from "@/services/DatabaseService";
 import {TreeService} from "@/services/TreeService";
 import {TreeData} from "@/model/TreeData";
 import useClipboard from 'vue-clipboard3';
+import TemplateSqlService from "@/services/template/TemplateSqlService";
+import {SqlBody} from "@/model/template/SqlBody";
 
 const {toClipboard} = useClipboard();
 
@@ -66,31 +65,24 @@ export default defineComponent({
     handlerInitialize()
     {
       this.treeData = [];
-      const sql = new DatabaseService().sql(this.type);
-      const configure: ExecuteModel = {
-        name: this.id,
-        content: sql,
-        format: "JSON"
-      };
-      if (sql) {
-        this.loading = true;
-        new ExecuteService()
-          .execute(configure, null)
-          .then((response) => {
-            if (response.status) {
-              this.treeData = new TreeService().getTree(response);
-            }
-            else {
-              // // message.error(response.message);
-            }
-          })
-          .finally(() => {
-            this.loading = false;
-          });
+      this.loading = true;
+      const sqlBody: SqlBody = {
+        templateName: 'getAllDatabaseAndTable',
+        sourceId: this.id,
+        configure: {}
       }
-      else {
-        // // message.error('Not Supported!')
-      }
+      TemplateSqlService.execute(sqlBody)
+        .then((response) => {
+          if (response.status) {
+            this.treeData = new TreeService().getTree(response);
+          }
+          else {
+            this.$Message.error(response.message);
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     handlerCopy(database: string, table: string, value: string, dataType: string)
     {

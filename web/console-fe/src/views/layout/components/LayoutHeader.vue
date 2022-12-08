@@ -21,7 +21,7 @@
           <Submenu name="admin">
             <template #title>
               <Icon type="ios-hammer"/>
-              {{ $t('common.admin') }}&nbsp;
+              {{ $t('common.admin') }}&nbsp;<Tag color="warning">New</Tag>
             </template>
             <MenuGroup :title="$t('common.default')">
               <MenuItem name="admin_source" to="/admin/source">
@@ -37,6 +37,12 @@
               <MenuItem name="admin_history" to="/admin/history">
                 <Icon type="ios-book"/>
                 {{ $t('common.history') }}
+              </MenuItem>
+            </MenuGroup>
+            <MenuGroup :title="$t('common.template')">
+              <MenuItem name="admin_template_sql" to="/admin/template/sql">
+                <Icon type="md-browsers"/>
+                {{ $t('common.sql') }}<Tag style="margin-left: 5px;" color="warning">New</Tag>
               </MenuItem>
             </MenuGroup>
           </Submenu>
@@ -168,5 +174,13 @@ export default defineComponent({
 
 .badge-count {
   top: 1px;
+}
+
+.ivu-tag {
+  height: 17px;
+  line-height: 17px;
+  margin: 0;
+  padding: 0px 5px;
+  font-size: 10px;
 }
 </style>
