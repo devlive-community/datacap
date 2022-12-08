@@ -1,9 +1,7 @@
 package io.edurt.datacap.server.service.impl;
 
-import io.edurt.datacap.common.CollectorUtils;
 import io.edurt.datacap.server.adapter.PageRequestAdapter;
 import io.edurt.datacap.server.body.FilterBody;
-import io.edurt.datacap.server.body.OrderBody;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginAuditEntity;
@@ -13,9 +11,7 @@ import io.edurt.datacap.server.itransient.ContributionRadar;
 import io.edurt.datacap.server.repository.PluginAuditRepository;
 import io.edurt.datacap.server.security.UserDetailsService;
 import io.edurt.datacap.server.service.PluginAuditService;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -45,27 +41,7 @@ public class PluginAuditServiceImpl
     @Override
     public Response<PageEntity<PluginAuditEntity>> getAllByFilter(FilterBody filter)
     {
-        Pageable pageable = PageRequestAdapter.of(filter.getPage(), filter.getSize());
-        if (ObjectUtils.isNotEmpty(filter.getOrders())) {
-            // Remove duplicate data passed
-            List<OrderBody> remoted = new ArrayList<>();
-            filter.getOrders().stream().filter(CollectorUtils.distinctByKey(p -> p.getColumn()))  //filter保留true的值
-                    .forEach(remoted::add);
-
-            List<Sort.Order> orders = new ArrayList<>();
-            remoted.stream()
-                    .filter(value -> value.getOrder().equalsIgnoreCase("asc") || value.getOrder().equalsIgnoreCase("desc")) // Filter other
-                    .forEach(value -> {
-                        if (value.getOrder().equalsIgnoreCase("desc")) {
-                            orders.add(Sort.Order.desc(value.getColumn()));
-                        }
-                        else {
-                            orders.add(Sort.Order.asc(value.getColumn()));
-                        }
-                    });
-            Sort sort = Sort.by(orders);
-            pageable = PageRequestAdapter.of(filter.getPage(), filter.getSize(), sort);
-        }
+        Pageable pageable = PageRequestAdapter.of(filter);
         return Response.success(PageEntity.build(this.pluginAuditRepository.findAllByUser(UserDetailsService.getUser(), pageable)));
     }
 

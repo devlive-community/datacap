@@ -53,5 +53,7 @@ export default {
   column: 'Column',
   page: 'Paging',
   default: 'Default',
-  language: 'Language'
+  language: 'Language',
+  template: 'Template',
+  sql: 'Sql'
 }

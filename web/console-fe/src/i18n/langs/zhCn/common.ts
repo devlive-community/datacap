@@ -53,5 +53,7 @@ export default {
   column: '列',
   isPage: '分页',
   default: '默认',
-  language: '语言'
+  language: '语言',
+  template: '模版',
+  sql: 'Sql'
 }

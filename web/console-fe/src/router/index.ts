@@ -72,6 +72,15 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "snippet",
         component: () => import("../views/pages/admin/snippet/SnippetAdmin.vue")
+      },
+      {
+        path: "template",
+        children: [
+          {
+            path: "sql",
+            component: () => import("../views/pages/admin/template/sql/SqlAdmin.vue")
+          }
+        ]
       }
     ]
   },
