@@ -98,6 +98,7 @@ import {TableConfigure} from "@/components/table/TableConfigure";
 import SourceSelect from "@/components/source/SourceSelect.vue";
 import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
 import BasicTableComponent from "@/components/table/BasicTable.vue";
+import {AuditService} from "@/services/AuditService";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
   {title: 'Editor', key: '1', closable: false}
@@ -151,6 +152,15 @@ export default defineComponent({
               .then((response) => {
                 if (response.status && response.data?.code) {
                   this.activeEditorValue = response.data.code;
+                }
+              });
+          }
+          else if (from === 'history') {
+            new AuditService().getById(id)
+              .then((response) => {
+                if (response.status && response.data?.content) {
+                  this.activeEditorValue = response.data.content;
+                  this.handlerChangeValue(response.data.plugin.id + ':' + response.data.plugin.type);
                 }
               });
           }

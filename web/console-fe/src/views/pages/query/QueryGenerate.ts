@@ -3,6 +3,7 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.no'),
       key: 'id',
+      sortable: 'custom'
     },
     {
       title: i18n.t('common.plugin'),
