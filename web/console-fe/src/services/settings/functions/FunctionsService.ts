@@ -1,19 +1,19 @@
 import {HttpCommon} from "@/common/HttpCommon";
 import {ResponseModel} from "@/model/ResponseModel";
 import {Filter} from "@/model/Filter";
-import {Function} from "@/model/settings/function/Function";
-import {FunctionImport} from "@/model/settings/function/FunctionImport";
+import {Functions} from "@/model/settings/functions/Functions";
+import {FunctionsImport} from "@/model/settings/functions/FunctionsImport";
 
 const baseUrl = "/api/v1/admin/function";
 
-class FunctionService
+class FunctionsService
 {
   getAllByFilter(filter: Filter): Promise<ResponseModel>
   {
     return new HttpCommon().post(baseUrl + '/list', filter);
   }
 
-  saveAndUpdate(configure: Function, isUpdate: boolean): Promise<ResponseModel>
+  saveAndUpdate(configure: Functions, isUpdate: boolean): Promise<ResponseModel>
   {
     if (isUpdate) {
       return new HttpCommon().put(baseUrl, configure);
@@ -28,7 +28,7 @@ class FunctionService
     return new HttpCommon().get(baseUrl + "/" + id);
   }
 
-  import(configure: FunctionImport): Promise<ResponseModel>
+  import(configure: FunctionsImport): Promise<ResponseModel>
   {
     return new HttpCommon().put(baseUrl + "/import", configure);
   }
@@ -39,4 +39,4 @@ class FunctionService
   }
 }
 
-export default new FunctionService();
+export default new FunctionsService();

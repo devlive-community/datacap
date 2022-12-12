@@ -1,4 +1,4 @@
-export interface Function
+export interface Functions
 {
   id?: number;
   name: string;

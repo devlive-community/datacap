@@ -1,7 +1,7 @@
-import {Function} from "@/model/settings/function/Function";
-import {FunctionImport} from "@/model/settings/function/FunctionImport";
+import {Functions} from "@/model/settings/functions/Functions";
+import {FunctionsImport} from "@/model/settings/functions/FunctionsImport";
 
-const emptyEntity: Function = {
+const emptyEntity: Functions = {
   content: '',
   description: '',
   example: '',
@@ -9,7 +9,7 @@ const emptyEntity: Function = {
   plugin: '',
   type: 'KEYWORD'
 };
-const emptyImportEntity: FunctionImport = {
+const emptyImportEntity: FunctionsImport = {
   content: "", plugin: "", type: ""
 };
 

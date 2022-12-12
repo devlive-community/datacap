@@ -87,7 +87,7 @@ const routes: Array<RouteRecordRaw> = [
         children: [
           {
             path: "function",
-            component: () => import("../views/pages/admin/settings/function/FunctionAdmin.vue")
+            component: () => import("@/views/pages/admin/settings/functions/FunctionsAdmin.vue")
           }
         ]
       }

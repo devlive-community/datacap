@@ -42,8 +42,8 @@
               @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
       </p>
     </Card>
-    <FunctionDetails v-if="visibleInfo" :isVisible="visibleInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
-    <FunctionImport v-if="visibleImport" :isVisible="visibleImport" @close="handlerImportController($event)"/>
+    <FunctionsDetails v-if="visibleInfo" :isVisible="visibleInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
+    <FunctionsImport v-if="visibleImport" :isVisible="visibleImport" @close="handlerImportController($event)"/>
   </div>
 </template>
 
@@ -53,15 +53,15 @@ import {useI18n} from 'vue-i18n';
 import {ResponsePage} from "@/model/ResponsePage";
 import {Filter} from "@/model/Filter";
 import {Order} from "@/model/Order";
-import {createHeaders} from "@/views/pages/admin/settings/function/FunctionGenerate";
-import FunctionDetails from "@/views/pages/admin/settings/function/FunctionDetails.vue";
-import FunctionService from "@/services/settings/function/FunctionService";
-import FunctionImport from "@/views/pages/admin/settings/function/FunctionImport.vue";
+import {createHeaders} from "@/views/pages/admin/settings/functions/FunctionsGenerate";
+import FunctionsDetails from "@/views/pages/admin/settings/functions/FunctionsDetails.vue";
+import FunctionsService from "@/services/settings/functions/FunctionsService";
+import FunctionsImport from "@/views/pages/admin/settings/functions/FunctionsImport.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({
   name: "FunctionAdmin",
-  components: {FunctionImport, FunctionDetails},
+  components: {FunctionsImport, FunctionsDetails},
   setup()
   {
     const i18n = useI18n();
@@ -98,7 +98,7 @@ export default defineComponent({
     handlerInitialize(filter: Filter)
     {
       this.loading = true;
-      FunctionService.getAllByFilter(filter)
+      FunctionsService.getAllByFilter(filter)
         .then((response) => {
           if (response.status) {
             this.data = response.data;

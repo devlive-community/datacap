@@ -55,13 +55,13 @@
 <script lang="ts">
 import {defineComponent, reactive} from 'vue';
 import {SourceService} from "@/services/SourceService";
-import {Function} from "@/model/settings/function/Function";
-import {createDefaultType, emptyEntity} from "@/views/pages/admin/settings/function/FunctionGenerate";
-import FunctionService from "@/services/settings/function/FunctionService";
+import {Functions} from "@/model/settings/functions/Functions";
+import {createDefaultType, emptyEntity} from "@/views/pages/admin/settings/functions/FunctionsGenerate";
+import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
 
 export default defineComponent({
-  name: 'FunctionDetails',
+  name: 'FunctionsDetails',
   props: {
     isVisible: {
       type: Boolean,
@@ -84,7 +84,7 @@ export default defineComponent({
   {
     return {
       isUpdate: false,
-      formState: null as unknown as Function,
+      formState: null as unknown as Functions,
       loading: false,
       created: false,
       plugins: []
@@ -92,7 +92,7 @@ export default defineComponent({
   },
   created()
   {
-    this.formState = reactive<Function>(emptyEntity);
+    this.formState = reactive<Functions>(emptyEntity);
     this.isUpdate = this.id === 0 ? false : true;
     this.handlerInitialize();
   },
@@ -107,10 +107,10 @@ export default defineComponent({
         });
       if (this.id > 0) {
         this.loading = true;
-        FunctionService.getById(this.id)
+        FunctionsService.getById(this.id)
           .then(response => {
             if (response.status) {
-              this.formState = reactive<Function>(response.data);
+              this.formState = reactive<Functions>(response.data);
             }
           })
           .finally(() => {
@@ -121,7 +121,7 @@ export default defineComponent({
     handlerSave()
     {
       this.created = true;
-      FunctionService.saveAndUpdate(this.formState, this.isUpdate)
+      FunctionsService.saveAndUpdate(this.formState, this.isUpdate)
         .then((response) => {
           if (response.status) {
             this.$Message.success("Create successful");
