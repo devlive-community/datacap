@@ -72,5 +72,12 @@
             <lineEnding>unix</lineEnding>
             <filtered>true</filtered>
         </fileSet>
+        <fileSet>
+            <directory>src/main/functions</directory>
+            <outputDirectory>functions</outputDirectory>
+            <fileMode>0755</fileMode>
+            <lineEnding>unix</lineEnding>
+            <filtered>true</filtered>
+        </fileSet>
     </fileSets>
 </assembly>

@@ -81,6 +81,15 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import("../views/pages/admin/template/sql/SqlAdmin.vue")
           }
         ]
+      },
+      {
+        path: "settings",
+        children: [
+          {
+            path: "function",
+            component: () => import("../views/pages/admin/settings/function/FunctionAdmin.vue")
+          }
+        ]
       }
     ]
   },

@@ -55,5 +55,15 @@ export default {
   default: '默认',
   language: '语言',
   template: '模版',
-  sql: 'Sql'
+  sql: 'Sql',
+  settings: '设置',
+  function: '函数',
+  content: '内容',
+  type: '类型',
+  keyword: '关键字',
+  operator: '操作符',
+  example: '示例',
+  more: '更多',
+  batch: '批量',
+  import: '导入'
 }

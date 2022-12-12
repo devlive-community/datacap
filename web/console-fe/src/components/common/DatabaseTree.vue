@@ -56,6 +56,7 @@ export default defineComponent({
             text: data.title,
             length: 15,
             tooltip: true,
+            transfer: true,
             onClick: () => {
               this.handlerCopy(data.database, data.table, data.value, data.dataType);
             }

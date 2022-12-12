@@ -21,7 +21,7 @@
           <Submenu name="admin">
             <template #title>
               <Icon type="ios-hammer"/>
-              {{ $t('common.admin') }}&nbsp;<Tag color="warning">New</Tag>
+              {{ $t('common.admin') }}
             </template>
             <MenuGroup :title="$t('common.default')">
               <MenuItem name="admin_source" to="/admin/source">
@@ -37,6 +37,18 @@
               <MenuItem name="admin_history" to="/admin/history">
                 <Icon type="ios-book"/>
                 {{ $t('common.history') }}
+              </MenuItem>
+            </MenuGroup>
+          </Submenu>
+          <Submenu name="settings">
+            <template #title>
+              <Icon type="ios-cog"/>
+              {{ $t('common.settings') }}&nbsp;<Tag color="warning">New</Tag>
+            </template>
+            <MenuGroup :title="$t('common.default')">
+              <MenuItem name="settings_functions" to="/admin/settings/function">
+                <Icon type="ios-basket"/>
+                {{ $t('common.function') }} <Tag style="margin-left: 5px;" color="warning">New</Tag>
               </MenuItem>
             </MenuGroup>
             <MenuGroup :title="$t('common.template')">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Drawer :title="$t('common.create') + $t('common.template')" :width="720" :closable="false"
+    <Drawer :title="$t('common.create') + $t('common.function')" :width="720" :closable="false"
             v-model="visible" :maskClosable="false" :z-index="9" :styles="{}">
       <Form :model="formState">
         <Row :gutter="32">
@@ -11,7 +11,7 @@
           </Col>
           <Col span="12">
             <FormItem :label="$t('common.plugin')">
-              <Select v-model="formState.plugin" multiple>
+              <Select v-model="formState.plugin" multiple max-tag-count="3">
                 <OptionGroup v-for="key in Object.keys(plugins)" v-bind:key="key" :label="key">
                   <Option v-for="plugin in plugins[key]" :value="plugin.name" :key="plugin.name">{{ plugin.name }}</Option>
                 </OptionGroup>
@@ -19,16 +19,34 @@
             </FormItem>
           </Col>
         </Row>
-        <FormItem :label="$t('common.description')" label-position="top">
-          <Input type="textarea" v-model="formState.description" :rows="4"/>
-        </FormItem>
-        <FormItem :label="$t('common.template')" name="content" label-position="top">
-          <Input v-model="formState.content" show-word-limit type="textarea" :rows="8"/>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem :label="$t('common.content')" name="content" label-position="top">
+              <Input v-model="formState.content" show-word-limit type="textarea" :rows="3"/>
+            </FormItem>
+          </Col>
+          <Col span="12">
+            <FormItem :label="$t('common.description')" label-position="top">
+              <Input type="textarea" v-model="formState.description" show-word-limit :rows="3"/>
+            </FormItem>
+          </Col>
+        </Row>
+        <Row :gutter="32">
+          <Col span="12">
+            <FormItem :label="$t('common.type')" name="type" label-position="top">
+              <Select v-model="formState.type">
+                <Option v-for="item in types" :value="item.value" :key="item.value">{{ item.label }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+        </Row>
+        <FormItem :label="$t('common.example')" label-position="top">
+          <Input type="textarea" v-model="formState.example" :rows="5"/>
         </FormItem>
       </Form>
       <div class="datacap-drawer-footer">
-        <Button style="margin-right: 8px" @click="handlerCancel()">{{ $t('common.cancel') }}</Button>
-        <Button type="primary" @click="handlerSave()">{{ $t('common.submit') }}</Button>
+        <Button :disabled="created" style="margin-right: 8px" @click="handlerCancel()">{{ $t('common.cancel') }}</Button>
+        <Button type="primary" :loading="created" @click="handlerSave()">{{ $t('common.submit') }}</Button>
       </div>
       <Spin size="large" fix :show="loading"></Spin>
     </Drawer>
@@ -36,14 +54,14 @@
 </template>
 <script lang="ts">
 import {defineComponent, reactive} from 'vue';
-import {TemplateSql} from "@/model/template/Sql";
-import {emptyEntity} from "@/views/pages/admin/template/sql/SqlGenerate";
-import TemplateSqlService from "@/services/template/TemplateSqlService";
 import {SourceService} from "@/services/SourceService";
-import {clone} from "lodash";
+import {Function} from "@/model/settings/function/Function";
+import {createDefaultType, emptyEntity} from "@/views/pages/admin/settings/function/FunctionGenerate";
+import FunctionService from "@/services/settings/function/FunctionService";
+import {useI18n} from "vue-i18n";
 
 export default defineComponent({
-  name: 'TemplateSqlDetails',
+  name: 'FunctionDetails',
   props: {
     isVisible: {
       type: Boolean,
@@ -54,18 +72,27 @@ export default defineComponent({
       default: () => 0
     }
   },
+  setup()
+  {
+    const i18n = useI18n();
+    const types = createDefaultType(i18n);
+    return {
+      types
+    }
+  },
   data()
   {
     return {
       isUpdate: false,
-      formState: null as unknown as TemplateSql,
+      formState: null as unknown as Function,
       loading: false,
+      created: false,
       plugins: []
     }
   },
   created()
   {
-    this.formState = reactive<TemplateSql>(emptyEntity);
+    this.formState = reactive<Function>(emptyEntity);
     this.isUpdate = this.id === 0 ? false : true;
     this.handlerInitialize();
   },
@@ -80,12 +107,10 @@ export default defineComponent({
         });
       if (this.id > 0) {
         this.loading = true;
-        TemplateSqlService.getById(this.id)
+        FunctionService.getById(this.id)
           .then(response => {
             if (response.status) {
-              const data = response.data;
-              data.plugin = data.plugin.split(',');
-              this.formState = reactive<TemplateSql>(data);
+              this.formState = reactive<Function>(response.data);
             }
           })
           .finally(() => {
@@ -93,11 +118,10 @@ export default defineComponent({
           });
       }
     },
-    handlerImport()
+    handlerSave()
     {
-      const entity = clone(this.formState);
-      entity.plugin = this.formState.plugin.join(',');
-      TemplateSqlService.saveAndUpdate(entity, this.isUpdate)
+      this.created = true;
+      FunctionService.saveAndUpdate(this.formState, this.isUpdate)
         .then((response) => {
           if (response.status) {
             this.$Message.success("Create successful");
@@ -106,6 +130,9 @@ export default defineComponent({
           else {
             this.$Message.error(response.message);
           }
+        })
+        .finally(() => {
+          this.created = false;
         });
     },
     handlerCancel()
