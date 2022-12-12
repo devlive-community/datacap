@@ -62,5 +62,8 @@ export default {
   type: '类型',
   keyword: '关键字',
   operator: '操作符',
-  example: '示例'
+  example: '示例',
+  more: '更多',
+  batch: '批量',
+  import: '导入'
 }

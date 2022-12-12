@@ -1,14 +1,12 @@
 <template>
   <div>
-    <Drawer :title="$t('common.create') + $t('common.function')" :width="720" :closable="false"
+    <Drawer :title="$t('common.import') + $t('common.function')" :width="720" :closable="false"
             v-model="visible" :maskClosable="false" :z-index="9" :styles="{}">
       <Form :model="formState">
+        <FormItem :label="$t('common.content')" label-position="top">
+          <Input type="textarea" show-word-limit v-model="formState.content" :placeholder="$t('tooltip.multipleLines')" :rows="12"/>
+        </FormItem>
         <Row :gutter="32">
-          <Col span="12">
-            <FormItem :label="$t('common.name')">
-              <Input v-model="formState.name"/>
-            </FormItem>
-          </Col>
           <Col span="12">
             <FormItem :label="$t('common.plugin')">
               <Select v-model="formState.plugin" multiple max-tag-count="3">
@@ -18,20 +16,6 @@
               </Select>
             </FormItem>
           </Col>
-        </Row>
-        <Row :gutter="32">
-          <Col span="12">
-            <FormItem :label="$t('common.content')" name="content" label-position="top">
-              <Input v-model="formState.content" show-word-limit type="textarea" :rows="3"/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem :label="$t('common.description')" label-position="top">
-              <Input type="textarea" v-model="formState.description" show-word-limit :rows="3"/>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row :gutter="32">
           <Col span="12">
             <FormItem :label="$t('common.type')" name="type" label-position="top">
               <Select v-model="formState.type">
@@ -40,13 +24,10 @@
             </FormItem>
           </Col>
         </Row>
-        <FormItem :label="$t('common.example')" label-position="top">
-          <Input type="textarea" v-model="formState.example" :rows="5"/>
-        </FormItem>
       </Form>
       <div class="datacap-drawer-footer">
         <Button :disabled="created" style="margin-right: 8px" @click="handlerCancel()">{{ $t('common.cancel') }}</Button>
-        <Button type="primary" :loading="created" @click="handlerSave()">{{ $t('common.submit') }}</Button>
+        <Button type="primary" :loading="created" @click="handlerImport()">{{ $t('common.submit') }}</Button>
       </div>
       <Spin size="large" fix :show="loading"></Spin>
     </Drawer>
@@ -55,21 +36,17 @@
 <script lang="ts">
 import {defineComponent, reactive} from 'vue';
 import {SourceService} from "@/services/SourceService";
-import {Function} from "@/model/settings/function/Function";
-import {createDefaultType, emptyEntity} from "@/views/pages/admin/settings/function/FunctionGenerate";
+import {createDefaultType, emptyImportEntity} from "@/views/pages/admin/settings/function/FunctionGenerate";
 import FunctionService from "@/services/settings/function/FunctionService";
 import {useI18n} from "vue-i18n";
+import {FunctionImport} from "@/model/settings/function/FunctionImport";
 
 export default defineComponent({
-  name: 'FunctionDetails',
+  name: 'FunctionImport',
   props: {
     isVisible: {
       type: Boolean,
       default: () => false
-    },
-    id: {
-      type: Number,
-      default: () => 0
     }
   },
   setup()
@@ -84,7 +61,7 @@ export default defineComponent({
   {
     return {
       isUpdate: false,
-      formState: null as unknown as Function,
+      formState: null as unknown as FunctionImport,
       loading: false,
       created: false,
       plugins: []
@@ -92,8 +69,7 @@ export default defineComponent({
   },
   created()
   {
-    this.formState = reactive<Function>(emptyEntity);
-    this.isUpdate = this.id === 0 ? false : true;
+    this.formState = reactive<FunctionImport>(emptyImportEntity);
     this.handlerInitialize();
   },
   methods: {
@@ -105,23 +81,11 @@ export default defineComponent({
             this.plugins = response.data;
           }
         });
-      if (this.id > 0) {
-        this.loading = true;
-        FunctionService.getById(this.id)
-          .then(response => {
-            if (response.status) {
-              this.formState = reactive<Function>(response.data);
-            }
-          })
-          .finally(() => {
-            this.loading = false;
-          });
-      }
     },
     handlerImport()
     {
       this.created = true;
-      FunctionService.saveAndUpdate(this.formState, this.isUpdate)
+      FunctionService.import(this.formState)
         .then((response) => {
           if (response.status) {
             this.$Message.success("Create successful");

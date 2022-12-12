@@ -7,6 +7,17 @@
             <template #content>{{ $t('common.create') }}</template>
             <Button type="primary" shape="circle" icon="md-add" size="small" @click="handlerCreateOrUpdate()"/>
           </Tooltip>
+          <Dropdown>
+            <a href="javascript:void(0)">
+              <Button shape="circle" type="info" size="small" icon="md-more"/>
+            </a>
+            <template #list>
+              <DropdownMenu>
+                <DropdownItem @click="handlerImportController(true)">{{ $t('common.import') }}
+                </DropdownItem>
+              </DropdownMenu>
+            </template>
+          </Dropdown>
         </Space>
       </template>
       <Table :loading="loading" :columns="headers" :data="data.content" @on-sort-change="handlerSort">
@@ -32,6 +43,7 @@
       </p>
     </Card>
     <FunctionDetails v-if="visibleInfo" :isVisible="visibleInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
+    <FunctionImport v-if="visibleImport" :isVisible="visibleImport" @close="handlerImportController($event)"/>
   </div>
 </template>
 
@@ -44,11 +56,12 @@ import {Order} from "@/model/Order";
 import {createHeaders} from "@/views/pages/admin/settings/function/FunctionGenerate";
 import FunctionDetails from "@/views/pages/admin/settings/function/FunctionDetails.vue";
 import FunctionService from "@/services/settings/function/FunctionService";
+import FunctionImport from "@/views/pages/admin/settings/function/FunctionImport.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({
   name: "FunctionAdmin",
-  components: {FunctionDetails},
+  components: {FunctionImport, FunctionDetails},
   setup()
   {
     const i18n = useI18n();
@@ -65,6 +78,7 @@ export default defineComponent({
       loading: false,
       applyId: 0,
       visibleInfo: false,
+      visibleImport: false,
       pagination: {
         total: 0,
         current: 1,
@@ -77,6 +91,10 @@ export default defineComponent({
     this.handlerInitialize(this.filter)
   },
   methods: {
+    alert()
+    {
+      return alert
+    },
     handlerInitialize(filter: Filter)
     {
       this.loading = true;
@@ -141,7 +159,12 @@ export default defineComponent({
       const plugins = [];
       elements.forEach(element => plugins.push({tip: element}));
       return plugins;
-    }
+    },
+    handlerImportController(value: boolean)
+    {
+      this.visibleImport = value;
+      this.handlerInitialize(this.filter);
+    },
   }
 });
 </script>

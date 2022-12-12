@@ -93,7 +93,7 @@ export default defineComponent({
           });
       }
     },
-    handlerSave()
+    handlerImport()
     {
       const entity = clone(this.formState);
       entity.plugin = this.formState.plugin.join(',');

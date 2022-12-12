@@ -62,5 +62,8 @@ export default {
   type: 'Type',
   keyword: 'KeyWord',
   operator: 'Operator',
-  example: 'Example'
+  example: 'Example',
+  more: 'More',
+  batch: 'Batch',
+  import: 'import'
 }

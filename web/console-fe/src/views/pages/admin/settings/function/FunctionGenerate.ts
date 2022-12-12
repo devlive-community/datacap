@@ -1,4 +1,5 @@
 import {Function} from "@/model/settings/function/Function";
+import {FunctionImport} from "@/model/settings/function/FunctionImport";
 
 const emptyEntity: Function = {
   content: '',
@@ -7,6 +8,9 @@ const emptyEntity: Function = {
   name: '',
   plugin: '',
   type: 'KEYWORD'
+};
+const emptyImportEntity: FunctionImport = {
+  content: "", plugin: "", type: ""
 };
 
 const createHeaders = (i18n: any) => {
@@ -64,7 +68,7 @@ const createHeaders = (i18n: any) => {
   ];
 };
 
-const createDefaultType= (i18n: any) => [
+const createDefaultType = (i18n: any) => [
   {label: i18n.t('common.keyword'), value: 'KEYWORD'},
   {label: i18n.t('common.operator'), value: 'OPERATOR'},
   {label: i18n.t('common.function'), value: 'FUNCTION'}
@@ -73,5 +77,6 @@ const createDefaultType= (i18n: any) => [
 export {
   createHeaders,
   createDefaultType,
-  emptyEntity
+  emptyEntity,
+  emptyImportEntity
 }

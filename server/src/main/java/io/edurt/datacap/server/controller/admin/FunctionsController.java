@@ -1,6 +1,7 @@
 package io.edurt.datacap.server.controller.admin;
 
 import io.edurt.datacap.server.body.FilterBody;
+import io.edurt.datacap.server.body.FunctionsImportBody;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.FunctionsEntity;
 import io.edurt.datacap.server.entity.PageEntity;
@@ -49,5 +50,11 @@ public class FunctionsController
     public Response<FunctionsEntity> getInfo(@PathVariable(value = "id") Long id)
     {
         return this.functionsService.getById(id);
+    }
+
+    @PutMapping(value = "import")
+    public Response<Object> batchImport(@RequestBody @Validated FunctionsImportBody configure)
+    {
+        return this.functionsService.batchImport(configure);
     }
 }

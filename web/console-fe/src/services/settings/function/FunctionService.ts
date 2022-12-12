@@ -2,6 +2,7 @@ import {HttpCommon} from "@/common/HttpCommon";
 import {ResponseModel} from "@/model/ResponseModel";
 import {Filter} from "@/model/Filter";
 import {Function} from "@/model/settings/function/Function";
+import {FunctionImport} from "@/model/settings/function/FunctionImport";
 
 const baseUrl = "/api/v1/admin/function";
 
@@ -25,6 +26,11 @@ class FunctionService
   getById(id: number): Promise<ResponseModel>
   {
     return new HttpCommon().get(baseUrl + "/" + id);
+  }
+
+  import(configure: FunctionImport): Promise<ResponseModel>
+  {
+    return new HttpCommon().put(baseUrl + "/import", configure);
   }
 }
 
