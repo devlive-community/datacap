@@ -1,5 +1,49 @@
 #!/bin/sh
 
+isCompile=0
+folders='common,plugin,server,spi'
+
 printf "Code verification before submission starting\n"
 
-./mvnw clean install checkstyle:checkstyle findbugs:findbugs -Dskip.npm -DskipTests=true -Dgpg.skip
+job_before_echo_basic() {
+    printf "\n\tJob before echo basic \n"
+    printf "============================================\n"
+    printf "Runtime time               | %s\n" $(date)
+    printf "============================================\n\n"
+}
+
+job_check_modify_files() {
+    for file in $(git diff --name-only --cached | xargs ls); do
+        folder=$(echo "$file" | cut -d '/' -f1)
+        extension=$(echo "$file" | cut -d . -f2)
+        # shellcheck disable=SC2046
+        # shellcheck disable=SC2005
+        exists=$(echo "$folders" | grep "$folder")
+        if [[ "$exists" != "" && "$extension" == "java" ]]; then
+            isCompile=1
+            break
+        else
+            isCompile=0
+        fi
+    done
+}
+
+job_check() {
+    if [ "$isCompile" -ne 1 ]; then
+        printf "\nCode verification before submission successful\n\n"
+        exit 0
+    else
+        ./mvnw clean install checkstyle:checkstyle findbugs:findbugs -Dskip.npm -DskipTests=true -Dgpg.skip
+        # shellcheck disable=SC2181
+        if [ $? -ne 0 ]; then
+            printf "\nCode verification before submission failed\n\n"
+            exit 1
+        else
+            printf "\nCode verification before submission successful\n\n"
+        fi
+    fi
+}
+
+job_before_echo_basic
+job_check_modify_files
+job_check
