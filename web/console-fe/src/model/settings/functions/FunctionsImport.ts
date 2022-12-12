@@ -1,4 +1,4 @@
-export interface FunctionImport
+export interface FunctionsImport
 {
   content: string;
   plugin: string;

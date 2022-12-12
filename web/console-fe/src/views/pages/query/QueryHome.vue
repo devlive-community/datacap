@@ -98,7 +98,7 @@ import SourceSelect from "@/components/source/SourceSelect.vue";
 import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
 import BasicTableComponent from "@/components/table/BasicTable.vue";
 import {AuditService} from "@/services/AuditService";
-import FunctionService from "@/services/settings/function/FunctionService";
+import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
@@ -191,7 +191,7 @@ export default defineComponent({
       else {
         editorMap.set(activeKey.value, editor);
       }
-      FunctionService.getByPlugin(language)
+      FunctionsService.getByPlugin(language)
         .then((response) => {
           if (response.status) {
             const languageSugs = [];

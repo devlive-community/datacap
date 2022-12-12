@@ -36,13 +36,13 @@
 <script lang="ts">
 import {defineComponent, reactive} from 'vue';
 import {SourceService} from "@/services/SourceService";
-import {createDefaultType, emptyImportEntity} from "@/views/pages/admin/settings/function/FunctionGenerate";
-import FunctionService from "@/services/settings/function/FunctionService";
+import {createDefaultType, emptyImportEntity} from "@/views/pages/admin/settings/functions/FunctionsGenerate";
+import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
-import {FunctionImport} from "@/model/settings/function/FunctionImport";
+import {FunctionsImport} from "@/model/settings/functions/FunctionsImport";
 
 export default defineComponent({
-  name: 'FunctionImport',
+  name: 'FunctionsImport',
   props: {
     isVisible: {
       type: Boolean,
@@ -61,7 +61,7 @@ export default defineComponent({
   {
     return {
       isUpdate: false,
-      formState: null as unknown as FunctionImport,
+      formState: null as unknown as FunctionsImport,
       loading: false,
       created: false,
       plugins: []
@@ -69,7 +69,7 @@ export default defineComponent({
   },
   created()
   {
-    this.formState = reactive<FunctionImport>(emptyImportEntity);
+    this.formState = reactive<FunctionsImport>(emptyImportEntity);
     this.handlerInitialize();
   },
   methods: {
@@ -85,7 +85,7 @@ export default defineComponent({
     handlerImport()
     {
       this.created = true;
-      FunctionService.import(this.formState)
+      FunctionsService.import(this.formState)
         .then((response) => {
           if (response.status) {
             this.$Message.success("Create successful");

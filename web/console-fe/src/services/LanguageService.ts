@@ -1,11 +1,11 @@
-import FunctionService from "@/services/settings/function/FunctionService";
+import FunctionsService from "@/services/settings/functions/FunctionsService";
 
 export class LanguageService
 {
   transSuggestions(items: string | any[], language: string)
   {
     const languageSugs = [];
-    FunctionService.getByPlugin(language)
+    FunctionsService.getByPlugin(language)
       .then((response) => {
         if (response.status) {
           response.data.content.forEach(value => {
