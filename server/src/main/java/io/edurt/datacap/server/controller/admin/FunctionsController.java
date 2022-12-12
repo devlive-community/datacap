@@ -57,4 +57,10 @@ public class FunctionsController
     {
         return this.functionsService.batchImport(configure);
     }
+
+    @GetMapping(value = "list/{plugin}")
+    public Response<PageEntity<FunctionsEntity>> getAllByPlugin(@PathVariable(value = "plugin") String plugin)
+    {
+        return this.functionsService.getAllByPlugin(plugin);
+    }
 }

@@ -118,7 +118,7 @@ export default defineComponent({
           });
       }
     },
-    handlerImport()
+    handlerSave()
     {
       this.created = true;
       FunctionService.saveAndUpdate(this.formState, this.isUpdate)

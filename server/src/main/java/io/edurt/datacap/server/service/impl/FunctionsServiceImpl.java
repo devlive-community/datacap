@@ -61,4 +61,13 @@ public class FunctionsServiceImpl
         });
         return Response.success(this.functionsRepository.saveAll(functions));
     }
+
+    @Override
+    public Response<PageEntity<FunctionsEntity>> getAllByPlugin(String plugin)
+    {
+        FilterBody filter = new FilterBody();
+        filter.setSize(Integer.MAX_VALUE);
+        Pageable pageable = PageRequestAdapter.of(filter);
+        return Response.success(PageEntity.build(this.functionsRepository.findAllByPluginContaining(pageable, plugin)));
+    }
 }

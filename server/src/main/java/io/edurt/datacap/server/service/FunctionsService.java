@@ -15,4 +15,6 @@ public interface FunctionsService
     Response<FunctionsEntity> getById(Long id);
 
     Response<Object> batchImport(FunctionsImportBody configure);
+
+    Response<PageEntity<FunctionsEntity>> getAllByPlugin(String plugin);
 }

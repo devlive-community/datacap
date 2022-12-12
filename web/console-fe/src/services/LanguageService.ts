@@ -1,31 +1,30 @@
-import filterLanguage from "@/services/language/index";
+import FunctionService from "@/services/settings/function/FunctionService";
 
 export class LanguageService
 {
   transSuggestions(items: string | any[], language: string)
   {
     const languageSugs = [];
-    const languageSupport = filterLanguage(language);
-    if (languageSupport) {
-      languageSugs.push(...languageSupport.keywords.keywords.map((item) => {
-          return {value: item, detail: 'keyword'};
-        }),
-        ...languageSupport.operators.operators.map((item) => {
-          return {value: item, detail: 'operator'};
-        }),
-        ...languageSupport.builtinFunctions.builtinFunctions.map((item) => {
-          return {value: item, detail: 'function'};
-        }));
-    }
-    const newSug = [...items, ...languageSugs]
-      .map((item) => {
-        return {
-          label: item.value,
-          detail: item.detail,
-          insertText: item.value,
-          icon: items.includes(item.value),
-        };
+    FunctionService.getByPlugin(language)
+      .then((response) => {
+        if (response.status) {
+          response.data.content.forEach(value => {
+            languageSugs.push(value);
+          });
+        }
+      })
+      .finally(() => {
+        const newSug = [...items, ...languageSugs]
+          .map((item) => {
+            return {
+              label: item.name,
+              detail: item.detail,
+              insertText: item.value,
+              description: item.description,
+              icon: items.includes(item.value),
+            };
+          });
+        return newSug;
       });
-    return newSug;
   }
 }

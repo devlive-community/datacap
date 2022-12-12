@@ -32,6 +32,11 @@ class FunctionService
   {
     return new HttpCommon().put(baseUrl + "/import", configure);
   }
+
+  getByPlugin(plugin: string): Promise<ResponseModel>
+  {
+    return new HttpCommon().get(baseUrl + "/list/" + plugin);
+  }
 }
 
 export default new FunctionService();

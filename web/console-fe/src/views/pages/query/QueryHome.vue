@@ -86,7 +86,6 @@
 import {ExecuteModel} from "@/model/ExecuteModel";
 import {ExecuteService} from "@/services/ExecuteService";
 import {FormatService} from "@/services/FormatService";
-import {LanguageService} from "@/services/LanguageService";
 import axios, {CancelTokenSource} from "axios";
 import * as monaco from 'monaco-editor';
 import MonacoEditor from 'monaco-editor-vue3';
@@ -99,6 +98,8 @@ import SourceSelect from "@/components/source/SourceSelect.vue";
 import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
 import BasicTableComponent from "@/components/table/BasicTable.vue";
 import {AuditService} from "@/services/AuditService";
+import FunctionService from "@/services/settings/function/FunctionService";
+import {useI18n} from "vue-i18n";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
   {title: 'Editor', key: '1', closable: false}
@@ -114,6 +115,13 @@ export default defineComponent({
   {
     if (this.editorCompletionProvider) {
       this.editorCompletionProvider.dispose();
+    }
+  },
+  setup()
+  {
+    const i18n = useI18n();
+    return {
+      i18n
     }
   },
   data()
@@ -175,7 +183,7 @@ export default defineComponent({
       catch (e) {
         console.log(e);
       }
-      const suggestions = new LanguageService().transSuggestions([], language);
+
       if (newEditor) {
         editorMap.set(newEditor, editor);
         editorValueMap.set(activeKey.value, '');
@@ -183,18 +191,31 @@ export default defineComponent({
       else {
         editorMap.set(activeKey.value, editor);
       }
-      this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
-        provideCompletionItems(): any
-        {
-          return {
-            suggestions: suggestions.map((item) => ({
-              ...item,
-              kind: item.icon ? monaco.languages.CompletionItemKind.Variable : null,
-            }))
-          };
-        },
-        triggerCharacters: ['.'],
-      });
+      FunctionService.getByPlugin(language)
+        .then((response) => {
+          if (response.status) {
+            const languageSugs = [];
+            response.data.content.forEach(value => {
+              languageSugs.push({
+                label: value.name,
+                detail: this.i18n.t('common.' + value.type.toLowerCase()) + '\n' + value.description,
+                insertText: value.content
+              });
+            });
+            this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
+              provideCompletionItems(): any
+              {
+                return {
+                  suggestions: languageSugs.map((item) => ({
+                    ...item,
+                    kind: item.icon ? monaco.languages.CompletionItemKind.Variable : null,
+                  }))
+                };
+              },
+              triggerCharacters: ['.'],
+            });
+          }
+        });
     },
     handlerRun()
     {

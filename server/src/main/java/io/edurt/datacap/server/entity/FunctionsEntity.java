@@ -2,14 +2,12 @@ package io.edurt.datacap.server.entity;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.server.common.FunctionType;
-import io.edurt.datacap.server.converter.JpaConverterListString;
 import io.edurt.datacap.server.validation.ValidationGroup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -30,7 +29,7 @@ import java.util.List;
 @Entity
 @Table(name = "functions")
 @org.hibernate.annotations.Table(appliesTo = "functions", comment = "Plug-in correlation function")
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class FunctionsEntity
 {
@@ -66,8 +65,7 @@ public class FunctionsEntity
     })
     @Size(min = 1)
     @Column(name = "plugin")
-    @Convert(converter = JpaConverterListString.class)
-    private List<String> plugin;
+    private String plugin;
 
     @NotBlank(groups = {
             ValidationGroup.Crud.Create.class,
@@ -85,4 +83,14 @@ public class FunctionsEntity
 
     @Column(name = "update_time", columnDefinition = "timestamp not null default current_timestamp")
     private Timestamp updateTime;
+
+    public List<String> getPlugin()
+    {
+        return Arrays.asList(plugin.split(","));
+    }
+
+    public void setPlugin(List<String> plugin)
+    {
+        this.plugin = String.join(",", plugin);
+    }
 }
