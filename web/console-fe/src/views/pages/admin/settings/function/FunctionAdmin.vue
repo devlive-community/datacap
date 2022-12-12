@@ -1,13 +1,24 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.sql') + $t('common.template')">
+    <Card style="width:100%" :title="$t('common.function')">
       <template #extra>
-        <Tooltip>
-          <template #content>{{ $t('common.create') }}</template>
-          <Button type="primary" shape="circle" icon="md-add" size="small" @click="handlerCreateOrUpdate()"/>
-        </Tooltip>
+        <Space>
+          <Tooltip>
+            <template #content>{{ $t('common.create') }}</template>
+            <Button type="primary" shape="circle" icon="md-add" size="small" @click="handlerCreateOrUpdate()"/>
+          </Tooltip>
+        </Space>
       </template>
       <Table :loading="loading" :columns="headers" :data="data.content" @on-sort-change="handlerSort">
+        <template #plugin="{ row }">
+          <AvatarList size="small" :list="handlerPluginConvert(row.plugin)" :max="5" :excess-style="{
+                    color: '#f56a00',
+                    backgroundColor: '#fde3cf'
+                }"/>
+        </template>
+        <template #type="{ row }">
+          {{ $t('common.' + row.type.toLowerCase()) }}
+        </template>
         <template #action="{ row }">
           <Tooltip :content="$t('common.modify')" transfer>
             <Button shape="circle" type="primary" size="small" icon="md-create"
@@ -20,7 +31,7 @@
               @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
       </p>
     </Card>
-    <TemplateSqlDetails v-if="visibleInfo" :isVisible="visibleInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
+    <FunctionDetails v-if="visibleInfo" :isVisible="visibleInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
   </div>
 </template>
 
@@ -28,16 +39,16 @@
 import {defineComponent} from "vue";
 import {useI18n} from 'vue-i18n';
 import {ResponsePage} from "@/model/ResponsePage";
-import {createHeaders} from "@/views/pages/admin/template/sql/SqlGenerate";
-import TemplateSqlService from "@/services/template/TemplateSqlService";
 import {Filter} from "@/model/Filter";
 import {Order} from "@/model/Order";
-import TemplateSqlDetails from "@/views/pages/admin/template/sql/SqlDetails.vue";
+import {createHeaders} from "@/views/pages/admin/settings/function/FunctionGenerate";
+import FunctionDetails from "@/views/pages/admin/settings/function/FunctionDetails.vue";
+import FunctionService from "@/services/settings/function/FunctionService";
 
 const filter: Filter = new Filter();
 export default defineComponent({
-  name: "TemplateSqlAdmin",
-  components: {TemplateSqlDetails},
+  name: "FunctionAdmin",
+  components: {FunctionDetails},
   setup()
   {
     const i18n = useI18n();
@@ -69,14 +80,16 @@ export default defineComponent({
     handlerInitialize(filter: Filter)
     {
       this.loading = true;
-      TemplateSqlService.getAllTemplateSql(filter)
+      FunctionService.getAllByFilter(filter)
         .then((response) => {
           if (response.status) {
             this.data = response.data;
             this.pagination.total = response.data.total;
           }
-          this.loading = false;
         })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     handlerSizeChange(size: number)
     {
@@ -122,6 +135,12 @@ export default defineComponent({
       this.visibleInfo = value;
       this.applyId = 0;
       this.handlerInitialize(this.filter);
+    },
+    handlerPluginConvert(elements: [])
+    {
+      const plugins = [];
+      elements.forEach(element => plugins.push({tip: element}));
+      return plugins;
     }
   }
 });

@@ -55,5 +55,12 @@ export default {
   default: 'Default',
   language: 'Language',
   template: 'Template',
-  sql: 'Sql'
+  sql: 'Sql',
+  settings: 'Settings',
+  function: 'Function',
+  content: 'Content',
+  type: 'Type',
+  keyword: 'KeyWord',
+  operator: 'Operator',
+  example: 'Example'
 }

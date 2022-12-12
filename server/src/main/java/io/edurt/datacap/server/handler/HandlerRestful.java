@@ -78,4 +78,13 @@ public class HandlerRestful
         log.error("", ex);
         return Response.failure(ServiceState.REQUEST_EXCEPTION, ex.getMessage());
     }
+
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Response<Object> handlerException(Exception ex)
+    {
+        log.error("", ex);
+        return Response.failure(ServiceState.REQUEST_EXCEPTION, ex.getMessage());
+    }
 }
