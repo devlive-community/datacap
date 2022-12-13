@@ -129,3 +129,5 @@ nav:
       - 1.2.0 (latest): release/1.2.0.md
       - 1.1.0.20221115: release/1.1.0.20221115.md
       - 1.0.0.20221015: release/1.0.0.20221015.md
+  - Resources:
+    - Functions: resources/functions/home.md
