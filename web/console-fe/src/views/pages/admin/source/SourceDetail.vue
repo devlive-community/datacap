@@ -249,7 +249,7 @@ export default defineComponent({
     {
       this.visible = false;
     },
-    handlerImport()
+    handlerSave()
     {
       this.formState.configures = Arrays.arrayToObject(this.configure);
       const applyConfigure = clone(this.formState);
