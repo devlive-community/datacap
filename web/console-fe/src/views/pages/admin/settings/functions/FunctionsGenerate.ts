@@ -1,5 +1,6 @@
 import {Functions} from "@/model/settings/functions/Functions";
 import {FunctionsImport} from "@/model/settings/functions/FunctionsImport";
+import {FunctionsImportMode} from "@/enum/FunctionsImportMode";
 
 const emptyEntity: Functions = {
   content: '',
@@ -10,6 +11,7 @@ const emptyEntity: Functions = {
   type: 'KEYWORD'
 };
 const emptyImportEntity: FunctionsImport = {
+  mode: FunctionsImportMode.txt,
   content: "", plugin: "", type: ""
 };
 

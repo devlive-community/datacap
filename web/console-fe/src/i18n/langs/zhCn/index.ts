@@ -6,6 +6,7 @@ import settings from "@/i18n/langs/zhCn/settings";
 import profile from "@/i18n/langs/zhCn/profile";
 import grid from "@/i18n/langs/zhCn/grid";
 import signup from "@/i18n/langs/zhCn/signup";
+import alert from "@/i18n/langs/zhCn/alert";
 
 export default {
   ...zh,
@@ -15,5 +16,6 @@ export default {
   setting: settings,
   profile: profile,
   grid: grid,
-  signup: signup
+  signup: signup,
+  alert: alert
 }

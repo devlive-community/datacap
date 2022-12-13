@@ -6,6 +6,7 @@ import settings from "@/i18n/langs/en/settings";
 import profile from "@/i18n/langs/en/profile";
 import grid from "@/i18n/langs/en/grid";
 import signup from "@/i18n/langs/en/signup";
+import alert from "@/i18n/langs/en/alert";
 
 export default {
   ...en,
@@ -15,5 +16,6 @@ export default {
   setting: settings,
   profile: profile,
   grid: grid,
-  signup: signup
+  signup: signup,
+  alert: alert
 }

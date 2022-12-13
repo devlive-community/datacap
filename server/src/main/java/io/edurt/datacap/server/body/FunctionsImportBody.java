@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.body;
 
+import io.edurt.datacap.server.common.FunctionImportMode;
 import io.edurt.datacap.server.common.FunctionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,4 +26,5 @@ public class FunctionsImportBody
     @Size(min = 1)
     private List<String> plugin;
     private FunctionType type = FunctionType.KEYWORD;
+    private FunctionImportMode mode = FunctionImportMode.txt;
 }
