@@ -1,4 +1,4 @@
 ---
 template: home.html
-title: DataCap (incubator)
+title: DataCap
 ---

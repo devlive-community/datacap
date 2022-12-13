@@ -1,4 +1,4 @@
-site_name: DataCap (incubator)
+site_name: DataCap
 site_url: https://databap.incubator.edurt.io/
 site_author: EdurtIO
 site_description: >-
@@ -17,7 +17,7 @@ theme:
   favicon: material/open-source-initiative
   include_search_page: false
   search_index_only: true
-  language: zh
+  language: en
   features:
     - content.code.annotate
     - content.tabs.link
@@ -91,69 +91,7 @@ markdown_extensions:
 
 use_directory_urls: false
 plugins:
-  - i18n:
-      default_language: zh
-      languages:
-        en: English
-        zh: 简体中文
-      nav_translations:
-        zh:
-          home: 主页
-          developer_guide: 开发指南
-          developer_guide_env: 开发环境
-          developer_guide_plugin: 自定义插件
-          blog: 博客
-          2022: 2022
-          springboot-hive-jdbc-v2: sss
-          documentation: 文档
-          documentation_install: 安装
-          documentation_query: 查询
-          documentation_history: 历史
-          documentation_database: 连接数据库
-          documentation_database_mysql: MySQL
-          documentation_database_clickhouse: ClickHouse
-          documentation_database_kylin: Kylin
-          documentation_database_oracle: Oracle
-          documentation_v120: 1.2.0
-          documentation_v120_plugin_cratedb: CrateDB
-          documentation_v120_plugin_tdengine: TDengine
-          documentation_v120_plugin_impala: Impala
-          documentation_update: 升级
-          documentation_update_120: 升级 1.2.0
-          release: 发布日志
-          release_20221015: 1.0.0.20221015
-          release_20221115: 1.1.0.20221115
-          release_120: 1.2.0 (latest)
-        en:
-          home: Home
-          developer_guide: Developer guide
-          developer_guide_env: Development environment
-          developer_guide_plugin: Custom Plugin
-          blog: Blog
-          springboot-hive-jdbc-v2: sss
-          documentation: Documentation
-          documentation_install: Installation
-          documentation_query: Query
-          documentation_history: History
-          documentation_database: Connecting to Databases
-          documentation_database_mysql: MySQL
-          documentation_database_clickhouse: ClickHouse
-          documentation_database_kylin: Kylin
-          documentation_database_oracle: Oracle
-          documentation_v120: 1.2.0
-          documentation_v120_plugin_cratedb: CrateDB
-          documentation_v120_plugin_tdengine: TDengine
-          documentation_v120_plugin_impala: Impala
-          documentation_update: Update
-          documentation_update_120: Update to 1.2.0
-          release: Release Note
-          release_20221015: 1.0.0.20221015
-          release_20221115: 1.1.0.20221115
-          release_120: 1.2.0 (latest)
   - search
-  - blog:
-      archive: false
-      categories: false
   - git-revision-date-localized:
       enable_creation_date: true
       fallback_to_build_date: true
@@ -164,28 +102,30 @@ plugins:
         release-latest.md: release/1.2.0.md
 
 nav:
-  - home: index.md
-  - documentation:
-      - documentation_install: reference/get_started/install.md
-      - documentation_query: reference/get_started/query.md
-      - documentation_history: reference/get_started/history.md
-      - documentation_database:
-        - documentation_v120:
-          - documentation_v120_plugin_cratedb: reference/plugin/v120/cratedb.md
-          - documentation_v120_plugin_tdengine: reference/plugin/v120/tdengine.md
-          - documentation_v120_plugin_impala: reference/plugin/v120/impala.md
-        - documentation_database_mysql: reference/database/mysql.md
-        - documentation_database_clickhouse: reference/database/clickhouse.md
-        - documentation_database_kylin: reference/database/kylin.md
-        - documentation_database_oracle: reference/database/oracle.md
-      - documentation_update:
-          - documentation_update_120: reference/update/v120.md
-  - developer_guide:
-      - developer_guide_env: developer_guide/env.md
-      - developer_guide_plugin: developer_guide/plugin.md
-  - release:
-      - release_120: release/1.2.0.md
-      - release_20221115: release/1.1.0.20221115.md
-      - release_20221015: release/1.0.0.20221015.md
-  - blog:
-    - blog/index.md
+  - Home: index.md
+  - Documentation:
+      - Installation: reference/get_started/install.md
+      - Query: reference/get_started/query.md
+      - History: reference/get_started/history.md
+      - Admin:
+          - Functions: reference/admin/functions/home.md
+          - Template:
+              - Sql: reference/admin/template/sql/home.md
+      - Connecting to Databases:
+        - 1.2.0:
+          - CrateDB: reference/plugin/v120/cratedb.md
+          - TDengine: reference/plugin/v120/tdengine.md
+          - Impala: reference/plugin/v120/impala.md
+        - MySQL: reference/database/mysql.md
+        - ClickHouse: reference/database/clickhouse.md
+        - Kylin: reference/database/kylin.md
+        - Oracle: reference/database/oracle.md
+      - Update:
+          - Update to 1.2.0: reference/update/v120.md
+  - Developer guide:
+      - Development environment: developer_guide/env.md
+      - Custom Plugin: developer_guide/plugin.md
+  - Release Note:
+      - 1.2.0 (latest): release/1.2.0.md
+      - 1.1.0.20221115: release/1.1.0.20221115.md
+      - 1.0.0.20221015: release/1.0.0.20221015.md

@@ -14,13 +14,13 @@
               {{ $t('alert.urlMode') }}
               <DescriptionList :col="1" style="margin-top: 20px;">
                 <Description :term="$t('common.keyword')">
-                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/keywords.txt
+                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/plugin/keywords.txt
                 </Description>
                 <Description :term="$t('common.operator')">
-                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/operators.txt
+                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/plugin/operators.txt
                 </Description>
                 <Description :term="$t('common.function')">
-                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/functions.txt
+                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/plugin/functions.txt
                 </Description>
               </DescriptionList>
             </Alert>
