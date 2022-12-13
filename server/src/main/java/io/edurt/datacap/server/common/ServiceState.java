@@ -11,6 +11,7 @@ public enum ServiceState
     REQUEST_VALID_ARGUMENT_LAYOUT(3003, "Related parameters cannot be resolved"),
     REQUEST_VALID_TYPE(3004, "Data types are not supported"),
     TEMPLATE_NOT_FOUND(3005, "Template dose not exists"),
+    INVALID_REMOTE_ADDRESS(3006, "Invalid remote address"),
     USER_NOT_FOUND(4001, "User dose not exists"),
     USER_ROLE_NOT_FOUND(4002, "User role dose not exists"),
     USER_UNAUTHORIZED(4003, "Insufficient current user permissions"),

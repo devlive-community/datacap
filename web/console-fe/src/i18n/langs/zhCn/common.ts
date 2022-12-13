@@ -65,5 +65,6 @@ export default {
   example: '示例',
   more: '更多',
   batch: '批量',
-  import: '导入'
+  import: '导入',
+  url: '网址'
 }

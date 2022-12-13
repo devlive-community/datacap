@@ -65,5 +65,6 @@ export default {
   example: 'Example',
   more: 'More',
   batch: 'Batch',
-  import: 'import'
+  import: 'Import',
+  url: 'Url'
 }

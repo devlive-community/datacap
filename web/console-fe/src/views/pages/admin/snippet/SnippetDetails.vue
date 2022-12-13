@@ -78,7 +78,7 @@ export default defineComponent({
         this.snippetForm.code = this.codeSnippet;
       }
     },
-    handlerImport()
+    handlerSave()
     {
       new SnippetService()
         .saveAndUpdate(this.snippetForm, this.isUpdate)

@@ -3,9 +3,32 @@
     <Drawer :title="$t('common.import') + $t('common.function')" :width="720" :closable="false"
             v-model="visible" :maskClosable="false" :z-index="9" :styles="{}">
       <Form :model="formState">
-        <FormItem :label="$t('common.content')" label-position="top">
-          <Input type="textarea" show-word-limit v-model="formState.content" :placeholder="$t('tooltip.multipleLines')" :rows="12"/>
-        </FormItem>
+        <Tabs v-model="formState.mode" :animated="false">
+          <TabPane :label="$t('common.content')" :name="FunctionsImportMode.txt">
+            <FormItem :label="$t('common.content')" label-position="top">
+              <Input type="textarea" show-word-limit v-model="formState.content" :placeholder="$t('tooltip.multipleLines')" :rows="12"/>
+            </FormItem>
+          </TabPane>
+          <TabPane :label="$t('common.url')" :name="FunctionsImportMode.url">
+            <Alert banner type="warning">
+              {{ $t('alert.urlMode') }}
+              <DescriptionList :col="1" style="margin-top: 20px;">
+                <Description :term="$t('common.keyword')">
+                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/plugin/keywords.txt
+                </Description>
+                <Description :term="$t('common.operator')">
+                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/plugin/operators.txt
+                </Description>
+                <Description :term="$t('common.function')">
+                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/plugin/functions.txt
+                </Description>
+              </DescriptionList>
+            </Alert>
+            <FormItem :label="$t('common.content')" label-position="top">
+              <Input v-model="formState.content"/>
+            </FormItem>
+          </TabPane>
+        </Tabs>
         <Row :gutter="32">
           <Col span="12">
             <FormItem :label="$t('common.plugin')">
@@ -40,6 +63,7 @@ import {createDefaultType, emptyImportEntity} from "@/views/pages/admin/settings
 import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
 import {FunctionsImport} from "@/model/settings/functions/FunctionsImport";
+import {FunctionsImportMode} from "@/enum/FunctionsImportMode";
 
 export default defineComponent({
   name: 'FunctionsImport',
@@ -105,6 +129,10 @@ export default defineComponent({
     }
   },
   computed: {
+    FunctionsImportMode()
+    {
+      return FunctionsImportMode
+    },
     visible: {
       get(): boolean
       {
