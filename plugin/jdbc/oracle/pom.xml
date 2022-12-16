@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (Oracle)</name>
 
     <properties>
-        <oracle.version>21.1.0.0</oracle.version>
+        <oracle.version>21.8.0.0</oracle.version>
         <plugin.name>jdbc-oracle</plugin.name>
     </properties>
 
