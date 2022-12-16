@@ -99,7 +99,7 @@ plugins:
   - git-authors
   - redirects:
       redirect_maps:
-        release-latest.md: release/1.2.0.md
+        release-latest.md: release/1.3.0.md
 
 nav:
   - Home: index.md
@@ -121,12 +121,14 @@ nav:
         - Kylin: reference/database/kylin.md
         - Oracle: reference/database/oracle.md
       - Update:
+          - Update to 1.3.0: reference/update/1.3.0.md
           - Update to 1.2.0: reference/update/v120.md
   - Developer guide:
       - Development environment: developer_guide/env.md
       - Custom Plugin: developer_guide/plugin.md
   - Release Note:
-      - 1.2.0 (latest): release/1.2.0.md
+      - 1.3.0 (latest): release/1.3.0.md
+      - 1.2.0: release/1.2.0.md
       - 1.1.0.20221115: release/1.1.0.20221115.md
       - 1.0.0.20221015: release/1.0.0.20221015.md
   - Resources:
