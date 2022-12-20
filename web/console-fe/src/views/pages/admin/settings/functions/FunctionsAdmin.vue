@@ -157,7 +157,7 @@ export default defineComponent({
     handlerPluginConvert(elements: [])
     {
       const plugins = [];
-      elements.forEach(element => plugins.push({tip: element}));
+      elements.forEach(element => plugins.push({src: '/static/images/plugin/' + element + '.png', tip: element}));
       return plugins;
     },
     handlerImportController(value: boolean)

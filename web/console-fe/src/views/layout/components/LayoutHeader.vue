@@ -43,18 +43,18 @@
           <Submenu name="settings">
             <template #title>
               <Icon type="ios-cog"/>
-              {{ $t('common.settings') }}&nbsp;<Tag color="warning">New</Tag>
+              {{ $t('common.settings') }}
             </template>
             <MenuGroup :title="$t('common.default')">
               <MenuItem name="settings_functions" to="/admin/settings/function">
                 <Icon type="ios-basket"/>
-                {{ $t('common.function') }} <Tag style="margin-left: 5px;" color="warning">New</Tag>
+                {{ $t('common.function') }}
               </MenuItem>
             </MenuGroup>
             <MenuGroup :title="$t('common.template')">
               <MenuItem name="admin_template_sql" to="/admin/template/sql">
                 <Icon type="md-browsers"/>
-                {{ $t('common.sql') }}<Tag style="margin-left: 5px;" color="warning">New</Tag>
+                {{ $t('common.sql') }}
               </MenuItem>
             </MenuGroup>
           </Submenu>
