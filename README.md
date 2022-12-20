@@ -119,10 +119,7 @@ Here are some of the major database solutions that are supported:
 [![](https://tokei.rs/b1/github/EdurtIO/incubator-datacap)](https://github.com/EdurtIO/incubator-datacap)
 ![version](https://img.shields.io/github/v/release/EdurtIO/incubator-datacap.svg)
 
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/EdurtIO/incubator-datacap/latest/total?style=flat-square)
-![GitHub all releases](https://img.shields.io/github/downloads/EdurtIO/incubator-datacap/total?style=flat-square)
-
-![GitHub branch checks state](https://img.shields.io/github/checks-status/EdurtIO/incubator-datacap/master?style=flat-square)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/EdurtIO/incubator-datacap/develop?style=flat-square)
 ![GitHub Release Date](https://img.shields.io/github/release-date/EdurtIO/incubator-datacap?style=flat-square)
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/EdurtIO/incubator-datacap?style=flat-square)
