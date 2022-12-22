@@ -38,7 +38,10 @@
                 <Divider orientation="left">{{ key }} ({{ plugins[key].length }})</Divider>
                 <Space wrap :size="[8, 16]">
                   <Tooltip v-for="plugin in plugins[key]" :content="plugin.description" transfer v-bind:key="plugin.name">
-                    <Radio :label="plugin.name + ' ' + plugin.type"/>
+                    <Radio :label="plugin.name + ' ' + plugin.type">
+                      <Avatar :src="'/static/images/plugin/' + plugin.name + '.png'" size="small" />
+                      <span style="margin-left: 2px;">{{ plugin.name }}</span>
+                    </Radio>
                   </Tooltip>
                 </Space>
               </div>
