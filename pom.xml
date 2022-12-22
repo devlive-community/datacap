@@ -16,6 +16,7 @@
         <module>dist</module>
         <module>docs</module>
         <module>assets</module>
+        <module>client</module>
     </modules>
 
     <name>DataCap(Incubator)</name>
