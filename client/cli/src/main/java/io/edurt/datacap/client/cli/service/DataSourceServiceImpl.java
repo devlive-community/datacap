@@ -13,8 +13,11 @@ import org.springframework.shell.table.TableModel;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import static java.lang.Math.toIntExact;
 
 @Service
 public class DataSourceServiceImpl
@@ -53,6 +56,30 @@ public class DataSourceServiceImpl
         headers.put("type", "Type");
         headers.put("description", "Description");
         TableModel model = new BeanListTableModel<>(dataSources, headers);
+        TableBuilder tableBuilder = new TableBuilder(model);
+        TableUtils.applyStyle(tableBuilder);
+        return tableBuilder.build();
+    }
+
+    @Override
+    public Table getInfo()
+    {
+        HttpConfigure configure = this.cacheService.getConfigure();
+        configure.setUrl(url + "/" + configure.getSourceId());
+        HttpCommon httpCommon = new HttpCommon(configure);
+        ServerResponse serverResponse = httpCommon.withTokenForGet();
+        LinkedTreeMap<String, Object> map = (LinkedTreeMap) serverResponse.getData();
+        LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
+        headers.put("id", "Id");
+        headers.put("name", "Name");
+        headers.put("type", "Type");
+        headers.put("description", "Description");
+        DataSource dataSource = new DataSource();
+        dataSource.setId(toIntExact(configure.getSourceId()));
+        dataSource.setName(String.valueOf(map.get("name")));
+        dataSource.setType(String.valueOf(map.get("type")));
+        dataSource.setDescription(String.valueOf(map.get("description")));
+        TableModel model = new BeanListTableModel<>(Collections.singleton(dataSource), headers);
         TableBuilder tableBuilder = new TableBuilder(model);
         TableUtils.applyStyle(tableBuilder);
         return tableBuilder.build();

@@ -42,6 +42,13 @@ public class DataSourceShell
         System.out.println("Use successful!");
     }
 
+    @ShellMethod(value = "Get data source details", key = {"source info"})
+    @ShellMethodAvailability(value = "availabilityCheck")
+    public Table getInfo()
+    {
+        return this.dataSourceService.getInfo();
+    }
+
     public Availability availabilityCheck()
     {
         return this.checkService.availabilityCheck();

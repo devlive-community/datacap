@@ -5,4 +5,6 @@ import org.springframework.shell.table.Table;
 public interface DataSourceService
 {
     Table showList();
+
+    Table getInfo();
 }

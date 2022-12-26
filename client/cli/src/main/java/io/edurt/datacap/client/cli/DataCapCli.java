@@ -13,6 +13,7 @@ public class DataCapCli
         SpringApplication application = new SpringApplication(DataCapCli.class);
         application.setBannerMode(Banner.Mode.OFF);
         application.setWebApplicationType(WebApplicationType.NONE);
+        application.setLogStartupInfo(false);
         application.run(args);
     }
 

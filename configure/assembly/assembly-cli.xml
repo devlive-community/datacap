@@ -1,0 +1,30 @@
+<assembly>
+    <id>jar-with-dependencies-and-exclude-classes</id>
+
+    <formats>
+        <format>jar</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/</outputDirectory>
+            <useProjectArtifact>false</useProjectArtifact>
+            <unpack>true</unpack>
+            <scope>runtime</scope>
+            <excludes>
+                <exclude>org.apache.logging.*:log4j</exclude>
+                <exclude>ch.qos.logback:logback-classic</exclude>
+                <exclude>ch.qos.logback:logback-core</exclude>
+            </excludes>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <outputDirectory>/</outputDirectory>
+            <directory>${project.build.outputDirectory}</directory>
+        </fileSet>
+    </fileSets>
+</assembly>
