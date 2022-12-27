@@ -196,9 +196,23 @@ export default defineComponent({
           if (response.status) {
             const languageSugs = [];
             response.data.content.forEach(value => {
+              let kind = monaco.languages.CompletionItemKind.Text;
+              switch (value.type.toLowerCase()) {
+                case 'keyword':
+                  kind = monaco.languages.CompletionItemKind.Keyword;
+                  break
+                case 'function':
+                  kind = monaco.languages.CompletionItemKind.Function;
+                  break
+                case 'operator':
+                  kind = monaco.languages.CompletionItemKind.Operator;
+                  break
+              }
               languageSugs.push({
                 label: value.name,
-                detail: this.i18n.t('common.' + value.type.toLowerCase()) + '\n' + value.description,
+                detail: this.i18n.t('common.' + value.type.toLowerCase()),
+                kind: kind,
+                documentation: this.i18n.t('common.description') + ':\n' + value.description + '\n\n' + this.i18n.t('common.example') + ':\n' + value.example,
                 insertText: value.content
               });
             });
@@ -207,12 +221,11 @@ export default defineComponent({
               {
                 return {
                   suggestions: languageSugs.map((item) => ({
-                    ...item,
-                    kind: item.icon ? monaco.languages.CompletionItemKind.Variable : null,
+                    ...item
                   }))
                 };
               },
-              triggerCharacters: ['.'],
+              triggerCharacters: ['.']
             });
           }
         });
