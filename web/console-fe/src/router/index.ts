@@ -90,6 +90,15 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import("@/views/pages/admin/settings/functions/FunctionsAdmin.vue")
           }
         ]
+      },
+      {
+        path: "monitor",
+        children: [
+          {
+            path: "processor",
+            component: () => import("../views/pages/admin/monitor/processor/ProcessorAdmin.vue")
+          }
+        ]
       }
     ]
   },

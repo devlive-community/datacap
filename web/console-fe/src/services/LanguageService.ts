@@ -20,7 +20,7 @@ export class LanguageService
               label: item.name,
               detail: item.detail,
               insertText: item.value,
-              description: item.description,
+              documentation: item.example,
               icon: items.includes(item.value),
             };
           });

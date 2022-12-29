@@ -33,6 +33,12 @@
                 {{ $t('common.snippet') }}
               </MenuItem>
             </MenuGroup>
+            <MenuGroup :title="$t('monitor.name')">
+              <MenuItem name="monitor_processor" to="/admin/monitor/processor">
+                <Icon type="md-american-football"/>
+                {{ $t('monitor.processor') }}
+              </MenuItem>
+            </MenuGroup>
             <MenuGroup :title="$t('common.history')">
               <MenuItem name="admin_history" to="/admin/history">
                 <Icon type="ios-book"/>

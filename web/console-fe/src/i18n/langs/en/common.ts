@@ -66,5 +66,6 @@ export default {
   more: 'More',
   batch: 'Batch',
   import: 'Import',
-  url: 'Url'
+  url: 'Url',
+  stop: 'Stop'
 }

@@ -7,6 +7,7 @@ import profile from "@/i18n/langs/en/profile";
 import grid from "@/i18n/langs/en/grid";
 import signup from "@/i18n/langs/en/signup";
 import alert from "@/i18n/langs/en/alert";
+import monitor from "@/i18n/langs/en/monitor";
 
 export default {
   ...en,
@@ -17,5 +18,6 @@ export default {
   profile: profile,
   grid: grid,
   signup: signup,
-  alert: alert
+  alert: alert,
+  monitor: monitor
 }
