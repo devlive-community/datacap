@@ -66,5 +66,6 @@ export default {
   more: '更多',
   batch: '批量',
   import: '导入',
-  url: '网址'
+  url: '网址',
+  stop: '停止'
 }
