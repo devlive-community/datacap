@@ -1,6 +1,7 @@
 import {TemplateSql} from "@/model/template/Sql";
 
 const emptyEntity: TemplateSql = {
+  system: false,
   configure: {},
   content: '',
   description: '',

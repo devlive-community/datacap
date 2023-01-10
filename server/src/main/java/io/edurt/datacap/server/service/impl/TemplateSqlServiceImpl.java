@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -50,6 +51,23 @@ public class TemplateSqlServiceImpl
     @Override
     public Response<TemplateSqlEntity> saveOrUpdate(TemplateSqlEntity configure)
     {
+        if (ObjectUtils.isEmpty(configure.getId())) {
+            List<TemplateSqlEntity> templateSqlEntitys = this.templateSqlRepository.findByName(configure.getName());
+            boolean skip = false;
+            if (templateSqlEntitys.size() > 0) {
+                for (TemplateSqlEntity templateSqlEntity : templateSqlEntitys) {
+                    for (String plugin : templateSqlEntity.getPlugin().split(",")) {
+                        if (configure.getPlugin().contains(plugin)) {
+                            skip = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (skip) {
+                return Response.failure(ServiceState.PLUGIN_ONLY_ONE_TEMPLATE);
+            }
+        }
         // Building configure
         String json;
         if (StringUtils.isEmpty(configure.getConfigure()) || ObjectUtils.isEmpty(configure.getConfigure())) {
@@ -128,10 +146,17 @@ public class TemplateSqlServiceImpl
         final String[] content = {sqlEntity.getContent()};
         try {
             if (ObjectUtils.isNotEmpty(configure.getConfigure())) {
-                List<SqlConfigure> configures = JSON.objectmapper.readValue(sqlEntity.getConfigure(), List.class);
+                List<LinkedHashMap> configures = JSON.objectmapper.readValue(sqlEntity.getConfigure(), List.class);
                 configure.getConfigure().entrySet().forEach(value -> {
                     Optional<SqlConfigure> sqlConfigure = configures.stream()
-                            .filter(v -> v.getColumn().equalsIgnoreCase(value.getKey()))
+                            .filter(v -> String.valueOf(v.get("column")).equalsIgnoreCase(value.getKey()))
+                            .map(v -> {
+                                SqlConfigure configure1 = new SqlConfigure();
+                                configure1.setColumn(v.get("column").toString());
+                                configure1.setType(Type.valueOf(String.valueOf(v.get("type"))));
+                                configure1.setExpression(String.valueOf(v.get("expression")));
+                                return configure1;
+                            })
                             .findFirst();
                     if (sqlConfigure.isPresent()) {
                         content[0] = content[0].replace(sqlConfigure.get().getExpression(), String.valueOf(value.getValue()));
