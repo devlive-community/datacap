@@ -51,6 +51,23 @@ public class TemplateSqlServiceImpl
     @Override
     public Response<TemplateSqlEntity> saveOrUpdate(TemplateSqlEntity configure)
     {
+        if (ObjectUtils.isEmpty(configure.getId())) {
+            List<TemplateSqlEntity> templateSqlEntitys = this.templateSqlRepository.findByName(configure.getName());
+            boolean skip = false;
+            if (templateSqlEntitys.size() > 0) {
+                for (TemplateSqlEntity templateSqlEntity : templateSqlEntitys) {
+                    for (String plugin : templateSqlEntity.getPlugin().split(",")) {
+                        if (configure.getPlugin().contains(plugin)) {
+                            skip = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (skip) {
+                return Response.failure(ServiceState.PLUGIN_ONLY_ONE_TEMPLATE);
+            }
+        }
         // Building configure
         String json;
         if (StringUtils.isEmpty(configure.getConfigure()) || ObjectUtils.isEmpty(configure.getConfigure())) {

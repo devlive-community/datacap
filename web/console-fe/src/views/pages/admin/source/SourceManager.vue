@@ -42,8 +42,8 @@
                 <Icon type="md-apps"></Icon>
                 {{ currentTable }}
               </template>
-              <Table ref="selection" :columns="headers" :data="columns"></Table>
-              <div style="text-align: center; margin: 5px 0;">
+              <Table ref="selection" :loading="dataLoading" :columns="headers" :data="columns"></Table>
+              <div v-if="!dataLoading" style="text-align: center; margin: 5px 0;">
                 <Space>
                   <Button :disabled="page === 0" size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
                   <InputNumber v-model="currentPage" size="small"/>
@@ -74,6 +74,7 @@ export default defineComponent({
       sourceId: 0,
       loading: false,
       tableLoading: false,
+      dataLoading: false,
       isSupported: false,
       isShowData: false,
       data: null as SourceModel,
@@ -162,6 +163,9 @@ export default defineComponent({
             });
             callback(dataTreeColumnArray);
           }
+          else {
+            this.$Message.error(response.message);
+          }
         })
         .finally(() => {
           this.tableLoading = false;
@@ -174,6 +178,7 @@ export default defineComponent({
       this.columns = [];
       if (item.length > 0) {
         this.isShowData = true;
+        this.dataLoading = true;
         const data = item[0];
         if (data.level === 'table') {
           this.currentTable = data.title;
@@ -201,9 +206,13 @@ export default defineComponent({
               });
               this.columns = response.data.columns;
             }
+            else {
+              this.$Message.error(response.message);
+            }
           })
           .finally(() => {
             this.tableLoading = false;
+            this.dataLoading = false;
           });
       }
     },

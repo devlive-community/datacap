@@ -20,3 +20,8 @@ VALUES ('getDataFromDatabaseAndTableLimited', 'SELECT *\nFROM ${table:String}\nL
         'MySQL,ClickHouse',
         '[{\"column\":\"table\",\"type\":\"String\",\"expression\":\"${table:String}\"},{\"column\":\"size\",\"type\":\"Integer\",\"expression\":\"${size:Integer}\"},{\"column\":\"page\",\"type\":\"Integer\",\"expression\":\"${page:Integer}\"}]',
         true);
+INSERT INTO `template_sql` (`name`, `content`, `description`, `plugin`, `configure`, `system`)
+VALUES ('getAllDatabase', 'SHOW DATABASES', 'Gets a list of all databases', 'ClickHouse,MySQL', '[]', true);
+INSERT INTO `template_sql` (`name`, `content`, `description`, `plugin`, `configure`, `system`)
+VALUES ('getAllTablesFromDatabase', 'SHOW TABLES FROM ${database:String}', 'Get the data table from the database', 'ClickHouse,MySQL',
+        '[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"}]', true);
