@@ -6,7 +6,7 @@
         <Row :gutter="32">
           <Col span="12">
             <FormItem :label="$t('common.name')">
-              <Input v-model="formState.name"/>
+              <Input :disabled="formState.system" v-model="formState.name"/>
             </FormItem>
           </Col>
           <Col span="12">

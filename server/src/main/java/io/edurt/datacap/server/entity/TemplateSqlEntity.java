@@ -64,6 +64,9 @@ public class TemplateSqlEntity
     @Column(name = "configure")
     private String configure;
 
+    @Column(name = "system")
+    private boolean system;
+
     @Column(name = "create_time", columnDefinition = "timestamp not null default current_timestamp")
     private Timestamp createTime;
 

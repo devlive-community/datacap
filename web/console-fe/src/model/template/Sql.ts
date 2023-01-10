@@ -6,6 +6,7 @@ export interface TemplateSql
   content: string;
   plugin: string;
   configure: {};
+  system: boolean;
   createTime?: string;
   updateTime?: string;
 }
