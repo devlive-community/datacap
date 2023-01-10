@@ -63,7 +63,17 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "source",
-        component: () => import("../views/pages/admin/source/SourceAdmin.vue")
+        redirect: '/admin/source/index',
+        children: [
+          {
+            path: "index",
+            component: () => import("../views/pages/admin/source/SourceAdmin.vue")
+          },
+          {
+            path: ":id/manager",
+            component: () => import("../views/pages/admin/source/SourceManager.vue")
+          }
+        ]
       },
       {
         path: "history",

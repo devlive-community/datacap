@@ -27,9 +27,9 @@ const createHeaders = (i18n: any) => {
       ellipsis: true
     },
     {
-      title: i18n.t('common.description'),
-      key: 'description',
-      ellipsis: true
+      title: i18n.t('common.type'),
+      key: 'type',
+      slot: 'type'
     },
     {
       title: i18n.t('common.protocol'),
@@ -45,23 +45,6 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.port'),
       key: 'port',
-      ellipsis: true
-    },
-    {
-      title: i18n.t('common.username'),
-      name: 'username',
-      dataIndex: 'username',
-      key: 'username',
-      ellipsis: true
-    },
-    {
-      title: i18n.t('common.catalog'),
-      key: 'catalog',
-      ellipsis: true
-    },
-    {
-      title: i18n.t('common.database'),
-      key: 'database',
       ellipsis: true
     },
     {

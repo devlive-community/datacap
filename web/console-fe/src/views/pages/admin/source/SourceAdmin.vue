@@ -11,6 +11,9 @@
         <template #name="{ row }">
           <Ellipsis :text="row.name" :length="8" tooltip transfer/>
         </template>
+        <template #type="{ row }">
+          <Avatar :src="'/static/images/plugin/' + row.type + '.png'" size="small" />
+        </template>
         <template #host="{ row }">
           <Ellipsis :text="row.host" :length="8" tooltip transfer/>
         </template>
@@ -23,11 +26,15 @@
               <Button :disabled="currentUserId !== row.user.id" shape="circle" type="primary" size="small" icon="md-create"
                       @click="handlerCreateOrUpdate(row.id)"/>
             </Tooltip>
-            <Poptip confirm title="Are you sure delete?" popper-class="poptip-box" transfer @on-ok="handlerDeleteRecord(row.id)">
-              <Tooltip :content="$t('common.delete')" placement="top-start">
+            <Tooltip :content="$t('common.delete')" transfer>
+              <Poptip confirm title="Are you sure delete?" popper-class="poptip-box" transfer @on-ok="handlerDeleteRecord(row.id)">
                 <Button :disabled="currentUserId !== row.user.id" shape="circle" type="error" size="small" icon="md-trash"/>
-              </Tooltip>
-            </Poptip>
+              </Poptip>
+            </Tooltip>
+            <Tooltip :content="$t('common.admin')" transfer>
+              <Button :disabled="currentUserId !== row.user.id" shape="circle" type="info" size="small" icon="md-construct"
+                      :to="'/admin/source/' + row.id + '/manager'"/>
+            </Tooltip>
           </Space>
         </template>
       </Table>
