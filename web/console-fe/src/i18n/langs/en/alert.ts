@@ -5,5 +5,6 @@ export default {
   currentSourceFixedTooltip: 'You can solve it by',
   currentSourceFixedTooltipStep1: 'Contact the developer to support this feature',
   currentSourceFixedTooltipStep2: 'Add template SQL suitable for the data source according to the current data source',
-  managerRequiredTreeData: 'Please select the corresponding database table on the left'
+  managerRequiredTreeData: 'Please select the corresponding database table on the left',
+  currentTemplateName: 'Current template name'
 }

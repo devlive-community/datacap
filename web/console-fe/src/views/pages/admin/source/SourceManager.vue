@@ -1,10 +1,6 @@
 <template>
   <div>
-    <Result v-if="!isSupported" type="error" style="margin-top: 50px;">
-      <template #desc>
-        {{ $t('alert.currentSourceNotSupportOperator') }}
-      </template>
-    </Result>
+    <SourceNotSupported v-if="!isSupported" :templateName="templateArray" style="margin-top: 50px;"></SourceNotSupported>
     <div v-else>
       <Layout :style="{padding: '0', 'min-height': '500px'}">
         <Sider hide-trigger :style="{background: '#fff'}">
@@ -42,12 +38,12 @@
                 <Icon type="md-apps"></Icon>
                 {{ currentTable }}
               </template>
-              <Table ref="selection" :loading="dataLoading" :columns="headers" :data="columns"></Table>
+              <Table ref="selection" :loading="dataLoading" size="small" :columns="headers" :data="columns"></Table>
               <div v-if="!dataLoading" style="text-align: center; margin: 5px 0;">
                 <Space>
                   <Button :disabled="page === 0" size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
                   <InputNumber v-model="currentPage" size="small"/>
-                  <Button size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
+                  <Button :disabled="columns.length < size" size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
                 </Space>
               </div>
             </Card>
@@ -65,12 +61,15 @@ import {SourceService} from "@/services/SourceService";
 import {toNumber} from "lodash";
 import {SourceModel} from "@/model/SourceModel";
 import MangerService from "@/services/source/MangerService";
+import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
 
 export default defineComponent({
   name: "SourceManager",
+  components: {SourceNotSupported},
   data()
   {
     return {
+      templateArray: ['getAllDatabase', 'getAllTablesFromDatabase', 'getAllColumnsFromDatabaseAndTable', 'getDataFromDatabaseAndTableLimited'],
       sourceId: 0,
       loading: false,
       tableLoading: false,
@@ -121,6 +120,9 @@ export default defineComponent({
             response.data.columns.forEach(column => {
               this.databaseArray.push(column[header]);
             });
+          }
+          else {
+            this.isSupported = false;
           }
         });
     },
