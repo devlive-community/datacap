@@ -67,5 +67,9 @@ export default {
   batch: 'Batch',
   import: 'Import',
   url: 'Url',
-  stop: 'Stop'
+  stop: 'Stop',
+  sort: 'Sort',
+  asc: 'Ascending',
+  desc: 'Descending',
+  apply: 'Apply'
 }

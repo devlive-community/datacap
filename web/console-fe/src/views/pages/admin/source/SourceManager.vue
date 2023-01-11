@@ -1,10 +1,6 @@
 <template>
   <div>
-    <Result v-if="!isSupported" type="error" style="margin-top: 50px;">
-      <template #desc>
-        {{ $t('alert.currentSourceNotSupportOperator') }}
-      </template>
-    </Result>
+    <SourceNotSupported v-if="!isSupported" :templateName="templateArray" style="margin-top: 50px;"></SourceNotSupported>
     <div v-else>
       <Layout :style="{padding: '0', 'min-height': '500px'}">
         <Sider hide-trigger :style="{background: '#fff'}">
@@ -42,12 +38,16 @@
                 <Icon type="md-apps"></Icon>
                 {{ currentTable }}
               </template>
-              <Table ref="selection" :loading="dataLoading" :columns="headers" :data="columns"></Table>
+              <template #extra>
+                <Button size="small" :type="isSort ? 'primary' : 'default'" icon="md-options" @click="handlerSort">{{ $t('common.sort') }}</Button>
+              </template>
+              <SortBy v-if="isSort" :columns="headers" @getValue="handlerGetValue($event, 'sort')" style="margin: 5px;"></SortBy>
+              <Table ref="selection" :loading="dataLoading" size="small" :columns="headers" :data="columns"></Table>
               <div v-if="!dataLoading" style="text-align: center; margin: 5px 0;">
                 <Space>
-                  <Button :disabled="page === 0" size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
+                  <Button :disabled="currentPage === 0" size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
                   <InputNumber v-model="currentPage" size="small"/>
-                  <Button size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
+                  <Button :disabled="columns.length < configure.limit" size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
                 </Space>
               </div>
             </Card>
@@ -65,18 +65,24 @@ import {SourceService} from "@/services/SourceService";
 import {toNumber} from "lodash";
 import {SourceModel} from "@/model/SourceModel";
 import MangerService from "@/services/source/MangerService";
+import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
+import SortBy from "@/views/pages/admin/source/components/sort/SortBy.vue";
+import {Sql} from "@/model/sql/Sql";
 
 export default defineComponent({
   name: "SourceManager",
+  components: {SortBy, SourceNotSupported},
   data()
   {
     return {
+      templateArray: ['getAllDatabase', 'getAllTablesFromDatabase', 'getAllColumnsFromDatabaseAndTable'],
       sourceId: 0,
       loading: false,
       tableLoading: false,
       dataLoading: false,
       isSupported: false,
       isShowData: false,
+      isSort: false,
       data: null as SourceModel,
       currentDatabase: null,
       currentTable: null,
@@ -84,15 +90,15 @@ export default defineComponent({
       currentPage: 0,
       databaseArray: [],
       dataTreeArray: [],
-      size: 10,
-      page: 0,
+      configure: Sql,
       headers: [],
       columns: []
     }
   },
   created()
   {
-    this.handlerInitialize()
+    this.configure = new Sql();
+    this.handlerInitialize();
   },
   methods: {
     handlerInitialize()
@@ -121,6 +127,9 @@ export default defineComponent({
             response.data.columns.forEach(column => {
               this.databaseArray.push(column[header]);
             });
+          }
+          else {
+            this.isSupported = false;
           }
         });
     },
@@ -183,50 +192,70 @@ export default defineComponent({
         if (data.level === 'table') {
           this.currentTable = data.title;
         }
-        MangerService.getData(this.sourceId, this.currentDatabase, this.currentTable, this.page, this.size)
-          .then(response => {
-            if (response.status) {
-              if (this.columns.length > 0) {
-                this.headers.push({
-                  type: 'selection',
-                  width: 60,
-                  align: 'center'
-                });
-              }
-              response.data.headers.forEach(header => {
-                this.headers.push(
-                  {
-                    title: header,
-                    key: header,
-                    width: 200,
-                    ellipsis: true,
-                    tooltip: true
-                  }
-                );
-              });
-              this.columns = response.data.columns;
-            }
-            else {
-              this.$Message.error(response.message);
-            }
-          })
-          .finally(() => {
-            this.tableLoading = false;
-            this.dataLoading = false;
-          });
+        this.configure.database = this.currentDatabase;
+        this.configure.table = this.currentTable;
+        this.handlerExecute();
       }
     },
     handlerChangePage(nexted: boolean)
     {
       if (nexted) {
         this.currentPage += 1;
-        this.page = this.currentPage * this.size;
+        this.configure.offset = this.currentPage * this.configure.limit;
       }
       else {
         this.currentPage -= 1;
-        this.page = this.currentPage * this.size;
+        this.configure.offset = this.currentPage * this.configure.limit;
       }
       this.handlerSelectNode(this.currentItem);
+    },
+    handlerExecute()
+    {
+      this.headers = [];
+      this.columns = [];
+      this.dataLoading = true;
+      MangerService.getDataByConfigure(this.sourceId, this.configure)
+        .then(response => {
+          if (response.status) {
+            if (this.columns.length > 0) {
+              this.headers.push({
+                type: 'selection',
+                width: 60,
+                align: 'center'
+              });
+            }
+            response.data.headers.forEach(header => {
+              this.headers.push(
+                {
+                  title: header,
+                  key: header,
+                  width: 200,
+                  ellipsis: true,
+                  tooltip: true
+                }
+              );
+            });
+            this.columns = response.data.columns;
+          }
+          else {
+            this.$Message.error(response.message);
+          }
+        })
+        .finally(() => {
+          this.tableLoading = false;
+          this.dataLoading = false;
+        });
+    },
+    handlerSort()
+    {
+      this.isSort = !this.isSort;
+    },
+    handlerGetValue(configure: any, type: string)
+    {
+      if (type === 'sort') {
+        this.configure.sort = configure;
+      }
+      this.handlerExecute();
     }
   }
 });

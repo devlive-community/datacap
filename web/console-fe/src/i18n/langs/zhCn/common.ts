@@ -67,5 +67,9 @@ export default {
   batch: '批量',
   import: '导入',
   url: '网址',
-  stop: '停止'
+  stop: '停止',
+  sort: '排序',
+  asc: '正序',
+  desc: '倒序',
+  apply: '应用'
 }

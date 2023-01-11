@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Affix :offset-bottom="20">
+    <Affix :offset-bottom="20" style="width: 200px; float: right;">
       <Dropdown class="datacap-affix">
         <Button type="primary" shape="circle" icon="ios-apps"></Button>
         <template #list>
