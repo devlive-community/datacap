@@ -134,6 +134,10 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import("../views/pages/profile/ProfilePublic.vue")
           },
           {
+            path: 'log',
+            component: () => import("../views/pages/profile/ProfileLog.vue")
+          },
+          {
             path: 'account',
             component: () => import("../views/pages/profile/ProfileAccount.vue")
           }

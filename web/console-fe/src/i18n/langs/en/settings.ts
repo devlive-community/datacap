@@ -7,5 +7,6 @@ export default {
   confirmPassword: 'Confirm password',
   accountSetting: 'Account Setting',
   changeUsername: 'Change the username',
-  newUsername: 'New username'
+  newUsername: 'New username',
+  log: 'Login Log'
 }

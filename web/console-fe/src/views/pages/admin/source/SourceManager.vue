@@ -46,7 +46,7 @@
               <div v-if="!dataLoading" style="text-align: center; margin: 5px 0;">
                 <Space>
                   <Button :disabled="currentPage === 0" size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
-                  <InputNumber v-model="currentPage" size="small"/>
+                  <InputNumber v-model="currentPage" min="0" size="small"/>
                   <Button :disabled="columns.length < configure.limit" size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
                 </Space>
               </div>
@@ -189,6 +189,12 @@ export default defineComponent({
         this.isShowData = true;
         this.dataLoading = true;
         const data = item[0];
+        // Reinitialize when switching to a new table
+        if (this.currentTable !== data.title) {
+          this.configure = new Sql();
+          this.isSort = false;
+          this.currentPage = 0;
+        }
         if (data.level === 'table') {
           this.currentTable = data.title;
         }
@@ -217,19 +223,12 @@ export default defineComponent({
       MangerService.getDataByConfigure(this.sourceId, this.configure)
         .then(response => {
           if (response.status) {
-            if (this.columns.length > 0) {
-              this.headers.push({
-                type: 'selection',
-                width: 60,
-                align: 'center'
-              });
-            }
             response.data.headers.forEach(header => {
               this.headers.push(
                 {
                   title: header,
                   key: header,
-                  width: 200,
+                  'minWidth': 200,
                   ellipsis: true,
                   tooltip: true
                 }

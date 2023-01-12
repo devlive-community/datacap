@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.service.impl;
 
+import io.edurt.datacap.server.audit.AuditUserLog;
 import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
 import io.edurt.datacap.server.common.JwtResponse;
@@ -70,6 +71,7 @@ public class UserServiceImpl
         return Response.success(userRepository.save(user));
     }
 
+    @AuditUserLog
     @Override
     public Response<JwtResponse> authenticate(UserEntity configure)
     {

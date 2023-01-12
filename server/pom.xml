@@ -86,6 +86,11 @@
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>1.21</version>
+        </dependency>
+        <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-spi</artifactId>
         </dependency>

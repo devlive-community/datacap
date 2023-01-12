@@ -71,5 +71,10 @@ export default {
   sort: 'Sort',
   asc: 'Ascending',
   desc: 'Descending',
-  apply: 'Apply'
+  apply: 'Apply',
+  device: 'Device',
+  client: 'Client',
+  ip: 'IP',
+  ua: 'User Agent',
+  loginTime: 'Login Time'
 }

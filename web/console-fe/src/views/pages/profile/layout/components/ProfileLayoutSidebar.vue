@@ -16,6 +16,10 @@
           <Icon type="ios-cog"/>
           {{ $t('setting.profile') }}
         </MenuItem>
+        <MenuItem name="setting_log" to="/profile/log">
+          <Icon type="md-egg"/>
+          {{ $t('setting.log') }}
+        </MenuItem>
         <MenuItem name="security" to="/profile/account">
           <Icon type="ios-contact"/>
           {{ $t('setting.accountSetting') }}
