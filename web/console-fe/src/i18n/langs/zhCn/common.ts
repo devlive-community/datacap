@@ -71,5 +71,10 @@ export default {
   sort: '排序',
   asc: '正序',
   desc: '倒序',
-  apply: '应用'
+  apply: '应用',
+  device: '设备',
+  client: '客户端',
+  ip: 'IP',
+  ua: '用户代理',
+  loginTime: '登录时间'
 }
