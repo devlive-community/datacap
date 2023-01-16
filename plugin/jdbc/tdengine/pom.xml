@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (TDengine)</name>
 
     <properties>
-        <tdengine.version>3.0.0</tdengine.version>
+        <tdengine.version>3.0.3</tdengine.version>
         <plugin.name>jdbc-tdengine</plugin.name>
     </properties>
 
