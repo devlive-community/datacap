@@ -7,6 +7,8 @@ public enum ServiceState
     PLUGIN_NOT_FOUND(2001, "Plugin dose not exists"),
     PLUGIN_EXECUTE_FAILED(2002, "Plugin execute failed"),
     PLUGIN_ONLY_ONE_TEMPLATE(2003, "Plug-ins support only templates with the same name"),
+    PLUGIN_CONFIGURE_MISMATCH(2004, "The plug-in passed parameters do not match the system configuration"),
+    PLUGIN_CONFIGURE_REQUIRED(2005, "Ensure that all required fields exist"),
     REQUEST_VALID_ARGUMENT(3001, "The related parameters cannot be verified"),
     REQUEST_VALID_ARGUMENT_FORMAT(3002, "Unable to format related parameters"),
     REQUEST_VALID_ARGUMENT_LAYOUT(3003, "Related parameters cannot be resolved"),

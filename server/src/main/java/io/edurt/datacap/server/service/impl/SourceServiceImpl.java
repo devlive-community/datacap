@@ -5,6 +5,8 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import io.edurt.datacap.server.adapter.PageRequestAdapter;
 import io.edurt.datacap.server.body.SharedSourceBody;
+import io.edurt.datacap.server.body.SourceBody;
+import io.edurt.datacap.server.common.IConfigureCommon;
 import io.edurt.datacap.server.common.JSON;
 import io.edurt.datacap.server.common.PluginCommon;
 import io.edurt.datacap.server.common.Response;
@@ -13,6 +15,8 @@ import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 import io.edurt.datacap.server.entity.UserEntity;
+import io.edurt.datacap.server.plugin.configure.IConfigure;
+import io.edurt.datacap.server.plugin.configure.IConfigureField;
 import io.edurt.datacap.server.repository.SourceRepository;
 import io.edurt.datacap.server.repository.UserRepository;
 import io.edurt.datacap.server.security.UserDetailsService;
@@ -22,6 +26,7 @@ import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +36,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 public class SourceServiceImpl
@@ -39,12 +45,14 @@ public class SourceServiceImpl
     private final SourceRepository sourceRepository;
     private final UserRepository userRepository;
     private final Injector injector;
+    private final Environment environment;
 
-    public SourceServiceImpl(SourceRepository sourceRepository, UserRepository userRepository, Injector injector)
+    public SourceServiceImpl(SourceRepository sourceRepository, UserRepository userRepository, Injector injector, Environment environment)
     {
         this.sourceRepository = sourceRepository;
         this.userRepository = userRepository;
         this.injector = injector;
+        this.environment = environment;
     }
 
     @Override
@@ -70,6 +78,7 @@ public class SourceServiceImpl
         return Response.success(id);
     }
 
+    @Deprecated
     @Override
     public Response<Object> testConnection(SourceEntity configure)
     {
@@ -115,6 +124,7 @@ public class SourceServiceImpl
                     entity.setName(plugin.name());
                     entity.setDescription(plugin.description());
                     entity.setType(plugin.type().name());
+                    entity.setConfigure(PluginCommon.loadConfigure(plugin.type().name(), plugin.name(), plugin.name(), environment));
                     List<PluginEntity> plugins = pluginMap.get(plugin.type().name());
                     if (ObjectUtils.isEmpty(plugins)) {
                         plugins = new ArrayList<>();
@@ -148,5 +158,38 @@ public class SourceServiceImpl
         source.setUser(userOptional.get());
         source.setPublish(configure.getPublish());
         return Response.success(this.sourceRepository.save(source));
+    }
+
+    @Override
+    public Response<Object> testConnectionV2(SourceBody configure)
+    {
+        Optional<Plugin> pluginOptional = PluginCommon.getPluginByNameAndType(this.injector, configure.getName(), configure.getType());
+        if (!pluginOptional.isPresent()) {
+            return Response.failure(ServiceState.PLUGIN_NOT_FOUND);
+        }
+
+        // Check configure
+        IConfigure iConfigure = PluginCommon.loadConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
+        if (ObjectUtils.isEmpty(iConfigure) || iConfigure.getConfigures().size() != configure.getConfigure().getConfigures().size()) {
+            return Response.failure(ServiceState.PLUGIN_CONFIGURE_MISMATCH);
+        }
+
+        // Filter required
+        List<IConfigureField> requiredMismatchConfigures = configure.getConfigure().getConfigures().stream().filter(v -> v.isRequired())
+                .filter(v -> ObjectUtils.isEmpty(v.getValue()))
+                .collect(Collectors.toList());
+        if (requiredMismatchConfigures.size() > 0) {
+            return Response.failure(ServiceState.PLUGIN_CONFIGURE_REQUIRED, IConfigureCommon.preparedMessage(requiredMismatchConfigures));
+        }
+
+        Plugin plugin = pluginOptional.get();
+        Configure _configure = IConfigureCommon.preparedConfigure(configure.getConfigure().getConfigures());
+        plugin.connect(_configure);
+        io.edurt.datacap.spi.model.Response response = plugin.execute(plugin.validator());
+        plugin.destroy();
+        if (response.getIsSuccessful()) {
+            return Response.success(response);
+        }
+        return Response.failure(ServiceState.PLUGIN_EXECUTE_FAILED, response.getMessage());
     }
 }
