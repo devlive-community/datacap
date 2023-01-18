@@ -1,6 +1,7 @@
 package io.edurt.datacap.server.service;
 
 import io.edurt.datacap.server.body.SharedSourceBody;
+import io.edurt.datacap.server.body.SourceBody;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.PluginEntity;
@@ -17,6 +18,7 @@ public interface SourceService
 
     Response<Long> delete(Long id);
 
+    @Deprecated
     Response<Object> testConnection(SourceEntity configure);
 
     Response<SourceEntity> getById(Long id);
@@ -26,4 +28,6 @@ public interface SourceService
     Response<Long> count();
 
     Response<Object> shared(SharedSourceBody configure);
+
+    Response<Object> testConnectionV2(SourceBody configure);
 }

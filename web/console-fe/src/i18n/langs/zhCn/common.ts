@@ -76,5 +76,6 @@ export default {
   client: '客户端',
   ip: 'IP',
   ua: '用户代理',
-  loginTime: '登录时间'
+  loginTime: '登录时间',
+  ssl: 'SSL'
 }

@@ -76,5 +76,6 @@ export default {
   client: 'Client',
   ip: 'IP',
   ua: 'User Agent',
-  loginTime: 'Login Time'
+  loginTime: 'Login Time',
+  ssl: 'SSL'
 }

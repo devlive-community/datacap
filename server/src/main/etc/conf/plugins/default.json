@@ -1,0 +1,21 @@
+{
+  "name": "Default",
+  "supportTime": "2023-01-16",
+  "configures": [
+    {
+      "field": "host",
+      "type": "String",
+      "required": true,
+      "value": "",
+      "message": "host is a required field, please be sure to enter"
+    },
+    {
+      "field": "port",
+      "type": "Number",
+      "required": true,
+      "min": 1,
+      "max": 65535,
+      "message": "host is a required field, please be sure to enter"
+    }
+  ]
+}

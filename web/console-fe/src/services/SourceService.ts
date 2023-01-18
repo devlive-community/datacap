@@ -5,6 +5,7 @@ import {SharedSource} from "@/model/SharedSource";
 import {isEmpty} from "lodash";
 
 const baseUrl = "/api/v1/source";
+const baseUrlV2 = "/api/v2/source";
 
 export class SourceService
 {
@@ -29,10 +30,9 @@ export class SourceService
     return new HttpCommon().delete(baseUrl + '/' + id);
   }
 
-  testConnection(configure: SourceModel): Promise<ResponseModel>
+  testConnection(configure): Promise<ResponseModel>
   {
-    configure.protocol = isEmpty(configure.protocol) ? 'HTTP' : configure.protocol;
-    return new HttpCommon().post(baseUrl + '/test', configure);
+    return new HttpCommon().post(baseUrlV2 + '/test', configure);
   }
 
   getById(id: number): Promise<ResponseModel>

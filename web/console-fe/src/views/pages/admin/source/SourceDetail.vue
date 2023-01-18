@@ -31,106 +31,70 @@
         <Col :span="3"/>
       </Row>
       <Form :model="formState" :label-width="80">
-        <Tabs v-model="activeKey">
-          <TabPane :label="$t('common.source')" name="type" icon="md-apps">
-            <RadioGroup v-if="plugins" v-model="formState.type" type="button">
-              <div v-for="key in Object.keys(plugins)" v-bind:key="key">
-                <Divider orientation="left">{{ key }} ({{ plugins[key].length }})</Divider>
-                <Space wrap :size="[8, 16]">
-                  <Tooltip v-for="plugin in plugins[key]" :content="plugin.description" transfer v-bind:key="plugin.name">
-                    <Radio :label="plugin.name + ' ' + plugin.type">
-                      <Avatar :src="'/static/images/plugin/' + plugin.name + '.png'" size="small" />
-                      <span style="margin-left: 2px;">{{ plugin.name }}</span>
-                    </Radio>
-                  </Tooltip>
-                </Space>
-              </div>
-            </RadioGroup>
-          </TabPane>
-          <TabPane :disabled="!formState.type" name="configure" :label="$t('common.configure')" icon="md-cog">
-            <div style="margin-top: 10px;">
+        <Tabs v-model="activeKey" :animated="false" @update:modelValue="handlerFilterConfigure($event)">
+          <TabPane :label="$t('common.' + type)" v-for="type in pluginTabs" :name="type" :disabled="!formState.type" icon="md-apps">
+            <div v-if="type === 'source'">
+              <RadioGroup v-if="plugins" v-model="formState.type" type="button" @on-change="handlerChangePlugin($event)">
+                <div v-for="key in Object.keys(plugins)" v-bind:key="key">
+                  <Divider orientation="left">{{ key }} ({{ plugins[key].length }})</Divider>
+                  <Space wrap :size="[8, 16]">
+                    <Tooltip v-for="plugin in plugins[key]" :content="plugin.description" transfer v-bind:key="plugin.name">
+                      <Radio :label="plugin.name + ' ' + plugin.type">
+                        <Avatar :src="'/static/images/plugin/' + plugin.name + '.png'" size="small"/>
+                        <span style="margin-left: 2px;">{{ plugin.name }}</span>
+                      </Radio>
+                    </Tooltip>
+                  </Space>
+                </div>
+              </RadioGroup>
+            </div>
+            <div v-else style="margin-top: 10px;">
               <Row>
                 <Col :span="5"/>
                 <Col :span="14">
-                  <FormItem :label="$t('common.name')" prop="name">
-                    <Input type="text" v-model="formState.name"/>
-                  </FormItem>
-                  <FormItem :label="$t('common.host')" prop="host">
-                    <Input type="text" v-model="formState.host"/>
-                  </FormItem>
-                  <FormItem :label="$t('common.port')" prop="port">
-                    <InputNumber :max="65535" :min="1" v-model="formState.port"/>
+                  <FormItem v-for="configure in pluginTabConfigure" :required="configure.required" :prop="configure.field">
+                    <template #label>
+                      <span v-if="configure.field !== 'configures'">{{ $t('common.' + configure.field) }}</span>
+                    </template>
+                    <Input v-if="configure.type === 'String'" type="text" v-model="configure.value"/>
+                    <InputNumber v-else-if="configure.type === 'Number'" :max="configure.max" :min="configure.min" v-model="configure.value"/>
+                    <Switch v-else-if="configure.type === 'Boolean'" v-model="configure.value"/>
+                    <div v-else>
+                      <div style="margin-top: 10px;">
+                        <FormItem style="margin-bottom: 5px;">
+                          <Button size="small" type="primary" shape="circle" icon="md-add" @click="handlerPlusConfigure(configure.value)"/>
+                        </FormItem>
+                        <FormItem v-for="(element, index) in configure.value" :key="index" style="margin-bottom: 5px;">
+                          <Row :gutter="12">
+                            <Col :span="10">
+                              <FormItem>
+                                <Input v-model="element.field">
+                                  <template #prepend>
+                                    <span>{{ $t('common.field') }}</span>
+                                  </template>
+                                </Input>
+                              </FormItem>
+                            </Col>
+                            <Col :span="10">
+                              <FormItem>
+                                <Input v-model="element.value">
+                                  <template #prepend>
+                                    <span>{{ $t('common.value') }}</span>
+                                  </template>
+                                </Input>
+                              </FormItem>
+                            </Col>
+                            <Col :span="2">
+                              <Button size="small" type="error" shape="circle" icon="md-remove" @click="handlerMinusConfigure(element, configure.value)"/>
+                            </Col>
+                          </Row>
+                        </FormItem>
+                      </div>
+                    </div>
                   </FormItem>
                 </Col>
                 <Col :span="5"/>
               </Row>
-            </div>
-          </TabPane>
-          <TabPane :disabled="!formState.type" name="authorization" :label="$t('common.authorization')" icon="md-lock">
-            <div style="margin-top: 10px;">
-              <Row>
-                <Col :span="5"/>
-                <Col :span="14">
-                  <FormItem :label="$t('common.username')" prop="username">
-                    <Input type="text" v-model="formState.username"/>
-                  </FormItem>
-                  <FormItem :label="$t('common.password')" prop="password">
-                    <Input type="password" v-model="formState.password"/>
-                  </FormItem>
-                  <FormItem label="SSL" prop="ssl">
-                    <Switch v-model="formState.ssl"/>
-                  </FormItem>
-                </Col>
-                <Col :span="5"/>
-              </Row>
-            </div>
-          </TabPane>
-          <TabPane :disabled="!formState.type" name="advanced" :label="$t('common.advanced')" icon="md-archive">
-            <div style="margin-top: 10px;">
-              <Row>
-                <Col :span="5"/>
-                <Col :span="14">
-                  <FormItem :label="$t('common.catalog')" prop="catalog">
-                    <Input type="text" v-model="formState.catalog"/>
-                  </FormItem>
-                  <FormItem :label="$t('common.database')" prop="database">
-                    <Input type="text" v-model="formState.database"/>
-                  </FormItem>
-                </Col>
-                <Col :span="5"/>
-              </Row>
-            </div>
-          </TabPane>
-          <TabPane :disabled="!formState.type" name="custom" :label="$t('common.custom')" icon="md-hammer">
-            <div style="margin-top: 10px;">
-              <FormItem>
-                <Button size="small" type="primary" shape="circle" icon="md-add" @click="handlerPlusConfigure()"/>
-              </FormItem>
-              <FormItem v-for="(element, index) in configure" :key="index" style="margin-bottom: 5px;">
-                <Row :gutter="12">
-                  <Col :span="10">
-                    <FormItem>
-                      <Input v-model="element.field">
-                        <template #prepend>
-                          <span>{{ $t('common.field') }}</span>
-                        </template>
-                      </Input>
-                    </FormItem>
-                  </Col>
-                  <Col :span="10">
-                    <FormItem>
-                      <Input v-model="element.value">
-                        <template #prepend>
-                          <span>{{ $t('common.value') }}</span>
-                        </template>
-                      </Input>
-                    </FormItem>
-                  </Col>
-                  <Col :span="2">
-                    <Button size="small" type="error" shape="circle" icon="md-remove" @click="handlerMinusConfigure(element)"/>
-                  </Col>
-                </Row>
-              </FormItem>
             </div>
           </TabPane>
         </Tabs>
@@ -182,16 +146,8 @@ export default defineComponent({
       labelCol: {span: 6},
       wrapperCol: {span: 12},
     };
-    const validateMessages = {
-      required: '${label} is required!',
-      number: {
-        range: '${label} must be between ${min} and ${max}',
-      },
-    };
-
     return {
-      activeKey: ref('type'),
-      validateMessages,
+      activeKey: ref('source'),
       layout
     };
   },
@@ -205,7 +161,10 @@ export default defineComponent({
       plugins: null,
       testInfo: {} as TestInfo,
       connectionLoading: false,
-      configure: [] as Configure[]
+      pluginTabs: ['source'],
+      pluginConfigure: null,
+      pluginTabConfigure: null,
+      applyPlugin: null
     }
   },
   created()
@@ -270,14 +229,14 @@ export default defineComponent({
     },
     handlerTest()
     {
-      this.connectionLoading = true;
-      this.formState.configures = Arrays.arrayToObject(this.configure);
-      const applyConfigure = clone(this.formState);
       const temp = clone(this.formState.type).split(' ');
-      applyConfigure.type = temp[0];
-      applyConfigure.protocol = temp[1];
+      const configure = {
+        type: temp[1],
+        name: temp[0],
+        configure: this.applyPlugin
+      };
       new SourceService()
-        .testConnection(applyConfigure)
+        .testConnection(configure)
         .then((response) => {
           this.testInfo.percent = 100;
           if (response.status) {
@@ -293,17 +252,38 @@ export default defineComponent({
           this.connectionLoading = false;
         });
     },
-    handlerPlusConfigure()
+    handlerPlusConfigure(array: Array<Configure>)
     {
-      const configure: Configure = {field: '', value: ''};
-      this.configure.push(configure);
-    },
-    handlerMinusConfigure(configure: Configure)
-    {
-      const index = this.configure.indexOf(configure);
-      if (index !== -1) {
-        this.configure.splice(index, 1);
+      if (array === null) {
+        array = new Array<Configure>();
       }
+      const configure: Configure = {field: '', value: ''};
+      array.push(configure);
+    },
+    handlerMinusConfigure(configure: Configure, array: Array<Configure>)
+    {
+      const index = array.indexOf(configure);
+      if (index !== -1) {
+        array.splice(index, 1);
+      }
+    },
+    handlerChangePlugin(value)
+    {
+      const pluginAndType = value.split(' ');
+      const applyPlugins: [] = this.plugins[pluginAndType[1]];
+      const applyPlugin = applyPlugins.filter(plugin => plugin['name'] === pluginAndType[0])[0];
+      this.applyPlugin = applyPlugin['configure'];
+      this.pluginConfigure = applyPlugin['configure']['configures'];
+      // Clear
+      this.pluginTabs = ['source'];
+      this.pluginTabs = [...this.pluginTabs, ...Array.from(new Set(this.pluginConfigure.map(v => v.group)))];
+    },
+    handlerFilterConfigure(group: string)
+    {
+      if (group === 'source') {
+        return;
+      }
+      this.pluginTabConfigure = this.pluginConfigure.filter(field => field.group === group);
     }
   },
   computed: {
