@@ -32,7 +32,7 @@
       </Row>
       <Form :model="formState" :label-width="80">
         <Tabs v-model="activeKey" :animated="false" @update:modelValue="handlerFilterConfigure($event)">
-          <TabPane :label="$t('common.' + type)" v-for="type in pluginTabs" :name="type" :disabled="!formState.type" icon="md-apps">
+          <TabPane :label="$t('common.' + type)" v-for="type in pluginTabs" :name="type" v-bind:key="type" :disabled="!formState.type" icon="md-apps">
             <div v-if="type === 'source'">
               <RadioGroup v-if="plugins" v-model="formState.type" type="button" @on-change="handlerChangePlugin($event)">
                 <div v-for="key in Object.keys(plugins)" v-bind:key="key">
@@ -52,7 +52,7 @@
               <Row>
                 <Col :span="5"/>
                 <Col :span="14">
-                  <FormItem v-for="configure in pluginTabConfigure" :required="configure.required" :prop="configure.field">
+                  <FormItem v-for="configure in pluginTabConfigure" :required="configure.required" v-bind:key="configure.field" :prop="configure.field">
                     <template #label>
                       <span v-if="configure.field !== 'configures'">{{ $t('common.' + configure.field) }}</span>
                     </template>
@@ -119,8 +119,8 @@ import {SourceService} from "@/services/SourceService";
 import {emptySource} from "@/views/pages/admin/source/SourceGenerate";
 import {defineComponent, reactive, ref} from "vue";
 import {Configure} from "@/model/Configure";
-import {Arrays} from "@/common/Arrays";
 import {clone} from 'lodash'
+import SourceV2Service from "@/services/SourceV2Service";
 
 interface TestInfo
 {
@@ -183,20 +183,16 @@ export default defineComponent({
     handlerInitialize()
     {
       if (this.id > 0) {
-        new SourceService().getById(this.id)
+        SourceV2Service.getById(this.id)
           .then(response => {
             if (response.status) {
               this.formState = reactive(response.data);
               this.formState.type = this.formState.type + ' ' + this.formState.protocol;
-              if (response.data.configures) {
-                Object.keys(response.data.configures).forEach((value) => {
-                  const configure: Configure = {
-                    field: value,
-                    value: response.data.configures[value]
-                  };
-                  this.configure.push(configure);
-                });
-              }
+              this.applyPlugin = response.data['schema'];
+              this.pluginConfigure = response.data['schema']['configures'];
+              // Clear
+              this.pluginTabs = ['source'];
+              this.pluginTabs = [...this.pluginTabs, ...Array.from(new Set(this.pluginConfigure.map(v => v.group)))];
             }
           });
       }
@@ -213,13 +209,14 @@ export default defineComponent({
     },
     handlerSave()
     {
-      this.formState.configures = Arrays.arrayToObject(this.configure);
-      const applyConfigure = clone(this.formState);
       const temp = clone(this.formState.type).split(' ');
-      applyConfigure.type = temp[0];
-      applyConfigure.protocol = temp[1];
-      new SourceService()
-        .saveAndUpdate(applyConfigure, this.isUpdate)
+      const configure = {
+        id: this.id,
+        type: temp[1],
+        name: temp[0],
+        configure: this.applyPlugin
+      };
+      SourceV2Service.saveAndUpdate(configure, this.isUpdate)
         .then((response) => {
           if (response.status) {
             this.$Message.success("Create successful");

@@ -55,6 +55,7 @@ public class SourceServiceImpl
         this.environment = environment;
     }
 
+    @Deprecated
     @Override
     public Response<SourceEntity> saveOrUpdate(SourceEntity configure)
     {
@@ -117,21 +118,19 @@ public class SourceServiceImpl
     public Response<Map<String, List<PluginEntity>>> getPlugins()
     {
         Map<String, List<PluginEntity>> pluginMap = new ConcurrentHashMap<>();
-        this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}))
-                .stream()
-                .forEach(plugin -> {
-                    PluginEntity entity = new PluginEntity();
-                    entity.setName(plugin.name());
-                    entity.setDescription(plugin.description());
-                    entity.setType(plugin.type().name());
-                    entity.setConfigure(PluginCommon.loadConfigure(plugin.type().name(), plugin.name(), plugin.name(), environment));
-                    List<PluginEntity> plugins = pluginMap.get(plugin.type().name());
-                    if (ObjectUtils.isEmpty(plugins)) {
-                        plugins = new ArrayList<>();
-                    }
-                    plugins.add(entity);
-                    pluginMap.put(plugin.type().name(), plugins);
-                });
+        this.injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {})).stream().forEach(plugin -> {
+            PluginEntity entity = new PluginEntity();
+            entity.setName(plugin.name());
+            entity.setDescription(plugin.description());
+            entity.setType(plugin.type().name());
+            entity.setConfigure(PluginCommon.loadConfigure(plugin.type().name(), plugin.name(), plugin.name(), environment));
+            List<PluginEntity> plugins = pluginMap.get(plugin.type().name());
+            if (ObjectUtils.isEmpty(plugins)) {
+                plugins = new ArrayList<>();
+            }
+            plugins.add(entity);
+            pluginMap.put(plugin.type().name(), plugins);
+        });
         return Response.success(pluginMap);
     }
 
@@ -175,15 +174,15 @@ public class SourceServiceImpl
         }
 
         // Filter required
-        List<IConfigureField> requiredMismatchConfigures = configure.getConfigure().getConfigures().stream().filter(v -> v.isRequired())
-                .filter(v -> ObjectUtils.isEmpty(v.getValue()))
-                .collect(Collectors.toList());
+        List<IConfigureField> requiredMismatchConfigures = configure.getConfigure().getConfigures().stream().filter(v -> v.isRequired()).filter(v -> ObjectUtils.isEmpty(v.getValue())).collect(Collectors.toList());
         if (requiredMismatchConfigures.size() > 0) {
             return Response.failure(ServiceState.PLUGIN_CONFIGURE_REQUIRED, IConfigureCommon.preparedMessage(requiredMismatchConfigures));
         }
 
         Plugin plugin = pluginOptional.get();
-        Configure _configure = IConfigureCommon.preparedConfigure(configure.getConfigure().getConfigures());
+        // The filter parameter value is null data
+        List<IConfigureField> applyConfigures = IConfigureCommon.filterNotEmpty(configure.getConfigure().getConfigures());
+        Configure _configure = IConfigureCommon.preparedConfigure(applyConfigures);
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(plugin.validator());
         plugin.destroy();
@@ -191,5 +190,56 @@ public class SourceServiceImpl
             return Response.success(response);
         }
         return Response.failure(ServiceState.PLUGIN_EXECUTE_FAILED, response.getMessage());
+    }
+
+    @Override
+    public Response<SourceEntity> saveOrUpdateV2(SourceBody configure)
+    {
+        Optional<Plugin> pluginOptional = PluginCommon.getPluginByNameAndType(this.injector, configure.getName(), configure.getType());
+        if (!pluginOptional.isPresent()) {
+            return Response.failure(ServiceState.PLUGIN_NOT_FOUND);
+        }
+
+        // Check configure
+        IConfigure iConfigure = PluginCommon.loadConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
+        if (ObjectUtils.isEmpty(iConfigure) || iConfigure.getConfigures().size() != configure.getConfigure().getConfigures().size()) {
+            return Response.failure(ServiceState.PLUGIN_CONFIGURE_MISMATCH);
+        }
+
+        // Filter required
+        List<IConfigureField> requiredMismatchConfigures = configure.getConfigure().getConfigures().stream().filter(v -> v.isRequired()).filter(v -> ObjectUtils.isEmpty(v.getValue())).collect(Collectors.toList());
+        if (requiredMismatchConfigures.size() > 0) {
+            return Response.failure(ServiceState.PLUGIN_CONFIGURE_REQUIRED, IConfigureCommon.preparedMessage(requiredMismatchConfigures));
+        }
+
+        // The filter parameter value is null data
+        List<IConfigureField> applyConfigures = IConfigureCommon.filterNotEmpty(configure.getConfigure().getConfigures());
+        SourceEntity source = IConfigureCommon.preparedSourceEntity(applyConfigures);
+        source.setProtocol(configure.getType());
+        source.setType(configure.getName());
+        source.setUser(UserDetailsService.getUser());
+        if (ObjectUtils.isNotEmpty(configure.getId())) {
+            source.setId(configure.getId());
+        }
+        return Response.success(this.sourceRepository.save(source));
+    }
+
+    @Override
+    public Response<SourceEntity> getByIdV2(Long id)
+    {
+        Optional<SourceEntity> optionalSource = this.sourceRepository.findById(id);
+        if (!optionalSource.isPresent()) {
+            return Response.failure(ServiceState.SOURCE_NOT_FOUND);
+        }
+        SourceEntity entity = optionalSource.get();
+        SourceBody configure = new SourceBody();
+        configure.setId(id);
+        configure.setName(entity.getType());
+        configure.setType(entity.getProtocol());
+        // Load default configure
+        IConfigure iConfigure = PluginCommon.loadConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
+        configure.setConfigure(IConfigureCommon.preparedConfigure(iConfigure, entity));
+        entity.setSchema(iConfigure);
+        return Response.success(entity);
     }
 }

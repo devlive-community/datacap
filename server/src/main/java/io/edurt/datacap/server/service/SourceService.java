@@ -12,6 +12,7 @@ import java.util.Map;
 
 public interface SourceService
 {
+    @Deprecated
     Response<SourceEntity> saveOrUpdate(SourceEntity configure);
 
     Response<PageEntity<SourceEntity>> getAll(int offset, int limit);
@@ -30,4 +31,8 @@ public interface SourceService
     Response<Object> shared(SharedSourceBody configure);
 
     Response<Object> testConnectionV2(SourceBody configure);
+
+    Response<SourceEntity> saveOrUpdateV2(SourceBody configure);
+
+    Response<SourceEntity> getByIdV2(Long id);
 }

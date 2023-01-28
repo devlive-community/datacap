@@ -1,6 +1,6 @@
 {
-  "name": "ClickHouse",
-  "supportTime": "2022-09-22",
+  "name": "Presto",
+  "supportTime": "2022-09-25",
   "configures": [
     {
       "field": "name",
@@ -21,7 +21,7 @@
       "required": true,
       "min": 1,
       "max": 65535,
-      "value": 1,
+      "value": 8080,
       "message": "port is a required field, please be sure to enter"
     },
     {
@@ -38,6 +38,12 @@
       "field": "database",
       "type": "String",
       "message": "database is a required field, please be sure to enter",
+      "group": "advanced"
+    },
+    {
+      "field": "catalog",
+      "type": "String",
+      "value": "",
       "group": "advanced"
     },
     {

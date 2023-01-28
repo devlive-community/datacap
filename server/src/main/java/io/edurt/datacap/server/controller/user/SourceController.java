@@ -34,12 +34,14 @@ public class SourceController
         this.sourceService = sourceService;
     }
 
+    @Deprecated
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public Response<SourceEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceEntity configure)
     {
         return this.sourceService.saveOrUpdate(configure);
     }
 
+    @Deprecated
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public Response<SourceEntity> update(@RequestBody @Validated(ValidationGroup.Crud.Update.class) SourceEntity configure)
     {
