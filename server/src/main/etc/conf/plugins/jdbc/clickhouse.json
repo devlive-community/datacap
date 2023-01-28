@@ -21,7 +21,7 @@
       "required": true,
       "min": 1,
       "max": 65535,
-      "value": 1,
+      "value": 9000,
       "message": "port is a required field, please be sure to enter"
     },
     {
@@ -37,7 +37,6 @@
     {
       "field": "database",
       "type": "String",
-      "message": "database is a required field, please be sure to enter",
       "group": "advanced"
     },
     {

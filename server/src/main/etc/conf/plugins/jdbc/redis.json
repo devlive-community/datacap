@@ -1,6 +1,6 @@
 {
-  "name": "ClickHouse",
-  "supportTime": "2022-09-22",
+  "name": "Redis",
+  "supportTime": "2022-09-26",
   "configures": [
     {
       "field": "name",
@@ -21,30 +21,13 @@
       "required": true,
       "min": 1,
       "max": 65535,
-      "value": 1,
+      "value": 6379,
       "message": "port is a required field, please be sure to enter"
-    },
-    {
-      "field": "username",
-      "type": "String",
-      "group": "authorization"
     },
     {
       "field": "password",
       "type": "String",
       "group": "authorization"
-    },
-    {
-      "field": "database",
-      "type": "String",
-      "message": "database is a required field, please be sure to enter",
-      "group": "advanced"
-    },
-    {
-      "field": "configures",
-      "type": "Array",
-      "value": [],
-      "group": "custom"
     }
   ]
 }
