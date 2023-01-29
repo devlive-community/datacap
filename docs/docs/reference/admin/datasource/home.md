@@ -51,3 +51,28 @@ Click the small window that pops up and click `OK` to delete the data source
 ---
 
 Click the third button in `Action` of a data source in the list to jump to the data source management page.
+
+![img_6.png](img_6.png)
+
+The page is divided into left and right parts. The left side mainly displays the basic information of the data source, including:
+
+- Database list
+- Data table & data column tree list
+
+When we select a database and a data table on the left, the content on the right is displayed as follows
+
+![img_7.png](img_7.png)
+
+Under the data table in the right content, you can select the previous page and next page operations of the current database table data.
+
+On the top right we can use the sorter to reorder the data
+
+![img_8.png](img_8.png)
+
+When we activate the sorter, we click the `Apply` button to apply the current sorter by selecting the data column and sorting rules, and the data below will be changed according to the sorter
+
+!!! danger
+
+    If the current data source does not support the management function, the following page will be displayed
+
+![img_9.png](img_9.png)

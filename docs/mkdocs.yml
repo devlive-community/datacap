@@ -111,6 +111,7 @@ nav:
       - History: reference/get_started/history.md
       - User Manager:
           - DataSource: reference/admin/datasource/home.md
+          - Snippet: reference/admin/snippet/home.md
           - Functions: reference/admin/functions/home.md
           - Template:
               - Sql: reference/admin/template/sql/home.md
