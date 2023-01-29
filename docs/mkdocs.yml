@@ -110,8 +110,11 @@ nav:
       - Query: reference/get_started/query.md
       - History: reference/get_started/history.md
       - User Manager:
-          - DataSource: reference/admin/datasource/home.md
-          - Snippet: reference/admin/snippet/home.md
+          - Basic:
+            - DataSource: reference/admin/datasource/home.md
+            - Snippet: reference/admin/snippet/home.md
+          - Monitor:
+            - Processor: reference/admin/processor/home.md
           - Functions: reference/admin/functions/home.md
           - Template:
               - Sql: reference/admin/template/sql/home.md
