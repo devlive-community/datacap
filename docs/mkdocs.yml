@@ -115,9 +115,11 @@ nav:
             - Snippet: reference/admin/snippet/home.md
           - Monitor:
             - Processor: reference/admin/processor/home.md
-          - Functions: reference/admin/functions/home.md
+      - System Setting:
+          - Basic:
+            - Functions: reference/admin/functions/home.md
           - Template:
-              - Sql: reference/admin/template/sql/home.md
+            - Sql: reference/admin/template/sql/home.md
       - Connecting to Databases:
         - JDBC:
           - Snowflake: reference/plugin/jdbc/snowflake.md
