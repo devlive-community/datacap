@@ -1,6 +1,6 @@
 {
-  "name": "Default",
-  "supportTime": "2022-09-22",
+  "name": "ClickHouse",
+  "supportTime": "2023-01-29",
   "configures": [
     {
       "field": "name",
@@ -21,17 +21,19 @@
       "required": true,
       "min": 1,
       "max": 65535,
-      "value": 1,
+      "value": 80,
       "message": "port is a required field, please be sure to enter"
     },
     {
       "field": "username",
       "type": "String",
+      "required": true,
       "group": "authorization"
     },
     {
       "field": "password",
       "type": "String",
+      "required": true,
       "group": "authorization"
     },
     {

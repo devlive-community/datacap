@@ -37,6 +37,7 @@
                 <include>**/*.xml</include>
                 <include>**/*.properties</include>
                 <include>**/*.yml</include>
+                <include>**/*.json</include>
             </includes>
             <filtered>true</filtered>
         </fileSet>
