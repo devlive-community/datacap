@@ -109,7 +109,8 @@ nav:
       - Installation: reference/get_started/install.md
       - Query: reference/get_started/query.md
       - History: reference/get_started/history.md
-      - Admin:
+      - User Manager:
+          - DataSource: reference/admin/datasource/home.md
           - Functions: reference/admin/functions/home.md
           - Template:
               - Sql: reference/admin/template/sql/home.md
