@@ -49,6 +49,8 @@ extra:
       link: https://github.com/EdurtIO
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/qianmoQ/
+extra_css:
+  - stylesheets/extra.css
 markdown_extensions:
   - admonition
   - abbr
@@ -107,17 +109,30 @@ nav:
       - Installation: reference/get_started/install.md
       - Query: reference/get_started/query.md
       - History: reference/get_started/history.md
-      - Admin:
-          - Functions: reference/admin/functions/home.md
+      - User Manager:
+          - Basic:
+            - DataSource: reference/admin/datasource/home.md
+            - Snippet: reference/admin/snippet/home.md
+          - Monitor:
+            - Processor: reference/admin/processor/home.md
+      - System Setting:
+          - Basic:
+            - Functions: reference/admin/functions/home.md
           - Template:
-              - Sql: reference/admin/template/sql/home.md
+            - Sql: reference/admin/template/sql/home.md
       - Connecting to Databases:
-        - 1.2.0:
-          - CrateDB: reference/plugin/v120/cratedb.md
-          - TDengine: reference/plugin/v120/tdengine.md
-          - Impala: reference/plugin/v120/impala.md
+        - JDBC:
+          - Snowflake: reference/plugin/jdbc/snowflake.md
+          - MySQL: reference/plugin/jdbc/mysql.md
+          - ClickHouse: reference/plugin/jdbc/clickhouse.md
+        - Native:
+          - Redis: reference/plugin/native/redis.md
+        - Http:
+          - ClickHouse: reference/plugin/http/clickhouse.md
+        - CrateDB: reference/plugin/v120/cratedb.md
+        - TDengine: reference/plugin/v120/tdengine.md
+        - Impala: reference/plugin/v120/impala.md
         - MySQL: reference/database/mysql.md
-        - ClickHouse: reference/database/clickhouse.md
         - Kylin: reference/database/kylin.md
         - Oracle: reference/database/oracle.md
       - Update:

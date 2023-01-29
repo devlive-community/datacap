@@ -1,35 +1,35 @@
-当我们第一次使用系统或需要添加新的数据源时，点击顶部菜单 `Admin` -> `History` 此时会跳转到查询历史管理页面，它的布局如下
+When we use the system for the first time or need to add a new data source, click the top menu `Admin` -> `History` and it will jump to the query history management page, its layout is as follows
 
 ![img.png](../../assets/admin/history/img.png)
 
-默认进入页面后，显示的是添加过的所有数据源查询历史列表。
+After entering the page by default, the query history list of all added data sources is displayed.
 
-|               |        |
-|---------------|--------|
-| `No`          | 数据编号   |
-| `Plugin`      | 调用的数据源 |
-| `Create Time` | 创建时间   |
-| `End Time`    | 结束时间   |
-| `Elapsed`     | 总耗时    |
-| `State`       | 状态     |
-| `Action`      | 附加操作   |
+|               |                         |
+|---------------|-------------------------|
+| `No`          | Data number             |
+| `Plugin`      | The data source to call |
+| `Create Time` | Creation time           |
+| `End Time`    | End Time                |
+| `Elapsed`     | Total time spent        |
+| `State`       | Status                  |
+| `Action`      | Additional operation    |
 
-#### 附加操作
+#### Additional operation
 
-目前附加操作包含两个:
+Currently there are two additional operations:
 
-##### 查看执行 SQL
+##### View execution SQL
 
-点击 :material-eye: 按钮，将会弹出以下窗口
+Click :material-eye: button，the following window will pop up
 
 ![img.png](../../assets/admin/history/img_1.png)
 
-窗口内显示为本次查询里查询的具体SQL语句
+The specific SQL statement queried in this query is displayed in the window
 
-##### 查看执行错误
+##### View execution errors
 
-点击 :warning: 按钮将会弹出以下窗口
+click :warning: button will pop up the following window
 
 ![img.png](../../assets/admin/history/img_2.png)
 
-窗口内展示本次查询具体错误信息，它只有本次查询失败情况下可用
+The specific error information of this query is displayed in the window, which is only available when this query fails

@@ -1,61 +1,61 @@
-DataCap是用于数据转换、集成和可视化软件。
+DataCap is a software for data transformation, integration and visualization.
 
-#### 系统要求
+#### System Requirements
 
 ---
 
 !!! warning
 
-    软件的二进制包基于以下系统进行编译并测试通过,尚未在其他版本上测试,理论上是支持的.
+    The binary package of the software is compiled and tested based on the following systems. It has not been tested on other versions, and it is theoretically supported.
 
-    如有不支持的系统使用源码编译方式,主动编译二进制文件.
+    If there is an unsupported system, use the source code compilation method to actively compile the binary file.
 
-| 系统     | 版本        |
+| System | Version   |
 |--------|-----------|
 | JDK    | `>=1.8`   |
 | MySQL  | `>=5.6.x` |
 
-#### 二进制安装
+#### Binary install
 
 ---
 
 !!! note
 
-    通过以下地址下载对应系统的二进制软件包进行安装.
+    Download the binary software package of the corresponding system from the following address for installation.
 
 - [GitHub Release](https://github.com/EdurtIO/incubator-datacap/releases/latest)
 
-##### 下载软件包
+##### Download package
 
-将二进制文件下载到本地后运行以下命令
+Run the following command after downloading the binary to your local
 
 ```bash
 tar -xvzf datacap-<VERSION>-release.tar.gz
 ```
 
-`VERSION` 指的是下载下来的二进制文件版本后
+`VERSION` After referring to the downloaded binary file version
 
-##### 配置软件
+##### Configuration software
 
-软件第一次安装需要将 `schema` 目录下的 sql 脚本导入到 MySQL 服务器中，注意需要导入的脚本根据下载的软件包进行匹配
+For the first installation of the software, you need to import the sql scripts in the `schema` directory to the MySQL server. Note that the scripts that need to be imported are matched according to the downloaded software package
 
-将 `SQL` 脚本导入后，修改 `configure/application.properties` 配置文件，修改 MySQL 服务器的配置信息
+After importing the `SQL` script, modify the `configure/application.properties` configuration file to modify the configuration information of the MySQL server
 
 !!! warning
 
-    如果您需要修改日志配置，那么修改 `configure/logback.xml` 配置文件即可
+    If you need to modify the log configuration, just modify the `configure/logback.xml` configuration file
 
-##### 启动服务
+##### Start service
 
-DataCap 服务启动很简单，执行以下脚本
+DataCap service startup is very simple, execute the following script
 
 ```bash
 ./bin/startup.sh
 ```
 
-##### 停止服务
+##### Stop service
 
-停止服务执行以下脚本
+Stop the service and execute the following script
 
 ```bash
 ./bin/shutdown.sh
@@ -63,25 +63,25 @@ DataCap 服务启动很简单，执行以下脚本
 
 !!! note
 
-    如果您想调试系统可以使用 `./bin/debug.sh` 进行启动服务，不过它当您关闭该窗口后服务将会停止
+    If you want to debug the system, you can use `./bin/debug.sh` to start the service, but it will stop when you close the window
 
-#### 源码安装
+#### Source installation
 
 ---
 
 !!! warning
 
-    要手动编译安装 DataCap,需要执行以下步骤进行操作.
+    To manually compile and install DataCap, you need to perform the following steps.
 
-    系统需要安装 `JDK`
+    The system needs to install `JDK`
 
-- 克隆源代码到本机
+- Clone the source code to this machine
 
 ```bash
 git clone https://github.com/EdurtIO/incubator-datacap.git
 ```
 
-- 编译并构建应用
+- Compile and build the application
 
 ```bash
 ./mvnw clean install package -DskipTests
@@ -89,12 +89,12 @@ git clone https://github.com/EdurtIO/incubator-datacap.git
 
 !!! warning
 
-    编译完成后会在 `dist` 目录下生成 `datacap-release.tar.gz` 软件包. 
+    After compiling, the `datacap-release.tar.gz` package will be generated in the `dist` directory.
 
-    使用相关软件包安装即可.
+    Use the relevant packages to install it.
 
 !!! note
 
-    如果您不想安装到本地软件目录,可使用参考以下文档启动开发模式进行软件使用
+    If you do not want to install to the local software directory, you can use the following documents to start the development mode for software use.
 
-[开发者](../../developer_guide/env.md)
+[Developer](../../developer_guide/env.md)

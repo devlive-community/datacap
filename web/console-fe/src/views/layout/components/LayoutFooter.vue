@@ -14,7 +14,7 @@ export default {
         {
           key: 'Documentation',
           title: 'Documentation',
-          href: 'https://datacap.incubator.edurt.io/en/reference/get_started/install.html',
+          href: 'https://datacap.incubator.edurt.io/reference/get_started/install.html',
           blankTarget: true
         },
         {

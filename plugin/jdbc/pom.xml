@@ -41,5 +41,6 @@
         <module>oceanbase</module>
         <module>neo4j</module>
         <module>iotdb</module>
+        <module>snowflake</module>
     </modules>
 </project>

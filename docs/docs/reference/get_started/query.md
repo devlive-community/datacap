@@ -1,50 +1,48 @@
-进入软件UI界面后，点击顶部的 `Query` 菜单选项，将会进入类似如下页面：
+After entering the software UI interface, click the `Query` menu option at the top, and you will enter a page similar to the following:
 
 ![img.png](../../assets/get_started/img.png)
 
-#### 描述
+#### Description
 
 ---
 
-查询页面分为两部分： 上半部分为SQL编辑器， 下半部分为查询结果
+The query page is divided into two parts: the upper part is the SQL editor, and the lower part is the query result
 
 ![img.png](../../assets/get_started/img_1.png)
 
-在编辑器顶部有4个功能框，他们分别是：
+There are 4 function boxes at the top of the editor, they are:
 
-- 第一个：`选择框` 用于选择我们已经创建好的数据源
-- 第二个：`按钮` 为执行运行操作
-- 第三个：`按钮` 为格式化我们输入的SQL内容
-- 第四个：`按钮` 用于取消执行时间过长的查询
+- The first one: `selection box` is used to select the data source we have created
+- The second: `button` is to perform the operation
+- The third: `button` is to format the SQL content we entered
+- The fourth: `button` is used to cancel the query that takes too long to execute
 
 !!! danger
 
-    取消功能不代表实际查询结束，查询还会在后台继续运行。
+    The cancel function does not mean that the actual query is over, and the query will continue to run in the background.
 
-#### 示例
+#### Example
 
 ---
 
-我们通过以下SQL用来做测试
+We use the following SQL for testing
 
 ```sql
 show databases
 ```
 
-我们将SQL写入到编辑器后，点击编辑器顶部第二个功能按钮进行运行，运行结束后，会展示类似如下窗口：
+After we write the SQL into the editor, click the second function button at the top of the editor to run it. After running, a window similar to the following will be displayed:
 
 ![img.png](../../assets/get_started/img_2.png)
 
-结果窗口分为：顶部菜单为数据导出功能，目前支持导出 `CSV`，下半部分为数据结果展示。
+The result window is divided into: the top menu is the data export function, which currently supports `CSV` export, and the lower part is the data result display.
 
 !!! note
 
-    具体的结果展示内容根据用户查询的SQL返回
+    The specific result display content is returned according to the SQL query by the user
 
-#### 数据导出
+#### Data output
 
 ---
 
-
-
-鼠标移向结果展示区的顶部菜单会出现下拉框，点击需要导出的类型，将弹出下载对话框，便可以将数据下载到本地。
+Move the mouse to the top menu of the result display area, and a drop-down box will appear. Click the type to be exported, and a download dialog box will pop up, and the data can be downloaded to the local.
