@@ -15,13 +15,13 @@ theme:
   icon:
     logo: material/open-source-initiative
   favicon: material/open-source-initiative
-  include_search_page: false
+  include_search_page: true
   search_index_only: true
   language: en
   features:
     - content.code.annotate
     - content.tabs.link
-    - navigation.expand
+#    - navigation.expand
     - navigation.indexes
     - navigation.sections
     - navigation.tabs
@@ -101,20 +101,21 @@ plugins:
   - git-authors
   - redirects:
       redirect_maps:
-        release-latest.md: release/1.3.0.md
+        release-latest.md: release/1.4.0.md
 
 nav:
   - Home: index.md
   - Documentation:
       - Installation: reference/get_started/install.md
       - Query: reference/get_started/query.md
-      - History: reference/get_started/history.md
       - User Manager:
           - Basic:
             - DataSource: reference/admin/datasource/home.md
             - Snippet: reference/admin/snippet/home.md
           - Monitor:
             - Processor: reference/admin/processor/home.md
+          - History:
+            - Query History: reference/get_started/history.md
       - System Setting:
           - Basic:
             - Functions: reference/admin/functions/home.md
@@ -136,13 +137,15 @@ nav:
         - Kylin: reference/database/kylin.md
         - Oracle: reference/database/oracle.md
       - Update:
+          - Update to 1.4.0: reference/update/1.4.0.md
           - Update to 1.3.0: reference/update/1.3.0.md
           - Update to 1.2.0: reference/update/v120.md
   - Developer guide:
       - Development environment: developer_guide/env.md
       - Custom Plugin: developer_guide/plugin.md
   - Release Note:
-      - 1.3.0 (latest): release/1.3.0.md
+      - 1.4.0 (latest): release/1.4.0.md
+      - 1.3.0: release/1.3.0.md
       - 1.2.0: release/1.2.0.md
       - 1.1.0.20221115: release/1.1.0.20221115.md
       - 1.0.0.20221015: release/1.0.0.20221015.md

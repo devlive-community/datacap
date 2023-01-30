@@ -37,7 +37,7 @@ const content = `
 
 const releaseNote: ReleaseNote = {
   content: content,
-  latest: true,
+  latest: false,
   time: "2022-12-16",
   version: "1.3.0"
 };
