@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (Druid)</name>
 
     <properties>
-        <avatica.version>1.22.0</avatica.version>
+        <avatica.version>1.23.0</avatica.version>
         <plugin.name>jdbc-druid</plugin.name>
     </properties>
 
