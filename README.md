@@ -105,6 +105,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://www.snowflake.com/" target="_blank">
         <img src="assets/plugin/snowflake.png" alt="Snowflake" height="70" />
+    </a>&nbsp;
+    <a href="https://ydb.tech/" target="_blank">
+        <img src="assets/plugin/ydb.png" alt="YDB" height="50" />
     </a>
 </p>
 

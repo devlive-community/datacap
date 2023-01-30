@@ -122,6 +122,7 @@ nav:
             - Sql: reference/admin/template/sql/home.md
       - Connecting to Databases:
         - JDBC:
+          - Yandex Database:  reference/plugin/jdbc/ydb.md
           - Snowflake: reference/plugin/jdbc/snowflake.md
           - MySQL: reference/plugin/jdbc/mysql.md
           - ClickHouse: reference/plugin/jdbc/clickhouse.md
@@ -132,7 +133,6 @@ nav:
         - CrateDB: reference/plugin/v120/cratedb.md
         - TDengine: reference/plugin/v120/tdengine.md
         - Impala: reference/plugin/v120/impala.md
-        - MySQL: reference/database/mysql.md
         - Kylin: reference/database/kylin.md
         - Oracle: reference/database/oracle.md
       - Update:
