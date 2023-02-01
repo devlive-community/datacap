@@ -24,13 +24,6 @@
             <filtered>true</filtered>
         </fileSet>
         <fileSet>
-            <directory>src/main/plugins/</directory>
-            <outputDirectory>plugins</outputDirectory>
-            <fileMode>0755</fileMode>
-            <lineEnding>unix</lineEnding>
-            <filtered>true</filtered>
-        </fileSet>
-        <fileSet>
             <directory>src/main/etc/conf</directory>
             <outputDirectory>configure</outputDirectory>
             <includes>
@@ -80,5 +73,15 @@
             <lineEnding>unix</lineEnding>
             <filtered>true</filtered>
         </fileSet>
+<!--        <fileSet>-->
+<!--            <directory>../dist/plugins</directory>-->
+<!--            <outputDirectory>plugins</outputDirectory>-->
+<!--            <fileMode>0644</fileMode>-->
+<!--            <filtered>true</filtered>-->
+<!--            <excludes>-->
+<!--                <exclude>target/</exclude>-->
+<!--                <exclude>*.md</exclude>-->
+<!--            </excludes>-->
+<!--        </fileSet>-->
     </fileSets>
 </assembly>

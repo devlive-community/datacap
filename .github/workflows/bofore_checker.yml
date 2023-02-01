@@ -21,7 +21,7 @@ jobs:
       - name: Maven Checker Style
         uses: actions/setup-java@v3
         with:
-          java-version: '8'
+          java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
       - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dgpg.skip -Dskip.npm -DskipTests=true
@@ -36,7 +36,7 @@ jobs:
       - name: Maven Checker Bugs
         uses: actions/setup-java@v3
         with:
-          java-version: '8'
+          java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
       - run: ./mvnw clean install findbugs:findbugs -Dcheckstyle.skip -Dgpg.skip -Dskip.npm -DskipTests=true
@@ -53,7 +53,7 @@ jobs:
       - name: Maven Checker Package
         uses: actions/setup-java@v3
         with:
-          java-version: '8'
+          java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
       - run: ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true

@@ -8,8 +8,6 @@
 
     <modules>
         <module>configure</module>
-        <module>server</module>
-        <module>web</module>
         <module>spi</module>
         <module>plugin</module>
         <module>common</module>
@@ -17,6 +15,9 @@
         <module>docs</module>
         <module>assets</module>
         <module>client</module>
+        <module>web</module>
+        <module>server</module>
+        <module>binary</module>
     </modules>
 
     <name>DataCap(Incubator)</name>
@@ -294,6 +295,46 @@
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <!-- Clear cache -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <excludeDefaultDirectories>false</excludeDefaultDirectories>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/dist/plugins</directory>
+                            <followSymlinks>false</followSymlinks>
+                            <useDefaultExcludes>true</useDefaultExcludes>
+                            <excludes>
+                                <exclude>README.md</exclude>
+                            </excludes>
+                        </fileset>
+                        <fileset>
+                            <directory>${project.basedir}/server/src/main/plugins</directory>
+                            <followSymlinks>false</followSymlinks>
+                            <useDefaultExcludes>true</useDefaultExcludes>
+                            <excludes>
+                                <exclude>README.md</exclude>
+                            </excludes>
+                        </fileset>
+                        <fileset>
+                            <directory>${project.basedir}/dist/</directory>
+                            <followSymlinks>false</followSymlinks>
+                            <includes>
+                                <include>*.tar.gz</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/binary/tar/copy-conf/</directory>
+                            <excludes>
+                                <exclude>README.md</exclude>
+                            </excludes>
+                        </fileset>
+                    </filesets>
                 </configuration>
             </plugin>
         </plugins>

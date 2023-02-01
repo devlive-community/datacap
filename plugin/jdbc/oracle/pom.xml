@@ -14,7 +14,6 @@
 
     <properties>
         <oracle.version>21.1.0.0</oracle.version>
-        <plugin.name>jdbc-oracle</plugin.name>
     </properties>
 
     <dependencies>
@@ -33,29 +32,4 @@
             <version>${oracle.version}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${assembly-plugin.version}</version>
-                <configuration>
-                    <finalName>${plugin.name}</finalName>
-                    <descriptors>
-                        <descriptor>../../../configure/assembly/assembly-plugin.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>../../../dist/plugins/${plugin.name}</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

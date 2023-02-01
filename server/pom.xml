@@ -98,186 +98,198 @@
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-mysql</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-clickhouse</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-presto</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-redis</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-trino</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-postgresql</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-elasticsearch</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-druid</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-kyuubi</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-hive</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-kylin</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-ignite</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-db2</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-mongo</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-dremio</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-monetdb</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-phoenix</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-h2</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-sqlserver</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-oracle</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-cratedb</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-dm</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.http</groupId>
             <artifactId>datacap-plugin-http-cratedb</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.http</groupId>
             <artifactId>datacap-plugin-http-clickhouse</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-tdengine</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-impala</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-oceanbase</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.natived</groupId>
             <artifactId>datacap-plugin-native-redis</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-neo4j</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-iotdb</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-snowflake</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-ydb</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${assembly-plugin.version}</version>
-                <configuration>
-                    <finalName>datacap</finalName>
-                    <descriptors>
-                        <descriptor>../configure/assembly/assembly.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>../dist</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
@@ -314,6 +326,29 @@
                         </goals>
                         <configuration>
                             <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resource</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/plugins</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>../dist/plugins</directory>
+                                    <includes>
+                                        <include>*</include>
+                                    </includes>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>

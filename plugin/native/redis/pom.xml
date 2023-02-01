@@ -38,28 +38,29 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${assembly-plugin.version}</version>
-                <configuration>
-                    <finalName>${plugin.name}</finalName>
-                    <descriptors>
-                        <descriptor>../../../configure/assembly/assembly-plugin.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>../../../dist/plugins/${plugin.name}</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                <version>${assembly-plugin.version}</version>-->
+<!--                <configuration>-->
+<!--                    <finalName>${plugin.name}</finalName>-->
+<!--                    <descriptors>-->
+<!--                        <descriptor>../../../configure/assembly/assembly-plugin.xml</descriptor>-->
+<!--                    </descriptors>-->
+<!--                    <outputDirectory>../../../dist/plugins</outputDirectory>-->
+<!--                    <appendAssemblyId>false</appendAssemblyId>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>make-assembly</id>-->
+<!--                        <phase>prepare-package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>single</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 </project>

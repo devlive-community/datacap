@@ -15,7 +15,6 @@
     <properties>
         <!-- https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-jdbc.html#jdbc-compatibility -->
         <x-pack-sql-jdbc.version>7.10.0</x-pack-sql-jdbc.version>
-        <plugin.name>jdbc-elasticsearch</plugin.name>
     </properties>
 
     <dependencies>
@@ -34,29 +33,4 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${assembly-plugin.version}</version>
-                <configuration>
-                    <finalName>${plugin.name}</finalName>
-                    <descriptors>
-                        <descriptor>../../../configure/assembly/assembly-plugin.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>../../../dist/plugins/${plugin.name}</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

@@ -14,8 +14,8 @@
 
     <properties>
         <dremio.version>20.1.0-202202061055110045-36733c65</dremio.version>
-        <plugin.name>jdbc-dremio</plugin.name>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
@@ -32,31 +32,6 @@
             <version>${dremio.version}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${assembly-plugin.version}</version>
-                <configuration>
-                    <finalName>${plugin.name}</finalName>
-                    <descriptors>
-                        <descriptor>../../../configure/assembly/assembly-plugin.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>../../../dist/plugins/${plugin.name}</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
     <repositories>
         <repository>

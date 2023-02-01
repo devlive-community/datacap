@@ -41,3 +41,6 @@ tmp/
 .vscode
 dist/datacap/
 list
+
+binary/tar/copy-conf/*
+!binary/tar/copy-conf/README.md

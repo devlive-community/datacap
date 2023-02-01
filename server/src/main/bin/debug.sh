@@ -39,7 +39,8 @@ job_runner_debug_server() {
     printf "Server starting                        | %s\n" "$APPLICATION_NAME"
     cd "$HOME"
     "$JAVA_HOME"/bin/java -classpath 'lib/*' "$APPLICATION_NAME" \
-        --spring.config.location="$HOME/configure/"
+        --spring.config.location="$HOME/configure/" \
+        --plugin-dir="$HOME/plugins/"
 }
 
 job_before_echo_basic

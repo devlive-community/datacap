@@ -1,0 +1,149 @@
+<runtime>
+    <!-- Target -->
+    <archive name="datacap-${project.version}.tar.gz" hardLinkIncludes="**/*.jar" />
+
+    <!-- Basic configure -->
+    <fileSet to="/">
+        <directory path="${basedir}/copy-conf/">
+            <include>bin/*</include>
+            <include>configure/*</include>
+            <include>configure/*/*</include>
+            <include>configure/*/*/*</include>
+            <include>functions/*</include>
+            <include>schema/*</include>
+        </directory>
+    </fileSet>
+
+    <!-- Server -->
+    <artifactSet to="lib">
+        <artifact id="io.edurt.datacap:datacap-server:${project.version}" />
+    </artifactSet>
+
+    <!-- Plugins -->
+    <artifactSet to="plugins/http-clickhouse">
+        <artifact id="io.edurt.datacap.plugin.http:datacap-plugin-http-clickhouse:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/http-cratedb">
+        <artifact id="io.edurt.datacap.plugin.http:datacap-plugin-http-cratedb:${project.version}">
+        </artifact>
+    </artifactSet>
+
+    <artifactSet to="plugins/jdbc-clickhouse">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-clickhouse:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-cratedb">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-cratedb:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-db2">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-db2:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-dameng">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-dm:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-dremio">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-dremio:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-druid">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-druid:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-elasticsearch">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-elasticsearch:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-h2">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-h2:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-hive">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-hive:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-ignite">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-ignite:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-impala">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-impala:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-iotdb">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-iotdb:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-kylin">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-kylin:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-kyuubi">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-kyuubi:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-monetdb">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-monetdb:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-mongo">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-mongo:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-mysql">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-mysql:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-neo4j">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-neo4j:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-oceanbase">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-oceanbase:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-oracle">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-oracle:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-phoenix">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-phoenix:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-postgresql">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-postgresql:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-presto">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-presto:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-snowflake">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-snowflake:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-sqlserver">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-sqlserver:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-tdengine">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-tdengine:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-trino">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-trino:${project.version}">
+        </artifact>
+    </artifactSet>
+    <artifactSet to="plugins/jdbc-ydb">
+        <artifact id="io.edurt.datacap.plugin.jdbc:datacap-plugin-jdbc-ydb:${project.version}">
+        </artifact>
+    </artifactSet>
+
+    <artifactSet to="plugins/native-redis">
+        <artifact id="io.edurt.datacap.plugin.natived:datacap-plugin-native-redis:${project.version}">
+        </artifact>
+    </artifactSet>
+</runtime>

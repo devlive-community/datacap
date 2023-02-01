@@ -44,7 +44,8 @@
                     <descriptors>
                         <descriptor>../../../configure/assembly/assembly-plugin.xml</descriptor>
                     </descriptors>
-                    <outputDirectory>../../../dist/plugins/${plugin.name}</outputDirectory>
+                    <outputDirectory>../../../dist/plugins</outputDirectory>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
                     <execution>
