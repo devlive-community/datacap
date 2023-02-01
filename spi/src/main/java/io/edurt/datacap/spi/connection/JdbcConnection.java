@@ -70,7 +70,7 @@ public class JdbcConnection
             String url = formatJdbcUrl();
             log.info("Connection driver {}", this.jdbcConfigure.getJdbcDriver());
             log.info("Connection url {}", url);
-            if (this.jdbcConfigure.getUsername().isPresent() || this.jdbcConfigure.getPassword().isPresent()) {
+            if (this.jdbcConfigure.getUsername().isPresent() && this.jdbcConfigure.getPassword().isPresent()) {
                 log.info("Connection username with {} password with {}", this.jdbcConfigure.getUsername().get(), "***");
                 this.connection = DriverManager.getConnection(url, this.jdbcConfigure.getUsername().get(), this.jdbcConfigure.getPassword().get());
             }
