@@ -2,9 +2,13 @@ import {ResponseModel} from "@/model/ResponseModel";
 import TemplateSqlService from "@/services/template/TemplateSqlService";
 import {SqlBody} from "@/model/template/SqlBody";
 import {ExecuteService} from "@/services/ExecuteService";
-import {ExecuteModel} from "@/model/ExecuteModel";
 import {Sql} from "@/model/sql/Sql";
 import squel from "squel";
+import {ExecuteDslBodyBuilder} from "@/model/ExecuteDslBody";
+import {SqlBodyBuilder} from "@/model/builder/SqlBody";
+import {SqlType} from "@/model/builder/SqlType";
+import {SqlColumn, SqlColumnBuilder} from "@/model/builder/SqlColumn";
+import {SqlOrder} from "@/model/builder/SqlOrder";
 
 class ManagerService
 {
@@ -58,12 +62,25 @@ class ManagerService
 
   getDataByConfigure(id: string, sql: Sql): Promise<ResponseModel>
   {
-    const configure: ExecuteModel = {
-      name: id,
-      content: this.builderSql(sql),
-      format: "JSON"
+    const columns: SqlColumn[] = new Array<SqlColumn>();
+    columns.push(new SqlColumnBuilder('*').build());
+
+    const orders: SqlColumn[] = new Array();
+    if (sql.sort) {
+      orders.push(new SqlColumnBuilder(sql.sort.column).setOrder(SqlOrder[sql.sort.sort]).build());
     }
-    return new ExecuteService().execute(configure, null);
+
+    const sqlBody = new SqlBodyBuilder(sql.database, sql.table)
+      .setColumns(columns)
+      .setOrders(orders)
+      .setType(SqlType.SELECT)
+      .setLimit(sql.limit)
+      .setOffset(sql.offset)
+      .build();
+    const configure = new ExecuteDslBodyBuilder(id, 'JSON')
+      .setConfigure(sqlBody)
+      .build();
+    return new ExecuteService().executeDsl(configure);
   }
 
   private builderSql(configure: Sql): string
