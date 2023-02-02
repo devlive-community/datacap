@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (Impala)</name>
 
     <properties>
-        <impala.version>2.6.26.1031</impala.version>
+        <impala.version>2.6.29.1035</impala.version>
         <plugin.name>jdbc-impala</plugin.name>
     </properties>
 
