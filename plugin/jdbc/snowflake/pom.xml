@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (Snowflake)</name>
 
     <properties>
-        <snowflake.version>3.13.26</snowflake.version>
+        <snowflake.version>3.13.27</snowflake.version>
         <plugin.name>jdbc-snowflake</plugin.name>
     </properties>
 
