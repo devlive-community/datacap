@@ -1,7 +1,11 @@
 package io.edurt.datacap.server.service.impl;
 
 import com.google.inject.Injector;
+import io.edurt.datacap.plugin.builder.sql.SqlBuilder;
+import io.edurt.datacap.plugin.builder.sql.configure.SqlBody;
+import io.edurt.datacap.plugin.builder.sql.configure.SqlType;
 import io.edurt.datacap.server.audit.AuditPlugin;
+import io.edurt.datacap.server.body.ExecuteDslBody;
 import io.edurt.datacap.server.common.PluginCommon;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
@@ -62,5 +66,19 @@ public class ExecuteServiceImpl
             return Response.success(response);
         }
         return Response.failure(ServiceState.PLUGIN_EXECUTE_FAILED, response.getMessage());
+    }
+
+    @Override
+    public Response<Object> execute(ExecuteDslBody configure)
+    {
+        ExecuteEntity executeEntity = new ExecuteEntity();
+        executeEntity.setEnv(configure.getEnv());
+        executeEntity.setName(configure.getName());
+        executeEntity.setFormat(configure.getFormat());
+        SqlBody body = configure.getConfigure();
+        body.setType(SqlType.SELECT);
+        SqlBuilder builder = new SqlBuilder(body);
+        executeEntity.setContent(builder.getSql());
+        return this.execute(executeEntity);
     }
 }

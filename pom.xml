@@ -17,6 +17,7 @@
         <module>docs</module>
         <module>assets</module>
         <module>client</module>
+        <module>builder</module>
     </modules>
 
     <name>DataCap(Incubator)</name>
@@ -73,6 +74,7 @@
         <logback.version>1.2.11</logback.version>
         <slf4j.version>1.7.36</slf4j.version>
         <sql-formatter.version>2.0.3</sql-formatter.version>
+        <guava.version>31.1-jre</guava.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <assembly-plugin.version>3.1.1</assembly-plugin.version>
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
@@ -167,6 +169,11 @@
                 <groupId>com.github.vertical-blank</groupId>
                 <artifactId>sql-formatter</artifactId>
                 <version>${sql-formatter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
