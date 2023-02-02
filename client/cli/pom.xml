@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.edurt.datacap.client</groupId>
         <artifactId>datacap-client</artifactId>
-        <version>1.4.0</version>
+        <version>1.5.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>datacap-client-cli</artifactId>
