@@ -14,7 +14,7 @@ Support Time: `2023-01-30`
 
 ---
 
-DataCap uses configuration files by default [ydb.json](https://github.com/EdurtIO/incubator-datacap/blob/develop/server/src/main/etc/conf/plugins/jdbc/ydb.json)
+DataCap uses configuration files by default [ydb.json](https://github.com/EdurtIO/datacap/blob/develop/server/src/main/etc/conf/plugins/jdbc/ydb.json)
 
 !!! note
 
@@ -47,6 +47,6 @@ DataCap uses configuration files by default [ydb.json](https://github.com/EdurtI
 
 !!! warning
 
-    The online service has not been tested yet, if you have detailed test results, please submit [issues](https://github.com/EdurtIO/incubator-datacap/issues/new/choose) to us
+    The online service has not been tested yet, if you have detailed test results, please submit [issues](https://github.com/EdurtIO/datacap/issues/new/choose) to us
 
 - [x] 2.1.x

@@ -13,8 +13,8 @@ const content = `
 
 ---
 
-- Support for data result column header hiding [#139](https://github.com/EdurtIO/incubator-datacap/pull/139)
-- Support data result filtering [#132](https://github.com/EdurtIO/incubator-datacap/pull/132) [#140](https://github.com/EdurtIO/incubator-datacap/pull/140)
+- Support for data result column header hiding [#139](https://github.com/EdurtIO/datacap/pull/139)
+- Support data result filtering [#132](https://github.com/EdurtIO/datacap/pull/132) [#140](https://github.com/EdurtIO/datacap/pull/140)
 - Replace \`@antv/g2\` to \`echarts\`
 - Replace \`ant-design-vue\` to \`iview\`
 - Replace \`@antv/s2\` to \`ag-grid\`

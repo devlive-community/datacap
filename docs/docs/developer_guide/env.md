@@ -29,7 +29,7 @@ The development environment is mainly divided into two services and a document m
 Fork the code in the code warehouse and clone the code to the local, enter the source code directory
 
 ```bash
-git clone git@github.com:<GitHubUser>/incubator-datacap.git
+git clone git@github.com:<GitHubUser>/datacap.git
 ```
 
 #### Load source code

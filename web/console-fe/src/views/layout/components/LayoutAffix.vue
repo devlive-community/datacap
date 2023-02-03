@@ -6,39 +6,39 @@
         <template #list>
           <DropdownMenu>
             <DropdownItem>
-              <a target="_blank" href="https://gitee.com/EdurtIO/incubator-datacap">
-                <img width="13" src='https://gitee.com/EdurtIO/incubator-datacap/widgets/widget_5.svg'>
+              <a target="_blank" href="https://gitee.com/EdurtIO/datacap">
+                <img width="13" src='https://gitee.com/EdurtIO/datacap/widgets/widget_5.svg'>
                 Gitee
               </a>
             </DropdownItem>
             <DropdownItem divided>
-              <a target="_blank" href="https://gitee.com/EdurtIO/incubator-datacap/members">
+              <a target="_blank" href="https://gitee.com/EdurtIO/datacap/members">
                 <Icon type="md-infinite"/>
-                Forks <img src='https://gitee.com/EdurtIO/incubator-datacap/badge/fork.svg?theme=white' alt='fork'/>
+                Forks <img src='https://gitee.com/EdurtIO/datacap/badge/fork.svg?theme=white' alt='fork'/>
               </a>
             </DropdownItem>
             <DropdownItem>
-              <a target="_blank" href="https://gitee.com/EdurtIO/incubator-datacap/stargazers">
+              <a target="_blank" href="https://gitee.com/EdurtIO/datacap/stargazers">
                 <Icon type="md-star"/>
-                Stars <img src='https://gitee.com/EdurtIO/incubator-datacap/badge/star.svg?theme=white' alt='star'/>
+                Stars <img src='https://gitee.com/EdurtIO/datacap/badge/star.svg?theme=white' alt='star'/>
               </a>
             </DropdownItem>
             <DropdownItem divided>
-              <a target="_blank" href="https://github.com/EdurtIO/incubator-datacap">
+              <a target="_blank" href="https://github.com/EdurtIO/datacap">
                 <Icon type="logo-github"/>
                 GitHub
               </a>
             </DropdownItem>
             <DropdownItem divided>
-              <a target="_blank" href="https://github.com/EdurtIO/incubator-datacap/fork">
+              <a target="_blank" href="https://github.com/EdurtIO/datacap/fork">
                 <Icon type="md-infinite"/>
-                Forks <img alt="GitHub stars" src="https://img.shields.io/github/forks/EdurtIO/incubator-datacap?logo=github">
+                Forks <img alt="GitHub stars" src="https://img.shields.io/github/forks/EdurtIO/datacap?logo=github">
               </a>
             </DropdownItem>
             <DropdownItem>
-              <a target="_blank" href="https://github.com/EdurtIO/incubator-datacap/stargazers">
+              <a target="_blank" href="https://github.com/EdurtIO/datacap/stargazers">
                 <Icon type="md-star"/>
-                Stars <img alt="GitHub stars" src="https://img.shields.io/github/stars/EdurtIO/incubator-datacap?logo=github">
+                Stars <img alt="GitHub stars" src="https://img.shields.io/github/stars/EdurtIO/datacap?logo=github">
               </a>
             </DropdownItem>
           </DropdownMenu>

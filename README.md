@@ -1,4 +1,4 @@
-# DataCap (incubator)
+# DataCap
 
 DataCap is integrated software for data transformation, integration and visualization.
 
@@ -115,22 +115,22 @@ Here are some of the major database solutions that are supported:
 
 ---
 
-[![Stargazers over time](https://starchart.cc/EdurtIO/incubator-datacap.svg)](https://starchart.cc/EdurtIO/incubator-datacap)
+[![Stargazers over time](https://starchart.cc/EdurtIO/datacap.svg)](https://starchart.cc/EdurtIO/datacap)
 
 ## Overview
 
 ---
 
-![](https://visitor-badge.glitch.me/badge?page_id=incubator-datacap)
-[![](https://tokei.rs/b1/github/EdurtIO/incubator-datacap)](https://github.com/EdurtIO/incubator-datacap)
-![version](https://img.shields.io/github/v/release/EdurtIO/incubator-datacap.svg)
+![](https://visitor-badge.glitch.me/badge?page_id=datacap)
+[![](https://tokei.rs/b1/github/EdurtIO/datacap)](https://github.com/EdurtIO/datacap)
+![version](https://img.shields.io/github/v/release/EdurtIO/datacap.svg)
 
-![GitHub branch checks state](https://img.shields.io/github/checks-status/EdurtIO/incubator-datacap/develop?style=flat-square)
-![GitHub Release Date](https://img.shields.io/github/release-date/EdurtIO/incubator-datacap?style=flat-square)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/EdurtIO/datacap/develop?style=flat-square)
+![GitHub Release Date](https://img.shields.io/github/release-date/EdurtIO/datacap?style=flat-square)
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/y/EdurtIO/incubator-datacap?style=flat-square)
-![GitHub contributors](https://img.shields.io/github/contributors-anon/EdurtIO/incubator-datacap?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/EdurtIO/incubator-datacap?style=flat-square)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/EdurtIO/datacap?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors-anon/EdurtIO/datacap?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/EdurtIO/datacap?style=flat-square)
 
 ## Join Us
 
@@ -156,6 +156,6 @@ Open the DingTalk software and scan the following QR code to join
 
 ---
 
-<a href="https://github.com/EdurtIO/incubator-datacap/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=EdurtIO/incubator-datacap" />
+<a href="https://github.com/EdurtIO/datacap/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=EdurtIO/datacap" />
 </a>

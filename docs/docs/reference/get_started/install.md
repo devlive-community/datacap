@@ -23,7 +23,7 @@ DataCap is a software for data transformation, integration and visualization.
 
     Download the binary software package of the corresponding system from the following address for installation.
 
-- [GitHub Release](https://github.com/EdurtIO/incubator-datacap/releases/latest)
+- [GitHub Release](https://github.com/EdurtIO/datacap/releases/latest)
 
 ##### Download package
 
@@ -78,7 +78,7 @@ Stop the service and execute the following script
 - Clone the source code to this machine
 
 ```bash
-git clone https://github.com/EdurtIO/incubator-datacap.git
+git clone https://github.com/EdurtIO/datacap.git
 ```
 
 - Compile and build the application

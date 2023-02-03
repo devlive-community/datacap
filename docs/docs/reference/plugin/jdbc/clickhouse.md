@@ -14,7 +14,7 @@ Support Time: `2022-09-22`
 
 ---
 
-DataCap uses configuration files by default [clickhouse.json](https://github.com/EdurtIO/incubator-datacap/blob/develop/server/src/main/etc/conf/plugins/jdbc/clickhouse.json)
+DataCap uses configuration files by default [clickhouse.json](https://github.com/EdurtIO/datacap/blob/develop/server/src/main/etc/conf/plugins/jdbc/clickhouse.json)
 
 !!! note
 
@@ -53,7 +53,7 @@ DataCap uses configuration files by default [clickhouse.json](https://github.com
 
 !!! warning
 
-    The online service has not been tested yet, if you have detailed test results, please submit [issues](https://github.com/EdurtIO/incubator-datacap/issues/new/choose) to us
+    The online service has not been tested yet, if you have detailed test results, please submit [issues](https://github.com/EdurtIO/datacap/issues/new/choose) to us
 
 - [x] 19.x
 - [x] 20.x
