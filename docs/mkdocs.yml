@@ -151,3 +151,4 @@ nav:
       - 1.0.0.20221015: release/1.0.0.20221015.md
   - Resources:
     - Functions: resources/functions/home.md
+  - Powered By: powered_by.md
