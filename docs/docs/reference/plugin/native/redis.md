@@ -14,7 +14,7 @@ Support Time: `2022-12-01`
 
 ---
 
-DataCap uses configuration files by default [redis.json](https://github.com/EdurtIO/incubator-datacap/blob/develop/server/src/main/etc/conf/plugins/native/redis.json)
+DataCap uses configuration files by default [redis.json](https://github.com/EdurtIO/datacap/blob/develop/server/src/main/etc/conf/plugins/native/redis.json)
 
 !!! note
 
@@ -40,7 +40,7 @@ DataCap uses configuration files by default [redis.json](https://github.com/Edur
 
 !!! warning
 
-    The online service has not been tested yet, if you have detailed test results, please submit [issues](https://github.com/EdurtIO/incubator-datacap/issues/new/choose) to us
+    The online service has not been tested yet, if you have detailed test results, please submit [issues](https://github.com/EdurtIO/datacap/issues/new/choose) to us
 
 - [x] 6.x
 - [x] 7.x

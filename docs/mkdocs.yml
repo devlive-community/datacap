@@ -1,11 +1,11 @@
 site_name: DataCap
-site_url: https://databap.incubator.edurt.io/
+site_url: https://databap.edurt.io/
 site_author: EdurtIO
 site_description: >-
   DataCap is integrated software for data transformation, integration and visualization.
-repo_name: EdurtIO/incubator-datacap
-repo_url: https://github.com/EdurtIO/incubator-datacap
-edit_uri: "https://github.com/EdurtIO/incubator-datacap/blob/master/docs/docs"
+repo_name: EdurtIO/datacap
+repo_url: https://github.com/EdurtIO/datacap
+edit_uri: "https://github.com/EdurtIO/datacap/blob/master/docs/docs"
 
 copyright: Copyright &copy; 2022 EdurtIO
 
@@ -78,7 +78,7 @@ markdown_extensions:
   - pymdownx.magiclink:
       repo_url_shorthand: true
       user: EdurtIO
-      repo: incubator-datacap
+      repo: datacap
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences
@@ -151,3 +151,4 @@ nav:
       - 1.0.0.20221015: release/1.0.0.20221015.md
   - Resources:
     - Functions: resources/functions/home.md
+  - Powered By: powered_by.md

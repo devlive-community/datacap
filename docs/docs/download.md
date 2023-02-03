@@ -14,7 +14,7 @@ hide:
 </style>
 
 <div class="font-center">
-The current Trino release is version <img src="https://img.shields.io/github/v/release/EdurtIO/incubator-datacap.svg" />. Learn more details from the <a href="/release-latest.html">release notes</a>.
+The current Trino release is version <img src="https://img.shields.io/github/v/release/EdurtIO/datacap.svg" />. Learn more details from the <a href="/release-latest.html">release notes</a>.
 </div>
 
 <div class="grid cards" markdown style="margin-top: 30px; padding: 50px;">
@@ -37,7 +37,7 @@ The current Trino release is version <img src="https://img.shields.io/github/v/r
 
     <br />
 
-    [Source Code](https://github.com/EdurtIO/incubator-datacap){ .md-button .md-button-primary }
+    [Source Code](https://github.com/EdurtIO/datacap){ .md-button .md-button-primary }
 
 </div>
 
@@ -48,13 +48,13 @@ The current Trino release is version <img src="https://img.shields.io/github/v/r
     ---
 
     * **Chat On Slack**: [edurtio.slack.com](https://edurtio.slack.com/archives/C02EU2YM2N8)
-    * **Issues**: [GitHub issues](https://github.com/EdurtIO/incubator-datacap/issues)
+    * **Issues**: [GitHub issues](https://github.com/EdurtIO/datacap/issues)
     * **DingTalk**: [16160001608]()
 
 - __Getting help__
 
     ---
 
-    If you need help using or running dbm, please ask a question on [Slack](https://edurtio.slack.com/archives/C02EU2YM2N8). Please [report](https://github.com/EdurtIO/incubator-datacap/issues/new/choose) any issue you find with dbm.
+    If you need help using or running dbm, please ask a question on [Slack](https://edurtio.slack.com/archives/C02EU2YM2N8). Please [report](https://github.com/EdurtIO/datacap/issues/new/choose) any issue you find with dbm.
 
 </div>

@@ -20,7 +20,7 @@ export default {
         {
           key: 'github',
           icon: 'logo-github',
-          href: 'https://github.com/EdurtIO/incubator-datacap',
+          href: 'https://github.com/EdurtIO/datacap',
           blankTarget: true
         },
         {

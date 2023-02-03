@@ -9,7 +9,7 @@ body:
       label: Contribution guidelines
       description: Please read the contribution guidelines before proceeding.
       options:
-        - label: I've read the [contribution guidelines](https://github.com/EdurtIO/incubator-datacap/blob/master/CONTRIBUTING.md) and wholeheartedly agree
+        - label: I've read the [contribution guidelines](https://github.com/EdurtIO/datacap/blob/master/CONTRIBUTING.md) and wholeheartedly agree
           required: true
   - type: checkboxes
     attributes:
@@ -65,7 +65,7 @@ body:
       description: Please provide a minimal (!) `application.properties` to reproduce the bug.
       placeholder: |-
         site_name: DataCap Website
-        site_url: https://databap.incubator.edurt.io
+        site_url: https://databap.edurt.io
       render: yaml
     validations:
       required: true

@@ -23,7 +23,7 @@
             <div>
               <Icon type="ios-close-circle-outline" color="#ed4014"/>
               {{ $t('alert.currentSourceFixedTooltipStep1') }}
-              <a class="ivu-ml-16" target="_blank" href="https://github.com/EdurtIO/incubator-datacap/issues/new/choose">
+              <a class="ivu-ml-16" target="_blank" href="https://github.com/EdurtIO/datacap/issues/new/choose">
                 Go
                 <Icon type="ios-arrow-forward"/>
               </a>
