@@ -9,12 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>datacap-plugin-native-redis</artifactId>
-    <name>DataCap plugin for native (Redis)</name>
+    <artifactId>datacap-plugin-native-zookeeper</artifactId>
+    <name>DataCap plugin for native (Zookeeper)</name>
 
     <properties>
-        <redis.version>3.6.3</redis.version>
-        <plugin.name>native-redis</plugin.name>
+        <antlr4.version>4.9.3</antlr4.version>
+        <zookeeper.version>0.11</zookeeper.version>
+        <plugin.name>native-zookeeper</plugin.name>
+        <antlr4.dir>${project.build.directory}/generated-sources/antlr4</antlr4.dir>
     </properties>
 
     <dependencies>
@@ -32,9 +34,14 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
         <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>${redis.version}</version>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr4.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>${zookeeper.version}</version>
         </dependency>
     </dependencies>
 
@@ -57,6 +64,29 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr4.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>
+                                <argument>-package</argument>
+                                <argument>io.edurt.datacap.plugin.natived.zookeeper.sql</argument>
+                                <argument>-o</argument>
+                                <argument>${antlr4.dir}/io/edurt/datacap/plugin/natived/zookeeper/sql</argument>
+                            </arguments>
+                            <sourceDirectory>${basedir}/src/main/antlr4/ZookeeperSql.g4</sourceDirectory>
+                            <listener>true</listener>
+                            <visitor>true</visitor>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
