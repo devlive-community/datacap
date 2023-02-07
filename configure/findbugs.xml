@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+  This file contains some false positive bugs detected by findbugs. Their
+  false positive nature has been analyzed individually and they have been
+  put here to instruct findbugs it must ignore them.
+-->
+<FindBugsFilter>
+    <Match>
+        <Package name="io.edurt.datacap.plugin.natived.zookeeper.sql" />
+    </Match>
+</FindBugsFilter>

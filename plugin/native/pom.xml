@@ -15,5 +15,6 @@
 
     <modules>
         <module>redis</module>
+        <module>zookeeper</module>
     </modules>
 </project>

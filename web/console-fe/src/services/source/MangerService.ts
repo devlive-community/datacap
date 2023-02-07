@@ -3,7 +3,6 @@ import TemplateSqlService from "@/services/template/TemplateSqlService";
 import {SqlBody} from "@/model/template/SqlBody";
 import {ExecuteService} from "@/services/ExecuteService";
 import {Sql} from "@/model/sql/Sql";
-import squel from "squel";
 import {ExecuteDslBodyBuilder} from "@/model/ExecuteDslBody";
 import {SqlBodyBuilder} from "@/model/builder/SqlBody";
 import {SqlType} from "@/model/builder/SqlType";
@@ -67,7 +66,9 @@ class ManagerService
 
     const orders: SqlColumn[] = new Array();
     if (sql.sort) {
-      orders.push(new SqlColumnBuilder(sql.sort.column).setOrder(SqlOrder[sql.sort.sort]).build());
+      sql.sort.forEach(order => {
+        orders.push(new SqlColumnBuilder(order.column).setOrder(SqlOrder[order.sort]).build());
+      });
     }
 
     const sqlBody = new SqlBodyBuilder(sql.database, sql.table)
@@ -81,22 +82,6 @@ class ManagerService
       .setConfigure(sqlBody)
       .build();
     return new ExecuteService().executeDsl(configure);
-  }
-
-  private builderSql(configure: Sql): string
-  {
-    const sql = squel.select();
-    sql.from(configure.database + '.' + configure.table);
-    sql.limit(configure.limit).offset(configure.offset);
-    if (configure.sort) {
-      if (configure.sort.sort === 'ASC') {
-        sql.order(configure.sort.column, true);
-      }
-      else {
-        sql.order(configure.sort.column, false);
-      }
-    }
-    return sql.toString();
   }
 }
 

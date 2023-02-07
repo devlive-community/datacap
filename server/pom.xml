@@ -259,6 +259,11 @@
             <artifactId>datacap-plugin-jdbc-ydb</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.natived</groupId>
+            <artifactId>datacap-plugin-native-zookeeper</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

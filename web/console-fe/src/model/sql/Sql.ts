@@ -6,5 +6,5 @@ export class Sql
   table: string;
   limit = 10;
   offset = 0;
-  sort: Sort;
+  sort: Array<Sort>;
 }
