@@ -51,6 +51,22 @@ public class ZookeeperSqlBaseListener
      * <p>The default implementation does nothing.</p>
      */
     @Override
+    public void enterColumnStatement(ZookeeperSqlParser.ColumnStatementContext ctx) {}
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitColumnStatement(ZookeeperSqlParser.ColumnStatementContext ctx) {}
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
     public void enterFromClause(ZookeeperSqlParser.FromClauseContext ctx) {}
 
     /**
@@ -67,7 +83,7 @@ public class ZookeeperSqlBaseListener
      * <p>The default implementation does nothing.</p>
      */
     @Override
-    public void enterSelectElements(ZookeeperSqlParser.SelectElementsContext ctx) {}
+    public void enterTableName(ZookeeperSqlParser.TableNameContext ctx) {}
 
     /**
      * {@inheritDoc}
@@ -75,7 +91,7 @@ public class ZookeeperSqlBaseListener
      * <p>The default implementation does nothing.</p>
      */
     @Override
-    public void exitSelectElements(ZookeeperSqlParser.SelectElementsContext ctx) {}
+    public void exitTableName(ZookeeperSqlParser.TableNameContext ctx) {}
 
     /**
      * {@inheritDoc}
@@ -83,7 +99,7 @@ public class ZookeeperSqlBaseListener
      * <p>The default implementation does nothing.</p>
      */
     @Override
-    public void enterQualifiedName(ZookeeperSqlParser.QualifiedNameContext ctx) {}
+    public void enterIdentifier(ZookeeperSqlParser.IdentifierContext ctx) {}
 
     /**
      * {@inheritDoc}
@@ -91,23 +107,7 @@ public class ZookeeperSqlBaseListener
      * <p>The default implementation does nothing.</p>
      */
     @Override
-    public void exitQualifiedName(ZookeeperSqlParser.QualifiedNameContext ctx) {}
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void enterUnquotedIdentifier(ZookeeperSqlParser.UnquotedIdentifierContext ctx) {}
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void exitUnquotedIdentifier(ZookeeperSqlParser.UnquotedIdentifierContext ctx) {}
+    public void exitIdentifier(ZookeeperSqlParser.IdentifierContext ctx) {}
 
     /**
      * {@inheritDoc}
@@ -124,38 +124,6 @@ public class ZookeeperSqlBaseListener
      */
     @Override
     public void exitQuotedIdentifier(ZookeeperSqlParser.QuotedIdentifierContext ctx) {}
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void enterBackQuotedIdentifier(ZookeeperSqlParser.BackQuotedIdentifierContext ctx) {}
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void exitBackQuotedIdentifier(ZookeeperSqlParser.BackQuotedIdentifierContext ctx) {}
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void enterDigitIdentifier(ZookeeperSqlParser.DigitIdentifierContext ctx) {}
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The default implementation does nothing.</p>
-     */
-    @Override
-    public void exitDigitIdentifier(ZookeeperSqlParser.DigitIdentifierContext ctx) {}
 
     /**
      * {@inheritDoc}

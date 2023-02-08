@@ -74,11 +74,7 @@ public class ZookeeperAdapter
                     ZkClient client = this.zookeeperConnection.getClient();
                     headers.add(node.getColumns().get(0));
                     types.add("String");
-                    if (node.getTable().equalsIgnoreCase("all")) {
-                        node.setTable("");
-                    }
-
-                    client.getChildren("/" + node.getTable().replace(".", "/"))
+                    client.getChildren(ZookeeperPathConvert.toPath(node.getTable()))
                             .forEach(column -> columns.add(handlerFormatter(configure.getFormat(), headers, Collections.singletonList(column))));
                     response.setIsSuccessful(Boolean.TRUE);
                 }

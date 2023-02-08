@@ -1,6 +1,6 @@
 # DataCap
 
-DataCap is integrated software for data transformation, integration and visualization.
+DataCap is integrated software for data transformation, integration, and visualization. Support a variety of data sources, file types, big data related database, relational database, NoSQL database, etc. Through the software can realize the management of multiple data sources, the data under the source of various operations conversion, making data charts, monitoring data sources and other functions.
 
 ### Require
 
@@ -13,7 +13,7 @@ cp configure/git-hook/* .git/hooks
 chmod 700 .git/hooks/*
 ```
 
-## Supported Databases
+## Supported Connectors
 
 ---
 
