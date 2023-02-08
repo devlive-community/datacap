@@ -5,7 +5,7 @@ site_description: >-
   DataCap is integrated software for data transformation, integration and visualization.
 repo_name: EdurtIO/datacap
 repo_url: https://github.com/EdurtIO/datacap
-edit_uri: "https://github.com/EdurtIO/datacap/blob/master/docs/docs"
+edit_uri: "https://github.com/EdurtIO/datacap/blob/dev/docs/docs"
 
 copyright: Copyright &copy; 2022 EdurtIO
 
@@ -121,7 +121,7 @@ nav:
             - Functions: reference/admin/functions/home.md
           - Template:
             - Sql: reference/admin/template/sql/home.md
-      - Connecting to Databases:
+      - Connecting to connectors:
         - JDBC:
           - Yandex Database:  reference/plugin/jdbc/ydb.md
           - Snowflake: reference/plugin/jdbc/snowflake.md
@@ -129,6 +129,7 @@ nav:
           - ClickHouse: reference/plugin/jdbc/clickhouse.md
         - Native:
           - Redis: reference/plugin/native/redis.md
+          - Zookeeper: reference/plugin/native/zookeeper.md
         - Http:
           - ClickHouse: reference/plugin/http/clickhouse.md
         - CrateDB: reference/plugin/v120/cratedb.md
