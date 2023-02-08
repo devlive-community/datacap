@@ -46,7 +46,7 @@ public class ZookeeperSqlParserTest
         Assert.assertTrue(configure.getColumns().size() > 0);
         Assert.assertNotNull(configure.getTable());
 
-        sql = "Select * FROM test.dd.dd";
+        sql = "Select * FROM test.dd.`dd`";
         configure = getConfigure(sql);
         Assert.assertNotNull(configure.getTable());
     }

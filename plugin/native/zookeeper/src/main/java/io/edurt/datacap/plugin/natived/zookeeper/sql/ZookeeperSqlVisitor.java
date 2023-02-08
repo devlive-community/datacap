@@ -38,7 +38,7 @@ public class ZookeeperSqlVisitor
         int i = 0;
         for (; i < childCount; i++) {
             ParseTree child = statementContext.getChild(i);
-            if (child instanceof ZookeeperSqlParser.SelectElementsContext) {
+            if (child instanceof ZookeeperSqlParser.ColumnStatementContext) {
                 configure.setColumns(Arrays.asList(child.getText()));
             }
             else if (child instanceof ZookeeperSqlParser.FromClauseContext) {

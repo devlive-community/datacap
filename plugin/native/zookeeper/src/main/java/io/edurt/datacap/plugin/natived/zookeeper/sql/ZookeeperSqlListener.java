@@ -39,6 +39,20 @@ public interface ZookeeperSqlListener
     void exitStatement(ZookeeperSqlParser.StatementContext ctx);
 
     /**
+     * Enter a parse tree produced by {@link ZookeeperSqlParser#columnStatement}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterColumnStatement(ZookeeperSqlParser.ColumnStatementContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link ZookeeperSqlParser#columnStatement}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitColumnStatement(ZookeeperSqlParser.ColumnStatementContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link ZookeeperSqlParser#fromClause}.
      *
      * @param ctx the parse tree
@@ -53,94 +67,44 @@ public interface ZookeeperSqlListener
     void exitFromClause(ZookeeperSqlParser.FromClauseContext ctx);
 
     /**
-     * Enter a parse tree produced by {@link ZookeeperSqlParser#selectElements}.
+     * Enter a parse tree produced by {@link ZookeeperSqlParser#tableName}.
      *
      * @param ctx the parse tree
      */
-    void enterSelectElements(ZookeeperSqlParser.SelectElementsContext ctx);
+    void enterTableName(ZookeeperSqlParser.TableNameContext ctx);
 
     /**
-     * Exit a parse tree produced by {@link ZookeeperSqlParser#selectElements}.
+     * Exit a parse tree produced by {@link ZookeeperSqlParser#tableName}.
      *
      * @param ctx the parse tree
      */
-    void exitSelectElements(ZookeeperSqlParser.SelectElementsContext ctx);
+    void exitTableName(ZookeeperSqlParser.TableNameContext ctx);
 
     /**
-     * Enter a parse tree produced by {@link ZookeeperSqlParser#qualifiedName}.
+     * Enter a parse tree produced by {@link ZookeeperSqlParser#identifier}.
      *
      * @param ctx the parse tree
      */
-    void enterQualifiedName(ZookeeperSqlParser.QualifiedNameContext ctx);
+    void enterIdentifier(ZookeeperSqlParser.IdentifierContext ctx);
 
     /**
-     * Exit a parse tree produced by {@link ZookeeperSqlParser#qualifiedName}.
+     * Exit a parse tree produced by {@link ZookeeperSqlParser#identifier}.
      *
      * @param ctx the parse tree
      */
-    void exitQualifiedName(ZookeeperSqlParser.QualifiedNameContext ctx);
+    void exitIdentifier(ZookeeperSqlParser.IdentifierContext ctx);
 
     /**
-     * Enter a parse tree produced by the {@code unquotedIdentifier}
-     * labeled alternative in {@link ZookeeperSqlParser#identifier}.
-     *
-     * @param ctx the parse tree
-     */
-    void enterUnquotedIdentifier(ZookeeperSqlParser.UnquotedIdentifierContext ctx);
-
-    /**
-     * Exit a parse tree produced by the {@code unquotedIdentifier}
-     * labeled alternative in {@link ZookeeperSqlParser#identifier}.
-     *
-     * @param ctx the parse tree
-     */
-    void exitUnquotedIdentifier(ZookeeperSqlParser.UnquotedIdentifierContext ctx);
-
-    /**
-     * Enter a parse tree produced by the {@code quotedIdentifier}
-     * labeled alternative in {@link ZookeeperSqlParser#identifier}.
+     * Enter a parse tree produced by {@link ZookeeperSqlParser#quotedIdentifier}.
      *
      * @param ctx the parse tree
      */
     void enterQuotedIdentifier(ZookeeperSqlParser.QuotedIdentifierContext ctx);
 
     /**
-     * Exit a parse tree produced by the {@code quotedIdentifier}
-     * labeled alternative in {@link ZookeeperSqlParser#identifier}.
+     * Exit a parse tree produced by {@link ZookeeperSqlParser#quotedIdentifier}.
      *
      * @param ctx the parse tree
      */
     void exitQuotedIdentifier(ZookeeperSqlParser.QuotedIdentifierContext ctx);
-
-    /**
-     * Enter a parse tree produced by the {@code backQuotedIdentifier}
-     * labeled alternative in {@link ZookeeperSqlParser#identifier}.
-     *
-     * @param ctx the parse tree
-     */
-    void enterBackQuotedIdentifier(ZookeeperSqlParser.BackQuotedIdentifierContext ctx);
-
-    /**
-     * Exit a parse tree produced by the {@code backQuotedIdentifier}
-     * labeled alternative in {@link ZookeeperSqlParser#identifier}.
-     *
-     * @param ctx the parse tree
-     */
-    void exitBackQuotedIdentifier(ZookeeperSqlParser.BackQuotedIdentifierContext ctx);
-
-    /**
-     * Enter a parse tree produced by the {@code digitIdentifier}
-     * labeled alternative in {@link ZookeeperSqlParser#identifier}.
-     *
-     * @param ctx the parse tree
-     */
-    void enterDigitIdentifier(ZookeeperSqlParser.DigitIdentifierContext ctx);
-
-    /**
-     * Exit a parse tree produced by the {@code digitIdentifier}
-     * labeled alternative in {@link ZookeeperSqlParser#identifier}.
-     *
-     * @param ctx the parse tree
-     */
-    void exitDigitIdentifier(ZookeeperSqlParser.DigitIdentifierContext ctx);
 }

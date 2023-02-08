@@ -1,32 +1,37 @@
 grammar ZookeeperSql;
 
-singleStatement : statement EOF ;
+singleStatement:(statement)*;
 
-statement : 'SELECT' selectElements fromClause ;
+SELECT: [Ss][Ee][Ll][Ee][Cc][Tt];
+FROM: [Ff][Rr][Oo][Mm];
 
-fromClause : 'FROM' qualifiedName;
-
-selectElements : ID|'*' ;
-
-ID : [a-zA-Z]+ ;
-
-WS : [ \r\n\t]+ -> skip ;
-
-QUOTED_IDENTIFIER
-    : '"' ( ~'"' | '""' )* '"'
+statement
+    : SELECT columnStatement fromClause
     ;
 
+columnStatement: identifier;
+
+fromClause : FROM tableName;
+
+tableName: identifier ('.' identifier)*;
+identifier: (IDENTIFIER | STRING | quotedIdentifier)*;
+quotedIdentifier: BACKQUOTED_IDENTIFIER;
+
+fragment DIGIT:[0-9];
+fragment LETTER:[a-zA-Z];
+STRING
+    : '\'' ( ~('\''|'\\') | ('\\' .) )* '\''
+    | '"' ( ~('"'|'\\') | ('\\' .) )* '"'
+    | '*'
+    ;
+IDENTIFIER
+    : (LETTER | DIGIT | '_')+
+    ;
 BACKQUOTED_IDENTIFIER
     : '`' ( ~'`' | '``' )* '`'
     ;
 
-qualifiedName
-    : identifier ('.' identifier)*
-    ;
-
-identifier
-    : IDENTIFIER
-    | QUOTED_IDENTIFIER      #quotedIdentifier
-    | BACKQUOTED_IDENTIFIER  #backQuotedIdentifier
-    | DIGIT_IDENTIFIER       #digitIdentifier
-    ;
+SIMPLE_COMMENT: '--' ~[\r\n]* '\r'? '\n'? -> channel(HIDDEN);
+BRACKETED_EMPTY_COMMENT: '/**/' -> channel(HIDDEN);
+BRACKETED_COMMENT : '/*' ~[+] .*? '*/' -> channel(HIDDEN);
+WS: [ \r\n\t]+ -> channel(HIDDEN);
