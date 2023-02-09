@@ -18,6 +18,7 @@
         <module>assets</module>
         <module>client</module>
         <module>builder</module>
+        <module>core/parser</module>
     </modules>
 
     <name>DataCap(Incubator)</name>
