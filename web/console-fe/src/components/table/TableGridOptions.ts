@@ -9,6 +9,8 @@ const createDefaultOptions = (i18n: any) => {
     rowDragManaged: true,
     animateRows: true,
     allowContextMenuWithControlKey: true,
+    // Fixed issues: https://github.com/EdurtIO/datacap/issues/219
+    suppressFieldDotNotation: true,
     localeText: {
       page: i18n.t('grid.page'),
       more: i18n.t('grid.more'),
