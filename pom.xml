@@ -21,7 +21,7 @@
         <module>core/parser</module>
     </modules>
 
-    <name>DataCap(Incubator)</name>
+    <name>DataCap</name>
     <description>DataCap is integrated software for data transformation, integration and visualization.</description>
     <url>https://datacap.incubator.edurt.io/</url>
 
