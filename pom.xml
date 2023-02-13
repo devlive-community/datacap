@@ -7,23 +7,19 @@
     <version>1.5.0-SNAPSHOT</version>
 
     <modules>
-        <module>configure</module>
-        <module>server</module>
-        <module>web</module>
-        <module>spi</module>
         <module>plugin</module>
-        <module>common</module>
-        <module>dist</module>
-        <module>docs</module>
-        <module>assets</module>
-        <module>client</module>
         <module>builder</module>
+        <module>client/cli</module>
+        <module>core/common</module>
         <module>core/parser</module>
+        <module>core/spi</module>
+        <module>core/web</module>
+        <module>core/server</module>
     </modules>
 
-    <name>DataCap(Incubator)</name>
+    <name>DataCap</name>
     <description>DataCap is integrated software for data transformation, integration and visualization.</description>
-    <url>https://datacap.incubator.edurt.io/</url>
+    <url>https://datacap.edurt.io/</url>
 
     <scm>
         <url>https://datacap.edurt.io</url>

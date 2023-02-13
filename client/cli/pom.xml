@@ -4,12 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>io.edurt.datacap.client</groupId>
-        <artifactId>datacap-client</artifactId>
+        <groupId>io.edurt.datacap</groupId>
+        <artifactId>datacap</artifactId>
         <version>1.5.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>datacap-client-cli</artifactId>
+    <groupId>io.edurt.datacap.client</groupId>
     <name>DataCap client for cli</name>
 
     <properties>
@@ -76,9 +77,9 @@
                             <mainClass>io.edurt.datacap.client.cli.DataCapCli</mainClass>
                         </manifest>
                     </archive>
-<!--                    <descriptorRefs>-->
-<!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
-<!--                    </descriptorRefs>-->
+                    <!--                    <descriptorRefs>-->
+                    <!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
+                    <!--                    </descriptorRefs>-->
                     <descriptors>
                         <descriptor>../../configure/assembly/assembly-cli.xml</descriptor>
                     </descriptors>

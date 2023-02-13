@@ -18,8 +18,8 @@
         <jjwt.version>0.9.1</jjwt.version>
         <findbugs.version>3.0.1</findbugs.version>
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
-        <node.version>v16.10.0</node.version>
-        <npm.version>7.19.1</npm.version>
+        <node.version>v16.14.2</node.version>
+        <yarn.version>v1.22.11</yarn.version>
     </properties>
 
     <dependencies>
@@ -274,9 +274,9 @@
                 <configuration>
                     <finalName>datacap</finalName>
                     <descriptors>
-                        <descriptor>../configure/assembly/assembly.xml</descriptor>
+                        <descriptor>../../configure/assembly/assembly.xml</descriptor>
                     </descriptors>
-                    <outputDirectory>../dist</outputDirectory>
+                    <outputDirectory>../../dist</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
@@ -298,19 +298,19 @@
                     <installDirectory>../web/console-fe/</installDirectory>
                     <workingDirectory>../web/console-fe/</workingDirectory>
                     <nodeVersion>${node.version}</nodeVersion>
-                    <npmVersion>${npm.version}</npmVersion>
+                    <yarnVersion>${yarn.version}</yarnVersion>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>install node and npm</id>
+                        <id>install node and yarn</id>
                         <goals>
-                            <goal>install-node-and-npm</goal>
+                            <goal>install-node-and-yarn</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>npm install</id>
+                        <id>yarn install</id>
                         <goals>
-                            <goal>npm</goal>
+                            <goal>yarn</goal>
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>

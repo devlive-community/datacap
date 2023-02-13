@@ -1,4 +1,26 @@
+<div align="center">
+
 # DataCap
+
+---
+
+![](https://visitor-badge.glitch.me/badge?page_id=datacap)
+![Visitors](https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fgithub.com%2FEdurtIO%2Fdatacap.git&countColor=%23263759&style=flat&labelStyle=none)
+[![](https://tokei.rs/b1/github/EdurtIO/datacap)](https://github.com/EdurtIO/datacap)
+![version](https://img.shields.io/github/v/release/EdurtIO/datacap.svg)
+
+![GitHub branch checks state](https://img.shields.io/github/checks-status/EdurtIO/datacap/develop?style=flat-square)
+![GitHub Release Date](https://img.shields.io/github/release-date/EdurtIO/datacap?style=flat-square)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/EdurtIO/datacap?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors-anon/EdurtIO/datacap?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/EdurtIO/datacap?style=flat-square)
+
+</div>
+
+### What is datacap?
+
+---
 
 DataCap is integrated software for data transformation, integration, and visualization. Support a variety of data sources, file types, big data related database, relational database, NoSQL database, etc. Through the software can realize the management of multiple data sources, the data under the source of various operations conversion, making data charts, monitoring data sources and other functions.
 
@@ -119,21 +141,6 @@ Here are some of the major database solutions that are supported:
 ---
 
 [![Stargazers over time](https://starchart.cc/EdurtIO/datacap.svg)](https://starchart.cc/EdurtIO/datacap)
-
-## Overview
-
----
-
-![](https://visitor-badge.glitch.me/badge?page_id=datacap)
-[![](https://tokei.rs/b1/github/EdurtIO/datacap)](https://github.com/EdurtIO/datacap)
-![version](https://img.shields.io/github/v/release/EdurtIO/datacap.svg)
-
-![GitHub branch checks state](https://img.shields.io/github/checks-status/EdurtIO/datacap/develop?style=flat-square)
-![GitHub Release Date](https://img.shields.io/github/release-date/EdurtIO/datacap?style=flat-square)
-
-![GitHub commit activity](https://img.shields.io/github/commit-activity/y/EdurtIO/datacap?style=flat-square)
-![GitHub contributors](https://img.shields.io/github/contributors-anon/EdurtIO/datacap?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/EdurtIO/datacap?style=flat-square)
 
 ## Join Us
 
