@@ -13,7 +13,7 @@
     <name>DataCap plugin for jdbc (Mongo)</name>
 
     <properties>
-        <mongo.version>2.0.0</mongo.version>
+        <mongo.version>2.0.2</mongo.version>
         <plugin.name>jdbc-mongo</plugin.name>
     </properties>
 
