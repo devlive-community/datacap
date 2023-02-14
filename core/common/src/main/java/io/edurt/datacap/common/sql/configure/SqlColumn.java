@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.builder.sql.configure;
+package io.edurt.datacap.common.sql.configure;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

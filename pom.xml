@@ -8,12 +8,10 @@
 
     <modules>
         <module>plugin</module>
-        <module>builder</module>
         <module>client/cli</module>
         <module>core/common</module>
         <module>core/parser</module>
         <module>core/spi</module>
-        <module>core/web</module>
         <module>core/server</module>
     </modules>
 
@@ -264,7 +262,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <aggregate>true</aggregate>
                     <tags>
                         <tag>
                             <name>Description</name>
@@ -272,7 +269,7 @@
                             <head>description</head>
                         </tag>
                     </tags>
-                    <additionalparam>-Xdoclint:none</additionalparam>
+                    <additionalOptions>-Xdoclint:none</additionalOptions>
                     <failOnError>false</failOnError>
                 </configuration>
             </plugin>

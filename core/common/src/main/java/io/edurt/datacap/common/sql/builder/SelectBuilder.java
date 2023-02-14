@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.builder.sql.builder;
+package io.edurt.datacap.common.sql.builder;
 
 import java.util.List;
 
