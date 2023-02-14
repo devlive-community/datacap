@@ -1,9 +1,9 @@
 package io.edurt.datacap.server.service.impl;
 
 import com.google.inject.Injector;
-import io.edurt.datacap.plugin.builder.sql.SqlBuilder;
-import io.edurt.datacap.plugin.builder.sql.configure.SqlBody;
-import io.edurt.datacap.plugin.builder.sql.configure.SqlType;
+import io.edurt.datacap.common.sql.SqlBuilder;
+import io.edurt.datacap.common.sql.configure.SqlBody;
+import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.server.audit.AuditPlugin;
 import io.edurt.datacap.server.body.ExecuteDslBody;
 import io.edurt.datacap.server.common.PluginCommon;

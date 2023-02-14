@@ -8,7 +8,6 @@
 
     <modules>
         <module>plugin</module>
-        <module>builder</module>
         <module>client/cli</module>
         <module>core/common</module>
         <module>core/parser</module>

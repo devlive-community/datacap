@@ -1,10 +1,10 @@
-package io.edurt.datacap.plugin.builder.sql;
+package io.edurt.datacap.common.sql;
 
 import com.google.common.base.Preconditions;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.edurt.datacap.plugin.builder.sql.builder.SelectBuilder;
-import io.edurt.datacap.plugin.builder.sql.configure.SqlBody;
-import io.edurt.datacap.plugin.builder.sql.configure.SqlColumn;
+import io.edurt.datacap.common.sql.builder.SelectBuilder;
+import io.edurt.datacap.common.sql.configure.SqlBody;
+import io.edurt.datacap.common.sql.configure.SqlColumn;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;

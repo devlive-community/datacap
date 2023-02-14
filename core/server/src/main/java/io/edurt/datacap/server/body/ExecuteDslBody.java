@@ -1,6 +1,6 @@
 package io.edurt.datacap.server.body;
 
-import io.edurt.datacap.plugin.builder.sql.configure.SqlBody;
+import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.spi.FormatType;
 import lombok.Data;
 import lombok.ToString;
