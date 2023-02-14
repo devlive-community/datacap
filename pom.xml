@@ -13,7 +13,6 @@
         <module>core/common</module>
         <module>core/parser</module>
         <module>core/spi</module>
-        <module>core/web</module>
         <module>core/server</module>
     </modules>
 
