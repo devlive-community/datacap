@@ -68,7 +68,7 @@ public class SourceEntity
 
     @Column(name = "port", unique = true, nullable = false)
     @NotNull(message = "The passed port cannot by empty")
-    private Integer port;
+    private Integer port = 0;
 
     @Column(name = "username")
     private String username;
