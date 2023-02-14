@@ -96,11 +96,6 @@
             <artifactId>datacap-spi</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.edurt.datacap.plugin.builder</groupId>
-            <artifactId>datacap-builder-sql</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>io.edurt.datacap.plugin.jdbc</groupId>
             <artifactId>datacap-plugin-jdbc-mysql</artifactId>
             <version>${project.version}</version>
