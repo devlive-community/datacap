@@ -1,5 +1,7 @@
 <div align="center">
 
+<img width=68 height=65 src="./core/web/console-fe/public/static/images/logo.png" />
+
 # DataCap
 
 ---
