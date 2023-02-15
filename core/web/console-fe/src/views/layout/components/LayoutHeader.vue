@@ -4,9 +4,9 @@
       <Menu mode="horizontal" theme="dark" active-name="dashboard">
         <div class="layout-logo">
           <div class="layout-logo logo-text">
-            <Badge :text="version" :offset="[14, -12]">
-              DataCap
-            </Badge>
+            <RouterLink to="/">
+              <Avatar style="width: 45px; height: 45px;" src="/static/images/logo.png"></Avatar>
+            </RouterLink>
           </div>
         </div>
         <div class="layout-nav">
@@ -122,12 +122,10 @@ import {defineComponent} from "vue";
 import Common from "@/common/Common";
 import {AuthResponse} from "@/model/AuthResponse";
 import router from "@/router";
-import {Badge, MenuItem} from "view-ui-plus";
 import config from '../../../../package.json';
 
 export default defineComponent({
   name: "LayoutHeader",
-  components: {Badge, MenuItem},
   setup()
   {
     let username;
@@ -160,9 +158,8 @@ export default defineComponent({
 
 <style scoped>
 .layout-logo {
-  width: 100px;
-  height: 30px;
-  background: #5b6270;
+  width: 60px;
+  height: 35px;
   border-radius: 3px;
   float: left;
   position: relative;
