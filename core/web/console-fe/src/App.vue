@@ -17,8 +17,9 @@ export default defineComponent({
     setTimeout(() => {
       const authUser = JSON.parse(localStorage.getItem(Common.token) || '{}') as AuthResponse;
       if (authUser) {
+        const applyWatermark = authUser.username ? authUser.username : 'DataCap';
         watermark['watermark'].load({
-          watermark_txt: authUser.username,
+          watermark_txt: applyWatermark,
           watermark_x: 20,
           watermark_y: 20,
           watermark_rows: 0,

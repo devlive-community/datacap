@@ -2,12 +2,18 @@ grammar SqlBase;
 
 singleStatement:(statement)*;
 
+SHOW: [Ss][Hh][Oo][Ww];
+PATHS: [Pp][Aa][Tt][Hh][Ss];
 SELECT: [Ss][Ee][Ll][Ee][Cc][Tt];
 FROM: [Ff][Rr][Oo][Mm];
 
 statement
-    : SELECT columnStatement fromClause
+    : SHOW childPathStatement
+    | SELECT columnStatement fromClause
     ;
+
+// SHOW PATHS, SHOW PATHS FROM ...
+childPathStatement: PATHS | PATHS fromClause;
 
 columnStatement: identifier;
 

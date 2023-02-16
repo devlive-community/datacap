@@ -40,6 +40,18 @@ public class SqlBaseBaseListener implements SqlBaseListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterChildPathStatement(SqlBaseParser.ChildPathStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitChildPathStatement(SqlBaseParser.ChildPathStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterColumnStatement(SqlBaseParser.ColumnStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}

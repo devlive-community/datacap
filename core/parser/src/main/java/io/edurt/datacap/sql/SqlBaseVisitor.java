@@ -66,16 +66,44 @@ public class SqlBaseVisitor
             else if (child instanceof SqlBaseParser.FromClauseContext) {
                 configure.setTable(child.getChild(1).getText());
             }
-            else if (child instanceof TerminalNode) {
-                try {
-                    configure.setToken(SqlBaseToken.valueOf(child.getText()));
-                    configure.setSuccessful(true);
-                }
-                catch (Exception exception) {
-                    configure.setSuccessful(false);
-                    configure.setMessage(ExceptionUtils.getMessage(exception));
-                }
+            else if (child instanceof SqlBaseParser.ChildPathStatementContext) {
+                this.handlerWithChildPathStatementContext((SqlBaseParser.ChildPathStatementContext) child);
             }
+            else if (child instanceof TerminalNode) {
+                this.applyToken(child.getText(), false);
+            }
+        }
+    }
+
+    private void handlerWithChildPathStatementContext(SqlBaseParser.ChildPathStatementContext context)
+    {
+        int childCount = context.getChildCount();
+        int i = 0;
+        for (; i < childCount; i++) {
+            ParseTree child = context.getChild(i);
+            if (child instanceof SqlBaseParser.FromClauseContext) {
+                this.configure.setTable(child.getChild(1).getText());
+            }
+            else if (child instanceof TerminalNode) {
+                this.applyToken(child.getText(), true);
+            }
+        }
+    }
+
+    private void applyToken(String token, boolean isChild)
+    {
+        try {
+            if (isChild) {
+                this.configure.setChildToken(SqlBaseToken.valueOf(token.toUpperCase()));
+            }
+            else {
+                this.configure.setToken(SqlBaseToken.valueOf(token.toUpperCase()));
+            }
+            configure.setSuccessful(true);
+        }
+        catch (Exception exception) {
+            configure.setSuccessful(false);
+            configure.setMessage(ExceptionUtils.getMessage(exception));
         }
     }
 }
