@@ -2,7 +2,7 @@
   <div class="main">
     <Result>
       <template #title>
-        <Avatar icon="ios-person" size="64" style="background-color: #87d068"/>
+        <Avatar src="/static/images/logo.png" size="70" style="background-color: #87d068"/>
       </template>
       <template #desc>
         {{ $t('common.register') }}
