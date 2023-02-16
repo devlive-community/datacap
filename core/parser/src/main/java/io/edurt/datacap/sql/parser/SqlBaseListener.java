@@ -28,6 +28,16 @@ public interface SqlBaseListener extends ParseTreeListener {
 	 */
 	void exitStatement(SqlBaseParser.StatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SqlBaseParser#childPathStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterChildPathStatement(SqlBaseParser.ChildPathStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SqlBaseParser#childPathStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitChildPathStatement(SqlBaseParser.ChildPathStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SqlBaseParser#columnStatement}.
 	 * @param ctx the parse tree
 	 */

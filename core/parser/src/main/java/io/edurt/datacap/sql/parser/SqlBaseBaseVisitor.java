@@ -31,6 +31,13 @@ public class SqlBaseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitChildPathStatement(SqlBaseParser.ChildPathStatementContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitColumnStatement(SqlBaseParser.ColumnStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

@@ -23,6 +23,12 @@ public interface SqlBaseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatement(SqlBaseParser.StatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SqlBaseParser#childPathStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChildPathStatement(SqlBaseParser.ChildPathStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SqlBaseParser#columnStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -15,6 +15,7 @@ import java.util.List;
 public class SqlBase
 {
     private SqlBaseToken token;
+    private SqlBaseToken childToken;
     private List<String> columns = new ArrayList<>();
     private String table;
     private boolean successful = false;
