@@ -14,7 +14,7 @@
     <name>DataCap for parser</name>
 
     <properties>
-        <antlr4.version>4.9.3</antlr4.version>
+        <antlr4.version>4.11.1</antlr4.version>
     </properties>
 
     <dependencies>
