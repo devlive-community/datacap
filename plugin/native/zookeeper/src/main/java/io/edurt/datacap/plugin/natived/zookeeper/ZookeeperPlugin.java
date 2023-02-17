@@ -21,7 +21,7 @@ public class ZookeeperPlugin
     @Override
     public String validator()
     {
-        return "SELECT * FROM all";
+        return "SHOW PATHS FROM controller";
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ZookeeperPlugin
         if (ObjectUtils.isNotEmpty(this.connection)) {
             log.info("Execute zookeeper plugin logic started");
             this.response = this.connection.getResponse();
-            Adapter processor = new ZookeeperAdapter(this.connection);
+            Adapter processor = new ZookeeperAdapter(this.connection, new ZookeeperParser(content));
             this.response = processor.handlerExecute(content);
             log.info("Execute zookeeper plugin logic end");
         }

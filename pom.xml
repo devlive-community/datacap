@@ -173,7 +173,7 @@
             <dependency>
                 <groupId>io.edurt.datacap</groupId>
                 <artifactId>datacap-parser</artifactId>
-                <version>${guava.version}</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
