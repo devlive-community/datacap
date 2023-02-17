@@ -13,10 +13,8 @@
     <name>DataCap plugin for native (Zookeeper)</name>
 
     <properties>
-        <antlr4.version>4.9.3</antlr4.version>
         <zookeeper.version>0.11</zookeeper.version>
         <plugin.name>native-zookeeper</plugin.name>
-        <antlr4.dir>${project.build.directory}/generated-sources/antlr4</antlr4.dir>
     </properties>
 
     <dependencies>
@@ -34,14 +32,13 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>${antlr4.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
             <version>${zookeeper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-parser</artifactId>
         </dependency>
     </dependencies>
 
@@ -64,29 +61,6 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr4-maven-plugin</artifactId>
-                <version>${antlr4.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>antlr4</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>
-                                <argument>-package</argument>
-                                <argument>io.edurt.datacap.plugin.natived.zookeeper.sql</argument>
-                                <argument>-o</argument>
-                                <argument>${antlr4.dir}/io/edurt/datacap/plugin/natived/zookeeper/sql</argument>
-                            </arguments>
-                            <sourceDirectory>${basedir}/src/main/antlr4/ZookeeperSql.g4</sourceDirectory>
-                            <listener>true</listener>
-                            <visitor>true</visitor>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

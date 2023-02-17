@@ -53,5 +53,9 @@
             <artifactId>okhttp</artifactId>
             <version>${okhttp.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-parser</artifactId>
+        </dependency>
     </dependencies>
 </project>

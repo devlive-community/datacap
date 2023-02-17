@@ -5,6 +5,8 @@ import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.connection.Connection;
 import io.edurt.datacap.spi.formatter.FormatterFactory;
 import io.edurt.datacap.spi.model.Response;
+import io.edurt.datacap.spi.parser.SqlParser;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -17,9 +19,18 @@ public class NativeAdapter
 {
     protected Connection connection;
 
+    @Getter
+    private SqlParser parser;
+
     public NativeAdapter(Connection connection)
     {
         this.connection = connection;
+    }
+
+    public NativeAdapter(Connection connection, SqlParser parser)
+    {
+        this.connection = connection;
+        this.parser = parser;
     }
 
     protected Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
