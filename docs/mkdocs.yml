@@ -123,6 +123,7 @@ nav:
             - Sql: reference/admin/template/sql/home.md
       - Connecting to connectors:
         - JDBC:
+          - DuckDB:  reference/plugin/jdbc/duckdb.md
           - Yandex Database:  reference/plugin/jdbc/ydb.md
           - Snowflake: reference/plugin/jdbc/snowflake.md
           - MySQL: reference/plugin/jdbc/mysql.md
