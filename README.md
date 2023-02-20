@@ -135,6 +135,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://zookeeper.apache.org/" target="_blank">
         <img src="assets/plugin/zookeeper.png" alt="Zookeeper" height="50" />
+    </a>&nbsp;
+    <a href="https://duckdb.org/" target="_blank">
+        <img src="assets/plugin/duckdb.png" alt="DuckDB" height="50" />
     </a>
 </p>
 

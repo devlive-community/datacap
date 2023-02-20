@@ -43,5 +43,6 @@
         <module>iotdb</module>
         <module>snowflake</module>
         <module>ydb</module>
+        <module>duckdb</module>
     </modules>
 </project>
