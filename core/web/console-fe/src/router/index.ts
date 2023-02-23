@@ -164,16 +164,6 @@ const routes: Array<RouteRecordRaw> = [
         name: "routerNotNetwork",
         path: "not_network",
         component: () => import("../views/common/NotNetwork.vue")
-      },
-      {
-        name: "about",
-        path: "about",
-        children: [
-          {
-            path: '',
-            component: () => import("../views/common/CommonAbout.vue")
-          }
-        ]
       }
     ]
   },

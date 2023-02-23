@@ -64,10 +64,6 @@
               </MenuItem>
             </MenuGroup>
           </Submenu>
-          <MenuItem name="about" to="/common/about">
-            <Icon type="md-information-circle"/>
-            {{ $t('common.about') }}
-          </MenuItem>
         </div>
         <div :style="{lineHeight: '64px', float: 'right', 'margin-right': '10px'}">
           <MenuItem name="feedback" target="_blank" to="https://github.com/EdurtIO/datacap/issues/new/choose">
