@@ -265,6 +265,11 @@
             <artifactId>datacap-plugin-jdbc-duckdb</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap.plugin.natived</groupId>
+            <artifactId>datacap-plugin-native-alioss</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

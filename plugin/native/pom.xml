@@ -16,5 +16,6 @@
     <modules>
         <module>redis</module>
         <module>zookeeper</module>
+        <module>alioss</module>
     </modules>
 </project>
