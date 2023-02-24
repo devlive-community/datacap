@@ -138,6 +138,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://duckdb.org/" target="_blank">
         <img src="assets/plugin/duckdb.png" alt="DuckDB" height="50" />
+    </a>&nbsp;
+    <a href="https://www.alibabacloud.com/zh/product/object-storage-service" target="_blank">
+        <img src="assets/plugin/alioss.png" alt="Aliyun OSS" height="50" />
     </a>
 </p>
 
