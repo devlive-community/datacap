@@ -18,6 +18,8 @@
 ![GitHub contributors](https://img.shields.io/github/contributors-anon/EdurtIO/datacap?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/EdurtIO/datacap?style=flat-square)
 
+[![Security Status](https://www.murphysec.com/platform3/v3/badge/1629055559743877120.svg)](https://www.murphysec.com/accept?code=d1f9c5849bfdc699127f6141c8e0978c&type=1&from=2)
+
 </div>
 
 ### What is datacap?
@@ -138,6 +140,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://duckdb.org/" target="_blank">
         <img src="assets/plugin/duckdb.png" alt="DuckDB" height="50" />
+    </a>&nbsp;
+    <a href="https://www.alibabacloud.com/zh/product/object-storage-service" target="_blank">
+        <img src="assets/plugin/alioss.png" alt="Aliyun OSS" height="50" />
     </a>
 </p>
 
