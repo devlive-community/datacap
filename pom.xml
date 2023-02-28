@@ -7,12 +7,46 @@
     <version>1.6.0-SNAPSHOT</version>
 
     <modules>
-        <module>plugin</module>
-        <module>client/cli</module>
-        <module>core/common</module>
-        <module>core/parser</module>
-        <module>core/spi</module>
-        <module>core/server</module>
+        <module>client/datacap-cli</module>
+        <module>core/datacap-common</module>
+        <module>core/datacap-parser</module>
+        <module>core/datacap-spi</module>
+        <module>core/datacap-server</module>
+        <module>plugin/datacap-native-alioss</module>
+        <module>plugin/datacap-native-zookeeper</module>
+        <module>plugin/datacap-native-redis</module>
+        <module>plugin/datacap-http-cratedb</module>
+        <module>plugin/datacap-http-clickhouse</module>
+        <module>plugin/datacap-jdbc-clickhouse</module>
+        <module>plugin/datacap-jdbc-cratedb</module>
+        <module>plugin/datacap-jdbc-db2</module>
+        <module>plugin/datacap-jdbc-dm</module>
+        <module>plugin/datacap-jdbc-dremio</module>
+        <module>plugin/datacap-jdbc-druid</module>
+        <module>plugin/datacap-jdbc-duckdb</module>
+        <module>plugin/datacap-jdbc-elasticsearch</module>
+        <module>plugin/datacap-jdbc-h2</module>
+        <module>plugin/datacap-jdbc-hive</module>
+        <module>plugin/datacap-jdbc-ignite</module>
+        <module>plugin/datacap-jdbc-impala</module>
+        <module>plugin/datacap-jdbc-iotdb</module>
+        <module>plugin/datacap-jdbc-kylin</module>
+        <module>plugin/datacap-jdbc-kyuubi</module>
+        <module>plugin/datacap-jdbc-monetdb</module>
+        <module>plugin/datacap-jdbc-mongo</module>
+        <module>plugin/datacap-jdbc-ydb</module>
+        <module>plugin/datacap-jdbc-mysql</module>
+        <module>plugin/datacap-jdbc-neo4j</module>
+        <module>plugin/datacap-jdbc-oceanbase</module>
+        <module>plugin/datacap-jdbc-oracle</module>
+        <module>plugin/datacap-jdbc-phoenix</module>
+        <module>plugin/datacap-jdbc-postgresql</module>
+        <module>plugin/datacap-jdbc-presto</module>
+        <module>plugin/datacap-jdbc-redis</module>
+        <module>plugin/datacap-jdbc-snowflake</module>
+        <module>plugin/datacap-jdbc-sqlserver</module>
+        <module>plugin/datacap-jdbc-tdengine</module>
+        <module>plugin/datacap-jdbc-trino</module>
     </modules>
 
     <name>DataCap</name>
@@ -101,7 +135,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.edurt.datacap.common</groupId>
+                <groupId>io.edurt.datacap</groupId>
                 <artifactId>datacap-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
