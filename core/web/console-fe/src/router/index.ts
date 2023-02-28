@@ -5,6 +5,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Common from "@/common/Common";
 import ProfileLayout from "@/views/pages/profile/layout/ProfileLayout.vue";
+import _ from 'lodash';
 
 NProgress.configure({
   easing: 'ease',
@@ -33,6 +34,9 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "index",
+        meta: {
+          roles: ['Admin', 'User']
+        },
         component: () => import("../views/pages/dashboard/DashboardConsole.vue")
       }
     ]
@@ -49,6 +53,9 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'ConsoleIndex',
         path: "index",
+        meta: {
+          roles: ['Admin', 'User']
+        },
         component: () => import("../views/pages/query/QueryHome.vue")
       }
     ]
@@ -67,6 +74,9 @@ const routes: Array<RouteRecordRaw> = [
         children: [
           {
             path: "index",
+            meta: {
+              roles: ['Admin', 'User']
+            },
             component: () => import("../views/pages/admin/source/SourceAdmin.vue")
           },
           {
@@ -77,10 +87,16 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "history",
+        meta: {
+          roles: ['Admin', 'User']
+        },
         component: () => import("../views/pages/query/QueryHistory.vue")
       },
       {
         path: "snippet",
+        meta: {
+          roles: ['Admin', 'User']
+        },
         component: () => import("../views/pages/admin/snippet/SnippetAdmin.vue")
       },
       {
@@ -88,6 +104,10 @@ const routes: Array<RouteRecordRaw> = [
         children: [
           {
             path: "sql",
+            name: 'RouterForTemplateAndSql',
+            meta: {
+              roles: ['Admin']
+            },
             component: () => import("../views/pages/admin/template/sql/SqlAdmin.vue")
           }
         ]
@@ -97,6 +117,9 @@ const routes: Array<RouteRecordRaw> = [
         children: [
           {
             path: "function",
+            meta: {
+              roles: ['Admin', 'User']
+            },
             component: () => import("@/views/pages/admin/settings/functions/FunctionsAdmin.vue")
           }
         ]
@@ -106,6 +129,9 @@ const routes: Array<RouteRecordRaw> = [
         children: [
           {
             path: "processor",
+            meta: {
+              roles: ['Admin', 'User']
+            },
             component: () => import("../views/pages/admin/monitor/processor/ProcessorAdmin.vue")
           }
         ]
@@ -127,18 +153,30 @@ const routes: Array<RouteRecordRaw> = [
         children: [
           {
             path: 'index',
+            meta: {
+              roles: ['Admin', 'User']
+            },
             component: () => import("../views/pages/profile/ProfileIndex.vue")
           },
           {
             path: 'public',
+            meta: {
+              roles: ['Admin', 'User']
+            },
             component: () => import("../views/pages/profile/ProfilePublic.vue")
           },
           {
             path: 'log',
+            meta: {
+              roles: ['Admin', 'User']
+            },
             component: () => import("../views/pages/profile/ProfileLog.vue")
           },
           {
             path: 'account',
+            meta: {
+              roles: ['Admin', 'User']
+            },
             component: () => import("../views/pages/profile/ProfileAccount.vue")
           }
         ]
@@ -200,7 +238,14 @@ router.beforeEach((to, from, next) => {
   else {
     if (to.meta.requireAuth) {
       if (localStorage.getItem(Common.token)) {
-        next();
+        const meta = JSON.parse(localStorage.getItem(Common.token));
+        // @ts-ignore
+        if (_.intersection(to.meta.roles, meta['roles']).length > 0) {
+          next();
+        }
+        else {
+          next({name: "routerNotAuthorized"});
+        }
       }
       else {
         next('/auth/signin');
