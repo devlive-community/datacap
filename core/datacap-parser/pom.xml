@@ -14,7 +14,7 @@
     <description>DataCap - sql parser</description>
 
     <properties>
-        <antlr4.version>4.9.3</antlr4.version>
+        <antlr4.version>4.12.0</antlr4.version>
     </properties>
 
     <dependencies>
