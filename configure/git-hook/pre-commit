@@ -33,7 +33,7 @@ job_check() {
         printf "\nCode verification before submission successful\n\n"
         exit 0
     else
-        ./mvnw clean install checkstyle:checkstyle findbugs:findbugs -Dskip.yarn -DskipTests=true -Dgpg.skip
+        ./mvnw clean compile -T 1C checkstyle:checkstyle findbugs:findbugs -Dskip.yarn -DskipTests=true -Dgpg.skip
         # shellcheck disable=SC2181
         if [ $? -ne 0 ]; then
             printf "\nCode verification before submission failed\n\n"
