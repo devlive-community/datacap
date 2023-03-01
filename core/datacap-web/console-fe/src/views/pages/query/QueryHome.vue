@@ -6,7 +6,7 @@
           <template #title>
             <SourceSelect @changeValue="handlerChangeValue($event)"/>
           </template>
-          <DatabaseTree v-if="applySource" :id="applySource" :type="applySourceType"/>
+          <DataLazyTree v-if="applySource" :id="applySource"></DataLazyTree>
         </Card>
       </Sider>
       <Layout class="content" :style="{padding: '0 12px 12px'}">
@@ -92,7 +92,6 @@ import MonacoEditor from 'monaco-editor-vue3';
 import {defineComponent, ref} from "vue";
 import {useRouter} from "vue-router";
 import {SnippetService} from "@/services/SnippetService";
-import DatabaseTree from "@/components/common/DatabaseTree.vue";
 import {TableConfigure} from "@/components/table/TableConfigure";
 import SourceSelect from "@/components/source/SourceSelect.vue";
 import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
@@ -100,6 +99,7 @@ import BasicTableComponent from "@/components/table/BasicTable.vue";
 import {AuditService} from "@/services/AuditService";
 import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
+import DataLazyTree from "@/components/common/DataLazyTree.vue";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
   {title: 'Editor', key: '1', closable: false}
@@ -110,7 +110,7 @@ const editorValueMap = new Map<string, string>();
 
 export default defineComponent({
   name: "QueryHome",
-  components: {BasicTableComponent, SnippetDetails, DatabaseTree, SourceSelect, MonacoEditor},
+  components: {DataLazyTree, BasicTableComponent, SnippetDetails, SourceSelect, MonacoEditor},
   unmounted()
   {
     if (this.editorCompletionProvider) {
