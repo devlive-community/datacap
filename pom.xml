@@ -12,6 +12,8 @@
         <module>core/datacap-parser</module>
         <module>core/datacap-spi</module>
         <module>core/datacap-server</module>
+        <module>lib/datacap-http</module>
+        <module>lib/datacap-logger</module>
         <module>plugin/datacap-native-alioss</module>
         <module>plugin/datacap-native-zookeeper</module>
         <module>plugin/datacap-native-redis</module>
