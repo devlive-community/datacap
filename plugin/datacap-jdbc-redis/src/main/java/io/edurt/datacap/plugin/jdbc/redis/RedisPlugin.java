@@ -50,7 +50,7 @@ public class RedisPlugin
             this.response = new Response();
             this.jdbcConfigure = new JdbcConfigure();
             BeanUtils.copyProperties(this.jdbcConfigure, configure);
-            this.jdbcConfigure.setJdbcDriver("com.itmuch.redis.jdbc.redis.RedisDriver");
+            this.jdbcConfigure.setJdbcDriver("io.edurt.datacap.driver.redis.RedisDriver");
             this.jdbcConfigure.setJdbcType("redis");
             this.jdbcConfigure.setUsername(configure.getUsername().map(u -> "".equals(u) ? null : u));
             this.jdbcConfigure.setPassword(configure.getPassword().map(pwd -> "".equals(pwd) ? null : pwd));
