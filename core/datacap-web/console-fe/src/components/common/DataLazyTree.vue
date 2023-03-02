@@ -101,11 +101,12 @@ export default defineComponent({
             if (response.status) {
               const header = response.data.headers[0];
               response.data.columns.forEach(column => {
-                const data = new DataTree();
-                data.title = column[header];
-                data.database = item.database;
-                data.table = item.title;
-                data.level = DataTreeLevel.column;
+                const data = {
+                  title: column[header],
+                  database: item.database,
+                  table: item.title,
+                  level: DataTreeLevel.column
+                };
                 dataChildArray.push(data);
               });
             }
