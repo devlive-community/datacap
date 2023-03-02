@@ -1,7 +1,10 @@
 name: Before checker with maven
 
 on:
-  push
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "dev" ]
 
 jobs:
   before_checker_loading:
