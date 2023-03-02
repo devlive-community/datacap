@@ -5,8 +5,8 @@ import io.edurt.datacap.core.Utils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import redis.clients.jedis.BinaryJedisCluster;
 import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisCluster;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class RedisClusterConnectionInfo extends BaseConnectionInfo {
         super((info));
         try {
             URI uri = new URI(rawUrl);
-            Object maxAttemptsString = info.getOrDefault("maxAttempts", BinaryJedisCluster.DEFAULT_MAX_ATTEMPTS);
+            Object maxAttemptsString = info.getOrDefault("maxAttempts", JedisCluster.DEFAULT_MAX_ATTEMPTS);
             int maxAttempts = Integer.parseInt(maxAttemptsString.toString());
 
             String query = uri.getQuery();
