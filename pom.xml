@@ -4,7 +4,7 @@
     <groupId>io.edurt.datacap</groupId>
     <artifactId>datacap</artifactId>
     <packaging>pom</packaging>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.6.0</version>
 
     <modules>
         <module>client/datacap-cli</module>
@@ -12,6 +12,8 @@
         <module>core/datacap-parser</module>
         <module>core/datacap-spi</module>
         <module>core/datacap-server</module>
+        <module>lib/datacap-http</module>
+        <module>lib/datacap-logger</module>
         <module>plugin/datacap-native-alioss</module>
         <module>plugin/datacap-native-zookeeper</module>
         <module>plugin/datacap-native-redis</module>
@@ -114,7 +116,7 @@
         <plugin.maven.cobertura.version>2.7</plugin.maven.cobertura.version>
         <plugin.maven.dependency.version>3.0.1</plugin.maven.dependency.version>
         <plugin.maven.source.version>2.2.1</plugin.maven.source.version>
-        <plugin.maven.javadoc.version>3.4.1</plugin.maven.javadoc.version>
+        <plugin.maven.javadoc.version>3.5.0</plugin.maven.javadoc.version>
         <plugin.maven.gpg.version>1.6</plugin.maven.gpg.version>
         <plugin.maven.nexus.version>1.6</plugin.maven.nexus.version>
         <environment.compile.java.version>1.8</environment.compile.java.version>

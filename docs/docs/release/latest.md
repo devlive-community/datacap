@@ -6,55 +6,53 @@
 
 | Release Version | Release Time |
 |:---------------:|:------------:|
-|     `1.5.0`     | `2023-02-16` |
+|     `1.6.0`     | `2023-03-02` |
 
 #### General
 
 ---
 
-- Support dsl query
-- Remove incubator
-- Add sql parser
-- Refactor the module directories
-- Set port default value is 0
+- Add logo
+- Support `SHOW PATHS xxx`
+- Fixed function time field
+- Refactor all module
+- Add http lib
+- Add logger lib
 
 #### SPI
 
 ---
 
-- Fixed jdbc no password exception is configured
+- JDBC: Repair Connection failure Do not close the connection
 
 #### Web
 
 ---
 
-- Support multi column sort
+- Add default watermark
+- Remove about page
+- Add routing permission control
+- Optimize lazy loading of the tree menu of the query page
 
 #### Plugins
 
 ---
 
-- Support zookeeper for native
+- Support duckdb for jdbc close #249
+- Support alioss for native #250
 
-#### Docs
-
----
-
-- Add powered by page
-
-#### Redis (Native)
+#### Zookeeper (Native)
 
 ---
 
-- Fixed mget,hget value is displayed as null #219
+- Support `SHOW PATHS`
 
 #### Dependencies
 
 ---
 
-- Bump maven-javadoc-plugin from 2.10.4 to 3.4.1
-- Bump ojdbc8 from 21.1.0.0 to 21.9.0.0
-- Bump mongodb-jdbc from 2.0.0 to 2.0.2
+- Bump maven-javadoc-plugin from `3.4.1` to `3.5.1`
+- Bump oceanbas-client from `2.4.0` to `2.4.2`
 
 #### Contributors
 
@@ -66,6 +64,8 @@
 
     In no particular order
 
-|   GitHub ID    |
-|:--------------:|
-|    @qianmoQ    |
+| GitHub ID  |
+|:----------:|
+| @why198852 |
+|   @mlboy   |
+|  @qianmoQ  |
