@@ -40,6 +40,54 @@ public class SqlBaseBaseListener implements SqlBaseListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterKafkaQueryTopicStatement(SqlBaseParser.KafkaQueryTopicStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitKafkaQueryTopicStatement(SqlBaseParser.KafkaQueryTopicStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterKafkaQueryConsumerStatement(SqlBaseParser.KafkaQueryConsumerStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitKafkaQueryConsumerStatement(SqlBaseParser.KafkaQueryConsumerStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterKafkaQueryStatement(SqlBaseParser.KafkaQueryStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitKafkaQueryStatement(SqlBaseParser.KafkaQueryStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterKafkaStatement(SqlBaseParser.KafkaStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitKafkaStatement(SqlBaseParser.KafkaStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterChildPathStatement(SqlBaseParser.ChildPathStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}

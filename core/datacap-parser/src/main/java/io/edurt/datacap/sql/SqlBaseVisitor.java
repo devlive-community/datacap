@@ -60,7 +60,11 @@ public class SqlBaseVisitor
         int i = 0;
         for (; i < childCount; i++) {
             ParseTree child = statementContext.getChild(i);
-            if (child instanceof SqlBaseParser.ColumnStatementContext) {
+            /* Kafka Statement */
+            if (child instanceof SqlBaseParser.KafkaStatementContext) {
+                this.handlerWithKafkaStatement((SqlBaseParser.KafkaStatementContext) child);
+            }
+            else if (child instanceof SqlBaseParser.ColumnStatementContext) {
                 configure.setColumns(Arrays.asList(child.getText()));
             }
             else if (child instanceof SqlBaseParser.FromClauseContext) {
@@ -86,6 +90,26 @@ public class SqlBaseVisitor
             }
             else if (child instanceof TerminalNode) {
                 this.applyToken(child.getText(), true);
+            }
+        }
+    }
+
+    private void handlerWithKafkaStatement(SqlBaseParser.KafkaStatementContext context)
+    {
+        ParseTree node = context.getChild(0);
+        if (node instanceof SqlBaseParser.KafkaQueryStatementContext) {
+            ParseTree queryNode = node.getChild(0);
+            if (queryNode instanceof SqlBaseParser.KafkaQueryTopicStatementContext | queryNode instanceof SqlBaseParser.KafkaQueryConsumerStatementContext) {
+                int count = queryNode.getChildCount();
+                this.applyToken(queryNode.getChild(0).getText(), false);
+                this.applyToken(queryNode.getChild(1).getText(), true);
+                // If the total number is greater than 2, the mark specifies the topic, which is the table name
+                if (count > 2) {
+                    ParseTree fromNode = queryNode.getChild(count - 1);
+                    if (fromNode instanceof SqlBaseParser.FromClauseContext) {
+                        configure.setTable(fromNode.getChild(1).getText());
+                    }
+                }
             }
         }
     }

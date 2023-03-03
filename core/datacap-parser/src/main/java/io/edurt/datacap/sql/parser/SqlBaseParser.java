@@ -17,15 +17,18 @@ public class SqlBaseParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, SHOW=2, PATHS=3, SELECT=4, FROM=5, STRING=6, IDENTIFIER=7, BACKQUOTED_IDENTIFIER=8, 
-		SIMPLE_COMMENT=9, BRACKETED_EMPTY_COMMENT=10, BRACKETED_COMMENT=11, WS=12;
+		T__0=1, SHOW=2, PATHS=3, TOPICS=4, CONSUMERS=5, SELECT=6, FROM=7, STRING=8, 
+		IDENTIFIER=9, BACKQUOTED_IDENTIFIER=10, SIMPLE_COMMENT=11, BRACKETED_EMPTY_COMMENT=12, 
+		BRACKETED_COMMENT=13, WS=14;
 	public static final int
-		RULE_singleStatement = 0, RULE_statement = 1, RULE_childPathStatement = 2, 
-		RULE_columnStatement = 3, RULE_fromClause = 4, RULE_tableName = 5, RULE_identifier = 6, 
-		RULE_quotedIdentifier = 7;
+		RULE_singleStatement = 0, RULE_statement = 1, RULE_kafkaQueryTopicStatement = 2, 
+		RULE_kafkaQueryConsumerStatement = 3, RULE_kafkaQueryStatement = 4, RULE_kafkaStatement = 5, 
+		RULE_childPathStatement = 6, RULE_columnStatement = 7, RULE_fromClause = 8, 
+		RULE_tableName = 9, RULE_identifier = 10, RULE_quotedIdentifier = 11;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"singleStatement", "statement", "childPathStatement", "columnStatement", 
+			"singleStatement", "statement", "kafkaQueryTopicStatement", "kafkaQueryConsumerStatement", 
+			"kafkaQueryStatement", "kafkaStatement", "childPathStatement", "columnStatement", 
 			"fromClause", "tableName", "identifier", "quotedIdentifier"
 		};
 	}
@@ -33,14 +36,15 @@ public class SqlBaseParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'.'", null, null, null, null, null, null, null, null, "'/**/'"
+			null, "'.'", null, null, "'TOPICS'", "'CONSUMERS'", null, null, null, 
+			null, null, null, "'/**/'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, "SHOW", "PATHS", "SELECT", "FROM", "STRING", "IDENTIFIER", 
-			"BACKQUOTED_IDENTIFIER", "SIMPLE_COMMENT", "BRACKETED_EMPTY_COMMENT", 
+			null, null, "SHOW", "PATHS", "TOPICS", "CONSUMERS", "SELECT", "FROM", 
+			"STRING", "IDENTIFIER", "BACKQUOTED_IDENTIFIER", "SIMPLE_COMMENT", "BRACKETED_EMPTY_COMMENT", 
 			"BRACKETED_COMMENT", "WS"
 		};
 	}
@@ -128,17 +132,17 @@ public class SqlBaseParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(19);
+			setState(27);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==SHOW || _la==SELECT) {
 				{
 				{
-				setState(16);
+				setState(24);
 				statement();
 				}
 				}
-				setState(21);
+				setState(29);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -167,6 +171,9 @@ public class SqlBaseParser extends Parser {
 		public FromClauseContext fromClause() {
 			return getRuleContext(FromClauseContext.class,0);
 		}
+		public KafkaStatementContext kafkaStatement() {
+			return getRuleContext(KafkaStatementContext.class,0);
+		}
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -190,31 +197,250 @@ public class SqlBaseParser extends Parser {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_statement);
 		try {
-			setState(28);
+			setState(37);
 			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case SHOW:
+			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
+			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(22);
+				setState(30);
 				match(SHOW);
-				setState(23);
+				setState(31);
 				childPathStatement();
 				}
 				break;
-			case SELECT:
+			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(24);
+				setState(32);
 				match(SELECT);
-				setState(25);
+				setState(33);
 				columnStatement();
-				setState(26);
+				setState(34);
 				fromClause();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(36);
+				kafkaStatement();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class KafkaQueryTopicStatementContext extends ParserRuleContext {
+		public TerminalNode SHOW() { return getToken(SqlBaseParser.SHOW, 0); }
+		public TerminalNode TOPICS() { return getToken(SqlBaseParser.TOPICS, 0); }
+		public KafkaQueryTopicStatementContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_kafkaQueryTopicStatement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SqlBaseListener ) ((SqlBaseListener)listener).enterKafkaQueryTopicStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SqlBaseListener ) ((SqlBaseListener)listener).exitKafkaQueryTopicStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SqlBaseVisitor ) return ((SqlBaseVisitor<? extends T>)visitor).visitKafkaQueryTopicStatement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final KafkaQueryTopicStatementContext kafkaQueryTopicStatement() throws RecognitionException {
+		KafkaQueryTopicStatementContext _localctx = new KafkaQueryTopicStatementContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_kafkaQueryTopicStatement);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(39);
+			match(SHOW);
+			setState(40);
+			match(TOPICS);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class KafkaQueryConsumerStatementContext extends ParserRuleContext {
+		public TerminalNode SHOW() { return getToken(SqlBaseParser.SHOW, 0); }
+		public TerminalNode CONSUMERS() { return getToken(SqlBaseParser.CONSUMERS, 0); }
+		public FromClauseContext fromClause() {
+			return getRuleContext(FromClauseContext.class,0);
+		}
+		public KafkaQueryConsumerStatementContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_kafkaQueryConsumerStatement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SqlBaseListener ) ((SqlBaseListener)listener).enterKafkaQueryConsumerStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SqlBaseListener ) ((SqlBaseListener)listener).exitKafkaQueryConsumerStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SqlBaseVisitor ) return ((SqlBaseVisitor<? extends T>)visitor).visitKafkaQueryConsumerStatement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final KafkaQueryConsumerStatementContext kafkaQueryConsumerStatement() throws RecognitionException {
+		KafkaQueryConsumerStatementContext _localctx = new KafkaQueryConsumerStatementContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_kafkaQueryConsumerStatement);
+		try {
+			setState(47);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(42);
+				match(SHOW);
+				setState(43);
+				match(CONSUMERS);
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(44);
+				match(SHOW);
+				setState(45);
+				match(CONSUMERS);
+				setState(46);
+				fromClause();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class KafkaQueryStatementContext extends ParserRuleContext {
+		public KafkaQueryTopicStatementContext kafkaQueryTopicStatement() {
+			return getRuleContext(KafkaQueryTopicStatementContext.class,0);
+		}
+		public KafkaQueryConsumerStatementContext kafkaQueryConsumerStatement() {
+			return getRuleContext(KafkaQueryConsumerStatementContext.class,0);
+		}
+		public KafkaQueryStatementContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_kafkaQueryStatement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SqlBaseListener ) ((SqlBaseListener)listener).enterKafkaQueryStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SqlBaseListener ) ((SqlBaseListener)listener).exitKafkaQueryStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SqlBaseVisitor ) return ((SqlBaseVisitor<? extends T>)visitor).visitKafkaQueryStatement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final KafkaQueryStatementContext kafkaQueryStatement() throws RecognitionException {
+		KafkaQueryStatementContext _localctx = new KafkaQueryStatementContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_kafkaQueryStatement);
+		try {
+			setState(51);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(49);
+				kafkaQueryTopicStatement();
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(50);
+				kafkaQueryConsumerStatement();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class KafkaStatementContext extends ParserRuleContext {
+		public KafkaQueryStatementContext kafkaQueryStatement() {
+			return getRuleContext(KafkaQueryStatementContext.class,0);
+		}
+		public KafkaStatementContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_kafkaStatement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SqlBaseListener ) ((SqlBaseListener)listener).enterKafkaStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SqlBaseListener ) ((SqlBaseListener)listener).exitKafkaStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SqlBaseVisitor ) return ((SqlBaseVisitor<? extends T>)visitor).visitKafkaStatement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final KafkaStatementContext kafkaStatement() throws RecognitionException {
+		KafkaStatementContext _localctx = new KafkaStatementContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_kafkaStatement);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(53);
+			kafkaQueryStatement();
 			}
 		}
 		catch (RecognitionException re) {
@@ -254,24 +480,24 @@ public class SqlBaseParser extends Parser {
 
 	public final ChildPathStatementContext childPathStatement() throws RecognitionException {
 		ChildPathStatementContext _localctx = new ChildPathStatementContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_childPathStatement);
+		enterRule(_localctx, 12, RULE_childPathStatement);
 		try {
-			setState(33);
+			setState(58);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(30);
+				setState(55);
 				match(PATHS);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(31);
+				setState(56);
 				match(PATHS);
-				setState(32);
+				setState(57);
 				fromClause();
 				}
 				break;
@@ -313,11 +539,11 @@ public class SqlBaseParser extends Parser {
 
 	public final ColumnStatementContext columnStatement() throws RecognitionException {
 		ColumnStatementContext _localctx = new ColumnStatementContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_columnStatement);
+		enterRule(_localctx, 14, RULE_columnStatement);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(35);
+			setState(60);
 			identifier();
 			}
 		}
@@ -358,13 +584,13 @@ public class SqlBaseParser extends Parser {
 
 	public final FromClauseContext fromClause() throws RecognitionException {
 		FromClauseContext _localctx = new FromClauseContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_fromClause);
+		enterRule(_localctx, 16, RULE_fromClause);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(37);
+			setState(62);
 			match(FROM);
-			setState(38);
+			setState(63);
 			tableName();
 			}
 		}
@@ -407,26 +633,26 @@ public class SqlBaseParser extends Parser {
 
 	public final TableNameContext tableName() throws RecognitionException {
 		TableNameContext _localctx = new TableNameContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_tableName);
+		enterRule(_localctx, 18, RULE_tableName);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(40);
+			setState(65);
 			identifier();
-			setState(45);
+			setState(70);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__0) {
 				{
 				{
-				setState(41);
+				setState(66);
 				match(T__0);
-				setState(42);
+				setState(67);
 				identifier();
 				}
 				}
-				setState(47);
+				setState(72);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -479,34 +705,34 @@ public class SqlBaseParser extends Parser {
 
 	public final IdentifierContext identifier() throws RecognitionException {
 		IdentifierContext _localctx = new IdentifierContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_identifier);
+		enterRule(_localctx, 20, RULE_identifier);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(53);
+			setState(78);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << STRING) | (1L << IDENTIFIER) | (1L << BACKQUOTED_IDENTIFIER))) != 0)) {
 				{
-				setState(51);
+				setState(76);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case IDENTIFIER:
 					{
-					setState(48);
+					setState(73);
 					match(IDENTIFIER);
 					}
 					break;
 				case STRING:
 					{
-					setState(49);
+					setState(74);
 					match(STRING);
 					}
 					break;
 				case BACKQUOTED_IDENTIFIER:
 					{
-					setState(50);
+					setState(75);
 					quotedIdentifier();
 					}
 					break;
@@ -514,7 +740,7 @@ public class SqlBaseParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(55);
+				setState(80);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -554,11 +780,11 @@ public class SqlBaseParser extends Parser {
 
 	public final QuotedIdentifierContext quotedIdentifier() throws RecognitionException {
 		QuotedIdentifierContext _localctx = new QuotedIdentifierContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_quotedIdentifier);
+		enterRule(_localctx, 22, RULE_quotedIdentifier);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(56);
+			setState(81);
 			match(BACKQUOTED_IDENTIFIER);
 			}
 		}
@@ -574,22 +800,27 @@ public class SqlBaseParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\16=\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\7\2\24\n\2\f\2"+
-		"\16\2\27\13\2\3\3\3\3\3\3\3\3\3\3\3\3\5\3\37\n\3\3\4\3\4\3\4\5\4$\n\4"+
-		"\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3\7\7\7.\n\7\f\7\16\7\61\13\7\3\b\3\b\3\b"+
-		"\7\b\66\n\b\f\b\16\b9\13\b\3\t\3\t\3\t\2\2\n\2\4\6\b\n\f\16\20\2\2\2;"+
-		"\2\25\3\2\2\2\4\36\3\2\2\2\6#\3\2\2\2\b%\3\2\2\2\n\'\3\2\2\2\f*\3\2\2"+
-		"\2\16\67\3\2\2\2\20:\3\2\2\2\22\24\5\4\3\2\23\22\3\2\2\2\24\27\3\2\2\2"+
-		"\25\23\3\2\2\2\25\26\3\2\2\2\26\3\3\2\2\2\27\25\3\2\2\2\30\31\7\4\2\2"+
-		"\31\37\5\6\4\2\32\33\7\6\2\2\33\34\5\b\5\2\34\35\5\n\6\2\35\37\3\2\2\2"+
-		"\36\30\3\2\2\2\36\32\3\2\2\2\37\5\3\2\2\2 $\7\5\2\2!\"\7\5\2\2\"$\5\n"+
-		"\6\2# \3\2\2\2#!\3\2\2\2$\7\3\2\2\2%&\5\16\b\2&\t\3\2\2\2\'(\7\7\2\2("+
-		")\5\f\7\2)\13\3\2\2\2*/\5\16\b\2+,\7\3\2\2,.\5\16\b\2-+\3\2\2\2.\61\3"+
-		"\2\2\2/-\3\2\2\2/\60\3\2\2\2\60\r\3\2\2\2\61/\3\2\2\2\62\66\7\t\2\2\63"+
-		"\66\7\b\2\2\64\66\5\20\t\2\65\62\3\2\2\2\65\63\3\2\2\2\65\64\3\2\2\2\66"+
-		"9\3\2\2\2\67\65\3\2\2\2\678\3\2\2\28\17\3\2\2\29\67\3\2\2\2:;\7\n\2\2"+
-		";\21\3\2\2\2\b\25\36#/\65\67";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20V\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
+		"\f\t\f\4\r\t\r\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\5\3(\n\3\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\5\5\62\n\5\3\6\3\6\5\6\66"+
+		"\n\6\3\7\3\7\3\b\3\b\3\b\5\b=\n\b\3\t\3\t\3\n\3\n\3\n\3\13\3\13\3\13\7"+
+		"\13G\n\13\f\13\16\13J\13\13\3\f\3\f\3\f\7\fO\n\f\f\f\16\fR\13\f\3\r\3"+
+		"\r\3\r\2\2\16\2\4\6\b\n\f\16\20\22\24\26\30\2\2\2S\2\35\3\2\2\2\4\'\3"+
+		"\2\2\2\6)\3\2\2\2\b\61\3\2\2\2\n\65\3\2\2\2\f\67\3\2\2\2\16<\3\2\2\2\20"+
+		">\3\2\2\2\22@\3\2\2\2\24C\3\2\2\2\26P\3\2\2\2\30S\3\2\2\2\32\34\5\4\3"+
+		"\2\33\32\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36\3\3\2\2"+
+		"\2\37\35\3\2\2\2 !\7\4\2\2!(\5\16\b\2\"#\7\b\2\2#$\5\20\t\2$%\5\22\n\2"+
+		"%(\3\2\2\2&(\5\f\7\2\' \3\2\2\2\'\"\3\2\2\2\'&\3\2\2\2(\5\3\2\2\2)*\7"+
+		"\4\2\2*+\7\6\2\2+\7\3\2\2\2,-\7\4\2\2-\62\7\7\2\2./\7\4\2\2/\60\7\7\2"+
+		"\2\60\62\5\22\n\2\61,\3\2\2\2\61.\3\2\2\2\62\t\3\2\2\2\63\66\5\6\4\2\64"+
+		"\66\5\b\5\2\65\63\3\2\2\2\65\64\3\2\2\2\66\13\3\2\2\2\678\5\n\6\28\r\3"+
+		"\2\2\29=\7\5\2\2:;\7\5\2\2;=\5\22\n\2<9\3\2\2\2<:\3\2\2\2=\17\3\2\2\2"+
+		">?\5\26\f\2?\21\3\2\2\2@A\7\t\2\2AB\5\24\13\2B\23\3\2\2\2CH\5\26\f\2D"+
+		"E\7\3\2\2EG\5\26\f\2FD\3\2\2\2GJ\3\2\2\2HF\3\2\2\2HI\3\2\2\2I\25\3\2\2"+
+		"\2JH\3\2\2\2KO\7\13\2\2LO\7\n\2\2MO\5\30\r\2NK\3\2\2\2NL\3\2\2\2NM\3\2"+
+		"\2\2OR\3\2\2\2PN\3\2\2\2PQ\3\2\2\2Q\27\3\2\2\2RP\3\2\2\2ST\7\f\2\2T\31"+
+		"\3\2\2\2\n\35\'\61\65<HNP";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

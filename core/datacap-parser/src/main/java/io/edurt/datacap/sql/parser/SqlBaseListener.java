@@ -28,6 +28,46 @@ public interface SqlBaseListener extends ParseTreeListener {
 	 */
 	void exitStatement(SqlBaseParser.StatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SqlBaseParser#kafkaQueryTopicStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterKafkaQueryTopicStatement(SqlBaseParser.KafkaQueryTopicStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SqlBaseParser#kafkaQueryTopicStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitKafkaQueryTopicStatement(SqlBaseParser.KafkaQueryTopicStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SqlBaseParser#kafkaQueryConsumerStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterKafkaQueryConsumerStatement(SqlBaseParser.KafkaQueryConsumerStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SqlBaseParser#kafkaQueryConsumerStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitKafkaQueryConsumerStatement(SqlBaseParser.KafkaQueryConsumerStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SqlBaseParser#kafkaQueryStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterKafkaQueryStatement(SqlBaseParser.KafkaQueryStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SqlBaseParser#kafkaQueryStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitKafkaQueryStatement(SqlBaseParser.KafkaQueryStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SqlBaseParser#kafkaStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterKafkaStatement(SqlBaseParser.KafkaStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SqlBaseParser#kafkaStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitKafkaStatement(SqlBaseParser.KafkaStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SqlBaseParser#childPathStatement}.
 	 * @param ctx the parse tree
 	 */

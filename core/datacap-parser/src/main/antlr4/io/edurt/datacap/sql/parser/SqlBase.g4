@@ -4,12 +4,29 @@ singleStatement:(statement)*;
 
 SHOW: [Ss][Hh][Oo][Ww];
 PATHS: [Pp][Aa][Tt][Hh][Ss];
+TOPICS: 'TOPICS';
+CONSUMERS: 'CONSUMERS';
 SELECT: [Ss][Ee][Ll][Ee][Cc][Tt];
 FROM: [Ff][Rr][Oo][Mm];
 
 statement
     : SHOW childPathStatement
     | SELECT columnStatement fromClause
+    | kafkaStatement
+    ;
+
+// -------------------- Kafka Statement --------------------
+kafkaQueryTopicStatement: SHOW TOPICS;
+kafkaQueryConsumerStatement
+    : SHOW CONSUMERS
+    | SHOW CONSUMERS fromClause
+    ;
+kafkaQueryStatement
+    : kafkaQueryTopicStatement
+    | kafkaQueryConsumerStatement
+    ;
+kafkaStatement
+    : kafkaQueryStatement
     ;
 
 // SHOW PATHS, SHOW PATHS FROM ...
