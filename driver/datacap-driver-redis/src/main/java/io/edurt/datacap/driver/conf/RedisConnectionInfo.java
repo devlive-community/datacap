@@ -8,14 +8,17 @@ import java.util.Properties;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class RedisConnectionInfo extends BaseConnectionInfo {
+public class RedisConnectionInfo
+        extends BaseConnectionInfo
+{
     private final static Logger LOGGER = new Logger(RedisConnectionInfo.class);
 
     private String host;
     private int port;
     private int dbIndex;
 
-    public RedisConnectionInfo(String rawUrl, Properties info) {
+    public RedisConnectionInfo(String rawUrl, Properties info)
+    {
         super(info);
         try {
             URI uri = new URI(rawUrl);
@@ -32,8 +35,8 @@ public class RedisConnectionInfo extends BaseConnectionInfo {
             this.host = host;
             this.port = port;
             this.dbIndex = dbIndex;
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOGGER.log("Cannot parse JDBC URL %s", rawUrl);
             throw new RuntimeException("Cannot parse JDBC URL: " + rawUrl, e);
         }

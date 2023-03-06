@@ -1,5 +1,6 @@
 package io.edurt.datacap;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.core.Logger;
 import io.edurt.datacap.core.RedisStatement;
 import lombok.AllArgsConstructor;
@@ -10,10 +11,15 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.sql.*;
 
-public class RedisTest {
+@SuppressFBWarnings(value = {"OBL_UNSATISFIED_OBLIGATION", "SQL_BAD_RESULTSET_ACCESS"},
+        justification = "I prefer to suppress these FindBugs warnings")
+public class RedisTest
+{
     private final static Logger LOGGER = new Logger(RedisStatement.class);
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args)
+            throws SQLException, ClassNotFoundException
+    {
         Class.forName("com.itmuch.redis.jdbc.redis.RedisDriver");
 
         Connection connection = DriverManager.getConnection("jdbc:redis://localhost:6379/0");
@@ -73,10 +79,10 @@ public class RedisTest {
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-class User {
+class User
+{
     private String name;
     private Short age;
     private String email;
     private BigDecimal money;
-
 }

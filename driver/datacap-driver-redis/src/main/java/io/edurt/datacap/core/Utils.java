@@ -5,8 +5,10 @@ import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Utils {
-    public static boolean isNumber(String str) {
+public class Utils
+{
+    public static boolean isNumber(String str)
+    {
         if (str == null || str.length() == 0) {
             return false;
         }
@@ -19,7 +21,8 @@ public class Utils {
         return true;
     }
 
-    public static <T> List<T> toList(T[] arr) {
+    public static <T> List<T> toList(T[] arr)
+    {
         if (arr == null) {
             return null;
         }
@@ -27,7 +30,8 @@ public class Utils {
                 .collect(Collectors.toList());
     }
 
-    public static Op parseSql(String rawSql) {
+    public static Op parseSql(String rawSql)
+    {
         // for IDEA database tool only
         if (rawSql.contains("SELECT 'keep alive'")) {
             return new Op(rawSql, null, "PING", new String[0]);
@@ -43,7 +47,8 @@ public class Utils {
         lines.forEach(line -> {
             if (line.startsWith("--")) {
                 hintLines.add(line);
-            } else {
+            }
+            else {
                 sqlLines.add(line);
             }
         });
@@ -57,7 +62,6 @@ public class Utils {
                     return new Hint(HintKey.fromString(arr[0]), arr[1]);
                 }).collect(Collectors.toList());
 
-
         // sql to execute
         StringBuilder sb = new StringBuilder();
         sqlLines.forEach(sb::append);
@@ -70,13 +74,15 @@ public class Utils {
 
         if (arr.length == 1) {
             return new Op(rawSql, hints, commandString, new String[0]);
-        } else {
+        }
+        else {
             String[] commandParams = Arrays.copyOfRange(arr, 1, arr.length);
             return new Op(rawSql, hints, commandString, commandParams);
         }
     }
 
-    public static Map<String, String> parseQueryStringToMap(String queryString) {
+    public static Map<String, String> parseQueryStringToMap(String queryString)
+    {
         String[] params = queryString.split("&");
         Map<String, String> map = new HashMap<>();
         for (String param : params) {

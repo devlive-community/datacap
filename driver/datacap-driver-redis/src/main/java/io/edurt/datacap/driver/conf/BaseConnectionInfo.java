@@ -7,13 +7,15 @@ import java.util.Properties;
 
 @Data
 @NoArgsConstructor
-public class BaseConnectionInfo {
+public class BaseConnectionInfo
+{
     protected String username;
     protected String password;
     protected boolean ssl;
     protected int timeout;
 
-    public BaseConnectionInfo(Properties info) {
+    public BaseConnectionInfo(Properties info)
+    {
         String username = info.getProperty("user");
         String password = info.getProperty("password");
         String sslString = info.getProperty("ssl");

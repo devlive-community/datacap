@@ -2,14 +2,17 @@ package io.edurt.datacap.core;
 
 import java.util.Arrays;
 
-public class Logger {
+public class Logger
+{
     private final Class<?> mark;
 
-    public Logger(Class<?> mark) {
+    public Logger(Class<?> mark)
+    {
         this.mark = mark;
     }
 
-    public synchronized void log(String format, Object... arguments) {
+    public synchronized void log(String format, Object... arguments)
+    {
         Object[] objs = Arrays.stream(arguments)
                 .map(t -> {
                     if (t instanceof Throwable) {
