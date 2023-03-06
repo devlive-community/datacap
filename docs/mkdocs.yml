@@ -23,6 +23,7 @@ theme:
     - content.tabs.link
 #    - navigation.expand
     - navigation.indexes
+    - navigation.path
     - navigation.sections
     - navigation.tabs
     - navigation.top
@@ -49,6 +50,8 @@ extra:
       link: https://github.com/EdurtIO
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/qianmoQ/
+  status:
+    new: Recently added
 extra_css:
   - stylesheets/extra.css
 markdown_extensions:
@@ -129,9 +132,13 @@ nav:
           - MySQL: reference/plugin/jdbc/mysql.md
           - ClickHouse: reference/plugin/jdbc/clickhouse.md
         - Native:
-          - Redis: reference/plugin/native/redis.md
-          - Zookeeper: reference/plugin/native/zookeeper.md
+          - Apache Kafka:
+            - reference/plugin/native/kafka/index.md
+            - SHOW TOPICS: reference/sql_syntax/plugin/native/kafka/show_topics.md
+            - SHOW CONSUMERS: reference/sql_syntax/plugin/native/kafka/show_consumers.md
           - Aliyun OSS: reference/plugin/native/alioss.md
+          - Zookeeper: reference/plugin/native/zookeeper.md
+          - Redis: reference/plugin/native/redis.md
         - Http:
           - ClickHouse: reference/plugin/http/clickhouse.md
         - CrateDB: reference/plugin/v120/cratedb.md
