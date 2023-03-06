@@ -58,6 +58,7 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
+      this.dataTreeArray = [];
       this.loading = true;
       MangerService.getDatabases(this.id)
         .then(response => {

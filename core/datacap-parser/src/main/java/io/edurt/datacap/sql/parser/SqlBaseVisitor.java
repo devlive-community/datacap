@@ -23,6 +23,30 @@ public interface SqlBaseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatement(SqlBaseParser.StatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SqlBaseParser#kafkaQueryTopicStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitKafkaQueryTopicStatement(SqlBaseParser.KafkaQueryTopicStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SqlBaseParser#kafkaQueryConsumerStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitKafkaQueryConsumerStatement(SqlBaseParser.KafkaQueryConsumerStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SqlBaseParser#kafkaQueryStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitKafkaQueryStatement(SqlBaseParser.KafkaQueryStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SqlBaseParser#kafkaStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitKafkaStatement(SqlBaseParser.KafkaStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SqlBaseParser#childPathStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

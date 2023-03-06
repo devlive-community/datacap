@@ -4,5 +4,8 @@ public enum SqlBaseToken
 {
     SHOW,
     PATHS,
-    SELECT
+    SELECT,
+    // ------ Kafka ------
+    TOPICS,
+    CONSUMERS,
 }
