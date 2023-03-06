@@ -14,7 +14,6 @@
     <description>DataCap - Redis</description>
 
     <properties>
-        <redis-jdbc.version>0.0.1</redis-jdbc.version>
         <plugin.name>jdbc-redis</plugin.name>
     </properties>
 
@@ -25,13 +24,13 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-driver-redis</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.itmuch.redis</groupId>
-            <artifactId>redis-jdbc-driver</artifactId>
-            <version>${redis-jdbc.version}</version>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
         </dependency>
     </dependencies>
 
