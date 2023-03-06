@@ -23,8 +23,8 @@ Support Time: `2023-03-06`
 
 This chapter describes the SQL syntax used in DataCap Kafka plugin.
 
-[SHOW TOPICS](../../../sql_syntax/plugin/native/kafka/show_topics.md) <br />
-[SHOW CONSUMERS](../../../sql_syntax/plugin/native/kafka/show_consumers.md)
+[SHOW TOPICS](../../../sql_syntax/connectors/native/kafka/show_topics.md) <br />
+[SHOW CONSUMERS](../../../sql_syntax/connectors/native/kafka/show_consumers.md)
 
 #### Configure
 
