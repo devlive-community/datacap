@@ -12,11 +12,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class JedisRedisClusterClient extends AbstractRedisClient {
+public class JedisRedisClusterClient
+        extends AbstractRedisClient
+{
     private final JedisCluster jedisCluster;
 
     @Override
-    protected Object sendCommand(Op op) {
+    protected Object sendCommand(Op op)
+    {
         String rawSql = op.getOriginSql();
         String commandString = op.getCommand();
         String[] params = op.getParams();
@@ -34,23 +37,28 @@ public class JedisRedisClusterClient extends AbstractRedisClient {
             Object result;
             if (params == null || params.length == 0) {
                 result = this.jedisCluster.sendCommand(sampleKey, command);
-            } else {
+            }
+            else {
                 result = this.jedisCluster.sendCommand(sampleKey, command, params);
             }
             return result;
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             LOGGER.log("command `%s` cannot execute.", rawSql);
             throw new RuntimeException(String.format("command `%s` cannot execute.", rawSql));
         }
     }
 
     @Override
-    public void select(int dbIndex) throws SQLException {
+    public void select(int dbIndex)
+            throws SQLException
+    {
         throw new SQLException("Redis Cluster does not support this operation");
     }
 
     @Override
-    public void close() {
+    public void close()
+    {
         this.jedisCluster.close();
     }
 }

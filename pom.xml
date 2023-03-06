@@ -14,9 +14,11 @@
         <module>core/datacap-server</module>
         <module>lib/datacap-http</module>
         <module>lib/datacap-logger</module>
+        <module>driver/datacap-driver-redis</module>
         <module>plugin/datacap-native-alioss</module>
         <module>plugin/datacap-native-zookeeper</module>
         <module>plugin/datacap-native-redis</module>
+        <module>plugin/datacap-native-kafka</module>
         <module>plugin/datacap-http-cratedb</module>
         <module>plugin/datacap-http-clickhouse</module>
         <module>plugin/datacap-jdbc-clickhouse</module>
@@ -49,7 +51,6 @@
         <module>plugin/datacap-jdbc-sqlserver</module>
         <module>plugin/datacap-jdbc-tdengine</module>
         <module>plugin/datacap-jdbc-trino</module>
-        <module>driver/datacap-driver-redis</module>
     </modules>
 
     <name>DataCap</name>

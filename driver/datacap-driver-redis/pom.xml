@@ -6,7 +6,7 @@
     <parent>
         <artifactId>datacap</artifactId>
         <groupId>io.edurt.datacap</groupId>
-        <version>1.6.0</version>
+        <version>1.7.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -15,19 +15,19 @@
     <description>DataCap - Driver</description>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <redis.version>3.6.3</redis.version>
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>${redis.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>findbugs</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

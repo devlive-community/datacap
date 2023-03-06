@@ -18,13 +18,16 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class RedisClusterConnectionInfo extends BaseConnectionInfo {
+public class RedisClusterConnectionInfo
+        extends BaseConnectionInfo
+{
     public static final Logger LOGGER = new Logger(RedisClusterConnectionInfo.class);
 
     private Set<HostAndPort> nodes;
     private int maxAttempts;
 
-    public RedisClusterConnectionInfo(String rawUrl, Properties info) {
+    public RedisClusterConnectionInfo(String rawUrl, Properties info)
+    {
         super((info));
         try {
             URI uri = new URI(rawUrl);
@@ -43,7 +46,8 @@ public class RedisClusterConnectionInfo extends BaseConnectionInfo {
                     }).collect(Collectors.toSet());
 
             this.maxAttempts = maxAttempts;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOGGER.log("Cannot parse JDBC URL %s", rawUrl);
             throw new RuntimeException("Cannot parse JDBC URL: " + rawUrl, e);
         }

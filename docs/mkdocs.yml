@@ -23,6 +23,7 @@ theme:
     - content.tabs.link
 #    - navigation.expand
     - navigation.indexes
+    - navigation.path
     - navigation.sections
     - navigation.tabs
     - navigation.top
@@ -49,6 +50,8 @@ extra:
       link: https://github.com/EdurtIO
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/qianmoQ/
+  status:
+    new: Recently added
 extra_css:
   - stylesheets/extra.css
 markdown_extensions:
@@ -122,23 +125,23 @@ nav:
           - Template:
             - Sql: reference/admin/template/sql/home.md
       - Connecting to connectors:
+        - reference/connectors/index.md
         - JDBC:
-          - DuckDB:  reference/plugin/jdbc/duckdb.md
-          - Yandex Database:  reference/plugin/jdbc/ydb.md
-          - Snowflake: reference/plugin/jdbc/snowflake.md
-          - MySQL: reference/plugin/jdbc/mysql.md
-          - ClickHouse: reference/plugin/jdbc/clickhouse.md
+          - DuckDB:  reference/connectors/jdbc/duckdb.md
+          - Yandex Database:  reference/connectors/jdbc/ydb.md
+          - Snowflake: reference/connectors/jdbc/snowflake.md
+          - MySQL: reference/connectors/jdbc/mysql.md
+          - ClickHouse: reference/connectors/jdbc/clickhouse.md
         - Native:
-          - Redis: reference/plugin/native/redis.md
-          - Zookeeper: reference/plugin/native/zookeeper.md
-          - Aliyun OSS: reference/plugin/native/alioss.md
+          - Apache Kafka:
+            - reference/connectors/native/kafka/index.md
+            - SHOW TOPICS: reference/sql_syntax/connectors/native/kafka/show_topics.md
+            - SHOW CONSUMERS: reference/sql_syntax/connectors/native/kafka/show_consumers.md
+          - Aliyun OSS: reference/connectors/native/alioss.md
+          - Zookeeper: reference/connectors/native/zookeeper.md
+          - Redis: reference/connectors/native/redis.md
         - Http:
-          - ClickHouse: reference/plugin/http/clickhouse.md
-        - CrateDB: reference/plugin/v120/cratedb.md
-        - TDengine: reference/plugin/v120/tdengine.md
-        - Impala: reference/plugin/v120/impala.md
-        - Kylin: reference/database/kylin.md
-        - Oracle: reference/database/oracle.md
+          - ClickHouse: reference/connectors/http/clickhouse.md
       - Update:
           - Update to 1.6.0: reference/update/1.6.0.md
           - Update to 1.5.0: reference/update/1.5.0.md

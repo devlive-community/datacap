@@ -1,5 +1,6 @@
 package io.edurt.datacap.driver;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.core.Hint;
 import io.edurt.datacap.core.Logger;
 import io.edurt.datacap.core.Op;
@@ -14,26 +15,33 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
-public abstract class AbstractRedisClient implements RedisClient
+@SuppressFBWarnings(value = {"BC_BAD_CAST_TO_ABSTRACT_COLLECTION"},
+        justification = "I prefer to suppress these FindBugs warnings")
+public abstract class AbstractRedisClient
+        implements RedisClient
 {
     public static final Logger LOGGER = new Logger(AbstractRedisClient.class);
 
     @Override
-    public String[] sendCommand(String sql) throws SQLException {
+    public String[] sendCommand(String sql)
+            throws SQLException
+    {
         try {
             Op op = Utils.parseSql(sql);
 
             Object result = this.sendCommand(op);
 
             return this.decodeResult(sql, result, op.getHints());
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             throw new SQLException(e);
         }
     }
 
     protected abstract Object sendCommand(Op op);
 
-    protected Protocol.Command convertCommand(String commandString) {
+    protected Protocol.Command convertCommand(String commandString)
+    {
         return Arrays.stream(Protocol.Command.values())
                 .filter(t -> {
                     String string = t.toString();
@@ -45,7 +53,6 @@ public abstract class AbstractRedisClient implements RedisClient
                 ));
     }
 
-
     /**
      * hint:
      * -- decoder:jdk
@@ -56,22 +63,24 @@ public abstract class AbstractRedisClient implements RedisClient
      * @param hints
      * @return
      */
-    protected String[] decodeResult(String sql, Object originResult, List<Hint> hints) {
+    protected String[] decodeResult(String sql, Object originResult, List<Hint> hints)
+    {
         String[] decodedResult;
         if (originResult == null) {
-            decodedResult = new String[]{null};
-        } else if (originResult.getClass().isArray()) {
+            decodedResult = new String[] {null};
+        }
+        else if (originResult.getClass().isArray()) {
             String decoded = SafeEncoder.encode((byte[]) originResult);
             decodedResult = Stream.of(decoded)
                     .toArray(String[]::new);
-
-        } else if (originResult instanceof Collection) {
+        }
+        else if (originResult instanceof Collection) {
             List<?> list = (List<?>) originResult;
             decodedResult = list.stream()
                     .map(t -> SafeEncoder.encode((byte[]) t))
                     .toArray(String[]::new);
-
-        } else {
+        }
+        else {
             LOGGER.log("cannot decode result. originResult = %s", originResult);
             decodedResult = Stream.of(originResult.toString())
                     .toArray(String[]::new);

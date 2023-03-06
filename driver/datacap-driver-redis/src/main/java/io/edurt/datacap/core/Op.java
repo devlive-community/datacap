@@ -1,5 +1,6 @@
 package io.edurt.datacap.core;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,24 +10,27 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Op {
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
+        justification = "I prefer to suppress these FindBugs warnings")
+public class Op
+{
     /**
-     * 执行的原始SQL
+     * Executed original SQL
      */
     private String originSql;
 
     /**
-     * SQL中解析出来的hint
+     * Hint parsed from SQL
      */
     private List<Hint> hints;
 
     /**
-     * SQL中解析出来的command
+     * COMMAND parsed from SQL
      */
     private String command;
 
     /**
-     * SQL解析出来的参数
+     * Parameters parsed by SQL
      */
     private String[] params;
 }
