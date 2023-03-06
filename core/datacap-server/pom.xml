@@ -274,6 +274,11 @@
             <artifactId>datacap-native-alioss</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-native-kafka</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

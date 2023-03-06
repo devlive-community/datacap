@@ -18,6 +18,7 @@
         <module>plugin/datacap-native-alioss</module>
         <module>plugin/datacap-native-zookeeper</module>
         <module>plugin/datacap-native-redis</module>
+        <module>plugin/datacap-native-kafka</module>
         <module>plugin/datacap-http-cratedb</module>
         <module>plugin/datacap-http-clickhouse</module>
         <module>plugin/datacap-jdbc-clickhouse</module>
