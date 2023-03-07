@@ -12,6 +12,10 @@ const createHeaders = (i18n: any) => {
       ellipsis: true
     },
     {
+      title: i18n.t('common.type'),
+      slot: 'type'
+    },
+    {
       title: i18n.t('common.createTime'),
       key: 'createTime',
       ellipsis: true

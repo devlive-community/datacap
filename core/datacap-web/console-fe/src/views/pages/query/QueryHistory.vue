@@ -5,6 +5,11 @@
         <template #plugin="{ row }">
           <Ellipsis :text="row.plugin.name" :height="25" tooltip transfer/>
         </template>
+        <template #type="{ row }">
+          <Tooltip transfer :content="row?.plugin?.type">
+            <Avatar :src="'/static/images/plugin/' + row?.plugin?.type + '.png'" size="small" />
+          </Tooltip>
+        </template>
         <template #elapsed="{ row }">
           <Tooltip :content="$t('tooltip.elapsedMillisecond')" transfer>
             {{ row.elapsed }}
