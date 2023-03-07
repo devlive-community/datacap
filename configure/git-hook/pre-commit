@@ -34,7 +34,7 @@ job_check() {
         exit 0
     else
         if  command -v jenv version > /dev/null; then
-            jenc exec ./mvnw clean compile -T 1C checkstyle:checkstyle findbugs:findbugs -Dskip.yarn -DskipTests=true -Dgpg.skip
+            jenv exec ./mvnw clean compile -T 1C checkstyle:checkstyle findbugs:findbugs -Dskip.yarn -DskipTests=true -Dgpg.skip
         else
             ./mvnw clean compile -T 1C checkstyle:checkstyle findbugs:findbugs -Dskip.yarn -DskipTests=true -Dgpg.skip
         fi

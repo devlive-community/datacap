@@ -14,7 +14,7 @@ import okhttp3.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"},
+@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "DM_DEFAULT_ENCODING"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class HttpCommon
 {
