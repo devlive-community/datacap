@@ -12,7 +12,9 @@
           <Ellipsis :text="row.name" :length="8" tooltip transfer/>
         </template>
         <template #type="{ row }">
-          <Avatar :src="'/static/images/plugin/' + row.type + '.png'" size="small" />
+          <Tooltip transfer :content="row.type">
+            <Avatar :src="'/static/images/plugin/' + row.type + '.png'" size="small" />
+          </Tooltip>
         </template>
         <template #host="{ row }">
           <Ellipsis :text="row.host" :length="8" tooltip transfer/>
