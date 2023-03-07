@@ -93,4 +93,32 @@ public class HttpCommon
             return serverResponse;
         }
     }
+
+    public ServerResponse withTokenForPost(String body)
+    {
+        ServerResponse serverResponse = new ServerResponse();
+        Request request = new Request.Builder()
+                .url(this.getUrl())
+                .addHeader("Authorization", "Bearer " + this.configure.getToken())
+                .post(RequestBody.create(body.getBytes(), MediaType.parse("application/json")))
+                .build();
+        Call call = client.newCall(request);
+        try {
+            Response response = call.execute();
+            if (response.isSuccessful()) {
+                serverResponse = new Gson().fromJson(response.body().string(), ServerResponse.class);
+            }
+            else {
+                serverResponse.setStatus(false);
+                serverResponse.setMessage("Failed to connect to the server, please check whether the configured connection is correct.");
+            }
+        }
+        catch (Exception exception) {
+            serverResponse.setStatus(false);
+            serverResponse.setMessage("Failed to connect to the server, " + exception.getMessage());
+        }
+        finally {
+            return serverResponse;
+        }
+    }
 }
