@@ -6,7 +6,9 @@
         <Col :span="5">
           <Card :bordered="false" dis-hover>
             <div style="text-align:center">
-              <Avatar :size="40" :style="{'background-color': !testInfo.percent ? '#CCC' : testInfo.connected ? '#52c41a' : '#ff4d4f'}" icon="ios-person"/>
+              <Avatar :size="40"
+                      :src="formState?.type ? '/static/images/plugin/' + formState?.type.split(' ')[0] + '.png' : ''"
+                      :style="{'background-color': !testInfo.percent ? '#CCC' : testInfo.connected ? '#52c41a' : '#ff4d4f'}" icon="ios-person"/>
               <p>{{ !formState['type'] ? '_' : formState['type'] }}</p>
             </div>
           </Card>
@@ -100,13 +102,13 @@
         </Tabs>
       </Form>
       <template #footer>
-        <Button key="cancel" type="error" size="small" :disabled="connectionLoading" @click="handlerCancel()">
+        <Button key="cancel" type="error" size="small" :disabled="loading.test || loading.save" @click="handlerCancel()">
           {{ $t('common.cancel') }}
         </Button>
-        <Button key="test" type="primary" size="small" :loading="connectionLoading" @click="handlerTest()">
+        <Button type="primary" size="small" :loading="loading.test" :disabled="loading.save" @click="handlerTest()">
           {{ $t('common.test') }}
         </Button>
-        <Button key="submit" type="primary" size="small" :disabled="!testInfo.connected" @click="handlerSave()">
+        <Button type="primary" size="small" :loading="loading.save" :disabled="!testInfo.connected || loading.test" @click="handlerSave()">
           {{ $t('common.save') }}
         </Button>
       </template>
@@ -160,11 +162,14 @@ export default defineComponent({
       formState: {} as SourceModel,
       plugins: null,
       testInfo: {} as TestInfo,
-      connectionLoading: false,
       pluginTabs: ['source'],
       pluginConfigure: null,
       pluginTabConfigure: null,
-      applyPlugin: null
+      applyPlugin: null,
+      loading: {
+        test: false,
+        save: false
+      }
     }
   },
   created()
@@ -209,6 +214,7 @@ export default defineComponent({
     },
     handlerSave()
     {
+      this.loading.save = true;
       const temp = clone(this.formState.type).split(' ');
       const configure = {
         id: this.id,
@@ -222,10 +228,14 @@ export default defineComponent({
             this.$Message.success("Create successful");
             this.visible = false;
           }
+        })
+        .finally(() => {
+          this.loading.save = false;
         });
     },
     handlerTest()
     {
+      this.loading.test = true;
       const temp = clone(this.formState.type).split(' ');
       const configure = {
         type: temp[1],
@@ -246,7 +256,7 @@ export default defineComponent({
           }
         })
         .finally(() => {
-          this.connectionLoading = false;
+          this.loading.test = false;
         });
     },
     handlerPlusConfigure(array: Array<Configure>)
