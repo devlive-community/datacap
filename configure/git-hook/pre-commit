@@ -33,7 +33,11 @@ job_check() {
         printf "\nCode verification before submission successful\n\n"
         exit 0
     else
-        ./mvnw clean compile -T 1C checkstyle:checkstyle findbugs:findbugs -Dskip.yarn -DskipTests=true -Dgpg.skip
+        if  command -v jenv version > /dev/null; then
+            jenc exec ./mvnw clean compile -T 1C checkstyle:checkstyle findbugs:findbugs -Dskip.yarn -DskipTests=true -Dgpg.skip
+        else
+            ./mvnw clean compile -T 1C checkstyle:checkstyle findbugs:findbugs -Dskip.yarn -DskipTests=true -Dgpg.skip
+        fi
         # shellcheck disable=SC2181
         if [ $? -ne 0 ]; then
             printf "\nCode verification before submission failed\n\n"
