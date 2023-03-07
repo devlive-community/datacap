@@ -1,3 +1,9 @@
+---
+title: MySQL
+---
+
+<img src="/assets/plugin/mysql.png" class="connector-logo" />
+
 #### What is MySQL ?
 
 MySQL is one of the most recognizable technologies in the modern big data ecosystem. Often called the most popular database and currently enjoying widespread, effective use regardless of industry, it’s clear that anyone involved with enterprise data or general IT should at least aim for a basic familiarity of MySQL.

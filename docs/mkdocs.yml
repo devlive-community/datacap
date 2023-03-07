@@ -32,6 +32,9 @@ theme:
     - search.share
     - search.suggest
     - content.tooltips
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
   palette:
     - scheme: default
       toggle:
@@ -107,7 +110,8 @@ plugins:
         release-latest.md: release/latest.md
 
 nav:
-  - Home: index.md
+  - Home:
+    - index.md
   - Documentation:
       - Installation: reference/get_started/install.md
       - Query: reference/get_started/query.md
