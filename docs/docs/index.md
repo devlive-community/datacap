@@ -20,7 +20,7 @@ hide:
 </style>
 
 <div style="text-align: center;">
-    <img width="80" height="65" style="margin-left: 60px;" src="/assets/logo.png" />
+    <img width="80" height="65" src="/assets/logo.png" />
     <p/>
     DataCap is integrated software for data transformation, integration, and visualization. Support a variety of data sources, file types, big data related database, relational database, NoSQL database, etc. Through the software can realize the management of multiple data sources, the data under the source of various operations conversion, making data charts, monitoring data sources and other functions.
     <p/>
