@@ -1,3 +1,9 @@
+---
+title: ClickHouse
+---
+
+<img src="/assets/plugin/clickhouse.png" class="connector-logo" />
+
 #### What is ClickHouse ?
 
 ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP). ClickHouse’s performance exceeds all other column-oriented database management systems. It processes billions of rows and tens of gigabytes of data per server per second.

@@ -49,6 +49,13 @@ public class DataSourceShell
         return this.dataSourceService.getInfo();
     }
 
+    @ShellMethod(value = "Get data source details", key = {"source execute"})
+    @ShellMethodAvailability(value = "availabilityCheck")
+    public Table execute(String query)
+    {
+        return this.dataSourceService.execute(query);
+    }
+
     public Availability availabilityCheck()
     {
         return this.checkService.availabilityCheck();

@@ -1,3 +1,9 @@
+---
+title: Snowflake
+---
+
+<img src="/assets/plugin/snowflake.png" class="connector-logo" />
+
 #### What is Snowflake ?
 
 Execute your most critical workloads on top of Snowflake's multi-cluster shared data architecture in a fully managed platform that capitalizes on the near-infinite resources of the cloud.

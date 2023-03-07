@@ -1,3 +1,9 @@
+---
+title: DuckDB
+---
+
+<img src="/assets/plugin/duckdb.png" class="connector-logo" />
+
 #### What is DuckDB ?
 
 DuckDB is an in-process SQL OLAP database management system.

@@ -14,7 +14,7 @@ import okhttp3.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"},
+@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "DM_DEFAULT_ENCODING"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class HttpCommon
 {
@@ -74,6 +74,34 @@ public class HttpCommon
     {
         ServerResponse serverResponse = new ServerResponse();
         Request request = new Request.Builder().url(this.getUrl()).addHeader("Authorization", "Bearer " + this.configure.getToken()).get().build();
+        Call call = client.newCall(request);
+        try {
+            Response response = call.execute();
+            if (response.isSuccessful()) {
+                serverResponse = new Gson().fromJson(response.body().string(), ServerResponse.class);
+            }
+            else {
+                serverResponse.setStatus(false);
+                serverResponse.setMessage("Failed to connect to the server, please check whether the configured connection is correct.");
+            }
+        }
+        catch (Exception exception) {
+            serverResponse.setStatus(false);
+            serverResponse.setMessage("Failed to connect to the server, " + exception.getMessage());
+        }
+        finally {
+            return serverResponse;
+        }
+    }
+
+    public ServerResponse withTokenForPost(String body)
+    {
+        ServerResponse serverResponse = new ServerResponse();
+        Request request = new Request.Builder()
+                .url(this.getUrl())
+                .addHeader("Authorization", "Bearer " + this.configure.getToken())
+                .post(RequestBody.create(body.getBytes(), MediaType.parse("application/json")))
+                .build();
         Call call = client.newCall(request);
         try {
             Response response = call.execute();

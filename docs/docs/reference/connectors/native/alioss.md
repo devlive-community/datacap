@@ -1,3 +1,9 @@
+---
+title: AliYun OSS
+---
+
+<img src="/assets/plugin/alioss.png" class="connector-logo" style="width: 50px;" />
+
 #### What is Aliyun OSS ?
 
 Fully managed object storage service to store and access any amount of data from anywhere

@@ -7,4 +7,6 @@ public interface DataSourceService
     Table showList();
 
     Table getInfo();
+
+    Table execute(String query);
 }

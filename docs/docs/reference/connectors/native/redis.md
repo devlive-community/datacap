@@ -1,3 +1,9 @@
+---
+title: Redis
+---
+
+<img src="/assets/plugin/redis.png" class="connector-logo" />
+
 #### What is Redis ?
 
 The open source, in-memory data store used by millions of developers as a database, cache, streaming engine, and message broker.

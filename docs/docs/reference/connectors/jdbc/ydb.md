@@ -1,3 +1,9 @@
+---
+title: Yandex Database
+---
+
+<img src="/assets/plugin/ydb.png" class="connector-logo" />
+
 #### What is YDB ?
 
 YDB is a fault-tolerant distributed SQL DBMS. YDB provides high availability, horizontal scalability, strict consistency, and ACID transaction support. Queries are made using an SQL dialect (YQL).
