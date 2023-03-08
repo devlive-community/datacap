@@ -7,7 +7,7 @@ import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.spi.model.Time;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import redis.clients.jedis.Client;
+import redis.clients.jedis.Connection;
 import redis.clients.jedis.Protocol;
 
 import java.lang.reflect.Method;
@@ -45,9 +45,9 @@ public class RedisAdapter
             try {
                 String[] commands = content.split(" ");
                 Protocol.Command cmd = Protocol.Command.valueOf(commands[0].toUpperCase());
-                Method method = MethodUtils.getMatchingMethod(Client.class, "sendCommand", Protocol.Command.class, String[].class);
+                Method method = MethodUtils.getMatchingMethod(Connection.class, "sendCommand", Protocol.Command.class, String[].class);
                 method.setAccessible(true);
-                Client client = this.redisConnection.getJedis().getClient();
+                Connection client = this.redisConnection.getJedis().getClient();
                 List<String> cmdParam = new ArrayList<>();
                 for (int i = 0; i < commands.length; i++) {
                     if (i == 0) {

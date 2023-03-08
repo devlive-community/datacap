@@ -34,11 +34,11 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v3
         with:
-          java-version: '8'
+          java-version: '11'
           distribution: 'temurin'
 
       - run: |
-          ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -Dskip.npm
+          ./mvnw -T 1C clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -Dskip.npm
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
