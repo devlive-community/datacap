@@ -77,5 +77,8 @@ export default {
   ip: 'IP',
   ua: '用户代理',
   loginTime: '登录时间',
-  ssl: 'SSL'
+  ssl: 'SSL',
+  id: 'ID',
+  authority: '权限',
+  code: '代码',
 }
