@@ -1,5 +1,6 @@
 package io.edurt.datacap.spi.executor;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,8 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressFBWarnings(value = {"URF_UNREAD_FIELD"},
+        justification = "I prefer to suppress these FindBugs warnings")
 public class Pipeline
 {
     private String username;
