@@ -53,6 +53,7 @@
         <module>plugin/datacap-jdbc-trino</module>
         <module>executor/executor-example</module>
         <module>lib/datacap-shell</module>
+        <module>executor/executor-seatunnel</module>
     </modules>
 
     <name>DataCap</name>

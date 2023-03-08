@@ -13,5 +13,7 @@ public interface Executor
         return String.format("Integrate %s executor", this.name());
     }
 
-    void start(ExecutorConfigure configure);
+    void before(Pipeline configure);
+
+    void start(Pipeline configure);
 }

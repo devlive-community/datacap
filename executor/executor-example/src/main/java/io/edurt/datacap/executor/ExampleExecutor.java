@@ -1,16 +1,18 @@
 package io.edurt.datacap.executor;
 
 import io.edurt.datacap.spi.executor.Executor;
-import io.edurt.datacap.spi.executor.ExecutorConfigure;
-import org.slf4j.Logger;
+import io.edurt.datacap.spi.executor.Pipeline;
 
 public class ExampleExecutor
         implements Executor
 {
     @Override
-    public void start(ExecutorConfigure configure)
+    public void before(Pipeline configure)
     {
-        Logger logger = (Logger) configure.getLogger().getLogger();
-        logger.info("ExampleExecutor start");
+    }
+
+    @Override
+    public void start(Pipeline configure)
+    {
     }
 }
