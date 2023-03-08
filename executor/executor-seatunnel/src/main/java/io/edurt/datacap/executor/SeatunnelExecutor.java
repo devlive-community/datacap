@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.google.common.base.Preconditions;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.executor.connector.Connector;
 import io.edurt.datacap.executor.connector.ConnectorFactory;
 import io.edurt.datacap.executor.connector.ConnectorType;
@@ -24,6 +25,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 
+@SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"})
 public class SeatunnelExecutor
         implements Executor
 {

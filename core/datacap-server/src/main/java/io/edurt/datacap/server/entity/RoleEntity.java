@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "role")
 @org.hibernate.annotations.Table(appliesTo = "role", comment = "User rights configuration table")
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class RoleEntity
 {

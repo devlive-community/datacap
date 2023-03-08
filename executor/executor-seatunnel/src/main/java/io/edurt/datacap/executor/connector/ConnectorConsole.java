@@ -3,14 +3,16 @@ package io.edurt.datacap.executor.connector;
 import io.edurt.datacap.spi.executor.PipelineField;
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectorConsole
         extends Connector
 {
-    private static final String[] supportOptions = {};
+    private static final Set<String> supportOptions = new HashSet<>();
 
     public ConnectorConsole(ConnectorType type, PipelineField configure)
     {
