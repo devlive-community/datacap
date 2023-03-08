@@ -61,5 +61,15 @@
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-logger</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-shell</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

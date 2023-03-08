@@ -279,6 +279,12 @@
             <artifactId>datacap-native-kafka</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Executor -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>executor-example</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

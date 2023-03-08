@@ -1,7 +1,7 @@
 #!/bin/sh
 
 isCompile=0
-folders='core,plugin,client,lib,driver'
+folders='core,plugin,client,lib,driver,executor'
 
 printf "Code verification before submission starting\n"
 

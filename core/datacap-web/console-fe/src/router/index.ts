@@ -81,6 +81,9 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: ":id/manager",
+            meta: {
+              roles: ['Admin', 'User']
+            },
             component: () => import("../views/pages/admin/source/SourceManager.vue")
           }
         ]

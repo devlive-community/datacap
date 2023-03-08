@@ -51,6 +51,8 @@
         <module>plugin/datacap-jdbc-sqlserver</module>
         <module>plugin/datacap-jdbc-tdengine</module>
         <module>plugin/datacap-jdbc-trino</module>
+        <module>executor/executor-example</module>
+        <module>lib/datacap-shell</module>
     </modules>
 
     <name>DataCap</name>
