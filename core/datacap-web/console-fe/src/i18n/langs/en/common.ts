@@ -77,5 +77,8 @@ export default {
   ip: 'IP',
   ua: 'User Agent',
   loginTime: 'Login Time',
-  ssl: 'SSL'
+  ssl: 'SSL',
+  id: 'ID',
+  authority: 'Authority',
+  code: 'Code'
 }

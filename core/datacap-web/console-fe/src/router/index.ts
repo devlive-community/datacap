@@ -81,6 +81,9 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: ":id/manager",
+            meta: {
+              roles: ['Admin', 'User']
+            },
             component: () => import("../views/pages/admin/source/SourceManager.vue")
           }
         ]
@@ -135,6 +138,13 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import("../views/pages/admin/monitor/processor/ProcessorAdmin.vue")
           }
         ]
+      },
+      {
+        path: "role",
+        meta: {
+          roles: ['Admin']
+        },
+        component: () => import("@/views/admin/role/RoleHome.vue")
       }
     ]
   },

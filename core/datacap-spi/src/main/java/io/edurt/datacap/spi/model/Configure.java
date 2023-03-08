@@ -23,4 +23,6 @@ public class Configure
     private Optional<Map<String, Object>> env = Optional.empty();
     private Optional<Boolean> ssl = Optional.empty();
     private FormatType format = FormatType.NONE;
+    // if `to`: skip
+    private Optional<String> query = Optional.empty();
 }

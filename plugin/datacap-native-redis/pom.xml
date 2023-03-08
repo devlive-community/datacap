@@ -14,7 +14,7 @@
     <description>DataCap - Redis</description>
 
     <properties>
-        <redis.version>3.6.3</redis.version>
+        <redis.version>4.3.1</redis.version>
         <plugin.name>native-redis</plugin.name>
     </properties>
 
