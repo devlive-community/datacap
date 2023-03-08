@@ -14,6 +14,7 @@
         <module>core/datacap-server</module>
         <module>lib/datacap-http</module>
         <module>lib/datacap-logger</module>
+        <module>lib/datacap-shell</module>
         <module>driver/datacap-driver-redis</module>
         <module>plugin/datacap-native-alioss</module>
         <module>plugin/datacap-native-zookeeper</module>
@@ -52,7 +53,6 @@
         <module>plugin/datacap-jdbc-tdengine</module>
         <module>plugin/datacap-jdbc-trino</module>
         <module>executor/executor-example</module>
-        <module>lib/datacap-shell</module>
         <module>executor/executor-seatunnel</module>
     </modules>
 
@@ -113,7 +113,7 @@
         <guava.version>31.1-jre</guava.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <redis.version>4.3.1</redis.version>
-        <assembly-plugin.version>3.1.1</assembly-plugin.version>
+        <assembly-plugin.version>3.5.0</assembly-plugin.version>
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
         <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
