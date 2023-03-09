@@ -1,8 +1,14 @@
 package io.edurt.datacap.server.service.impl;
 
+import com.unfbx.chatgpt.OpenAiClient;
+import com.unfbx.chatgpt.entity.chat.ChatCompletion;
+import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
+import com.unfbx.chatgpt.entity.chat.Message;
 import io.edurt.datacap.server.audit.AuditUserLog;
 import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
+import io.edurt.datacap.server.body.UserQuestionBody;
+import io.edurt.datacap.server.common.JSON;
 import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
@@ -14,6 +20,7 @@ import io.edurt.datacap.server.security.JwtService;
 import io.edurt.datacap.server.security.UserDetailsService;
 import io.edurt.datacap.server.service.UserService;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,8 +28,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -133,5 +143,55 @@ public class UserServiceImpl
         user.setUsername(configure.getNewUsername());
         this.userRepository.save(user);
         return Response.success(user.getId());
+    }
+
+    @Override
+    public Response<Long> changeThirdConfigure(Map<String, Map<String, Object>> configure)
+    {
+        Optional<UserEntity> userOptional = this.userRepository.findById(UserDetailsService.getUser().getId());
+        if (!userOptional.isPresent()) {
+            return Response.failure(ServiceState.USER_NOT_FOUND);
+        }
+        UserEntity user = userOptional.get();
+        user.setThirdConfigure(JSON.toJSON(configure));
+        this.userRepository.save(user);
+        return Response.success(user.getId());
+    }
+
+    @Override
+    public Response<Object> startChat(UserQuestionBody configure)
+    {
+        Optional<UserEntity> userOptional = this.userRepository.findById(UserDetailsService.getUser().getId());
+        if (!userOptional.isPresent()) {
+            return Response.failure(ServiceState.USER_NOT_FOUND);
+        }
+        if (!configure.getType().equals("ChatGPT")) {
+            return Response.failure("Not supported");
+        }
+
+        UserEntity user = userOptional.get();
+        List<String> content = new ArrayList<>();
+        if (StringUtils.isNotEmpty(user.getThirdConfigure())) {
+            Map<String, Object> configureMap = JSON.toMap(user.getThirdConfigure());
+            if (configureMap.containsKey("chatgpt")) {
+                Map<String, Object> chatGPTMap = (Map<String, Object>) configureMap.get("chatgpt");
+                if (chatGPTMap.containsKey("token")) {
+                    String token = (String) chatGPTMap.get("token");
+                    if (StringUtils.isNotEmpty(token)) {
+                        OpenAiClient openAiClient = OpenAiClient.builder()
+                                .apiKey(token)
+                                .build();
+                        Message message = Message.builder()
+                                .role(Message.Role.USER)
+                                .content(configure.getQuestion())
+                                .build();
+                        ChatCompletion chatCompletion = ChatCompletion.builder().messages(Arrays.asList(message)).build();
+                        ChatCompletionResponse chatCompletionResponse = openAiClient.chatCompletion(chatCompletion);
+                        chatCompletionResponse.getChoices().forEach(e -> content.add(e.getMessage().getContent()));
+                    }
+                }
+            }
+        }
+        return Response.success(content);
     }
 }

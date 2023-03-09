@@ -66,6 +66,9 @@ public class UserEntity
     @Column(name = "password")
     private String password;
 
+    @Column(name = "third_configure")
+    private String thirdConfigure;
+
     @Column(name = "create_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
     private Timestamp createTime;
 

@@ -80,5 +80,8 @@ export default {
   ssl: 'SSL',
   id: 'ID',
   authority: 'Authority',
-  code: 'Code'
+  code: 'Code',
+  chatgpt: 'ChatGPT',
+  send: 'Send',
+  token: 'Token'
 }

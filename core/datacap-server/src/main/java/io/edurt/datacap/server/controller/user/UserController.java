@@ -3,6 +3,7 @@ package io.edurt.datacap.server.controller.user;
 import io.edurt.datacap.server.body.FilterBody;
 import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
+import io.edurt.datacap.server.body.UserQuestionBody;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.UserEntity;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/user")
@@ -49,9 +52,21 @@ public class UserController
         return this.userService.changeUsername(configure);
     }
 
+    @PutMapping(value = "changeThirdConfigure")
+    public Response<Long> changeThirdConfigure(@Validated @RequestBody Map<String, Map<String, Object>> configure)
+    {
+        return this.userService.changeThirdConfigure(configure);
+    }
+
     @PostMapping(value = "log")
     public Response<PageEntity<UserLogEntity>> getAllLogByFilter(@RequestBody FilterBody filter)
     {
         return this.userLogService.getAllByFilter(filter);
+    }
+
+    @PostMapping(value = "startChat")
+    public Response<Object> startChat(@RequestBody UserQuestionBody configure)
+    {
+        return this.userService.startChat(configure);
     }
 }

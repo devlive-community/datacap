@@ -92,6 +92,11 @@
             <version>1.21</version>
         </dependency>
         <dependency>
+            <groupId>com.unfbx</groupId>
+            <artifactId>chatgpt-java</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-spi</artifactId>
         </dependency>

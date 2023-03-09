@@ -20,6 +20,11 @@
           <Icon type="md-egg"/>
           {{ $t('setting.log') }}
         </MenuItem>
+        <MenuItem name="setting_chatgpt" to="/profile/chatgpt">
+          <Icon type="md-chatbubbles"/>
+          {{ $t('common.chatgpt') }}
+          <Badge text="new"></Badge>
+        </MenuItem>
         <MenuItem name="security" to="/profile/account">
           <Icon type="ios-contact"/>
           {{ $t('setting.accountSetting') }}

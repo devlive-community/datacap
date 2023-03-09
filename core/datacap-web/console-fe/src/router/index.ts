@@ -183,6 +183,13 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import("../views/pages/profile/ProfileLog.vue")
           },
           {
+            path: 'chatgpt',
+            meta: {
+              roles: ['Admin', 'User']
+            },
+            component: () => import("../views/pages/profile/ProfileChatGPT.vue")
+          },
+          {
             path: 'account',
             meta: {
               roles: ['Admin', 'User']

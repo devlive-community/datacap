@@ -81,4 +81,7 @@ export default {
   id: 'ID',
   authority: '权限',
   code: '代码',
+  chatgpt: 'ChatGPT',
+  send: '发送',
+  token: '密钥'
 }
