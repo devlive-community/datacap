@@ -11,6 +11,12 @@ export class UserQuestion
   type: string;
 }
 
+export class UserQuestionItem
+{
+  content: string;
+  isSelf: boolean;
+}
+
 export class ThirdConfigure
 {
   token = '';
