@@ -11,11 +11,11 @@
       </template>
       <div>
         <Layout>
-          <Content style="padding: 24px 50px;">
+          <Content style="padding: 0px 0px 0px 10px">
             <div ref="scrollDiv" style="height: 300px; max-height: 300px; overflow: auto; background-color: #f5f7f9">
               <List item-layout="vertical">
                 <ListItem v-for="item in userQuestionItems" :key="item">
-                  <ListItemMeta :description="item.content">
+                  <ListItemMeta style="margin-bottom: 0px;">
                     <template #title>
                       {{ item.isSelf ? username : 'ChatGPT' }}
                     </template>
@@ -24,6 +24,7 @@
                       <Avatar v-else icon="md-ionitron" style="background-color: #87d068;"></Avatar>
                     </template>
                   </ListItemMeta>
+                  <v-md-preview :text="item.content"/>
                 </ListItem>
               </List>
             </div>
