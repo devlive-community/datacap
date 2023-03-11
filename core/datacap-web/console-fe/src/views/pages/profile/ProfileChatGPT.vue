@@ -17,7 +17,7 @@
                 <ListItem v-for="item in userQuestionItems" :key="item">
                   <ListItemMeta :description="item.content">
                     <template #title>
-                      {{ item.isSelf ? username : 'ChatGPT'}}
+                      {{ item.isSelf ? username : 'ChatGPT' }}
                     </template>
                     <template #avatar>
                       <Avatar v-if="item.isSelf" icon="ios-person"></Avatar>
@@ -31,7 +31,7 @@
           <Footer style="background-color: #FFFFFF;">
             <Row>
               <Col span="20">
-                <Input v-model="userQuestion.question" :disabled="!userInfo?.thirdConfigure?.chatgpt?.token" type="textarea" :autosize="{minRows: 2,maxRows: 5}"/>
+                <Input v-model="userQuestionContext" :disabled="!userInfo?.thirdConfigure?.chatgpt?.token" type="textarea" :autosize="{minRows: 2,maxRows: 5}"/>
               </Col>
               <Col span="2" offset="1">
                 <Button :disabled="!userInfo?.thirdConfigure?.chatgpt?.token" type="primary" icon="md-send"
@@ -68,8 +68,6 @@ import {ThirdConfigure, User, UserQuestion, UserQuestionItem} from '@/model/User
 import Common from "@/common/Common";
 import {AuthResponse} from "@/model/AuthResponse";
 
-const userQuestion = new UserQuestion();
-userQuestion.type = 'ChatGPT';
 export default defineComponent({
   setup()
   {
@@ -79,7 +77,6 @@ export default defineComponent({
       username = authUser.username;
     }
     return {
-      userQuestion,
       username
     }
   },
@@ -94,6 +91,7 @@ export default defineComponent({
       visibleModel: false,
       startChatLoading: false,
       userInfo: null as User,
+      userQuestionContext: null,
       userQuestionItems: null as UserQuestionItem[]
     }
   },
@@ -141,13 +139,17 @@ export default defineComponent({
     },
     handlerStartChat()
     {
+      const userQuestion = new UserQuestion();
+      userQuestion.type = 'ChatGPT';
+      userQuestion.question = this.userQuestionContext;
       const question = new UserQuestionItem();
-      question.content = this.userQuestion.question;
+      question.content = this.userQuestionContext;
       question.isSelf = true;
       this.userQuestionItems.push(question);
       this.handlerGoBottom();
       this.startChatLoading = true;
-      UserService.startChat(this.userQuestion)
+      this.userQuestionContext = null;
+      UserService.startChat(userQuestion)
         .then(response => {
           if (response.status) {
             const answer = new UserQuestionItem();
