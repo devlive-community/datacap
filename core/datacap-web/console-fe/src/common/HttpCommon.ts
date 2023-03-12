@@ -14,7 +14,7 @@ export class HttpCommon
   {
     if (process.env.NODE_ENV === 'development' ||
       window.location.hostname === 'localhost') {
-      axios.defaults.baseURL = 'http://localhost:9096';
+      axios.defaults.baseURL = 'http://139.198.158.103:9096';
     }
     else {
       axios.defaults.baseURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
