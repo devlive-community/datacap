@@ -11,13 +11,28 @@
       </template>
       <div>
         <Layout>
-          <Content style="padding: 24px 50px;">
-            <Input v-model="userQuestionResponse" :disabled="!userInfo?.thirdConfigure?.chatgpt?.token" type="textarea" :rows="10"/>
+          <Content style="padding: 0px 0px 0px 10px">
+            <div ref="scrollDiv" style="height: 300px; max-height: 300px; overflow: auto; background-color: #f5f7f9">
+              <List item-layout="vertical">
+                <ListItem v-for="item in userQuestionItems" :key="item">
+                  <ListItemMeta style="margin-bottom: 0px;">
+                    <template #title>
+                      {{ item.isSelf ? username : 'ChatGPT' }}
+                    </template>
+                    <template #avatar>
+                      <Avatar v-if="item.isSelf" icon="ios-person"></Avatar>
+                      <Avatar v-else icon="md-ionitron" style="background-color: #87d068;"></Avatar>
+                    </template>
+                  </ListItemMeta>
+                  <v-md-preview :text="item.content"/>
+                </ListItem>
+              </List>
+            </div>
           </Content>
-          <Footer>
+          <Footer style="background-color: #FFFFFF;">
             <Row>
               <Col span="20">
-                <Input v-model="userQuestion.question" :disabled="!userInfo?.thirdConfigure?.chatgpt?.token" type="textarea" :autosize="{minRows: 2,maxRows: 5}"/>
+                <Input v-model="userQuestionContext" :disabled="!userInfo?.thirdConfigure?.chatgpt?.token" type="textarea" :autosize="{minRows: 2,maxRows: 5}"/>
               </Col>
               <Col span="2" offset="1">
                 <Button :disabled="!userInfo?.thirdConfigure?.chatgpt?.token" type="primary" icon="md-send"
@@ -50,15 +65,20 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import UserService from "@/services/UserService";
-import {ThirdConfigure, User, UserQuestion} from '@/model/User';
+import {ThirdConfigure, User, UserQuestion, UserQuestionItem} from '@/model/User';
+import Common from "@/common/Common";
+import {AuthResponse} from "@/model/AuthResponse";
 
-const userQuestion = new UserQuestion();
-userQuestion.type = 'ChatGPT';
 export default defineComponent({
   setup()
   {
+    let username;
+    const authUser = JSON.parse(localStorage.getItem(Common.token) || '{}') as AuthResponse;
+    if (authUser) {
+      username = authUser.username;
+    }
     return {
-      userQuestion
+      username
     }
   },
   created()
@@ -72,12 +92,14 @@ export default defineComponent({
       visibleModel: false,
       startChatLoading: false,
       userInfo: null as User,
-      userQuestionResponse: null
+      userQuestionContext: null,
+      userQuestionItems: null as UserQuestionItem[]
     }
   },
   methods: {
     handlerInitialize()
     {
+      this.userQuestionItems = [];
       this.loading = true;
       UserService.getInfo()
         .then(response => {
@@ -118,11 +140,24 @@ export default defineComponent({
     },
     handlerStartChat()
     {
+      const userQuestion = new UserQuestion();
+      userQuestion.type = 'ChatGPT';
+      userQuestion.question = this.userQuestionContext;
+      const question = new UserQuestionItem();
+      question.content = this.userQuestionContext;
+      question.isSelf = true;
+      this.userQuestionItems.push(question);
+      this.handlerGoBottom();
       this.startChatLoading = true;
-      UserService.startChat(this.userQuestion)
+      this.userQuestionContext = null;
+      UserService.startChat(userQuestion)
         .then(response => {
           if (response.status) {
-            this.userQuestionResponse = response.data;
+            const answer = new UserQuestionItem();
+            answer.content = response.data.toString();
+            answer.isSelf = false;
+            this.userQuestionItems.push(answer);
+            this.handlerGoBottom();
           }
           else {
             this.$Message.error(response.message);
@@ -131,6 +166,13 @@ export default defineComponent({
         .finally(() => {
           this.startChatLoading = false;
         });
+    },
+    handlerGoBottom()
+    {
+      let scrollElem = this.$refs.scrollDiv;
+      setTimeout(() => {
+        scrollElem.scrollTo({top: scrollElem.scrollHeight, behavior: 'smooth'});
+      }, 0);
     }
   }
 });

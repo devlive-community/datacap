@@ -20,4 +20,5 @@ public class IConfigure
     private String name;
     private Date supportTime;
     private List<IConfigureField> configures;
+    private List<IConfigureExecutor> pipelines;
 }
