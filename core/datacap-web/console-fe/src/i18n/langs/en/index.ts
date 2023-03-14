@@ -8,6 +8,7 @@ import grid from "@/i18n/langs/en/grid";
 import signup from "@/i18n/langs/en/signup";
 import alert from "@/i18n/langs/en/alert";
 import monitor from "@/i18n/langs/en/monitor";
+import ai from "@/i18n/langs/en/ai";
 
 export default {
   ...en,
@@ -19,5 +20,6 @@ export default {
   grid: grid,
   signup: signup,
   alert: alert,
-  monitor: monitor
+  monitor: monitor,
+  ai: ai
 }

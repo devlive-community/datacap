@@ -8,6 +8,7 @@ import grid from "@/i18n/langs/zhCn/grid";
 import signup from "@/i18n/langs/zhCn/signup";
 import alert from "@/i18n/langs/zhCn/alert";
 import monitor from "@/i18n/langs/zhCn/monitor";
+import ai from "@/i18n/langs/zhCn/ai";
 
 export default {
   ...zh,
@@ -19,5 +20,6 @@ export default {
   grid: grid,
   signup: signup,
   alert: alert,
-  monitor: monitor
+  monitor: monitor,
+  ai: ai
 }
