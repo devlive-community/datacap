@@ -1,6 +1,11 @@
 <template>
   <div class="layout">
     <Layout>
+      <RouterLink to="/profile/chatgpt">
+        <Alert style="margin-bottom: 0px;" banner closable type="success">
+          Support ChatGPT
+        </Alert>
+      </RouterLink>
       <LayoutHeader @changeLanguage="setLangCondition($event)"/>
       <LayoutContent style="background-color: #FFFFFF; padding: 12px; min-height: 500px"/>
       <LayoutFooter/>
