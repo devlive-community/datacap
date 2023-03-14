@@ -62,11 +62,11 @@
                   <Button @click="handlerPlusEditor" size="small" type="primary" icon="md-add"/>
                 </template>
                 <TabPane v-for="editor in editors" :key="editor.key" :name="editor.key" :label="editor.title" :closable="editor.closable">
-                  <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
-                                :key="activeKey.value" @change="handlerChangeEditorValue"
-                                v-model:value="activeEditorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
-                  </MonacoEditor>
                 </TabPane>
+                <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
+                                :key="activeKey.value" @change="handlerChangeEditorValue" :width="'100%'"
+                                v-model:value="activeEditorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
+                </MonacoEditor>
               </Tabs>
             </div>
           </Card>
@@ -146,6 +146,13 @@ export default defineComponent({
   created()
   {
     this.handlerInitialize();
+  },
+  mounted(){
+    window.onresize=()=>{
+      if(editorMap.values().next().value){
+        editorMap.values().next().value.layout({width: this.$refs.editorContainer.offsetWidth,height:300})
+      }
+    }
   },
   methods: {
     handlerInitialize()
@@ -229,6 +236,9 @@ export default defineComponent({
             });
           }
         });
+        setTimeout(()=>{
+          editorMap.values().next().value?.layout({width: this.$refs.editorContainer.offsetWidth,height:300})
+        },200)
     },
     handlerRun()
     {
