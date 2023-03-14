@@ -50,6 +50,7 @@ STRING
 IDENTIFIER
     : (LETTER | DIGIT | '_')+
     ;
+
 BACKQUOTED_IDENTIFIER
     : '`' ( ~'`' | '``' )* '`'
     ;

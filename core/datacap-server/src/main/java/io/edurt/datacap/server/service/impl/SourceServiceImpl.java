@@ -123,7 +123,7 @@ public class SourceServiceImpl
             entity.setName(plugin.name());
             entity.setDescription(plugin.description());
             entity.setType(plugin.type().name());
-            entity.setConfigure(PluginCommon.loadConfigure(plugin.type().name(), plugin.name(), plugin.name(), environment));
+            entity.setConfigure(PluginCommon.loadYamlConfigure(plugin.type().name(), plugin.name(), plugin.name(), environment));
             List<PluginEntity> plugins = pluginMap.get(plugin.type().name());
             if (ObjectUtils.isEmpty(plugins)) {
                 plugins = new ArrayList<>();
@@ -168,7 +168,7 @@ public class SourceServiceImpl
         }
 
         // Check configure
-        IConfigure iConfigure = PluginCommon.loadConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
+        IConfigure iConfigure = PluginCommon.loadYamlConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
         if (ObjectUtils.isEmpty(iConfigure) || iConfigure.getConfigures().size() != configure.getConfigure().getConfigures().size()) {
             return Response.failure(ServiceState.PLUGIN_CONFIGURE_MISMATCH);
         }
@@ -201,7 +201,7 @@ public class SourceServiceImpl
         }
 
         // Check configure
-        IConfigure iConfigure = PluginCommon.loadConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
+        IConfigure iConfigure = PluginCommon.loadYamlConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
         if (ObjectUtils.isEmpty(iConfigure) || iConfigure.getConfigures().size() != configure.getConfigure().getConfigures().size()) {
             return Response.failure(ServiceState.PLUGIN_CONFIGURE_MISMATCH);
         }
@@ -237,7 +237,7 @@ public class SourceServiceImpl
         configure.setName(entity.getType());
         configure.setType(entity.getProtocol());
         // Load default configure
-        IConfigure iConfigure = PluginCommon.loadConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
+        IConfigure iConfigure = PluginCommon.loadYamlConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
         configure.setConfigure(IConfigureCommon.preparedConfigure(iConfigure, entity));
         entity.setSchema(iConfigure);
         return Response.success(entity);

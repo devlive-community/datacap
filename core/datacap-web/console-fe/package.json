@@ -30,6 +30,7 @@
     "vue-clipboard3": "^2.0.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.0.3",
+    "vue3-markdown": "^1.1.7",
     "watermark-dom": "^2.3.0",
     "webpack-bundle-analyzer": "^4.6.1"
   },

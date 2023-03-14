@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class ResourceCommonTest
 {
-    private String resource = "default.json";
+    private String resource = "default.yaml";
     private String resource2 = "empty.json";
 
     @Test

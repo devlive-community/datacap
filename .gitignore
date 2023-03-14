@@ -41,3 +41,4 @@ tmp/
 .vscode
 dist/datacap/
 list
+*.configure

@@ -34,6 +34,7 @@ public class ProcessBuilderCommander
     {
         LoggerExecutor loggerExecutor = this.configure.getLoggerExecutor();
         Logger logger = (Logger) loggerExecutor.getLogger();
+        logger.info("Execute pipeline on username {}", configure.getUsername());
         ShellResponse shellResponse = new ShellResponse();
         shellResponse.setSuccessful(Boolean.TRUE);
         List<String> command = new ArrayList<>();
@@ -49,8 +50,9 @@ public class ProcessBuilderCommander
         logger.info("Work directory {}", configure.getDirectory());
         Map<String, String> environment = this.getEnvironment();
         builder.environment().putAll(environment);
-        logger.info("========== container environment loading ==========");
+        logger.info("========== container environment start ==========");
         environment.keySet().forEach(key -> logger.info("Container environment {}={}", key, environment.get(key)));
+        logger.info("========== container environment end ==========");
 
         Process process = null;
         try {
@@ -79,6 +81,9 @@ public class ProcessBuilderCommander
                 }
             }
             shellResponse.setCode(process.exitValue());
+            if (process.exitValue() > 0) {
+                shellResponse.setSuccessful(Boolean.FALSE);
+            }
         }
         catch (Exception ex) {
             logger.error("Execute failed ", ex);
@@ -89,8 +94,8 @@ public class ProcessBuilderCommander
                 process.destroy();
             }
             logger.info("Execute response {}", shellResponse);
-            logger.info("Execute end destroy logger components");
             loggerExecutor.destroy();
+            logger.info("Execute end destroy logger components successful");
         }
         return shellResponse;
     }

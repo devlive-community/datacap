@@ -1,4 +1,4 @@
-// Generated from io/edurt/datacap/sql/parser/SqlBase.g4 by ANTLR 4.9.3
+// Generated from io/edurt/datacap/sql/parser/SqlBase.g4 by ANTLR 4.12.0
 package io.edurt.datacap.sql.parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class SqlBaseParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.9.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.12.0", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -99,6 +99,7 @@ public class SqlBaseParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SingleStatementContext extends ParserRuleContext {
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
@@ -159,6 +160,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class StatementContext extends ParserRuleContext {
 		public TerminalNode SHOW() { return getToken(SqlBaseParser.SHOW, 0); }
 		public ChildPathStatementContext childPathStatement() {
@@ -240,6 +242,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class KafkaQueryTopicStatementContext extends ParserRuleContext {
 		public TerminalNode SHOW() { return getToken(SqlBaseParser.SHOW, 0); }
 		public TerminalNode TOPICS() { return getToken(SqlBaseParser.TOPICS, 0); }
@@ -285,6 +288,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class KafkaQueryConsumerStatementContext extends ParserRuleContext {
 		public TerminalNode SHOW() { return getToken(SqlBaseParser.SHOW, 0); }
 		public TerminalNode CONSUMERS() { return getToken(SqlBaseParser.CONSUMERS, 0); }
@@ -350,6 +354,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class KafkaQueryStatementContext extends ParserRuleContext {
 		public KafkaQueryTopicStatementContext kafkaQueryTopicStatement() {
 			return getRuleContext(KafkaQueryTopicStatementContext.class,0);
@@ -410,6 +415,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class KafkaStatementContext extends ParserRuleContext {
 		public KafkaQueryStatementContext kafkaQueryStatement() {
 			return getRuleContext(KafkaQueryStatementContext.class,0);
@@ -454,6 +460,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ChildPathStatementContext extends ParserRuleContext {
 		public TerminalNode PATHS() { return getToken(SqlBaseParser.PATHS, 0); }
 		public FromClauseContext fromClause() {
@@ -514,6 +521,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ColumnStatementContext extends ParserRuleContext {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
@@ -558,6 +566,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FromClauseContext extends ParserRuleContext {
 		public TerminalNode FROM() { return getToken(SqlBaseParser.FROM, 0); }
 		public TableNameContext tableName() {
@@ -605,6 +614,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class TableNameContext extends ParserRuleContext {
 		public List<IdentifierContext> identifier() {
 			return getRuleContexts(IdentifierContext.class);
@@ -669,6 +679,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class IdentifierContext extends ParserRuleContext {
 		public List<TerminalNode> IDENTIFIER() { return getTokens(SqlBaseParser.IDENTIFIER); }
 		public TerminalNode IDENTIFIER(int i) {
@@ -713,7 +724,7 @@ public class SqlBaseParser extends Parser {
 			setState(78);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << STRING) | (1L << IDENTIFIER) | (1L << BACKQUOTED_IDENTIFIER))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1792L) != 0)) {
 				{
 				setState(76);
 				_errHandler.sync(this);
@@ -757,6 +768,7 @@ public class SqlBaseParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class QuotedIdentifierContext extends ParserRuleContext {
 		public TerminalNode BACKQUOTED_IDENTIFIER() { return getToken(SqlBaseParser.BACKQUOTED_IDENTIFIER, 0); }
 		public QuotedIdentifierContext(ParserRuleContext parent, int invokingState) {
@@ -800,27 +812,52 @@ public class SqlBaseParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20V\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\4\r\t\r\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\5\3(\n\3\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\5\5\62\n\5\3\6\3\6\5\6\66"+
-		"\n\6\3\7\3\7\3\b\3\b\3\b\5\b=\n\b\3\t\3\t\3\n\3\n\3\n\3\13\3\13\3\13\7"+
-		"\13G\n\13\f\13\16\13J\13\13\3\f\3\f\3\f\7\fO\n\f\f\f\16\fR\13\f\3\r\3"+
-		"\r\3\r\2\2\16\2\4\6\b\n\f\16\20\22\24\26\30\2\2\2S\2\35\3\2\2\2\4\'\3"+
-		"\2\2\2\6)\3\2\2\2\b\61\3\2\2\2\n\65\3\2\2\2\f\67\3\2\2\2\16<\3\2\2\2\20"+
-		">\3\2\2\2\22@\3\2\2\2\24C\3\2\2\2\26P\3\2\2\2\30S\3\2\2\2\32\34\5\4\3"+
-		"\2\33\32\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36\3\3\2\2"+
-		"\2\37\35\3\2\2\2 !\7\4\2\2!(\5\16\b\2\"#\7\b\2\2#$\5\20\t\2$%\5\22\n\2"+
-		"%(\3\2\2\2&(\5\f\7\2\' \3\2\2\2\'\"\3\2\2\2\'&\3\2\2\2(\5\3\2\2\2)*\7"+
-		"\4\2\2*+\7\6\2\2+\7\3\2\2\2,-\7\4\2\2-\62\7\7\2\2./\7\4\2\2/\60\7\7\2"+
-		"\2\60\62\5\22\n\2\61,\3\2\2\2\61.\3\2\2\2\62\t\3\2\2\2\63\66\5\6\4\2\64"+
-		"\66\5\b\5\2\65\63\3\2\2\2\65\64\3\2\2\2\66\13\3\2\2\2\678\5\n\6\28\r\3"+
-		"\2\2\29=\7\5\2\2:;\7\5\2\2;=\5\22\n\2<9\3\2\2\2<:\3\2\2\2=\17\3\2\2\2"+
-		">?\5\26\f\2?\21\3\2\2\2@A\7\t\2\2AB\5\24\13\2B\23\3\2\2\2CH\5\26\f\2D"+
-		"E\7\3\2\2EG\5\26\f\2FD\3\2\2\2GJ\3\2\2\2HF\3\2\2\2HI\3\2\2\2I\25\3\2\2"+
-		"\2JH\3\2\2\2KO\7\13\2\2LO\7\n\2\2MO\5\30\r\2NK\3\2\2\2NL\3\2\2\2NM\3\2"+
-		"\2\2OR\3\2\2\2PN\3\2\2\2PQ\3\2\2\2Q\27\3\2\2\2RP\3\2\2\2ST\7\f\2\2T\31"+
-		"\3\2\2\2\n\35\'\61\65<HNP";
+		"\u0004\u0001\u000eT\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
+		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
+		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0001"+
+		"\u0000\u0005\u0000\u001a\b\u0000\n\u0000\f\u0000\u001d\t\u0000\u0001\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0003\u0001&\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0003\u00030\b\u0003"+
+		"\u0001\u0004\u0001\u0004\u0003\u00044\b\u0004\u0001\u0005\u0001\u0005"+
+		"\u0001\u0006\u0001\u0006\u0001\u0006\u0003\u0006;\b\u0006\u0001\u0007"+
+		"\u0001\u0007\u0001\b\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0005\tE"+
+		"\b\t\n\t\f\tH\t\t\u0001\n\u0001\n\u0001\n\u0005\nM\b\n\n\n\f\nP\t\n\u0001"+
+		"\u000b\u0001\u000b\u0001\u000b\u0000\u0000\f\u0000\u0002\u0004\u0006\b"+
+		"\n\f\u000e\u0010\u0012\u0014\u0016\u0000\u0000Q\u0000\u001b\u0001\u0000"+
+		"\u0000\u0000\u0002%\u0001\u0000\u0000\u0000\u0004\'\u0001\u0000\u0000"+
+		"\u0000\u0006/\u0001\u0000\u0000\u0000\b3\u0001\u0000\u0000\u0000\n5\u0001"+
+		"\u0000\u0000\u0000\f:\u0001\u0000\u0000\u0000\u000e<\u0001\u0000\u0000"+
+		"\u0000\u0010>\u0001\u0000\u0000\u0000\u0012A\u0001\u0000\u0000\u0000\u0014"+
+		"N\u0001\u0000\u0000\u0000\u0016Q\u0001\u0000\u0000\u0000\u0018\u001a\u0003"+
+		"\u0002\u0001\u0000\u0019\u0018\u0001\u0000\u0000\u0000\u001a\u001d\u0001"+
+		"\u0000\u0000\u0000\u001b\u0019\u0001\u0000\u0000\u0000\u001b\u001c\u0001"+
+		"\u0000\u0000\u0000\u001c\u0001\u0001\u0000\u0000\u0000\u001d\u001b\u0001"+
+		"\u0000\u0000\u0000\u001e\u001f\u0005\u0002\u0000\u0000\u001f&\u0003\f"+
+		"\u0006\u0000 !\u0005\u0006\u0000\u0000!\"\u0003\u000e\u0007\u0000\"#\u0003"+
+		"\u0010\b\u0000#&\u0001\u0000\u0000\u0000$&\u0003\n\u0005\u0000%\u001e"+
+		"\u0001\u0000\u0000\u0000% \u0001\u0000\u0000\u0000%$\u0001\u0000\u0000"+
+		"\u0000&\u0003\u0001\u0000\u0000\u0000\'(\u0005\u0002\u0000\u0000()\u0005"+
+		"\u0004\u0000\u0000)\u0005\u0001\u0000\u0000\u0000*+\u0005\u0002\u0000"+
+		"\u0000+0\u0005\u0005\u0000\u0000,-\u0005\u0002\u0000\u0000-.\u0005\u0005"+
+		"\u0000\u0000.0\u0003\u0010\b\u0000/*\u0001\u0000\u0000\u0000/,\u0001\u0000"+
+		"\u0000\u00000\u0007\u0001\u0000\u0000\u000014\u0003\u0004\u0002\u0000"+
+		"24\u0003\u0006\u0003\u000031\u0001\u0000\u0000\u000032\u0001\u0000\u0000"+
+		"\u00004\t\u0001\u0000\u0000\u000056\u0003\b\u0004\u00006\u000b\u0001\u0000"+
+		"\u0000\u00007;\u0005\u0003\u0000\u000089\u0005\u0003\u0000\u00009;\u0003"+
+		"\u0010\b\u0000:7\u0001\u0000\u0000\u0000:8\u0001\u0000\u0000\u0000;\r"+
+		"\u0001\u0000\u0000\u0000<=\u0003\u0014\n\u0000=\u000f\u0001\u0000\u0000"+
+		"\u0000>?\u0005\u0007\u0000\u0000?@\u0003\u0012\t\u0000@\u0011\u0001\u0000"+
+		"\u0000\u0000AF\u0003\u0014\n\u0000BC\u0005\u0001\u0000\u0000CE\u0003\u0014"+
+		"\n\u0000DB\u0001\u0000\u0000\u0000EH\u0001\u0000\u0000\u0000FD\u0001\u0000"+
+		"\u0000\u0000FG\u0001\u0000\u0000\u0000G\u0013\u0001\u0000\u0000\u0000"+
+		"HF\u0001\u0000\u0000\u0000IM\u0005\t\u0000\u0000JM\u0005\b\u0000\u0000"+
+		"KM\u0003\u0016\u000b\u0000LI\u0001\u0000\u0000\u0000LJ\u0001\u0000\u0000"+
+		"\u0000LK\u0001\u0000\u0000\u0000MP\u0001\u0000\u0000\u0000NL\u0001\u0000"+
+		"\u0000\u0000NO\u0001\u0000\u0000\u0000O\u0015\u0001\u0000\u0000\u0000"+
+		"PN\u0001\u0000\u0000\u0000QR\u0005\n\u0000\u0000R\u0017\u0001\u0000\u0000"+
+		"\u0000\b\u001b%/3:FLN";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

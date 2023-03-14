@@ -5,14 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Properties;
+
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class PipelineBody
+public class PipelineFieldBody
 {
-    private PipelineFieldBody from;
-    private PipelineFieldBody to;
-    private String content;
-    private String executor;
+    private Long id;
+    private Properties configures;
 }

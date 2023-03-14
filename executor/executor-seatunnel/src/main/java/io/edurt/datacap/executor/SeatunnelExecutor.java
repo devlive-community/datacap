@@ -33,7 +33,8 @@ public class SeatunnelExecutor
     public void before(Pipeline configure)
     {
         JsonFactory jsonFactory = new JsonFactory();
-        try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(new File(configure.getFile()), JsonEncoding.UTF8)) {
+        String workFile = String.join(File.separator, configure.getWork(), configure.getPipelineName() + ".configure");
+        try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(new File(workFile), JsonEncoding.UTF8)) {
             jsonGenerator.setPrettyPrinter(new DefaultPrettyPrinter());
             jsonGenerator.writeStartObject();
             this.writeChild("source", jsonGenerator, configure.getFrom());
@@ -51,14 +52,16 @@ public class SeatunnelExecutor
         before(configure);
         SeaTunnelCommander commander = new SeaTunnelCommander(
                 configure.getHome() + "/bin",
-                String.join("/", configure.getWork(), configure.getFile()),
-                configure.getUsername());
-        LoggerExecutor loggerExecutor = new LogbackExecutor(configure.getWork(), configure.getUsername());
-        ShellConfigure shellConfigure = new ShellConfigure();
-        shellConfigure.setDirectory(configure.getWork());
-        shellConfigure.setLoggerExecutor(loggerExecutor);
-        shellConfigure.setCommand(Arrays.asList(commander.toCommand()));
-        shellConfigure.setTimeout(configure.getTimeout());
+                String.join(File.separator, configure.getWork(), configure.getPipelineName() + ".configure"),
+                configure.getPipelineName());
+        LoggerExecutor loggerExecutor = new LogbackExecutor(configure.getWork(), configure.getPipelineName() + ".log");
+        ShellConfigure shellConfigure = ShellConfigure.builder()
+                .directory(configure.getWork())
+                .loggerExecutor(loggerExecutor)
+                .command(Arrays.asList(commander.toCommand()))
+                .timeout(configure.getTimeout())
+                .username(configure.getUsername())
+                .build();
         ShellCommander shellExecutor = new ProcessBuilderCommander(shellConfigure);
         ShellResponse response = shellExecutor.execute();
         if (!response.getSuccessful()) {
@@ -81,5 +84,6 @@ public class SeatunnelExecutor
             }
             jsonGenerator.writeEndObject();
         }
+        jsonGenerator.writeEndObject();
     }
 }

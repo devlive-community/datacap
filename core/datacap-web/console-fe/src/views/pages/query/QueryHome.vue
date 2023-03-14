@@ -14,11 +14,11 @@
           <Card style="width:100%">
             <template #title>
               <Space>
-                <Button type="primary" size="small" :loading="tableLoading" :disabled="!applySource"
+                <Button type="primary" size="small" :loading="tableLoading" :disabled="!applySource || !activeEditorValue"
                         icon="md-arrow-dropright-circle" @click="handlerRun()">
                   {{ $t('common.run') }}
                 </Button>
-                <Button type="dashed" size="small" :disabled="!applySource" icon="md-code" @click="handlerFormat()">
+                <Button type="dashed" size="small" :disabled="!applySource || !activeEditorValue" icon="md-code" @click="handlerFormat()">
                   {{ $t('common.format') }}
                 </Button>
                 <Button type="error" size="small" :disabled="!applySource || !tableLoading"
@@ -54,6 +54,12 @@
                     </Space>
                   </template>
                 </Poptip>
+                <Badge v-if="applySource && activeEditorValue">
+                  <Button type="primary" size="small" icon="md-ionitron" @click="handlerVisibleHelp(true)"></Button>
+                  <template #count>
+                    <Icon type="md-help-circle" color="#ed4014" size="16"/>
+                  </template>
+                </Badge>
               </Space>
             </template>
             <div ref="editorContainer">
@@ -64,8 +70,8 @@
                 <TabPane v-for="editor in editors" :key="editor.key" :name="editor.key" :label="editor.title" :closable="editor.closable">
                 </TabPane>
                 <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
-                                :key="activeKey.value" @change="handlerChangeEditorValue" :width="'100%'"
-                                v-model:value="activeEditorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
+                              :key="activeKey.value" @change="handlerChangeEditorValue" :width="'100%'"
+                              v-model:value="activeEditorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
                 </MonacoEditor>
               </Tabs>
             </div>
@@ -79,6 +85,7 @@
     <SnippetDetails v-if="snippetDetails" :isVisible="snippetDetails"
                     :codeSnippet="activeEditorValue" @close="handlerCloseSnippetDetails($event)">
     </SnippetDetails>
+    <QueryAiHelp v-if="visibleAiHelp" :isVisible="visibleAiHelp" :content="activeEditorValue" @close="handlerVisibleHelp($event)"></QueryAiHelp>
   </div>
 </template>
 
@@ -100,6 +107,7 @@ import {AuditService} from "@/services/AuditService";
 import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
 import DataLazyTree from "@/components/common/DataLazyTree.vue";
+import QueryAiHelp from "@/views/pages/query/QueryAiHelp.vue";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
   {title: 'Editor', key: '1', closable: false}
@@ -110,7 +118,7 @@ const editorValueMap = new Map<string, string>();
 
 export default defineComponent({
   name: "QueryHome",
-  components: {DataLazyTree, BasicTableComponent, SnippetDetails, SourceSelect, MonacoEditor},
+  components: {QueryAiHelp, DataLazyTree, BasicTableComponent, SnippetDetails, SourceSelect, MonacoEditor},
   unmounted()
   {
     if (this.editorCompletionProvider) {
@@ -140,17 +148,19 @@ export default defineComponent({
       activeEditorValue: '',
       editors,
       activeKey,
-      editorValueMap
+      editorValueMap,
+      visibleAiHelp: false
     }
   },
   created()
   {
     this.handlerInitialize();
   },
-  mounted(){
-    window.onresize=()=>{
-      if(editorMap.values().next().value){
-        editorMap.values().next().value.layout({width: this.$refs.editorContainer.offsetWidth,height:300})
+  mounted()
+  {
+    window.onresize = () => {
+      if (editorMap.values().next().value) {
+        editorMap.values().next().value.layout({width: this.$refs.editorContainer.offsetWidth, height: 300})
       }
     }
   },
@@ -236,9 +246,9 @@ export default defineComponent({
             });
           }
         });
-        setTimeout(()=>{
-          editorMap.values().next().value?.layout({width: this.$refs.editorContainer.offsetWidth,height:300})
-        },200)
+      setTimeout(() => {
+        editorMap.values().next().value?.layout({width: this.$refs.editorContainer.offsetWidth, height: 300})
+      }, 200)
     },
     handlerRun()
     {
@@ -348,6 +358,11 @@ export default defineComponent({
     handlerChangeEditorValue(value: string)
     {
       editorValueMap.set(activeKey.value, value);
+    },
+    handlerVisibleHelp(value: boolean)
+    {
+      this.visibleAiHelp = value;
+      console.log(1)
     }
   },
   // Prevents errors from affecting other components

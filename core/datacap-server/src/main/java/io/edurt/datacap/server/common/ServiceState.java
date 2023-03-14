@@ -4,6 +4,8 @@ public enum ServiceState
 {
     SOURCE_NOT_FOUND(1001, "Source does not exist"),
     SOURCE_NOT_SUPPORTED(1002, "The current data source is not supported"),
+    SOURCE_NOT_SUPPORTED_PIPELINE(1003, "The current data source does not support pipeline"),
+    SOURCE_NOT_SUPPORTED_PIPELINE_TYPE(1004, "The current data source does not support pipeline type"),
     PLUGIN_NOT_FOUND(2001, "Plugin dose not exists"),
     PLUGIN_EXECUTE_FAILED(2002, "Plugin execute failed"),
     PLUGIN_ONLY_ONE_TEMPLATE(2003, "Plug-ins support only templates with the same name"),

@@ -9,12 +9,12 @@ import org.junit.Test;
         justification = "I prefer to suppress these FindBugs warnings")
 public class PluginCommonTest
 {
-    private String resource = "default.json";
+    private String resource = "default.yaml";
 
     @Test
     public void loadConfigure()
     {
-        IConfigure configure = PluginCommon.loadConfigure("JDBC", "MySQL", resource, null);
+        IConfigure configure = PluginCommon.loadYamlConfigure("JDBC", "MySQL", resource, null);
         Assert.assertNotNull(configure);
     }
 }

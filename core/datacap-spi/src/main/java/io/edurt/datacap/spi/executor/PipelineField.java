@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.util.Properties;
+import java.util.Set;
 
 @Data
 @Builder
@@ -13,4 +14,5 @@ public class PipelineField
 {
     private String type;
     private Properties configure;
+    private Set<String> supportOptions;
 }
