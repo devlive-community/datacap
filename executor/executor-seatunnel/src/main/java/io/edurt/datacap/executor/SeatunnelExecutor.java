@@ -18,6 +18,7 @@ import io.edurt.datacap.lib.shell.process.ProcessBuilderCommander;
 import io.edurt.datacap.spi.executor.Executor;
 import io.edurt.datacap.spi.executor.Pipeline;
 import io.edurt.datacap.spi.executor.PipelineField;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class SeatunnelExecutor
         try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(new File(workFile), JsonEncoding.UTF8)) {
             jsonGenerator.setPrettyPrinter(new DefaultPrettyPrinter());
             jsonGenerator.writeStartObject();
+            this.writeChild("env", jsonGenerator, null);
             this.writeChild("source", jsonGenerator, configure.getFrom());
             this.writeChild("sink", jsonGenerator, configure.getTo());
             jsonGenerator.writeEndObject();
@@ -73,17 +75,23 @@ public class SeatunnelExecutor
             throws IOException
     {
         jsonGenerator.writeFieldName(type);
-        Connector factory = ConnectorFactory.createFormatter(ConnectorType.valueOf(configure.getType()), configure);
-        for (Map.Entry<String, Object> entry : factory.formatToMap().entrySet()) {
-            jsonGenerator.writeStartObject();
-            jsonGenerator.writeObjectFieldStart(entry.getKey());
-            if (entry.getValue() instanceof Properties) {
-                for (Map.Entry<Object, Object> property : ((Properties) entry.getValue()).entrySet()) {
-                    jsonGenerator.writeStringField(property.getKey().toString(), (String) property.getValue());
+        if (ObjectUtils.isNotEmpty(configure)) {
+            Connector factory = ConnectorFactory.createFormatter(ConnectorType.valueOf(configure.getType()), configure);
+            for (Map.Entry<String, Object> entry : factory.formatToMap().entrySet()) {
+                jsonGenerator.writeStartObject();
+                jsonGenerator.writeObjectFieldStart(entry.getKey());
+                if (entry.getValue() instanceof Properties) {
+                    for (Map.Entry<Object, Object> property : ((Properties) entry.getValue()).entrySet()) {
+                        jsonGenerator.writeStringField(property.getKey().toString(), (String) property.getValue());
+                    }
                 }
+                jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndObject();
         }
-        jsonGenerator.writeEndObject();
+        else {
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeEndObject();
+        }
     }
 }
