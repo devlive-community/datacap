@@ -1,4 +1,4 @@
-// Generated from io/edurt/datacap/sql/parser/SqlBase.g4 by ANTLR 4.9.3
+// Generated from io/edurt/datacap/sql/parser/SqlBase.g4 by ANTLR 4.12.0
 package io.edurt.datacap.sql.parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 

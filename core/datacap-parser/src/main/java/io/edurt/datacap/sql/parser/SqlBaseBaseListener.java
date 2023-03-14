@@ -1,4 +1,4 @@
-// Generated from io/edurt/datacap/sql/parser/SqlBase.g4 by ANTLR 4.9.3
+// Generated from io/edurt/datacap/sql/parser/SqlBase.g4 by ANTLR 4.12.0
 package io.edurt.datacap.sql.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
+@SuppressWarnings("CheckReturnValue")
 public class SqlBaseBaseListener implements SqlBaseListener {
 	/**
 	 * {@inheritDoc}
