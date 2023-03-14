@@ -14,6 +14,6 @@ import java.util.List;
 public class IConfigureExecutor
 {
     private String executor;
-    private String type;
+    private IConfigurePipelineType type;
     private List<IConfigureExecutorField> fields;
 }

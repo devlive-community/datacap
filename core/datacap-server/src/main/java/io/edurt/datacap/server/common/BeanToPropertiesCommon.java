@@ -1,5 +1,7 @@
 package io.edurt.datacap.server.common;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -19,10 +21,16 @@ public class BeanToPropertiesCommon
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
             for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
                 String propertyName = propertyDescriptor.getName();
-                if (!propertyName.equals("class")) {
-                    Method readMethod = propertyDescriptor.getReadMethod();
-                    Object value = readMethod.invoke(bean);
-                    properties.setProperty(propertyName, value.toString());
+                if (!propertyDescriptor.getPropertyType().getName().startsWith("io\\.edurt\\.datacap")) {
+                    if (!propertyName.equals("class")) {
+                        Method readMethod = propertyDescriptor.getReadMethod();
+                        if (!readMethod.getGenericReturnType().getTypeName().contains("io.edurt.datacap")) {
+                            Object value = readMethod.invoke(bean);
+                            if (ObjectUtils.isNotEmpty(value)) {
+                                properties.setProperty(propertyName, value.toString());
+                            }
+                        }
+                    }
                 }
             }
         }
