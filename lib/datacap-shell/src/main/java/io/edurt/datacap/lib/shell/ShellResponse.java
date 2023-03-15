@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Data
 @ToString
 @AllArgsConstructor
@@ -14,4 +16,5 @@ public class ShellResponse
     private Integer code;
     private Boolean successful;
     private boolean timeout = false;
+    private List<String> errors;
 }

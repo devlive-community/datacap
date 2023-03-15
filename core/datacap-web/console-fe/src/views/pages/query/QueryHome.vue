@@ -57,7 +57,7 @@
                 <Badge v-if="applySource && activeEditorValue">
                   <Button type="primary" size="small" icon="md-ionitron" @click="handlerVisibleHelp(true)"></Button>
                   <template #count>
-                    <Icon type="md-help-circle" color="#ed4014" size="16"/>
+                    <Icon class="go" type="md-help-circle" color="#ed4014" size="20"/>
                   </template>
                 </Badge>
               </Space>
@@ -379,5 +379,18 @@ export default defineComponent({
 
 .center {
   text-align: center;
+}
+
+@keyframes changDeg {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.go {
+  animation: changDeg 2s linear 0.2s infinite;
 }
 </style>
