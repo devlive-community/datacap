@@ -8,17 +8,21 @@ import io.edurt.datacap.server.common.BeanToPropertiesCommon;
 import io.edurt.datacap.server.common.PluginCommon;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
+import io.edurt.datacap.server.entity.PipelineEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 import io.edurt.datacap.server.plugin.configure.IConfigure;
 import io.edurt.datacap.server.plugin.configure.IConfigureExecutor;
 import io.edurt.datacap.server.plugin.configure.IConfigureExecutorField;
 import io.edurt.datacap.server.plugin.configure.IConfigurePipelineType;
+import io.edurt.datacap.server.repository.PipelineRepository;
 import io.edurt.datacap.server.repository.SourceRepository;
 import io.edurt.datacap.server.security.UserDetailsService;
 import io.edurt.datacap.server.service.PipelineService;
 import io.edurt.datacap.spi.executor.Executor;
 import io.edurt.datacap.spi.executor.Pipeline;
 import io.edurt.datacap.spi.executor.PipelineField;
+import io.edurt.datacap.spi.executor.PipelineResponse;
+import io.edurt.datacap.spi.executor.PipelineState;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -28,27 +32,33 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 @Slf4j
 public class PipelineServiceImpl
         implements PipelineService
 {
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final SourceRepository repository;
     private final Injector injector;
     private final Environment environment;
+    private final PipelineRepository pipelineRepository;
 
-    public PipelineServiceImpl(SourceRepository repository, Injector injector, Environment environment)
+    public PipelineServiceImpl(SourceRepository repository, Injector injector, Environment environment, PipelineRepository pipelineRepository)
     {
         this.repository = repository;
         this.injector = injector;
         this.environment = environment;
+        this.pipelineRepository = pipelineRepository;
     }
 
     @Override
@@ -133,7 +143,7 @@ public class PipelineServiceImpl
             String username = UserDetailsService.getUser().getUsername();
             String pipelineHome = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMddHHmmssSSS");
             String work = String.join(File.separator, executorHome, username, pipelineHome);
-            String pipelineName = String.join("_", username, configure.getExecutor().toLowerCase(), pipelineHome);
+            String pipelineName = String.join("_", username, configure.getExecutor().toLowerCase(), "from", String.valueOf(fromSource.getId()), "to", String.valueOf(toSource.getId()), pipelineHome);
             try {
                 FileUtils.forceMkdir(new File(work));
             }
@@ -149,8 +159,32 @@ public class PipelineServiceImpl
                     .to(toField)
                     .timeout(600)
                     .build();
-            executorOptional.get().start(pipeline);
-            return Response.success(null);
+
+            PipelineEntity pipelineEntity = new PipelineEntity();
+            pipelineEntity.setName(pipelineName);
+            pipelineEntity.setContent(configure.getContent());
+            pipelineEntity.setState(PipelineState.CREATED);
+            pipelineEntity.setWork(work);
+            pipelineEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
+            pipelineEntity.setUser(UserDetailsService.getUser());
+            pipelineEntity.setFrom(fromSource);
+            pipelineEntity.setFromConfigures(fromProperties);
+            pipelineEntity.setTo(toSource);
+            pipelineEntity.setToConfigures(toProperties);
+            pipelineRepository.save(pipelineEntity);
+
+            executorService.submit(() -> {
+                pipelineEntity.setState(PipelineState.RUNNING);
+                pipelineRepository.save(pipelineEntity);
+
+                PipelineResponse response = executorOptional.get().start(pipeline);
+                pipelineEntity.setEndTime(new Timestamp(System.currentTimeMillis()));
+                pipelineEntity.setState(response.getState());
+                pipelineEntity.setMessage(response.getMessage());
+                pipelineEntity.setElapsed(pipelineEntity.getElapsed());
+                pipelineRepository.save(pipelineEntity);
+            });
+            return Response.success(pipelineEntity.getId());
         }
         return Response.failure(ServiceState.SOURCE_NOT_FOUND);
     }
@@ -184,5 +218,11 @@ public class PipelineServiceImpl
             }
         }
         properties.put(field.getField(), value);
+    }
+
+    @Override
+    public Response<Long> delete(Long id)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

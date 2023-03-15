@@ -83,5 +83,9 @@ export default {
   code: 'Code',
   chatgpt: 'ChatGPT',
   send: 'Send',
-  token: 'Token'
+  token: 'Token',
+  pipeline: 'Pipeline',
+  work: 'Work',
+  from: 'From',
+  to: 'To',
 }

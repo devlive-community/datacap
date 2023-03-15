@@ -15,5 +15,5 @@ public interface Executor
 
     void before(Pipeline configure);
 
-    void start(Pipeline configure);
+    PipelineResponse start(Pipeline configure);
 }
