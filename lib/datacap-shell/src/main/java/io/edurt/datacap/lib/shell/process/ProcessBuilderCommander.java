@@ -56,7 +56,6 @@ public class ProcessBuilderCommander
 
         Process process = null;
         try {
-            builder.redirectErrorStream(true);
             process = builder.start();
             boolean exitCode = process.waitFor(configure.getTimeout(), TimeUnit.SECONDS);
             if (!exitCode) {
@@ -80,8 +79,17 @@ public class ProcessBuilderCommander
                     }
                 }
             }
+
             shellResponse.setCode(process.exitValue());
             if (process.exitValue() > 0) {
+                List<String> errors = new ArrayList<>();
+                new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8))
+                        .lines()
+                        .forEach(line -> {
+                            logger.error(line);
+                            errors.add(line);
+                        });
+                shellResponse.setErrors(errors);
                 shellResponse.setSuccessful(Boolean.FALSE);
             }
         }
@@ -93,9 +101,8 @@ public class ProcessBuilderCommander
             if (ObjectUtils.isNotEmpty(process)) {
                 process.destroy();
             }
-            logger.info("Execute response {}", shellResponse);
-            loggerExecutor.destroy();
             logger.info("Execute end destroy logger components successful");
+            loggerExecutor.destroy();
         }
         return shellResponse;
     }

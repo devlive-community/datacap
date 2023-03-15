@@ -18,6 +18,9 @@ import io.edurt.datacap.lib.shell.process.ProcessBuilderCommander;
 import io.edurt.datacap.spi.executor.Executor;
 import io.edurt.datacap.spi.executor.Pipeline;
 import io.edurt.datacap.spi.executor.PipelineField;
+import io.edurt.datacap.spi.executor.PipelineResponse;
+import io.edurt.datacap.spi.executor.PipelineState;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +40,7 @@ public class SeatunnelExecutor
         try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(new File(workFile), JsonEncoding.UTF8)) {
             jsonGenerator.setPrettyPrinter(new DefaultPrettyPrinter());
             jsonGenerator.writeStartObject();
+            this.writeChild("env", jsonGenerator, null);
             this.writeChild("source", jsonGenerator, configure.getFrom());
             this.writeChild("sink", jsonGenerator, configure.getTo());
             jsonGenerator.writeEndObject();
@@ -47,7 +51,7 @@ public class SeatunnelExecutor
     }
 
     @Override
-    public void start(Pipeline configure)
+    public PipelineResponse start(Pipeline configure)
     {
         before(configure);
         SeaTunnelCommander commander = new SeaTunnelCommander(
@@ -64,26 +68,36 @@ public class SeatunnelExecutor
                 .build();
         ShellCommander shellExecutor = new ProcessBuilderCommander(shellConfigure);
         ShellResponse response = shellExecutor.execute();
-        if (!response.getSuccessful()) {
-            Preconditions.checkArgument(false, "Could not execute command");
-        }
+        PipelineState state = response.getSuccessful() ? PipelineState.SUCCESS : PipelineState.FAILURE;
+        return PipelineResponse.builder()
+                .state(state)
+                .timeout(response.isTimeout())
+                .successful(response.getSuccessful())
+                .message(String.join("\n", response.getErrors()))
+                .build();
     }
 
     private void writeChild(String type, JsonGenerator jsonGenerator, PipelineField configure)
             throws IOException
     {
         jsonGenerator.writeFieldName(type);
-        Connector factory = ConnectorFactory.createFormatter(ConnectorType.valueOf(configure.getType()), configure);
-        for (Map.Entry<String, Object> entry : factory.formatToMap().entrySet()) {
-            jsonGenerator.writeStartObject();
-            jsonGenerator.writeObjectFieldStart(entry.getKey());
-            if (entry.getValue() instanceof Properties) {
-                for (Map.Entry<Object, Object> property : ((Properties) entry.getValue()).entrySet()) {
-                    jsonGenerator.writeStringField(property.getKey().toString(), (String) property.getValue());
+        if (ObjectUtils.isNotEmpty(configure)) {
+            Connector factory = ConnectorFactory.createFormatter(ConnectorType.valueOf(configure.getType()), configure);
+            for (Map.Entry<String, Object> entry : factory.formatToMap().entrySet()) {
+                jsonGenerator.writeStartObject();
+                jsonGenerator.writeObjectFieldStart(entry.getKey());
+                if (entry.getValue() instanceof Properties) {
+                    for (Map.Entry<Object, Object> property : ((Properties) entry.getValue()).entrySet()) {
+                        jsonGenerator.writeStringField(property.getKey().toString(), (String) property.getValue());
+                    }
                 }
+                jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndObject();
         }
-        jsonGenerator.writeEndObject();
+        else {
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeEndObject();
+        }
     }
 }

@@ -96,6 +96,13 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/pages/query/QueryHistory.vue")
       },
       {
+        path: "pipeline",
+        meta: {
+          roles: ['Admin', 'User']
+        },
+        component: () => import("../views/user/pipeline/PipelineHome.vue")
+      },
+      {
         path: "snippet",
         meta: {
           roles: ['Admin', 'User']

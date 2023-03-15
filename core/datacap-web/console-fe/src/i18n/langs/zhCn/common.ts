@@ -83,5 +83,9 @@ export default {
   code: '代码',
   chatgpt: 'ChatGPT',
   send: '发送',
-  token: '密钥'
+  token: '密钥',
+  pipeline: '流水线',
+  work: '工作目录',
+  from: '来源',
+  to: '目标'
 }
