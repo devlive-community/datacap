@@ -208,8 +208,14 @@ public class PipelineServiceImpl
     {
         Object value = "";
         if (ObjectUtils.isNotEmpty(field.getOrigin())) {
-            if (ObjectUtils.isNotEmpty(configure.get(field.getOrigin()))) {
-                value = configure.get(field.getOrigin());
+            String[] split = String.valueOf(field.getOrigin()).split("\\|");
+            if (split.length > 1) {
+                value = String.join(":", String.valueOf(configure.get(split[0])), String.valueOf(configure.get(split[1])));
+            }
+            else {
+                if (ObjectUtils.isNotEmpty(configure.get(field.getOrigin()))) {
+                    value = configure.get(field.getOrigin());
+                }
             }
         }
         else {

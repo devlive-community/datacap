@@ -44,6 +44,10 @@
                 <Icon type="ios-book"/>
                 {{ $t('common.history') }}
               </MenuItem>
+              <MenuItem name="admin_pipeline" to="/admin/pipeline">
+                <Icon type="md-list-box"/>
+                {{ $t('common.pipeline') }}
+              </MenuItem>
             </MenuGroup>
           </Submenu>
           <Submenu name="settings">
