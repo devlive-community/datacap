@@ -87,5 +87,8 @@ export default {
   pipeline: '流水线',
   work: '工作目录',
   from: '来源',
-  to: '目标'
+  to: '目标',
+  analysis: '解析',
+  optimize: '优化',
+  fixedbugs: '修复问题'
 }

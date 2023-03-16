@@ -147,7 +147,7 @@ export default defineComponent({
     {
       const userQuestion = new UserQuestion();
       userQuestion.type = 'ChatGPT';
-      userQuestion.question = this.userQuestionContext;
+      userQuestion.content = this.userQuestionContext;
       const question = new UserQuestionItem();
       question.content = this.userQuestionContext;
       question.isSelf = true;

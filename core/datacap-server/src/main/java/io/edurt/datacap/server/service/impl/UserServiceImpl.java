@@ -8,6 +8,7 @@ import io.edurt.datacap.server.audit.AuditUserLog;
 import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
 import io.edurt.datacap.server.body.UserQuestionBody;
+import io.edurt.datacap.server.common.AiSupportCommon;
 import io.edurt.datacap.server.common.JSON;
 import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
@@ -19,6 +20,7 @@ import io.edurt.datacap.server.repository.UserRepository;
 import io.edurt.datacap.server.security.JwtService;
 import io.edurt.datacap.server.security.UserDetailsService;
 import io.edurt.datacap.server.service.UserService;
+import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -181,9 +184,27 @@ public class UserServiceImpl
                         OpenAiClient openAiClient = OpenAiClient.builder()
                                 .apiKey(token)
                                 .build();
+                        String forwardContent = configure.getContent();
+                        try {
+                            AiSupportCommon.AiSupportEnum type = AiSupportCommon.AiSupportEnum.valueOf(configure.getTransType());
+                            String replaceContent = AiSupportCommon.getValue(configure.getLocale(), type);
+                            Properties properties = new Properties();
+                            properties.put("sql", configure.getContent());
+                            if (ObjectUtils.isNotEmpty(configure.getEngine())) {
+                                properties.put("engine", configure.getEngine());
+                            }
+                            if (ObjectUtils.isNotEmpty(configure.getError())) {
+                                properties.put("error", configure.getError());
+                            }
+                            StrSubstitutor sub = new StrSubstitutor(properties);
+                            forwardContent = sub.replace(replaceContent);
+                        }
+                        catch (Exception exception) {
+                            // Ignore it
+                        }
                         Message message = Message.builder()
                                 .role(Message.Role.USER)
-                                .content(configure.getQuestion())
+                                .content(forwardContent)
                                 .build();
                         ChatCompletion chatCompletion = ChatCompletion.builder().messages(Arrays.asList(message)).build();
                         ChatCompletionResponse chatCompletionResponse = openAiClient.chatCompletion(chatCompletion);
