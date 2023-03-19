@@ -292,7 +292,7 @@
         <!-- Executor -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
-            <artifactId>executor-seatunnel</artifactId>
+            <artifactId>datacap-executor-seatunnel</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
