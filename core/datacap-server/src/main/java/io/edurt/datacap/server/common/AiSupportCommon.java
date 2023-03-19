@@ -1,10 +1,13 @@
 package io.edurt.datacap.server.common;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
+@SuppressFBWarnings(value = {"ME_ENUM_FIELD_SETTER"},
+        justification = "I prefer to suppress these FindBugs warnings")
 public class AiSupportCommon
 {
     private AiSupportCommon()
