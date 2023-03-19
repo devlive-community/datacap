@@ -14,9 +14,15 @@
 
 - Add other issues template
 - Add role
-- Upgrade JDK 8 to 11
+- Upgrade JDK `8` to `11`
 - Support chatgpt
 - Add submit pipeline api
+
+#### Experimental
+
+---
+
+- Add seatunnel executor
 
 #### Client
 
@@ -55,12 +61,6 @@
 
 - Support kafka
 
-#### Executors
-
----
-
-- Add seatunnel executor
-
 #### Dependencies
 
 ---
@@ -70,7 +70,6 @@
 - Bump antlr4.version from `4.9.3` to `4.12.0` #262
 - Bump jedis from `3.6.3` to `4.3.1` #254
 - Bump DmJdbcDriver18 from `8.1.2.141` to `8.1.2.192` #234
-- Updated antlr4 to `4.12.0`
 
 #### Contributors
 

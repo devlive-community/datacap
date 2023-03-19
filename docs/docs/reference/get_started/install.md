@@ -12,7 +12,7 @@ DataCap is a software for data transformation, integration and visualization.
 
 | System | Version   |
 |--------|-----------|
-| JDK    | `>=1.8`   |
+| JDK    | `>=11`    |
 | MySQL  | `>=5.6.x` |
 
 #### Binary install
