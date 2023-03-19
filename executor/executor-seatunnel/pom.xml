@@ -10,7 +10,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>executor-seatunnel</artifactId>
+    <artifactId>datacap-executor-seatunnel</artifactId>
     <description>DataCap - Executor seatunnel</description>
 
     <dependencies>

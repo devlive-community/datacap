@@ -10,7 +10,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>executor-example</artifactId>
+    <artifactId>datacap-executor-example</artifactId>
     <description>DataCap - Executor example</description>
 
     <dependencies>
