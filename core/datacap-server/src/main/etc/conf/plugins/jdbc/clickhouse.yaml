@@ -37,6 +37,7 @@ pipelines:
     type: SOURCE
     fields:
       - field: host
+        origin: host|port
         required: true
       - field: database
         required: true
@@ -55,6 +56,7 @@ pipelines:
     type: SINK
     fields:
       - field: host
+        origin: host|port
         required: true
       - field: database
         override: true

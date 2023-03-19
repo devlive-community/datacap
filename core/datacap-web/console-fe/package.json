@@ -10,7 +10,6 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@kangc/v-md-editor": "^2.3.15",
     "@types/nprogress": "^0.2.0",
     "@types/watermark-dom": "^2.3.1",
     "ag-grid-community": "^28.2.1",

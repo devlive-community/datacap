@@ -2,15 +2,8 @@
   <div>
     <Modal title="AI" width="80%" :closable="false" v-model="visible" :maskClosable="false" :z-index="9">
       <div style="height: 350px; max-height: 350px;">
-        <Tabs v-if="!loading" :animated="false" @on-click="handlerTab($event)">
-          <TabPane :label="$t('ai.optimizeSQL')" name="OPTIMIZE" :disabled="actionLoading">
-            <div style="height: 300px; max-height: 350px; overflow: auto;">
-              <Skeleton v-if="actionLoading" loading :title="false" :animated="true"
-                        :paragraph="{ rows: 5, width: [100, 200, '300px', '50%', '62%'] }"/>
-              <VMarkdownView v-else :mode="'light'" :content="finalContent"></VMarkdownView>
-            </div>
-          </TabPane>
-          <TabPane :label="$t('ai.analysisSQL')" name="ANALYSIS" :disabled="actionLoading">
+        <Tabs v-if="!loading" :model-value="tabValue" :animated="false" @on-click="handlerTab($event)">
+          <TabPane :label="$t('common.' + support.toLowerCase())" v-for="support of aiSupports" :name="support" :key="support" :disabled="actionLoading">
             <div style="height: 300px; max-height: 350px; overflow: auto;">
               <Skeleton v-if="actionLoading" loading :title="false" :animated="true"
                         :paragraph="{ rows: 5, width: [100, 200, '300px', '50%', '62%'] }"/>
@@ -34,12 +27,6 @@ import {VMarkdownView} from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
 import {Skeleton} from "view-ui-plus";
 
-export enum TabType
-{
-  OPTIMIZE = ('OPTIMIZE'),
-  ANALYSIS = ('ANALYSIS')
-}
-
 export default defineComponent({
   name: 'QueryAiHelp',
   props: {
@@ -50,6 +37,18 @@ export default defineComponent({
     content: {
       type: String,
       default: () => ''
+    },
+    engine: {
+      type: String,
+      default: () => ''
+    },
+    error: {
+      type: String,
+      default: () => ''
+    },
+    aiSupports: {
+      type: Array,
+      default: () => []
     }
   },
   components: {Skeleton, VMarkdownView},
@@ -59,7 +58,8 @@ export default defineComponent({
       loading: false,
       actionLoading: false,
       userInfo: null as User,
-      finalContent: null
+      finalContent: null,
+      tabValue: 'ANALYSIS'
     }
   },
   created()
@@ -74,32 +74,24 @@ export default defineComponent({
         .then(response => {
           if (response.status) {
             this.userInfo = response.data;
-            this.handlerTab(TabType.OPTIMIZE);
+            this.handlerTab(this.tabValue);
           }
         })
         .finally(() => {
           this.loading = false;
         });
     },
-    handlerTab(value: TabType)
+    handlerTab(value: string)
     {
       this.finalContent = null;
-      let message = '';
-      if (value === TabType.OPTIMIZE) {
-        message += this.$t('ai.optimizeSQLContent');
-        message += '\n';
-        message += this.content;
-      }
-      else if (value === TabType.ANALYSIS) {
-        message += this.$t('ai.analysisSQLContent');
-        message += '\n';
-        message += this.content;
-      }
-
       this.actionLoading = true;
       const userQuestion = new UserQuestion();
       userQuestion.type = 'ChatGPT';
-      userQuestion.question = message;
+      userQuestion.content = this.content;
+      userQuestion.transType = value;
+      userQuestion.engine = this.engine;
+      userQuestion.error = this.error;
+      userQuestion.locale = this.$i18n.locale;
       UserService.startChat(userQuestion)
         .then(response => {
           if (response.status) {

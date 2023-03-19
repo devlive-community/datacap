@@ -88,4 +88,7 @@ export default {
   work: 'Work',
   from: 'From',
   to: 'To',
+  analysis: 'Analysis',
+  optimize: 'Optimize',
+  fixedbugs: 'Fixed Bugs'
 }

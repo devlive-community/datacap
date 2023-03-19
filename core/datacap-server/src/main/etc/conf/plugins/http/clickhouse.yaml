@@ -24,7 +24,7 @@ pipelines:
     type: SOURCE
     fields:
       - field: host
-        origin: host
+        origin: host|port
         required: true
       - field: database
         origin: database
@@ -42,7 +42,7 @@ pipelines:
     type: SINK
     fields:
       - field: host
-        origin: host
+        origin: host|port
         required: true
       - field: database
         origin: database

@@ -11,6 +11,10 @@ import lombok.ToString;
 @AllArgsConstructor
 public class UserQuestionBody
 {
-    private String question;
+    private String locale;
+    private String content;
     private String type;
+    private String engine;
+    private String error;
+    private String transType;
 }

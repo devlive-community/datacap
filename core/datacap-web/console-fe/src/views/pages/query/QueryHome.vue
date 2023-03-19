@@ -54,11 +54,8 @@
                     </Space>
                   </template>
                 </Poptip>
-                <Badge v-if="applySource && activeEditorValue">
+                <Badge v-if="applySource && activeEditorValue" :count="aiSupportType.length">
                   <Button type="primary" size="small" icon="md-ionitron" @click="handlerVisibleHelp(true)"></Button>
-                  <template #count>
-                    <Icon class="go" type="md-help-circle" color="#ed4014" size="20"/>
-                  </template>
                 </Badge>
               </Space>
             </template>
@@ -85,7 +82,9 @@
     <SnippetDetails v-if="snippetDetails" :isVisible="snippetDetails"
                     :codeSnippet="activeEditorValue" @close="handlerCloseSnippetDetails($event)">
     </SnippetDetails>
-    <QueryAiHelp v-if="visibleAiHelp" :isVisible="visibleAiHelp" :content="activeEditorValue" @close="handlerVisibleHelp($event)"></QueryAiHelp>
+    <QueryAiHelp v-if="visibleAiHelp" :isVisible="visibleAiHelp" :content="activeEditorValue"
+                 :aiSupports="aiSupportType" :error="error"
+                 :engine="engine" @close="handlerVisibleHelp($event)"></QueryAiHelp>
   </div>
 </template>
 
@@ -149,7 +148,10 @@ export default defineComponent({
       editors,
       activeKey,
       editorValueMap,
-      visibleAiHelp: false
+      visibleAiHelp: false,
+      engine: null,
+      aiSupportType: ['ANALYSIS', 'OPTIMIZE'],
+      error: null
     }
   },
   created()
@@ -253,6 +255,8 @@ export default defineComponent({
     handlerRun()
     {
       this.tableConfigure = null;
+      this.error = null;
+      this.aiSupportType = ['ANALYSIS', 'OPTIMIZE'];
       this.response = {};
       this.cancelToken = axios.CancelToken.source();
       this.tableLoading = true;
@@ -278,6 +282,8 @@ export default defineComponent({
           }
           else {
             this.$Message.error(response.message);
+            this.error = response.message;
+            this.aiSupportType.push('FIXEDBUGS');
             this.tableConfigure = null;
           }
         })
@@ -290,6 +296,7 @@ export default defineComponent({
       const idAndType = value.split(':');
       this.applySource = idAndType[0];
       this.applySourceType = idAndType[1];
+      this.engine = idAndType[1];
       this.editorCompletionProvider.dispose();
       this.handlerEditorDidMount(editorMap.get(activeKey.value), idAndType[1]);
     },
@@ -324,6 +331,8 @@ export default defineComponent({
     },
     handlerPlusEditor()
     {
+      this.error = null;
+      this.aiSupportType = ['ANALYSIS', 'OPTIMIZE'];
       activeKey.value = 'newTab' + activeKey.value + Date.parse(new Date().toString());
       editors.value.push({title: 'New Tab', key: activeKey.value, closable: true});
       editorValueMap.set(activeKey.value, '');
@@ -353,6 +362,8 @@ export default defineComponent({
     },
     handlerChangeEditor(targetKey: string)
     {
+      this.error = null;
+      this.aiSupportType = ['ANALYSIS', 'OPTIMIZE'];
       this.activeEditorValue = editorValueMap.get(targetKey) as string;
     },
     handlerChangeEditorValue(value: string)

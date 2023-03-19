@@ -7,8 +7,12 @@ export interface User
 
 export class UserQuestion
 {
-  question: string;
+  content: string;
   type: string;
+  locale?: string;
+  engine?: string;
+  error?: string;
+  transType?: string;
 }
 
 export class UserQuestionItem

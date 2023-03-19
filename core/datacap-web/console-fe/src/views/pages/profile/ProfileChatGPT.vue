@@ -10,9 +10,9 @@
         </Tooltip>
       </template>
       <div>
-        <Layout>
-          <Content style="padding: 0px 0px 0px 10px">
-            <div ref="scrollDiv" style="height: 300px; max-height: 300px; overflow: auto; background-color: #f5f7f9">
+        <Layout style="background-color: #FFFFFF;">
+          <Content style="padding: 0px 0px 0px 10px;">
+            <div ref="scrollDiv" style="height: 300px; max-height: 300px; overflow: auto;">
               <List item-layout="vertical">
                 <ListItem v-for="item in userQuestionItems" :key="item">
                   <ListItemMeta style="margin-bottom: 0px;">
@@ -24,7 +24,9 @@
                       <Avatar v-else icon="md-ionitron" style="background-color: #87d068;"></Avatar>
                     </template>
                   </ListItemMeta>
-                  <v-md-preview :text="item.content"/>
+                  <div style="margin: 0px 10px;">
+                    <VMarkdownView v-if="item.content" :mode="'light'" :content="item.content"></VMarkdownView>
+                  </div>
                 </ListItem>
               </List>
             </div>
@@ -68,6 +70,8 @@ import UserService from "@/services/UserService";
 import {ThirdConfigure, User, UserQuestion, UserQuestionItem} from '@/model/User';
 import Common from "@/common/Common";
 import {AuthResponse} from "@/model/AuthResponse";
+import {VMarkdownView} from 'vue3-markdown'
+import 'vue3-markdown/dist/style.css'
 
 export default defineComponent({
   setup()
@@ -81,6 +85,7 @@ export default defineComponent({
       username
     }
   },
+  components: {VMarkdownView},
   created()
   {
     this.handlerInitialize()
@@ -142,7 +147,7 @@ export default defineComponent({
     {
       const userQuestion = new UserQuestion();
       userQuestion.type = 'ChatGPT';
-      userQuestion.question = this.userQuestionContext;
+      userQuestion.content = this.userQuestionContext;
       const question = new UserQuestionItem();
       question.content = this.userQuestionContext;
       question.isSelf = true;

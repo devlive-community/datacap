@@ -1,5 +1,6 @@
 name: Kafka
 supportTime: '2023-03-06'
+
 configures:
   - field: name
     type: String
@@ -10,3 +11,27 @@ configures:
     required: true
     value: 127.0.0.1:9092
     message: host is a required field, please be sure to enter
+
+pipelines:
+  - executor: Seatunnel
+    type: SOURCE
+    fields:
+      - field: bootstrap.servers
+        origin: host
+        required: true
+      - field: topic
+        origin: database
+        required: true
+        override: true
+        input: true
+  - executor: Seatunnel
+    type: SINK
+    fields:
+      - field: bootstrap.servers
+        origin: host
+        required: true
+      - field: topic
+        origin: database
+        required: true
+        override: true
+        input: true
