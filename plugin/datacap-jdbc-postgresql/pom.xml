@@ -14,7 +14,7 @@
     <description>DataCap - PostgreSQL</description>
 
     <properties>
-        <pgsql.version>42.5.0</pgsql.version>
+        <pgsql.version>42.6.0</pgsql.version>
         <plugin.name>jdbc-postgresql</plugin.name>
     </properties>
 
