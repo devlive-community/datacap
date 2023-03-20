@@ -14,7 +14,7 @@
     <description>DataCap - IoTDB</description>
 
     <properties>
-        <iotdb.version>0.13.0</iotdb.version>
+        <iotdb.version>1.0.1</iotdb.version>
         <plugin.name>jdbc-iotdb</plugin.name>
     </properties>
 
