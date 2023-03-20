@@ -4,7 +4,7 @@
     <groupId>io.edurt.datacap</groupId>
     <artifactId>datacap</artifactId>
     <packaging>pom</packaging>
-    <version>1.7.0</version>
+    <version>1.8.0-SNAPSHOT</version>
 
     <modules>
         <module>client/datacap-cli</module>
@@ -52,8 +52,8 @@
         <module>plugin/datacap-jdbc-sqlserver</module>
         <module>plugin/datacap-jdbc-tdengine</module>
         <module>plugin/datacap-jdbc-trino</module>
-        <module>executor/executor-example</module>
-        <module>executor/executor-seatunnel</module>
+        <module>executor/datacap-executor-example</module>
+        <module>executor/datacap-executor-seatunnel</module>
     </modules>
 
     <name>DataCap</name>

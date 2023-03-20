@@ -38,6 +38,7 @@
                 <include>**/*.properties</include>
                 <include>**/*.yml</include>
                 <include>**/*.json</include>
+                <include>**/*.yaml</include>
             </includes>
             <filtered>true</filtered>
         </fileSet>
