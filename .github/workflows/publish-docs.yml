@@ -1,6 +1,8 @@
 name: Publish docs via GitHub Pages
 
-on: push
+on:
+  release:
+    types: [ published ]
 
 jobs:
   deploy:
