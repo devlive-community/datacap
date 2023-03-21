@@ -27,6 +27,12 @@
 
 DataCap is integrated software for data transformation, integration, and visualization. Support a variety of data sources, file types, big data related database, relational database, NoSQL database, etc. Through the software can realize the management of multiple data sources, the data under the source of various operations conversion, making data charts, monitoring data sources and other functions.
 
+**Example**: [try.datacap.edurt.io](http://try.datacap.edurt.io/)
+
+| Username  | Password    |
+|:---------:|:------------|
+| `datacap` | `123456789` |
+
 ### Require
 
 ---
