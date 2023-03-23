@@ -47,7 +47,7 @@ hide:
     <a href="https://github.com/EdurtIO/datacap" target="_blank" title="Join Us On GitHub" class="md-button md-button--primary">
       Join Us On GitHub
     </a>
-    <a href="http://139.198.158.103:9096/" target="_blank" title="View online examples" class="md-button md-button--primary">
+    <a href="http://try.datacap.edurt.io/" target="_blank" title="View online examples" class="md-button md-button--primary">
       View online examples
     </a>
     <p/><p/><p/><p/>

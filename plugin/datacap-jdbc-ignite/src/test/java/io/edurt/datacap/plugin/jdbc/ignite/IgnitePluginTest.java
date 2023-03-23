@@ -6,6 +6,7 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ public class IgnitePluginTest
         if (pluginOptional.isPresent()) {
             Plugin plugin = pluginOptional.get();
             plugin.connect(configure);
-            System.out.println(plugin.execute("SELECT TABLE_NAME FROM SYS.TABLES"));
+            Assert.assertNotNull(plugin.execute(plugin.validator()).getConnection());
             plugin.destroy();
         }
     }
