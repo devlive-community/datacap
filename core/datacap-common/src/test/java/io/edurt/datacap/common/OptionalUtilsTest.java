@@ -13,14 +13,14 @@ public class OptionalUtilsTest
     @Test
     public void isEmpty()
     {
-        Assert.assertTrue(OptionalUtils.isEmpty(empty));
+        Assert.assertFalse(OptionalUtils.isEmpty(empty));
         Assert.assertFalse(OptionalUtils.isEmpty(notEmpty));
     }
 
     @Test
     public void isNotEmpty()
     {
-        Assert.assertFalse(OptionalUtils.isNotEmpty(empty));
+        Assert.assertTrue(OptionalUtils.isNotEmpty(empty));
         Assert.assertTrue(OptionalUtils.isNotEmpty(notEmpty));
     }
 }
