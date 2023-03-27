@@ -23,7 +23,7 @@
 <script lang="ts">
 import {defineComponent, reactive} from 'vue';
 import {Snippet} from "@/model/Snippet";
-import {SnippetService} from "@/services/SnippetService";
+import SnippetService from "@/services/SnippetService";
 
 export default defineComponent({
   name: 'SnippetDetails',
@@ -64,7 +64,7 @@ export default defineComponent({
     {
       if (this.id > 0) {
         this.loading = true;
-        new SnippetService().getById(this.id)
+        SnippetService.getById(this.id)
           .then(response => {
             if (response.status) {
               this.snippetForm = reactive<Snippet>(response.data);
@@ -80,8 +80,7 @@ export default defineComponent({
     },
     handlerSave()
     {
-      new SnippetService()
-        .saveAndUpdate(this.snippetForm, this.isUpdate)
+      SnippetService.saveAndUpdate(this.snippetForm, this.isUpdate)
         .then((response) => {
           if (response.status) {
             this.$Message.success("Create successful");

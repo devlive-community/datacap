@@ -97,7 +97,6 @@ import * as monaco from 'monaco-editor';
 import MonacoEditor from 'monaco-editor-vue3';
 import {defineComponent, ref} from "vue";
 import {useRouter} from "vue-router";
-import {SnippetService} from "@/services/SnippetService";
 import {TableConfigure} from "@/components/table/TableConfigure";
 import SourceSelect from "@/components/source/SourceSelect.vue";
 import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
@@ -107,6 +106,8 @@ import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
 import DataLazyTree from "@/components/common/DataLazyTree.vue";
 import QueryAiHelp from "@/views/pages/query/QueryAiHelp.vue";
+import {HttpCommon} from "@/common/HttpCommon";
+import SnippetService from "@/services/SnippetService";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
   {title: 'Editor', key: '1', closable: false}
@@ -175,7 +176,7 @@ export default defineComponent({
         const from = router.currentRoute.value.query.from;
         if (id && from) {
           if (from === 'snippet') {
-            new SnippetService().getById(id)
+            SnippetService.getById(id)
               .then((response) => {
                 if (response.status && response.data?.code) {
                   this.activeEditorValue = response.data.code;
@@ -210,11 +211,12 @@ export default defineComponent({
       else {
         editorMap.set(activeKey.value, editor);
       }
-      FunctionsService.getByPlugin(language)
-        .then((response) => {
-          if (response.status) {
-            const languageSugs = [];
-            response.data.content.forEach(value => {
+      const client = new HttpCommon().getAxios();
+      axios.all([FunctionsService.getByPlugin(language), SnippetService.getSnippets(0, 100000)])
+        .then(axios.spread((pluginResponse, snippetResponse) => {
+          const languageSugs = [];
+          if (pluginResponse.status) {
+            pluginResponse.data.content.forEach(value => {
               let kind = monaco.languages.CompletionItemKind.Text;
               switch (value.type.toLowerCase()) {
                 case 'keyword':
@@ -235,19 +237,31 @@ export default defineComponent({
                 insertText: value.content
               });
             });
-            this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
-              provideCompletionItems(): any
-              {
-                return {
-                  suggestions: languageSugs.map((item) => ({
-                    ...item
-                  }))
-                };
-              },
-              triggerCharacters: ['.']
+          }
+          if (snippetResponse.status) {
+            snippetResponse.data?.content.forEach(value => {
+              let kind = monaco.languages.CompletionItemKind.Snippet;
+              languageSugs.push({
+                label: value.name,
+                detail: this.i18n.t('common.snippet'),
+                kind: kind,
+                documentation: this.i18n.t('common.description') + ':\n' + value.description + '\n\n' + this.i18n.t('common.example') + ':\n' + value.code,
+                insertText: value.code
+              });
             });
           }
-        });
+          this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
+            provideCompletionItems(): any
+            {
+              return {
+                suggestions: languageSugs.map((item) => ({
+                  ...item
+                }))
+              };
+            },
+            triggerCharacters: ['.']
+          });
+        }));
       setTimeout(() => {
         editorMap.values().next().value?.layout({width: this.$refs.editorContainer.offsetWidth, height: 300})
       }, 200)

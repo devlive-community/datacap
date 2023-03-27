@@ -20,6 +20,13 @@ public class OraclePlugin
     private Response response;
 
     @Override
+    public String validator()
+    {
+        return "SELECT version FROM PRODUCT_COMPONENT_VERSION\n" +
+                "WHERE product LIKE 'Oracle Database%'";
+    }
+
+    @Override
     public String name()
     {
         return "Oracle";

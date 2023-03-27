@@ -24,4 +24,7 @@ export class UserQuestionItem
 export class ThirdConfigure
 {
   token = '';
+  proxy = false;
+  host = '';
+  port = 0;
 }

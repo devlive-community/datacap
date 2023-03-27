@@ -4,7 +4,7 @@ import {Snippet} from "@/model/Snippet";
 
 const baseUrl = "/api/v1/snippet";
 
-export class SnippetService
+class SnippetService
 {
   getSnippets(page: number, size: number): Promise<ResponseModel>
   {
@@ -31,3 +31,5 @@ export class SnippetService
     return new HttpCommon().get(baseUrl + "/" + id);
   }
 }
+
+export default new SnippetService();
