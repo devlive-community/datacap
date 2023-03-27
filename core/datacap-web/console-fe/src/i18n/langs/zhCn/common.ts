@@ -90,5 +90,6 @@ export default {
   to: '目标',
   analysis: '解析',
   optimize: '优化',
-  fixedbugs: '修复问题'
+  fixedbugs: '修复问题',
+  proxy: '代理'
 }

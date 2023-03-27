@@ -90,5 +90,6 @@ export default {
   to: 'To',
   analysis: 'Analysis',
   optimize: 'Optimize',
-  fixedbugs: 'Fixed Bugs'
+  fixedbugs: 'Fixed Bugs',
+  proxy: 'Proxy',
 }

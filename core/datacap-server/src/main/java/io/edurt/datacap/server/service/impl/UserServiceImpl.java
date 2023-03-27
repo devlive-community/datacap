@@ -30,6 +30,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -181,9 +183,22 @@ public class UserServiceImpl
                 if (chatGPTMap.containsKey("token")) {
                     String token = (String) chatGPTMap.get("token");
                     if (StringUtils.isNotEmpty(token)) {
-                        OpenAiClient openAiClient = OpenAiClient.builder()
-                                .apiKey(token)
-                                .build();
+                        OpenAiClient openAiClient;
+                        Object isProxy = chatGPTMap.get("proxy");
+                        if (ObjectUtils.isNotEmpty(isProxy) && Boolean.valueOf(isProxy.toString())) {
+                            String host = (String) chatGPTMap.get("host");
+                            int port = (int) chatGPTMap.get("port");
+                            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+                            openAiClient = OpenAiClient.builder()
+                                    .apiKey(token)
+                                    .proxy(proxy)
+                                    .build();
+                        }
+                        else {
+                            openAiClient = OpenAiClient.builder()
+                                    .apiKey(token)
+                                    .build();
+                        }
                         String forwardContent = configure.getContent();
                         try {
                             AiSupportCommon.AiSupportEnum type = AiSupportCommon.AiSupportEnum.valueOf(configure.getTransType());

@@ -54,6 +54,15 @@
         <FormItem :label="$t('common.token')">
           <Input v-model="userInfo.thirdConfigure.chatgpt.token" type="text" placeholder="example: sk-xxxx"/>
         </FormItem>
+        <FormItem :label="$t('common.proxy')">
+          <Switch v-model="userInfo.thirdConfigure.chatgpt.proxy"/>
+        </FormItem>
+        <FormItem v-if="userInfo.thirdConfigure.chatgpt.proxy" :label="$t('common.host')">
+          <Input v-model="userInfo.thirdConfigure.chatgpt.host" type="text"/>
+        </FormItem>
+        <FormItem v-if="userInfo.thirdConfigure.chatgpt.proxy" :label="$t('common.port')">
+          <InputNumber v-model="userInfo.thirdConfigure.chatgpt.port"/>
+        </FormItem>
       </Form>
       <template #footer>
         <Space>
