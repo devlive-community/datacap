@@ -1,6 +1,7 @@
 package io.edurt.datacap.plugin.natived.kafka;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.SneakyThrows;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
@@ -11,6 +12,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+@SuppressFBWarnings(value = {"EQ_DOESNT_OVERRIDE_EQUALS"},
+        justification = "I prefer to suppress these FindBugs warnings")
 public class KafkaContainer
         extends GenericContainer<KafkaContainer>
 {
