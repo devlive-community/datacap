@@ -38,9 +38,7 @@ public class JdbcConnection
             buffer.append(this.jdbcConfigure.getDatabase().get());
         }
         if (this.jdbcConfigure.getSsl().isPresent()) {
-            if (this.jdbcConfigure.getSsl().get()) {
-                buffer.append(String.format("?ssl=%s", this.jdbcConfigure.getSsl().get()));
-            }
+            buffer.append(String.format("?ssl=%s", this.jdbcConfigure.getSsl().get()));
         }
         if (this.jdbcConfigure.getEnv().isPresent()) {
             Map<String, Object> env = this.jdbcConfigure.getEnv().get();
