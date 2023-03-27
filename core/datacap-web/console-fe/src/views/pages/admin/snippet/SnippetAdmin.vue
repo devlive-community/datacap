@@ -50,10 +50,10 @@ import {defineComponent} from "vue";
 import {useI18n} from 'vue-i18n';
 import Common from "@/common/Common";
 import {createHeaders} from "@/views/pages/admin/snippet/SnippetGenerate";
-import {SnippetService} from "@/services/SnippetService";
 import router from "@/router";
 import {ResponsePage} from "@/model/ResponsePage";
 import SqlDetail from "@/components/sql/SqlDetail.vue";
+import SnippetService from "@/services/SnippetService";
 
 export default defineComponent({
   name: "SnippetAdmin",
@@ -92,8 +92,7 @@ export default defineComponent({
     handlerInitialize(page: number, size: number)
     {
       this.loading = true;
-      new SnippetService()
-        .getSnippets(page, size)
+      SnippetService.getSnippets(page, size)
         .then((response) => {
           if (response.status) {
             this.data = response.data;
@@ -104,8 +103,7 @@ export default defineComponent({
     },
     handlerDeleteRecord(id: number)
     {
-      new SnippetService()
-        .delete(id)
+      SnippetService.delete(id)
         .then((response) => {
           if (response.status) {
             this.$Message.success("Delete successful");
