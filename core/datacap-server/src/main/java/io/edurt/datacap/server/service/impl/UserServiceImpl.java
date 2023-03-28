@@ -14,8 +14,10 @@ import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
 import io.edurt.datacap.server.entity.RoleEntity;
+import io.edurt.datacap.server.entity.UserChatEntity;
 import io.edurt.datacap.server.entity.UserEntity;
 import io.edurt.datacap.server.repository.RoleRepository;
+import io.edurt.datacap.server.repository.UserChatRepository;
 import io.edurt.datacap.server.repository.UserRepository;
 import io.edurt.datacap.server.security.JwtService;
 import io.edurt.datacap.server.security.UserDetailsService;
@@ -32,14 +34,17 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,14 +53,16 @@ public class UserServiceImpl
 {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UserChatRepository userChatRepository;
     private final PasswordEncoder encoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService)
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserChatRepository userChatRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService)
     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.userChatRepository = userChatRepository;
         this.encoder = encoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
@@ -170,11 +177,20 @@ public class UserServiceImpl
         if (!userOptional.isPresent()) {
             return Response.failure(ServiceState.USER_NOT_FOUND);
         }
+
         if (!configure.getType().equals("ChatGPT")) {
             return Response.failure("Not supported");
         }
-
         UserEntity user = userOptional.get();
+        UserChatEntity userChat = UserChatEntity.builder()
+                .question(configure.getContent())
+                .user(user)
+                .name(UUID.randomUUID().toString())
+                .type(configure.getType())
+                .createTime(Timestamp.valueOf(LocalDateTime.now()))
+                .isNew(configure.isNewChat())
+                .build();
+
         List<String> content = new ArrayList<>();
         if (StringUtils.isNotEmpty(user.getThirdConfigure())) {
             Map<String, Object> configureMap = JSON.toMap(user.getThirdConfigure());
@@ -217,13 +233,44 @@ public class UserServiceImpl
                         catch (Exception exception) {
                             // Ignore it
                         }
+                        List<Message> messages = new ArrayList<>();
+                        // Extract database history for recording context if source is dialog mode
+                        boolean saved = false;
+                        if (StringUtils.isNotEmpty(configure.getFrom()) && configure.getFrom().equalsIgnoreCase("chat")) {
+                            if (!configure.isNewChat()) {
+                                this.userChatRepository.findTop5ByUserOrderByIdDesc(UserDetailsService.getUser())
+                                        .stream()
+                                        .sorted(Comparator.comparing(UserChatEntity::getId))
+                                        .forEach(userChatHistory -> {
+                                            Message question = Message.builder()
+                                                    .role(Message.Role.USER)
+                                                    .content(userChatHistory.getQuestion())
+                                                    .build();
+                                            messages.add(question);
+                                            Message answer = Message.builder()
+                                                    .role(Message.Role.ASSISTANT)
+                                                    .content(userChatHistory.getAnswer())
+                                                    .build();
+                                            messages.add(answer);
+                                        });
+                            }
+                            saved = true;
+                        }
                         Message message = Message.builder()
                                 .role(Message.Role.USER)
                                 .content(forwardContent)
                                 .build();
-                        ChatCompletion chatCompletion = ChatCompletion.builder().messages(Arrays.asList(message)).build();
+                        messages.add(message);
+                        ChatCompletion chatCompletion = ChatCompletion.builder()
+                                .messages(messages)
+                                .build();
                         ChatCompletionResponse chatCompletionResponse = openAiClient.chatCompletion(chatCompletion);
                         chatCompletionResponse.getChoices().forEach(e -> content.add(e.getMessage().getContent()));
+                        userChat.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
+                        userChat.setAnswer(String.join("\n", content));
+                        if (saved) {
+                            this.userChatRepository.save(userChat);
+                        }
                     }
                 }
             }
