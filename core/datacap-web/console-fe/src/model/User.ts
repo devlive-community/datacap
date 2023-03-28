@@ -9,10 +9,12 @@ export class UserQuestion
 {
   content: string;
   type: string;
+  newChat = true;
   locale?: string;
   engine?: string;
   error?: string;
   transType?: string;
+  from?: string;
 }
 
 export class UserQuestionItem
