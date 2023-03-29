@@ -64,7 +64,8 @@ public class KafkaAdapter
                     response.setIsSuccessful(Boolean.TRUE);
                 }
                 else {
-                    Preconditions.checkArgument(!sqlBase.isSuccessful(), sqlBase.getMessage());
+                    response.setIsSuccessful(Boolean.FALSE);
+                    response.setMessage(sqlBase.getMessage());
                 }
             }
             catch (Exception ex) {
