@@ -6,6 +6,8 @@ SHOW: [Ss][Hh][Oo][Ww];
 PATHS: [Pp][Aa][Tt][Hh][Ss];
 TOPICS: 'TOPICS';
 CONSUMERS: 'CONSUMERS';
+DATABASES: [Dd][Aa][Tt][Aa][Bb][Aa][Ss][Es][Ss];
+TABLES: [Tt][Aa][Bb][Ll][Ee][Ss];
 SELECT: [Ss][Ee][Ll][Ee][Cc][Tt];
 FROM: [Ff][Rr][Oo][Mm];
 
@@ -16,10 +18,15 @@ statement
     ;
 
 // -------------------- Kafka Statement --------------------
-kafkaQueryTopicStatement: SHOW TOPICS;
+kafkaQueryTopicStatement
+    : SHOW TOPICS
+    | SHOW DATABASES
+    ;
 kafkaQueryConsumerStatement
     : SHOW CONSUMERS
     | SHOW CONSUMERS fromClause
+    | SHOW TABLES
+    | SHOW TABLES fromClause
     ;
 kafkaQueryStatement
     : kafkaQueryTopicStatement

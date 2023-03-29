@@ -23,4 +23,21 @@ public class KafkaParserTest
         formatter = new SqlBaseFormatter("show Consumers from " + table);
         Assert.assertEquals(formatter.getParseResult().getTable(), table);
     }
+
+    @Test
+    public void showDatabases()
+    {
+        SqlBaseFormatter formatter = new SqlBaseFormatter("show databases");
+        Assert.assertTrue(formatter.getParseResult().getToken().equals("SHOW"));
+    }
+
+    @Test
+    public void showTables()
+    {
+        SqlBaseFormatter formatter = new SqlBaseFormatter("show tables");
+        Assert.assertTrue(formatter.getParseResult().getChildToken().equals("TABLES"));
+
+        formatter = new SqlBaseFormatter("show tables from " + table);
+        Assert.assertEquals(formatter.getParseResult().getTable(), table);
+    }
 }

@@ -14,8 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SqlBase
 {
-    private SqlBaseToken token;
-    private SqlBaseToken childToken;
+    private String token;
+    private String childToken;
     private List<String> columns = new ArrayList<>();
     private String table;
     private boolean successful = false;
