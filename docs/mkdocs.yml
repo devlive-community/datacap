@@ -143,6 +143,8 @@ nav:
             - reference/connectors/native/kafka/index.md
             - SHOW TOPICS: reference/sql_syntax/connectors/native/kafka/show_topics.md
             - SHOW CONSUMERS: reference/sql_syntax/connectors/native/kafka/show_consumers.md
+            - SHOW DATABASES: reference/sql_syntax/connectors/native/kafka/show_databases.md
+            - SHOW TABLES: reference/sql_syntax/connectors/native/kafka/show_tables.md
           - Aliyun OSS: reference/connectors/native/alioss.md
           - Zookeeper: reference/connectors/native/zookeeper.md
           - Redis: reference/connectors/native/redis.md

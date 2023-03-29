@@ -88,10 +88,12 @@ public class KafkaAdapter
     {
         List<String> array = new ArrayList<>();
         if (info.getToken().equalsIgnoreCase(SqlBaseToken.SHOW.name())) {
-            if (info.getChildToken().equalsIgnoreCase(SqlBaseToken.TOPICS.name())) {
+            if (info.getChildToken().equalsIgnoreCase(SqlBaseToken.TOPICS.name())
+                    || info.getChildToken().equalsIgnoreCase("DATABASES")) {
                 this.adapterShowTopics(client, array);
             }
-            else if (info.getChildToken().equalsIgnoreCase(SqlBaseToken.CONSUMERS.name())) {
+            else if (info.getChildToken().equalsIgnoreCase(SqlBaseToken.CONSUMERS.name())
+                    | info.getChildToken().equalsIgnoreCase("TABLES")) {
                 this.adapterShowConsumers(client, info, array);
             }
         }
