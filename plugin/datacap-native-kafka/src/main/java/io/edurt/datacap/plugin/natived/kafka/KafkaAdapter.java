@@ -93,7 +93,7 @@ public class KafkaAdapter
                 this.adapterShowTopics(client, array);
             }
             else if (info.getChildToken().equalsIgnoreCase(SqlBaseToken.CONSUMERS.name())
-                    | info.getChildToken().equalsIgnoreCase("TABLES")) {
+                    || info.getChildToken().equalsIgnoreCase("TABLES")) {
                 this.adapterShowConsumers(client, info, array);
             }
         }
