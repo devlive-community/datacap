@@ -15,6 +15,7 @@
         <module>lib/datacap-http</module>
         <module>lib/datacap-logger</module>
         <module>lib/datacap-shell</module>
+        <module>lib/datacap-schedule</module>
         <module>driver/datacap-driver-redis</module>
         <module>plugin/datacap-native-alioss</module>
         <module>plugin/datacap-native-zookeeper</module>
