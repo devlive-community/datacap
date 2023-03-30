@@ -29,8 +29,12 @@ public class SqlBaseFormatter
     {
         CharStream stream = CharStreams.fromString(this.sql);
         SqlBaseLexer lexer = new SqlBaseLexer(new SqlCaseInsensitiveStream(stream));
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(new UnderLineListener());
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         SqlBaseParser parser = new SqlBaseParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(new UnderLineListener());
         parser.getInterpreter().setPredictionMode(PredictionMode.SLL);
 
         ParseTree tree = null;
@@ -38,7 +42,9 @@ public class SqlBaseFormatter
             tree = parser.singleStatement();
         }
         catch (Exception ex) {
-            Preconditions.checkArgument(false, "Not support this sql");
+            this.parseResult.setMessage(ex.getMessage());
+            this.parseResult.setSuccessful(false);
+            return this.parseResult;
         }
 
         SqlBaseVisitor sqlBaseVisitor = new SqlBaseVisitor();
@@ -46,8 +52,7 @@ public class SqlBaseFormatter
             this.parseResult = sqlBaseVisitor.visit(tree);
         }
         else {
-            this.parseResult.setSuccessful(false);
-            this.parseResult.setMessage("Not support sql");
+            Preconditions.checkArgument(false, "Not support sql");
         }
         return this.parseResult;
     }

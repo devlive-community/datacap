@@ -99,7 +99,8 @@ public class SqlBaseVisitor
         ParseTree node = context.getChild(0);
         if (node instanceof SqlBaseParser.KafkaQueryStatementContext) {
             ParseTree queryNode = node.getChild(0);
-            if (queryNode instanceof SqlBaseParser.KafkaQueryTopicStatementContext | queryNode instanceof SqlBaseParser.KafkaQueryConsumerStatementContext) {
+            if (queryNode instanceof SqlBaseParser.KafkaQueryTopicStatementContext
+                    | queryNode instanceof SqlBaseParser.KafkaQueryConsumerStatementContext) {
                 int count = queryNode.getChildCount();
                 this.applyToken(queryNode.getChild(0).getText(), false);
                 this.applyToken(queryNode.getChild(1).getText(), true);
@@ -118,10 +119,10 @@ public class SqlBaseVisitor
     {
         try {
             if (isChild) {
-                this.configure.setChildToken(SqlBaseToken.valueOf(token.toUpperCase()));
+                this.configure.setChildToken(token.toUpperCase());
             }
             else {
-                this.configure.setToken(SqlBaseToken.valueOf(token.toUpperCase()));
+                this.configure.setToken(token.toUpperCase());
             }
             configure.setSuccessful(true);
         }

@@ -61,16 +61,23 @@ public class KafkaPluginTest
                 .findFirst();
     }
 
-    @Test
-    public void testValidator()
+    private Response execute(String content)
     {
+        Response response = new Response();
         if (pluginOptional.isPresent()) {
             Plugin plugin = pluginOptional.get();
             plugin.connect(configure);
-            Response response = plugin.execute(plugin.validator());
+            response = plugin.execute(content);
             plugin.destroy();
-            log.info("Kafka plugin validation response {}", response);
-            Assert.assertTrue(response.getIsSuccessful());
         }
+        return response;
+    }
+
+    @Test
+    public void testValidator()
+    {
+        Response response = this.execute(pluginOptional.get().validator());
+        log.info("Kafka plugin validation response {}", response);
+        Assert.assertTrue(response.getIsSuccessful());
     }
 }

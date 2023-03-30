@@ -64,7 +64,8 @@ public class KafkaAdapter
                     response.setIsSuccessful(Boolean.TRUE);
                 }
                 else {
-                    Preconditions.checkArgument(!sqlBase.isSuccessful(), sqlBase.getMessage());
+                    response.setIsSuccessful(Boolean.FALSE);
+                    response.setMessage(sqlBase.getMessage());
                 }
             }
             catch (Exception ex) {
@@ -86,11 +87,13 @@ public class KafkaAdapter
     private List<String> adapter(AdminClient client, SqlBase info)
     {
         List<String> array = new ArrayList<>();
-        if (info.getToken() == SqlBaseToken.SHOW) {
-            if (info.getChildToken() == SqlBaseToken.TOPICS) {
+        if (info.getToken().equalsIgnoreCase(SqlBaseToken.SHOW.name())) {
+            if (info.getChildToken().equalsIgnoreCase(SqlBaseToken.TOPICS.name())
+                    || info.getChildToken().equalsIgnoreCase("DATABASES")) {
                 this.adapterShowTopics(client, array);
             }
-            else if (info.getChildToken() == SqlBaseToken.CONSUMERS) {
+            else if (info.getChildToken().equalsIgnoreCase(SqlBaseToken.CONSUMERS.name())
+                    || info.getChildToken().equalsIgnoreCase("TABLES")) {
                 this.adapterShowConsumers(client, info, array);
             }
         }

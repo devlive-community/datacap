@@ -17,9 +17,9 @@ public class SqlBaseParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, SHOW=2, PATHS=3, TOPICS=4, CONSUMERS=5, SELECT=6, FROM=7, STRING=8, 
-		IDENTIFIER=9, BACKQUOTED_IDENTIFIER=10, SIMPLE_COMMENT=11, BRACKETED_EMPTY_COMMENT=12, 
-		BRACKETED_COMMENT=13, WS=14;
+		T__0=1, SHOW=2, PATHS=3, TOPICS=4, CONSUMERS=5, DATABASES=6, TABLES=7, 
+		SELECT=8, FROM=9, STRING=10, IDENTIFIER=11, BACKQUOTED_IDENTIFIER=12, 
+		SIMPLE_COMMENT=13, BRACKETED_EMPTY_COMMENT=14, BRACKETED_COMMENT=15, WS=16;
 	public static final int
 		RULE_singleStatement = 0, RULE_statement = 1, RULE_kafkaQueryTopicStatement = 2, 
 		RULE_kafkaQueryConsumerStatement = 3, RULE_kafkaQueryStatement = 4, RULE_kafkaStatement = 5, 
@@ -37,15 +37,15 @@ public class SqlBaseParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'.'", null, null, "'TOPICS'", "'CONSUMERS'", null, null, null, 
-			null, null, null, "'/**/'"
+			null, null, null, null, null, "'/**/'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, "SHOW", "PATHS", "TOPICS", "CONSUMERS", "SELECT", "FROM", 
-			"STRING", "IDENTIFIER", "BACKQUOTED_IDENTIFIER", "SIMPLE_COMMENT", "BRACKETED_EMPTY_COMMENT", 
-			"BRACKETED_COMMENT", "WS"
+			null, null, "SHOW", "PATHS", "TOPICS", "CONSUMERS", "DATABASES", "TABLES", 
+			"SELECT", "FROM", "STRING", "IDENTIFIER", "BACKQUOTED_IDENTIFIER", "SIMPLE_COMMENT", 
+			"BRACKETED_EMPTY_COMMENT", "BRACKETED_COMMENT", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -246,6 +246,7 @@ public class SqlBaseParser extends Parser {
 	public static class KafkaQueryTopicStatementContext extends ParserRuleContext {
 		public TerminalNode SHOW() { return getToken(SqlBaseParser.SHOW, 0); }
 		public TerminalNode TOPICS() { return getToken(SqlBaseParser.TOPICS, 0); }
+		public TerminalNode DATABASES() { return getToken(SqlBaseParser.DATABASES, 0); }
 		public KafkaQueryTopicStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -269,12 +270,27 @@ public class SqlBaseParser extends Parser {
 		KafkaQueryTopicStatementContext _localctx = new KafkaQueryTopicStatementContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_kafkaQueryTopicStatement);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(39);
-			match(SHOW);
-			setState(40);
-			match(TOPICS);
+			setState(43);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(39);
+				match(SHOW);
+				setState(40);
+				match(TOPICS);
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(41);
+				match(SHOW);
+				setState(42);
+				match(DATABASES);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -295,6 +311,7 @@ public class SqlBaseParser extends Parser {
 		public FromClauseContext fromClause() {
 			return getRuleContext(FromClauseContext.class,0);
 		}
+		public TerminalNode TABLES() { return getToken(SqlBaseParser.TABLES, 0); }
 		public KafkaQueryConsumerStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -318,26 +335,46 @@ public class SqlBaseParser extends Parser {
 		KafkaQueryConsumerStatementContext _localctx = new KafkaQueryConsumerStatementContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_kafkaQueryConsumerStatement);
 		try {
-			setState(47);
+			setState(55);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(42);
+				setState(45);
 				match(SHOW);
-				setState(43);
+				setState(46);
 				match(CONSUMERS);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(44);
+				setState(47);
 				match(SHOW);
-				setState(45);
+				setState(48);
 				match(CONSUMERS);
-				setState(46);
+				setState(49);
+				fromClause();
+				}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(50);
+				match(SHOW);
+				setState(51);
+				match(TABLES);
+				}
+				break;
+			case 4:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(52);
+				match(SHOW);
+				setState(53);
+				match(TABLES);
+				setState(54);
 				fromClause();
 				}
 				break;
@@ -385,20 +422,20 @@ public class SqlBaseParser extends Parser {
 		KafkaQueryStatementContext _localctx = new KafkaQueryStatementContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_kafkaQueryStatement);
 		try {
-			setState(51);
+			setState(59);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(49);
+				setState(57);
 				kafkaQueryTopicStatement();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(50);
+				setState(58);
 				kafkaQueryConsumerStatement();
 				}
 				break;
@@ -445,7 +482,7 @@ public class SqlBaseParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(53);
+			setState(61);
 			kafkaQueryStatement();
 			}
 		}
@@ -489,22 +526,22 @@ public class SqlBaseParser extends Parser {
 		ChildPathStatementContext _localctx = new ChildPathStatementContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_childPathStatement);
 		try {
-			setState(58);
+			setState(66);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(55);
+				setState(63);
 				match(PATHS);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(56);
+				setState(64);
 				match(PATHS);
-				setState(57);
+				setState(65);
 				fromClause();
 				}
 				break;
@@ -551,7 +588,7 @@ public class SqlBaseParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(60);
+			setState(68);
 			identifier();
 			}
 		}
@@ -597,9 +634,9 @@ public class SqlBaseParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(62);
+			setState(70);
 			match(FROM);
-			setState(63);
+			setState(71);
 			tableName();
 			}
 		}
@@ -648,21 +685,21 @@ public class SqlBaseParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(65);
+			setState(73);
 			identifier();
-			setState(70);
+			setState(78);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__0) {
 				{
 				{
-				setState(66);
+				setState(74);
 				match(T__0);
-				setState(67);
+				setState(75);
 				identifier();
 				}
 				}
-				setState(72);
+				setState(80);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -721,29 +758,29 @@ public class SqlBaseParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(78);
+			setState(86);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1792L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 7168L) != 0)) {
 				{
-				setState(76);
+				setState(84);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case IDENTIFIER:
 					{
-					setState(73);
+					setState(81);
 					match(IDENTIFIER);
 					}
 					break;
 				case STRING:
 					{
-					setState(74);
+					setState(82);
 					match(STRING);
 					}
 					break;
 				case BACKQUOTED_IDENTIFIER:
 					{
-					setState(75);
+					setState(83);
 					quotedIdentifier();
 					}
 					break;
@@ -751,7 +788,7 @@ public class SqlBaseParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(80);
+				setState(88);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -796,7 +833,7 @@ public class SqlBaseParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(81);
+			setState(89);
 			match(BACKQUOTED_IDENTIFIER);
 			}
 		}
@@ -812,52 +849,57 @@ public class SqlBaseParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u000eT\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0010\\\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0001"+
 		"\u0000\u0005\u0000\u001a\b\u0000\n\u0000\f\u0000\u001d\t\u0000\u0001\u0001"+
 		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0003\u0001&\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003"+
-		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0003\u00030\b\u0003"+
-		"\u0001\u0004\u0001\u0004\u0003\u00044\b\u0004\u0001\u0005\u0001\u0005"+
-		"\u0001\u0006\u0001\u0006\u0001\u0006\u0003\u0006;\b\u0006\u0001\u0007"+
-		"\u0001\u0007\u0001\b\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0005\tE"+
-		"\b\t\n\t\f\tH\t\t\u0001\n\u0001\n\u0001\n\u0005\nM\b\n\n\n\f\nP\t\n\u0001"+
-		"\u000b\u0001\u000b\u0001\u000b\u0000\u0000\f\u0000\u0002\u0004\u0006\b"+
-		"\n\f\u000e\u0010\u0012\u0014\u0016\u0000\u0000Q\u0000\u001b\u0001\u0000"+
-		"\u0000\u0000\u0002%\u0001\u0000\u0000\u0000\u0004\'\u0001\u0000\u0000"+
-		"\u0000\u0006/\u0001\u0000\u0000\u0000\b3\u0001\u0000\u0000\u0000\n5\u0001"+
-		"\u0000\u0000\u0000\f:\u0001\u0000\u0000\u0000\u000e<\u0001\u0000\u0000"+
-		"\u0000\u0010>\u0001\u0000\u0000\u0000\u0012A\u0001\u0000\u0000\u0000\u0014"+
-		"N\u0001\u0000\u0000\u0000\u0016Q\u0001\u0000\u0000\u0000\u0018\u001a\u0003"+
-		"\u0002\u0001\u0000\u0019\u0018\u0001\u0000\u0000\u0000\u001a\u001d\u0001"+
-		"\u0000\u0000\u0000\u001b\u0019\u0001\u0000\u0000\u0000\u001b\u001c\u0001"+
-		"\u0000\u0000\u0000\u001c\u0001\u0001\u0000\u0000\u0000\u001d\u001b\u0001"+
-		"\u0000\u0000\u0000\u001e\u001f\u0005\u0002\u0000\u0000\u001f&\u0003\f"+
-		"\u0006\u0000 !\u0005\u0006\u0000\u0000!\"\u0003\u000e\u0007\u0000\"#\u0003"+
-		"\u0010\b\u0000#&\u0001\u0000\u0000\u0000$&\u0003\n\u0005\u0000%\u001e"+
-		"\u0001\u0000\u0000\u0000% \u0001\u0000\u0000\u0000%$\u0001\u0000\u0000"+
-		"\u0000&\u0003\u0001\u0000\u0000\u0000\'(\u0005\u0002\u0000\u0000()\u0005"+
-		"\u0004\u0000\u0000)\u0005\u0001\u0000\u0000\u0000*+\u0005\u0002\u0000"+
-		"\u0000+0\u0005\u0005\u0000\u0000,-\u0005\u0002\u0000\u0000-.\u0005\u0005"+
-		"\u0000\u0000.0\u0003\u0010\b\u0000/*\u0001\u0000\u0000\u0000/,\u0001\u0000"+
-		"\u0000\u00000\u0007\u0001\u0000\u0000\u000014\u0003\u0004\u0002\u0000"+
-		"24\u0003\u0006\u0003\u000031\u0001\u0000\u0000\u000032\u0001\u0000\u0000"+
-		"\u00004\t\u0001\u0000\u0000\u000056\u0003\b\u0004\u00006\u000b\u0001\u0000"+
-		"\u0000\u00007;\u0005\u0003\u0000\u000089\u0005\u0003\u0000\u00009;\u0003"+
-		"\u0010\b\u0000:7\u0001\u0000\u0000\u0000:8\u0001\u0000\u0000\u0000;\r"+
-		"\u0001\u0000\u0000\u0000<=\u0003\u0014\n\u0000=\u000f\u0001\u0000\u0000"+
-		"\u0000>?\u0005\u0007\u0000\u0000?@\u0003\u0012\t\u0000@\u0011\u0001\u0000"+
-		"\u0000\u0000AF\u0003\u0014\n\u0000BC\u0005\u0001\u0000\u0000CE\u0003\u0014"+
-		"\n\u0000DB\u0001\u0000\u0000\u0000EH\u0001\u0000\u0000\u0000FD\u0001\u0000"+
-		"\u0000\u0000FG\u0001\u0000\u0000\u0000G\u0013\u0001\u0000\u0000\u0000"+
-		"HF\u0001\u0000\u0000\u0000IM\u0005\t\u0000\u0000JM\u0005\b\u0000\u0000"+
-		"KM\u0003\u0016\u000b\u0000LI\u0001\u0000\u0000\u0000LJ\u0001\u0000\u0000"+
-		"\u0000LK\u0001\u0000\u0000\u0000MP\u0001\u0000\u0000\u0000NL\u0001\u0000"+
-		"\u0000\u0000NO\u0001\u0000\u0000\u0000O\u0015\u0001\u0000\u0000\u0000"+
-		"PN\u0001\u0000\u0000\u0000QR\u0005\n\u0000\u0000R\u0017\u0001\u0000\u0000"+
-		"\u0000\b\u001b%/3:FLN";
+		"\u0003\u0001&\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
+		"\u0003\u0002,\b\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003"+
+		"\u0003\u00038\b\u0003\u0001\u0004\u0001\u0004\u0003\u0004<\b\u0004\u0001"+
+		"\u0005\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0003\u0006C\b"+
+		"\u0006\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001\b\u0001\t\u0001\t"+
+		"\u0001\t\u0005\tM\b\t\n\t\f\tP\t\t\u0001\n\u0001\n\u0001\n\u0005\nU\b"+
+		"\n\n\n\f\nX\t\n\u0001\u000b\u0001\u000b\u0001\u000b\u0000\u0000\f\u0000"+
+		"\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0000\u0000\\\u0000"+
+		"\u001b\u0001\u0000\u0000\u0000\u0002%\u0001\u0000\u0000\u0000\u0004+\u0001"+
+		"\u0000\u0000\u0000\u00067\u0001\u0000\u0000\u0000\b;\u0001\u0000\u0000"+
+		"\u0000\n=\u0001\u0000\u0000\u0000\fB\u0001\u0000\u0000\u0000\u000eD\u0001"+
+		"\u0000\u0000\u0000\u0010F\u0001\u0000\u0000\u0000\u0012I\u0001\u0000\u0000"+
+		"\u0000\u0014V\u0001\u0000\u0000\u0000\u0016Y\u0001\u0000\u0000\u0000\u0018"+
+		"\u001a\u0003\u0002\u0001\u0000\u0019\u0018\u0001\u0000\u0000\u0000\u001a"+
+		"\u001d\u0001\u0000\u0000\u0000\u001b\u0019\u0001\u0000\u0000\u0000\u001b"+
+		"\u001c\u0001\u0000\u0000\u0000\u001c\u0001\u0001\u0000\u0000\u0000\u001d"+
+		"\u001b\u0001\u0000\u0000\u0000\u001e\u001f\u0005\u0002\u0000\u0000\u001f"+
+		"&\u0003\f\u0006\u0000 !\u0005\b\u0000\u0000!\"\u0003\u000e\u0007\u0000"+
+		"\"#\u0003\u0010\b\u0000#&\u0001\u0000\u0000\u0000$&\u0003\n\u0005\u0000"+
+		"%\u001e\u0001\u0000\u0000\u0000% \u0001\u0000\u0000\u0000%$\u0001\u0000"+
+		"\u0000\u0000&\u0003\u0001\u0000\u0000\u0000\'(\u0005\u0002\u0000\u0000"+
+		"(,\u0005\u0004\u0000\u0000)*\u0005\u0002\u0000\u0000*,\u0005\u0006\u0000"+
+		"\u0000+\'\u0001\u0000\u0000\u0000+)\u0001\u0000\u0000\u0000,\u0005\u0001"+
+		"\u0000\u0000\u0000-.\u0005\u0002\u0000\u0000.8\u0005\u0005\u0000\u0000"+
+		"/0\u0005\u0002\u0000\u000001\u0005\u0005\u0000\u000018\u0003\u0010\b\u0000"+
+		"23\u0005\u0002\u0000\u000038\u0005\u0007\u0000\u000045\u0005\u0002\u0000"+
+		"\u000056\u0005\u0007\u0000\u000068\u0003\u0010\b\u00007-\u0001\u0000\u0000"+
+		"\u00007/\u0001\u0000\u0000\u000072\u0001\u0000\u0000\u000074\u0001\u0000"+
+		"\u0000\u00008\u0007\u0001\u0000\u0000\u00009<\u0003\u0004\u0002\u0000"+
+		":<\u0003\u0006\u0003\u0000;9\u0001\u0000\u0000\u0000;:\u0001\u0000\u0000"+
+		"\u0000<\t\u0001\u0000\u0000\u0000=>\u0003\b\u0004\u0000>\u000b\u0001\u0000"+
+		"\u0000\u0000?C\u0005\u0003\u0000\u0000@A\u0005\u0003\u0000\u0000AC\u0003"+
+		"\u0010\b\u0000B?\u0001\u0000\u0000\u0000B@\u0001\u0000\u0000\u0000C\r"+
+		"\u0001\u0000\u0000\u0000DE\u0003\u0014\n\u0000E\u000f\u0001\u0000\u0000"+
+		"\u0000FG\u0005\t\u0000\u0000GH\u0003\u0012\t\u0000H\u0011\u0001\u0000"+
+		"\u0000\u0000IN\u0003\u0014\n\u0000JK\u0005\u0001\u0000\u0000KM\u0003\u0014"+
+		"\n\u0000LJ\u0001\u0000\u0000\u0000MP\u0001\u0000\u0000\u0000NL\u0001\u0000"+
+		"\u0000\u0000NO\u0001\u0000\u0000\u0000O\u0013\u0001\u0000\u0000\u0000"+
+		"PN\u0001\u0000\u0000\u0000QU\u0005\u000b\u0000\u0000RU\u0005\n\u0000\u0000"+
+		"SU\u0003\u0016\u000b\u0000TQ\u0001\u0000\u0000\u0000TR\u0001\u0000\u0000"+
+		"\u0000TS\u0001\u0000\u0000\u0000UX\u0001\u0000\u0000\u0000VT\u0001\u0000"+
+		"\u0000\u0000VW\u0001\u0000\u0000\u0000W\u0015\u0001\u0000\u0000\u0000"+
+		"XV\u0001\u0000\u0000\u0000YZ\u0005\f\u0000\u0000Z\u0017\u0001\u0000\u0000"+
+		"\u0000\t\u001b%+7;BNTV";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
