@@ -38,6 +38,11 @@ class UserService
   {
     return new HttpCommon().post(baseUrl + '/log', filter);
   }
+
+  getSugs(id: number): Promise<ResponseModel>
+  {
+    return new HttpCommon().get(baseUrl + '/sugs/' + id);
+  }
 }
 
 export default new UserService();

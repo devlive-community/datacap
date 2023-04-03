@@ -91,5 +91,10 @@ export default {
   analysis: '解析',
   optimize: '优化',
   fixedbugs: '修复问题',
-  proxy: '代理'
+  proxy: '代理',
+  schedule: '定时任务',
+  system: '系统',
+  active: '激活状态',
+  expression: '表达式',
+  table: '表'
 }

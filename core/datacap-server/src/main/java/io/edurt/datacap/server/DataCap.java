@@ -2,10 +2,15 @@ package io.edurt.datacap.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 
 import java.io.File;
 
 @SpringBootApplication
+@ComponentScans(value = {
+        @ComponentScan(value = "io.edurt.datacap.schedule")
+})
 public class DataCap
 {
     public void start(String[] args)

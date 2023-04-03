@@ -108,6 +108,8 @@ import DataLazyTree from "@/components/common/DataLazyTree.vue";
 import QueryAiHelp from "@/views/pages/query/QueryAiHelp.vue";
 import {HttpCommon} from "@/common/HttpCommon";
 import SnippetService from "@/services/SnippetService";
+import UserService from "@/services/UserService";
+import {join} from "lodash";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
   {title: 'Editor', key: '1', closable: false}
@@ -135,7 +137,7 @@ export default defineComponent({
   data()
   {
     return {
-      applySource: null || '',
+      applySource: 0,
       applySourceType: '',
       tableConfigure: null as TableConfigure,
       tableOptions: {},
@@ -212,8 +214,8 @@ export default defineComponent({
         editorMap.set(activeKey.value, editor);
       }
       const client = new HttpCommon().getAxios();
-      axios.all([FunctionsService.getByPlugin(language), SnippetService.getSnippets(0, 100000)])
-        .then(axios.spread((pluginResponse, snippetResponse) => {
+      client.all([FunctionsService.getByPlugin(language), SnippetService.getSnippets(0, 100000), UserService.getSugs(this.applySource)])
+        .then(client.spread((pluginResponse, snippetResponse, sugsResponse) => {
           const languageSugs = [];
           if (pluginResponse.status) {
             pluginResponse.data.content.forEach(value => {
@@ -248,6 +250,54 @@ export default defineComponent({
                 documentation: this.i18n.t('common.description') + ':\n' + value.description + '\n\n' + this.i18n.t('common.example') + ':\n' + value.code,
                 insertText: value.code
               });
+            });
+          }
+          if (sugsResponse.status) {
+            const databaseSet = new Set();
+            const tableSet = new Set();
+            const columnSet = new Set();
+            sugsResponse.data.forEach(value => {
+              const array = value.split('.');
+              // Build database prompt
+              if (!databaseSet.has(array[0])) {
+                databaseSet.add(array[0]);
+                const database = monaco.languages.CompletionItemKind.Class;
+                languageSugs.push({
+                  label: array[0],
+                  detail: this.i18n.t('common.database'),
+                  kind: database,
+                  documentation: this.i18n.t('common.description') + ':\n' + array[0],
+                  insertText: array[0]
+                });
+              }
+              // Build table prompt
+              const tableName = join([array[0], array[1]], ".");
+              if (!tableSet.has(tableName)) {
+                tableSet.add(tableName);
+                const table = monaco.languages.CompletionItemKind.Method;
+                languageSugs.push({
+                  label: tableName,
+                  detail: this.i18n.t('common.table'),
+                  kind: table,
+                  documentation: this.i18n.t('common.description') + ':\n\t' + this.i18n.t('common.database') + ': ' + array[0]
+                    + '\n\t' + this.i18n.t('common.table') + ': ' + array[1],
+                  insertText: tableName
+                });
+              }
+              // Build column prompt
+              if (!columnSet.has(value)) {
+                columnSet.add(value);
+                const column = monaco.languages.CompletionItemKind.Field;
+                languageSugs.push({
+                  label: value,
+                  detail: this.i18n.t('common.column'),
+                  kind: column,
+                  documentation: this.i18n.t('common.description') + ':\n\t' + this.i18n.t('common.database') + ': ' + array[0]
+                    + '\n\t' + this.i18n.t('common.table') + ': ' + array[1]
+                    + '\n\t' + this.i18n.t('common.column') + ': ' + array[2],
+                  insertText: value
+                });
+              }
             });
           }
           this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {

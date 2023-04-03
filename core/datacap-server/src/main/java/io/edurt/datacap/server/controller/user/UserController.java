@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -68,5 +69,11 @@ public class UserController
     public Response<Object> startChat(@RequestBody UserQuestionBody configure)
     {
         return this.userService.startChat(configure);
+    }
+
+    @GetMapping(value = "sugs/{id}")
+    public Response<List<Object>> getSugs(@PathVariable Long id)
+    {
+        return this.userService.getSugs(id);
     }
 }

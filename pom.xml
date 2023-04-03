@@ -113,7 +113,7 @@
         <sql-formatter.version>2.0.3</sql-formatter.version>
         <guava.version>31.1-jre</guava.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <redis.version>4.3.1</redis.version>
+        <redis.version>3.8.0</redis.version>
         <assembly-plugin.version>3.5.0</assembly-plugin.version>
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>

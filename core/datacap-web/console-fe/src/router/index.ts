@@ -152,6 +152,13 @@ const routes: Array<RouteRecordRaw> = [
           roles: ['Admin']
         },
         component: () => import("@/views/admin/role/RoleHome.vue")
+      },
+      {
+        path: "schedule",
+        meta: {
+          roles: ['Admin']
+        },
+        component: () => import("@/views/admin/schedule/ScheduleHome.vue")
       }
     ]
   },
