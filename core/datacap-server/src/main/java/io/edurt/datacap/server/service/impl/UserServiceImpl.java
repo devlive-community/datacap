@@ -14,9 +14,11 @@ import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
 import io.edurt.datacap.server.entity.RoleEntity;
+import io.edurt.datacap.server.entity.SourceEntity;
 import io.edurt.datacap.server.entity.UserChatEntity;
 import io.edurt.datacap.server.entity.UserEntity;
 import io.edurt.datacap.server.repository.RoleRepository;
+import io.edurt.datacap.server.repository.SourceRepository;
 import io.edurt.datacap.server.repository.UserChatRepository;
 import io.edurt.datacap.server.repository.UserRepository;
 import io.edurt.datacap.server.security.JwtService;
@@ -25,6 +27,7 @@ import io.edurt.datacap.server.service.UserService;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,18 +57,22 @@ public class UserServiceImpl
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserChatRepository userChatRepository;
+    private final SourceRepository sourceRepository;
     private final PasswordEncoder encoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final RedisTemplate redisTemplate;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserChatRepository userChatRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService)
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserChatRepository userChatRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate)
     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.userChatRepository = userChatRepository;
+        this.sourceRepository = sourceRepository;
         this.encoder = encoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -276,5 +283,18 @@ public class UserServiceImpl
             }
         }
         return Response.success(content);
+    }
+
+    @Override
+    public Response<List<Object>> getSugs(Long id)
+    {
+        Optional<SourceEntity> sourceEntityOptional = sourceRepository.findById(id);
+        if (!sourceEntityOptional.isPresent()) {
+            return Response.failure(ServiceState.SOURCE_NOT_FOUND);
+        }
+
+        SourceEntity entity = sourceEntityOptional.get();
+        String key = String.join("_", entity.getType(), entity.getId().toString());
+        return Response.success(redisTemplate.opsForSet().members(key));
     }
 }

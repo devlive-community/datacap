@@ -92,4 +92,9 @@ export default {
   optimize: 'Optimize',
   fixedbugs: 'Fixed Bugs',
   proxy: 'Proxy',
+  schedule: 'Schedule',
+  system: 'System',
+  active: 'Active',
+  expression: 'Expression',
+  table: 'Table'
 }

@@ -1,267 +1,282 @@
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+use datacap;
 
--- ----------------------------
--- Table structure for audit_plugin
--- ----------------------------
-DROP TABLE IF EXISTS `audit_plugin`;
-CREATE TABLE `audit_plugin`
+-- --------------------------------
+-- Table for audit_plugin
+-- --------------------------------
+create table audit_plugin
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `state`       varchar(255) COLLATE utf8_bin DEFAULT NULL,
-    `create_time` mediumtext COLLATE utf8_bin,
-    `end_time`    mediumtext COLLATE utf8_bin,
-    `plugin_id`   bigint(20) NOT NULL,
-    `content`     text COLLATE utf8_bin,
-    `message`     text COLLATE utf8_bin,
-    `elapsed`     bigint(20)                    DEFAULT '0',
-    `user_id`     bigint(20) NOT NULL,
-    PRIMARY KEY (`id`),
-    FULLTEXT KEY `full_text_index_for_content` (`content`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_bin;
+    id          bigint auto_increment primary key,
+    state       varchar(255)     null,
+    create_time mediumtext       null,
+    end_time    mediumtext       null,
+    plugin_id   bigint           not null,
+    content     text             null,
+    message     text             null,
+    elapsed     bigint default 0 null,
+    user_id     bigint           not null
+);
 
--- ----------------------------
--- Records of audit_plugin
--- ----------------------------
-BEGIN;
-COMMIT;
+create fulltext index full_text_index_for_content
+    on audit_plugin (content);
 
--- ----------------------------
--- Table structure for functions
--- ----------------------------
-DROP TABLE IF EXISTS `functions`;
-CREATE TABLE `functions`
+-- --------------------------------
+-- Table for functions
+-- --------------------------------
+create table functions
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `name`        varchar(255)        DEFAULT NULL COMMENT 'Function name',
-    `content`     varchar(255)        DEFAULT NULL COMMENT 'Expression of function',
-    `description` text COMMENT 'Function description',
-    `plugin`      varchar(255)        DEFAULT NULL COMMENT 'Trial plug-in, multiple according to, split',
-    `example`     text COMMENT 'Function Usage Example',
-    `create_time` timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `update_time` timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `type`        varchar(20)         DEFAULT 'KEYWORDS',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Plug-in correlation function';
+    id          bigint auto_increment primary key,
+    name        varchar(255)                          null comment 'Function name',
+    content     varchar(255)                          null comment 'Expression of function',
+    description text                                  null comment 'Function description',
+    plugin      varchar(255)                          null comment 'Trial plug-in, multiple according to, split',
+    example     text                                  null comment 'Function Usage Example',
+    create_time datetime    default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    update_time datetime    default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    type        varchar(20) default 'KEYWORDS'        null
+)
+    comment 'Plug-in correlation function';
 
--- ----------------------------
--- Records of functions
--- ----------------------------
-BEGIN;
-COMMIT;
+-- --------------------------------
+-- Table for pipeline
+-- --------------------------------
+create table pipeline
+(
+    id              int auto_increment primary key,
+    name            varchar(255)                       not null,
+    content         text                               not null,
+    state           varchar(100)                       null,
+    message         text                               null,
+    work            text                               null,
+    start_time      datetime default CURRENT_TIMESTAMP null,
+    end_time        datetime                           null on update CURRENT_TIMESTAMP,
+    elapsed         bigint                             null,
+    user_id         int                                not null,
+    from_id         int                                not null,
+    from_configures text                               null,
+    to_id           int                                not null,
+    to_configures   text                               null
+);
 
--- ----------------------------
+-- --------------------------------
 -- Table structure for role
--- ----------------------------
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role`
+-- --------------------------------
+create table role
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `name`        varchar(255) DEFAULT NULL COMMENT ' ',
-    `description` varchar(255) DEFAULT NULL COMMENT ' ',
-    `create_time` datetime(5)  DEFAULT CURRENT_TIMESTAMP(5),
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 3
-  DEFAULT CHARSET = utf8;
+    id          bigint auto_increment primary key,
+    name        varchar(255)                             null comment ' ',
+    description varchar(255)                             null comment ' ',
+    create_time datetime(5) default CURRENT_TIMESTAMP(5) null
+);
 
--- ----------------------------
--- Records of role
--- ----------------------------
-BEGIN;
-INSERT INTO `role` (`id`, `name`, `description`, `create_time`)
-VALUES (1, 'Admin', 'Admin role', '2022-10-19 13:45:06.83388');
-INSERT INTO `role` (`id`, `name`, `description`, `create_time`)
-VALUES (2, 'User', 'User role', '2022-10-19 13:45:06.83388');
-COMMIT;
+INSERT INTO datacap.role (name, description)
+VALUES ('Admin', 'Admin role');
+INSERT INTO datacap.role (name, description)
+VALUES ('User', 'User role');
 
--- ----------------------------
+-- --------------------------------
+-- Table structure for scheduled_task
+-- --------------------------------
+create table datacap.scheduled_task
+(
+    id          int auto_increment primary key,
+    name        varchar(255)                         not null,
+    description text                                 not null,
+    expression  varchar(100)                         null,
+    active      tinyint(1) default 1                 null,
+    is_system   tinyint(1) default 1                 null,
+    create_time datetime   default CURRENT_TIMESTAMP null,
+    update_time datetime                             null on update CURRENT_TIMESTAMP
+);
+
+INSERT INTO datacap.scheduled_task (name, description, expression, active, is_system)
+VALUES ('Synchronize table structure', 'Synchronize the table structure of the data source library at 1 am every day', '0 20 * * * ?', 1, 1);
+
+-- --------------------------------
 -- Table structure for snippet
--- ----------------------------
-DROP TABLE IF EXISTS `snippet`;
-CREATE TABLE `snippet`
+-- --------------------------------
+create table datacap.snippet
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `name`        varchar(255)        DEFAULT NULL COMMENT ' ',
-    `description` varchar(255)        DEFAULT NULL COMMENT ' ',
-    `code`        text COMMENT ' ',
-    `create_time` timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `update_time` timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `user_id`     bigint(20) NOT NULL,
-    PRIMARY KEY (`id`),
-    FULLTEXT KEY `full_text_index_for_code` (`code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+    id          bigint auto_increment primary key,
+    name        varchar(255)                        null comment ' ',
+    description varchar(255)                        null comment ' ',
+    code        text                                null comment ' ',
+    create_time timestamp default CURRENT_TIMESTAMP not null,
+    update_time timestamp default CURRENT_TIMESTAMP not null,
+    user_id     bigint                              not null
+);
 
--- ----------------------------
--- Records of snippet
--- ----------------------------
-BEGIN;
-COMMIT;
+create fulltext index full_text_index_for_code
+    on datacap.snippet (code);
 
--- ----------------------------
+-- --------------------------------
 -- Table structure for source
--- ----------------------------
-DROP TABLE IF EXISTS `source`;
-CREATE TABLE `source`
+-- --------------------------------
+create table datacap.source
 (
-    `id`          bigint(20)                    NOT NULL AUTO_INCREMENT,
-    `_catalog`    varchar(255) COLLATE utf8_bin DEFAULT NULL,
-    `create_time` datetime                      DEFAULT CURRENT_TIMESTAMP,
-    `_database`   varchar(255) COLLATE utf8_bin DEFAULT NULL,
-    `description` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-    `host`        varchar(255) COLLATE utf8_bin NOT NULL,
-    `name`        varchar(255) COLLATE utf8_bin NOT NULL,
-    `password`    varchar(255) COLLATE utf8_bin DEFAULT NULL,
-    `port`        bigint(20)                    NOT NULL,
-    `protocol`    varchar(255) COLLATE utf8_bin DEFAULT NULL,
-    `username`    varchar(255) COLLATE utf8_bin DEFAULT NULL,
-    `_type`       varchar(100) COLLATE utf8_bin NOT NULL,
-    `ssl`         tinyint(1)                    DEFAULT '0',
-    `_ssl`        tinyint(1)                    DEFAULT '0',
-    `publish`     tinyint(1)                    DEFAULT '0',
-    `public`      tinyint(1)                    DEFAULT '0',
-    `user_id`     bigint(20)                    DEFAULT NULL,
-    `configure`   text COLLATE utf8_bin,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_bin COMMENT ='The storage is used to query the data connection source';
+    id          bigint auto_increment primary key,
+    _catalog    varchar(255)                         null,
+    create_time datetime   default CURRENT_TIMESTAMP null,
+    _database   varchar(255)                         null,
+    description varchar(255)                         null,
+    host        varchar(255)                         not null,
+    name        varchar(255)                         not null,
+    password    varchar(255)                         null,
+    port        bigint                               not null,
+    protocol    varchar(255)                         null,
+    username    varchar(255)                         null,
+    _type       varchar(100)                         not null,
+    `ssl`       tinyint(1) default 0                 null,
+    _ssl        tinyint(1) default 0                 null,
+    publish     tinyint(1) default 0                 null,
+    public      tinyint(1) default 0                 null,
+    user_id     bigint                               null,
+    configure   text                                 null
+)
+    comment 'The storage is used to query the data connection source';
 
--- ----------------------------
--- Records of source
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
+-- --------------------------------
 -- Table structure for template_sql
--- ----------------------------
-DROP TABLE IF EXISTS `template_sql`;
-CREATE TABLE `template_sql`
+-- --------------------------------
+create table datacap.template_sql
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `name`        varchar(255)        DEFAULT NULL COMMENT 'Name of template',
-    `content`     text,
-    `description` text,
-    `plugin`      varchar(50)         DEFAULT NULL COMMENT 'Using plug-ins',
-    `configure`   text COMMENT 'The template must use the configuration information in the key->value format',
-    `create_time` timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `update_time` timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `system`      tinyint(1)          DEFAULT '0',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 17
-  DEFAULT CHARSET = utf8 COMMENT ='The system preset SQL template table';
+    id          bigint auto_increment primary key,
+    name        varchar(255)                         null comment 'Name of template',
+    content     text                                 null,
+    description text                                 null,
+    plugin      varchar(50)                          null comment 'Using plug-ins',
+    configure   text                                 null comment 'The template must use the configuration information in the key->value format',
+    create_time timestamp  default CURRENT_TIMESTAMP not null,
+    update_time timestamp  default CURRENT_TIMESTAMP not null,
+    `system`    tinyint(1) default 0                 null
+)
+    comment 'The system preset SQL template table';
 
--- ----------------------------
--- Records of template_sql
--- ----------------------------
-BEGIN;
-INSERT INTO `template_sql` (`id`, `name`, `content`, `description`, `plugin`, `configure`, `create_time`, `update_time`, `system`)
-VALUES (1, 'getAllDatabase', 'SHOW DATABASES', 'Gets a list of all databases', 'ClickHouse,MySQL', '[]', '2022-12-08 18:38:39', '2022-12-08 18:38:39', 0);
-INSERT INTO `template_sql` (`id`, `name`, `content`, `description`, `plugin`, `configure`, `create_time`, `update_time`, `system`)
-VALUES (2, 'getAllTablesFromDatabase', 'SHOW TABLES FROM ${database:String}', 'Get the data table from the database', 'ClickHouse,MySQL',
-        '[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"}]', '2022-12-08 19:25:31', '2022-12-08 19:25:31', 0);
-INSERT INTO `template_sql` (`id`, `name`, `content`, `description`, `plugin`, `configure`, `create_time`, `update_time`, `system`)
-VALUES (3, 'getAllDatabaseAndTable', 'SELECT database as tableSchema, name as tableName\nFROM system.tables\nWHERE database NOT IN (\'system\')\nORDER BY tableSchema, tableName',
-        'Get all databases (including all tables)', 'ClickHouse', '[]', '2022-12-08 22:52:59', '2022-12-08 22:52:59', 1);
-INSERT INTO `template_sql` (`id`, `name`, `content`, `description`, `plugin`, `configure`, `create_time`, `update_time`, `system`)
-VALUES (4, 'getAllDatabaseAndTable', 'SELECT t.table_schema AS tableSchema, t.table_name AS tableName\nFROM INFORMATION_SCHEMA.TABLES t\nORDER BY t.table_schema, t.table_name',
-        'Get all databases (including all tables)', 'MySQL', '[]', '2022-12-08 23:04:45', '2022-12-08 23:04:45', 1);
-INSERT INTO `template_sql` (`id`, `name`, `content`, `description`, `plugin`, `configure`, `create_time`, `update_time`, `system`)
-VALUES (5, 'getAllDatabaseAndTables', 'show tables', 'show tables', 'ClickHouse', '[]', '2022-12-27 18:51:02', '2022-12-27 18:51:02', 0);
-INSERT INTO `template_sql` (`id`, `name`, `content`, `description`, `plugin`, `configure`, `create_time`, `update_time`, `system`)
-VALUES (7, 'getAllRunningProcess',
-        'SELECT\n  query_id AS id,\n  query AS content,\n  toUInt64(toUInt64(read_rows) + toUInt64(written_rows)) AS rows,\n  round(elapsed, 1) AS elapsed,\n  formatReadableSize(toUInt64(read_bytes) + toUInt64(written_bytes)) AS bytes,\n  formatReadableSize(memory_usage) AS memory,\n  formatReadableSize(read_bytes) AS bytesRead,\n  formatReadableSize(written_bytes) AS bytesWritten\nFROM\n  system.processes\nWHERE\n  round(elapsed, 1) > 0',
-        'Get a running list of all currently specified server nodes', 'ClickHouse', '[]', '2022-12-29 16:40:11', '2022-12-29 16:40:11', 0);
-INSERT INTO `template_sql` (`id`, `name`, `content`, `description`, `plugin`, `configure`, `create_time`, `update_time`, `system`)
-VALUES (8, 'getAllRunningProcess',
-        'SELECT\n  id AS id,\n  info AS content,\n  \'-\' AS rows,\n  time AS elapsed,\n  \'-\' AS bytes,\n  \'-\' AS memory,\n  \'-\' AS bytesRead,\n  \'-\' AS bytesWritten\nFROM\n  information_schema.PROCESSLIST',
-        'Get a running list of all currently specified server nodes', 'MySQL', '[]', '2022-12-29 19:33:04', '2022-12-29 19:33:04', 0);
-INSERT INTO `template_sql` (`id`, `name`, `content`, `description`, `plugin`, `configure`, `create_time`, `update_time`, `system`)
-VALUES (10, 'getAllColumnsFromDatabaseAndTable', 'DESC ${table:String}', 'Get the data column from the database and table', 'MySQL,ClickHouse',
-        '[{\"column\":\"table\",\"type\":\"String\",\"expression\":\"${table:String}\"}]', '2023-01-10 11:59:23', '2023-01-10 11:59:23', 0);
-INSERT INTO `template_sql` (`id`, `name`, `content`, `description`, `plugin`, `configure`, `create_time`, `update_time`, `system`)
-VALUES (11, 'getDataFromDatabaseAndTableLimited', 'SELECT *\nFROM ${table:String}\nLIMIT ${size:Integer}\nOFFSET ${page:Integer}', 'Get all data from table by limited',
-        'MySQL,ClickHouse',
-        '[{\"column\":\"table\",\"type\":\"String\",\"expression\":\"${table:String}\"},{\"column\":\"size\",\"type\":\"Integer\",\"expression\":\"${size:Integer}\"},{\"column\":\"page\",\"type\":\"Integer\",\"expression\":\"${page:Integer}\"}]',
+INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+VALUES ('getAllDatabase', 'SHOW DATABASES', 'Gets a list of all databases', 'ClickHouse,MySQL', '[]', '2022-12-08 18:38:39', '2022-12-08 18:38:39', 0);
+
+INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+VALUES ('getAllTablesFromDatabase', 'SHOW TABLES FROM ${database:String}', 'Get the data table from the database', 'ClickHouse,MySQL',
+        '[{"column":"database","type":"String","expression":"${database:String}"}]', '2022-12-08 19:25:31', '2022-12-08 19:25:31', 0);
+
+INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+VALUES ('getAllDatabaseAndTable', 'SELECT database as tableSchema, name as tableName
+FROM system.tables
+WHERE database NOT IN (\'system\')
+ORDER BY tableSchema, tableName', 'Get all databases (including all tables)', 'ClickHouse', '[]', '2022-12-08 22:52:59', '2022-12-08 22:52:59', 1);
+
+INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+VALUES ('getAllDatabaseAndTable', 'SELECT t.table_schema AS tableSchema, t.table_name AS tableName
+FROM INFORMATION_SCHEMA.TABLES t
+ORDER BY t.table_schema, t.table_name', 'Get all databases (including all tables)', 'MySQL', '[]', '2022-12-08 23:04:45', '2022-12-08 23:04:45', 1);
+
+INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+VALUES ('getAllDatabaseAndTables', 'show tables', 'show tables', 'ClickHouse', '[]', '2022-12-27 18:51:02', '2022-12-27 18:51:02', 0);
+
+INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+VALUES ('getAllRunningProcess', 'SELECT
+  query_id AS id,
+  query AS content,
+  toUInt64(toUInt64(read_rows) + toUInt64(written_rows)) AS rows,
+  round(elapsed, 1) AS elapsed,
+  formatReadableSize(toUInt64(read_bytes) + toUInt64(written_bytes)) AS bytes,
+  formatReadableSize(memory_usage) AS memory,
+  formatReadableSize(read_bytes) AS bytesRead,
+  formatReadableSize(written_bytes) AS bytesWritten
+FROM
+  system.processes
+WHERE
+  round(elapsed, 1) > 0', 'Get a running list of all currently specified server nodes', 'ClickHouse', '[]', '2022-12-29 16:40:11', '2022-12-29 16:40:11', 0);
+
+INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+VALUES ('getAllRunningProcess', 'SELECT
+  id AS id,
+  info AS content,
+  \'-\' AS rows,
+  time AS elapsed,
+  \'-\' AS bytes,
+  \'-\' AS memory,
+  \'-\' AS bytesRead,
+  \'-\' AS bytesWritten
+FROM
+  information_schema.PROCESSLIST', 'Get a running list of all currently specified server nodes', 'MySQL', '[]', '2022-12-29 19:33:04', '2022-12-29 19:33:04', 0);
+
+INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+VALUES ('getAllColumnsFromDatabaseAndTable', 'DESC ${table:String}', 'Get the data column from the database and table', 'MySQL,ClickHouse',
+        '[{"column":"table","type":"String","expression":"${table:String}"}]', '2023-01-10 11:59:23', '2023-01-10 11:59:23', 0);
+
+INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+VALUES ('getDataFromDatabaseAndTableLimited', 'SELECT *
+FROM ${table:String}
+LIMIT ${size:Integer}
+OFFSET ${page:Integer}', 'Get all data from table by limited', 'MySQL,ClickHouse',
+        '[{"column":"table","type":"String","expression":"${table:String}"},{"column":"size","type":"Integer","expression":"${size:Integer}"},{"column":"page","type":"Integer","expression":"${page:Integer}"}]',
         '2023-01-10 13:31:10', '2023-01-10 13:31:10', 0);
-COMMIT;
 
--- ----------------------------
+-- --------------------------------
+-- Table structure for user_chat
+-- --------------------------------
+create table user_chat
+(
+    id          int auto_increment primary key,
+    name        varchar(255)                         not null,
+    question    text                                 not null,
+    answer      text                                 null,
+    type        varchar(100)                         null,
+    create_time datetime   default CURRENT_TIMESTAMP null,
+    end_time    datetime                             null on update CURRENT_TIMESTAMP,
+    elapsed     bigint                               null,
+    user_id     int                                  not null,
+    is_new      tinyint(1) default 1                 null
+);
+
+-- --------------------------------
 -- Table structure for user_log
--- ----------------------------
-DROP TABLE IF EXISTS `user_log`;
-CREATE TABLE `user_log`
+-- --------------------------------
+create table user_log
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `device`      varchar(255) DEFAULT NULL COMMENT 'Login device',
-    `client`      varchar(255) DEFAULT NULL COMMENT 'Login client',
-    `ip`          varchar(100) DEFAULT NULL COMMENT 'Login ip',
-    `message`     varchar(225) DEFAULT NULL COMMENT 'Error message',
-    `state`       varchar(20)  DEFAULT NULL COMMENT 'Login state',
-    `ua`          varchar(255) DEFAULT NULL COMMENT 'Trial plug-in, multiple according to, split',
-    `user_id`     bigint(20) NOT NULL,
-    `create_time` datetime(5)  DEFAULT CURRENT_TIMESTAMP(5),
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='User login log';
+    id          bigint auto_increment
+        primary key,
+    device      varchar(255)                             null comment 'Login device',
+    client      varchar(255)                             null comment 'Login client',
+    ip          varchar(100)                             null comment 'Login ip',
+    message     varchar(225)                             null comment 'Error message',
+    state       varchar(20)                              null comment 'Login state',
+    ua          varchar(255)                             null comment 'Trial plug-in, multiple according to, split',
+    user_id     bigint                                   not null,
+    create_time datetime(5) default CURRENT_TIMESTAMP(5) null
+)
+    comment 'User login log';
 
--- ----------------------------
--- Records of user_log
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
+-- --------------------------------
 -- Table structure for user_roles
--- ----------------------------
-DROP TABLE IF EXISTS `user_roles`;
-CREATE TABLE `user_roles`
+-- --------------------------------
+create table datacap.user_roles
 (
-    `user_id` bigint(20) NOT NULL,
-    `role_id` bigint(20) NOT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_bin;
+    user_id bigint not null,
+    role_id bigint not null
+);
 
--- ----------------------------
--- Records of user_roles
--- ----------------------------
-BEGIN;
-INSERT INTO `user_roles` (`user_id`, `role_id`)
+INSERT INTO datacap.user_roles (user_id, role_id)
 VALUES (1, 1);
-INSERT INTO `user_roles` (`user_id`, `role_id`)
+
+INSERT INTO datacap.user_roles (user_id, role_id)
 VALUES (2, 2);
-COMMIT;
 
--- ----------------------------
+-- --------------------------------
 -- Table structure for users
--- ----------------------------
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users`
+-- --------------------------------
+create table datacap.users
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `username`    varchar(255) DEFAULT NULL COMMENT ' ',
-    `password`    varchar(255) DEFAULT NULL COMMENT ' ',
-    `create_time` datetime(5)  DEFAULT CURRENT_TIMESTAMP(5),
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 10
-  DEFAULT CHARSET = utf8;
+    id              bigint auto_increment
+        primary key,
+    username        varchar(255)                             null comment ' ',
+    password        varchar(255)                             null comment ' ',
+    create_time     datetime(5) default CURRENT_TIMESTAMP(5) null,
+    third_configure text                                     null
+);
 
--- ----------------------------
--- Records of users
--- ----------------------------
-BEGIN;
-INSERT INTO `users` (`id`, `username`, `password`, `create_time`)
-VALUES (1, 'admin', '$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG', NULL);
-INSERT INTO `users` (`id`, `username`, `password`, `create_time`)
-VALUES (2, 'datacap', '$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.', NULL);
-COMMIT;
+INSERT INTO datacap.users (username, password, create_time)
+VALUES ('admin', '$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG', null);
 
-SET FOREIGN_KEY_CHECKS = 1;
+INSERT INTO datacap.users (username, password, create_time)
+VALUES ('datacap', '$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.', null);

@@ -7,6 +7,7 @@ import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.UserEntity;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService
@@ -24,4 +25,6 @@ public interface UserService
     Response<Long> changeThirdConfigure(Map<String, Map<String, Object>> configure);
 
     Response<Object> startChat(UserQuestionBody configure);
+
+    Response<List<Object>> getSugs(Long id);
 }
