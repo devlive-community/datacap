@@ -6,10 +6,12 @@ import io.edurt.datacap.server.repository.ScheduledTaskRepository;
 import io.edurt.datacap.server.repository.SourceRepository;
 import io.edurt.datacap.server.repository.TemplateSqlRepository;
 import io.edurt.datacap.server.scheduled.SourceScheduledRunnable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ScheduleTaskRunnerConfigure
         implements CommandLineRunner
@@ -35,6 +37,7 @@ public class ScheduleTaskRunnerConfigure
     public void run(String... args)
     {
         this.scheduledTaskRepository.findAllByActiveIsTrueAndIsSystemIsTrue().forEach(task -> {
+            log.info("Add new task " + task.getName() + " to scheduler");
             SourceScheduledRunnable scheduled = new SourceScheduledRunnable(task.getName(), this.injector, this.sourceRepository, templateSqlRepository, redisTemplate);
             this.scheduledCronRegistrar.addCronTask(scheduled, task.getExpression());
         });
