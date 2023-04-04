@@ -12,8 +12,7 @@ export class HttpCommon
 
   constructor()
   {
-    if (process.env.NODE_ENV === 'development' ||
-      window.location.hostname === 'localhost') {
+    if (process.env.NODE_ENV === 'development') {
       axios.defaults.baseURL = 'http://localhost:9096';
     }
     else {

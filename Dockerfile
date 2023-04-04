@@ -5,6 +5,9 @@ MAINTAINER qianmoQ "shicheng@ttxit.com"
 RUN mkdir -p /opt/app
 ADD dist/datacap-release.tar.gz /opt/app/
 WORKDIR /opt/app/datacap
-CMD sh ./bin/startup.sh
 
+# expose our default runtime port
 EXPOSE 9096
+
+# run it
+ENTRYPOINT ["sh", "./bin/debug.sh"]
