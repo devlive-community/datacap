@@ -70,8 +70,11 @@ public class SecurityConfigure
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/", "/**/*.js", "/**/*.css", "/api/auth/**", "/fonts/**", "/static/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/", "/**/*.js", "/**/*.css", "/api/auth/**", "/fonts/**", "/static/**", "/h2-console/**").permitAll()
+                .anyRequest()
+                .authenticated();
+        // Fixed load denied by X-Frame-Options
+        http.headers().frameOptions().sameOrigin();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
