@@ -119,6 +119,10 @@ CREATE TABLE IF NOT EXISTS source
     user_id     bigint       NULL,
     configure   text         NULL
 );
+TRUNCATE TABLE scheduled_task;
+ALTER TABLE scheduled_task ALTER COLUMN id RESTART WITH 1;
+INSERT INTO source(name, _database, password, host, port, protocol, username, _type, publish, user_id, public)
+VALUES ('Built-in database', 'datacap', 'h2', '-', 1, 'NATIVE', 'h2', 'H2', FALSE, 2, TRUE);
 -- --------------------------------
 -- Table structure for template_sql
 -- --------------------------------
@@ -138,13 +142,13 @@ TRUNCATE TABLE template_sql;
 ALTER TABLE template_sql ALTER COLUMN id RESTART WITH 1;
 INSERT INTO template_sql ( name, content, description, plugin, configure
                          , create_time, update_time, `system`)
-VALUES ( 'getAllDatabase', 'SHOW DATABASES', 'Gets a list of all databases', 'ClickHouse,MySQL', '[]'
-       , '2022-12-08 18:38:39', '2022-12-08 18:38:39', 0);
+VALUES ( 'getAllDatabase', 'SHOW DATABASES', 'Gets a list of all databases', 'ClickHouse,MySQL,H2', '[]'
+       , '2022-12-08 18:38:39', '2022-12-08 18:38:39', 1);
 INSERT INTO template_sql ( name, content, description, plugin, configure
                          , create_time, update_time, `system`)
-VALUES ( 'getAllTablesFromDatabase', 'SHOW TABLES FROM ${database:String}', 'Get the data table from the database', 'ClickHouse,MySQL'
+VALUES ( 'getAllTablesFromDatabase', 'SHOW TABLES FROM ${database:String}', 'Get the data table from the database', 'ClickHouse,MySQL,H2'
        , '[{"column":"database","type":"String","expression":"${database:String}"}]'
-       , '2022-12-08 19:25:31', '2022-12-08 19:25:31', 0);
+       , '2022-12-08 19:25:31', '2022-12-08 19:25:31', 1);
 INSERT INTO template_sql ( name, content, description, plugin, configure
                          , create_time, update_time, `system`)
 VALUES ( 'getAllDatabaseAndTable', 'SELECT database as tableSchema, name as tableName
@@ -197,6 +201,9 @@ INSERT INTO template_sql ( name, content, description, plugin, configure
 VALUES ( 'getAllColumnsFromDatabaseAndTable', 'DESC ${table:String}', 'Get the data column from the database and table', 'MySQL,ClickHouse'
        , '[{"column":"table","type":"String","expression":"${table:String}"}]'
        , '2023-01-10 11:59:23', '2023-01-10 11:59:23', 0);
+INSERT INTO template_sql ( name, content, description, plugin, configure, `system`)
+VALUES ( 'getAllColumnsFromDatabaseAndTable', 'SHOW COLUMNS FROM ${table:String}', 'Get the data column from the database and table', 'H2'
+       , '[{"column":"table","type":"String","expression":"${table:String}"}]', 1);
 INSERT INTO template_sql ( name, content, description, plugin, configure
                          , create_time, update_time, `system`)
 VALUES ( 'getDataFromDatabaseAndTableLimited', 'SELECT *

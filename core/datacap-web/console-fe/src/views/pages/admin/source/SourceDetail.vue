@@ -58,9 +58,9 @@
                     <template #label>
                       <span v-if="configure.field !== 'configures'">{{ $t('common.' + configure.field) }}</span>
                     </template>
-                    <Input v-if="configure.type === 'String'" type="text" v-model="configure.value"/>
-                    <InputNumber v-else-if="configure.type === 'Number'" :max="configure.max" :min="configure.min" v-model="configure.value"/>
-                    <Switch v-else-if="configure.type === 'Boolean'" v-model="configure.value"/>
+                    <Input v-if="configure.type === 'String'" type="text" :disabled="configure.disabled" v-model="configure.value"/>
+                    <InputNumber v-else-if="configure.type === 'Number'" :disabled="configure.disabled" :max="configure.max" :min="configure.min" v-model="configure.value"/>
+                    <Switch v-else-if="configure.type === 'Boolean'" :disabled="configure.disabled" v-model="configure.value"/>
                     <div v-else>
                       <div style="margin-top: 10px;">
                         <FormItem style="margin-bottom: 5px;">
