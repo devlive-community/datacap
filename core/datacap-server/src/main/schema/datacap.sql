@@ -152,11 +152,11 @@ create table datacap.template_sql
     comment 'The system preset SQL template table';
 
 INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
-VALUES ('getAllDatabase', 'SHOW DATABASES', 'Gets a list of all databases', 'ClickHouse,MySQL', '[]', '2022-12-08 18:38:39', '2022-12-08 18:38:39', 0);
+VALUES ('getAllDatabase', 'SHOW DATABASES', 'Gets a list of all databases', 'ClickHouse,MySQL,H2', '[]', '2022-12-08 18:38:39', '2022-12-08 18:38:39', 1);
 
 INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
-VALUES ('getAllTablesFromDatabase', 'SHOW TABLES FROM ${database:String}', 'Get the data table from the database', 'ClickHouse,MySQL',
-        '[{"column":"database","type":"String","expression":"${database:String}"}]', '2022-12-08 19:25:31', '2022-12-08 19:25:31', 0);
+VALUES ('getAllTablesFromDatabase', 'SHOW TABLES FROM ${database:String}', 'Get the data table from the database', 'ClickHouse,MySQL,H2',
+        '[{"column":"database","type":"String","expression":"${database:String}"}]', '2022-12-08 19:25:31', '2022-12-08 19:25:31', 1);
 
 INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getAllDatabaseAndTable', 'SELECT database as tableSchema, name as tableName
@@ -211,6 +211,10 @@ LIMIT ${size:Integer}
 OFFSET ${page:Integer}', 'Get all data from table by limited', 'MySQL,ClickHouse',
         '[{"column":"table","type":"String","expression":"${table:String}"},{"column":"size","type":"Integer","expression":"${size:Integer}"},{"column":"page","type":"Integer","expression":"${page:Integer}"}]',
         '2023-01-10 13:31:10', '2023-01-10 13:31:10', 0);
+
+INSERT INTO template_sql ( name, content, description, plugin, configure, `system`)
+VALUES ( 'getAllColumnsFromDatabaseAndTable', 'SHOW COLUMNS FROM ${table:String}', 'Get the data column from the database and table', 'H2'
+       , '[{"column":"table","type":"String","expression":"${table:String}"}]', 1);
 
 -- --------------------------------
 -- Table structure for user_chat

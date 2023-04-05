@@ -18,5 +18,6 @@ public class IConfigureField
     private Long max;
     private String message;
     private Object value;
+    private boolean disabled;
     private IConfigureFieldGroup group = IConfigureFieldGroup.configure;
 }

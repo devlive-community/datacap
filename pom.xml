@@ -55,6 +55,7 @@
         <module>plugin/datacap-jdbc-trino</module>
         <module>executor/datacap-executor-example</module>
         <module>executor/datacap-executor-seatunnel</module>
+        <module>plugin/datacap-native-h2</module>
     </modules>
 
     <name>DataCap</name>

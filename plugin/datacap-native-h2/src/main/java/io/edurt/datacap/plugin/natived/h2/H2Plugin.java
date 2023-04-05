@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.jdbc.h2;
+package io.edurt.datacap.plugin.natived.h2;
 
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
@@ -36,13 +36,13 @@ public class H2Plugin
     @Override
     public String description()
     {
-        return "Integrate H2 data sources";
+        return "Integrate H2 mem data sources";
     }
 
     @Override
     public PluginType type()
     {
-        return PluginType.JDBC;
+        return PluginType.NATIVE;
     }
 
     @Override
@@ -53,8 +53,8 @@ public class H2Plugin
             this.jdbcConfigure = new JdbcConfigure();
             BeanUtils.copyProperties(this.jdbcConfigure, configure);
             this.jdbcConfigure.setJdbcDriver("org.h2.Driver");
-            this.jdbcConfigure.setJdbcType("h2:tcp");
-            this.connection = new JdbcConnection(this.jdbcConfigure, this.response);
+            this.jdbcConfigure.setJdbcType("h2:mem");
+            this.connection = new H2Connection(this.jdbcConfigure, this.response);
         }
         catch (Exception ex) {
             this.response.setIsConnected(Boolean.FALSE);
