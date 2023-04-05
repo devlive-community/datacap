@@ -1,0 +1,16 @@
+.red {
+    color: #ff0000;
+}
+
+.connector-logo {
+    width: 150px;
+    float: right;
+    position: relative;
+    top: -5.5rem;
+}
+
+.connector-logo-index img {
+    max-width: 150px;
+    max-height: 60px;
+    margin: 5px 10px;
+}
