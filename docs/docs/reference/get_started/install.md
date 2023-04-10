@@ -23,7 +23,7 @@ DataCap is a software for data transformation, integration and visualization.
 
     Download the binary software package of the corresponding system from the following address for installation.
 
-- [GitHub Release](https://github.com/EdurtIO/datacap/releases/latest)
+- [Download Release](/download.html)
 
 ##### Download package
 
@@ -37,9 +37,32 @@ tar -xvzf datacap-<VERSION>-release.tar.gz
 
 ##### Configuration software
 
-For the first installation of the software, you need to import the sql scripts in the `schema` directory to the MySQL server. Note that the scripts that need to be imported are matched according to the downloaded software package
+!!! warning
+
+    If MySQL is not configured for the first installation, the h2 built-in database will be used by default.
+
+For the first installation of the software, you need to import the sql scripts in the `schema/datacap.sql` file to the MySQL server. Note that the scripts that need to be imported are matched according to the downloaded software package
 
 After importing the `SQL` script, modify the `configure/application.properties` configuration file to modify the configuration information of the MySQL server
+
+If MySQL, Remove configuration
+
+```bash
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.url=jdbc:h2:mem:datacap
+spring.datasource.username=h2
+spring.datasource.password=h2
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+```
+
+Add configuration
+
+```bash
+spring.datasource.url=jdbc:mysql://localhost:3306/datacap?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false&useOldAliasMetadataBehavior=true&jdbcCompliantTruncation=false&sessionVariables=sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,PIPES_AS_CONCAT'
+spring.datasource.username=root
+spring.datasource.password=12345678
+```
 
 !!! warning
 

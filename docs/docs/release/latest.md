@@ -6,70 +6,62 @@
 
 | Release Version | Release Time |
 |:---------------:|:------------:|
-|     `1.7.0`     | `2023-03-20` |
+|     `1.8.0`     | `2023-04-10` |
 
 #### General
 
 ---
 
-- Add other issues template
-- Add role
-- Upgrade JDK `8` to `11`
-- Support chatgpt
-- Add submit pipeline api
-
-#### Experimental
-
----
-
-- Add seatunnel executor
-
-#### Client
-
----
-
-- Support execute sql on source
-- Fixed code bugs
+- Rename executor directory
+- Optimize document release timing
+- Fixed format connect url close #304
+- Support proxy for chatgpt close #299
+- ChatGPT is currently unable to associate context close #298
+- Support returning parsing error results
+- Add schedule lib
+- Support the code editor supports automatic prompts for data source library tables and columns close #301
+- Fix initialization sql script
+- Support h2 database
+- Remove some invalid jars
+- Add docker publish ci
 
 #### Docs
 
 ---
 
-- Add icon to connectors
-
-#### SPI
-
----
-
-- Add executor spi
+- Refactor install docs
 
 #### Web
 
 ---
 
-- Fixed duplicate tree menu data
-- Optimized type display icon
-- Optimize data source testing｜save interaction
-- Support query history display plug-in type
-- Add system announcement display
-- Fixed the 'keyword' is repeated with tab page addition bug #208
-- Replace markdown preview component
+- The code editor supports code fragments close #300
 
 #### Plugins
 
 ---
 
-- Support kafka
+- Support h2 for native (memory)
+
+#### Kafka
+
+---
+
+- Perfect test case
+- Support `SHOW DATABASES` and `SHOW TABLES` ...
+
+#### Oracle
+
+---
+
+- Fixed validation sql content
 
 #### Dependencies
 
 ---
 
-- Upgrade redis version from `3.6.3` to `4.3.1`
-- Bump maven-assembly-plugin from `3.1.1` to `3.5.0` #272
-- Bump antlr4.version from `4.9.3` to `4.12.0` #262
-- Bump jedis from `3.6.3` to `4.3.1` #254
-- Bump DmJdbcDriver18 from `8.1.2.141` to `8.1.2.192` #234
+- Bump jackson.version from `2.13.4` to `2.14.2`
+- Bump postgresql from `42.5.0` to `42.6.0`
 
 #### Contributors
 
@@ -83,6 +75,4 @@
 
 |  GitHub ID  |
 |:-----------:|
-| @why198852  |
-| @Stacey1018 |
 |  @qianmoQ   |

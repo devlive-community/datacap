@@ -1,6 +1,5 @@
 ---
 title: Command line interface
-status: new
 ---
 
 The DataCap CLI provides a terminal-based, interactive shell for running queries. The CLI is a self-executing JAR file, which means it acts like a normal UNIX executable.
