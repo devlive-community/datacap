@@ -14,6 +14,7 @@ This chapter describes the connectors available in DataCap to access data from d
 
 #### Native
 
+[H2 Database](./native/h2.md) <br />
 [Apache Kafka](./native/kafka/index.md) <br />
 [Aliyun OSS](./native/alioss.md) <br />
 [Apache Zookeeper](./native/zookeeper.md) <br />

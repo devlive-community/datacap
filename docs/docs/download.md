@@ -27,8 +27,18 @@ The current Trino release is version <img src="https://img.shields.io/github/v/r
 
     <br />
 
-    [datacap-server-1.7.0.tar.gz](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-server/1.7.0/datacap-server-1.7.0-release.tar.gz){ .md-button .md-button-primary }
+    [datacap-server-1.8.0.tar.gz](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-server/1.8.0/datacap-server-1.8.0-release.tar.gz){ .md-button .md-button-primary }
 
+- :material-application-outline: __Command line client__
+
+     ---
+  
+     You can run queries using the interactive [command line interface](/reference/clients/cli.html).
+     
+     <br />
+  
+     [datacap-client-cli-1.8.0.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/1.8.0/datacap-client-cli-1.8.0.jar){ .md-button .md-button-primary }
+  
 - :material-more: __More package__
 
     ---

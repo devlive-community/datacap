@@ -6,7 +6,7 @@ site_description: >-
 repo_name: EdurtIO/datacap
 repo_url: https://github.com/EdurtIO/datacap
 edit_uri: "https://github.com/EdurtIO/datacap/blob/dev/docs/docs"
-current_version: 1.7.0
+current_version: 1.8.0
 
 copyright: Copyright &copy; 2022 EdurtIO
 
@@ -113,7 +113,9 @@ nav:
   - Home:
     - index.md
   - Documentation:
-      - Installation: reference/get_started/install.md
+      - Installation:
+        - Deploying DataCap: reference/get_started/install.md
+        - DataCap in a Docker container: reference/get_started/install_containers.md
       - Query: reference/get_started/query.md
       - Clients:
         - Command line interface: reference/clients/cli.md
@@ -139,6 +141,7 @@ nav:
           - MySQL: reference/connectors/jdbc/mysql.md
           - ClickHouse: reference/connectors/jdbc/clickhouse.md
         - Native:
+          - H2 Database: reference/connectors/native/h2.md
           - Apache Kafka:
             - reference/connectors/native/kafka/index.md
             - SHOW TOPICS: reference/sql_syntax/connectors/native/kafka/show_topics.md
@@ -154,7 +157,8 @@ nav:
       - Development environment: developer_guide/env.md
       - Custom Plugin: developer_guide/plugin.md
   - Release Note:
-      - 1.7.0 (latest): release/latest.md
+      - 1.8.0 (latest): release/latest.md
+      - 1.7.0: release/1.7.0.md
       - 1.6.0: release/1.6.0.md
       - 1.5.0: release/1.5.0.md
       - 1.4.0: release/1.4.0.md

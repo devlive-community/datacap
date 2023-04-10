@@ -1,6 +1,5 @@
 ---
 title: Apache Kafka
-status: new
 ---
 
 <img src="/assets/plugin/kafka.png" class="connector-logo" />

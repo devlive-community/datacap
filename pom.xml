@@ -4,7 +4,7 @@
     <groupId>io.edurt.datacap</groupId>
     <artifactId>datacap</artifactId>
     <packaging>pom</packaging>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.8.0</version>
 
     <modules>
         <module>client/datacap-cli</module>
