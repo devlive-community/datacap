@@ -21,7 +21,7 @@ hide:
 <div style="text-align: center;">
     <img width="80" height="65" src="/assets/logo.png" />
     <p/>
-    DataCap is integrated software for data transformation, integration, and visualization. Support a variety of data sources, file types, big data related database, relational database, NoSQL database, etc. Through the software can realize the management of multiple data sources, the data under the source of various operations conversion, making data charts, monitoring data sources and other functions.
+    DataCap 是用于数据转换、集成和可视化的集成软件。支持多种数据源、文件类型、大数据相关数据库、关系数据库、NoSQL数据库等。通过软件可以实现多数据源的管理，对源下的数据进行各种操作转换、制作数据图表、监控数据源和其他功能。
     <p/>
     <a target="_blank" class="connector-logo-index" href="https://gitee.com/EdurtIO/datacap/members">
         <img src='https://gitee.com/EdurtIO/datacap/badge/fork.svg?theme=white' alt='fork'/>
@@ -37,42 +37,42 @@ hide:
     </a>
     <p/> 
     <p/>
-    <a href="/reference/get_started/install.html" title="Get Started" class="md-button">
-        Get Started
+    <a href="/reference/get_started/install.html" title="马上开始" class="md-button">
+        马上开始
     </a>
-    <a href="/download.html" title="Download" class="md-button">
-      Download
+    <a href="/download.html" title="下载" class="md-button">
+      下载
     </a>
-    <a href="https://github.com/EdurtIO/datacap" target="_blank" title="Join Us On GitHub" class="md-button md-button--primary">
-      Join Us On GitHub
+    <a href="https://github.com/EdurtIO/datacap" target="_blank" title="在 GitHub 上加入我们" class="md-button md-button--primary">
+      在 GitHub 上加入我们
     </a>
-    <a href="http://try.datacap.edurt.io/" target="_blank" title="View online examples" class="md-button md-button--primary">
-      View online examples
+    <a href="http://try.datacap.edurt.io/" target="_blank" title="查看在线 Demo" class="md-button md-button--primary">
+      查看在线 Demo
     </a>
     <p/><p/><p/><p/>
 </div>
 
-# Overview
+# 概述
 
 <p align="center">
-Datacap is fast, lightweight, intuitive system.
+Datacap 是快速、轻量级、直观的系统。
 </p>
 
 <div style="max-width: 800px; margin: 0 auto" class="grid cards" markdown>
 
-- __Powerful yet easy to use__ 
+- __功能强大但易于使用__ 
 
     ---
 
-    Quickly and easily integrate and explore your data, using simple SQL IDE.
+    使用简单的 SQL IDE 快速轻松地集成和探索您的数据。
 
-- __Integrates with modern databases__
+- __与现代数据库集成__
 
     ---
 
-    DataCap can connect to any SQL based datasource through JDBC and native and http.
+    DataCap 可以通过 JDBC, Native, http 连接到任何基于 SQL 的数据源。
 
-- __Join DingDing__
+- __加入钉钉__
 
     ---
 
@@ -80,7 +80,7 @@ Datacap is fast, lightweight, intuitive system.
 
 </div>
 
-# Supported Connectors
+# 支持的连接器
 
 <p align="center">
     <a href="https://clickhouse.com" target="_blank" class="connector-logo-index">
