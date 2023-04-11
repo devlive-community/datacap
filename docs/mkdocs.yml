@@ -47,6 +47,7 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
+
 extra:
   social:
     - icon: fontawesome/brands/github
@@ -55,6 +56,13 @@ extra:
       link: https://linkedin.com/in/qianmoQ/
   status:
     new: Recently added
+  alternate:
+    - name: English
+      link: /en/
+      lang: en
+    - name: Chinese (Simplified)
+      link: /zh/
+      lang: zh
 extra_css:
   - stylesheets/extra.css
 markdown_extensions:
@@ -99,6 +107,11 @@ markdown_extensions:
 
 use_directory_urls: false
 plugins:
+  - i18n:
+      default_language: en
+      languages:
+        en: English
+        zh: Chinese (Simplified)
   - search
   - git-revision-date-localized:
       enable_creation_date: true
