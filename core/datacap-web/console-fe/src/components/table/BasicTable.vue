@@ -3,7 +3,7 @@
     <Card :padding="5">
       <Button size="small" type="primary" @click="columnDrawerVisible = true" icon="md-list" style="margin-right: 10px;"/>
       <Tooltip :content="$t('tooltip.pageShow')">
-        <Switch v-model="isPage" size="small" style="margin-right: 10px;" @change="handlerChange">
+        <Switch v-model="isPage" size="small" style="margin-right: 10px;" @on-change="handlerChange">
           <template #open>
             <Icon type="md-check"></Icon>
           </template>
