@@ -181,6 +181,9 @@ Datacap is fast, lightweight, intuitive system.
     </a>&nbsp;
     <a href="https://kafka.apache.org" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/kafka.png" alt="Apache Kafka" height="50" />
+    </a>&nbsp;
+    <a href="https://docs.ceresdb.io/" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/ceresdb.png" alt="CeresDB" height="50" />
     </a>
 </p>
 
