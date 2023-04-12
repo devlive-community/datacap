@@ -1,14 +1,12 @@
 import {AxisConfigure} from "@/components/editor/echarts/configure/AxisConfigure";
 import {SeriesConfigure} from "@/components/editor/echarts/configure/SeriesConfigure";
 import {TooltipConfigure} from "@/components/editor/echarts/configure/TooltipConfigure";
-import {EchartsType} from "@/components/editor/echarts/EchartsType";
 
 export class ChartConfigure
 {
-  type = EchartsType.LINE;
-  xAxis: AxisConfigure = new AxisConfigure();
-  yAxis: AxisConfigure = new AxisConfigure();
-  series: Array<SeriesConfigure> = new Array();
+  xAxis: AxisConfigure = null;
+  yAxis: AxisConfigure = null;
+  series: Array<SeriesConfigure> = null;
   tooltip: TooltipConfigure = new TooltipConfigure();
 }
 

@@ -96,5 +96,10 @@ export default {
   system: '系统',
   active: '激活状态',
   expression: '表达式',
-  table: '表'
+  table: '表',
+  visualization: '可视化',
+  xAxis: '横轴',
+  yAxis: '纵轴',
+  tag: '标签',
+  data: '数据'
 }

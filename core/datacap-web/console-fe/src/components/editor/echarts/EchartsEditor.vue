@@ -1,70 +1,72 @@
 <template>
   <div>
-    <Drawer v-model="visible" title="Visualization" placement="right" :mask-closable="false"
-            :width="'80%'" :transfer="false">
-      <Split v-if="configure" v-model="editorSplit">
-        <template #left>
-          <div class="demo-split-pane">
-            <EchartsPreview :key="referKey" :height="'500px'" :configure="chartConfigure"/>
-          </div>
-        </template>
-        <template #right>
-          <Form label-position="left" :label-width="50">
-            <FormItem label="Type" style="margin-left: 10px;">
-              <RadioGroup v-model="chartConfigure.type" @on-change="handlerChangeValue('series')">
-                <Radio :label="chartType.LINE">Line</Radio>
-                <Radio :label="chartType.BAR">Bar</Radio>
-              </RadioGroup>
-            </FormItem>
-            <div class="demo-split-pane">
-              <Collapse v-model="collapseValue">
-                <Panel name="xAxis">
-                  xAxis
-                  <template #content>
-                    <FormItem label="Value">
-                      <Select v-model="defaultConfigure.xAxis" @on-change="handlerChangeValue('series')">
-                        <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
-                      </Select>
-                    </FormItem>
-                    <FormItem label="Type">
-                      <RadioGroup v-model="chartConfigure.xAxis.type" @on-change="handlerChangeValue">
-                        <Radio label="value"></Radio>
-                        <Radio label="category"></Radio>
-                      </RadioGroup>
-                    </FormItem>
-                  </template>
-                </Panel>
-                <Panel name="yAxis">
-                  yAxis
-                  <template #content>
-                    <FormItem label="Value">
-                      <Select v-model="defaultConfigure.yAxis" @on-change="handlerChangeValue('y')">
-                        <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
-                      </Select>
-                    </FormItem>
-                    <FormItem label="Type">
-                      <RadioGroup v-model="chartConfigure.yAxis.type" @on-change="handlerChangeValue">
-                        <Radio label="value"></Radio>
-                        <Radio label="category"></Radio>
-                      </RadioGroup>
-                    </FormItem>
-                  </template>
-                </Panel>
-                <Panel name="Series">
-                  Series
-                  <template #content>
-                    <FormItem label="Value">
-                      <Select v-model="defaultConfigure.series" @on-change="handlerChangeValue('series')">
-                        <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
-                      </Select>
-                    </FormItem>
-                  </template>
-                </Panel>
-              </Collapse>
-            </div>
-          </Form>
-        </template>
-      </Split>
+    <Drawer v-model="visible" :title="$t('common.visualization')" placement="right" :mask-closable="false"
+            :width="'90%'" :transfer="false">
+      <Layout v-if="configure">
+        <Layout>
+          <Content>
+            <EchartsPreview :key="referKey" :height="'500px'" :configure="chartOptions"/>
+          </Content>
+          <Sider style="background-color: #FFFFFF;" hide-trigger>
+            <Form label-position="left" :label-width="50">
+              <Card padding="0" shadow>
+                <template #title>
+                  <RadioGroup v-model="chartType" type="button" @on-change="handlerChangeValue('Type')">
+                    <Space>
+                      <Radio label="line">Line</Radio>
+                      <Radio label="bar">Bar</Radio>
+                    </Space>
+                  </RadioGroup>
+                </template>
+                <Collapse v-if="chartType" v-model="collapseValue" accordion>
+                  <Panel name="xAxis">
+                    {{ $t('common.xAxis') }}
+                    <template #content>
+                      <FormItem :label="$t('common.column')">
+                        <Select v-model="defaultConfigure.xAxis" @on-change="handlerChangeValue('xAxis')">
+                          <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
+                        </Select>
+                      </FormItem>
+                      <FormItem :label="$t('common.type')">
+                        <RadioGroup v-model="chartOptions.xAxis.type" type="button" size="small" @on-change="handlerChangeValue">
+                          <Radio label="value">{{ $t('common.column') }}</Radio>
+                          <Radio label="category">{{ $t('common.tag') }}</Radio>
+                        </RadioGroup>
+                      </FormItem>
+                    </template>
+                  </Panel>
+                  <Panel v-if="chartOptions.xAxis && !chartOptions.yAxis.disabled" disabled name="yAxis">
+                    {{ $t('common.yAxis') }}
+                    <template #content>
+                      <FormItem label="Value">
+                        <Select v-model="defaultConfigure.yAxis">
+                          <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
+                        </Select>
+                      </FormItem>
+                      <FormItem label="Type">
+                        <RadioGroup v-model="chartOptions.yAxis.type" @on-change="handlerChangeValue">
+                          <Radio label="value"></Radio>
+                          <Radio label="category"></Radio>
+                        </RadioGroup>
+                      </FormItem>
+                    </template>
+                  </Panel>
+                  <Panel v-if="chartOptions.xAxis" name="Series">
+                    {{ $t('common.data') }}
+                    <template #content>
+                      <FormItem :label="$t('common.column')">
+                        <Select v-model="defaultConfigure.series" @on-change="handlerChangeValue('Series')">
+                          <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
+                        </Select>
+                      </FormItem>
+                    </template>
+                  </Panel>
+                </Collapse>
+              </Card>
+            </Form>
+          </Sider>
+        </Layout>
+      </Layout>
       <Result v-else type="warning">
         <template #desc>
         </template>
@@ -80,17 +82,14 @@ import {ChartConfigure} from "@/components/editor/echarts/configure/ChartConfigu
 import {getValueByKey} from "./DataUtils";
 import {getTimestamp} from "@/common/DateCommon";
 import {SeriesConfigure} from "@/components/editor/echarts/configure/SeriesConfigure";
-import {FormItem} from "view-ui-plus";
 import {isEmpty} from "lodash";
 import {EchartsConfigure} from "@/components/editor/echarts/EchartsConfigure";
 import EchartsPreview from "@/components/editor/echarts/EchartsPreview.vue";
-import {EchartsType} from "@/components/editor/echarts/EchartsType";
-
-const chartType = EchartsType;
+import {AxisConfigure} from "@/components/editor/echarts/configure/AxisConfigure";
 
 export default defineComponent({
   name: 'EchartsEditor',
-  components: {EchartsPreview, FormItem},
+  components: {EchartsPreview},
   props: {
     isVisible: {
       type: Boolean,
@@ -104,7 +103,6 @@ export default defineComponent({
   data()
   {
     return {
-      editorSplit: 0.7,
       collapseValue: 'xAxis',
       referKey: 0,
       defaultConfigure: {
@@ -112,8 +110,8 @@ export default defineComponent({
         yAxis: '',
         series: ''
       },
-      chartConfigure: ChartConfigure,
-      chartType: chartType
+      chartOptions: null as ChartConfigure,
+      chartType: null
     }
   },
   created()
@@ -123,33 +121,43 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.chartConfigure = new ChartConfigure();
+      this.chartOptions = new ChartConfigure();
     },
     handlerChangeValue(type: string)
     {
       this.referKey = getTimestamp();
-      if (type === 'x') {
-        this.chartConfigure.xAxis.data = getValueByKey(this.defaultConfigure.xAxis, this.configure.columns);
-      }
-      else if (type === 'y') {
-        this.chartConfigure.yAxis.data = getValueByKey(this.defaultConfigure.yAxis, this.configure.columns);
-      }
-      else if (type === 'series') {
-        const series: SeriesConfigure = new SeriesConfigure();
-        series.data = getValueByKey(this.defaultConfigure.series, this.configure.columns);
-        series.type = this.chartConfigure.type;
-        this.chartConfigure.series = [];
-        this.chartConfigure.series.push(series);
+
+      switch (type) {
+        case 'xAxis':
+          this.chartOptions.xAxis = new AxisConfigure();
+          this.chartOptions.xAxis.data = getValueByKey(this.defaultConfigure.xAxis, this.configure.columns);
+          this.chartOptions.yAxis = new AxisConfigure();
+          this.chartOptions.yAxis.type = 'value';
+          this.chartOptions.yAxis.disabled = true;
+          break;
+        case 'Series': {
+          const series: SeriesConfigure = new SeriesConfigure();
+          series.data = getValueByKey(this.defaultConfigure.series, this.configure.columns);
+          series.type = this.chartType;
+          this.chartOptions.series = [];
+          this.chartOptions.series.push(series);
+          break;
+        }
+        case 'Type': {
+          if (this.chartOptions.series) {
+            this.chartOptions.series[0].type = this.chartType;
+          }
+        }
       }
       this.handlerSetDefaultValue();
     },
     handlerSetDefaultValue()
     {
       if (isEmpty(this.defaultConfigure.xAxis)) {
-        this.chartConfigure.xAxis.data = null;
+        this.chartOptions.xAxis.data = null;
       }
       if (isEmpty(this.defaultConfigure.yAxis)) {
-        this.chartConfigure.yAxis.data = null;
+        this.chartOptions.yAxis.data = null;
       }
     }
   },
@@ -167,3 +175,8 @@ export default defineComponent({
   }
 });
 </script>
+<style scoped>
+.ivu-drawer-body {
+  padding: 0px;
+}
+</style>

@@ -3,7 +3,7 @@
     <Card :padding="5">
       <Button size="small" type="primary" @click="columnDrawerVisible = true" icon="md-list" style="margin-right: 10px;"/>
       <Tooltip :content="$t('tooltip.pageShow')">
-        <Switch v-model="isPage" size="small" style="margin-right: 10px;" @change="handlerChange">
+        <Switch v-model="isPage" size="small" style="margin-right: 10px;" @on-change="handlerChange">
           <template #open>
             <Icon type="md-check"></Icon>
           </template>
@@ -23,8 +23,10 @@
           </DropdownMenu>
         </template>
       </Dropdown>
-      <Button size="small" icon="md-pie" @click="handlerVisualization(true)">
-      </Button>
+      <Tooltip :content="$t('common.visualization')">
+        <Button size="small" icon="md-pie" @click="handlerVisualization(true)">
+        </Button>
+      </Tooltip>
       <ag-grid-vue :key="timestamp" :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}" :pagination="isPage"
                    class="ag-theme-datacap" :columnDefs="columnDefs" :rowData="configure.columns" :gridOptions="gridOptions">
       </ag-grid-vue>

@@ -96,5 +96,10 @@ export default {
   system: 'System',
   active: 'Active',
   expression: 'Expression',
-  table: 'Table'
+  table: 'Table',
+  visualization: 'Visualization',
+  xAxis: 'xAxis',
+  yAxis: 'yAxis',
+  tag: 'Tag',
+  data: 'Data'
 }
