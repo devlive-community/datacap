@@ -1,6 +1,5 @@
 ---
 title: DataCap in a Docker container
-status: new
 ---
 
 The DataCap project provides the [qianmoq/datacap](https://hub.docker.com/r/qianmoq/datacap) Docker image that includes the DataCap server and a default configuration. The Docker image is published to Docker Hub and can be used with the Docker runtime, among several others.
