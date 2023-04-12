@@ -23,8 +23,10 @@
           </DropdownMenu>
         </template>
       </Dropdown>
-      <Button size="small" icon="md-pie" @click="handlerVisualization(true)">
-      </Button>
+      <Tooltip :content="$t('common.visualization')">
+        <Button size="small" icon="md-pie" @click="handlerVisualization(true)">
+        </Button>
+      </Tooltip>
       <ag-grid-vue :key="timestamp" :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}" :pagination="isPage"
                    class="ag-theme-datacap" :columnDefs="columnDefs" :rowData="configure.columns" :gridOptions="gridOptions">
       </ag-grid-vue>
