@@ -101,5 +101,6 @@ export default {
   xAxis: '横轴',
   yAxis: '纵轴',
   tag: '标签',
-  data: '数据'
+  data: '数据',
+  export: '导出'
 }

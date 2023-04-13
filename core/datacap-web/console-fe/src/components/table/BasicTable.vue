@@ -1,32 +1,40 @@
 <template>
   <div>
     <Card :padding="5">
-      <Button size="small" type="primary" @click="columnDrawerVisible = true" icon="md-list" style="margin-right: 10px;"/>
-      <Tooltip :content="$t('tooltip.pageShow')">
-        <Switch v-model="isPage" size="small" style="margin-right: 10px;" @on-change="handlerChange">
-          <template #open>
-            <Icon type="md-check"></Icon>
+      <Space>
+        <Button size="small" type="primary" @click="columnDrawerVisible = true" icon="md-list"/>
+        <Tooltip :content="$t('tooltip.pageShow')">
+          <Switch v-model="isPage" size="small" @on-change="handlerChange">
+            <template #open>
+              <Icon type="md-check"></Icon>
+            </template>
+            <template #close>
+              <Icon type="md-close"></Icon>
+            </template>
+          </Switch>
+        </Tooltip>
+        <Dropdown>
+          <Button type="primary" size="small">
+            {{ $t('common.export') }}
+            <Icon type="md-download"/>
+          </Button>
+          <template #list>
+            <DropdownMenu>
+              <DropdownItem @click="handlerExport()">CSV</DropdownItem>
+            </DropdownMenu>
           </template>
-          <template #close>
-            <Icon type="md-close"></Icon>
+        </Dropdown>
+        <Tooltip :content="$t('common.visualization')">
+          <Button size="small" icon="md-pie" @click="handlerVisualization(true)">
+          </Button>
+        </Tooltip>
+        <Poptip trigger="hover" placement="bottom" word-wrap width="150">
+          <Button size="small" shape="circle" type="warning" icon="md-help"/>
+          <template #content>
+            {{ $t('tooltip.smallTips') }}
           </template>
-        </Switch>
-      </Tooltip>
-      <Dropdown style="margin-right: 10px;">
-        <Button type="primary" size="small">
-          Export
-          <Icon type="md-download"/>
-        </Button>
-        <template #list>
-          <DropdownMenu>
-            <DropdownItem @click="handlerExport()">CSV</DropdownItem>
-          </DropdownMenu>
-        </template>
-      </Dropdown>
-      <Tooltip :content="$t('common.visualization')">
-        <Button size="small" icon="md-pie" @click="handlerVisualization(true)">
-        </Button>
-      </Tooltip>
+        </Poptip>
+      </Space>
       <ag-grid-vue :key="timestamp" :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}" :pagination="isPage"
                    class="ag-theme-datacap" :columnDefs="columnDefs" :rowData="configure.columns" :gridOptions="gridOptions">
       </ag-grid-vue>
@@ -54,12 +62,12 @@ import {ExportToCsv} from "export-to-csv";
 import {AgGridVue} from "ag-grid-vue3";
 import "ag-grid-community/styles/ag-grid.css";
 import "./ag-theme-datacap.css";
-import {createDefaultOptions} from "./TableGridOptions";
 import {useI18n} from "vue-i18n";
 import {TableColumnDef} from "@/components/table/TableColumnDef";
 import {getTimestamp} from "@/common/DateCommon";
 import EchartsEditor from "@/components/editor/echarts/EchartsEditor.vue";
 import {EchartsConfigure} from "@/components/editor/echarts/EchartsConfigure";
+import TableGridOptions from "@/components/table/TableGridOptions";
 
 export default defineComponent({
   name: "BasicTableComponent",
@@ -73,7 +81,7 @@ export default defineComponent({
   setup()
   {
     const i18n = useI18n();
-    const gridOptions = createDefaultOptions(i18n);
+    const gridOptions = TableGridOptions.createDefaultOptions(i18n);
     const timestamp = getTimestamp();
     return {
       gridOptions,
