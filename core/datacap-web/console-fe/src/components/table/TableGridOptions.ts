@@ -81,7 +81,8 @@ const createDefaultOptions = (i18n: any) => {
       editable: true,
       sortable: true,
       filter: true,
-      resizable: true
+      resizable: true,
+      wrapText: true
     }
   }
 }
