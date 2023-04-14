@@ -72,11 +72,12 @@ Datacap is fast, lightweight, intuitive system.
 
     DataCap can connect to any SQL based datasource through JDBC and native and http.
 
-- __Join DingDing__
+- __Join (DingTalk ｜ WeChat)__
 
     ---
 
-    ![DingDing](/assets/dingtalk.png)
+    <img src="/assets/dingtalk.png" alt="DingTalk" style="height: 180px;" />
+    <img src="/assets/wechat.png" alt="WeChat" style="height: 180px;" />
 
 </div>
 
