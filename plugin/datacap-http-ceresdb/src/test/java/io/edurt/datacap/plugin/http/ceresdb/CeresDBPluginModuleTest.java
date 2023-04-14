@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.natived.ceresdb;
+package io.edurt.datacap.plugin.http.ceresdb;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

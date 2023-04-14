@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.natived.ceresdb;
+package io.edurt.datacap.plugin.http.ceresdb;
 
 import io.edurt.datacap.spi.adapter.HttpAdapter;
 import io.edurt.datacap.spi.connection.HttpConfigure;
