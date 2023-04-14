@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.natived.ceresdb;
+package io.edurt.datacap.plugin.http.ceresdb;
 
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;

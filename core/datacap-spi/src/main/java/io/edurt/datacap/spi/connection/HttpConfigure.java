@@ -25,5 +25,6 @@ public class HttpConfigure
     private Boolean autoConnected = Boolean.FALSE;
     private Map<String, String> params;
     private String jsonBody;
+    private boolean isDecoded = false;
     private MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
 }

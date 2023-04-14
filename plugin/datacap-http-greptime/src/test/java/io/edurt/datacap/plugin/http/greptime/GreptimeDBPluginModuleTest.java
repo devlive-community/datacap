@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.natived.ceresdb;
+package io.edurt.datacap.plugin.http.greptime;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -11,14 +11,14 @@ import org.junit.Test;
 
 import java.util.Set;
 
-public class CeresDBPluginModuleTest
+public class GreptimeDBPluginModuleTest
 {
     private Injector injector;
 
     @Before
     public void before()
     {
-        this.injector = Guice.createInjector(new CeresDBPluginModule());
+        this.injector = Guice.createInjector(new GreptimeDBPluginModule());
     }
 
     @Test

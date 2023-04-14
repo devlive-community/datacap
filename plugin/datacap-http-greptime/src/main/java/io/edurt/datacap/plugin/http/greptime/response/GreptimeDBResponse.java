@@ -1,22 +1,22 @@
-package io.edurt.datacap.plugin.natived.ceresdb;
+package io.edurt.datacap.plugin.http.greptime.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.edurt.datacap.plugin.http.greptime.response.record.Output;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CeresDBResponse
+public class GreptimeDBResponse
 {
     private int code;
-    private String message;
-    private List<Map<String, String>> rows;
+    private String error;
+    private List<Output> output;
 }

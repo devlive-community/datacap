@@ -101,5 +101,6 @@ export default {
   xAxis: 'xAxis',
   yAxis: 'yAxis',
   tag: 'Tag',
-  data: 'Data'
+  data: 'Data',
+  export: 'Export'
 }

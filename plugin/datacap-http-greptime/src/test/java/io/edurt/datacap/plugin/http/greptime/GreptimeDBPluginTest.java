@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.natived.ceresdb;
+package io.edurt.datacap.plugin.http.greptime;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.testcontainers.containers.Network;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.lifecycle.Startables;
 
 import java.util.Optional;
@@ -19,11 +20,11 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 @Slf4j
-public class CeresDBPluginTest
+public class GreptimeDBPluginTest
 {
-    private static final String HOST = "ceresDBCluster";
+    private static final String HOST = "greptimeDBCluster";
     private Network network;
-    private CeresDBContainer container;
+    private GreptimeDBContainer container;
 
     private Injector injector;
     private Configure configure;
@@ -32,14 +33,20 @@ public class CeresDBPluginTest
     public void before()
     {
         network = Network.newNetwork();
-        container = new CeresDBContainer().withNetwork(network).withNetworkAliases(HOST).withExposedPorts(CeresDBContainer.HTTP_PORT);
+        container = new GreptimeDBContainer()
+                .withNetwork(network)
+                .withNetworkAliases(HOST)
+                .withExposedPorts(GreptimeDBContainer.HTTP_PORT)
+                .withCommand("standalone", "start",
+                        "--http-addr", "0.0.0.0:4000")
+                .waitingFor(Wait.forHttp("/dashboard"));
         Startables.deepStart(Stream.of(container)).join();
-        log.info("CeresDB container started");
+        log.info("GreptimeDB container started");
 
-        injector = Guice.createInjector(new CeresDBPluginModule());
+        injector = Guice.createInjector(new GreptimeDBPluginModule());
         configure = new Configure();
         configure.setHost("localhost");
-        configure.setPort(container.getMappedPort(CeresDBContainer.HTTP_PORT));
+        configure.setPort(container.getMappedPort(GreptimeDBContainer.HTTP_PORT));
         configure.setDatabase(Optional.of("default"));
     }
 
@@ -47,11 +54,13 @@ public class CeresDBPluginTest
     public void test()
     {
         Set<Plugin> plugins = injector.getInstance(Key.get(new TypeLiteral<Set<Plugin>>() {}));
-        Optional<Plugin> pluginOptional = plugins.stream().filter(v -> v.name().equalsIgnoreCase("CeresDB")).findFirst();
+        Optional<Plugin> pluginOptional = plugins.stream()
+                .filter(v -> v.name().equalsIgnoreCase("GreptimeDB"))
+                .findFirst();
         if (pluginOptional.isPresent()) {
             Plugin plugin = pluginOptional.get();
             plugin.connect(configure);
-            String sql = "SELECT * FROM system.public.tables";
+            String sql = "SELECT * FROM numbers LIMIT 5";
             Response response = plugin.execute(sql);
             log.info("================ plugin executed information =================");
             if (!response.getIsSuccessful()) {

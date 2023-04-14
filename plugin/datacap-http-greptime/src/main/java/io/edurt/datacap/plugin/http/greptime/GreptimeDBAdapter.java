@@ -1,5 +1,8 @@
-package io.edurt.datacap.plugin.natived.ceresdb;
+package io.edurt.datacap.plugin.http.greptime;
 
+import com.google.common.collect.Maps;
+import io.edurt.datacap.plugin.http.greptime.response.GreptimeDBResponse;
+import io.edurt.datacap.plugin.http.greptime.response.record.Records;
 import io.edurt.datacap.spi.adapter.HttpAdapter;
 import io.edurt.datacap.spi.connection.HttpConfigure;
 import io.edurt.datacap.spi.connection.HttpConnection;
@@ -9,7 +12,6 @@ import io.edurt.datacap.spi.json.JSON;
 import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.spi.model.Time;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.MediaType;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -17,14 +19,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Slf4j
-public class CeresDBAdapter
+public class GreptimeDBAdapter
         extends HttpAdapter
 {
-    public CeresDBAdapter(HttpConnection connection)
+    public GreptimeDBAdapter(HttpConnection connection)
     {
         super(connection);
     }
@@ -45,33 +45,32 @@ public class CeresDBAdapter
                 configure.setAutoConnected(Boolean.FALSE);
                 configure.setRetry(0);
                 configure.setMethod(HttpMethod.POST);
-                configure.setPath("sql");
-                Map<String, String> map = new ConcurrentHashMap<>();
-                map.put("query", content);
-                configure.setJsonBody(JSON.toJSON(map));
-                configure.setMediaType(MediaType.parse("application/json; charset=utf-8"));
+                configure.setPath("v1/sql");
+                Map<String, String> parameters = Maps.newHashMap();
+                parameters.put("sql", content);
+                configure.setParams(parameters);
+                configure.setDecoded(true);
                 HttpConnection httpConnection = new HttpConnection(configure, new Response());
                 HttpClient httpClient = HttpClient.getInstance(configure, httpConnection);
                 String body = httpClient.execute();
-                CeresDBResponse ceresDBResponse = JSON.objectmapper.readValue(body, CeresDBResponse.class);
-                if (ceresDBResponse.getCode() == 0 || ObjectUtils.isNotEmpty(ceresDBResponse.getRows())) {
+                GreptimeDBResponse requestResponse = JSON.objectmapper.readValue(body, GreptimeDBResponse.class);
+                if (requestResponse.getCode() == 0 || ObjectUtils.isNotEmpty(requestResponse.getOutput())) {
                     response.setIsSuccessful(true);
-                    for (int i = ceresDBResponse.getRows().size() - 1; i >= 0; i--) {
-                        Map<String, String> row = ceresDBResponse.getRows().get(i);
-                        if (i == 0) {
-                            headers.addAll(row.keySet());
-                            // TODO: check type
-                        }
-                        List<Object> _columns = row.entrySet()
-                                .stream()
-                                .map(entry -> entry.getValue())
-                                .collect(Collectors.toList());
-                        columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
+                    Records records = requestResponse.getOutput().get(0).getRecords();
+                    if (ObjectUtils.isNotEmpty(records.getSchema())) {
+                        records.getSchema()
+                                .getColumnSchemas()
+                                .forEach(schema -> {
+                                    headers.add(schema.getName());
+                                    types.add(schema.getDataType());
+                                });
                     }
+                    records.getRows()
+                            .forEach(record -> columns.add(handlerFormatter(configure.getFormat(), headers, record)));
                 }
                 else {
                     response.setIsSuccessful(Boolean.FALSE);
-                    response.setMessage(ceresDBResponse.getMessage());
+                    response.setMessage(requestResponse.getError());
                 }
             }
             catch (Exception ex) {

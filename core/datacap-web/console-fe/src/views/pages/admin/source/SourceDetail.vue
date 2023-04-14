@@ -7,8 +7,7 @@
           <Card :bordered="false" dis-hover>
             <div style="text-align:center">
               <Avatar :size="40"
-                      :src="formState?.type ? '/static/images/plugin/' + formState?.type.split(' ')[0] + '.png' : ''"
-                      :style="{'background-color': !testInfo.percent ? '#CCC' : testInfo.connected ? '#52c41a' : '#ff4d4f'}" icon="ios-person"/>
+                      :src="formState?.type ? '/static/images/plugin/' + formState?.type.split(' ')[0] + '.png' : ''" icon="ios-person"/>
               <p>{{ !formState['type'] ? '_' : formState['type'] }}</p>
             </div>
           </Card>
@@ -16,7 +15,7 @@
         <Col :span="6">
           <Card :bordered="false" dis-hover>
             <div style="text-align:center">
-              <Progress :percent="testInfo.percent" :status="testInfo.connected ? 'success' : 'wrong'">
+              <Progress :percent="testInfo.percent" :status="(testInfo.connected && testInfo.successful) ? 'success' : 'wrong'">
                 <span></span>
               </Progress>
             </div>
@@ -127,7 +126,8 @@ import SourceV2Service from "@/services/SourceV2Service";
 interface TestInfo
 {
   connected: boolean,
-  percent: number
+  percent: number,
+  successful: boolean
 }
 
 export default defineComponent({
@@ -249,10 +249,12 @@ export default defineComponent({
           if (response.status) {
             this.$Message.success("Test successful");
             this.testInfo.connected = true;
+            this.testInfo.successful = true;
           }
           else {
             this.$Message.error(response.message);
             this.testInfo.connected = false;
+            this.testInfo.successful = false;
           }
         })
         .finally(() => {

@@ -165,6 +165,7 @@ nav:
           - Zookeeper: reference/connectors/native/zookeeper.md
           - Redis: reference/connectors/native/redis.md
         - Http:
+          - GreptimeDB: reference/connectors/http/greptimedb.md
           - CeresDB: reference/connectors/http/ceresdb.md
           - ClickHouse: reference/connectors/http/clickhouse.md
   - Developer guide:

@@ -184,6 +184,9 @@ Datacap is fast, lightweight, intuitive system.
     </a>&nbsp;
     <a href="https://docs.ceresdb.io/" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/ceresdb.png" alt="CeresDB" height="50" />
+    </a>&nbsp;
+    <a href="https://docs.greptime.com/" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/greptimedb.png" alt="GreptimeDB" height="70" />
     </a>
 </p>
 
