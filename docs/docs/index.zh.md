@@ -184,6 +184,9 @@ Datacap 是快速、轻量级、直观的系统。
     </a>&nbsp;
     <a href="https://docs.ceresdb.io/" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/ceresdb.png" alt="CeresDB" height="50" />
+    </a>&nbsp;
+    <a href="https://docs.greptime.com/" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/greptimedb.png" alt="GreptimeDB" height="70" />
     </a>
 </p>
 

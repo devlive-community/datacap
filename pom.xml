@@ -25,6 +25,7 @@
         <module>plugin/datacap-http-cratedb</module>
         <module>plugin/datacap-http-clickhouse</module>
         <module>plugin/datacap-http-ceresdb</module>
+        <module>plugin/datacap-http-greptime</module>
         <module>plugin/datacap-jdbc-clickhouse</module>
         <module>plugin/datacap-jdbc-cratedb</module>
         <module>plugin/datacap-jdbc-db2</module>
