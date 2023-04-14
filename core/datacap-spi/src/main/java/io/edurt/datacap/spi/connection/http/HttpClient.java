@@ -38,10 +38,7 @@ public class HttpClient
                 .readTimeout(SOCKET_TIME_OUT, TimeUnit.MILLISECONDS)
                 .writeTimeout(SOCKET_TIME_OUT, TimeUnit.MILLISECONDS)
                 .connectionPool(connectionPool)
-                .retryOnConnectionFailure(configure.getAutoConnected())
                 .connectTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-                .addInterceptor(new HttpRetryInterceptor(configure))
-                .addNetworkInterceptor(new HttpRetryInterceptor(configure))
                 .build();
     }
 
