@@ -14,7 +14,7 @@
     <description>DataCap - cli</description>
 
     <properties>
-        <spring-shell.version>2.1.4</spring-shell.version>
+        <spring-shell.version>3.0.2</spring-shell.version>
         <okhttp.version>4.9.2</okhttp.version>
         <gson.version>2.10</gson.version>
     </properties>
