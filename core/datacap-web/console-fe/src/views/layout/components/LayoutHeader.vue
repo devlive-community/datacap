@@ -60,6 +60,10 @@
                 <Icon type="ios-basket"/>
                 {{ $t('common.function') }}
               </MenuItem>
+              <MenuItem name="settings_schedule" to="/admin/schedule">
+                <Icon type="md-timer"/>
+                {{ $t('common.schedule') }}
+              </MenuItem>
             </MenuGroup>
             <MenuGroup :title="$t('common.template')">
               <MenuItem name="admin_template_sql" to="/admin/template/sql">
