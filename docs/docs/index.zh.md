@@ -188,6 +188,9 @@ Datacap 是快速、轻量级、直观的系统。
     </a>&nbsp;
     <a href="https://docs.greptime.com/" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/greptimedb.png" alt="GreptimeDB" height="70" />
+    </a>&nbsp;
+    <a href="https://questdb.io/" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/questdb.png" alt="QuestDB" height="50" />
     </a>
 </p>
 

@@ -157,6 +157,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://docs.greptime.com/" target="_blank" class="connector-logo-index">
         <img src="docs/docs/assets/plugin/greptimedb.png" alt="GreptimeDB" height="70" />
+    </a>&nbsp;
+    <a href="https://questdb.io/" target="_blank" class="connector-logo-index">
+        <img src="docs/docs/assets/plugin/questdb.png" alt="QuestDB" height="50" />
     </a>
 </p>
 
