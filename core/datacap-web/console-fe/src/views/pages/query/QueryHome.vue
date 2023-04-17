@@ -345,7 +345,11 @@ export default defineComponent({
             this.tableConfigure = tConfigure;
           }
           else {
-            this.$Message.error(response.message);
+            this.$Message.error({
+              content: response.message,
+              duration: 5,
+              closable: true
+            });
             this.error = response.message;
             this.aiSupportType.push('FIXEDBUGS');
             this.tableConfigure = null;

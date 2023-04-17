@@ -18,12 +18,14 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.createTime'),
       key: 'createTime',
-      ellipsis: true
+      ellipsis: true,
+      tooltip: true
     },
     {
       title: i18n.t('common.endTime'),
       key: 'endTime',
-      ellipsis: true
+      ellipsis: true,
+      tooltip: true
     },
     {
       title: i18n.t('common.elapsed'),

@@ -325,6 +325,11 @@
             <artifactId>datacap-http-greptime</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-http-questdb</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Executor -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>

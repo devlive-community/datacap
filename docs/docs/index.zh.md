@@ -72,11 +72,12 @@ Datacap 是快速、轻量级、直观的系统。
 
     DataCap 可以通过 JDBC, Native, http 连接到任何基于 SQL 的数据源。
 
-- __加入钉钉__
+- __加入 (钉钉 ｜ 微信)__
 
     ---
 
-    ![DingDing](/assets/dingtalk.png)
+    <img src="/assets/dingtalk.png" alt="钉钉" style="height: 180px;" />
+    <img src="/assets/wechat.png" alt="微信" style="height: 180px;" />
 
 </div>
 
@@ -187,6 +188,9 @@ Datacap 是快速、轻量级、直观的系统。
     </a>&nbsp;
     <a href="https://docs.greptime.com/" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/greptimedb.png" alt="GreptimeDB" height="70" />
+    </a>&nbsp;
+    <a href="https://questdb.io/" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/questdb.png" alt="QuestDB" height="50" />
     </a>
 </p>
 
