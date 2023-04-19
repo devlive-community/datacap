@@ -148,7 +148,8 @@ nav:
       - Connecting to connectors:
         - reference/connectors/index.md
         - JDBC:
-          - DuckDB:  reference/connectors/jdbc/duckdb.md
+          - Apache Doris: reference/connectors/jdbc/doris.md
+          - DuckDB: reference/connectors/jdbc/duckdb.md
           - Yandex Database:  reference/connectors/jdbc/ydb.md
           - Snowflake: reference/connectors/jdbc/snowflake.md
           - MySQL: reference/connectors/jdbc/mysql.md

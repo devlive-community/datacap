@@ -160,6 +160,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://questdb.io/" target="_blank" class="connector-logo-index">
         <img src="docs/docs/assets/plugin/questdb.png" alt="QuestDB" height="50" />
+    </a>&nbsp;
+    <a href="https://doris.apache.org/" target="_blank" class="connector-logo-index">
+        <img src="docs/docs/assets/plugin/doris.png" alt="Apache Doris" height="50" />
     </a>
 </p>
 

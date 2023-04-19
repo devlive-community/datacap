@@ -191,6 +191,9 @@ Datacap 是快速、轻量级、直观的系统。
     </a>&nbsp;
     <a href="https://questdb.io/" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/questdb.png" alt="QuestDB" height="50" />
+    </a>&nbsp;
+    <a href="https://doris.apache.org/" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/doris.png" alt="Apache Doris" height="50" />
     </a>
 </p>
 
