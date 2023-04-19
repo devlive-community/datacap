@@ -330,6 +330,11 @@
             <artifactId>datacap-http-questdb</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-jdbc-doris</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Executor -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
@@ -341,6 +346,7 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>${assembly-plugin.version}</version>
                 <configuration>
