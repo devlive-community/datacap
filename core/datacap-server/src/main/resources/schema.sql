@@ -80,8 +80,6 @@ CREATE TABLE IF NOT EXISTS scheduled_task
 );
 TRUNCATE TABLE scheduled_task;
 ALTER TABLE scheduled_task ALTER COLUMN id RESTART WITH 1;
-INSERT INTO scheduled_task (name, description, expression, active, is_system)
-VALUES ('Synchronize table structure', 'Synchronize the table structure of the data source library at 1 am every day', '0 20 * * * ?', 1, 1);
 -- --------------------------------
 -- Table structure for snippet
 -- --------------------------------
