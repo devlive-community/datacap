@@ -32,6 +32,7 @@ DataCap is integrated software for data transformation, integration, and visuali
 | Username  | Password    |
 |:---------:|:------------|
 | `datacap` | `123456789` |
+|  `admin`  | `12345678`  |
 
 ### Require
 
