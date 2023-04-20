@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -74,7 +75,11 @@ public class JdbcConnection
             }
             else {
                 log.info("Connection username and password not present");
-                this.connection = DriverManager.getConnection(url);
+                Properties properties = new Properties();
+                if (jdbcConfigure.getUsername().isPresent()) {
+                    properties.put("user", jdbcConfigure.getUsername().get());
+                }
+                this.connection = DriverManager.getConnection(url, properties);
             }
             response.setIsConnected(Boolean.TRUE);
         }

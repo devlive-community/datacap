@@ -32,6 +32,7 @@ DataCap is integrated software for data transformation, integration, and visuali
 | Username  | Password    |
 |:---------:|:------------|
 | `datacap` | `123456789` |
+|  `admin`  | `12345678`  |
 
 ### Require
 
@@ -163,6 +164,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://doris.apache.org/" target="_blank" class="connector-logo-index">
         <img src="docs/docs/assets/plugin/doris.png" alt="Apache Doris" height="50" />
+    </a>&nbsp;
+    <a href="https://www.starrocks.io/" target="_blank" class="connector-logo-index">
+        <img src="docs/docs/assets/plugin/starrocks.png" alt="StarRocks" height="50" />
     </a>
 </p>
 

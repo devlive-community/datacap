@@ -1,5 +1,5 @@
-name: Doris
-supportTime: '2023-04-19'
+name: StarRocks
+supportTime: '2023-04-20'
 configures:
   - field: name
     type: String
@@ -15,7 +15,7 @@ configures:
     required: true
     min: 1
     max: 65535
-    value: 9093
+    value: 9030
     message: port is a required field, please be sure to enter
   - field: username
     type: String
