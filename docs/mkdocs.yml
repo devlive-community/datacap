@@ -174,7 +174,9 @@ nav:
           - ClickHouse: reference/connectors/http/clickhouse.md
   - Developer guide:
       - Development environment: developer_guide/env.md
-      - Custom Plugin: developer_guide/plugin.md
+      - Add a Plugin:
+        - Java Implementation: developer_guide/plugin-java.md
+        - Kotlin Implementation: developer_guide/plugin-kotlin.md
   - Release Note:
       - 1.8.0 (latest): release/latest.md
       - 1.7.0: release/1.7.0.md
