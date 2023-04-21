@@ -127,8 +127,9 @@ nav:
     - index.md
   - Documentation:
       - Installation:
-        - Deploying DataCap: reference/get_started/install.md
-        - DataCap in a Docker container: reference/get_started/install_containers.md
+        - Deploying in Self Host: reference/get_started/install.md
+        - Deploying in Docker: reference/get_started/install_containers.md
+        - Deploying in Rainbond: reference/get_started/install_rainbond.md
       - Query: reference/get_started/query.md
       - Clients:
         - Command line interface: reference/clients/cli.md
