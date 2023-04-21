@@ -10,8 +10,13 @@
 [![](https://tokei.rs/b1/github/EdurtIO/datacap)](https://github.com/EdurtIO/datacap)
 ![version](https://img.shields.io/github/v/release/EdurtIO/datacap.svg)
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/EdurtIO/datacap/develop?style=flat-square)
 ![GitHub Release Date](https://img.shields.io/github/release-date/EdurtIO/datacap?style=flat-square)
+
+![Docker Automated build](https://img.shields.io/docker/automated/qianmoq/datacap)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/qianmoq/datacap?style=flat-square)
+![Docker Pulls](https://img.shields.io/docker/pulls/qianmoq/datacap?style=flat-square)
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/EdurtIO/datacap?style=flat-square)
 ![GitHub contributors](https://img.shields.io/github/contributors-anon/EdurtIO/datacap?style=flat-square)
@@ -189,7 +194,8 @@ Open the DingTalk (left) or WeChat(right) software and scan the following QR cod
 
 ---
 
-- [Jetbrains](https://www.jetbrains.com/)
+[![Jetbrains](https://img.shields.io/badge/Development-Jetbrains-brightgreen?style=flat-square)](https://www.jetbrains.com/)
+[![App Store](https://img.shields.io/badge/App%20Store-Rainbond-brightgreen?style=flat-square)](https://www.rainbond.com/)
 
 ## Installation and Configuration
 
