@@ -1,6 +1,8 @@
 FROM eclipse-temurin:8-jdk-focal
 MAINTAINER qianmoQ "shicheng@ttxit.com"
 
+LABEL org.opencontainers.image.description DESCRIPTION
+
 # Add datacap
 RUN mkdir -p /opt/app
 ADD dist/datacap-release.tar.gz /opt/app/
