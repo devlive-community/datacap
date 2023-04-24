@@ -14,7 +14,7 @@
     <description>DataCap - Trino</description>
 
     <properties>
-        <trino.version>397</trino.version>
+        <trino.version>414</trino.version>
         <plugin.name>jdbc-trino</plugin.name>
     </properties>
 
