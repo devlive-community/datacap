@@ -42,3 +42,6 @@ tmp/
 dist/datacap/
 list
 *.configure
+
+# shaded #
+shaded/*/dependency-reduced-pom.xml
