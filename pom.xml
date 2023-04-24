@@ -61,6 +61,7 @@
         <module>plugin/datacap-jdbc-starrocks</module>
         <module>executor/datacap-executor-example</module>
         <module>executor/datacap-executor-seatunnel</module>
+        <module>shaded/datacap-shaded-ydb</module>
     </modules>
 
     <name>DataCap</name>

@@ -14,7 +14,6 @@
     <description>DataCap - YDB</description>
 
     <properties>
-        <ydb.version>1.45.6</ydb.version>
         <plugin.name>jdbc-ydb</plugin.name>
     </properties>
 
@@ -29,9 +28,15 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yandex.ydb</groupId>
-            <artifactId>ydb-sdk-jdbc</artifactId>
-            <version>${ydb.version}</version>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-shaded-ydb</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.yandex.ydb</groupId>
+                    <artifactId>ydb-sdk-jdbc</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
