@@ -59,6 +59,7 @@
         <module>plugin/datacap-jdbc-trino</module>
         <module>plugin/datacap-jdbc-doris</module>
         <module>plugin/datacap-jdbc-starrocks</module>
+        <module>plugin/datacap-jdbc-hologres</module>
         <module>executor/datacap-executor-example</module>
         <module>executor/datacap-executor-seatunnel</module>
         <module>shaded/datacap-shaded-ydb</module>

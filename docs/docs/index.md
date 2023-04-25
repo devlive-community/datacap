@@ -197,6 +197,9 @@ Datacap is fast, lightweight, intuitive system.
     </a>&nbsp;
     <a href="https://www.starrocks.io/" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/starrocks.png" alt="StarRocks" height="50" />
+    </a>&nbsp;
+    <a href="https://www.alibabacloud.com/product/hologres" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/hologres.png" alt="Hologres" height=60" />
     </a>
 </p>
 
