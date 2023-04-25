@@ -10,11 +10,14 @@ public interface Plugin
         return "SELECT version() AS version";
     }
 
+    default PluginType type()
+    {
+        return PluginType.JDBC;
+    }
+
     String name();
 
     String description();
-
-    PluginType type();
 
     void connect(Configure configure);
 
