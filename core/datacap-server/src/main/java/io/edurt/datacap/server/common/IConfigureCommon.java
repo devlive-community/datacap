@@ -11,6 +11,8 @@ import io.edurt.datacap.spi.model.Configure;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -149,6 +151,7 @@ public class IConfigureCommon
                     break;
             }
         });
+        configure.setCreateTime(Timestamp.from(Instant.now()));
         return configure;
     }
 
