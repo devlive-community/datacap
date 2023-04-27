@@ -70,7 +70,13 @@ Datacap 是快速、轻量级、直观的系统。
 
     ---
 
-    DataCap 可以通过 JDBC, Native, http 连接到任何基于 SQL 的数据源。
+    DataCap 可以通过 JDBC, Native, Http 连接到任何基于 SQL 的数据源。
+
+- __高度定制化__
+
+    ---
+
+    DataCap 可以通过实现 SPI 提供的方式可以实现快速对接新的数据源。
 
 - __加入 (钉钉 ｜ 微信)__
 
