@@ -134,6 +134,7 @@
         <plugin.maven.javadoc.version>3.5.0</plugin.maven.javadoc.version>
         <plugin.maven.gpg.version>1.6</plugin.maven.gpg.version>
         <plugin.maven.nexus.version>1.6</plugin.maven.nexus.version>
+        <plugin.maven.dokka.version>1.8.10</plugin.maven.dokka.version>
         <environment.compile.java.version>1.8</environment.compile.java.version>
     </properties>
 
@@ -266,11 +267,11 @@
         <plugins>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <version>${kotlin.version}</version>
                 <configuration>
                     <jvmTarget>1.8</jvmTarget>
                 </configuration>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <version>${kotlin.version}</version>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -452,6 +453,31 @@
                 </configuration>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <!-- Fixed Missing: no javadoc jar found in folder -->
+                <plugin>
+                    <groupId>org.jetbrains.dokka</groupId>
+                    <artifactId>dokka-maven-plugin</artifactId>
+                    <version>${plugin.maven.dokka.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>pre-site</phase>
+                            <goals>
+                                <goal>dokka</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <phase>package</phase>
+                            <id>attach-javadocs-dokka</id>
+                            <goals>
+                                <goal>javadocJar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <distributionManagement>
