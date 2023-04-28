@@ -68,7 +68,7 @@
                             :format="['xml']"
                             :on-success="handlerUploadSuccess"
                             :on-remove="handlerUploadRemove"
-                            action="http://localhost:9096/api/v1/source/uploadFile">
+                            action="/api/v1/source/uploadFile">
                       <Button icon="ios-cloud-upload-outline">{{ $t('common.upload') }}</Button>
                     </Upload>
                     <div v-else>
