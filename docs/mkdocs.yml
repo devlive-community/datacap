@@ -171,6 +171,8 @@ nav:
           - MySQL: reference/connectors/jdbc/mysql.md
           - ClickHouse: reference/connectors/jdbc/clickhouse.md
         - Native:
+          - Apache Hadoop:
+            - HDFS: reference/connectors/native/hadoop/hdfs.md
           - H2 Database: reference/connectors/native/h2.md
           - Apache Kafka:
             - reference/connectors/native/kafka/index.md

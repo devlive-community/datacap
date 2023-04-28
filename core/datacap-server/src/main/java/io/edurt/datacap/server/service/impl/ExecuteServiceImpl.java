@@ -16,8 +16,10 @@ import io.edurt.datacap.server.service.ExecuteService;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.Optional;
 
 @Service
@@ -26,11 +28,13 @@ public class ExecuteServiceImpl
 {
     private final Injector injector;
     private final SourceRepository sourceRepository;
+    private final Environment environment;
 
-    public ExecuteServiceImpl(Injector injector, SourceRepository sourceRepository)
+    public ExecuteServiceImpl(Injector injector, SourceRepository sourceRepository, Environment environment)
     {
         this.injector = injector;
         this.sourceRepository = sourceRepository;
+        this.environment = environment;
     }
 
     @AuditPlugin
@@ -59,6 +63,16 @@ public class ExecuteServiceImpl
         _configure.setSsl(Optional.ofNullable(entity.getSsl()));
         _configure.setEnv(Optional.ofNullable(entity.getConfigures()));
         _configure.setFormat(configure.getFormat());
+        _configure.setUsedConfig(entity.isUsedConfig());
+        if (entity.isUsedConfig()) {
+            _configure.setUsername(Optional.of(entity.getUser().getUsername()));
+            String configHome = environment.getProperty("datacap.config.data");
+            if (StringUtils.isEmpty(configHome)) {
+                configHome = String.join(File.separator, System.getProperty("user.dir"), "config");
+            }
+            _configure.setHome(configHome);
+            _configure.setId(String.valueOf(entity.getId()));
+        }
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(configure.getContent());
         plugin.destroy();

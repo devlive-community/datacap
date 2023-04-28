@@ -14,4 +14,5 @@ export interface SourceModel
   createTime?: number;
   ssl?: boolean;
   configures: {};
+  file?: []
 }

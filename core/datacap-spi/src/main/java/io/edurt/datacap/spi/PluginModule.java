@@ -2,7 +2,12 @@ package io.edurt.datacap.spi;
 
 public interface PluginModule
 {
-    String getName();
+    default String getName()
+    {
+        return this.getClass().getSimpleName()
+                .replace("PluginModule", "")
+                .replace("Module", "");
+    }
 
     PluginType getType();
 

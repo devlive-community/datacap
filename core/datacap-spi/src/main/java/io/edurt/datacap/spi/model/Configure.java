@@ -25,4 +25,8 @@ public class Configure
     private FormatType format = FormatType.NONE;
     // if `to`: skip
     private Optional<String> query = Optional.empty();
+    // Support for custom upload configuration plugins
+    private String home;
+    private boolean usedConfig;
+    private String id;
 }

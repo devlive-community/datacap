@@ -22,6 +22,7 @@
         <module>plugin/datacap-native-redis</module>
         <module>plugin/datacap-native-kafka</module>
         <module>plugin/datacap-native-h2</module>
+        <module>plugin/datacap-native-hdfs</module>
         <module>plugin/datacap-http-cratedb</module>
         <module>plugin/datacap-http-clickhouse</module>
         <module>plugin/datacap-http-ceresdb</module>
@@ -65,7 +66,7 @@
         <module>shaded/datacap-shaded-ydb</module>
     </modules>
 
-    <name>DataCap</name>
+    <name>datacap</name>
     <description>DataCap is integrated software for data transformation, integration and visualization.</description>
     <url>https://datacap.edurt.io/</url>
 

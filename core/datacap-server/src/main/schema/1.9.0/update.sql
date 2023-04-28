@@ -1,0 +1,1 @@
+alter table `source` add column `used_config` boolean default false;

@@ -175,6 +175,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://www.alibabacloud.com/product/hologres" target="_blank" class="connector-logo-index">
         <img src="docs/docs/assets/plugin/hologres.png" alt="Hologres" height=60" />
+    </a>&nbsp;
+    <a href="https://hadoop.apache.org/" target="_blank" class="connector-logo-index">
+        <img src="docs/docs/assets/plugin/hdfs.png" alt="Apache Hdfs" height=60" />
     </a>
 </p>
 

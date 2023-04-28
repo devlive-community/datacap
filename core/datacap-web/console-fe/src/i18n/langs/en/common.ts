@@ -102,5 +102,7 @@ export default {
   yAxis: 'yAxis',
   tag: 'Tag',
   data: 'Data',
-  export: 'Export'
+  export: 'Export',
+  file: 'File',
+  upload: 'Upload'
 }

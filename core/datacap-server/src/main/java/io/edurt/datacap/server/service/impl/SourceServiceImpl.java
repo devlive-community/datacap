@@ -1,8 +1,10 @@
 package io.edurt.datacap.server.service.impl;
 
+import com.google.common.io.Files;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.server.adapter.PageRequestAdapter;
 import io.edurt.datacap.server.body.SharedSourceBody;
 import io.edurt.datacap.server.body.SourceBody;
@@ -24,12 +26,15 @@ import io.edurt.datacap.server.service.SourceService;
 import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
+import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
+@SuppressFBWarnings(value = {"RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"})
 public class SourceServiceImpl
         implements SourceService
 {
@@ -72,10 +78,23 @@ public class SourceServiceImpl
         return Response.success(PageEntity.build(this.sourceRepository.findAllByUserOrPublishIsTrue(user, pageable)));
     }
 
+    @SneakyThrows
     @Override
     public Response<Long> delete(Long id)
     {
-        this.sourceRepository.deleteById(id);
+        Optional<SourceEntity> entityOptional = this.sourceRepository.findById(id);
+        if (entityOptional.isPresent()) {
+            SourceEntity source = entityOptional.get();
+            if (source.isUsedConfig()) {
+                String configHome = environment.getProperty("datacap.config.data");
+                if (StringUtils.isEmpty(configHome)) {
+                    configHome = String.join(File.separator, System.getProperty("user.dir"), "config");
+                }
+                String destination = String.join(File.separator, configHome, source.getUser().getUsername(), source.getType(), String.valueOf(source.getId()));
+                FileUtils.deleteDirectory(new File(destination));
+            }
+            this.sourceRepository.deleteById(id);
+        }
         return Response.success(id);
     }
 
@@ -183,6 +202,15 @@ public class SourceServiceImpl
         // The filter parameter value is null data
         List<IConfigureField> applyConfigures = IConfigureCommon.filterNotEmpty(configure.getConfigure().getConfigures());
         Configure _configure = IConfigureCommon.preparedConfigure(applyConfigures);
+        // Adapter file configure
+        if (_configure.isUsedConfig()) {
+            String cacheHome = environment.getProperty("datacap.cache.data");
+            if (StringUtils.isEmpty(cacheHome)) {
+                cacheHome = String.join(File.separator, System.getProperty("user.dir"), "cache");
+            }
+            _configure.setHome(cacheHome);
+            _configure.setUsername(Optional.of(UserDetailsService.getUser().getUsername()));
+        }
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(plugin.validator());
         if (response.getIsSuccessful()) {
@@ -218,10 +246,38 @@ public class SourceServiceImpl
         source.setProtocol(configure.getType());
         source.setType(configure.getName());
         source.setUser(UserDetailsService.getUser());
-        if (ObjectUtils.isNotEmpty(configure.getId())) {
+        if (ObjectUtils.isNotEmpty(configure.getId()) && configure.getId() > 0) {
             source.setId(configure.getId());
         }
-        return Response.success(this.sourceRepository.save(source));
+
+        this.sourceRepository.save(source);
+        // Copy file to local data
+        if (source.isUsedConfig()) {
+            String cacheHome = environment.getProperty("datacap.cache.data");
+            if (StringUtils.isEmpty(cacheHome)) {
+                cacheHome = String.join(File.separator, System.getProperty("user.dir"), "cache");
+            }
+            String configHome = environment.getProperty("datacap.config.data");
+            if (StringUtils.isEmpty(configHome)) {
+                configHome = String.join(File.separator, System.getProperty("user.dir"), "config");
+            }
+            File sourceFile = new File(String.join(File.separator, cacheHome, source.getUser().getUsername(), source.getType()));
+            String destination = String.join(File.separator, configHome, source.getUser().getUsername(), source.getType(), String.valueOf(source.getId()));
+            File directory = new File(destination);
+            try {
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+                for (File file : sourceFile.listFiles()) {
+                    Files.copy(file, new File(String.join(File.separator, destination, file.getName())));
+                }
+                FileUtils.deleteDirectory(sourceFile);
+            }
+            catch (Exception e) {
+                return Response.failure("Copy failed: " + e.getMessage());
+            }
+        }
+        return Response.success(source);
     }
 
     @Override

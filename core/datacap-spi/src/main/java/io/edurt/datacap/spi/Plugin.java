@@ -15,9 +15,15 @@ public interface Plugin
         return PluginType.JDBC;
     }
 
-    String name();
+    default String name()
+    {
+        return this.getClass().getSimpleName().replace("Plugin", "");
+    }
 
-    String description();
+    default String description()
+    {
+        return String.format("Integrate %s data sources", this.name());
+    }
 
     void connect(Configure configure);
 

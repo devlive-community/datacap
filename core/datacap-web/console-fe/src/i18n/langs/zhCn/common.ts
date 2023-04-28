@@ -102,5 +102,7 @@ export default {
   yAxis: '纵轴',
   tag: '标签',
   data: '数据',
-  export: '导出'
+  export: '导出',
+  file: '文件',
+  upload: '上传'
 }
