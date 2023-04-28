@@ -70,7 +70,13 @@ Datacap is fast, lightweight, intuitive system.
 
     ---
 
-    DataCap can connect to any SQL based datasource through JDBC and native and http.
+    DataCap can connect to any SQL based datasource through JDBC and Native and Http.
+
+- __Highly Customizable__
+
+    ---
+
+    DataCap can quickly connect to new data sources by implementing the methods provided by SPI.
 
 - __Join (DingTalk ｜ WeChat)__
 
@@ -200,6 +206,9 @@ Datacap is fast, lightweight, intuitive system.
     </a>&nbsp;
     <a href="https://www.alibabacloud.com/product/hologres" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/hologres.png" alt="Hologres" height=60" />
+    </a>&nbsp;
+    <a href="https://hadoop.apache.org/" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/hdfs.png" alt="Apache Hdfs" height=60" />
     </a>
 </p>
 

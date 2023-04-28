@@ -13,5 +13,6 @@ public enum IConfigureFieldName
     ssl,
     catalog,
     database,
+    file,
     configures
 }

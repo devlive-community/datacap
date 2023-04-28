@@ -45,3 +45,7 @@ list
 
 # shaded #
 shaded/*/dependency-reduced-pom.xml
+
+# datacap #
+cache/
+config/

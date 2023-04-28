@@ -7,5 +7,6 @@ public enum IConfigureFieldType
     List,
     Boolean,
     Array,
-    Map
+    Map,
+    File
 }

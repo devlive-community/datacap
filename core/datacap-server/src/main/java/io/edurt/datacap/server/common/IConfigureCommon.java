@@ -65,6 +65,9 @@ public class IConfigureCommon
                 case configures:
                     configure.setEnv(Optional.ofNullable(IConfigureCommon.getMapValue(configures, IConfigureFieldName.configures)));
                     break;
+                case file:
+                    configure.setUsedConfig(true);
+                    break;
             }
         });
         configure.setFormat(FormatType.JSON);
@@ -148,6 +151,9 @@ public class IConfigureCommon
                     break;
                 case configures:
                     configure.setConfigure(JSON.toJSON(IConfigureCommon.getMapValue(configures, IConfigureFieldName.configures)));
+                    break;
+                case file:
+                    configure.setUsedConfig(true);
                     break;
             }
         });

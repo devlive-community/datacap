@@ -108,6 +108,9 @@ public class SourceEntity
     @Transient
     private IConfigure schema;
 
+    @Column(name = "used_config")
+    private boolean usedConfig;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIncludeProperties(value = {"id", "username"})

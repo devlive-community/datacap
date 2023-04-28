@@ -60,6 +60,17 @@
                     <Input v-if="configure.type === 'String'" type="text" :disabled="configure.disabled" v-model="configure.value"/>
                     <InputNumber v-else-if="configure.type === 'Number'" :disabled="configure.disabled" :max="configure.max" :min="configure.min" v-model="configure.value"/>
                     <Switch v-else-if="configure.type === 'Boolean'" :disabled="configure.disabled" v-model="configure.value"/>
+                    <Upload v-else-if="configure.type === 'File'" multiple
+                            :headers="{
+                              'Authorization': auth.type + ' ' + auth.token,
+                              'PluginType': formState.type.split(' ')[0]
+                            }"
+                            :format="['xml']"
+                            :on-success="handlerUploadSuccess"
+                            :on-remove="handlerUploadRemove"
+                            action="/api/v1/source/uploadFile">
+                      <Button icon="ios-cloud-upload-outline">{{ $t('common.upload') }}</Button>
+                    </Upload>
                     <div v-else>
                       <div style="margin-top: 10px;">
                         <FormItem style="margin-bottom: 5px;">
@@ -122,6 +133,8 @@ import {defineComponent, reactive, ref} from "vue";
 import {Configure} from "@/model/Configure";
 import {clone} from 'lodash'
 import SourceV2Service from "@/services/SourceV2Service";
+import Common from "@/common/Common";
+import {ResponseModel} from "@/model/ResponseModel";
 
 interface TestInfo
 {
@@ -169,11 +182,13 @@ export default defineComponent({
       loading: {
         test: false,
         save: false
-      }
+      },
+      auth: null
     }
   },
   created()
   {
+    this.auth = JSON.parse(localStorage.getItem(Common.token) || '{}');
     if (this.id <= 0) {
       this.title = 'Create New Source';
       this.formState = reactive(emptySource);
@@ -293,6 +308,18 @@ export default defineComponent({
         return;
       }
       this.pluginTabConfigure = this.pluginConfigure.filter(field => field.group === group);
+    },
+    handlerUploadSuccess(response: ResponseModel)
+    {
+      if (response.status) {
+        const configure = this.applyPlugin.configures.filter(configure => configure.field === 'file')
+        configure[0].value.push(response.data)
+      }
+    },
+    handlerUploadRemove(file)
+    {
+      const configure = this.applyPlugin.configures.filter(configure => configure.field === 'file')
+      configure[0].value = configure[0].value.filter(value => !value.endsWith(file.name))
     }
   },
   computed: {

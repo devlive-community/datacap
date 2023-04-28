@@ -6,7 +6,17 @@ site_description: >-
 repo_name: EdurtIO/datacap
 repo_url: https://github.com/EdurtIO/datacap
 edit_uri: "https://github.com/EdurtIO/datacap/blob/dev/docs/docs"
-current_version: 1.8.0
+
+banners:
+  - title: DataCap 1.8.0 is released
+    link: /release-latest.html
+    description: <a href="https://github.com/EdurtIO/datacap"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
+  - title: Support ceresdb
+    link: /reference/connectors/http/ceresdb.html
+    description: newsletter 🎉
+  - title: Support greptimedb
+    link: /reference/connectors/http/greptimedb.html
+    description: newsletter 🎉
 
 copyright: Copyright &copy; 2022 EdurtIO
 
@@ -65,6 +75,9 @@ extra:
       lang: zh
 extra_css:
   - stylesheets/extra.css
+  - css/datacap.css
+extra_javascript:
+  - js/datacap.js
 markdown_extensions:
   - admonition
   - abbr
@@ -158,6 +171,8 @@ nav:
           - MySQL: reference/connectors/jdbc/mysql.md
           - ClickHouse: reference/connectors/jdbc/clickhouse.md
         - Native:
+          - Apache Hadoop:
+            - HDFS: reference/connectors/native/hadoop/hdfs.md
           - H2 Database: reference/connectors/native/h2.md
           - Apache Kafka:
             - reference/connectors/native/kafka/index.md

@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS role
     create_time datetime(5)  NULL DEFAULT CURRENT_TIMESTAMP(5)
 );
 TRUNCATE TABLE role;
-ALTER TABLE role ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE role
+    ALTER COLUMN id RESTART WITH 1;
 INSERT INTO role (name, description)
 VALUES ('Admin', 'Admin role');
 INSERT INTO role (name, description)
@@ -79,7 +80,8 @@ CREATE TABLE IF NOT EXISTS scheduled_task
     update_time date         NULL ON UPDATE CURRENT_TIMESTAMP
 );
 TRUNCATE TABLE scheduled_task;
-ALTER TABLE scheduled_task ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE scheduled_task
+    ALTER COLUMN id RESTART WITH 1;
 -- --------------------------------
 -- Table structure for snippet
 -- --------------------------------
@@ -115,10 +117,12 @@ CREATE TABLE IF NOT EXISTS source
     publish     boolean      NULL DEFAULT 0,
     public      boolean      NULL DEFAULT 0,
     user_id     bigint       NULL,
-    configure   text         NULL
+    configure   text         NULL,
+    used_config boolean           default false
 );
 TRUNCATE TABLE scheduled_task;
-ALTER TABLE scheduled_task ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE scheduled_task
+    ALTER COLUMN id RESTART WITH 1;
 INSERT INTO source(name, _database, password, host, port, protocol, username, _type, publish, user_id, public)
 VALUES ('Built-in database', 'datacap', 'h2', '-', 1, 'NATIVE', 'h2', 'H2', FALSE, 2, TRUE);
 -- --------------------------------
@@ -137,7 +141,8 @@ CREATE TABLE IF NOT EXISTS template_sql
     `system`    boolean      NULL     DEFAULT 0
 );
 TRUNCATE TABLE template_sql;
-ALTER TABLE template_sql ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE template_sql
+    ALTER COLUMN id RESTART WITH 1;
 INSERT INTO template_sql ( name, content, description, plugin, configure
                          , create_time, update_time, `system`)
 VALUES ( 'getAllDatabase', 'SHOW DATABASES', 'Gets a list of all databases', 'ClickHouse,MySQL,H2', '[]'
@@ -199,7 +204,7 @@ INSERT INTO template_sql ( name, content, description, plugin, configure
 VALUES ( 'getAllColumnsFromDatabaseAndTable', 'DESC ${table:String}', 'Get the data column from the database and table', 'MySQL,ClickHouse'
        , '[{"column":"table","type":"String","expression":"${table:String}"}]'
        , '2023-01-10 11:59:23', '2023-01-10 11:59:23', 0);
-INSERT INTO template_sql ( name, content, description, plugin, configure, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, `system`)
 VALUES ( 'getAllColumnsFromDatabaseAndTable', 'SHOW COLUMNS FROM ${table:String}', 'Get the data column from the database and table', 'H2'
        , '[{"column":"table","type":"String","expression":"${table:String}"}]', 1);
 INSERT INTO template_sql ( name, content, description, plugin, configure
@@ -266,7 +271,8 @@ CREATE TABLE IF NOT EXISTS users
     third_configure text         NULL
 );
 TRUNCATE TABLE users;
-ALTER TABLE users ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE users
+    ALTER COLUMN id RESTART WITH 1;
 INSERT INTO users (username, password, create_time)
 VALUES ('admin', '$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG', NULL);
 INSERT INTO users (username, password, create_time)

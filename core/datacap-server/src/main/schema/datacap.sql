@@ -130,7 +130,8 @@ create table datacap.source
     publish     tinyint(1) default 0                 null,
     public      tinyint(1) default 0                 null,
     user_id     bigint                               null,
-    configure   text                                 null
+    configure   text                                 null,
+    used_config boolean    default false
 )
     comment 'The storage is used to query the data connection source';
 
@@ -212,7 +213,7 @@ OFFSET ${page:Integer}', 'Get all data from table by limited', 'MySQL,ClickHouse
         '[{"column":"table","type":"String","expression":"${table:String}"},{"column":"size","type":"Integer","expression":"${size:Integer}"},{"column":"page","type":"Integer","expression":"${page:Integer}"}]',
         '2023-01-10 13:31:10', '2023-01-10 13:31:10', 0);
 
-INSERT INTO template_sql ( name, content, description, plugin, configure, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, `system`)
 VALUES ( 'getAllColumnsFromDatabaseAndTable', 'SHOW COLUMNS FROM ${table:String}', 'Get the data column from the database and table', 'H2'
        , '[{"column":"table","type":"String","expression":"${table:String}"}]', 1);
 
