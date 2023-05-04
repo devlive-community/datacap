@@ -6,62 +6,80 @@
 
 | Release Version | Release Time |
 |:---------------:|:------------:|
-|     `1.8.0`     | `2023-04-10` |
+|     `1.9.0`     | `2023-05-04` |
 
 #### General
 
 ---
 
-- Rename executor directory
-- Optimize document release timing
-- Fixed format connect url close #304
-- Support proxy for chatgpt close #299
-- ChatGPT is currently unable to associate context close #298
-- Support returning parsing error results
-- Add schedule lib
-- Support the code editor supports automatic prompts for data source library tables and columns close #301
-- Fix initialization sql script
-- Support h2 database
-- Remove some invalid jars
-- Add docker publish ci
+- Support github publish packages
+- Optimized the docker image publishing process
+- Support format date
+- Add a connection to the database to specify the time zone
+- Fixed default h2 database uninitialized scheduled task
+- Add admin user to README.md
+- Add docker image label
+- Add wechat qr to README.md
+- Add docker badge
+- Fixed source create time is null
 
 #### Docs
 
 ---
 
-- Refactor install docs
+- Add chinese index
+- Add the Rainbond deployment document
+- Add plugin docs
+- Top scrolling notifications are supported
 
 #### Web
 
 ---
 
-- The code editor supports code fragments close #300
+- Fix invalid paging of data table
+- Fixed not rendering properly
+- Fix missing translation results for rendering containing translational data
+- Support copy multiple selection rows
+- Fix data source test status issues
+- Support close message
+- Add schedule link
 
 #### Plugins
 
 ---
 
-- Support h2 for native (memory)
+- Support ceresdb
+- Support greptimedb
+- Support questdb
+- Support apache doris
+- Support starrocks
+- Support hologres
+- Support apache hadoop hdfs
 
-#### Kafka
+#### SPI
 
 ---
 
-- Perfect test case
-- Support `SHOW DATABASES` and `SHOW TABLES` ...
+- Remove http retry logic
 
-#### Oracle
+#### Yandex Database
 
 ---
 
-- Fixed validation sql content
+- Fixed ydb dependency conflicts
+
+#### Trino
+
+---
+
+- Add configure
 
 #### Dependencies
 
 ---
 
-- Bump jackson.version from `2.13.4` to `2.14.2`
-- Bump postgresql from `42.5.0` to `42.6.0`
+- Bump trino-jdbc from `397` to `414` (#331)
+- Bump iotdb-jdbc from `0.13.0` to `1.1.0` (#309)
 
 #### Contributors
 
