@@ -61,9 +61,11 @@
         <module>plugin/datacap-jdbc-doris</module>
         <module>plugin/datacap-jdbc-starrocks</module>
         <module>plugin/datacap-jdbc-hologres</module>
+        <module>plugin/datacap-plugin-pinot</module>
         <module>executor/datacap-executor-example</module>
         <module>executor/datacap-executor-seatunnel</module>
         <module>shaded/datacap-shaded-ydb</module>
+        <module>shaded/datacap-shaded-pinot</module>
     </modules>
 
     <name>datacap</name>
