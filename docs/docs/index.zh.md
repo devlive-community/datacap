@@ -209,6 +209,9 @@ Datacap 是快速、轻量级、直观的系统。
     </a>&nbsp;
     <a href="https://hadoop.apache.org/" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/hdfs.png" alt="Apache Hdfs" height=60" />
+    </a>&nbsp;
+    <a href="https://docs.pinot.apache.org/" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/pinot.png" alt="Apache Pinot" height=60" />
     </a>
 </p>
 

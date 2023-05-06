@@ -12,9 +12,11 @@ import router from "@/router";
 import Common from "@/common/Common";
 
 export default {
+  created() {
+    localStorage.removeItem(Common.token);
+  },
   methods: {
     handlerGoSignIn() {
-      localStorage.removeItem(Common.token);
       router.push('/auth/signin');
     }
   }

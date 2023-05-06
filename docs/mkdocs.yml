@@ -11,11 +11,8 @@ banners:
   - title: DataCap 1.9.0 is released
     link: /release-latest.html
     description: <a href="https://github.com/EdurtIO/datacap"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
-  - title: Support ceresdb
-    link: /reference/connectors/http/ceresdb.html
-    description: newsletter 🎉
-  - title: Support greptimedb
-    link: /reference/connectors/http/greptimedb.html
+  - title: Support apache pinot
+    link: /reference/connectors/jdbc/pinot.html
     description: newsletter 🎉
 
 copyright: Copyright &copy; 2022 EdurtIO
@@ -66,6 +63,7 @@ extra:
       link: https://linkedin.com/in/qianmoQ/
   status:
     new: Recently added
+    1.10.0: 1.10.0
   alternate:
     - name: English
       link: /en/
@@ -171,6 +169,7 @@ nav:
           - MySQL: reference/connectors/jdbc/mysql.md
           - ClickHouse: reference/connectors/jdbc/clickhouse.md
         - Native:
+          - Apache Pinot: reference/connectors/jdbc/pinot.md
           - Apache Hadoop:
             - HDFS: reference/connectors/native/hadoop/hdfs.md
           - H2 Database: reference/connectors/native/h2.md

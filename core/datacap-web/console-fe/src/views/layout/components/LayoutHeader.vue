@@ -102,13 +102,13 @@
                 {{ username }}
               </Avatar>&nbsp;
             </template>
-            <MenuGroup :title="$t('common.profile')">
+            <MenuGroup v-if="username" :title="$t('common.profile')">
               <MenuItem name="profile_index" to="/profile/index">
                 <Icon type="md-contact"/>
                 {{ $t('common.profile') }}
               </MenuItem>
             </MenuGroup>
-            <MenuGroup :title="$t('common.advanced')">
+            <MenuGroup v-if="username" :title="$t('common.advanced')">
               <MenuItem name="advanced_logout" @click="handlerLogout()">
                 <Icon type="md-log-out"/>
                 {{ $t('common.logout') }}

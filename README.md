@@ -178,6 +178,9 @@ Here are some of the major database solutions that are supported:
     </a>&nbsp;
     <a href="https://hadoop.apache.org/" target="_blank" class="connector-logo-index">
         <img src="docs/docs/assets/plugin/hdfs.png" alt="Apache Hdfs" height=60" />
+    </a>&nbsp;
+    <a href="https://docs.pinot.apache.org/" target="_blank" class="connector-logo-index">
+        <img src="docs/docs/assets/plugin/pinot.png" alt="Apache Pinot" height=60" />
     </a>
 </p>
 
