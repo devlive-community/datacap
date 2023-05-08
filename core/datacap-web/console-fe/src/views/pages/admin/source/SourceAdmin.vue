@@ -13,7 +13,7 @@
         </template>
         <template #type="{ row }">
           <Tooltip transfer :content="row.type">
-            <Avatar :src="'/static/images/plugin/' + row.type + '.png'" size="small" />
+            <Avatar :src="'/static/images/plugin/' + row.type.split(' ')[0] + '.png'" size="small" />
           </Tooltip>
         </template>
         <template #host="{ row }">

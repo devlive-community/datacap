@@ -41,7 +41,7 @@
                   <Space wrap :size="[8, 16]">
                     <Tooltip v-for="plugin in plugins[key]" :content="plugin.description" transfer v-bind:key="plugin.name">
                       <Radio :label="plugin.name + ' ' + plugin.type">
-                        <Avatar :src="'/static/images/plugin/' + plugin.name + '.png'" size="small"/>
+                        <Avatar :src="'/static/images/plugin/' + plugin.name.split(' ')[0] + '.png'" size="small"/>
                         <span style="margin-left: 2px;">{{ plugin.name }}</span>
                       </Radio>
                     </Tooltip>
@@ -131,7 +131,7 @@ import {SourceService} from "@/services/SourceService";
 import {emptySource} from "@/views/pages/admin/source/SourceGenerate";
 import {defineComponent, reactive, ref} from "vue";
 import {Configure} from "@/model/Configure";
-import {clone} from 'lodash'
+import {clone, join} from 'lodash'
 import SourceV2Service from "@/services/SourceV2Service";
 import Common from "@/common/Common";
 import {ResponseModel} from "@/model/ResponseModel";
@@ -231,10 +231,16 @@ export default defineComponent({
     {
       this.loading.save = true;
       const temp = clone(this.formState.type).split(' ');
+      let type = temp[1]
+      let name = temp[0]
+      if (temp.length === 3) {
+        type = temp[2]
+        name = join([temp[0], temp[1]], ' ')
+      }
       const configure = {
         id: this.id,
-        type: temp[1],
-        name: temp[0],
+        type: type,
+        name: name,
         configure: this.applyPlugin
       };
       SourceV2Service.saveAndUpdate(configure, this.isUpdate)
@@ -252,9 +258,15 @@ export default defineComponent({
     {
       this.loading.test = true;
       const temp = clone(this.formState.type).split(' ');
+      let type = temp[1]
+      let name = temp[0]
+      if (temp.length === 3) {
+        type = temp[2]
+        name = join([temp[0], temp[1]], ' ')
+      }
       const configure = {
-        type: temp[1],
-        name: temp[0],
+        type: type,
+        name: name,
         configure: this.applyPlugin
       };
       new SourceService()
@@ -293,9 +305,14 @@ export default defineComponent({
     },
     handlerChangePlugin(value)
     {
-      const pluginAndType = value.split(' ');
+      const pluginAndType = value.replace(' Community', '').split(' ');
       const applyPlugins: [] = this.plugins[pluginAndType[1]];
-      const applyPlugin = applyPlugins.filter(plugin => plugin['name'] === pluginAndType[0])[0];
+      const applyPlugin = applyPlugins.filter(plugin => {
+        if (new String(plugin['name']).indexOf('Community') > 0) {
+          pluginAndType[0] = pluginAndType[0] + ' Community'
+        }
+        return plugin['name'] === pluginAndType[0]
+      })[0];
       this.applyPlugin = applyPlugin['configure'];
       this.pluginConfigure = applyPlugin['configure']['configures'];
       // Clear

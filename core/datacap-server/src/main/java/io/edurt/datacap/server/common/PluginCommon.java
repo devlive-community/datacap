@@ -65,6 +65,9 @@ public class PluginCommon
     public static IConfigure loadYamlConfigure(String type, String plugin, String resource, Environment environment)
     {
         String root = environment.getProperty("spring.config.location");
+        if (resource.contains(" ")) {
+            resource = resource.split(" ")[0];
+        }
         if (!resource.endsWith(".yaml")) {
             resource = resource + ".yaml";
         }
