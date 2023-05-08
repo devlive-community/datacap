@@ -15,7 +15,7 @@
 
     <properties>
         <!-- https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-jdbc.html#jdbc-compatibility -->
-        <x-pack-sql-jdbc.version>7.10.0</x-pack-sql-jdbc.version>
+        <x-pack-sql-jdbc.version>8.7.1</x-pack-sql-jdbc.version>
         <plugin.name>jdbc-elasticsearch</plugin.name>
     </properties>
 
