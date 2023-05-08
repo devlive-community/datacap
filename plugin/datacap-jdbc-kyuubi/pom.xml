@@ -14,7 +14,7 @@
     <description>DataCap - Apache Kyuubi</description>
 
     <properties>
-        <kyuubi-jdbc.version>1.6.0-incubating</kyuubi-jdbc.version>
+        <kyuubi-jdbc.version>1.7.1</kyuubi-jdbc.version>
         <plugin.name>jdbc-kyuubi</plugin.name>
     </properties>
 
