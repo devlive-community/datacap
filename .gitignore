@@ -42,6 +42,7 @@ tmp/
 dist/datacap/
 list
 *.configure
+mongo_*.xml
 
 # shaded #
 /dependency-reduced-pom.xml

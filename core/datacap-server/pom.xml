@@ -195,11 +195,11 @@
             <artifactId>datacap-jdbc-db2</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-jdbc-mongo</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.edurt.datacap</groupId>-->
+<!--            <artifactId>datacap-jdbc-mongo</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-jdbc-dremio</artifactId>
@@ -353,6 +353,11 @@
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-plugin-pinot</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-plugin-mongo-community</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- Executor -->

@@ -3,7 +3,7 @@
     <Select v-model="applySource" style="width: 160px" @on-change="handlerChangeValue">
       <Option v-for="column in columns" :value="column.id + ':' + column.type" v-bind:key="column.id">
         <Tooltip transfer :content="column.type">
-          <Avatar :src="'/static/images/plugin/' + column.type + '.png'" size="small" /> {{ column.name }}
+          <Avatar :src="'/static/images/plugin/' + column.type.split(' ')[0] + '.png'" size="small" /> {{ column.name }}
         </Tooltip>
       </Option>
     </Select>

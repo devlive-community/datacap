@@ -196,8 +196,10 @@ Here are some of the major database solutions that are supported:
 
 Open the DingTalk (left) or WeChat(right) software and scan the following QR code to join
 
-<img src="docs/docs/assets/dingtalk.png" width="200px" height="200px"/>
-<img src="docs/docs/assets/wechat.png" width="200px" height="200px"/>
+<div>
+  <img src="docs/docs/assets/dingtalk.png" width="200px" height="200px"/>
+  <img src="docs/docs/assets/wechat.png" width="200px" height="200px"/>
+</div>
 
 ## Thank you
 
