@@ -1,0 +1,11 @@
+*.js linguist-language=JavaScript
+*.ts linguist-language=TypeScript
+*.java linguist-language=Java
+*.css linguist-language=CSS
+*.sh linguist-language=Shell
+*.vue linguist-language=Vue
+*.kt linguist-language=Kotlin
+*.md linguist-language=Markdown
+*.xml linguist-language=XML
+*.yml linguist-language=YAML
+*.html linguist-language=HTML

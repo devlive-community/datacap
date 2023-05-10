@@ -13,6 +13,13 @@
             <outputDirectory>lib</outputDirectory>
             <unpack>false</unpack>
         </dependencySet>
+        <!-- Add system scope jar to lib -->
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>false</unpack>
+            <scope>system</scope>
+        </dependencySet>
     </dependencySets>
 
     <fileSets>
