@@ -116,7 +116,7 @@ const routes: Array<RouteRecordRaw> = [
             path: "sql",
             name: 'RouterForTemplateAndSql',
             meta: {
-              roles: ['Admin']
+              roles: ['Admin', 'User']
             },
             component: () => import("../views/pages/admin/template/sql/SqlAdmin.vue")
           }

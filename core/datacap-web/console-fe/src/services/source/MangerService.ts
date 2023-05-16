@@ -21,6 +21,86 @@ class ManagerService
     return TemplateSqlService.execute(configure);
   }
 
+  /**
+   * Finds all table types under the database according to the database
+   * Template: FindTableTypeByDatabase
+   * @param id The selected data source tag, which is stored in the database
+   * @param database The query database name
+   */
+  findTableTypeByDatabase(id: number, database: string): Promise<ResponseModel>
+  {
+    const configure: SqlBody = {
+      configure: {
+        database: database
+      },
+      sourceId: id,
+      templateName: 'FindTableTypeByDatabase'
+    };
+    return TemplateSqlService.execute(configure);
+  }
+
+  /**
+   * Gets a collection of related data based on the specified database and data type
+   * Template: FindTableByDatabaseAndType
+   * @param id The selected data source tag, which is stored in the database
+   * @param database The query database name
+   * @param type The query table type
+   */
+  getTableDataByDatabaseAndType(id: number, database: string, type: string): Promise<ResponseModel>
+  {
+    const configure: SqlBody = {
+      configure: {
+        database: database,
+        type: type
+      },
+      sourceId: id,
+      templateName: 'FindTableByDatabaseAndType'
+    };
+    return TemplateSqlService.execute(configure);
+  }
+
+  /**
+   * Gets the data column classification collection based on the provided database and data table
+   * Template: FindColumnTypeByDatabaseAndTable
+   * @param id The selected data source tag, which is stored in the database
+   * @param database The query database name
+   * @param table The query table name
+   */
+  findColumnTypeByDatabaseAndTable(id: number, database: string, table: string): Promise<ResponseModel>
+  {
+    const configure: SqlBody = {
+      configure: {
+        database: database,
+        table: table
+      },
+      sourceId: id,
+      templateName: 'FindColumnTypeByDatabaseAndTable'
+    };
+    return TemplateSqlService.execute(configure);
+  }
+
+  /**
+   * Gets a collection of related data based on the specified database, table, and data type
+   * Template: FindColumnByDatabaseAndTableAndType
+   * @param id The selected data source tag, which is stored in the database
+   * @param database The query database name
+   * @param table The query table name
+   * @param type The query table type
+   */
+  getColumnDataByDatabaseAndTableAndType(id: number, database: string, table: string, type: string): Promise<ResponseModel>
+  {
+    const configure: SqlBody = {
+      configure: {
+        database: database,
+        table: table,
+        type: type
+      },
+      sourceId: id,
+      templateName: 'FindColumnByDatabaseAndTableAndType'
+    };
+    return TemplateSqlService.execute(configure);
+  }
+
   getTables(id: number, database: string): Promise<ResponseModel>
   {
     const configure: SqlBody = {
