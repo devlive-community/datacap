@@ -104,5 +104,8 @@ export default {
   data: '数据',
   export: '导出',
   file: '文件',
-  upload: '上传'
+  upload: '上传',
+  view: '视图',
+  index: '索引',
+  primaryKey: '主键'
 }

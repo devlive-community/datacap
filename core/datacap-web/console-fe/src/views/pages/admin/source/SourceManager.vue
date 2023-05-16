@@ -18,7 +18,7 @@
               </Select>
             </template>
             <div style="max-height: 500px; max-width: 200px; overflow: auto;">
-              <Tree :data="dataTreeArray" :load-data="handlerLoadColumn" @on-select-change="handlerSelectNode"></Tree>
+              <Tree :data="dataTreeArray" :load-data="handlerLoadChild" @on-select-change="handlerSelectNode"></Tree>
               <Spin size="large" fix :show="tableLoading"></Spin>
             </div>
             <Spin size="large" fix :show="loading"></Spin>
@@ -68,10 +68,18 @@ import MangerService from "@/services/source/MangerService";
 import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
 import SortBy from "@/views/pages/admin/source/components/sort/SortBy.vue";
 import {Sql} from "@/model/sql/Sql";
+import {useI18n} from "vue-i18n";
 
 export default defineComponent({
   name: "SourceManager",
   components: {SortBy, SourceNotSupported},
+  setup()
+  {
+    const i18n = useI18n();
+    return {
+      i18n
+    }
+  },
   data()
   {
     return {
@@ -87,7 +95,7 @@ export default defineComponent({
       currentDatabase: null,
       currentTable: null,
       currentItem: null,
-      currentPage: 0,
+      currentPage: 1,
       databaseArray: [],
       dataTreeArray: [],
       configure: Sql,
@@ -136,15 +144,16 @@ export default defineComponent({
     handlerChangeDatabase()
     {
       this.tableLoading = true;
-      MangerService.getTables(this.sourceId, this.currentDatabase)
+      MangerService.findTableTypeByDatabase(this.sourceId, this.currentDatabase)
         .then(response => {
           if (response.status) {
             const header = response.data.headers[0];
             this.dataTreeArray = [];
             response.data.columns.forEach(column => {
               this.dataTreeArray.push({
-                title: column[header],
-                level: 'table',
+                title: this.i18n.t('common.' + column[header]),
+                level: 'GetDataForTableType',
+                action: column[header],
                 loading: false,
                 children: []
               });
@@ -155,30 +164,96 @@ export default defineComponent({
           this.tableLoading = false;
         });
     },
-    handlerLoadColumn(item, callback)
+    handlerLoadChild(item, callback)
     {
       this.currentTable = item.title;
-      MangerService.getColumns(this.sourceId, this.currentDatabase, item.title)
-        .then(response => {
-          if (response.status) {
-            const header = response.data.headers[0];
-            const dataTreeColumnArray = [];
-            response.data.columns.forEach(column => {
-              dataTreeColumnArray.push({
-                title: column[header],
-                level: 'column',
-                database: this.currentDatabase
+      // Load all tables under the database according to type
+      if (item.level === 'GetDataForTableType') {
+        MangerService.getTableDataByDatabaseAndType(this.sourceId, this.currentDatabase, item.action)
+          .then(response => {
+            if (response.status) {
+              const dataTreeColumnArray = [];
+              // Add the total amount of data to the parent class header
+              item.title = item.title + ' [' + response.data.columns.length + ']';
+              response.data.columns.forEach(column => {
+                dataTreeColumnArray.push({
+                  title: column['TABLE_NAME'],
+                  level: 'FindColumnType',
+                  database: this.currentDatabase,
+                  catalog: column['TABLE_CATALOG'],
+                  loading: false,
+                  children: []
+                });
               });
-            });
-            callback(dataTreeColumnArray);
-          }
-          else {
-            this.$Message.error(response.message);
-          }
-        })
-        .finally(() => {
-          this.tableLoading = false;
-        });
+              callback(dataTreeColumnArray);
+            }
+            else {
+              this.$Message.error(response.message);
+            }
+          })
+          .finally(() => {
+            this.tableLoading = false;
+          });
+      }
+      // Gets a collection of related data based on the specified database and data type
+      else if (item.level === 'FindColumnType') {
+        MangerService.findColumnTypeByDatabaseAndTable(this.sourceId, item.catalog, this.currentTable)
+          .then(response => {
+            if (response.status) {
+              const dataTreeColumnArray = [];
+              const types = [];
+              response.data.columns.forEach(column => {
+                column['COLUMN_TYPE'].split(',').forEach(type => {
+                  if (types.indexOf(type) === -1) {
+                    dataTreeColumnArray.push({
+                      title: this.i18n.t('common.' + type),
+                      level: 'GetColumnDataForTableType',
+                      action: type,
+                      catalog: column['TABLE_CATALOG'],
+                      database: this.currentDatabase,
+                      table: this.currentTable,
+                      loading: false,
+                      children: []
+                    });
+                  }
+                  types.push(type);
+                })
+              });
+              callback(dataTreeColumnArray);
+            }
+            else {
+              this.$Message.error(response.message);
+            }
+          })
+          .finally(() => {
+            this.tableLoading = false;
+          });
+      }
+      // Gets a collection of related data based on the specified database, table, and data type
+      else if (item.level === 'GetColumnDataForTableType') {
+        MangerService.getColumnDataByDatabaseAndTableAndType(this.sourceId, item.catalog, item.table, item.action)
+          .then(response => {
+            if (response.status) {
+              const dataTreeColumnArray = [];
+              item.title = item.title + ' [' + response.data.columns.length + ']';
+              response.data.columns.forEach(column => {
+                dataTreeColumnArray.push({
+                  title: column['COLUMN_NAME'],
+                  level: 'FindColumnType',
+                  database: this.currentDatabase,
+                  children: []
+                });
+              })
+              callback(dataTreeColumnArray);
+            }
+            else {
+              this.$Message.error(response.message);
+            }
+          })
+          .finally(() => {
+            this.tableLoading = false;
+          });
+      }
     },
     handlerSelectNode(item)
     {

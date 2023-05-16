@@ -104,5 +104,8 @@ export default {
   data: 'Data',
   export: 'Export',
   file: 'File',
-  upload: 'Upload'
+  upload: 'Upload',
+  view: 'View',
+  index: 'Index',
+  primaryKey: 'Primary Key'
 }
