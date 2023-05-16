@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS template_sql
     description text         NULL,
     plugin      varchar(50)  NULL COMMENT 'Using plug-ins',
     configure   text         NULL COMMENT 'The template must use the configuration information in the key->value format',
-    create_time timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_time timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    create_time timestamp    DEFAULT CURRENT_TIMESTAMP,
+    update_time timestamp    DEFAULT CURRENT_TIMESTAMP,
     `system`    boolean      NULL     DEFAULT 0
 );
 TRUNCATE TABLE template_sql;
