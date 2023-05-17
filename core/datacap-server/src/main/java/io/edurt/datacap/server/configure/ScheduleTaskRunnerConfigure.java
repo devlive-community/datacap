@@ -8,6 +8,7 @@ import io.edurt.datacap.server.repository.TemplateSqlRepository;
 import io.edurt.datacap.server.scheduled.SourceScheduledRunnable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,9 @@ public class ScheduleTaskRunnerConfigure
     private final TemplateSqlRepository templateSqlRepository;
     private final ScheduledCronRegistrar scheduledCronRegistrar;
     private final RedisTemplate redisTemplate;
+    private final Environment environment;
 
-    public ScheduleTaskRunnerConfigure(Injector injector, ScheduledTaskRepository scheduledTaskRepository, SourceRepository sourceRepository, TemplateSqlRepository templateSqlRepository, ScheduledCronRegistrar scheduledCronRegistrar, RedisTemplate redisTemplate)
+    public ScheduleTaskRunnerConfigure(Injector injector, ScheduledTaskRepository scheduledTaskRepository, SourceRepository sourceRepository, TemplateSqlRepository templateSqlRepository, ScheduledCronRegistrar scheduledCronRegistrar, RedisTemplate redisTemplate, Environment environment)
     {
         this.injector = injector;
         this.scheduledTaskRepository = scheduledTaskRepository;
@@ -31,6 +33,7 @@ public class ScheduleTaskRunnerConfigure
         this.templateSqlRepository = templateSqlRepository;
         this.scheduledCronRegistrar = scheduledCronRegistrar;
         this.redisTemplate = redisTemplate;
+        this.environment = environment;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class ScheduleTaskRunnerConfigure
     {
         this.scheduledTaskRepository.findAllByActiveIsTrueAndIsSystemIsTrue().forEach(task -> {
             log.info("Add new task " + task.getName() + " to scheduler");
-            SourceScheduledRunnable scheduled = new SourceScheduledRunnable(task.getName(), this.injector, this.sourceRepository, templateSqlRepository, redisTemplate);
+            SourceScheduledRunnable scheduled = new SourceScheduledRunnable(task.getName(), this.injector, this.sourceRepository, templateSqlRepository, redisTemplate, environment);
             this.scheduledCronRegistrar.addCronTask(scheduled, task.getExpression());
         });
     }

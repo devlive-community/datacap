@@ -17,6 +17,7 @@ import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.HashMap;
@@ -40,14 +41,19 @@ public class SourceScheduledRunnable
     private final SourceRepository sourceRepository;
     private final TemplateSqlRepository templateSqlRepository;
     private final RedisTemplate redisTemplate;
+    private final Environment environment;
 
-    public SourceScheduledRunnable(String name, Injector injector, SourceRepository sourceRepository, TemplateSqlRepository templateSqlRepository, RedisTemplate redisTemplate)
+    private int maxSuggestions;
+
+    public SourceScheduledRunnable(String name, Injector injector, SourceRepository sourceRepository, TemplateSqlRepository templateSqlRepository, RedisTemplate redisTemplate, Environment environment)
     {
         super(name);
         this.injector = injector;
         this.sourceRepository = sourceRepository;
         this.templateSqlRepository = templateSqlRepository;
         this.redisTemplate = redisTemplate;
+        this.environment = environment;
+        this.maxSuggestions = Integer.valueOf(environment.getProperty("datacap.editor.sugs.maxSize"));
     }
 
     @Override
@@ -139,13 +145,16 @@ public class SourceScheduledRunnable
                 log.warn("The scheduled task {} template {} is not available", this.getName(), entity.getName(), GET_ALL_TABLES);
             }
             else {
-                response.getColumns().forEach(column -> {
-                    String database = ((List<String>) column).get(0);
-                    log.info("The scheduled task {} child {} sync data from source : {}", this.getName(), entity.getName(), database);
-                    Map<String, String> configure = new HashMap<>();
-                    configure.put("database", database);
-                    this.processTable(entity, this.getContent(getAllTableEntity, configure), database, plugin, key);
-                });
+                response.getColumns()
+                        .stream()
+                        .limit(maxSuggestions)
+                        .forEach(column -> {
+                            String database = ((List<String>) column).get(0);
+                            log.info("The scheduled task {} child {} sync data from source : {}", this.getName(), entity.getName(), database);
+                            Map<String, String> configure = new HashMap<>();
+                            configure.put("database", database);
+                            this.processTable(entity, this.getContent(getAllTableEntity, configure), database, plugin, key);
+                        });
             }
         }
         else {
@@ -164,13 +173,16 @@ public class SourceScheduledRunnable
                 log.warn("The scheduled task {} template {} is not available", this.getName(), entity.getName(), GET_ALL_COLUMNS);
             }
             else {
-                response.getColumns().forEach(column -> {
-                    String table = ((List<String>) column).get(0);
-                    log.info("The scheduled task {} child {} database {} sync data from source is : {}", this.getName(), entity.getName(), database, table);
-                    Map<String, String> configure = new HashMap<>();
-                    configure.put("table", String.join(".", database, table));
-                    this.processColumn(entity, this.getContent(getAllChildEntity, configure), database, table, plugin, key);
-                });
+                response.getColumns()
+                        .stream()
+                        .limit(maxSuggestions)
+                        .forEach(column -> {
+                            String table = ((List<String>) column).get(0);
+                            log.info("The scheduled task {} child {} database {} sync data from source is : {}", this.getName(), entity.getName(), database, table);
+                            Map<String, String> configure = new HashMap<>();
+                            configure.put("table", String.join(".", database, table));
+                            this.processColumn(entity, this.getContent(getAllChildEntity, configure), database, table, plugin, key);
+                        });
             }
         }
         else {
@@ -189,11 +201,14 @@ public class SourceScheduledRunnable
                 log.warn("The scheduled task {} template {} is not available", this.getName(), entity.getName(), GET_ALL_COLUMNS);
             }
             else {
-                response.getColumns().forEach(column -> {
-                    String value = ((List<String>) column).get(0);
-                    log.info("The scheduled task {} child {} database {} table {} sync data from source is : {}", this.getName(), entity.getName(), database, table, value);
-                    redisTemplate.opsForSet().add(key, String.join(".", database, table, value));
-                });
+                response.getColumns()
+                        .stream()
+                        .limit(maxSuggestions)
+                        .forEach(column -> {
+                            String value = ((List<String>) column).get(0);
+                            log.info("The scheduled task {} child {} database {} table {} sync data from source is : {}", this.getName(), entity.getName(), database, table, value);
+                            redisTemplate.opsForSet().add(key, String.join(".", database, table, value));
+                        });
             }
         }
         else {
