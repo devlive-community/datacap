@@ -155,6 +155,7 @@ export default defineComponent({
                 level: 'GetDataForTableType',
                 action: column[header],
                 loading: false,
+                type: 'action',
                 children: []
               });
             });
@@ -182,6 +183,7 @@ export default defineComponent({
                   database: this.currentDatabase,
                   catalog: column['TABLE_CATALOG'],
                   loading: false,
+                  type: 'data',
                   children: []
                 });
               });
@@ -213,6 +215,7 @@ export default defineComponent({
                       database: this.currentDatabase,
                       table: this.currentTable,
                       loading: false,
+                      type: 'action',
                       children: []
                     });
                   }
@@ -241,6 +244,7 @@ export default defineComponent({
                   title: column['COLUMN_NAME'],
                   level: 'FindColumnType',
                   database: this.currentDatabase,
+                  type: 'data',
                   children: []
                 });
               })
@@ -257,23 +261,24 @@ export default defineComponent({
     },
     handlerSelectNode(item)
     {
-      this.currentItem = item;
-      this.headers = [];
-      this.columns = [];
       if (item.length > 0) {
+        const data = item[0];
+        if (data.type === 'action') {
+          return
+        }
+        this.currentItem = item;
+        this.headers = [];
+        this.columns = [];
         this.isShowData = true;
         this.dataLoading = true;
-        const data = item[0];
         // Reinitialize when switching to a new table
         if (this.currentTable !== data.title) {
           this.configure = new Sql();
           this.isSort = false;
           this.currentPage = 0;
         }
-        if (data.level === 'table') {
-          this.currentTable = data.title;
-        }
-        this.configure.database = this.currentDatabase;
+        this.currentTable = data.title;
+        this.configure.database = data.catalog;
         this.configure.table = this.currentTable;
         this.handlerExecute();
       }
