@@ -107,5 +107,7 @@ export default {
   upload: 'Upload',
   view: 'View',
   index: 'Index',
-  primaryKey: 'Primary Key'
+  primaryKey: 'Primary Key',
+  kafka: 'Kafka',
+  log: 'Log',
 }

@@ -107,5 +107,7 @@ export default {
   upload: '上传',
   view: '视图',
   index: '索引',
-  primaryKey: '主键'
+  primaryKey: '主键',
+  kafka: 'Kafka',
+  log: '日志',
 }

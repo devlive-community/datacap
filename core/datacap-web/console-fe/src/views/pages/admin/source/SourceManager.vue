@@ -46,7 +46,7 @@
                   <Button :disabled="currentPageNumber === 1" shape="circle" type="text"
                           size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
                   <Input v-model="currentPageNumber" size="small" style="max-width: 50px;"/>
-                  <Button :disabled="tableConfigure.columns.length < configure.limit" shape="circle" type="text"
+                  <Button :disabled="tableConfigure?.columns.length < configure.limit" shape="circle" type="text"
                           size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
                 </Space>
               </div>
