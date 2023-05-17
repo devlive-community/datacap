@@ -8,6 +8,9 @@ import 'view-ui-plus/dist/styles/viewuiplus.css';
 import i18n from "@/i18n/I18n";
 
 const app = createApp(App);
+
+// Disable warnings
+app.config.warnHandler = () => null;
 app.use(router);
 app.use(ViewUIPlus);
 app.use(i18n);
