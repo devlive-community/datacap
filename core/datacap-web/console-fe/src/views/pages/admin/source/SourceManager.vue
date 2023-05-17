@@ -1,61 +1,71 @@
 <template>
-  <div>
+  <div style="padding: 0">
     <SourceNotSupported v-if="!isSupported" :templateName="templateArray" style="margin-top: 50px;"></SourceNotSupported>
-    <div v-else>
-      <Layout :style="{padding: '0', 'min-height': '500px'}">
-        <Sider hide-trigger :style="{background: '#fff'}">
-          <Card style="width:100%">
-            <template #title>
-              <Tooltip transfer :content="data.type">
-                <Avatar :src="'/static/images/plugin/' + data.type + '.png'" size="small"/>
-                {{ data.name }}
-              </Tooltip>
-              <Divider style="margin: 10px 0px;"/>
-              <Select v-model="currentDatabase" @on-change="handlerChangeDatabase">
-                <Option v-for="database in databaseArray" :value="database" :key="database">
-                  {{ database }}
-                </Option>
-              </Select>
-            </template>
-            <div style="max-height: 500px; max-width: 200px; overflow: auto;">
-              <Tree :data="dataTreeArray" :load-data="handlerLoadChild" @on-select-change="handlerSelectNode"></Tree>
-              <Spin size="large" fix :show="tableLoading"></Spin>
-            </div>
-            <Spin size="large" fix :show="loading"></Spin>
-          </Card>
-        </Sider>
-        <Layout :style="{padding: '0 2px', background: '#fff'}">
-          <Content :style="{minHeight: '280px', background: '#fff'}">
-            <Card v-if="!isShowData">
-              <Result type="warning">
+    <div ref="splitContainer" class="split-container">
+      <Split v-model="splitModel" :min="0.15">
+        <template #left>
+          <div ref="splitContainerLeftPane" class="split-container-pane">
+            <Card style="width:100%;" :padding="0" :bordered="false" dis-hover>
+              <template #title>
+                <Row>
+                  <Col span="4" style="margin-top: 3px;">
+                    <Tooltip v-if="data" transfer :content="data.name" placement="bottom-start">
+                      <Avatar :src="'/static/images/plugin/' + data.type + '.png'" size="small"/>
+                    </Tooltip>
+                  </Col>
+                  <Col span="20">
+                    <Select v-model="currentDatabase" @on-change="handlerChangeDatabase">
+                      <Option v-for="database in databaseArray" :value="database" :key="database">
+                        {{ database }}
+                      </Option>
+                    </Select>
+                  </Col>
+                </Row>
+              </template>
+              <div style="height: 470px; overflow: auto;">
+                <Tree :data="dataTreeArray" :load-data="handlerLoadChild" @on-select-change="handlerSelectNode"></Tree>
+                <Spin size="large" fix :show="tableLoading"></Spin>
+              </div>
+              <Spin size="large" fix :show="loading"></Spin>
+            </Card>
+          </div>
+        </template>
+        <template #right>
+          <div ref="splitContainerRightPane" class="split-container-pane">
+            <Card v-if="!isShowData" dis-hover :bordered="false">
+              <Result type="warning" style="margin-top: 10px;">
                 <template #desc>
                   {{ $t('alert.managerRequiredTreeData') }}
                 </template>
               </Result>
             </Card>
-            <Card v-else style="width:100%" :padding="0">
-              <template #title>
-                <Icon type="md-apps"></Icon>
-                {{ currentTable }}
-              </template>
-              <template #extra>
-                <Button size="small" :type="isSort ? 'primary' : 'default'" icon="md-options" @click="handlerSort">{{ $t('common.sort') }}</Button>
-              </template>
-              <SortBy v-if="isSort" :columns="headers" @getValue="handlerGetValue($event, 'sort')" style="margin: 5px;"></SortBy>
-              <div v-if="!dataLoading">
+            <div v-if="isShowData && !dataLoading">
+              <!-- Paging related components -->
+              <div style="margin: 3px 0px 3px 10px;">
                 <Space>
                   <Button :disabled="currentPageNumber === 1" shape="circle" type="text"
                           size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
                   <Input v-model="currentPageNumber" size="small" style="max-width: 50px;"/>
-                  <Button :disabled="columns.length < configure.limit" shape="circle" type="text"
+                  <Button :disabled="tableConfigure.columns.length < configure.limit" shape="circle" type="text"
                           size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
                 </Space>
               </div>
-              <Table ref="selection" :loading="dataLoading" size="small" :columns="headers" :data="columns"></Table>
-            </Card>
-          </Content>
-        </Layout>
-      </Layout>
+              <!-- Filter component -->
+              <div style="margin: 3px 0px -4px 10px;">
+                <Space>
+                  <Input v-model="currentOrder.inputValue" size="small" clearable style="width: auto;" @on-enter="handlerGetValue">
+                    <template #prepend>
+                      <Icon type="md-list"/>
+                      ORDER BY
+                    </template>
+                  </Input>
+                </Space>
+              </div>
+            </div>
+            <TablePreview v-if="tableConfigure" :configure="tableConfigure"></TablePreview>
+          </div>
+        </template>
+      </Split>
     </div>
   </div>
 </template>
@@ -67,15 +77,16 @@ import {SourceService} from "@/services/SourceService";
 import {toNumber} from "lodash";
 import {SourceModel} from "@/model/SourceModel";
 import MangerService from "@/services/source/MangerService";
-import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
-import SortBy from "@/views/pages/admin/source/components/sort/SortBy.vue";
 import {Sql} from "@/model/sql/Sql";
 import {useI18n} from "vue-i18n";
-import {Input} from "view-ui-plus";
+import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
+import {TableConfigure} from "@/components/table/TableConfigure";
+import TablePreview from "@/views/pages/admin/source/components/TablePreview.vue";
+import {Sort} from "@/model/sql/Sort";
 
 export default defineComponent({
   name: "SourceManager",
-  components: {Input, SortBy, SourceNotSupported},
+  components: {TablePreview, SourceNotSupported},
   setup()
   {
     const i18n = useI18n();
@@ -99,11 +110,14 @@ export default defineComponent({
       currentTable: null,
       currentItem: null,
       currentPageNumber: 1,
+      currentOrder: {
+        inputValue: null
+      },
       databaseArray: [],
       dataTreeArray: [],
       configure: null as Sql,
-      headers: [],
-      columns: []
+      splitModel: 0.15,
+      tableConfigure: null as TableConfigure
     }
   },
   created()
@@ -300,9 +314,10 @@ export default defineComponent({
     },
     handlerExecute()
     {
-      this.headers = [];
-      this.columns = [];
+      this.tableConfigure = null;
       this.dataLoading = true;
+      const splitContainerLeftPane: HTMLElement = this.$refs.splitContainerLeftPane as HTMLElement;
+      const splitContainer: HTMLElement = this.$refs.splitContainer as HTMLElement;
       MangerService.getDataByConfigure(this.sourceId, this.configure)
         .then(response => {
           if (response.status) {
@@ -317,7 +332,14 @@ export default defineComponent({
                 }
               );
             });
-            this.columns = response.data.columns;
+            const tConfigure: TableConfigure = {
+              headers: response.data.headers,
+              columns: response.data.columns,
+              height: splitContainerLeftPane.offsetHeight - 57,
+              width: splitContainer.offsetWidth - splitContainerLeftPane.offsetWidth,
+              showSeriesNumber: false
+            };
+            this.tableConfigure = tConfigure;
           }
           else {
             this.$Message.error(response.message);
@@ -332,13 +354,40 @@ export default defineComponent({
     {
       this.isSort = !this.isSort;
     },
-    handlerGetValue(configure: any, type: string)
+    handlerGetValue()
     {
-      if (type === 'sort') {
-        this.configure.sort = configure;
+      const value = this.currentOrder.inputValue;
+      if (value) {
+        const sort: Array<Sort> = new Array<Sort>();
+        value.split(',').forEach(item => {
+          const array = item.trim().split(' ')
+          sort.push({
+            column: array[0],
+            sort: array[1]
+          })
+        })
+        this.configure.sort = sort;
+      }
+      else {
+        const sort: Array<Sort> = new Array<Sort>();
+        const array = value.trim().split(' ')
+        sort.push({
+          column: array[0],
+          sort: array[1]
+        })
+        this.configure.sort = sort;
       }
       this.handlerExecute();
     }
   }
 });
 </script>
+<style scoped>
+.split-container {
+  height: 510px;
+}
+
+.split-container-pane {
+  padding: 0;
+}
+</style>

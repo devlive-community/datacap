@@ -147,7 +147,7 @@ class ManagerService
     const orders: SqlColumn[] = new Array();
     if (sql.sort) {
       sql.sort.forEach(order => {
-        orders.push(new SqlColumnBuilder(order.column).setOrder(SqlOrder[order.sort]).build());
+        orders.push(new SqlColumnBuilder(order.column).setOrder(SqlOrder[order.sort.toUpperCase()]).build());
       });
     }
 

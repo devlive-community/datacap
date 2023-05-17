@@ -4,7 +4,7 @@ export class Sql
 {
   database: string;
   table: string;
-  limit = 10;
+  limit = 15;
   offset = 1;
   sort: Array<Sort>;
 }
