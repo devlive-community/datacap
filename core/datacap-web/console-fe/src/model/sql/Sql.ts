@@ -5,6 +5,6 @@ export class Sql
   database: string;
   table: string;
   limit = 10;
-  offset = 0;
+  offset = 1;
   sort: Array<Sort>;
 }

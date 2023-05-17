@@ -42,14 +42,16 @@
                 <Button size="small" :type="isSort ? 'primary' : 'default'" icon="md-options" @click="handlerSort">{{ $t('common.sort') }}</Button>
               </template>
               <SortBy v-if="isSort" :columns="headers" @getValue="handlerGetValue($event, 'sort')" style="margin: 5px;"></SortBy>
-              <Table ref="selection" :loading="dataLoading" size="small" :columns="headers" :data="columns"></Table>
-              <div v-if="!dataLoading" style="text-align: center; margin: 5px 0;">
+              <div v-if="!dataLoading">
                 <Space>
-                  <Button :disabled="currentPage === 0" size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
-                  <InputNumber v-model="currentPage" min="0" size="small"/>
-                  <Button :disabled="columns.length < configure.limit" size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
+                  <Button :disabled="currentPageNumber === 1" shape="circle" type="text"
+                          size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
+                  <Input v-model="currentPageNumber" size="small" style="max-width: 50px;"/>
+                  <Button :disabled="columns.length < configure.limit" shape="circle" type="text"
+                          size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
                 </Space>
               </div>
+              <Table ref="selection" :loading="dataLoading" size="small" :columns="headers" :data="columns"></Table>
             </Card>
           </Content>
         </Layout>
@@ -69,10 +71,11 @@ import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
 import SortBy from "@/views/pages/admin/source/components/sort/SortBy.vue";
 import {Sql} from "@/model/sql/Sql";
 import {useI18n} from "vue-i18n";
+import {Input} from "view-ui-plus";
 
 export default defineComponent({
   name: "SourceManager",
-  components: {SortBy, SourceNotSupported},
+  components: {Input, SortBy, SourceNotSupported},
   setup()
   {
     const i18n = useI18n();
@@ -95,10 +98,10 @@ export default defineComponent({
       currentDatabase: null,
       currentTable: null,
       currentItem: null,
-      currentPage: 1,
+      currentPageNumber: 1,
       databaseArray: [],
       dataTreeArray: [],
-      configure: Sql,
+      configure: null as Sql,
       headers: [],
       columns: []
     }
@@ -274,8 +277,8 @@ export default defineComponent({
         // Reinitialize when switching to a new table
         if (this.currentTable !== data.title) {
           this.configure = new Sql();
+          this.configure.offset = this.currentPageNumber;
           this.isSort = false;
-          this.currentPage = 0;
         }
         this.currentTable = data.title;
         this.configure.database = data.catalog;
@@ -286,12 +289,12 @@ export default defineComponent({
     handlerChangePage(nexted: boolean)
     {
       if (nexted) {
-        this.currentPage += 1;
-        this.configure.offset = this.currentPage * this.configure.limit;
+        this.configure.offset = this.currentPageNumber * this.configure.limit + 1;
+        this.currentPageNumber += 1;
       }
       else {
-        this.currentPage -= 1;
-        this.configure.offset = this.currentPage * this.configure.limit;
+        this.currentPageNumber -= 1;
+        this.configure.offset = (this.currentPageNumber - 1) * this.configure.limit + 1;
       }
       this.handlerSelectNode(this.currentItem);
     },
