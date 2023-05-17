@@ -63,6 +63,7 @@
               </div>
             </div>
             <TablePreview v-if="tableConfigure" :configure="tableConfigure"></TablePreview>
+            <Spin size="large" fix :show="dataLoading"></Spin>
           </div>
         </template>
       </Split>
