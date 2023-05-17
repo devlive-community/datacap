@@ -104,7 +104,6 @@ export default defineComponent({
       dataLoading: false,
       isSupported: false,
       isShowData: false,
-      isSort: false,
       data: null as SourceModel,
       currentDatabase: null,
       currentTable: null,
@@ -291,8 +290,9 @@ export default defineComponent({
         // Reinitialize when switching to a new table
         if (this.currentTable !== data.title) {
           this.configure = new Sql();
+          this.currentPageNumber = 1;
+          this.currentOrder.inputValue = null;
           this.configure.offset = this.currentPageNumber;
-          this.isSort = false;
         }
         this.currentTable = data.title;
         this.configure.database = data.catalog;
@@ -349,10 +349,6 @@ export default defineComponent({
           this.tableLoading = false;
           this.dataLoading = false;
         });
-    },
-    handlerSort()
-    {
-      this.isSort = !this.isSort;
     },
     handlerGetValue()
     {
