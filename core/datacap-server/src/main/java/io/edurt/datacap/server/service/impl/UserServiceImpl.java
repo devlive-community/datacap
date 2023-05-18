@@ -4,6 +4,7 @@ import com.unfbx.chatgpt.OpenAiClient;
 import com.unfbx.chatgpt.entity.chat.ChatCompletion;
 import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
 import com.unfbx.chatgpt.entity.chat.Message;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.server.audit.AuditUserLog;
 import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
@@ -27,6 +28,7 @@ import io.edurt.datacap.server.service.UserService;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,6 +52,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
 @Service
 public class UserServiceImpl
         implements UserService
@@ -62,8 +65,9 @@ public class UserServiceImpl
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final RedisTemplate redisTemplate;
+    private final Environment environment;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserChatRepository userChatRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate)
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserChatRepository userChatRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate, Environment environment)
     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -73,6 +77,7 @@ public class UserServiceImpl
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.redisTemplate = redisTemplate;
+        this.environment = environment;
     }
 
     @Override
@@ -295,6 +300,12 @@ public class UserServiceImpl
 
         SourceEntity entity = sourceEntityOptional.get();
         String key = String.join("_", entity.getType(), entity.getId().toString());
-        return Response.success(redisTemplate.opsForSet().members(key));
+        int sugsMaxSize = Integer.parseInt(environment.getProperty("datacap.editor.sugs.maxSize"));
+        List<Object> sugs = (List<Object>) redisTemplate.opsForSet()
+                .members(key)
+                .stream()
+                .limit(sugsMaxSize)
+                .collect(Collectors.toList());
+        return Response.success(sugs);
     }
 }
