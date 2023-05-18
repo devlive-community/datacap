@@ -62,7 +62,11 @@
                 </Space>
               </div>
             </div>
-            <TablePreview v-if="tableConfigure" :configure="tableConfigure"></TablePreview>
+            <TablePreview v-if="tableConfigure"
+                          :configure="tableConfigure"
+                          :sortColumns="tableSortColumns"
+                          @on-sorted="handlerOnSorted">
+            </TablePreview>
             <Spin size="large" fix :show="dataLoading"></Spin>
           </div>
         </template>
@@ -75,7 +79,7 @@
 import {defineComponent} from "vue";
 import {useRouter} from "vue-router";
 import {SourceService} from "@/services/SourceService";
-import {toNumber} from "lodash";
+import {join, toNumber} from "lodash";
 import {SourceModel} from "@/model/SourceModel";
 import MangerService from "@/services/source/MangerService";
 import {Sql} from "@/model/sql/Sql";
@@ -117,7 +121,8 @@ export default defineComponent({
       dataTreeArray: [],
       configure: null as Sql,
       splitModel: 0.15,
-      tableConfigure: null as TableConfigure
+      tableConfigure: null as TableConfigure,
+      tableSortColumns: []
     }
   },
   created()
@@ -294,6 +299,7 @@ export default defineComponent({
           this.currentPageNumber = 1;
           this.currentOrder.inputValue = null;
           this.configure.offset = this.currentPageNumber;
+          this.tableSortColumns = null;
         }
         this.currentTable = data.title;
         this.configure.database = data.catalog;
@@ -374,6 +380,13 @@ export default defineComponent({
         })
         this.configure.sort = sort;
       }
+      this.handlerExecute();
+    },
+    handlerOnSorted(sort: Array<Sort>)
+    {
+      this.configure.sort = sort;
+      this.tableSortColumns = sort;
+      this.currentOrder.inputValue = join(sort.map(item => item.column + ' ' + item.sort));
       this.handlerExecute();
     }
   }

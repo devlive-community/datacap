@@ -19,20 +19,26 @@ WHERE
 GROUP BY
   table_type', 'Finds all table types under the database according to the database', 'H2', '[{"column":"database","type":"String","expression":"${database:String}"}]', TRUE),
        ('FindTableByDatabaseAndType', 'SELECT
-  TABLE_CATALOG AS TABLE_CATALOG,
-  TABLE_NAME AS TABLE_NAME
+  TABLE_CATALOG,
+  TABLE_NAME
 FROM
-  INFORMATION_SCHEMA.TABLES
-WHERE
-  INFORMATION_SCHEMA.TABLES.TABLE_SCHEMA = ''${database:String}''
-  AND CASE
-    INFORMATION_SCHEMA.TABLES.TABLE_TYPE
-    WHEN ''VIEW'' THEN ''view''
-    ELSE ''table''
-  END = ''${type:String}''
-GROUP BY
-  TABLE_NAME,
-  TABLE_CATALOG', 'Gets a collection of related data based on the specified database and data type', 'H2',
+  (
+    SELECT
+      TABLE_SCHEMA AS TABLE_CATALOG,
+      TABLE_NAME AS TABLE_NAME
+    FROM
+      INFORMATION_SCHEMA.TABLES
+    WHERE
+      INFORMATION_SCHEMA.TABLES.TABLE_SCHEMA = ''${database:String}''
+      AND CASE
+        INFORMATION_SCHEMA.TABLES.TABLE_TYPE
+        WHEN ''VIEW'' THEN ''view''
+        ELSE ''table''
+      END = ''${type:String}''
+    GROUP BY
+      TABLE_NAME,
+      TABLE_SCHEMA
+  )', 'Gets a collection of related data based on the specified database and data type', 'H2',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"type","type":"String","expression":"${type:String}"}]', TRUE),
        ('FindColumnTypeByDatabaseAndTable', 'SELECT
   ''${database:String}'' AS TABLE_CATALOG,
@@ -77,7 +83,7 @@ FROM
       AND icl.TABLE_NAME = col.TABLE_NAME
       AND icl.COLUMN_NAME = col.COLUMN_NAME
     WHERE
-      col.TABLE_CATALOG = ''${database:String}''
+      col.TABLE_SCHEMA = ''${database:String}''
       AND col.TABLE_NAME = ''${table:String}''
     ORDER BY
       col.COLUMN_NAME
@@ -129,7 +135,7 @@ FROM
       AND icl.TABLE_NAME = col.TABLE_NAME
       AND icl.COLUMN_NAME = col.COLUMN_NAME
     WHERE
-      col.TABLE_CATALOG = ''${database:String}''
+      col.TABLE_SCHEMA = ''${database:String}''
       AND col.TABLE_NAME = ''${table:String}''
     ORDER BY
       col.COLUMN_NAME
