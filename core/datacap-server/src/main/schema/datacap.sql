@@ -566,3 +566,104 @@ ORDER BY
   COLUMN_NAME', 'Gets a collection of related data based on the specified database, table, and data type', 'MySQL',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"},{"column":"type","type":"String","expression":"${type:String}"}]',
         TRUE);
+/* ClickHouse */
+INSERT INTO template_sql(name, content, description, plugin, configure, `system`)
+VALUES ('FindTableTypeByDatabase', 'SELECT
+  multiIf(
+    startsWith(engine, ''System''),
+    ''system'',
+    endsWith(engine, ''View''),
+    ''view'',
+    startsWith(engine, ''Kafka''),
+    ''kafka'',
+    endsWith(engine, ''Log''),
+    ''log'',
+    ''table''
+  ) AS TABLE_TYPE
+FROM
+  system.tables
+WHERE
+  database = ''${database:String}''
+GROUP BY
+  TABLE_TYPE', 'Finds all table types under the database according to the database', 'ClickHouse', '[{"column":"database","type":"String","expression":"${database:String}"}]', TRUE),
+       ('FindTableByDatabaseAndType', 'SELECT
+  `database` AS TABLE_CATALOG,
+  name AS TABLE_NAME
+FROM
+  system.tables
+WHERE
+  `database` = ''${database:String}''
+  AND multiIf(
+    startsWith(engine, ''System''),
+    ''system'',
+    endsWith(engine, ''View''),
+    ''view'',
+    startsWith(engine, ''Kafka''),
+    ''kafka'',
+    endsWith(engine, ''Log''),
+    ''log'',
+    ''table''
+  ) = ''${type:String}''
+GROUP BY
+  TABLE_NAME,
+  `database`', 'Gets a collection of related data based on the specified database and data type', 'ClickHouse',
+        '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"type","type":"String","expression":"${type:String}"}]', TRUE),
+       ('FindColumnTypeByDatabaseAndTable', 'SELECT
+  ''${database:String}'' AS TABLE_CATALOG,
+  COLUMN_TYPE
+FROM
+  (
+    SELECT
+      CASE
+        WHEN (
+          is_in_primary_key = ''1''
+          AND is_in_partition_key = ''1''
+        ) THEN ''index,primaryKey''
+        WHEN is_in_primary_key = ''1'' THEN ''primaryKey''
+        WHEN is_in_primary_key = ''1'' THEN ''index''
+        ELSE ''column''
+      END AS COLUMN_TYPE
+    FROM
+      system.columns col
+    WHERE
+      `database` = ''${database:String}''
+      AND `table` = ''${table:String}''
+    ORDER BY
+      `name`
+  ) AS tmp
+GROUP BY
+  COLUMN_TYPE', 'Gets the data column classification collection based on the provided database and data table', 'ClickHouse',
+        '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
+       ('FindColumnByDatabaseAndTableAndType', 'SELECT
+  COLUMN_NAME,
+  COLUMN_TYPE
+FROM
+  (
+    SELECT
+      `name` AS COLUMN_NAME,
+      CASE
+        WHEN (
+          is_in_primary_key = ''1''
+          AND is_in_partition_key = ''1''
+        ) THEN ''index,primaryKey''
+        WHEN is_in_primary_key = ''1'' THEN ''primaryKey''
+        WHEN is_in_primary_key = ''1'' THEN ''index''
+        ELSE ''column''
+      END AS COLUMN_TYPE
+    FROM
+      system.columns col
+    WHERE
+      `database` = ''${database:String}''
+      AND `table` = ''${table:String}''
+    ORDER BY
+      `name`
+  ) AS tmp
+WHERE
+  COLUMN_TYPE LIKE ''%${type:String}%''
+GROUP BY
+  COLUMN_NAME,
+  COLUMN_TYPE
+ORDER BY
+  COLUMN_NAME', 'Gets a collection of related data based on the specified database, table, and data type', 'ClickHouse',
+        '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"},{"column":"type","type":"String","expression":"${type:String}"}]',
+        TRUE);

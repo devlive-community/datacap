@@ -7,7 +7,7 @@
         </Alert>
       </RouterLink>
       <LayoutHeader @changeLanguage="setLangCondition($event)"/>
-      <LayoutContent style="background-color: #FFFFFF; padding: 12px; min-height: 500px"/>
+      <LayoutContent style="background-color: #FFFFFF; padding: 0; min-height: 500px"/>
       <LayoutFooter/>
       <LayoutAffix/>
     </Layout>

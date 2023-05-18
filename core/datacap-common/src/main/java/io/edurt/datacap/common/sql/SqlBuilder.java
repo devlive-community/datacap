@@ -40,7 +40,7 @@ public class SqlBuilder
     {
         Preconditions.checkArgument(StringUtils.isNotEmpty(configure.getTable()), "The table name must be specified");
         if (StringUtils.isNotEmpty(configure.getDatabase())) {
-            return String.format("%s.%s", configure.getDatabase(), configure.getTable());
+            return String.format("`%s`.`%s`", configure.getDatabase(), configure.getTable());
         }
         return configure.getTable();
     }

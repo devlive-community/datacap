@@ -1,59 +1,72 @@
 <template>
-  <div>
+  <div style="padding: 0">
     <SourceNotSupported v-if="!isSupported" :templateName="templateArray" style="margin-top: 50px;"></SourceNotSupported>
-    <div v-else>
-      <Layout :style="{padding: '0', 'min-height': '500px'}">
-        <Sider hide-trigger :style="{background: '#fff'}">
-          <Card style="width:100%">
-            <template #title>
-              <Tooltip transfer :content="data.type">
-                <Avatar :src="'/static/images/plugin/' + data.type + '.png'" size="small"/>
-                {{ data.name }}
-              </Tooltip>
-              <Divider style="margin: 10px 0px;"/>
-              <Select v-model="currentDatabase" @on-change="handlerChangeDatabase">
-                <Option v-for="database in databaseArray" :value="database" :key="database">
-                  {{ database }}
-                </Option>
-              </Select>
-            </template>
-            <div style="max-height: 500px; max-width: 200px; overflow: auto;">
-              <Tree :data="dataTreeArray" :load-data="handlerLoadChild" @on-select-change="handlerSelectNode"></Tree>
-              <Spin size="large" fix :show="tableLoading"></Spin>
-            </div>
-            <Spin size="large" fix :show="loading"></Spin>
-          </Card>
-        </Sider>
-        <Layout :style="{padding: '0 2px', background: '#fff'}">
-          <Content :style="{minHeight: '280px', background: '#fff'}">
-            <Card v-if="!isShowData">
-              <Result type="warning">
+    <div ref="splitContainer" class="split-container">
+      <Split v-model="splitModel" :min="0.15">
+        <template #left>
+          <div ref="splitContainerLeftPane" class="split-container-pane">
+            <Card style="width:100%;" :padding="0" :bordered="false" dis-hover>
+              <template #title>
+                <Row>
+                  <Col span="4" style="margin-top: 3px;">
+                    <Tooltip v-if="data" transfer :content="data.name" placement="bottom-start">
+                      <Avatar :src="'/static/images/plugin/' + data.type + '.png'" size="small"/>
+                    </Tooltip>
+                  </Col>
+                  <Col span="20">
+                    <Select v-model="currentDatabase" @on-change="handlerChangeDatabase">
+                      <Option v-for="database in databaseArray" :value="database" :key="database">
+                        {{ database }}
+                      </Option>
+                    </Select>
+                  </Col>
+                </Row>
+              </template>
+              <div style="height: 470px; overflow: auto;">
+                <Tree :data="dataTreeArray" :load-data="handlerLoadChild" @on-select-change="handlerSelectNode"></Tree>
+                <Spin size="large" fix :show="tableLoading"></Spin>
+              </div>
+              <Spin size="large" fix :show="loading"></Spin>
+            </Card>
+          </div>
+        </template>
+        <template #right>
+          <div ref="splitContainerRightPane" class="split-container-pane">
+            <Card v-if="!isShowData" dis-hover :bordered="false">
+              <Result type="warning" style="margin-top: 10px;">
                 <template #desc>
                   {{ $t('alert.managerRequiredTreeData') }}
                 </template>
               </Result>
             </Card>
-            <Card v-else style="width:100%" :padding="0">
-              <template #title>
-                <Icon type="md-apps"></Icon>
-                {{ currentTable }}
-              </template>
-              <template #extra>
-                <Button size="small" :type="isSort ? 'primary' : 'default'" icon="md-options" @click="handlerSort">{{ $t('common.sort') }}</Button>
-              </template>
-              <SortBy v-if="isSort" :columns="headers" @getValue="handlerGetValue($event, 'sort')" style="margin: 5px;"></SortBy>
-              <Table ref="selection" :loading="dataLoading" size="small" :columns="headers" :data="columns"></Table>
-              <div v-if="!dataLoading" style="text-align: center; margin: 5px 0;">
+            <div v-if="isShowData && !dataLoading">
+              <!-- Paging related components -->
+              <div style="margin: 3px 0px 3px 10px;">
                 <Space>
-                  <Button :disabled="currentPage === 0" size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
-                  <InputNumber v-model="currentPage" min="0" size="small"/>
-                  <Button :disabled="columns.length < configure.limit" size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
+                  <Button :disabled="currentPageNumber === 1" shape="circle" type="text"
+                          size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
+                  <Input v-model="currentPageNumber" size="small" style="max-width: 50px;"/>
+                  <Button :disabled="tableConfigure?.columns.length < configure.limit" shape="circle" type="text"
+                          size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
                 </Space>
               </div>
-            </Card>
-          </Content>
-        </Layout>
-      </Layout>
+              <!-- Filter component -->
+              <div style="margin: 3px 0px -4px 10px;">
+                <Space>
+                  <Input v-model="currentOrder.inputValue" size="small" clearable style="width: auto;" @on-enter="handlerGetValue">
+                    <template #prepend>
+                      <Icon type="md-list"/>
+                      ORDER BY
+                    </template>
+                  </Input>
+                </Space>
+              </div>
+            </div>
+            <TablePreview v-if="tableConfigure" :configure="tableConfigure"></TablePreview>
+            <Spin size="large" fix :show="dataLoading"></Spin>
+          </div>
+        </template>
+      </Split>
     </div>
   </div>
 </template>
@@ -65,14 +78,16 @@ import {SourceService} from "@/services/SourceService";
 import {toNumber} from "lodash";
 import {SourceModel} from "@/model/SourceModel";
 import MangerService from "@/services/source/MangerService";
-import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
-import SortBy from "@/views/pages/admin/source/components/sort/SortBy.vue";
 import {Sql} from "@/model/sql/Sql";
 import {useI18n} from "vue-i18n";
+import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
+import {TableConfigure} from "@/components/table/TableConfigure";
+import TablePreview from "@/views/pages/admin/source/components/TablePreview.vue";
+import {Sort} from "@/model/sql/Sort";
 
 export default defineComponent({
   name: "SourceManager",
-  components: {SortBy, SourceNotSupported},
+  components: {TablePreview, SourceNotSupported},
   setup()
   {
     const i18n = useI18n();
@@ -90,17 +105,19 @@ export default defineComponent({
       dataLoading: false,
       isSupported: false,
       isShowData: false,
-      isSort: false,
       data: null as SourceModel,
       currentDatabase: null,
       currentTable: null,
       currentItem: null,
-      currentPage: 1,
+      currentPageNumber: 1,
+      currentOrder: {
+        inputValue: null
+      },
       databaseArray: [],
       dataTreeArray: [],
-      configure: Sql,
-      headers: [],
-      columns: []
+      configure: null as Sql,
+      splitModel: 0.15,
+      tableConfigure: null as TableConfigure
     }
   },
   created()
@@ -155,6 +172,7 @@ export default defineComponent({
                 level: 'GetDataForTableType',
                 action: column[header],
                 loading: false,
+                type: 'action',
                 children: []
               });
             });
@@ -182,6 +200,7 @@ export default defineComponent({
                   database: this.currentDatabase,
                   catalog: column['TABLE_CATALOG'],
                   loading: false,
+                  type: 'data',
                   children: []
                 });
               });
@@ -213,6 +232,7 @@ export default defineComponent({
                       database: this.currentDatabase,
                       table: this.currentTable,
                       loading: false,
+                      type: 'action',
                       children: []
                     });
                   }
@@ -241,6 +261,7 @@ export default defineComponent({
                   title: column['COLUMN_NAME'],
                   level: 'FindColumnType',
                   database: this.currentDatabase,
+                  type: 'data',
                   children: []
                 });
               })
@@ -257,23 +278,25 @@ export default defineComponent({
     },
     handlerSelectNode(item)
     {
-      this.currentItem = item;
-      this.headers = [];
-      this.columns = [];
       if (item.length > 0) {
+        const data = item[0];
+        if (data.type === 'action') {
+          return
+        }
+        this.currentItem = item;
+        this.headers = [];
+        this.columns = [];
         this.isShowData = true;
         this.dataLoading = true;
-        const data = item[0];
         // Reinitialize when switching to a new table
         if (this.currentTable !== data.title) {
           this.configure = new Sql();
-          this.isSort = false;
-          this.currentPage = 0;
+          this.currentPageNumber = 1;
+          this.currentOrder.inputValue = null;
+          this.configure.offset = this.currentPageNumber;
         }
-        if (data.level === 'table') {
-          this.currentTable = data.title;
-        }
-        this.configure.database = this.currentDatabase;
+        this.currentTable = data.title;
+        this.configure.database = data.catalog;
         this.configure.table = this.currentTable;
         this.handlerExecute();
       }
@@ -281,20 +304,21 @@ export default defineComponent({
     handlerChangePage(nexted: boolean)
     {
       if (nexted) {
-        this.currentPage += 1;
-        this.configure.offset = this.currentPage * this.configure.limit;
+        this.configure.offset = this.currentPageNumber * this.configure.limit + 1;
+        this.currentPageNumber += 1;
       }
       else {
-        this.currentPage -= 1;
-        this.configure.offset = this.currentPage * this.configure.limit;
+        this.currentPageNumber -= 1;
+        this.configure.offset = (this.currentPageNumber - 1) * this.configure.limit + 1;
       }
       this.handlerSelectNode(this.currentItem);
     },
     handlerExecute()
     {
-      this.headers = [];
-      this.columns = [];
+      this.tableConfigure = null;
       this.dataLoading = true;
+      const splitContainerLeftPane: HTMLElement = this.$refs.splitContainerLeftPane as HTMLElement;
+      const splitContainer: HTMLElement = this.$refs.splitContainer as HTMLElement;
       MangerService.getDataByConfigure(this.sourceId, this.configure)
         .then(response => {
           if (response.status) {
@@ -309,7 +333,14 @@ export default defineComponent({
                 }
               );
             });
-            this.columns = response.data.columns;
+            const tConfigure: TableConfigure = {
+              headers: response.data.headers,
+              columns: response.data.columns,
+              height: splitContainerLeftPane.offsetHeight - 57,
+              width: splitContainer.offsetWidth - splitContainerLeftPane.offsetWidth,
+              showSeriesNumber: false
+            };
+            this.tableConfigure = tConfigure;
           }
           else {
             this.$Message.error(response.message);
@@ -320,17 +351,40 @@ export default defineComponent({
           this.dataLoading = false;
         });
     },
-    handlerSort()
+    handlerGetValue()
     {
-      this.isSort = !this.isSort;
-    },
-    handlerGetValue(configure: any, type: string)
-    {
-      if (type === 'sort') {
-        this.configure.sort = configure;
+      const value = this.currentOrder.inputValue;
+      if (value) {
+        const sort: Array<Sort> = new Array<Sort>();
+        value.split(',').forEach(item => {
+          const array = item.trim().split(' ')
+          sort.push({
+            column: array[0],
+            sort: array[1]
+          })
+        })
+        this.configure.sort = sort;
+      }
+      else {
+        const sort: Array<Sort> = new Array<Sort>();
+        const array = value.trim().split(' ')
+        sort.push({
+          column: array[0],
+          sort: array[1]
+        })
+        this.configure.sort = sort;
       }
       this.handlerExecute();
     }
   }
 });
 </script>
+<style scoped>
+.split-container {
+  height: 510px;
+}
+
+.split-container-pane {
+  padding: 0;
+}
+</style>

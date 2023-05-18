@@ -143,11 +143,11 @@ class ManagerService
   {
     const columns: SqlColumn[] = new Array<SqlColumn>();
     columns.push(new SqlColumnBuilder('*').build());
-
+    // The default offset is 1, and the database index defaults to 0, which needs to be subtracted by 1
     const orders: SqlColumn[] = new Array();
     if (sql.sort) {
       sql.sort.forEach(order => {
-        orders.push(new SqlColumnBuilder(order.column).setOrder(SqlOrder[order.sort]).build());
+        orders.push(new SqlColumnBuilder(order.column).setOrder(SqlOrder[order.sort.toUpperCase()]).build());
       });
     }
 
@@ -156,7 +156,7 @@ class ManagerService
       .setOrders(orders)
       .setType(SqlType.SELECT)
       .setLimit(sql.limit)
-      .setOffset(sql.offset)
+      .setOffset(sql.offset - 1)
       .build();
     const configure = new ExecuteDslBodyBuilder(id, 'JSON')
       .setConfigure(sqlBody)
