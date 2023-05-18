@@ -53,7 +53,7 @@ public class SourceScheduledRunnable
         this.templateSqlRepository = templateSqlRepository;
         this.redisTemplate = redisTemplate;
         this.environment = environment;
-        this.maxSuggestions = Integer.valueOf(environment.getProperty("datacap.editor.sugs.maxSize"));
+        this.maxSuggestions = Integer.parseInt(environment.getProperty("datacap.editor.sugs.maxSize"));
     }
 
     @Override
