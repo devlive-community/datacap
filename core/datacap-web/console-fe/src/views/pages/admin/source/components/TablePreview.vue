@@ -61,7 +61,19 @@ export default defineComponent({
           headerName: header,
           field: header,
           sort: hasSort ? hasSort.sort : null,
-          headerTooltip: header + ' [' + this.configure.types[index] + ']'
+          headerTooltip: header + ' [' + this.configure.types[index] + ']',
+          noSort: true,
+          comparator: () => {
+            if (hasSort) {
+              if (hasSort.sort === 'asc') {
+                return 0;
+              }
+              else if (hasSort.sort === 'desc') {
+                return -1;
+              }
+            }
+            return 1;
+          }
         };
         this.columnDefs.push(columnDef)
       });
