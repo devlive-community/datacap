@@ -6,6 +6,7 @@
                  :gridOptions="gridOptions"
                  :multiSortKey="multiSortKey"
                  :rowData="configure.columns"
+                 :tooltipShowDelay="tooltipShowDelay"
                  @sortChanged="handlerSortChanged">
     </ag-grid-vue>
   </div>
@@ -46,6 +47,7 @@ export default defineComponent({
     return {
       gridOptions: null,
       multiSortKey: 'ctrl',
+      tooltipShowDelay: 100,
       columnDefs: []
     }
   },
@@ -53,12 +55,19 @@ export default defineComponent({
     handlerInitialize()
     {
       this.columnDefs = [];
-      this.configure.headers.forEach(header => {
+      this.configure.headers.forEach((header, index) => {
         const hasSort = this.sortColumns?.filter(sortColumn => sortColumn.column === header)[0];
         const columnDef = {
           headerName: header,
           field: header,
-          sort: hasSort ? hasSort.sort : null
+          sort: hasSort ? hasSort.sort : null,
+          headerTooltip: header + ' [' + this.configure.types[index] + ']',
+          comparator: () => {
+            if (hasSort && hasSort.sort === 'asc') {
+              return 0;
+            }
+            return hasSort && hasSort.sort === 'desc' ? -1 : 1;
+          }
         };
         this.columnDefs.push(columnDef)
       });

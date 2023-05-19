@@ -21,4 +21,5 @@ public class Response
     private String message;
     private Time connection;
     private Time processor;
+    private String content;
 }

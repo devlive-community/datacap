@@ -93,11 +93,13 @@ GROUP BY
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
        ('FindColumnByDatabaseAndTableAndType', 'SELECT
   COLUMN_NAME,
-  COLUMN_TYPE
+  COLUMN_TYPE,
+  DATA_TYPE
 FROM
   (
     SELECT
       col.COLUMN_NAME AS COLUMN_NAME,
+      col.DATA_TYPE AS DATA_TYPE,
       CASE
         WHEN (
           icl.IS_INDEX = ''Y''
@@ -231,11 +233,13 @@ GROUP BY
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
        ('FindColumnByDatabaseAndTableAndType', 'SELECT
   COLUMN_NAME,
-  COLUMN_TYPE
+  COLUMN_TYPE,
+  DATA_TYPE
 FROM
   (
     SELECT
       col.COLUMN_NAME AS COLUMN_NAME,
+      col.DATA_TYPE AS DATA_TYPE,
       CASE
         WHEN (
           icl.IS_INDEX = ''Y''
@@ -282,7 +286,8 @@ WHERE
   COLUMN_TYPE LIKE ''%${type:String}%''
 GROUP BY
   COLUMN_NAME,
-  COLUMN_TYPE
+  COLUMN_TYPE,
+  DATA_TYPE
 ORDER BY
   COLUMN_NAME', 'Gets a collection of related data based on the specified database, table, and data type', 'MySQL',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"},{"column":"type","type":"String","expression":"${type:String}"}]',
@@ -357,11 +362,13 @@ GROUP BY
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
        ('FindColumnByDatabaseAndTableAndType', 'SELECT
   COLUMN_NAME,
-  COLUMN_TYPE
+  COLUMN_TYPE,
+  DATA_TYPE
 FROM
   (
     SELECT
       `name` AS COLUMN_NAME,
+      `type` AS DATA_TYPE,
       CASE
         WHEN (
           is_in_primary_key = ''1''
@@ -383,7 +390,8 @@ WHERE
   COLUMN_TYPE LIKE ''%${type:String}%''
 GROUP BY
   COLUMN_NAME,
-  COLUMN_TYPE
+  COLUMN_TYPE,
+  DATA_TYPE
 ORDER BY
   COLUMN_NAME', 'Gets a collection of related data based on the specified database, table, and data type', 'ClickHouse',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"},{"column":"type","type":"String","expression":"${type:String}"}]',

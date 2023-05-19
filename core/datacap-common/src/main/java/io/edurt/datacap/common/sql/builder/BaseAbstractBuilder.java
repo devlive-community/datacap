@@ -485,10 +485,10 @@ abstract class BaseAbstractBuilder<T>
             protected void appendClause(SafeAppendable builder, String offset, String limit)
             {
                 if (limit != null) {
-                    builder.append(" LIMIT ").append(limit);
+                    builder.append("\nLIMIT ").append(limit);
                 }
                 if (offset != null) {
-                    builder.append(" OFFSET ").append(offset);
+                    builder.append("\nOFFSET ").append(offset);
                 }
             }
         };
