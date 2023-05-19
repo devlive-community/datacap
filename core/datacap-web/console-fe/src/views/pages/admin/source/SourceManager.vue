@@ -360,6 +360,7 @@ export default defineComponent({
             const tConfigure: TableConfigure = {
               headers: response.data.headers,
               columns: response.data.columns,
+              types: response.data.types,
               height: splitContainerLeftPane.offsetHeight - 57,
               width: splitContainer.offsetWidth - splitContainerLeftPane.offsetWidth,
               showSeriesNumber: false,
