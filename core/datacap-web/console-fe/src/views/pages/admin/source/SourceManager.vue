@@ -48,6 +48,12 @@
                   <Input v-model="currentPageNumber" size="small" style="max-width: 50px;"/>
                   <Button :disabled="tableConfigure?.columns.length < configure.limit" shape="circle" type="text"
                           size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
+                  <Tooltip :content="$t('common.elapsed')">
+                    <Button size="small" icon="md-clock" type="default">{{ tableConfigure.elapsed }} ms</Button>
+                  </Tooltip>
+                  <Tooltip content="DDL">
+                    <Button size="small" icon="md-eye" type="text" shape="circle" @click="handlerControlModal(false)"></Button>
+                  </Tooltip>
                 </Space>
               </div>
               <!-- Filter component -->
@@ -72,6 +78,11 @@
         </template>
       </Split>
     </div>
+    <SqlDetail v-if="modalVisible"
+               :isVisible="modalVisible"
+               :content="tableConfigure.context"
+               @close="handlerControlModal(true)">
+    </SqlDetail>
   </div>
 </template>
 
@@ -88,10 +99,11 @@ import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
 import {TableConfigure} from "@/components/table/TableConfigure";
 import TablePreview from "@/views/pages/admin/source/components/TablePreview.vue";
 import {Sort} from "@/model/sql/Sort";
+import SqlDetail from "@/components/sql/SqlDetail.vue";
 
 export default defineComponent({
   name: "SourceManager",
-  components: {TablePreview, SourceNotSupported},
+  components: {SqlDetail, TablePreview, SourceNotSupported},
   setup()
   {
     const i18n = useI18n();
@@ -122,7 +134,8 @@ export default defineComponent({
       configure: null as Sql,
       splitModel: 0.15,
       tableConfigure: null as TableConfigure,
-      tableSortColumns: []
+      tableSortColumns: [],
+      modalVisible: false
     }
   },
   created()
@@ -345,7 +358,9 @@ export default defineComponent({
               columns: response.data.columns,
               height: splitContainerLeftPane.offsetHeight - 57,
               width: splitContainer.offsetWidth - splitContainerLeftPane.offsetWidth,
-              showSeriesNumber: false
+              showSeriesNumber: false,
+              elapsed: response?.data?.processor?.elapsed,
+              context: response?.data?.content
             };
             this.tableConfigure = tConfigure;
           }
@@ -389,6 +404,10 @@ export default defineComponent({
       this.tableSortColumns = sort;
       this.currentOrder.inputValue = join(sort.map(item => item.column + ' ' + item.sort));
       this.handlerExecute();
+    },
+    handlerControlModal(value: boolean)
+    {
+      this.modalVisible = !value;
     }
   }
 });
