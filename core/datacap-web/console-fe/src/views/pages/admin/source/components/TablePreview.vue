@@ -62,17 +62,11 @@ export default defineComponent({
           field: header,
           sort: hasSort ? hasSort.sort : null,
           headerTooltip: header + ' [' + this.configure.types[index] + ']',
-          noSort: true,
           comparator: () => {
-            if (hasSort) {
-              if (hasSort.sort === 'asc') {
-                return 0;
-              }
-              else if (hasSort.sort === 'desc') {
-                return -1;
-              }
+            if (hasSort && hasSort.sort === 'asc') {
+              return 0;
             }
-            return 1;
+            return hasSort && hasSort.sort === 'desc' ? -1 : 1;
           }
         };
         this.columnDefs.push(columnDef)

@@ -401,6 +401,7 @@ export default defineComponent({
         })
         this.configure.sort = sort;
       }
+      this.tableSortColumns = this.configure.sort;
       this.handlerExecute();
     },
     handlerOnSorted(sort: Array<Sort>)
