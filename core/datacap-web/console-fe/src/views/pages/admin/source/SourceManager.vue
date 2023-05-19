@@ -263,10 +263,11 @@ export default defineComponent({
               item.title = item.title + ' [' + response.data.columns.length + ']';
               response.data.columns.forEach(column => {
                 dataTreeColumnArray.push({
-                  title: column['COLUMN_NAME'],
+                  title: column['COLUMN_NAME'] + ' [' + column['DATA_TYPE'] + ']',
                   level: 'FindColumnType',
                   database: this.currentDatabase,
                   type: 'data',
+                  dataType: column['DATA_TYPE'],
                   children: []
                 });
               })
