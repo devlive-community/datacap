@@ -45,6 +45,9 @@
                 <Space>
                   <Button :disabled="currentPageNumber === 1" shape="circle" type="text"
                           size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
+                  <Select v-model="configure.limit" size="small" style="width: 60px" @on-change="handlerExecute">
+                    <Option v-for="item in limitOptions" :value="item" :key="item">{{ item }}</Option>
+                  </Select>
                   <Input v-model="currentPageNumber" size="small" style="max-width: 50px;"/>
                   <Button :disabled="tableConfigure?.columns.length < configure.limit" shape="circle" type="text"
                           size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
@@ -135,7 +138,8 @@ export default defineComponent({
       splitModel: 0.15,
       tableConfigure: null as TableConfigure,
       tableSortColumns: [],
-      modalVisible: false
+      modalVisible: false,
+      limitOptions: [5, 10, 15, 20, 50, 100]
     }
   },
   created()
