@@ -57,6 +57,19 @@
                   <Tooltip content="DDL">
                     <Button size="small" icon="md-eye" type="text" shape="circle" @click="handlerControlModal(false)"></Button>
                   </Tooltip>
+                  <Dropdown v-if="selectedRows.length > 0">
+                    <Button style="margin-top: -8px;" size="small" type="text" icon="ios-download">
+                      [<span style="font-size: 12px; color: #19BE6B; font-weight: bold;">{{ selectedRows.length }}</span>]
+                    </Button>
+                    <template #list>
+                      <DropdownMenu>
+                        <DropdownItem @click="handlerCopyWithHeaders">
+                          <Icon type="md-copy"/>
+                          {{ $t('copy.copyWithHeaders') }}
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </template>
+                  </Dropdown>
                 </Space>
               </div>
               <!-- Filter component -->
@@ -74,7 +87,8 @@
             <TablePreview v-if="tableConfigure"
                           :configure="tableConfigure"
                           :sortColumns="tableSortColumns"
-                          @on-sorted="handlerOnSorted">
+                          @on-sorted="handlerOnSorted"
+                          @on-selected="handlerOnSelected">
             </TablePreview>
             <Spin size="large" fix :show="dataLoading"></Spin>
           </div>
@@ -103,6 +117,7 @@ import {TableConfigure} from "@/components/table/TableConfigure";
 import TablePreview from "@/views/pages/admin/source/components/TablePreview.vue";
 import {Sort} from "@/model/sql/Sort";
 import SqlDetail from "@/components/sql/SqlDetail.vue";
+import useClipboard from "vue-clipboard3";
 
 export default defineComponent({
   name: "SourceManager",
@@ -139,7 +154,8 @@ export default defineComponent({
       tableConfigure: null as TableConfigure,
       tableSortColumns: [],
       modalVisible: false,
-      limitOptions: [5, 10, 15, 20, 50, 100]
+      limitOptions: [5, 10, 15, 20, 50, 100],
+      selectedRows: []
     }
   },
   created()
@@ -414,6 +430,28 @@ export default defineComponent({
     handlerControlModal(value: boolean)
     {
       this.modalVisible = !value;
+    },
+    handlerOnSelected(nodes: Array<any>)
+    {
+      this.selectedRows = nodes;
+    },
+    handlerCopyWithHeaders()
+    {
+      const headers = [];
+      const copyRows = [];
+      this.selectedRows.forEach(row => {
+        const values = [];
+        Object.keys(row)
+          .forEach(key => {
+            headers.push(key);
+            values.push(row[key]);
+          });
+        copyRows.push(join(values, ','));
+      });
+      copyRows.unshift(join(headers, ','));
+      useClipboard()
+        .toClipboard(join(copyRows, '\n'))
+        .then(() => this.$Message.info('Copy'));
     }
   }
 });

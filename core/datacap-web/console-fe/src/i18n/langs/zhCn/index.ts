@@ -9,6 +9,7 @@ import signup from "@/i18n/langs/zhCn/signup";
 import alert from "@/i18n/langs/zhCn/alert";
 import monitor from "@/i18n/langs/zhCn/monitor";
 import ai from "@/i18n/langs/zhCn/ai";
+import copy from "@/i18n/langs/zhCn/copy";
 
 export default {
   ...zh,
@@ -21,5 +22,6 @@ export default {
   signup: signup,
   alert: alert,
   monitor: monitor,
-  ai: ai
+  ai: ai,
+  copy: copy
 }

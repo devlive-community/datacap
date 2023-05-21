@@ -4,10 +4,12 @@
                  :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}"
                  :columnDefs="columnDefs"
                  :gridOptions="gridOptions"
-                 :multiSortKey="multiSortKey"
                  :rowData="configure.columns"
-                 :tooltipShowDelay="tooltipShowDelay"
-                 @sortChanged="handlerSortChanged">
+                 :tooltipShowDelay="100"
+                 :multiSortKey="'ctrl'"
+                 :rowSelection="'multiple'"
+                 @sortChanged="handlerSortChanged"
+                 @selectionChanged="handlerSelectionChanged">
     </ag-grid-vue>
   </div>
 </template>
@@ -46,8 +48,6 @@ export default defineComponent({
   {
     return {
       gridOptions: null,
-      multiSortKey: 'ctrl',
-      tooltipShowDelay: 100,
       columnDefs: []
     }
   },
@@ -55,6 +55,18 @@ export default defineComponent({
     handlerInitialize()
     {
       this.columnDefs = [];
+      // Build a select box for multiple selection operations
+      if (this.configure.headers.length > 0) {
+        this.columnDefs.push({
+          width: 38,
+          headerCheckboxSelection: true,
+          checkboxSelection: true,
+          showDisabledCheckboxes: true,
+          lockPinned: true,
+          pinned: 'left'
+        })
+      }
+      // Render backend returns data
       this.configure.headers.forEach((header, index) => {
         const hasSort = this.sortColumns?.filter(sortColumn => sortColumn.column === header)[0];
         const columnDef = {
@@ -88,6 +100,11 @@ export default defineComponent({
         });
         this.$emit('on-sorted', sort);
       }
+    },
+    handlerSelectionChanged(event)
+    {
+      const selectedRows = event.api.getSelectedRows();
+      this.$emit('on-selected', selectedRows);
     }
   }
 });
