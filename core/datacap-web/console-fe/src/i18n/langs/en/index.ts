@@ -9,6 +9,7 @@ import signup from "@/i18n/langs/en/signup";
 import alert from "@/i18n/langs/en/alert";
 import monitor from "@/i18n/langs/en/monitor";
 import ai from "@/i18n/langs/en/ai";
+import copy from "@/i18n/langs/en/copy";
 
 export default {
   ...en,
@@ -21,5 +22,6 @@ export default {
   signup: signup,
   alert: alert,
   monitor: monitor,
-  ai: ai
+  ai: ai,
+  copy: copy
 }
