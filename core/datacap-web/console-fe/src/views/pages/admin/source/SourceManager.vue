@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 0">
     <SourceNotSupported v-if="!isSupported" :templateName="templateArray" style="margin-top: 50px;"></SourceNotSupported>
-    <div ref="splitContainer" class="split-container">
+    <div v-else ref="splitContainer" class="split-container">
       <Split v-model="splitModel" :min="0.15">
         <template #left>
           <div ref="splitContainerLeftPane" class="split-container-pane">
@@ -39,7 +39,7 @@
                 </template>
               </Result>
             </Card>
-            <div v-if="isShowData && !dataLoading">
+            <div v-if="isShowData && !dataLoading && tableConfigure">
               <!-- Paging related components -->
               <div style="margin: 3px 0px 3px 10px;">
                 <Space>
@@ -57,15 +57,19 @@
                   <Tooltip content="DDL">
                     <Button size="small" icon="md-eye" type="text" shape="circle" @click="handlerControlModal(false)"></Button>
                   </Tooltip>
-                  <Dropdown v-if="selectedRows.length > 0">
+                  <Dropdown v-if="selectedRows.length > 0" placement="bottom-start">
                     <Button style="margin-top: -8px;" size="small" type="text" icon="ios-download">
                       [<span style="font-size: 12px; color: #19BE6B; font-weight: bold;">{{ selectedRows.length }}</span>]
                     </Button>
                     <template #list>
                       <DropdownMenu>
-                        <DropdownItem @click="handlerCopyWithHeaders">
+                        <DropdownItem @click="handlerCopyWith(true)">
                           <Icon type="md-copy"/>
-                          {{ $t('copy.copyWithHeaders') }}
+                          {{ $t('copy.copyWithHeadersRow') }}
+                        </DropdownItem>
+                        <DropdownItem @click="handlerCopyWith(false)">
+                          <Icon type="md-copy"/>
+                          {{ $t('copy.copyDataOnlyRow') }}
                         </DropdownItem>
                       </DropdownMenu>
                     </template>
@@ -79,6 +83,12 @@
                     <template #prepend>
                       <Icon type="md-list"/>
                       ORDER BY
+                    </template>
+                  </Input>
+                  <Input v-model="currentWhere" size="small" clearable style="width: auto;" @on-enter="handlerGetValue">
+                    <template #prepend>
+                      <FontAwesomeIcon icon="filter" />
+                      WHERE
                     </template>
                   </Input>
                 </Space>
@@ -147,6 +157,7 @@ export default defineComponent({
       currentOrder: {
         inputValue: null
       },
+      currentWhere: null,
       databaseArray: [],
       dataTreeArray: [],
       configure: null as Sql,
@@ -296,9 +307,12 @@ export default defineComponent({
               item.title = item.title + ' [' + response.data.columns.length + ']';
               response.data.columns.forEach(column => {
                 dataTreeColumnArray.push({
-                  title: column['COLUMN_NAME'] + ' [' + column['DATA_TYPE'] + ']',
-                  level: 'FindColumnType',
+                  catalog: column['TABLE_CATALOG'],
                   database: this.currentDatabase,
+                  table: column['TABLE_NAME'],
+                  column: column['COLUMN_NAME'],
+                  title: column['COLUMN_NAME'] + ' [' + column['DATA_TYPE'] + ']',
+                  level: 'GetColumnDataForTable',
                   type: 'data',
                   dataType: column['DATA_TYPE'],
                   children: []
@@ -327,17 +341,23 @@ export default defineComponent({
         this.columns = [];
         this.isShowData = true;
         this.dataLoading = true;
+        this.selectedRows = [];
         // Reinitialize when switching to a new table
         if (this.currentTable !== data.title) {
           this.configure = new Sql();
           this.currentPageNumber = 1;
           this.currentOrder.inputValue = null;
+          this.currentWhere = null;
           this.configure.offset = this.currentPageNumber;
           this.tableSortColumns = null;
         }
         this.currentTable = data.title;
         this.configure.database = data.catalog;
         this.configure.table = this.currentTable;
+        if (data.level === 'GetColumnDataForTable') {
+          this.configure.table = data.table;
+          this.configure.columns = [data.column];
+        }
         this.handlerExecute();
       }
     },
@@ -396,28 +416,34 @@ export default defineComponent({
     },
     handlerGetValue()
     {
-      const value = this.currentOrder.inputValue;
-      if (value) {
-        const sort: Array<Sort> = new Array<Sort>();
-        value.split(',').forEach(item => {
-          const array = item.trim().split(' ')
+      if (this.currentOrder.inputValue) {
+        const value = this.currentOrder.inputValue;
+        if (value) {
+          const sort: Array<Sort> = new Array<Sort>();
+          value.split(',').forEach(item => {
+            const array = item.trim().split(' ')
+            sort.push({
+              column: array[0],
+              sort: array[1]
+            })
+          })
+          this.configure.sort = sort;
+        }
+        else {
+          const sort: Array<Sort> = new Array<Sort>();
+          const array = value.trim().split(' ')
           sort.push({
             column: array[0],
             sort: array[1]
           })
-        })
-        this.configure.sort = sort;
+          this.configure.sort = sort;
+        }
+        this.tableSortColumns = this.configure.sort;
       }
-      else {
-        const sort: Array<Sort> = new Array<Sort>();
-        const array = value.trim().split(' ')
-        sort.push({
-          column: array[0],
-          sort: array[1]
-        })
-        this.configure.sort = sort;
+
+      if (this.currentWhere) {
+        this.configure.where = this.currentWhere;
       }
-      this.tableSortColumns = this.configure.sort;
       this.handlerExecute();
     },
     handlerOnSorted(sort: Array<Sort>)
@@ -435,7 +461,7 @@ export default defineComponent({
     {
       this.selectedRows = nodes;
     },
-    handlerCopyWithHeaders()
+    handlerCopyWith(withHeaders: boolean)
     {
       const headers = [];
       const copyRows = [];
@@ -448,10 +474,12 @@ export default defineComponent({
           });
         copyRows.push(join(values, ','));
       });
-      copyRows.unshift(join(headers, ','));
+      if (withHeaders) {
+        copyRows.unshift(join(headers, ','));
+      }
       useClipboard()
         .toClipboard(join(copyRows, '\n'))
-        .then(() => this.$Message.info('Copy'));
+        .then(() => this.$Message.info('Copy Successfully'));
     }
   }
 });

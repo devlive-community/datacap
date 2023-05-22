@@ -280,11 +280,11 @@ create table datacap.users
     third_configure text                                     null
 );
 
-INSERT INTO datacap.users (username, password, create_time)
-VALUES ('admin', '$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG', null);
+INSERT INTO datacap.users (username, password)
+VALUES ('admin', '$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG');
 
-INSERT INTO datacap.users (username, password, create_time)
-VALUES ('datacap', '$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.', null);
+INSERT INTO datacap.users (username, password)
+VALUES ('datacap', '$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.');
 
 -- --------------------------------
 --       Update to 1.10.0        --
@@ -377,6 +377,8 @@ GROUP BY
   COLUMN_TYPE', 'Gets the data column classification collection based on the provided database and data table', 'H2',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
        ('FindColumnByDatabaseAndTableAndType', 'SELECT
+  ''${database:String}'' AS TABLE_CATALOG,
+  ''${table:String}'' AS TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE
@@ -517,6 +519,8 @@ GROUP BY
   COLUMN_TYPE', 'Gets the data column classification collection based on the provided database and data table', 'MySQL',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
        ('FindColumnByDatabaseAndTableAndType', 'SELECT
+  ''${database:String}'' AS TABLE_CATALOG,
+  ''${table:String}'' AS TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE
@@ -570,6 +574,8 @@ FROM
 WHERE
   COLUMN_TYPE LIKE ''%${type:String}%''
 GROUP BY
+  TABLE_CATALOG,
+  TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE
@@ -646,6 +652,8 @@ GROUP BY
   COLUMN_TYPE', 'Gets the data column classification collection based on the provided database and data table', 'ClickHouse',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
        ('FindColumnByDatabaseAndTableAndType', 'SELECT
+  ''${database:String}'' AS TABLE_CATALOG,
+  ''${table:String}'' AS TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE
@@ -674,6 +682,8 @@ FROM
 WHERE
   COLUMN_TYPE LIKE ''%${type:String}%''
 GROUP BY
+  TABLE_CATALOG,
+  TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE

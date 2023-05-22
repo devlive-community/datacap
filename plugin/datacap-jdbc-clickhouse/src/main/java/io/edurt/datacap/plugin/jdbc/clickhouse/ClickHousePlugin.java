@@ -43,7 +43,7 @@ public class ClickHousePlugin
             this.response = new Response();
             this.jdbcConfigure = new JdbcConfigure();
             BeanUtils.copyProperties(this.jdbcConfigure, configure);
-            this.jdbcConfigure.setJdbcDriver("ru.yandex.clickhouse.ClickHouseDriver");
+            this.jdbcConfigure.setJdbcDriver("com.clickhouse.jdbc.ClickHouseDriver");
             this.jdbcConfigure.setJdbcType("clickhouse");
             this.clickHouseConnection = new ClickHouseConnection(this.jdbcConfigure, this.response);
         }
