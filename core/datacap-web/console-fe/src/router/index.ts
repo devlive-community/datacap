@@ -37,7 +37,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           roles: ['Admin', 'User']
         },
-        component: () => import("../views/pages/dashboard/DashboardConsole.vue")
+        component: () => import("@/views/user/dashboard/DashboardConsole.vue")
       }
     ]
   },
