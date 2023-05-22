@@ -57,15 +57,19 @@
                   <Tooltip content="DDL">
                     <Button size="small" icon="md-eye" type="text" shape="circle" @click="handlerControlModal(false)"></Button>
                   </Tooltip>
-                  <Dropdown v-if="selectedRows.length > 0">
+                  <Dropdown v-if="selectedRows.length > 0" placement="bottom-start">
                     <Button style="margin-top: -8px;" size="small" type="text" icon="ios-download">
                       [<span style="font-size: 12px; color: #19BE6B; font-weight: bold;">{{ selectedRows.length }}</span>]
                     </Button>
                     <template #list>
                       <DropdownMenu>
-                        <DropdownItem @click="handlerCopyWithHeaders">
+                        <DropdownItem @click="handlerCopyWith(true)">
                           <Icon type="md-copy"/>
-                          {{ $t('copy.copyWithHeaders') }}
+                          {{ $t('copy.copyWithHeadersRow') }}
+                        </DropdownItem>
+                        <DropdownItem @click="handlerCopyWith(false)">
+                          <Icon type="md-copy"/>
+                          {{ $t('copy.copyDataOnlyRow') }}
                         </DropdownItem>
                       </DropdownMenu>
                     </template>
@@ -327,6 +331,7 @@ export default defineComponent({
         this.columns = [];
         this.isShowData = true;
         this.dataLoading = true;
+        this.selectedRows = [];
         // Reinitialize when switching to a new table
         if (this.currentTable !== data.title) {
           this.configure = new Sql();
@@ -435,7 +440,7 @@ export default defineComponent({
     {
       this.selectedRows = nodes;
     },
-    handlerCopyWithHeaders()
+    handlerCopyWith(withHeaders: boolean)
     {
       const headers = [];
       const copyRows = [];
@@ -448,10 +453,12 @@ export default defineComponent({
           });
         copyRows.push(join(values, ','));
       });
-      copyRows.unshift(join(headers, ','));
+      if (withHeaders) {
+        copyRows.unshift(join(headers, ','));
+      }
       useClipboard()
         .toClipboard(join(copyRows, '\n'))
-        .then(() => this.$Message.info('Copy'));
+        .then(() => this.$Message.info('Copy Successfully'));
     }
   }
 });

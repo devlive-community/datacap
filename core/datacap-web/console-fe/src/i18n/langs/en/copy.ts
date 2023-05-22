@@ -1,3 +1,4 @@
 export default {
-  copyWithHeaders: 'Copy with headers',
+  copyWithHeadersRow: 'Copy with headers (Row)',
+  copyDataOnlyRow: 'Copy data (Row)',
 }
