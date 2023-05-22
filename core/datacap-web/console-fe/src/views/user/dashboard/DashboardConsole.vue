@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Row :gutter="16">
+    <Row style="margin: 10px 5px;" :gutter="16">
       <Col span="6">
         <Card class="content-center">
           <NumberInfo>
