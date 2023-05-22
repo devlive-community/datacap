@@ -19,5 +19,6 @@ public class SqlBody
     private List<SqlColumn> orders;
     private int limit = 10;
     private int offset = 1;
+    private String where;
     private SqlType type;
 }

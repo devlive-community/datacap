@@ -66,6 +66,10 @@ public class SqlBuilder
         SelectBuilder.SELECT(applySelectColumns());
         SelectBuilder.FROM(applyDatabaseAndTable());
 
+        if (StringUtils.isNotEmpty(configure.getWhere())) {
+            SelectBuilder.WHERE(configure.getWhere());
+        }
+
         if (ObjectUtils.isNotEmpty(configure.getOrders())) {
             SelectBuilder.ORDER_BY(applyOrderByColumns());
         }

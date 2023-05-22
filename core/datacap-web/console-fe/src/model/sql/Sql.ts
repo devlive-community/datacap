@@ -8,4 +8,5 @@ export class Sql
   limit = 15;
   offset = 1;
   sort: Array<Sort>;
+  where: string;
 }

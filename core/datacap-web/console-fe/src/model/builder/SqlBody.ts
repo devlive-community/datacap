@@ -10,6 +10,7 @@ export class SqlBody
   limit = 10;
   offset = 1;
   type: SqlType = SqlType.SELECT;
+  where: string;
 
   constructor(builder: SqlBodyBuilder)
   {
@@ -20,6 +21,7 @@ export class SqlBody
     this.limit = builder.limit;
     this.offset = builder.offset;
     this.type = builder.type;
+    this.where = builder.where;
   }
 }
 
@@ -32,6 +34,7 @@ export class SqlBodyBuilder
   private _limit = 10;
   private _offset = 1;
   private _type: SqlType = SqlType.SELECT;
+  private _where: string;
 
   constructor(database: string, table: string)
   {
@@ -69,6 +72,12 @@ export class SqlBodyBuilder
     return this;
   }
 
+  setWhere(where: string)
+  {
+    this._where = where;
+    return this;
+  }
+
   get database()
   {
     return this._database;
@@ -102,6 +111,11 @@ export class SqlBodyBuilder
   get type()
   {
     return this._type;
+  }
+
+  get where()
+  {
+    return this._where;
   }
 
   build()

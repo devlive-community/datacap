@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 0">
     <SourceNotSupported v-if="!isSupported" :templateName="templateArray" style="margin-top: 50px;"></SourceNotSupported>
-    <div ref="splitContainer" class="split-container">
+    <div v-else ref="splitContainer" class="split-container">
       <Split v-model="splitModel" :min="0.15">
         <template #left>
           <div ref="splitContainerLeftPane" class="split-container-pane">
@@ -85,6 +85,12 @@
                       ORDER BY
                     </template>
                   </Input>
+                  <Input v-model="currentWhere" size="small" clearable style="width: auto;" @on-enter="handlerGetValue">
+                    <template #prepend>
+                      <FontAwesomeIcon icon="filter" />
+                      WHERE
+                    </template>
+                  </Input>
                 </Space>
               </div>
             </div>
@@ -151,6 +157,7 @@ export default defineComponent({
       currentOrder: {
         inputValue: null
       },
+      currentWhere: null,
       databaseArray: [],
       dataTreeArray: [],
       configure: null as Sql,
@@ -340,6 +347,7 @@ export default defineComponent({
           this.configure = new Sql();
           this.currentPageNumber = 1;
           this.currentOrder.inputValue = null;
+          this.currentWhere = null;
           this.configure.offset = this.currentPageNumber;
           this.tableSortColumns = null;
         }
@@ -408,28 +416,34 @@ export default defineComponent({
     },
     handlerGetValue()
     {
-      const value = this.currentOrder.inputValue;
-      if (value) {
-        const sort: Array<Sort> = new Array<Sort>();
-        value.split(',').forEach(item => {
-          const array = item.trim().split(' ')
+      if (this.currentOrder.inputValue) {
+        const value = this.currentOrder.inputValue;
+        if (value) {
+          const sort: Array<Sort> = new Array<Sort>();
+          value.split(',').forEach(item => {
+            const array = item.trim().split(' ')
+            sort.push({
+              column: array[0],
+              sort: array[1]
+            })
+          })
+          this.configure.sort = sort;
+        }
+        else {
+          const sort: Array<Sort> = new Array<Sort>();
+          const array = value.trim().split(' ')
           sort.push({
             column: array[0],
             sort: array[1]
           })
-        })
-        this.configure.sort = sort;
+          this.configure.sort = sort;
+        }
+        this.tableSortColumns = this.configure.sort;
       }
-      else {
-        const sort: Array<Sort> = new Array<Sort>();
-        const array = value.trim().split(' ')
-        sort.push({
-          column: array[0],
-          sort: array[1]
-        })
-        this.configure.sort = sort;
+
+      if (this.currentWhere) {
+        this.configure.where = this.currentWhere;
       }
-      this.tableSortColumns = this.configure.sort;
       this.handlerExecute();
     },
     handlerOnSorted(sort: Array<Sort>)
