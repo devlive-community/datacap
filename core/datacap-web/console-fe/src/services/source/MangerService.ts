@@ -142,7 +142,12 @@ class ManagerService
   getDataByConfigure(id: string, sql: Sql): Promise<ResponseModel>
   {
     const columns: SqlColumn[] = new Array<SqlColumn>();
-    columns.push(new SqlColumnBuilder('*').build());
+    if (sql.columns.length > 0) {
+      sql.columns.forEach(column => columns.push(new SqlColumnBuilder(column).build()));
+    }
+    else {
+      columns.push(new SqlColumnBuilder('*').build());
+    }
     // The default offset is 1, and the database index defaults to 0, which needs to be subtracted by 1
     const orders: SqlColumn[] = new Array();
     if (sql.sort) {

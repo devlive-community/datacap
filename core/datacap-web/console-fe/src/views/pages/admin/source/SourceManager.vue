@@ -39,7 +39,7 @@
                 </template>
               </Result>
             </Card>
-            <div v-if="isShowData && !dataLoading">
+            <div v-if="isShowData && !dataLoading && tableConfigure">
               <!-- Paging related components -->
               <div style="margin: 3px 0px 3px 10px;">
                 <Space>
@@ -70,6 +70,14 @@
                         <DropdownItem @click="handlerCopyWith(false)">
                           <Icon type="md-copy"/>
                           {{ $t('copy.copyDataOnlyRow') }}
+                        </DropdownItem>
+                        <DropdownItem divided @click="handlerCopyWith(true)">
+                          <Icon type="md-copy"/>
+                          {{ $t('copy.copyWithHeadersColumn') }}
+                        </DropdownItem>
+                        <DropdownItem @click="handlerCopyWith(true)">
+                          <Icon type="md-copy"/>
+                          {{ $t('copy.copyDataOnlyColumn') }}
                         </DropdownItem>
                       </DropdownMenu>
                     </template>
@@ -300,9 +308,12 @@ export default defineComponent({
               item.title = item.title + ' [' + response.data.columns.length + ']';
               response.data.columns.forEach(column => {
                 dataTreeColumnArray.push({
-                  title: column['COLUMN_NAME'] + ' [' + column['DATA_TYPE'] + ']',
-                  level: 'FindColumnType',
+                  catalog: column['TABLE_CATALOG'],
                   database: this.currentDatabase,
+                  table: column['TABLE_NAME'],
+                  column: column['COLUMN_NAME'],
+                  title: column['COLUMN_NAME'] + ' [' + column['DATA_TYPE'] + ']',
+                  level: 'GetColumnDataForTable',
                   type: 'data',
                   dataType: column['DATA_TYPE'],
                   children: []
@@ -343,6 +354,10 @@ export default defineComponent({
         this.currentTable = data.title;
         this.configure.database = data.catalog;
         this.configure.table = this.currentTable;
+        if (data.level === 'GetColumnDataForTable') {
+          this.configure.table = data.table;
+          this.configure.columns = [data.column];
+        }
         this.handlerExecute();
       }
     },
