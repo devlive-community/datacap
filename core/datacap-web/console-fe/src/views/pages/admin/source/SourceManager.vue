@@ -71,14 +71,6 @@
                           <Icon type="md-copy"/>
                           {{ $t('copy.copyDataOnlyRow') }}
                         </DropdownItem>
-                        <DropdownItem divided @click="handlerCopyWith(true)">
-                          <Icon type="md-copy"/>
-                          {{ $t('copy.copyWithHeadersColumn') }}
-                        </DropdownItem>
-                        <DropdownItem @click="handlerCopyWith(true)">
-                          <Icon type="md-copy"/>
-                          {{ $t('copy.copyDataOnlyColumn') }}
-                        </DropdownItem>
                       </DropdownMenu>
                     </template>
                   </Dropdown>
