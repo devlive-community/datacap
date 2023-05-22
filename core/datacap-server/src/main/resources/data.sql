@@ -92,6 +92,8 @@ GROUP BY
   COLUMN_TYPE', 'Gets the data column classification collection based on the provided database and data table', 'H2',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
        ('FindColumnByDatabaseAndTableAndType', 'SELECT
+  ''${database:String}'' AS TABLE_CATALOG,
+  ''${table:String}'' AS TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE
@@ -232,6 +234,8 @@ GROUP BY
   COLUMN_TYPE', 'Gets the data column classification collection based on the provided database and data table', 'MySQL',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
        ('FindColumnByDatabaseAndTableAndType', 'SELECT
+  ''${database:String}'' AS TABLE_CATALOG,
+  ''${table:String}'' AS TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE
@@ -285,6 +289,8 @@ FROM
 WHERE
   COLUMN_TYPE LIKE ''%${type:String}%''
 GROUP BY
+  TABLE_CATALOG,
+  TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE
@@ -361,6 +367,8 @@ GROUP BY
   COLUMN_TYPE', 'Gets the data column classification collection based on the provided database and data table', 'ClickHouse',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', TRUE),
        ('FindColumnByDatabaseAndTableAndType', 'SELECT
+  ''${database:String}'' AS TABLE_CATALOG,
+  ''${table:String}'' AS TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE
@@ -389,6 +397,8 @@ FROM
 WHERE
   COLUMN_TYPE LIKE ''%${type:String}%''
 GROUP BY
+  TABLE_CATALOG,
+  TABLE_NAME,
   COLUMN_NAME,
   COLUMN_TYPE,
   DATA_TYPE
