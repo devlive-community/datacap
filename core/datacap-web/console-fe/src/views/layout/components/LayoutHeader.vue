@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header>
-      <Menu mode="horizontal" theme="dark" active-name="dashboard">
+      <Menu mode="horizontal" theme="dark" active-name="dashboard" :style="{'z-index':99}">
         <div class="layout-logo">
           <div class="layout-logo logo-text">
             <RouterLink to="/">
