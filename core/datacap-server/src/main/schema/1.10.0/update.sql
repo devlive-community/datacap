@@ -314,7 +314,8 @@ FROM
 WHERE
   database = ''${database:String}''
 GROUP BY
-  TABLE_TYPE', 'Finds all table types under the database according to the database', 'ClickHouse', '[{"column":"database","type":"String","expression":"${database:String}"}]', TRUE),
+  TABLE_TYPE', 'Finds all table types under the database according to the database', 'ClickHouse', '[{"column":"database","type":"String","expression":"${database:String}"}]',
+        TRUE),
        ('FindTableByDatabaseAndType', 'SELECT
   `database` AS TABLE_CATALOG,
   name AS TABLE_NAME
@@ -403,3 +404,25 @@ ORDER BY
   COLUMN_NAME', 'Gets a collection of related data based on the specified database, table, and data type', 'ClickHouse',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"},{"column":"type","type":"String","expression":"${type:String}"}]',
         TRUE);
+
+CREATE TABLE IF NOT EXISTS `role_menu_relation`
+(
+    role_id long,
+    menu_id long
+);
+
+CREATE TABLE `menus`
+(
+    `id`          bigint PRIMARY KEY AUTO_INCREMENT,
+    `name`        varchar(255) NOT NULL,
+    `code`        varchar(255) DEFAULT NULL,
+    `description` varchar(255) DEFAULT NULL,
+    `url`         varchar(255) NOT NULL,
+    `group_name`  varchar(255) DEFAULT NULL,
+    `sorted`      int          DEFAULT 0,
+    `type`        varchar(10)  DEFAULT 'VIEW',
+    `parent`      bigint       DEFAULT 0,
+    `active`      boolean      DEFAULT 1,
+    `create_time` DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `update_time` DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

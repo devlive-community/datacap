@@ -110,4 +110,8 @@ export default {
   primaryKey: 'Primary Key',
   kafka: 'Kafka',
   log: 'Log',
+  group: 'Group',
+  sorted: 'Sorted',
+  parent: 'Parent',
+  menu: 'Menu',
 }

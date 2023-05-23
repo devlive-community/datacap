@@ -110,4 +110,8 @@ export default {
   primaryKey: '主键',
   kafka: 'Kafka',
   log: '日志',
+  group: '组',
+  sorted: '顺序',
+  parent: '上级',
+  menu: '菜单'
 }

@@ -2,6 +2,7 @@ package io.edurt.datacap.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.server.entity.admin.MenuEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,19 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @ToString
@@ -41,6 +48,12 @@ public class RoleEntity
     @Column(name = "create_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createTime;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "role_menu_relation",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    private Set<MenuEntity> menus = new HashSet<>();
 
     @Transient
     private boolean isDefault;
