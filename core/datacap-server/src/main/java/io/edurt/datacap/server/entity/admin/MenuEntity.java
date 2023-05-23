@@ -62,7 +62,7 @@ public class MenuEntity
     private MenuEnum type;
 
     @Column(name = "parent")
-    private Long parent;
+    private long parent;
 
     @Column(name = "active")
     private boolean active;

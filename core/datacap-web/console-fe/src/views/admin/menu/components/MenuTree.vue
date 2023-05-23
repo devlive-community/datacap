@@ -1,15 +1,27 @@
 <template>
   <div>
     <Modal v-model="visible" :title="$t('common.menu')" :closable="false" :mask-closable="false" @cancel="handlerCancel()">
-      {{ fullMenus }}
+      <Tree show-checkbox
+            :data="fullMenus"
+            @on-check-change="handlerOnCheckedNode">
+      </Tree>
+      <Spin :show="loading" fix>
+      </Spin>
+      <template #footer>
+        <Button key="cancel" type="error" :disabled="saving" size="small" @click="handlerCancel()">
+          {{ $t('common.cancel') }}
+        </Button>
+        <Button type="primary" size="small" :loading="saving" @click="handlerSave()">
+          {{ $t('common.save') }}
+        </Button>
+      </template>
     </Modal>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {Filter} from "@/model/Filter";
-import MenuService from '@/services/admin/MenuService';
+import RoleService from "@/services/admin/RoleService";
 
 export default defineComponent({
   name: 'MenuTreeComponent',
@@ -17,34 +29,63 @@ export default defineComponent({
     isVisible: {
       type: Boolean,
       default: () => false
+    },
+    roleId: {
+      type: Number,
+      default: () => 0
     }
   },
   data()
   {
     return {
       loading: false,
-      fullMenus: []
+      saving: false,
+      fullMenus: [],
+      selectNodes: []
     }
   },
   created()
   {
-    const filter: Filter = new Filter();
-    filter.size = 1000;
-    this.handlerInitialize(filter);
+    this.handlerInitialize();
   },
   methods: {
-    handlerInitialize(filter: Filter)
+    handlerInitialize()
     {
       this.loading = true;
-      MenuService.getAll(filter)
+      RoleService.getAllMenuById(this.roleId)
         .then((response) => {
           if (response.status) {
-            this.fullMenus = response.data.content;
+            this.fullMenus = response.data;
           }
         })
         .finally(() => {
           this.loading = false
         })
+    },
+    handlerOnCheckedNode(nodes: any)
+    {
+      this.selectNodes = nodes;
+    },
+    handlerSave()
+    {
+      this.saving = true;
+      RoleService.saveMenu(this.roleId, this.selectNodes)
+        .then((response) => {
+          if (response.status) {
+            this.saving = false;
+            this.handlerCancel();
+          }
+          else {
+            this.$Message.error(response.message);
+          }
+        })
+        .finally(() => {
+          this.saving = false
+        })
+    },
+    handlerCancel()
+    {
+      this.$emit('close', false)
     }
   },
   computed: {

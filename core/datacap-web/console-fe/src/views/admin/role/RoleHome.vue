@@ -14,7 +14,7 @@
               <Button shape="circle" type="primary" size="small" icon="md-create" @click="handlerVisibleDetail(row.id, true)"/>
             </Tooltip>
             <Tooltip :content="$t('common.menu')" transfer>
-              <Button shape="circle" type="info" size="small" icon="md-menu" @click="handlerVisibleMenuTree"/>
+              <Button shape="circle" type="info" size="small" icon="md-menu" @click="handlerVisibleMenuTree(row.id)"/>
             </Tooltip>
           </Space>
         </template>
@@ -25,7 +25,11 @@
       </p>
     </Card>
     <RoleDetails v-if="visibleDetail" :isVisible="visibleDetail" :id="applyId" @close="handlerVisibleDetail(null, $event)"/>
-    <menu-tree-component v-if="visibleMenuTree" :isVisible="visibleMenuTree"></menu-tree-component>
+    <menu-tree-component v-if="visibleMenuTree"
+                         :isVisible="visibleMenuTree"
+                         :role-id="applyId"
+                         @close="handlerVisibleMenuTree(null)">
+    </menu-tree-component>
   </div>
 </template>
 
@@ -113,8 +117,9 @@ export default defineComponent({
       this.filter.size = pagination.size;
       this.handlerInitialize(this.filter);
     },
-    handlerVisibleMenuTree()
+    handlerVisibleMenuTree(value: number)
     {
+      this.applyId = value;
       this.visibleMenuTree = !this.visibleMenuTree;
     }
   }
