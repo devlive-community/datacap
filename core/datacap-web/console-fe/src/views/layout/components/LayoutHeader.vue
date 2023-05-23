@@ -10,68 +10,22 @@
           </div>
         </div>
         <div class="layout-nav">
-          <MenuItem name="dashboard" to="/">
-            <Icon type="ios-navigate"></Icon>
-            {{ $t('common.home') }}
-          </MenuItem>
-          <MenuItem name="console" to="/console/index">
-            <Icon type="md-browsers"/>
-            {{ $t('common.query') }}
-          </MenuItem>
-          <Submenu name="admin">
-            <template #title>
-              <Icon type="ios-hammer"/>
-              {{ $t('common.admin') }}
-            </template>
-            <MenuGroup :title="$t('common.default')">
-              <MenuItem name="admin_source" to="/admin/source">
-                <Icon type="md-appstore"/>
-                {{ $t('common.source') }}
+          <div v-for="menu in availableMenus" v-bind:key="menu.id">
+            <Submenu v-if="menu?.children" :name="menu.title">
+              <template #title>
+                <Icon v-if="menu?.icon" :type="menu.icon"/>
+                {{ $t(menu.i18nKey) }}
+              </template>
+              <MenuItem v-for="children in menu.children" :name="children.title" :to="children.url">
+                <Icon v-if="children?.icon" :type="children.icon"/>
+                {{ $t(children.i18nKey) }}
               </MenuItem>
-              <MenuItem name="admin_snippet" to="/admin/snippet">
-                <Icon type="ios-barcode"/>
-                {{ $t('common.snippet') }}
-              </MenuItem>
-            </MenuGroup>
-            <MenuGroup :title="$t('monitor.name')">
-              <MenuItem name="monitor_processor" to="/admin/monitor/processor">
-                <Icon type="md-american-football"/>
-                {{ $t('monitor.processor') }}
-              </MenuItem>
-            </MenuGroup>
-            <MenuGroup :title="$t('common.history')">
-              <MenuItem name="admin_history" to="/admin/history">
-                <Icon type="ios-book"/>
-                {{ $t('common.history') }}
-              </MenuItem>
-              <MenuItem name="admin_pipeline" to="/admin/pipeline">
-                <Icon type="md-list-box"/>
-                {{ $t('common.pipeline') }}
-              </MenuItem>
-            </MenuGroup>
-          </Submenu>
-          <Submenu name="settings">
-            <template #title>
-              <Icon type="ios-cog"/>
-              {{ $t('common.settings') }}
-            </template>
-            <MenuGroup :title="$t('common.default')">
-              <MenuItem name="settings_functions" to="/admin/settings/function">
-                <Icon type="ios-basket"/>
-                {{ $t('common.function') }}
-              </MenuItem>
-              <MenuItem name="settings_schedule" to="/admin/schedule">
-                <Icon type="md-timer"/>
-                {{ $t('common.schedule') }}
-              </MenuItem>
-            </MenuGroup>
-            <MenuGroup :title="$t('common.template')">
-              <MenuItem name="admin_template_sql" to="/admin/template/sql">
-                <Icon type="md-browsers"/>
-                {{ $t('common.sql') }}
-              </MenuItem>
-            </MenuGroup>
-          </Submenu>
+            </Submenu>
+            <MenuItem v-else :name="menu.title" :to="menu.url">
+              <Icon v-if="menu?.icon" :type="menu.icon"/>
+              {{ $t(menu.i18nKey) }}
+            </MenuItem>
+          </div>
         </div>
         <div :style="{lineHeight: '64px', float: 'right', 'margin-right': '10px'}">
           <MenuItem name="feedback" target="_blank" to="https://github.com/EdurtIO/datacap/issues/new/choose">
@@ -127,6 +81,7 @@ import Common from "@/common/Common";
 import {AuthResponse} from "@/model/AuthResponse";
 import router from "@/router";
 import config from '../../../../package.json';
+import UserService from "@/services/UserService";
 
 export default defineComponent({
   name: "LayoutHeader",
@@ -151,7 +106,29 @@ export default defineComponent({
       handlerLogout
     }
   },
+  created()
+  {
+    this.handlerInitialize();
+  },
+  data()
+  {
+    return {
+      availableMenus: []
+    }
+  },
   methods: {
+    handlerInitialize()
+    {
+      UserService.getMenus()
+        .then(response => {
+          if (response.status) {
+            this.availableMenus = response.data
+          }
+          else {
+            this.$Message.error(response.message)
+          }
+        })
+    },
     handlerChangeLang(language: string)
     {
       this.$emit('changeLanguage', language);

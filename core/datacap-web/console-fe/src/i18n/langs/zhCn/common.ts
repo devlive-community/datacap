@@ -113,5 +113,7 @@ export default {
   group: '组',
   sorted: '顺序',
   parent: '上级',
-  menu: '菜单'
+  menu: '菜单',
+  i18nKey: 'I18n Key',
+  icon: '图标',
 }

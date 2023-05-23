@@ -8,6 +8,7 @@ import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.UserEntity;
 import io.edurt.datacap.server.entity.UserLogEntity;
+import io.edurt.datacap.server.record.TreeRecord;
 import io.edurt.datacap.server.service.UserLogService;
 import io.edurt.datacap.server.service.UserService;
 import org.springframework.validation.annotation.Validated;
@@ -75,5 +76,11 @@ public class UserController
     public Response<List<Object>> getSugs(@PathVariable Long id)
     {
         return this.userService.getSugs(id);
+    }
+
+    @GetMapping(value = "menus")
+    public Response<List<TreeRecord>> getMenus()
+    {
+        return this.userService.getMenus();
     }
 }

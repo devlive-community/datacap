@@ -42,6 +42,16 @@
               </Select>
             </FormItem>
           </Col>
+          <Col span="12">
+            <FormItem :label="$t('common.i18nKey')" :label-width="80" prop="i18nKey">
+              <Input v-model="formState['i18nKey']"/>
+            </FormItem>
+          </Col>
+          <Col span="12">
+            <FormItem :label="$t('common.icon')" :label-width="80" prop="icon">
+              <Input v-model="formState['icon']"/>
+            </FormItem>
+          </Col>
         </Row>
         <FormItem :label="$t('common.description')" :label-width="80" prop="description">
           <Input type="textarea" :rows="3" v-model="formState['description']"/>
@@ -106,27 +116,26 @@ export default defineComponent({
       this.loading = true;
       const i18n = useI18n();
       this.title = i18n.t('common.create');
-      if (this.id > 0) {
-        this.title = i18n.t('common.modify');
-        MenuService.getById(this.id).then(response => {
-          if (response.status) {
-            this.formState = reactive<any>(response.data);
-          }
-        })
-      }
-      this.title += i18n.t('common.menu');
-
       const filter: Filter = new Filter();
       filter.size = 1000;
       MenuService.getAll(filter)
         .then((response) => {
           if (response.status) {
             this.fullMenus = response.data.content;
+            if (this.id > 0) {
+              this.title = i18n.t('common.modify');
+              MenuService.getById(this.id).then(response => {
+                if (response.status) {
+                  this.formState = reactive<any>(response.data);
+                }
+              })
+            }
           }
         })
         .finally(() => {
           this.loading = false
         })
+      this.title += i18n.t('common.menu');
     },
     handlerReset()
     {
@@ -141,6 +150,8 @@ export default defineComponent({
         .set('parent', null)
         .set('code', null)
         .set('active', true)
+        .set('i18nKey', null)
+        .set('icon', null)
         .build()['props'];
     },
     handlerSave()

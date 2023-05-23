@@ -114,4 +114,6 @@ export default {
   sorted: 'Sorted',
   parent: 'Parent',
   menu: 'Menu',
+  i18nKey: 'I18n Key',
+  icon: 'Icon',
 }

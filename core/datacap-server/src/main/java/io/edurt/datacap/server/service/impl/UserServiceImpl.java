@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.service.impl;
 
+import com.google.common.collect.Lists;
 import com.unfbx.chatgpt.OpenAiClient;
 import com.unfbx.chatgpt.entity.chat.ChatCompletion;
 import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
@@ -18,6 +19,8 @@ import io.edurt.datacap.server.entity.RoleEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 import io.edurt.datacap.server.entity.UserChatEntity;
 import io.edurt.datacap.server.entity.UserEntity;
+import io.edurt.datacap.server.entity.admin.MenuEntity;
+import io.edurt.datacap.server.record.TreeRecord;
 import io.edurt.datacap.server.repository.RoleRepository;
 import io.edurt.datacap.server.repository.SourceRepository;
 import io.edurt.datacap.server.repository.UserChatRepository;
@@ -50,7 +53,9 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
 @Service
@@ -307,5 +312,41 @@ public class UserServiceImpl
                 .limit(sugsMaxSize)
                 .collect(Collectors.toList());
         return Response.success(sugs);
+    }
+
+    @Override
+    public Response<List<TreeRecord>> getMenus()
+    {
+        Map<Long, TreeRecord> treeMap = new ConcurrentHashMap<>();
+        Optional<UserEntity> optionalUser = userRepository.findById(UserDetailsService.getUser().getId());
+        UserEntity user = optionalUser.get();
+        List<TreeRecord> tree = new ArrayList<>();
+        user.getRoles().forEach(role -> {
+            List<MenuEntity> menuList = StreamSupport.stream(role.getMenus().spliterator(), false)
+                    .sorted(Comparator.comparing(MenuEntity::getParent))
+                    .collect(Collectors.toList());
+            // Sets the parent menu sort
+            menuList.forEach(menu -> {
+                if (menu.getParent() == 0) {
+                    TreeRecord parent = TreeRecord.of(menu, true, true, Lists.newArrayList());
+                    treeMap.put(menu.getId(), parent);
+                }
+                else {
+                    TreeRecord temp = treeMap.get(menu.getParent());
+                    List<TreeRecord> childrens = temp.getChildren();
+                    if (ObjectUtils.isEmpty(childrens)) {
+                        childrens = Lists.newArrayList();
+                    }
+                    TreeRecord children = TreeRecord.of(menu, true, true, Lists.newArrayList());
+                    childrens.add(children);
+                    childrens.sort(Comparator.comparing(TreeRecord::getSorted));
+                    temp.setChildren(childrens);
+                    treeMap.put(temp.getId(), temp);
+                }
+            });
+            treeMap.keySet().forEach(v -> tree.add(treeMap.get(v)));
+        });
+        tree.sort(Comparator.comparing(TreeRecord::getSorted));
+        return Response.success(tree);
     }
 }

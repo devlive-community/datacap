@@ -9,6 +9,7 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.name'),
       key: 'name',
+      tooltip: true,
       ellipsis: true
     },
     {

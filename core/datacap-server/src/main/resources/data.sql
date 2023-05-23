@@ -426,6 +426,56 @@ CREATE TABLE `menus`
     `type`        varchar(10)  DEFAULT 'VIEW',
     `parent`      bigint       DEFAULT 0,
     `active`      boolean      DEFAULT 1,
+    `i18n_key`    varchar(255) DEFAULT NULL,
+    `icon`        varchar(255) DEFAULT NULL,
     `create_time` date         DEFAULT CURRENT_TIMESTAMP(5),
     `update_time` date         DEFAULT CURRENT_TIMESTAMP(5)
 );
+
+insert into `menus` (name, code, description, url, group_name, sorted, type, parent, active, i18n_key, icon)
+values ('全局 - 首页', 'HOME', '全局路由：所有用户都可以访问', '/dashboard/index', null, 1, 'VIEW', 0, 1, 'common.home', 'ios-navigate'),
+       ('全局 - 查询', 'QUERY', '全局路由：所有用户都可以访问', '/console/index', null, 2, 'VIEW', 0, 1, 'common.query', 'md-browsers'),
+       ('全局 - 管理主菜单', 'MANAGEMENT', '全局：所有用户都可以访问
+位置：顶部管理主菜单', '#', null, 3, 'VIEW', 0, 1, 'common.admin', 'ios-hammer'),
+       ('全局 - 管理 - 数据源', 'DATASOURCE', '全局：所有用户都可以访问
+位置：顶部管理一级子菜单', '/admin/source', 'default', 1, 'VIEW', 3, 1, 'common.source', 'md-appstore'),
+       ('全局 - 管理 - 片段', 'SNIPPET', '全局：所有用户都可以访问
+位置：顶部管理一级子菜单', '/admin/snippet', null, 2, 'VIEW', 3, 1, 'common.snippet', 'ios-barcode'),
+       ('全局 - 管理 - 查询历史', 'HISTORY', '全局：所有用户都可以访问
+位置：顶部管理一级子菜单', '/admin/history', null, 3, 'VIEW', 3, 1, 'common.history', 'ios-book'),
+       ('全局 - 管理 - 流水线', 'PIPELINE', '全局：所有用户都可以访问
+位置：顶部管理一级子菜单', '/admin/pipeline', null, 4, 'VIEW', 3, 1, 'common.pipeline', 'md-list-box'),
+       ('管理员 - 系统主菜单', 'SYSTEM', '管理员：管理员权限用户可以访问
+位置：顶部管理一级子菜单', '#', null, 4, 'VIEW', 0, 1, 'common.system', 'md-cog'),
+       ('管理员 - 系统 - 函数', 'FUNCTION', '管理员：管理员权限用户可以访问
+位置：顶部管理一级子菜单', '/admin/function', null, 1, 'VIEW', 8, 1, 'common.function', 'ios-basket'),
+       ('管理员 - 系统 - 定时任务', 'SCHEDULE', '管理员：管理员权限用户可以访问
+位置：顶部管理一级子菜单', '/admin/schedule', null, 2, 'VIEW', 8, 1, 'common.schedule', 'md-timer'),
+       ('管理员 - 系统 - 模版', 'TEMPLATE', '管理员：管理员权限用户可以访问
+位置：顶部管理一级子菜单', '/admin/template', null, 3, 'VIEW', 8, 1, 'common.template', 'md-browsers'),
+       ('管理员 - 系统 - 权限', 'ROLE', '管理员：管理员权限用户可以访问
+位置：顶部管理一级子菜单', '/admin/role', null, 4, 'VIEW', 8, 1, 'common.authority', 'md-flag'),
+       ('管理员 - 系统 - 菜单', 'MENU', '管理员：管理员权限用户可以访问
+位置：顶部管理一级子菜单', '/admin/menu', null, 5, 'VIEW', 8, 1, 'common.menu', 'md-menu');
+
+insert into role_menu_relation (role_id, menu_id)
+values ('2', '7'),
+       ('2', '1'),
+       ('2', '5'),
+       ('2', '2'),
+       ('2', '3'),
+       ('2', '4'),
+       ('2', '6'),
+       ('1', '12'),
+       ('1', '7'),
+       ('1', '1'),
+       ('1', '10'),
+       ('1', '8'),
+       ('1', '5'),
+       ('1', '4'),
+       ('1', '9'),
+       ('1', '13'),
+       ('1', '2'),
+       ('1', '3'),
+       ('1', '6'),
+       ('1', '11');

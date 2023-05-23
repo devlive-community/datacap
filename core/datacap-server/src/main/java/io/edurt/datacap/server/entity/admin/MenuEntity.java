@@ -67,6 +67,12 @@ public class MenuEntity
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "i18n_key")
+    private String i18nKey;
+
+    @Column(name = "icon")
+    private String icon;
+
     @Column(name = "create_time")
     @CreatedDate
     private Timestamp createTime;
