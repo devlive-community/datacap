@@ -43,6 +43,11 @@ class UserService
   {
     return new HttpCommon().get(baseUrl + '/sugs/' + id);
   }
+
+  getMenus(): Promise<ResponseModel>
+  {
+    return new HttpCommon().get(baseUrl + '/menus');
+  }
 }
 
 export default new UserService();

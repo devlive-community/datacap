@@ -8,13 +8,13 @@
         </Tooltip>
       </template>
       <Table :loading="loading" :columns="headers" :data="finalData?.content">
+        <template #active="{row}">
+          <Switch v-model="row.active" disabled></Switch>
+        </template>
         <template #action="{ row }">
           <Space>
             <Tooltip :content="$t('common.modify')" transfer>
-              <Button shape="circle" type="primary" size="small" icon="md-create" @click="handlerVisibleDetail(row.id, true)"/>
-            </Tooltip>
-            <Tooltip :content="$t('common.menu')" transfer>
-              <Button shape="circle" type="info" size="small" icon="md-menu" @click="handlerVisibleMenuTree(row.id)"/>
+              <Button shape="circle" :disabled="row.default" type="primary" size="small" icon="md-create" @click="handlerVisibleDetail(row.id, true)"/>
             </Tooltip>
           </Space>
         </template>
@@ -24,31 +24,25 @@
               @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
       </p>
     </Card>
-    <RoleDetails v-if="visibleDetail" :isVisible="visibleDetail" :id="applyId" @close="handlerVisibleDetail(null, $event)"/>
-    <menu-tree-component v-if="visibleMenuTree"
-                         :isVisible="visibleMenuTree"
-                         :role-id="applyId"
-                         @close="handlerVisibleMenuTree(null)">
-    </menu-tree-component>
+    <MenuDetails v-if="visibleDetail" :isVisible="visibleDetail" :id="applyId" @close="handlerVisibleDetail(null, $event)"/>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n';
-import {createHeaders} from "@/views/admin/role/RoleGenerate";
-import RoleService from "@/services/admin/RoleService";
 import {Filter} from "@/model/Filter";
 import {ResponsePage} from "@/model/ResponsePage";
-import RoleDetails from "@/views/admin/role/RoleDetails.vue";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
-import MenuTreeComponent from "@/views/admin/menu/components/MenuTree.vue";
+import {createHeaders} from './MenuGenerate';
+import MenuService from '@/services/admin/MenuService';
+import MenuDetails from "@/views/admin/menu/MenuDetails.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
-  name: 'AdminRoleHome',
-  components: {MenuTreeComponent, RoleDetails},
+  name: 'MenuHome',
+  components: {MenuDetails},
   setup()
   {
     const i18n = useI18n();
@@ -65,8 +59,7 @@ export default defineComponent({
       loading: false,
       visibleDetail: false,
       applyId: null,
-      finalData: null as ResponsePage,
-      visibleMenuTree: false
+      finalData: null as ResponsePage
     }
   },
   created()
@@ -77,7 +70,7 @@ export default defineComponent({
     handlerInitialize(filter: Filter)
     {
       this.loading = true;
-      RoleService.getAll(filter)
+      MenuService.getAll(filter)
         .then((response) => {
           if (response.status) {
             this.finalData = response.data;
@@ -97,6 +90,7 @@ export default defineComponent({
       else {
         this.applyId = null;
         this.visibleDetail = false;
+        this.handlerInitialize(this.filter)
       }
     },
     handlerSizeChange(size: number)
@@ -116,11 +110,6 @@ export default defineComponent({
       this.filter.page = pagination.current;
       this.filter.size = pagination.size;
       this.handlerInitialize(this.filter);
-    },
-    handlerVisibleMenuTree(value: number)
-    {
-      this.applyId = value;
-      this.visibleMenuTree = !this.visibleMenuTree;
     }
   }
 })

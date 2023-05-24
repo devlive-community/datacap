@@ -6,6 +6,7 @@ import io.edurt.datacap.server.body.UserQuestionBody;
 import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.UserEntity;
+import io.edurt.datacap.server.record.TreeRecord;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +28,6 @@ public interface UserService
     Response<Object> startChat(UserQuestionBody configure);
 
     Response<List<Object>> getSugs(Long id);
+
+    Response<List<TreeRecord>> getMenus();
 }

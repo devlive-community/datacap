@@ -63,6 +63,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin",
     name: "admin",
+    redirect: '/admin/source',
     component: LayoutContainer,
     meta: {
       requireAuth: true,
@@ -70,23 +71,17 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "source",
-        redirect: '/admin/source/index',
-        children: [
-          {
-            path: "index",
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("../views/pages/admin/source/SourceAdmin.vue")
-          },
-          {
-            path: ":id/manager",
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("../views/pages/admin/source/SourceManager.vue")
-          }
-        ]
+        meta: {
+          roles: ['Admin', 'User']
+        },
+        component: () => import("../views/pages/admin/source/SourceAdmin.vue")
+      },
+      {
+        path: "source/:id/manager",
+        meta: {
+          roles: ['Admin', 'User']
+        },
+        component: () => import("../views/pages/admin/source/SourceManager.vue")
       },
       {
         path: "history",
@@ -111,28 +106,18 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "template",
-        children: [
-          {
-            path: "sql",
-            name: 'RouterForTemplateAndSql',
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("../views/pages/admin/template/sql/SqlAdmin.vue")
-          }
-        ]
+        name: 'RouterForTemplateAndSql',
+        meta: {
+          roles: ['Admin', 'User']
+        },
+        component: () => import("../views/pages/admin/template/sql/SqlAdmin.vue")
       },
       {
-        path: "settings",
-        children: [
-          {
-            path: "function",
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("@/views/pages/admin/settings/functions/FunctionsAdmin.vue")
-          }
-        ]
+        path: "function",
+        meta: {
+          roles: ['Admin', 'User']
+        },
+        component: () => import("@/views/pages/admin/settings/functions/FunctionsAdmin.vue")
       },
       {
         path: "monitor",
@@ -159,6 +144,13 @@ const routes: Array<RouteRecordRaw> = [
           roles: ['Admin']
         },
         component: () => import("@/views/admin/schedule/ScheduleHome.vue")
+      },
+      {
+        path: "menu",
+        meta: {
+          roles: ['Admin']
+        },
+        component: () => import("@/views/admin/menu/MenuHome.vue")
       }
     ]
   },
