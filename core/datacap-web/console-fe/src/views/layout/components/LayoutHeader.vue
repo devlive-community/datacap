@@ -16,7 +16,7 @@
                 <Icon v-if="menu?.icon" :type="menu.icon"/>
                 {{ $t(menu.i18nKey) }}
               </template>
-              <MenuItem v-for="children in menu.children" :name="children.title" :to="children.url">
+              <MenuItem v-for="children in menu.children" v-bind:key="children.id" :name="children.title" :to="children.url">
                 <Icon v-if="children?.icon" :type="children.icon"/>
                 {{ $t(children.i18nKey) }}
               </MenuItem>
