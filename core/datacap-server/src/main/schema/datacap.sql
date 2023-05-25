@@ -738,7 +738,9 @@ values ('全局 - 首页', 'HOME', '全局路由：所有用户都可以访问',
        ('管理员 - 系统 - 权限', 'ROLE', '管理员：管理员权限用户可以访问
 位置：顶部管理一级子菜单', '/admin/role', null, 4, 'VIEW', 8, 1, 'common.authority', 'md-flag'),
        ('管理员 - 系统 - 菜单', 'MENU', '管理员：管理员权限用户可以访问
-位置：顶部管理一级子菜单', '/admin/menu', null, 5, 'VIEW', 8, 1, 'common.menu', 'md-menu');
+位置：顶部管理一级子菜单', '/admin/menu', null, 5, 'VIEW', 8, 1, 'common.menu', 'md-menu'),
+       ('管理员 - 系统 - 用户', 'USERS', '管理员：管理员权限用户可以访问
+位置：顶部管理一级子菜单', '/admin/users', null, 6, 'VIEW', 8, 1, 'common.user', 'ios-man');
 
 insert into role_menu_relation (role_id, menu_id)
 values ('2', '7'),
@@ -760,4 +762,5 @@ values ('2', '7'),
        ('1', '2'),
        ('1', '3'),
        ('1', '6'),
-       ('1', '11');
+       ('1', '11'),
+       ('1', '14');

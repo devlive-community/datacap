@@ -6,7 +6,6 @@ import "nprogress/nprogress.css";
 import Common from "@/common/Common";
 import ProfileLayout from "@/views/pages/profile/layout/ProfileLayout.vue";
 import LayoutWebErrorContainer from "@/views/layout/web-error/Layout.vue";
-import _ from 'lodash';
 
 NProgress.configure({
   easing: 'ease',
@@ -152,6 +151,13 @@ const routes: Array<RouteRecordRaw> = [
           roles: ['Admin']
         },
         component: () => import("@/views/admin/menu/MenuHome.vue")
+      },
+      {
+        path: "users",
+        meta: {
+          roles: ['Admin']
+        },
+        component: () => import("@/views/admin/user/UserHome.vue")
       }
     ]
   },
@@ -264,12 +270,12 @@ router.beforeEach((to, from, next) => {
       if (localStorage.getItem(Common.token)) {
         const meta = JSON.parse(localStorage.getItem(Common.token));
         // @ts-ignore
-        if (_.intersection(to.meta.roles, meta['roles']).length > 0) {
-          next();
-        }
-        else {
-          next({name: "routerNotAuthorized"});
-        }
+        // if (_.intersection(to.meta.roles, meta['roles']).length > 0) {
+        next();
+        // }
+        // else {
+        //   next({name: "routerNotAuthorized"});
+        // }
       }
       else {
         next('/auth/signin');

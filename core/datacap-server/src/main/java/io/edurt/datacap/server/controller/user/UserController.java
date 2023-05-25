@@ -1,14 +1,18 @@
 package io.edurt.datacap.server.controller.user;
 
+import com.google.common.collect.Sets;
 import io.edurt.datacap.server.body.FilterBody;
 import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
 import io.edurt.datacap.server.body.UserQuestionBody;
+import io.edurt.datacap.server.body.user.UserRole;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.entity.PageEntity;
+import io.edurt.datacap.server.entity.RoleEntity;
 import io.edurt.datacap.server.entity.UserEntity;
 import io.edurt.datacap.server.entity.UserLogEntity;
 import io.edurt.datacap.server.record.TreeRecord;
+import io.edurt.datacap.server.repository.RoleRepository;
 import io.edurt.datacap.server.service.UserLogService;
 import io.edurt.datacap.server.service.UserService;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/api/v1/user")
@@ -29,11 +35,13 @@ public class UserController
 {
     private final UserService userService;
     private final UserLogService userLogService;
+    private final RoleRepository roleRepository;
 
-    public UserController(UserService userService, UserLogService userLogService)
+    public UserController(UserService userService, UserLogService userLogService, RoleRepository roleRepository)
     {
         this.userService = userService;
         this.userLogService = userLogService;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping(value = {"{id}", ""})
@@ -82,5 +90,29 @@ public class UserController
     public Response<List<TreeRecord>> getMenus()
     {
         return this.userService.getMenus();
+    }
+
+    @PostMapping(value = "list")
+    public Response<PageEntity<UserEntity>> getAllByFilter(@RequestBody FilterBody filter)
+    {
+        return this.userService.getAll(filter);
+    }
+
+    @PutMapping(value = "allocationRole")
+    public Response<UserEntity> allocationRole(@RequestBody UserRole configure)
+    {
+        UserEntity user = new UserEntity();
+        user.setId(configure.getUserId());
+        Set<RoleEntity> roles = Sets.newHashSet();
+        configure.getRoles()
+                .stream()
+                .forEach(id -> {
+                    Optional<RoleEntity> optionalRole = roleRepository.findById(id);
+                    if (optionalRole.isPresent()) {
+                        roles.add(optionalRole.get());
+                    }
+                });
+        user.setRoles(roles);
+        return this.userService.saveOrUpdate(user);
     }
 }

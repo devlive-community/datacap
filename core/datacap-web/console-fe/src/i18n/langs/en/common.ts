@@ -116,4 +116,5 @@ export default {
   menu: 'Menu',
   i18nKey: 'I18n Key',
   icon: 'Icon',
+  user: 'User',
 }

@@ -6,7 +6,9 @@ import com.unfbx.chatgpt.entity.chat.ChatCompletion;
 import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
 import com.unfbx.chatgpt.entity.chat.Message;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.server.adapter.PageRequestAdapter;
 import io.edurt.datacap.server.audit.AuditUserLog;
+import io.edurt.datacap.server.body.FilterBody;
 import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
 import io.edurt.datacap.server.body.UserQuestionBody;
@@ -15,6 +17,7 @@ import io.edurt.datacap.server.common.JSON;
 import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
 import io.edurt.datacap.server.common.ServiceState;
+import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.RoleEntity;
 import io.edurt.datacap.server.entity.SourceEntity;
 import io.edurt.datacap.server.entity.UserChatEntity;
@@ -32,6 +35,7 @@ import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -88,25 +92,29 @@ public class UserServiceImpl
     @Override
     public Response<UserEntity> saveOrUpdate(UserEntity configure)
     {
-        Optional<UserEntity> userOptional = this.userRepository.findByUsername(configure.getUsername());
-        if (userOptional.isPresent()) {
-            return Response.failure(ServiceState.USER_EXISTS);
-        }
-
         UserEntity user = new UserEntity();
-        user.setUsername(configure.getUsername());
-        user.setPassword(encoder.encode(configure.getPassword()));
-
-        Set<RoleEntity> userRoles = configure.getRoles();
-        Set<RoleEntity> roles = new HashSet<>();
-        if (ObjectUtils.isEmpty(userRoles)) {
-            Optional<RoleEntity> userRoleOptional = roleRepository.findByName("User");
-            if (!userRoleOptional.isPresent()) {
-                return Response.failure(ServiceState.USER_ROLE_NOT_FOUND);
+        if (ObjectUtils.isEmpty(configure.getId())) {
+            Optional<UserEntity> userOptional = this.userRepository.findByUsername(configure.getUsername());
+            if (userOptional.isPresent()) {
+                return Response.failure(ServiceState.USER_EXISTS);
             }
-            roles.add(userRoleOptional.get());
+            user.setUsername(configure.getUsername());
+            user.setPassword(encoder.encode(configure.getPassword()));
+            Set<RoleEntity> userRoles = configure.getRoles();
+            Set<RoleEntity> roles = new HashSet<>();
+            if (ObjectUtils.isEmpty(userRoles)) {
+                Optional<RoleEntity> userRoleOptional = roleRepository.findByName("User");
+                if (!userRoleOptional.isPresent()) {
+                    return Response.failure(ServiceState.USER_ROLE_NOT_FOUND);
+                }
+                roles.add(userRoleOptional.get());
+            }
+            user.setRoles(roles);
         }
-        user.setRoles(roles);
+        else {
+            user = userRepository.findById(configure.getId()).get();
+            user.setRoles(configure.getRoles());
+        }
         return Response.success(userRepository.save(user));
     }
 
@@ -348,5 +356,12 @@ public class UserServiceImpl
         });
         tree.sort(Comparator.comparing(TreeRecord::getSorted));
         return Response.success(tree);
+    }
+
+    @Override
+    public Response<PageEntity<UserEntity>> getAll(FilterBody filter)
+    {
+        Pageable pageable = PageRequestAdapter.of(filter);
+        return Response.success(PageEntity.build(this.userRepository.findAll(pageable)));
     }
 }
