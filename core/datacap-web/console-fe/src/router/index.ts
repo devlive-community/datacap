@@ -5,6 +5,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Common from "@/common/Common";
 import ProfileLayout from "@/views/pages/profile/layout/ProfileLayout.vue";
+import LayoutWebErrorContainer from "@/views/layout/web-error/Layout.vue";
 import _ from 'lodash';
 
 NProgress.configure({
@@ -209,7 +210,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/common",
     name: "common",
-    component: LayoutContainer,
+    component: LayoutWebErrorContainer,
     children: [
       {
         name: "routerNotFound",

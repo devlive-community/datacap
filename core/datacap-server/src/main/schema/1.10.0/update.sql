@@ -411,7 +411,7 @@ CREATE TABLE IF NOT EXISTS `role_menu_relation`
     menu_id long
 );
 
-CREATE TABLE `menus`
+CREATE TABLE IF NOT EXISTS `menus`
 (
     `id`          bigint PRIMARY KEY AUTO_INCREMENT,
     `name`        varchar(255) NOT NULL,
