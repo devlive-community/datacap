@@ -17,6 +17,7 @@ export default {
   methods: {
     handlerGoSignIn() {
       localStorage.removeItem(Common.token);
+      localStorage.removeItem(Common.menu)
       router.push('/auth/signin');
     }
   }

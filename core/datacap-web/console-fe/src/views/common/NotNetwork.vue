@@ -14,6 +14,7 @@ import Common from "@/common/Common";
 export default {
   created() {
     localStorage.removeItem(Common.token);
+    localStorage.removeItem(Common.menu)
   },
   methods: {
     handlerGoSignIn() {

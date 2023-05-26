@@ -96,6 +96,7 @@ export default defineComponent({
           if (response.status) {
             // message.success('Success');
             localStorage.removeItem(Common.token);
+            localStorage.removeItem(Common.menu)
             this.changePasswordVisible = false;
             router.push('/auth/signin');
           }

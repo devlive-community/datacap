@@ -34,7 +34,7 @@ public class UserDetailsService
     public static UserDetailsService build(UserEntity user)
     {
         List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(String.valueOf(role.getId())))
                 .collect(Collectors.toList());
         return new UserDetailsService(
                 user.getId(),

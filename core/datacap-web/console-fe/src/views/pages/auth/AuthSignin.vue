@@ -27,6 +27,7 @@ import {AuthUser} from "@/model/AuthUser";
 import {AuthService} from "@/services/AuthService";
 import Common from "@/common/Common";
 import router from "@/router";
+import UserService from "@/services/UserService";
 
 export default defineComponent({
   setup()
@@ -51,12 +52,21 @@ export default defineComponent({
             .then(response => {
               if (response.status) {
                 localStorage.setItem(Common.token, JSON.stringify(response.data));
-                router.push('/');
+                UserService.getMenus()
+                  .then(menuResponse => {
+                    if (menuResponse.status) {
+                      localStorage.setItem(Common.menu, JSON.stringify(menuResponse.data))
+                      router.push('/');
+                    }
+                    else {
+                      this.$Message.error(menuResponse.message)
+                    }
+                  })
               }
               else {
                 this.$Message.error(response.message);
               }
-            });
+            })
         }
       }
     }

@@ -72,6 +72,7 @@ export default defineComponent({
           if (response.status) {
             this.$Message.success('Success');
             localStorage.removeItem(Common.token);
+            localStorage.removeItem(Common.menu)
             router.push('/auth/signin');
           }
           else {

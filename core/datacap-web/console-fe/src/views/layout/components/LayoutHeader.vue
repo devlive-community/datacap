@@ -81,7 +81,6 @@ import Common from "@/common/Common";
 import {AuthResponse} from "@/model/AuthResponse";
 import router from "@/router";
 import config from '../../../../package.json';
-import UserService from "@/services/UserService";
 
 export default defineComponent({
   name: "LayoutHeader",
@@ -95,6 +94,7 @@ export default defineComponent({
 
     const handlerLogout = () => {
       localStorage.removeItem(Common.token);
+      localStorage.removeItem(Common.menu)
       router.push('/auth/signin')
     }
     const language = 'zh_cn';
@@ -119,15 +119,7 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      UserService.getMenus()
-        .then(response => {
-          if (response.status) {
-            this.availableMenus = response.data
-          }
-          else {
-            this.$Message.error(response.message)
-          }
-        })
+      this.availableMenus = JSON.parse(localStorage.getItem(Common.menu));
     },
     handlerChangeLang(language: string)
     {

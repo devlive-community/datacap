@@ -1,10 +1,12 @@
 package io.edurt.datacap.server.service;
 
+import io.edurt.datacap.server.body.FilterBody;
 import io.edurt.datacap.server.body.UserNameBody;
 import io.edurt.datacap.server.body.UserPasswordBody;
 import io.edurt.datacap.server.body.UserQuestionBody;
 import io.edurt.datacap.server.common.JwtResponse;
 import io.edurt.datacap.server.common.Response;
+import io.edurt.datacap.server.entity.PageEntity;
 import io.edurt.datacap.server.entity.UserEntity;
 import io.edurt.datacap.server.record.TreeRecord;
 
@@ -30,4 +32,6 @@ public interface UserService
     Response<List<Object>> getSugs(Long id);
 
     Response<List<TreeRecord>> getMenus();
+
+    Response<PageEntity<UserEntity>> getAll(FilterBody filter);
 }
