@@ -38,9 +38,15 @@ hide:
 ---
 
 <div class="grid cards" markdown>
-- :fontawesome-solid-user: __qianmoQ__
+- <img src="https://avatars.githubusercontent.com/u/20521442?v=4" width="30" style="margin: -10px 10px;" /> __qianmoQ__
 
     ---
     Source code contributors who love open source projects.<br />
     [:octicons-arrow-right-24: Visit qianmoQ](https://github.com/qianmoQ)
+
+- <img src="https://avatars.githubusercontent.com/u/20924820?v=4" width="30" style="margin: -10px 10px;" /> __<span>Stacey1018</span>__
+
+    ---
+    I can make it through the rain. I can stand up once again on my own.<br />
+    [:octicons-arrow-right-24: Visit Stacey1018](https://github.com/Stacey1018)
 </div>
