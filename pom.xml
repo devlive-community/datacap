@@ -4,7 +4,7 @@
     <groupId>io.edurt.datacap</groupId>
     <artifactId>datacap</artifactId>
     <packaging>pom</packaging>
-    <version>1.10.0-SNAPSHOT</version>
+    <version>1.10.0</version>
 
     <modules>
         <module>client/datacap-cli</module>
@@ -103,6 +103,14 @@
             <id>002</id>
             <name>mlboy</name>
             <email>mlboy@126.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>003</id>
+            <name>Stacey1018</name>
+            <email>2506465056@qq.com</email>
             <roles>
                 <role>Developer</role>
             </roles>

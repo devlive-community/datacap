@@ -6,91 +6,54 @@
 
 | Release Version | Release Time |
 |:---------------:|:------------:|
-|     `1.9.0`     | `2023-05-04` |
+|    `1.10.0`     | `2023-05-30` |
 
 #### General
 
 ---
 
-- Support github publish packages
-- Optimized the docker image publishing process
-- Support format date
-- Add a connection to the database to specify the time zone
-- Fixed default h2 database uninitialized scheduled task
-- Add admin user to README.md
-- Add docker image label
-- Add wechat qr to README.md
-- Add docker badge
-- Fixed source create time is null
-
-#### Docs
-
----
-
-- Add chinese index
-- Add the Rainbond deployment document
-- Add plugin docs
-- Top scrolling notifications are supported
+- Fix service start default connection mongo
+- Fixed h2 db update_time and create_time for sql template
+- Improve the H2 metadata management to obtain type
+- Improve the mysql metadata management to obtain type
+- Fixed metadata management data page default to 1
+- Reconstruct the data render table
+- Support column type
+- Add time consuming and view executing SQL
+- Support for selectable totals per page
+- Supports header hint data types
+- Supports replication of selected data results
+- Support for selecting specified column queries
+- Support filter
+- Fixed the default user creation time being null
+- Support Permission
+- Fixed user createTime is null
 
 #### Web
 
 ---
 
-- Fix invalid paging of data table
-- Fixed not rendering properly
-- Fix missing translation results for rendering containing translational data
-- Support copy multiple selection rows
-- Fix data source test status issues
-- Support close message
-- Add schedule link
+- None Network authorization information is not cleared
+- Optimize data management to obtain data
+- Disable warnings output to console
+- Increased editor buffering prompt limit
+- Removes the default collation rule
+- Rename user dashboard path
+- Add dashboard chat style
+- Fix navigation style
+- Add data source load state
 
 #### Plugins
 
 ---
 
-- Support ceresdb
-- Support greptimedb
-- Support questdb
-- Support apache doris
-- Support starrocks
-- Support hologres
-- Support apache hadoop hdfs
-
-#### SPI
-
----
-
-- Remove http retry logic
-
-#### Yandex Database
-
----
-
-- Fixed ydb dependency conflicts
-
-#### Trino
-
----
-
-- Add configure
+- Support apache pinot
+- Support mongo community
 
 #### Dependencies
 
 ---
 
-- Bump trino-jdbc from `397` to `414` (#331)
-- Bump iotdb-jdbc from `0.13.0` to `1.1.0` (#309)
-
-#### Contributors
-
---- 
-
-!!! danger
-
-    Many thanks to the following contributors for contributing to the source code of this release
-
-    In no particular order
-
-|  GitHub ID  |
-|:-----------:|
-|  @qianmoQ   |
+- Bump clickhouse-jdbc from `0.3.2-patch9` to `0.4.6`
+- Bump oracle-xe from `1.17.6` to `1.18.1`
+- Bump kyuubi-hive-jdbc-shaded from `1.6.0-incubating` to `1.7.1`
