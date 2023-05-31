@@ -53,11 +53,12 @@ public class AuditPluginHandler
         handlerPlugin(joinPoint, pluginAudit, jsonResult);
     }
 
-    protected void handlerPlugin(final JoinPoint joinPoint, final PluginAuditEntity pluginAudit, Response jsonResult)
+    protected void handlerPlugin(final JoinPoint joinPoint, final PluginAuditEntity pluginAudit, Response<io.edurt.datacap.spi.model.Response> jsonResult)
     {
         try {
             if (jsonResult.getStatus()) {
                 pluginAudit.setState(State.SUCCESS);
+                pluginAudit.setCount(jsonResult.getData().getColumns().size());
             }
             else {
                 pluginAudit.setMessage(jsonResult.getMessage().toString());

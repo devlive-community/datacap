@@ -53,6 +53,9 @@ public class PluginAuditEntity
     @Column(name = "elapsed")
     private Long elapsed;
 
+    @Column(name = "count")
+    private int count;
+
     @ManyToOne
     @JoinColumn(name = "plugin_id")
     @JsonIncludeProperties(value = {"id", "name", "type"})

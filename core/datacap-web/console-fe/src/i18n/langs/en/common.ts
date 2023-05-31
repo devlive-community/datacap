@@ -117,4 +117,5 @@ export default {
   i18nKey: 'I18n Key',
   icon: 'Icon',
   user: 'User',
+  count: 'count',
 }

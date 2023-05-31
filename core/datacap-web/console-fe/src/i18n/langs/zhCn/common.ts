@@ -116,5 +116,6 @@ export default {
   menu: '菜单',
   i18nKey: 'I18n Key',
   icon: '图标',
-  user: '用户'
+  user: '用户',
+  count: '总数'
 }

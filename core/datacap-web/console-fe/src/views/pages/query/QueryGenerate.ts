@@ -33,6 +33,10 @@ const createHeaders = (i18n: any) => {
       key: 'elapsed'
     },
     {
+      title: i18n.t('common.count'),
+      key: 'count'
+    },
+    {
       title: i18n.t('common.state'),
       slot: 'state',
       key: 'state'
