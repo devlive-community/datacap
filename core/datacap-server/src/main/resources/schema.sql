@@ -277,3 +277,9 @@ INSERT INTO users (username, password)
 VALUES ('admin', '$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG');
 INSERT INTO users (username, password)
 VALUES ('datacap', '$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.');
+
+-- --------------------------------
+--       Update to 1.11.0        --
+-- --------------------------------
+alter table `audit_plugin`
+    add column `count` bigint default 0;
