@@ -7,6 +7,7 @@
         </Alert>
       </RouterLink>
       <LayoutHeader @changeLanguage="setLangCondition($event)"/>
+      <layout-breadcrumb></layout-breadcrumb>
       <LayoutContent style="background-color: #FFFFFF; padding: 0; min-height: 500px"/>
       <LayoutFooter/>
       <LayoutAffix/>
@@ -20,10 +21,11 @@ import LayoutFooter from "@/views/layout/common/components/LayoutFooter.vue";
 import LayoutHeader from "@/views/layout/common/components/LayoutHeader.vue";
 import {useI18n} from 'vue-i18n';
 import LayoutAffix from "@/views/layout/common/components/LayoutAffix.vue";
+import LayoutBreadcrumb from "@/views/layout/common/components/LayoutBreadcrumb.vue";
 
 export default {
   name: "LayoutContainer",
-  components: {LayoutHeader, LayoutFooter, LayoutContent, LayoutAffix},
+  components: {LayoutBreadcrumb, LayoutHeader, LayoutFooter, LayoutContent, LayoutAffix},
   setup()
   {
     const {locale} = useI18n();

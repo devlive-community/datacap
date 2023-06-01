@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <Row style="margin: 10px 5px;" :gutter="16">
+    <Row style="margin: 0px 5px;" :gutter="16">
       <Col span="6">
-        <Card class="content-center">
+        <Card class="content-center" dis-hover>
           <NumberInfo>
             <template #title>
               Source Count
@@ -22,7 +22,7 @@
         </Card>
       </Col>
       <Col span="6">
-        <Card class="content-center">
+        <Card class="content-center" dis-hover>
           <NumberInfo>
             <template #title>
               History Count
