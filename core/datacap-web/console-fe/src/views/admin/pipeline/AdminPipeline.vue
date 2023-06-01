@@ -1,20 +1,22 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.authority')">
-      <template #extra>
-        <Tooltip>
-          <template #content>{{ $t('common.create') }}</template>
-          <Button type="primary" shape="circle" icon="md-add" size="small" @click="handlerVisibleDetail(null, true)"/>
-        </Tooltip>
-      </template>
+    <Card style="width:100%" :title="$t('common.pipeline')">
       <Table :loading="loading" :columns="headers" :data="finalData?.content">
-        <template #active="{row}">
-          <Switch v-model="row.active" disabled></Switch>
+        <template #from="{row}">
+          <Tooltip transfer :content="row.from.name">
+            <Avatar :src="'/static/images/plugin/' + row.from.type + '.png'" size="small"/>
+          </Tooltip>
+        </template>
+        <template #to="{row}">
+          <Tooltip transfer :content="row.to.name">
+            <Avatar :src="'/static/images/plugin/' + row.to.type + '.png'" size="small"/>
+          </Tooltip>
         </template>
         <template #action="{ row }">
           <Space>
-            <Tooltip :content="$t('common.modify')" transfer>
-              <Button shape="circle" :disabled="row.default" type="primary" size="small" icon="md-create" @click="handlerVisibleDetail(row.id, true)"/>
+            <Tooltip :content="$t('common.error')" transfer>
+              <Button shape="circle" :disabled="row.state !== 'FAILURE'" type="error" size="small" icon="md-bug"
+                      @click="handlerVisibleMarkdownPreview(row.message, true)"/>
             </Tooltip>
           </Space>
         </template>
@@ -24,7 +26,8 @@
               @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
       </p>
     </Card>
-    <MenuDetails v-if="visibleDetail" :isVisible="visibleDetail" :id="applyId" @close="handlerVisibleDetail(null, $event)"/>
+    <MarkdownPreview v-if="visibleWarning" :isVisible="visibleWarning" :content="finalContent"
+                     @close="handlerVisibleMarkdownPreview(null, $event)"/>
   </div>
 </template>
 
@@ -34,15 +37,15 @@ import {useI18n} from 'vue-i18n';
 import {Filter} from "@/model/Filter";
 import {ResponsePage} from "@/model/ResponsePage";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
-import {createHeaders} from './MenuGenerate';
-import MenuService from '@/services/admin/MenuService';
-import MenuDetails from "@/views/admin/menu/MenuDetails.vue";
+import {createHeaders} from "@/views/admin/pipeline/PipelineGenerate";
+import PipelineService from "@/services/user/PipelineService";
+import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
-  name: 'MenuHome',
-  components: {MenuDetails},
+  name: 'UserPipelineHome',
+  components: {MarkdownPreview},
   setup()
   {
     const i18n = useI18n();
@@ -57,8 +60,8 @@ export default defineComponent({
   {
     return {
       loading: false,
-      visibleDetail: false,
-      applyId: null,
+      visibleWarning: false,
+      finalContent: null,
       finalData: null as ResponsePage
     }
   },
@@ -70,7 +73,7 @@ export default defineComponent({
     handlerInitialize(filter: Filter)
     {
       this.loading = true;
-      MenuService.getAll(filter)
+      PipelineService.getAll(filter)
         .then((response) => {
           if (response.status) {
             this.finalData = response.data;
@@ -80,18 +83,6 @@ export default defineComponent({
         .finally(() => {
           this.loading = false
         })
-    },
-    handlerVisibleDetail(value: number, isOpened: boolean)
-    {
-      if (isOpened) {
-        this.applyId = value;
-        this.visibleDetail = true;
-      }
-      else {
-        this.applyId = null;
-        this.visibleDetail = false;
-        this.handlerInitialize(this.filter)
-      }
     },
     handlerSizeChange(size: number)
     {
@@ -110,6 +101,13 @@ export default defineComponent({
       this.filter.page = pagination.current;
       this.filter.size = pagination.size;
       this.handlerInitialize(this.filter);
+    },
+    handlerVisibleMarkdownPreview(content: string, isOpen: boolean)
+    {
+      this.visibleWarning = isOpen;
+      if (content) {
+        this.finalContent = '```java\n' + content + '\n```';
+      }
     }
   }
 })

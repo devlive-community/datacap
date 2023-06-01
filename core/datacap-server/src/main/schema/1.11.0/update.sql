@@ -3,3 +3,4 @@
 -- --------------------------------
 alter table `audit_plugin`
     add column `count` bigint(20) default 0;
+

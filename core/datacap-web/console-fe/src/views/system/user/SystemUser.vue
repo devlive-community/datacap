@@ -47,7 +47,7 @@ import {ResponsePage} from "@/model/ResponsePage";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
 import {createHeaders} from './UserGenerate';
 import UserService from "@/services/admin/UserService";
-import RoleAllocationComponent from "@/views/admin/role/components/RoleAllocation.vue";
+import RoleAllocationComponent from "@/views/system/role/components/RoleAllocation.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();

@@ -99,7 +99,7 @@ import {defineComponent, ref} from "vue";
 import {useRouter} from "vue-router";
 import {TableConfigure} from "@/components/table/TableConfigure";
 import SourceSelect from "@/components/source/SourceSelect.vue";
-import SnippetDetails from "@/views/pages/admin/snippet/SnippetDetails.vue";
+import SnippetDetails from "@/views/admin/snippet/SnippetDetails.vue";
 import BasicTableComponent from "@/components/table/BasicTable.vue";
 import {AuditService} from "@/services/AuditService";
 import FunctionsService from "@/services/settings/functions/FunctionsService";
@@ -119,7 +119,7 @@ const editorMap = new Map<string, monaco.editor.ICodeEditor>();
 const editorValueMap = new Map<string, string>();
 
 export default defineComponent({
-  name: "QueryHome",
+  name: "ConsoleIndex",
   components: {QueryAiHelp, DataLazyTree, BasicTableComponent, SnippetDetails, SourceSelect, MonacoEditor},
   unmounted()
   {

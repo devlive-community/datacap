@@ -28,14 +28,18 @@ import {AuthService} from "@/services/AuthService";
 import Common from "@/common/Common";
 import router from "@/router";
 import UserService from "@/services/UserService";
+import {createDefaultRouter, createRemoteRouter} from "@/router/default";
+import {useI18n} from "vue-i18n";
 
 export default defineComponent({
   setup()
   {
+    const i18n = useI18n();
     const handlerGoSignup = () => {
       router.push('/auth/signup');
     }
     return {
+      i18n,
       handlerGoSignup
     };
   },
@@ -56,7 +60,9 @@ export default defineComponent({
                   .then(menuResponse => {
                     if (menuResponse.status) {
                       localStorage.setItem(Common.menu, JSON.stringify(menuResponse.data))
-                      router.push('/');
+                      createDefaultRouter(router)
+                      createRemoteRouter(menuResponse.data, router)
+                      router.push('/dashboard/index');
                     }
                     else {
                       this.$Message.error(menuResponse.message)

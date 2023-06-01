@@ -28,11 +28,11 @@
 import {defineComponent} from "vue";
 import {useI18n} from 'vue-i18n';
 import {ResponsePage} from "@/model/ResponsePage";
-import {createHeaders} from "@/views/pages/admin/template/sql/SqlGenerate";
+import {createHeaders} from "@/views/system/template/GenerateTemplate";
 import TemplateSqlService from "@/services/template/TemplateSqlService";
 import {Filter} from "@/model/Filter";
 import {Order} from "@/model/Order";
-import TemplateSqlDetails from "@/views/pages/admin/template/sql/SqlDetails.vue";
+import TemplateSqlDetails from "@/views/system/template/DetailsTemplate.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({

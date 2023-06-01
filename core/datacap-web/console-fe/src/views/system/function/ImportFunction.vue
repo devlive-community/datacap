@@ -1,14 +1,35 @@
 <template>
   <div>
-    <Drawer :title="$t('common.create') + $t('common.function')" :width="720" :closable="false"
+    <Drawer :title="$t('common.import') + $t('common.function')" :width="720" :closable="false"
             v-model="visible" :maskClosable="false" :z-index="9" :styles="{}">
       <Form :model="formState">
-        <Row :gutter="32">
-          <Col span="12">
-            <FormItem :label="$t('common.name')">
-              <Input v-model="formState.name"/>
+        <Tabs v-model="formState.mode" :animated="false">
+          <TabPane :label="$t('common.content')" :name="FunctionsImportMode.txt">
+            <FormItem :label="$t('common.content')" label-position="top">
+              <Input type="textarea" show-word-limit v-model="formState.content" :placeholder="$t('tooltip.multipleLines')" :rows="12"/>
             </FormItem>
-          </Col>
+          </TabPane>
+          <TabPane :label="$t('common.url')" :name="FunctionsImportMode.url">
+            <Alert banner type="warning">
+              {{ $t('alert.urlMode') }}
+              <DescriptionList :col="1" style="margin-top: 20px;">
+                <Description :term="$t('common.keyword')">
+                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/plugin/keywords.txt
+                </Description>
+                <Description :term="$t('common.operator')">
+                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/plugin/operators.txt
+                </Description>
+                <Description :term="$t('common.function')">
+                  &nbsp;&nbsp;(http|https)://datacap.edurt.io/resources/functions/plugin/functions.txt
+                </Description>
+              </DescriptionList>
+            </Alert>
+            <FormItem :label="$t('common.content')" label-position="top">
+              <Input v-model="formState.content"/>
+            </FormItem>
+          </TabPane>
+        </Tabs>
+        <Row :gutter="32">
           <Col span="12">
             <FormItem :label="$t('common.plugin')">
               <Select v-model="formState.plugin" multiple max-tag-count="3">
@@ -18,20 +39,6 @@
               </Select>
             </FormItem>
           </Col>
-        </Row>
-        <Row :gutter="32">
-          <Col span="12">
-            <FormItem :label="$t('common.content')" name="content" label-position="top">
-              <Input v-model="formState.content" show-word-limit type="textarea" :rows="3"/>
-            </FormItem>
-          </Col>
-          <Col span="12">
-            <FormItem :label="$t('common.description')" label-position="top">
-              <Input type="textarea" v-model="formState.description" show-word-limit :rows="3"/>
-            </FormItem>
-          </Col>
-        </Row>
-        <Row :gutter="32">
           <Col span="12">
             <FormItem :label="$t('common.type')" name="type" label-position="top">
               <Select v-model="formState.type">
@@ -40,13 +47,10 @@
             </FormItem>
           </Col>
         </Row>
-        <FormItem :label="$t('common.example')" label-position="top">
-          <Input type="textarea" v-model="formState.example" :rows="5"/>
-        </FormItem>
       </Form>
       <div class="datacap-drawer-footer">
         <Button :disabled="created" style="margin-right: 8px" @click="handlerCancel()">{{ $t('common.cancel') }}</Button>
-        <Button type="primary" :loading="created" @click="handlerSave()">{{ $t('common.submit') }}</Button>
+        <Button type="primary" :loading="created" @click="handlerImport()">{{ $t('common.submit') }}</Button>
       </div>
       <Spin size="large" fix :show="loading"></Spin>
     </Drawer>
@@ -55,21 +59,18 @@
 <script lang="ts">
 import {defineComponent, reactive} from 'vue';
 import {SourceService} from "@/services/SourceService";
-import {Functions} from "@/model/settings/functions/Functions";
-import {createDefaultType, emptyEntity} from "@/views/pages/admin/settings/functions/FunctionsGenerate";
+import {createDefaultType, emptyImportEntity} from "@/views/system/function/GenerateFunction";
 import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
+import {FunctionsImport} from "@/model/settings/functions/FunctionsImport";
+import {FunctionsImportMode} from "@/enum/FunctionsImportMode";
 
 export default defineComponent({
-  name: 'FunctionsDetails',
+  name: 'ImportFunction',
   props: {
     isVisible: {
       type: Boolean,
       default: () => false
-    },
-    id: {
-      type: Number,
-      default: () => 0
     }
   },
   setup()
@@ -84,7 +85,7 @@ export default defineComponent({
   {
     return {
       isUpdate: false,
-      formState: null as unknown as Functions,
+      formState: null as unknown as FunctionsImport,
       loading: false,
       created: false,
       plugins: []
@@ -92,8 +93,7 @@ export default defineComponent({
   },
   created()
   {
-    this.formState = reactive<Functions>(emptyEntity);
-    this.isUpdate = this.id === 0 ? false : true;
+    this.formState = reactive<FunctionsImport>(emptyImportEntity);
     this.handlerInitialize();
   },
   methods: {
@@ -105,23 +105,11 @@ export default defineComponent({
             this.plugins = response.data;
           }
         });
-      if (this.id > 0) {
-        this.loading = true;
-        FunctionsService.getById(this.id)
-          .then(response => {
-            if (response.status) {
-              this.formState = reactive<Functions>(response.data);
-            }
-          })
-          .finally(() => {
-            this.loading = false;
-          });
-      }
     },
-    handlerSave()
+    handlerImport()
     {
       this.created = true;
-      FunctionsService.saveAndUpdate(this.formState, this.isUpdate)
+      FunctionsService.import(this.formState)
         .then((response) => {
           if (response.status) {
             this.$Message.success("Create successful");
@@ -141,6 +129,10 @@ export default defineComponent({
     }
   },
   computed: {
+    FunctionsImportMode()
+    {
+      return FunctionsImportMode
+    },
     visible: {
       get(): boolean
       {

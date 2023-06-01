@@ -124,7 +124,7 @@ import {Sql} from "@/model/sql/Sql";
 import {useI18n} from "vue-i18n";
 import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
 import {TableConfigure} from "@/components/table/TableConfigure";
-import TablePreview from "@/views/pages/admin/source/components/TablePreview.vue";
+import TablePreview from "@/views/admin/source/components/TablePreview.vue";
 import {Sort} from "@/model/sql/Sort";
 import SqlDetail from "@/components/sql/SqlDetail.vue";
 import useClipboard from "vue-clipboard3";

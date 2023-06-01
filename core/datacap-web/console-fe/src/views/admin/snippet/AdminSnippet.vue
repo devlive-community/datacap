@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.source')">
+    <Card style="width:100%" :title="$t('common.snippet')">
       <template #extra>
         <Tooltip>
           <template #content>{{ $t('common.create') }}</template>
@@ -8,35 +8,27 @@
         </Tooltip>
       </template>
       <Table :loading="loading" :columns="headers" :data="data.content">
-        <template #name="{ row }">
-          <Ellipsis :text="row.name" :length="8" tooltip transfer/>
-        </template>
-        <template #type="{ row }">
-          <Tooltip transfer :content="row.type">
-            <Avatar :src="'/static/images/plugin/' + row.type.split(' ')[0] + '.png'" size="small" />
-          </Tooltip>
-        </template>
-        <template #host="{ row }">
-          <Ellipsis :text="row.host" :length="8" tooltip transfer/>
-        </template>
-        <template #public="{ row }">
-          <Switch v-model="row.public" :disabled="currentUserId !== row.user.id" @on-change="handlerShared(row.public, row.id)"/>
+        <template #username="{ row }">
+          <Avatar style="color: #f56a00;background-color: #fde3cf">{{ row.user.username }}</Avatar>
         </template>
         <template #action="{ row }">
           <Space>
+            <Tooltip content="SQL" transfer>
+              <Button :disabled="currentUserId !== row.user.id" shape="circle" type="info" size="small" icon="md-eye"
+                      @click="handlerShowContent(row.code)"/>
+            </Tooltip>
             <Tooltip :content="$t('common.modify')" transfer>
               <Button :disabled="currentUserId !== row.user.id" shape="circle" type="primary" size="small" icon="md-create"
                       @click="handlerCreateOrUpdate(row.id)"/>
             </Tooltip>
-            <Tooltip :content="$t('common.delete')" transfer>
-              <Poptip confirm title="Are you sure delete?" popper-class="poptip-box" transfer @on-ok="handlerDeleteRecord(row.id)">
+            <Tooltip :content="$t('common.quote')" transfer>
+              <Button shape="circle" type="dashed" size="small" icon="md-pin" @click="handlerGoConsoleIndex(row.id)"/>
+            </Tooltip>
+            <Poptip confirm title="Are you sure delete?" popper-class="poptip-box" transfer placement="right-end" @on-ok="handlerDeleteRecord(row.id)">
+              <Tooltip :content="$t('common.delete')" transfer>
                 <Button :disabled="currentUserId !== row.user.id" shape="circle" type="error" size="small" icon="md-trash"/>
-              </Poptip>
-            </Tooltip>
-            <Tooltip :content="$t('common.admin')" transfer>
-              <Button :disabled="currentUserId !== row.user.id" shape="circle" type="info" size="small" icon="md-construct"
-                      :to="'/admin/source/' + row.id + '/manager'"/>
-            </Tooltip>
+              </Tooltip>
+            </Poptip>
           </Space>
         </template>
       </Table>
@@ -45,24 +37,27 @@
               @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
       </p>
     </Card>
-    <SourceDetail v-if="visibleSourceInfo" :isVisible="visibleSourceInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
+    <SqlDetail v-if="visibleContent" :isVisible="visibleContent" :content="content"
+               @close="handlerCloseContent($event)"/>
+    <SnippetDetails v-if="visibleSnippetInfo" :isVisible="visibleSnippetInfo" :id="applyId"
+                    @close="handlerCloseCreateNew()"/>
   </div>
 </template>
 
 <script lang="ts">
-import {SourceService} from "@/services/SourceService";
-import {createHeaders} from "@/views/pages/admin/source/SourceGenerate";
+import SnippetDetails from "@/views/admin/snippet/SnippetDetails.vue";
 import {defineComponent} from "vue";
 import {useI18n} from 'vue-i18n';
 import Common from "@/common/Common";
-import {SharedSource} from "@/model/SharedSource";
+import {createHeaders} from "@/views/admin/snippet/SnippetGenerate";
+import router from "@/router";
 import {ResponsePage} from "@/model/ResponsePage";
-import {Space, Tooltip} from "view-ui-plus";
-import SourceDetail from "@/views/pages/admin/source/SourceDetail.vue";
+import SqlDetail from "@/components/sql/SqlDetail.vue";
+import SnippetService from "@/services/SnippetService";
 
 export default defineComponent({
-  name: "SourceAdmin",
-  components: {SourceDetail, Space, Tooltip},
+  name: "SnippetAdmin",
+  components: {SqlDetail, SnippetDetails},
   setup()
   {
     const i18n = useI18n();
@@ -78,8 +73,10 @@ export default defineComponent({
     return {
       data: ResponsePage,
       loading: false,
-      visibleSourceInfo: false,
       applyId: 0,
+      visibleSnippetInfo: false,
+      content: '',
+      visibleContent: false,
       pagination: {
         total: 0,
         current: 1,
@@ -95,8 +92,7 @@ export default defineComponent({
     handlerInitialize(page: number, size: number)
     {
       this.loading = true;
-      new SourceService()
-        .getSources(page, size)
+      SnippetService.getSnippets(page, size)
         .then((response) => {
           if (response.status) {
             this.data = response.data;
@@ -105,23 +101,9 @@ export default defineComponent({
           this.loading = false;
         })
     },
-    handlerCreateOrUpdate(value?: number)
-    {
-      if (value) {
-        this.applyId = value;
-      }
-      this.visibleSourceInfo = true;
-    },
-    handlerCloseCreateNew(value: boolean)
-    {
-      this.visibleSourceInfo = value;
-      this.applyId = 0;
-      this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
-    },
     handlerDeleteRecord(id: number)
     {
-      new SourceService()
-        .delete(id)
+      SnippetService.delete(id)
         .then((response) => {
           if (response.status) {
             this.$Message.success("Delete successful");
@@ -145,25 +127,33 @@ export default defineComponent({
       this.pagination.pageSize = pagination.pageSize;
       this.handlerInitialize(pagination.current, pagination.pageSize)
     },
-    handlerShared(shared: boolean, sourceId: number)
+    handlerShowContent(content: string)
     {
-      const instance: SharedSource = {
-        public: shared,
-        sourceId: sourceId,
-        userId: this.currentUserId
-      };
-      new SourceService().shared(instance)
-        .then((response) => {
-          if (response.status) {
-            this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
-          }
-        });
+      this.visibleContent = true;
+      this.content = content;
+    },
+    handlerCloseContent(value: boolean)
+    {
+      this.visibleContent = value;
+      this.content = '';
+    },
+    handlerCreateOrUpdate(value?: number)
+    {
+      if (value) {
+        this.applyId = value;
+      }
+      this.visibleSnippetInfo = true;
+    },
+    handlerCloseCreateNew()
+    {
+      this.visibleSnippetInfo = false;
+      this.applyId = 0;
+      this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
+    },
+    handlerGoConsoleIndex(id: number)
+    {
+      router.push('/console/index?id=' + id + '&from=snippet');
     }
   }
 });
 </script>
-<style scoped>
-.poptip-box .ivu-poptip-body-content {
-  overflow: visible;
-}
-</style>

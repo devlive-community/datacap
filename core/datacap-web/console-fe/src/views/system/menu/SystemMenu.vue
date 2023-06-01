@@ -1,17 +1,15 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.schedule')">
+    <Card style="width:100%" :title="$t('common.authority')">
+      <template #extra>
+        <Tooltip>
+          <template #content>{{ $t('common.create') }}</template>
+          <Button type="primary" shape="circle" icon="md-add" size="small" @click="handlerVisibleDetail(null, true)"/>
+        </Tooltip>
+      </template>
       <Table :loading="loading" :columns="headers" :data="finalData?.content">
-        <template #name="{row}">
-          <Tooltip transfer :content="row.description" :max-width="'10%'">
-            {{ row.name }}
-          </Tooltip>
-        </template>
         <template #active="{row}">
           <Switch v-model="row.active" disabled></Switch>
-        </template>
-        <template #system="{row}">
-          <Switch v-model="row.system" disabled></Switch>
         </template>
         <template #action="{ row }">
           <Space>
@@ -26,6 +24,7 @@
               @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
       </p>
     </Card>
+    <MenuDetails v-if="visibleDetail" :isVisible="visibleDetail" :id="applyId" @close="handlerVisibleDetail(null, $event)"/>
   </div>
 </template>
 
@@ -35,13 +34,15 @@ import {useI18n} from 'vue-i18n';
 import {Filter} from "@/model/Filter";
 import {ResponsePage} from "@/model/ResponsePage";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
-import {createHeaders} from "@/views/admin/schedule/ScheduleGenertate";
-import ScheduleService from "@/services/admin/ScheduleService";
+import {createHeaders} from './MenuGenerate';
+import MenuService from '@/services/admin/MenuService';
+import MenuDetails from "@/views/system/menu/MenuDetails.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
-  name: 'AdminScheduleHome',
+  name: 'MenuHome',
+  components: {MenuDetails},
   setup()
   {
     const i18n = useI18n();
@@ -69,7 +70,7 @@ export default defineComponent({
     handlerInitialize(filter: Filter)
     {
       this.loading = true;
-      ScheduleService.getAll(filter)
+      MenuService.getAll(filter)
         .then((response) => {
           if (response.status) {
             this.finalData = response.data;
@@ -89,6 +90,7 @@ export default defineComponent({
       else {
         this.applyId = null;
         this.visibleDetail = false;
+        this.handlerInitialize(this.filter)
       }
     },
     handlerSizeChange(size: number)

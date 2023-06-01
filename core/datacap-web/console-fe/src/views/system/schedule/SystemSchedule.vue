@@ -1,22 +1,22 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.pipeline')">
+    <Card style="width:100%" :title="$t('common.schedule')">
       <Table :loading="loading" :columns="headers" :data="finalData?.content">
-        <template #from="{row}">
-          <Tooltip transfer :content="row.from.name">
-            <Avatar :src="'/static/images/plugin/' + row.from.type + '.png'" size="small"/>
+        <template #name="{row}">
+          <Tooltip transfer :content="row.description" :max-width="'10%'">
+            {{ row.name }}
           </Tooltip>
         </template>
-        <template #to="{row}">
-          <Tooltip transfer :content="row.to.name">
-            <Avatar :src="'/static/images/plugin/' + row.to.type + '.png'" size="small"/>
-          </Tooltip>
+        <template #active="{row}">
+          <Switch v-model="row.active" disabled></Switch>
+        </template>
+        <template #system="{row}">
+          <Switch v-model="row.system" disabled></Switch>
         </template>
         <template #action="{ row }">
           <Space>
-            <Tooltip :content="$t('common.error')" transfer>
-              <Button shape="circle" :disabled="row.state !== 'FAILURE'" type="error" size="small" icon="md-bug"
-                      @click="handlerVisibleMarkdownPreview(row.message, true)"/>
+            <Tooltip :content="$t('common.modify')" transfer>
+              <Button shape="circle" :disabled="row.default" type="primary" size="small" icon="md-create" @click="handlerVisibleDetail(row.id, true)"/>
             </Tooltip>
           </Space>
         </template>
@@ -26,8 +26,6 @@
               @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
       </p>
     </Card>
-    <MarkdownPreview v-if="visibleWarning" :isVisible="visibleWarning" :content="finalContent"
-                     @close="handlerVisibleMarkdownPreview(null, $event)"/>
   </div>
 </template>
 
@@ -37,15 +35,13 @@ import {useI18n} from 'vue-i18n';
 import {Filter} from "@/model/Filter";
 import {ResponsePage} from "@/model/ResponsePage";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
-import {createHeaders} from "@/views/user/pipeline/PipelineGenerate";
-import PipelineService from "@/services/user/PipelineService";
-import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
+import {createHeaders} from "@/views/system/schedule/GenertateSchedule";
+import ScheduleService from "@/services/admin/ScheduleService";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
-  name: 'UserPipelineHome',
-  components: {MarkdownPreview},
+  name: 'AdminScheduleHome',
   setup()
   {
     const i18n = useI18n();
@@ -60,8 +56,8 @@ export default defineComponent({
   {
     return {
       loading: false,
-      visibleWarning: false,
-      finalContent: null,
+      visibleDetail: false,
+      applyId: null,
       finalData: null as ResponsePage
     }
   },
@@ -73,7 +69,7 @@ export default defineComponent({
     handlerInitialize(filter: Filter)
     {
       this.loading = true;
-      PipelineService.getAll(filter)
+      ScheduleService.getAll(filter)
         .then((response) => {
           if (response.status) {
             this.finalData = response.data;
@@ -83,6 +79,17 @@ export default defineComponent({
         .finally(() => {
           this.loading = false
         })
+    },
+    handlerVisibleDetail(value: number, isOpened: boolean)
+    {
+      if (isOpened) {
+        this.applyId = value;
+        this.visibleDetail = true;
+      }
+      else {
+        this.applyId = null;
+        this.visibleDetail = false;
+      }
     },
     handlerSizeChange(size: number)
     {
@@ -101,13 +108,6 @@ export default defineComponent({
       this.filter.page = pagination.current;
       this.filter.size = pagination.size;
       this.handlerInitialize(this.filter);
-    },
-    handlerVisibleMarkdownPreview(content: string, isOpen: boolean)
-    {
-      this.visibleWarning = isOpen;
-      if (content) {
-        this.finalContent = '```java\n' + content + '\n```';
-      }
     }
   }
 })

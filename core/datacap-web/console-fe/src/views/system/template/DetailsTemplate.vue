@@ -37,7 +37,7 @@
 <script lang="ts">
 import {defineComponent, reactive} from 'vue';
 import {TemplateSql} from "@/model/template/Sql";
-import {emptyEntity} from "@/views/pages/admin/template/sql/SqlGenerate";
+import {emptyEntity} from "@/views/system/template/GenerateTemplate";
 import TemplateSqlService from "@/services/template/TemplateSqlService";
 import {SourceService} from "@/services/SourceService";
 import {clone} from "lodash";

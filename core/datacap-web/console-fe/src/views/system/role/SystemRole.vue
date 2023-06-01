@@ -36,13 +36,13 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {useI18n} from 'vue-i18n';
-import {createHeaders} from "@/views/admin/role/RoleGenerate";
+import {createHeaders} from "@/views/system/role/RoleGenerate";
 import RoleService from "@/services/admin/RoleService";
 import {Filter} from "@/model/Filter";
 import {ResponsePage} from "@/model/ResponsePage";
-import RoleDetails from "@/views/admin/role/RoleDetails.vue";
+import RoleDetails from "@/views/system/role/RoleDetails.vue";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
-import MenuTreeComponent from "@/views/admin/menu/components/MenuTree.vue";
+import MenuTreeComponent from "@/views/system/menu/components/MenuTree.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();

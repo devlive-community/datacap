@@ -42,8 +42,8 @@
               @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
       </p>
     </Card>
-    <FunctionsDetails v-if="visibleInfo" :isVisible="visibleInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
-    <FunctionsImport v-if="visibleImport" :isVisible="visibleImport" @close="handlerImportController($event)"/>
+    <DetailsFunction v-if="visibleInfo" :isVisible="visibleInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
+    <ImportFunction v-if="visibleImport" :isVisible="visibleImport" @close="handlerImportController($event)"/>
   </div>
 </template>
 
@@ -53,15 +53,14 @@ import {useI18n} from 'vue-i18n';
 import {ResponsePage} from "@/model/ResponsePage";
 import {Filter} from "@/model/Filter";
 import {Order} from "@/model/Order";
-import {createHeaders} from "@/views/pages/admin/settings/functions/FunctionsGenerate";
-import FunctionsDetails from "@/views/pages/admin/settings/functions/FunctionsDetails.vue";
+import {createHeaders} from "@/views/system/function/GenerateFunction";
 import FunctionsService from "@/services/settings/functions/FunctionsService";
-import FunctionsImport from "@/views/pages/admin/settings/functions/FunctionsImport.vue";
+import DetailsFunction from "@/views/system/function/DetailsFunction.vue";
+import ImportFunction from "@/views/system/function/ImportFunction.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({
-  name: "FunctionAdmin",
-  components: {FunctionsImport, FunctionsDetails},
+  components: {ImportFunction, DetailsFunction},
   setup()
   {
     const i18n = useI18n();

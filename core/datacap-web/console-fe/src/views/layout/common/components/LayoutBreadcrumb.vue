@@ -5,7 +5,7 @@
       <BreadcrumbItem v-for="(item, index) in breadcrumbs"
                       :key="index"
                       :to="item.path">
-        {{ item.name }}
+        {{ $t(`${item.meta.title}`) }}
       </BreadcrumbItem>
     </Breadcrumb>
   </div>
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     isHome(route) {
-      return route.name === "home";
+      return route.meta.title === "common.home";
     },
     getBreadcrumb() {
       let matched = this.$route['matched'];

@@ -128,7 +128,7 @@
 <script lang="ts">
 import {SourceModel} from "@/model/SourceModel";
 import {SourceService} from "@/services/SourceService";
-import {emptySource} from "@/views/pages/admin/source/SourceGenerate";
+import {emptySource} from "@/views/admin/source/SourceGenerate";
 import {defineComponent, reactive, ref} from "vue";
 import {Configure} from "@/model/Configure";
 import {clone, join} from 'lodash'

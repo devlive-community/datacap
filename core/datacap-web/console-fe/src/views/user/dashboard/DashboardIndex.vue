@@ -50,7 +50,7 @@ import {AdminService} from "@/services/AdminService";
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: "DashboardConsoleView",
+  name: "DashboardIndex",
   data()
   {
     return {
