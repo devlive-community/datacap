@@ -1,11 +1,10 @@
-import LayoutContainer from "@/views/layout/Layout.vue";
 import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Common from "@/common/Common";
-import ProfileLayout from "@/views/pages/profile/layout/ProfileLayout.vue";
 import LayoutWebErrorContainer from "@/views/layout/web-error/Layout.vue";
+import {createDefaultRouter, createRemoteRouter} from "@/router/default";
 
 NProgress.configure({
   easing: 'ease',
@@ -15,204 +14,7 @@ NProgress.configure({
   minimum: 0.3
 });
 
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: "/",
-    name: "home",
-    redirect: "/dashboard/index",
-    component: LayoutContainer,
-    children: []
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    redirect: "/dashboard/index",
-    component: LayoutContainer,
-    meta: {
-      requireAuth: true,
-    },
-    children: [
-      {
-        path: "index",
-        meta: {
-          roles: ['Admin', 'User']
-        },
-        component: () => import("@/views/user/dashboard/DashboardConsole.vue")
-      }
-    ]
-  },
-  {
-    path: "/console",
-    name: "console",
-    redirect: "/console/index",
-    component: LayoutContainer,
-    meta: {
-      requireAuth: true,
-    },
-    children: [
-      {
-        name: 'ConsoleIndex',
-        path: "index",
-        meta: {
-          roles: ['Admin', 'User']
-        },
-        component: () => import("../views/pages/query/QueryHome.vue")
-      }
-    ]
-  },
-  {
-    path: "/admin",
-    name: "admin",
-    redirect: '/admin/source',
-    component: LayoutContainer,
-    meta: {
-      requireAuth: true,
-    },
-    children: [
-      {
-        path: "source",
-        meta: {
-          roles: ['Admin', 'User']
-        },
-        component: () => import("../views/pages/admin/source/SourceAdmin.vue")
-      },
-      {
-        path: "source/:id/manager",
-        meta: {
-          roles: ['Admin', 'User']
-        },
-        component: () => import("../views/pages/admin/source/SourceManager.vue")
-      },
-      {
-        path: "history",
-        meta: {
-          roles: ['Admin', 'User']
-        },
-        component: () => import("../views/pages/query/QueryHistory.vue")
-      },
-      {
-        path: "pipeline",
-        meta: {
-          roles: ['Admin', 'User']
-        },
-        component: () => import("../views/user/pipeline/PipelineHome.vue")
-      },
-      {
-        path: "snippet",
-        meta: {
-          roles: ['Admin', 'User']
-        },
-        component: () => import("../views/pages/admin/snippet/SnippetAdmin.vue")
-      },
-      {
-        path: "template",
-        name: 'RouterForTemplateAndSql',
-        meta: {
-          roles: ['Admin', 'User']
-        },
-        component: () => import("../views/pages/admin/template/sql/SqlAdmin.vue")
-      },
-      {
-        path: "function",
-        meta: {
-          roles: ['Admin', 'User']
-        },
-        component: () => import("@/views/pages/admin/settings/functions/FunctionsAdmin.vue")
-      },
-      {
-        path: "monitor",
-        children: [
-          {
-            path: "processor",
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("../views/pages/admin/monitor/processor/ProcessorAdmin.vue")
-          }
-        ]
-      },
-      {
-        path: "role",
-        meta: {
-          roles: ['Admin']
-        },
-        component: () => import("@/views/admin/role/RoleHome.vue")
-      },
-      {
-        path: "schedule",
-        meta: {
-          roles: ['Admin']
-        },
-        component: () => import("@/views/admin/schedule/ScheduleHome.vue")
-      },
-      {
-        path: "menu",
-        meta: {
-          roles: ['Admin']
-        },
-        component: () => import("@/views/admin/menu/MenuHome.vue")
-      },
-      {
-        path: "users",
-        meta: {
-          roles: ['Admin']
-        },
-        component: () => import("@/views/admin/user/UserHome.vue")
-      }
-    ]
-  },
-  {
-    path: '/profile',
-    name: 'profile',
-    redirect: '/profile/index',
-    component: LayoutContainer,
-    meta: {
-      requireAuth: true
-    },
-    children: [
-      {
-        path: '',
-        component: ProfileLayout,
-        children: [
-          {
-            path: 'index',
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("../views/pages/profile/ProfileIndex.vue")
-          },
-          {
-            path: 'public',
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("../views/pages/profile/ProfilePublic.vue")
-          },
-          {
-            path: 'log',
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("../views/pages/profile/ProfileLog.vue")
-          },
-          {
-            path: 'chatgpt',
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("../views/pages/profile/ProfileChatGPT.vue")
-          },
-          {
-            path: 'account',
-            meta: {
-              roles: ['Admin', 'User']
-            },
-            component: () => import("../views/pages/profile/ProfileAccount.vue")
-          }
-        ]
-      }
-    ]
-  },
+const commonRouters = [
   {
     path: "/common",
     name: "common",
@@ -221,20 +23,22 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: "routerNotFound",
         path: "not_found",
-        component: () => import("../views/common/NotFound.vue")
+        component: () => import("../views/common/http-code/NotFound.vue")
       },
       {
         name: "routerNotAuthorized",
         path: "not_authorized",
-        component: () => import("../views/common/NotAuthorized.vue")
+        component: () => import("../views/common/http-code/NotAuthorized.vue")
       },
       {
         name: "routerNotNetwork",
         path: "not_network",
-        component: () => import("../views/common/NotNetwork.vue")
+        component: () => import("../views/common/http-code/NotNetwork.vue")
       }
     ]
-  },
+  }
+]
+const authRouters = [
   {
     path: "/auth",
     name: "auth",
@@ -242,16 +46,19 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: "signin",
         path: "signin",
-        component: () => import("../views/pages/auth/AuthSignin.vue")
+        component: () => import("@/views/common/auth/AuthSignin.vue")
       },
       {
         name: "signup",
         path: "signup",
-        component: () => import("../views/pages/auth/AuthSignup.vue")
+        component: () => import("@/views/common/auth/AuthSignup.vue")
       }
     ]
   }
-];
+]
+
+const routes: Array<RouteRecordRaw> = []
+routes.push(...commonRouters, ...authRouters)
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -259,6 +66,9 @@ const router = createRouter({
 });
 
 const authRouterWith = '/auth/sign';
+
+createDefaultRouter(router)
+createRemoteRouter(JSON.parse(localStorage.getItem(Common.menu)), router)
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
@@ -268,14 +78,7 @@ router.beforeEach((to, from, next) => {
   else {
     if (to.meta.requireAuth) {
       if (localStorage.getItem(Common.token)) {
-        const meta = JSON.parse(localStorage.getItem(Common.token));
-        // @ts-ignore
-        // if (_.intersection(to.meta.roles, meta['roles']).length > 0) {
         next();
-        // }
-        // else {
-        //   next({name: "routerNotAuthorized"});
-        // }
       }
       else {
         next('/auth/signin');
