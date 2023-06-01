@@ -242,12 +242,12 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: "signin",
         path: "signin",
-        component: () => import("../views/pages/auth/AuthSignin.vue")
+        component: () => import("@/views/common/auth/AuthSignin.vue")
       },
       {
         name: "signup",
         path: "signup",
-        component: () => import("../views/pages/auth/AuthSignup.vue")
+        component: () => import("@/views/common/auth/AuthSignup.vue")
       }
     ]
   }
