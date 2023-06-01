@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-import LayoutFooter from "@/views/layout/components/LayoutFooter.vue";
-import LayoutAffix from "@/views/layout/components/LayoutAffix.vue";
-import LayoutContent from "@/views/layout/components/LayoutContent.vue";
+import LayoutFooter from "@/views/layout/common/components/LayoutFooter.vue";
+import LayoutAffix from "@/views/layout/common/components/LayoutAffix.vue";
+import LayoutContent from "@/views/layout/common/components/LayoutContent.vue";
 
 export default {
   name: "LayoutWebErrorContainer",

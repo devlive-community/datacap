@@ -15,11 +15,11 @@
 </template>
 
 <script lang="ts">
-import LayoutContent from "@/views/layout/components/LayoutContent.vue";
-import LayoutFooter from "@/views/layout/components/LayoutFooter.vue";
-import LayoutHeader from "@/views/layout/components/LayoutHeader.vue";
+import LayoutContent from "@/views/layout/common/components/LayoutContent.vue";
+import LayoutFooter from "@/views/layout/common/components/LayoutFooter.vue";
+import LayoutHeader from "@/views/layout/common/components/LayoutHeader.vue";
 import {useI18n} from 'vue-i18n';
-import LayoutAffix from "@/views/layout/components/LayoutAffix.vue";
+import LayoutAffix from "@/views/layout/common/components/LayoutAffix.vue";
 
 export default {
   name: "LayoutContainer",

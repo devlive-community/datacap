@@ -1,4 +1,4 @@
-import LayoutContainer from "@/views/layout/Layout.vue";
+import LayoutContainer from "@/views/layout/common/Layout.vue";
 import {createRouter, createWebHashHistory, RouteRecordRaw} from "vue-router";
 
 import NProgress from "nprogress";
@@ -221,17 +221,17 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: "routerNotFound",
         path: "not_found",
-        component: () => import("../views/common/NotFound.vue")
+        component: () => import("../views/common/http-code/NotFound.vue")
       },
       {
         name: "routerNotAuthorized",
         path: "not_authorized",
-        component: () => import("../views/common/NotAuthorized.vue")
+        component: () => import("../views/common/http-code/NotAuthorized.vue")
       },
       {
         name: "routerNotNetwork",
         path: "not_network",
-        component: () => import("../views/common/NotNetwork.vue")
+        component: () => import("../views/common/http-code/NotNetwork.vue")
       }
     ]
   },

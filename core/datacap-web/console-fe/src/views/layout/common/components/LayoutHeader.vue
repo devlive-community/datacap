@@ -80,7 +80,7 @@ import {defineComponent} from "vue";
 import Common from "@/common/Common";
 import {AuthResponse} from "@/model/AuthResponse";
 import router from "@/router";
-import config from '../../../../package.json';
+import config from '../../../../../package.json';
 
 export default defineComponent({
   name: "LayoutHeader",
