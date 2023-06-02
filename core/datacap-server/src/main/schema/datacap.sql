@@ -718,7 +718,7 @@ insert into `menus` (name, code, description, url, group_name, sorted, type, par
 values ('全局 - 首页', 'HOME', '全局路由：所有用户都可以访问', '/dashboard/index', null, 1, 'VIEW', 0, 1, 'common.home', 'ios-navigate'),
        ('全局 - 查询', 'QUERY', '全局路由：所有用户都可以访问', '/console/index', null, 2, 'VIEW', 0, 1, 'common.query', 'md-browsers'),
        ('全局 - 管理主菜单', 'MANAGEMENT', '全局：所有用户都可以访问
-位置：顶部管理主菜单', '/#', null, 3, 'VIEW', 0, 1, 'common.admin', 'ios-hammer'),
+位置：顶部管理主菜单', '/admin', null, 3, 'VIEW', 0, 1, 'common.admin', 'ios-hammer'),
        ('全局 - 管理 - 数据源', 'DATASOURCE', '全局：所有用户都可以访问
 位置：顶部管理一级子菜单', '/admin/source', 'default', 1, 'VIEW', 3, 1, 'common.source', 'md-appstore'),
        ('全局 - 管理 - 片段', 'SNIPPET', '全局：所有用户都可以访问
@@ -728,19 +728,19 @@ values ('全局 - 首页', 'HOME', '全局路由：所有用户都可以访问',
        ('全局 - 管理 - 流水线', 'PIPELINE', '全局：所有用户都可以访问
 位置：顶部管理一级子菜单', '/admin/pipeline', null, 4, 'VIEW', 3, 1, 'common.pipeline', 'md-list-box'),
        ('管理员 - 系统主菜单', 'SYSTEM', '管理员：管理员权限用户可以访问
-位置：顶部管理一级子菜单', '/#', null, 4, 'VIEW', 0, 1, 'common.system', 'md-cog'),
+位置：顶部管理一级子菜单', '/system', null, 4, 'VIEW', 0, 1, 'common.system', 'md-cog'),
        ('管理员 - 系统 - 函数', 'FUNCTION', '管理员：管理员权限用户可以访问
-位置：顶部管理一级子菜单', '/sys/function', null, 1, 'VIEW', 8, 1, 'common.function', 'ios-basket'),
+位置：顶部管理一级子菜单', '/system/function', null, 1, 'VIEW', 8, 1, 'common.function', 'ios-basket'),
        ('管理员 - 系统 - 定时任务', 'SCHEDULE', '管理员：管理员权限用户可以访问
-位置：顶部管理一级子菜单', '/sys/schedule', null, 2, 'VIEW', 8, 1, 'common.schedule', 'md-timer'),
+位置：顶部管理一级子菜单', '/system/schedule', null, 2, 'VIEW', 8, 1, 'common.schedule', 'md-timer'),
        ('管理员 - 系统 - 模版', 'TEMPLATE', '管理员：管理员权限用户可以访问
-位置：顶部管理一级子菜单', '/sys/template', null, 3, 'VIEW', 8, 1, 'common.template', 'md-browsers'),
+位置：顶部管理一级子菜单', '/system/template', null, 3, 'VIEW', 8, 1, 'common.template', 'md-browsers'),
        ('管理员 - 系统 - 权限', 'ROLE', '管理员：管理员权限用户可以访问
-位置：顶部管理一级子菜单', '/sys/role', null, 4, 'VIEW', 8, 1, 'common.authority', 'md-flag'),
+位置：顶部管理一级子菜单', '/system/role', null, 4, 'VIEW', 8, 1, 'common.authority', 'md-flag'),
        ('管理员 - 系统 - 菜单', 'MENU', '管理员：管理员权限用户可以访问
-位置：顶部管理一级子菜单', '/sys/menu', null, 5, 'VIEW', 8, 1, 'common.menu', 'md-menu'),
+位置：顶部管理一级子菜单', '/system/menu', null, 5, 'VIEW', 8, 1, 'common.menu', 'md-menu'),
        ('管理员 - 系统 - 用户', 'USERS', '管理员：管理员权限用户可以访问
-位置：顶部管理一级子菜单', '/sys/users', null, 6, 'VIEW', 8, 1, 'common.user', 'ios-man');
+位置：顶部管理一级子菜单', '/system/users', null, 6, 'VIEW', 8, 1, 'common.user', 'ios-man');
 
 insert into role_menu_relation (role_id, menu_id)
 values ('2', '7'),

@@ -29,9 +29,12 @@ export default {
       return route.meta.title === "common.home";
     },
     getBreadcrumb() {
-      let matched = this.$route['matched'];
+      let matched = this.$route['matched'].filter(route => route.meta.title);
       if (!this.isHome(matched[0])) {
         matched = [].concat(matched);
+      }
+      else {
+        return
       }
       this.breadcrumbs = matched;
     },

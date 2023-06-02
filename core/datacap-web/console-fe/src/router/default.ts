@@ -90,22 +90,22 @@ const createDefaultRouter = (router: any) => {
           },
           {
             path: 'public',
-            meta: {title: 'common.profile'},
+            meta: {title: 'setting.profile'},
             component: () => import("../views/pages/profile/ProfilePublic.vue")
           },
           {
             path: 'log',
-            meta: {title: 'common.log'},
+            meta: {title: 'setting.log'},
             component: () => import("../views/pages/profile/ProfileLog.vue")
           },
           {
             path: 'chatgpt',
-            meta: {title: 'common.profile'},
+            meta: {title: 'common.chatgpt'},
             component: () => import("../views/pages/profile/ProfileChatGPT.vue")
           },
           {
             path: 'account',
-            meta: {title: 'common.log'},
+            meta: {title: 'setting.accountSetting'},
             component: () => import("../views/pages/profile/ProfileAccount.vue")
           }
         ]
