@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import {AuditService} from "@/services/AuditService";
-import {createHeaders} from "@/views/pages/query/QueryGenerate";
+import {createHeaders} from "@/views/admin/history/QueryGenerate";
 import {useI18n} from 'vue-i18n';
 import {defineComponent} from "vue";
 import {ResponsePage} from "@/model/ResponsePage";
