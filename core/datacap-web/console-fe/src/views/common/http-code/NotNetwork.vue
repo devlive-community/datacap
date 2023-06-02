@@ -8,18 +8,12 @@
   </div>
 </template>
 <script>
-import router from "@/router";
 import Common from "@/common/Common";
 
 export default {
   created() {
     localStorage.removeItem(Common.token);
     localStorage.removeItem(Common.menu)
-  },
-  methods: {
-    handlerGoSignIn() {
-      router.push('/auth/signin');
-    }
   }
 }
 </script>
