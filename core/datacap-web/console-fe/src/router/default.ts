@@ -1,5 +1,5 @@
 import LayoutContainer from "@/views/layout/common/Layout.vue";
-import ProfileLayout from "@/views/user/profile/layout/ProfileLayout.vue";
+import ProfileLayout from "@/views/layout/user-profile/ProfileLayout.vue";
 import {Router} from "vue-router";
 
 interface RouterItem

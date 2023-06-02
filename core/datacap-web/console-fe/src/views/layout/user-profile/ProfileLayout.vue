@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
-import ProfileLayoutSidebar from "@/views/user/profile/layout/components/ProfileLayoutSidebar.vue";
-import ProfileLayoutContent from "@/views/user/profile/layout/components/ProfileLayoutContent.vue";
+import ProfileLayoutSidebar from "@/views/layout/user-profile/components/ProfileLayoutSidebar.vue";
+import ProfileLayoutContent from "@/views/layout/user-profile/components/ProfileLayoutContent.vue";
 
 export default {
   name: "ProfileLayout",
