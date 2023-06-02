@@ -1,5 +1,5 @@
 import LayoutContainer from "@/views/layout/common/Layout.vue";
-import ProfileLayout from "@/views/pages/profile/layout/ProfileLayout.vue";
+import ProfileLayout from "@/views/user/profile/layout/ProfileLayout.vue";
 import {Router} from "vue-router";
 
 interface RouterItem
@@ -94,27 +94,27 @@ const createDefaultRouter = (router: any) => {
           {
             path: 'index',
             meta: {title: 'common.profile'},
-            component: () => import("../views/pages/profile/ProfileIndex.vue")
+            component: () => import("@/views/user/profile/ProfileIndex.vue")
           },
           {
             path: 'public',
             meta: {title: 'setting.profile'},
-            component: () => import("../views/pages/profile/ProfilePublic.vue")
+            component: () => import("@/views/user/profile/ProfilePublic.vue")
           },
           {
             path: 'log',
             meta: {title: 'setting.log'},
-            component: () => import("../views/pages/profile/ProfileLog.vue")
+            component: () => import("@/views/user/profile/ProfileLog.vue")
           },
           {
             path: 'chatgpt',
             meta: {title: 'common.chatgpt'},
-            component: () => import("../views/pages/profile/ProfileChatGPT.vue")
+            component: () => import("@/views/user/profile/ProfileChatGPT.vue")
           },
           {
             path: 'account',
             meta: {title: 'setting.accountSetting'},
-            component: () => import("../views/pages/profile/ProfileAccount.vue")
+            component: () => import("@/views/user/profile/ProfileAccount.vue")
           }
         ]
       }
