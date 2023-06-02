@@ -67,6 +67,12 @@ const createRemoteRouter = (items: RouterItem[], router: Router, parent?: any) =
 }
 
 const createDefaultRouter = (router: any) => {
+  const indexRouter = {
+    path: '/',
+    redirect: '/dashboard/index',
+    component: LayoutContainer
+  };
+  router.addRoute(indexRouter)
   const userRouters = {
     path: '/profile',
     redirect: '/profile/index',
