@@ -113,6 +113,17 @@ const createDefaultRouter = (router: any) => {
     ]
   }
   router.addRoute(userRouters)
+  router.addRoute({
+    path: "/admin",
+    component: LayoutContainer,
+    meta: {title: 'common.admin'},
+    children: [{
+      path: "source/:id/manager",
+      meta: {title: 'common.source'},
+      layout: LayoutContainer,
+      component: () => import("../views/admin/source/SourceManager.vue")
+    }]
+  })
 }
 
 export {
