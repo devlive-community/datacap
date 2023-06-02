@@ -11,12 +11,20 @@ interface RouterItem
 
 const array = ['admin', 'system', 'monitor']
 
+const addRouter = (route: any, router: Router) => {
+  try {
+    router.addRoute(route)
+  }
+  catch (e) {
+    console.error(`Add route ${route} failed with ${e.message}`)
+  }
+}
+
 const createRemoteRouter = (items: RouterItem[], router: Router, parent?: any) => {
   items?.forEach(item => {
     const viewAndPath = item.url.split('/')
     // Remove first, but it is empty
     viewAndPath.shift()
-    console.log(viewAndPath[0])
     const isAdmin = array.includes(viewAndPath[0]) ? true : false
     let _router
     if (item.children?.length > 0) {
@@ -62,7 +70,7 @@ const createRemoteRouter = (items: RouterItem[], router: Router, parent?: any) =
         }
       }
     }
-    router.addRoute(_router)
+    addRouter(_router, router)
   })
 }
 
