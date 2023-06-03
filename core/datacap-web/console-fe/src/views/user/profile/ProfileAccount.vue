@@ -52,7 +52,7 @@ import UserService from "@/services/UserService";
 import {UserPassword} from "@/model/UserPassword";
 import Common from "@/common/Common";
 import router from "@/router";
-import ChangeUsername from "@/views/pages/profile/components/ChangeUsername.vue";
+import ChangeUsername from "@/views/user/profile/components/ChangeUsername.vue";
 
 export default defineComponent({
   components: {ChangeUsername},

@@ -1,5 +1,5 @@
 import LayoutContainer from "@/views/layout/common/Layout.vue";
-import ProfileLayout from "@/views/pages/profile/layout/ProfileLayout.vue";
+import ProfileLayout from "@/views/layout/user-profile/ProfileLayout.vue";
 import {Router} from "vue-router";
 
 interface RouterItem
@@ -11,12 +11,20 @@ interface RouterItem
 
 const array = ['admin', 'system', 'monitor']
 
+const addRouter = (route: any, router: Router) => {
+  try {
+    router.addRoute(route)
+  }
+  catch (e) {
+    console.error(`Add route ${route} failed with ${e.message}`)
+  }
+}
+
 const createRemoteRouter = (items: RouterItem[], router: Router, parent?: any) => {
   items?.forEach(item => {
     const viewAndPath = item.url.split('/')
     // Remove first, but it is empty
     viewAndPath.shift()
-    console.log(viewAndPath[0])
     const isAdmin = array.includes(viewAndPath[0]) ? true : false
     let _router
     if (item.children?.length > 0) {
@@ -62,11 +70,17 @@ const createRemoteRouter = (items: RouterItem[], router: Router, parent?: any) =
         }
       }
     }
-    router.addRoute(_router)
+    addRouter(_router, router)
   })
 }
 
 const createDefaultRouter = (router: any) => {
+  const indexRouter = {
+    path: '/',
+    redirect: '/dashboard/index',
+    component: LayoutContainer
+  };
+  router.addRoute(indexRouter)
   const userRouters = {
     path: '/profile',
     redirect: '/profile/index',
@@ -80,33 +94,44 @@ const createDefaultRouter = (router: any) => {
           {
             path: 'index',
             meta: {title: 'common.profile'},
-            component: () => import("../views/pages/profile/ProfileIndex.vue")
+            component: () => import("@/views/user/profile/ProfileIndex.vue")
           },
           {
             path: 'public',
-            meta: {title: 'common.profile'},
-            component: () => import("../views/pages/profile/ProfilePublic.vue")
+            meta: {title: 'setting.profile'},
+            component: () => import("@/views/user/profile/ProfilePublic.vue")
           },
           {
             path: 'log',
-            meta: {title: 'common.log'},
-            component: () => import("../views/pages/profile/ProfileLog.vue")
+            meta: {title: 'setting.log'},
+            component: () => import("@/views/user/profile/ProfileLog.vue")
           },
           {
             path: 'chatgpt',
-            meta: {title: 'common.profile'},
-            component: () => import("../views/pages/profile/ProfileChatGPT.vue")
+            meta: {title: 'common.chatgpt'},
+            component: () => import("@/views/user/profile/ProfileChatGPT.vue")
           },
           {
             path: 'account',
-            meta: {title: 'common.log'},
-            component: () => import("../views/pages/profile/ProfileAccount.vue")
+            meta: {title: 'setting.accountSetting'},
+            component: () => import("@/views/user/profile/ProfileAccount.vue")
           }
         ]
       }
     ]
   }
   router.addRoute(userRouters)
+  router.addRoute({
+    path: "/admin",
+    component: LayoutContainer,
+    meta: {title: 'common.admin'},
+    children: [{
+      path: "source/:id/manager",
+      meta: {title: 'common.source'},
+      layout: LayoutContainer,
+      component: () => import("../views/admin/source/SourceManager.vue")
+    }]
+  })
 }
 
 export {

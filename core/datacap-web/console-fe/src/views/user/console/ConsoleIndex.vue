@@ -105,7 +105,7 @@ import {AuditService} from "@/services/AuditService";
 import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
 import DataLazyTree from "@/components/common/DataLazyTree.vue";
-import QueryAiHelp from "@/views/pages/query/QueryAiHelp.vue";
+import QueryAiHelp from "@/views/user/console/QueryAiHelp.vue";
 import {HttpCommon} from "@/common/HttpCommon";
 import SnippetService from "@/services/SnippetService";
 import UserService from "@/services/UserService";

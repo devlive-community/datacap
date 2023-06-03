@@ -34,6 +34,11 @@ const commonRouters = [
         name: "routerNotNetwork",
         path: "not_network",
         component: () => import("../views/common/http-code/NotNetwork.vue")
+      },
+      {
+        name: 'userNotLogin',
+        path: 'not_login',
+        component: () => import("../views/common/user-prepared/UserNotLogin.vue")
       }
     ]
   }
@@ -72,8 +77,15 @@ createRemoteRouter(JSON.parse(localStorage.getItem(Common.menu)), router)
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
+  const isLogin = JSON.parse(localStorage.getItem(Common.token));
   if (to.matched.length === 0) {
-    next({name: "routerNotFound"})
+    // When the user is not logged in, echo the not logged in page
+    if (isLogin) {
+      next({name: "routerNotFound"})
+    }
+    else {
+      next({name: "userNotLogin"})
+    }
   }
   else {
     if (to.meta.requireAuth) {
