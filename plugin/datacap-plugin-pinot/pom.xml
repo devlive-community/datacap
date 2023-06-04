@@ -14,7 +14,6 @@
     <description>DataCap - Apache Pinot</description>
 
     <properties>
-        <pinot.version>0.8.0</pinot.version>
         <plugin.name>jdbc-pinot</plugin.name>
     </properties>
 
@@ -40,6 +39,7 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -83,13 +83,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>${assembly-plugin.version}</version>
-                <configuration>
-                    <finalName>${plugin.name}</finalName>
-                    <descriptors>
-                        <descriptor>../../configure/assembly/assembly-plugin.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>../../dist/plugins/${plugin.name}</outputDirectory>
-                </configuration>
                 <executions>
                     <execution>
                         <id>make-assembly</id>
@@ -99,6 +92,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <finalName>${plugin.name}</finalName>
+                    <descriptors>
+                        <descriptor>../../configure/assembly/plugin.xml</descriptor>
+                    </descriptors>
+                    <outputDirectory>../../dist/plugins</outputDirectory>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>

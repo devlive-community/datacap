@@ -63,13 +63,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>${assembly-plugin.version}</version>
-                <configuration>
-                    <finalName>${plugin.name}</finalName>
-                    <descriptors>
-                        <descriptor>../../configure/assembly/assembly-plugin.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>../../dist/plugins/${plugin.name}</outputDirectory>
-                </configuration>
                 <executions>
                     <execution>
                         <id>make-assembly</id>
@@ -79,6 +72,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <finalName>${plugin.name}</finalName>
+                    <descriptors>
+                        <descriptor>../../configure/assembly/plugin.xml</descriptor>
+                    </descriptors>
+                    <outputDirectory>../../dist/plugins</outputDirectory>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>

@@ -39,7 +39,7 @@ tmp/
 
 # vscode #
 .vscode
-dist/datacap/
+dist/
 list
 *.configure
 mongo_*.xml

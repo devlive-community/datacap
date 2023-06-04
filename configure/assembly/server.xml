@@ -31,13 +31,6 @@
             <filtered>true</filtered>
         </fileSet>
         <fileSet>
-            <directory>src/main/plugins/</directory>
-            <outputDirectory>plugins</outputDirectory>
-            <fileMode>0755</fileMode>
-            <lineEnding>unix</lineEnding>
-            <filtered>true</filtered>
-        </fileSet>
-        <fileSet>
             <directory>src/main/etc/conf</directory>
             <outputDirectory>configure</outputDirectory>
             <includes>
@@ -91,6 +84,32 @@
             <fileMode>0755</fileMode>
             <lineEnding>unix</lineEnding>
             <filtered>true</filtered>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/dist/plugins</directory>
+            <outputDirectory>./plugins</outputDirectory>
+            <includes>
+                <include>**/*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>**/*-javadoc.jar</exclude>
+                <exclude>**/*-sources.jar</exclude>
+                <exclude>**/kotlin-*.jar</exclude>
+                <exclude>**/lombok-*.jar</exclude>
+                <exclude>**/jdbc-pinot-plugin/*.jar</exclude>
+            </excludes>
+        </fileSet>
+        <!-- Since shaded has been done, remove the original dependency -->
+        <fileSet>
+            <directory>${project.parent.basedir}/dist/plugins/jdbc-pinot-plugin</directory>
+            <outputDirectory>./plugins/jdbc-pinot-plugin</outputDirectory>
+            <excludes>
+                <exclude>**/*-javadoc.jar</exclude>
+                <exclude>**/*-sources.jar</exclude>
+            </excludes>
+            <includes>
+                <include>**/datacap*.jar</include>
+            </includes>
         </fileSet>
     </fileSets>
 </assembly>
