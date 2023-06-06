@@ -1,5 +1,5 @@
 use
-datacap;
+    datacap;
 
 -- --------------------------------
 -- Table for audit_plugin
@@ -7,18 +7,18 @@ datacap;
 create table audit_plugin
 (
     id          bigint auto_increment primary key,
-    state       varchar(255) null,
-    create_time mediumtext null,
-    end_time    mediumtext null,
-    plugin_id   bigint not null,
-    content     text null,
-    message     text null,
+    state       varchar(255)     null,
+    create_time mediumtext       null,
+    end_time    mediumtext       null,
+    plugin_id   bigint           not null,
+    content     text             null,
+    message     text             null,
     elapsed     bigint default 0 null,
-    user_id     bigint not null
+    user_id     bigint           not null
 );
 
 create
-fulltext index full_text_index_for_content
+    fulltext index full_text_index_for_content
     on audit_plugin (content);
 
 -- --------------------------------
@@ -27,14 +27,14 @@ fulltext index full_text_index_for_content
 create table functions
 (
     id          bigint auto_increment primary key,
-    name        varchar(255) null comment 'Function name',
-    content     varchar(255) null comment 'Expression of function',
-    description text null comment 'Function description',
-    plugin      varchar(255) null comment 'Trial plug-in, multiple according to, split',
-    example     text null comment 'Function Usage Example',
+    name        varchar(255)                          null comment 'Function name',
+    content     varchar(255)                          null comment 'Expression of function',
+    description text                                  null comment 'Function description',
+    plugin      varchar(255)                          null comment 'Trial plug-in, multiple according to, split',
+    example     text                                  null comment 'Function Usage Example',
     create_time datetime    default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
     update_time datetime    default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    type        varchar(20) default 'KEYWORDS' null
+    type        varchar(20) default 'KEYWORDS'        null
 ) comment 'Plug-in correlation function';
 
 -- --------------------------------
@@ -43,19 +43,19 @@ create table functions
 create table pipeline
 (
     id              int auto_increment primary key,
-    name            varchar(255) not null,
-    content         text         not null,
-    state           varchar(100) null,
-    message         text null,
-    work            text null,
+    name            varchar(255)                       not null,
+    content         text                               not null,
+    state           varchar(100)                       null,
+    message         text                               null,
+    work            text                               null,
     start_time      datetime default CURRENT_TIMESTAMP null,
-    end_time        datetime null on update CURRENT_TIMESTAMP,
-    elapsed         bigint null,
-    user_id         int          not null,
-    from_id         int          not null,
-    from_configures text null,
-    to_id           int          not null,
-    to_configures   text null
+    end_time        datetime                           null on update CURRENT_TIMESTAMP,
+    elapsed         bigint                             null,
+    user_id         int                                not null,
+    from_id         int                                not null,
+    from_configures text                               null,
+    to_id           int                                not null,
+    to_configures   text                               null
 );
 
 -- --------------------------------
@@ -64,9 +64,9 @@ create table pipeline
 create table role
 (
     id          bigint auto_increment primary key,
-    name        varchar(255) null comment ' ',
-    description varchar(255) null comment ' ',
-    create_time datetime(5) default CURRENT_TIMESTAMP (5) null
+    name        varchar(255)                             null comment ' ',
+    description varchar(255)                             null comment ' ',
+    create_time datetime(5) default CURRENT_TIMESTAMP(5) null
 );
 
 INSERT INTO datacap.role (name, description)
@@ -80,13 +80,13 @@ VALUES ('User', 'User role');
 create table datacap.scheduled_task
 (
     id          int auto_increment primary key,
-    name        varchar(255) not null,
-    description text         not null,
-    expression  varchar(100) null,
-    active      tinyint(1) default 1 null,
-    is_system   tinyint(1) default 1 null,
-    create_time datetime default CURRENT_TIMESTAMP null,
-    update_time datetime null on update CURRENT_TIMESTAMP
+    name        varchar(255)                         not null,
+    description text                                 not null,
+    expression  varchar(100)                         null,
+    active      tinyint(1) default 1                 null,
+    is_system   tinyint(1) default 1                 null,
+    create_time datetime   default CURRENT_TIMESTAMP null,
+    update_time datetime                             null on update CURRENT_TIMESTAMP
 );
 
 INSERT INTO datacap.scheduled_task (name, description, expression, active, is_system)
@@ -98,16 +98,16 @@ VALUES ('Synchronize table structure', 'Synchronize the table structure of the d
 create table datacap.snippet
 (
     id          bigint auto_increment primary key,
-    name        varchar(255) null comment ' ',
-    description varchar(255) null comment ' ',
-    code        text null comment ' ',
+    name        varchar(255)                        null comment ' ',
+    description varchar(255)                        null comment ' ',
+    code        text                                null comment ' ',
     create_time timestamp default CURRENT_TIMESTAMP not null,
     update_time timestamp default CURRENT_TIMESTAMP not null,
     user_id     bigint                              not null
 );
 
 create
-fulltext index full_text_index_for_code
+    fulltext index full_text_index_for_code
     on datacap.snippet (code);
 
 -- --------------------------------
@@ -116,24 +116,24 @@ fulltext index full_text_index_for_code
 create table datacap.source
 (
     id          bigint auto_increment primary key,
-    _catalog    varchar(255) null,
-    create_time datetime default CURRENT_TIMESTAMP null,
-    _database   varchar(255) null,
-    description varchar(255) null,
-    host        varchar(255) not null,
-    name        varchar(255) not null,
-    password    varchar(255) null,
-    port        bigint       not null,
-    protocol    varchar(255) null,
-    username    varchar(255) null,
-    _type       varchar(100) not null,
-    `ssl`       tinyint(1) default 0 null,
-    _ssl        tinyint(1) default 0 null,
-    publish     tinyint(1) default 0 null,
-    public      tinyint(1) default 0 null,
-    user_id     bigint null,
-    configure   text null,
-    used_config boolean  default false
+    _catalog    varchar(255)                         null,
+    create_time datetime   default CURRENT_TIMESTAMP null,
+    _database   varchar(255)                         null,
+    description varchar(255)                         null,
+    host        varchar(255)                         not null,
+    name        varchar(255)                         not null,
+    password    varchar(255)                         null,
+    port        bigint                               not null,
+    protocol    varchar(255)                         null,
+    username    varchar(255)                         null,
+    _type       varchar(100)                         not null,
+    `ssl`       tinyint(1) default 0                 null,
+    _ssl        tinyint(1) default 0                 null,
+    publish     tinyint(1) default 0                 null,
+    public      tinyint(1) default 0                 null,
+    user_id     bigint                               null,
+    configure   text                                 null,
+    used_config boolean    default false
 ) comment 'The storage is used to query the data connection source';
 
 -- --------------------------------
@@ -142,14 +142,14 @@ create table datacap.source
 create table datacap.template_sql
 (
     id          bigint auto_increment primary key,
-    name        varchar(255) null comment 'Name of template',
-    content     text null,
-    description text null,
-    plugin      varchar(50) null comment 'Using plug-ins',
-    configure   text null comment 'The template must use the configuration information in the key->value format',
-    create_time timestamp default CURRENT_TIMESTAMP not null,
-    update_time timestamp default CURRENT_TIMESTAMP not null,
-    `system`    tinyint(1) default 0 null
+    name        varchar(255)                         null comment 'Name of template',
+    content     text                                 null,
+    description text                                 null,
+    plugin      varchar(50)                          null comment 'Using plug-ins',
+    configure   text                                 null comment 'The template must use the configuration information in the key->value format',
+    create_time timestamp  default CURRENT_TIMESTAMP not null,
+    update_time timestamp  default CURRENT_TIMESTAMP not null,
+    `system`    tinyint(1) default 0                 null
 ) comment 'The system preset SQL template table';
 
 INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
@@ -223,15 +223,15 @@ VALUES ( 'getAllColumnsFromDatabaseAndTable', 'SHOW COLUMNS FROM ${table:String}
 create table user_chat
 (
     id          int auto_increment primary key,
-    name        varchar(255) not null,
-    question    text         not null,
-    answer      text null,
-    type        varchar(100) null,
-    create_time datetime default CURRENT_TIMESTAMP null,
-    end_time    datetime null on update CURRENT_TIMESTAMP,
-    elapsed     bigint null,
-    user_id     int          not null,
-    is_new      tinyint(1) default 1 null
+    name        varchar(255)                         not null,
+    question    text                                 not null,
+    answer      text                                 null,
+    type        varchar(100)                         null,
+    create_time datetime   default CURRENT_TIMESTAMP null,
+    end_time    datetime                             null on update CURRENT_TIMESTAMP,
+    elapsed     bigint                               null,
+    user_id     int                                  not null,
+    is_new      tinyint(1) default 1                 null
 );
 
 -- --------------------------------
@@ -241,14 +241,14 @@ create table user_log
 (
     id          bigint auto_increment
         primary key,
-    device      varchar(255) null comment 'Login device',
-    client      varchar(255) null comment 'Login client',
-    ip          varchar(100) null comment 'Login ip',
-    message     varchar(225) null comment 'Error message',
-    state       varchar(20) null comment 'Login state',
-    ua          varchar(255) null comment 'Trial plug-in, multiple according to, split',
-    user_id     bigint not null,
-    create_time datetime(5) default CURRENT_TIMESTAMP (5) null
+    device      varchar(255)                             null comment 'Login device',
+    client      varchar(255)                             null comment 'Login client',
+    ip          varchar(100)                             null comment 'Login ip',
+    message     varchar(225)                             null comment 'Error message',
+    state       varchar(20)                              null comment 'Login state',
+    ua          varchar(255)                             null comment 'Trial plug-in, multiple according to, split',
+    user_id     bigint                                   not null,
+    create_time datetime(5) default CURRENT_TIMESTAMP(5) null
 ) comment 'User login log';
 
 -- --------------------------------
@@ -273,10 +273,10 @@ create table datacap.users
 (
     id              bigint auto_increment
         primary key,
-    username        varchar(255) null comment ' ',
-    password        varchar(255) null comment ' ',
-    create_time     datetime(5) default CURRENT_TIMESTAMP (5) null,
-    third_configure text null
+    username        varchar(255)                             null comment ' ',
+    password        varchar(255)                             null comment ' ',
+    create_time     datetime(5) default CURRENT_TIMESTAMP(5) null,
+    third_configure text                                     null
 );
 
 INSERT INTO datacap.users (username, password)
@@ -770,3 +770,25 @@ values ('2', '7'),
 -- --------------------------------
 alter table `audit_plugin`
     add column `count` bigint(20) default 0;
+
+INSERT INTO `template_sql` (name, content, description, plugin, configure, `system`)
+VALUES ('getAllDatabase', 'SELECT keyspace_name AS name
+FROM system_schema.keyspaces', 'Gets a list of all databases', 'Cassandra', '[]', 1);
+INSERT INTO `template_sql` (name, content, description, plugin, configure, `system`)
+VALUES ('getAllTablesFromDatabase', 'SELECT
+  table_name AS name
+FROM
+  system_schema.tables
+WHERE
+  keyspace_name = ''${database:String}''
+GROUP BY
+  table_name', 'Get the data table from the database', 'Cassandra', '[{"column":"database","type":"String","expression":"${database:String}"}]', 1);
+INSERT INTO `template_sql` (name, content, description, plugin, configure, `system`)
+VALUES ('getAllColumnsFromDatabaseAndTable', 'SELECT
+  column_name
+FROM
+  system_schema.columns
+WHERE
+  keyspace_name = ''${database:String}''
+  and table_name = ''${table:String}''', 'Get the data column from the database and table', 'Cassandra',
+        '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', 1);

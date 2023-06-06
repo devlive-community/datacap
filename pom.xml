@@ -64,6 +64,7 @@
         <module>plugin/datacap-jdbc-hologres</module>
         <module>plugin/datacap-plugin-pinot</module>
         <module>plugin/datacap-plugin-mongo-community</module>
+        <module>plugin/datacap-plugin-cassandra</module>
         <module>executor/datacap-executor-example</module>
         <module>executor/datacap-executor-seatunnel</module>
         <module>shaded/datacap-shaded-ydb</module>

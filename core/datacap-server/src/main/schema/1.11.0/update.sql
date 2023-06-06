@@ -35,3 +35,25 @@ where url = '/admin/menu';
 update `menus`
 set url = '/system/user'
 where url = '/admin/user';
+
+INSERT INTO `template_sql` (name, content, description, plugin, configure, `system`)
+VALUES ('getAllDatabase', 'SELECT keyspace_name AS name
+FROM system_schema.keyspaces', 'Gets a list of all databases', 'Cassandra', '[]', 1);
+INSERT INTO `template_sql` (name, content, description, plugin, configure, `system`)
+VALUES ('getAllTablesFromDatabase', 'SELECT
+  table_name AS name
+FROM
+  system_schema.tables
+WHERE
+  keyspace_name = ''${database:String}''
+GROUP BY
+  table_name', 'Get the data table from the database', 'Cassandra', '[{"column":"database","type":"String","expression":"${database:String}"}]', 1);
+INSERT INTO `template_sql` (name, content, description, plugin, configure, `system`)
+VALUES ('getAllColumnsFromDatabaseAndTable', 'SELECT
+  column_name
+FROM
+  system_schema.columns
+WHERE
+  keyspace_name = ''${database:String}''
+  and table_name = ''${table:String}''', 'Get the data column from the database and table', 'Cassandra',
+        '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', 1);

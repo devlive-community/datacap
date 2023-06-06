@@ -212,6 +212,9 @@ Datacap 是快速、轻量级、直观的系统。
     </a>&nbsp;
     <a href="https://docs.pinot.apache.org/" target="_blank" class="connector-logo-index">
         <img src="/assets/plugin/pinot.png" alt="Apache Pinot" height=60" />
+    </a>&nbsp;
+    <a href="https://cassandra.apache.org/" target="_blank" class="connector-logo-index">
+        <img src="/assets/plugin/cassandra.png" alt="Apache Cassandra" height=60" />
     </a>
 </p>
 
