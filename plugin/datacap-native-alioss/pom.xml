@@ -15,7 +15,7 @@
 
     <properties>
         <alioss.version>3.16.1</alioss.version>
-        <plugin.name>native-alioss</plugin.name>
+        <plugin.name>datacap-native-alioss</plugin.name>
     </properties>
 
     <dependencies>
@@ -36,6 +36,12 @@
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>${alioss.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -47,9 +53,9 @@
                 <configuration>
                     <finalName>${plugin.name}</finalName>
                     <descriptors>
-                        <descriptor>../../configure/assembly/assembly-plugin.xml</descriptor>
+                        <descriptor>../../configure/assembly/plugin.xml</descriptor>
                     </descriptors>
-                    <outputDirectory>../../dist/plugins/${plugin.name}</outputDirectory>
+                    <outputDirectory>../../dist/plugins</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>

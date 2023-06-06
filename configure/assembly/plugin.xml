@@ -2,10 +2,10 @@
     <id>plugin</id>
 
     <formats>
-        <format>jar</format>
+        <format>dir</format>
     </formats>
 
-    <includeBaseDirectory>true</includeBaseDirectory>
+    <includeBaseDirectory>false</includeBaseDirectory>
 
     <dependencySets>
         <dependencySet>

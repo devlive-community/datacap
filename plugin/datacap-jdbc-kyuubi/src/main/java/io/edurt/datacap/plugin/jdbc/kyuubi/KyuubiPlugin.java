@@ -45,7 +45,7 @@ public class KyuubiPlugin
             this.jdbcConfigure = new JdbcConfigure();
             BeanUtils.copyProperties(this.jdbcConfigure, configure);
             this.jdbcConfigure.setJdbcDriver("org.apache.kyuubi.jdbc.KyuubiHiveDriver");
-            this.jdbcConfigure.setJdbcType("hive2");
+            this.jdbcConfigure.setJdbcType("kyuubi");
             this.connection = new JdbcConnection(this.jdbcConfigure, this.response);
         }
         catch (Exception ex) {

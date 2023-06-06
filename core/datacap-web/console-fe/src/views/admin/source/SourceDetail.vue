@@ -7,7 +7,7 @@
           <Card :bordered="false" dis-hover>
             <div style="text-align:center">
               <Avatar :size="40"
-                      :src="formState?.type ? '/static/images/plugin/' + formState?.type.split(' ')[0] + '.png' : ''" icon="ios-person"/>
+                      :src="formState?.type ? '/static/images/plugin/' + formState?.type.split('_')[0].replace(' Community', '') + '.png' : ''" icon="ios-person"/>
               <p>{{ !formState['type'] ? '_' : formState['type'] }}</p>
             </div>
           </Card>
@@ -16,7 +16,6 @@
           <Card :bordered="false" dis-hover>
             <div style="text-align:center">
               <Progress :percent="testInfo.percent" :status="(testInfo.connected && testInfo.successful) ? 'success' : 'wrong'">
-                <span></span>
               </Progress>
             </div>
           </Card>
@@ -40,8 +39,8 @@
                   <Divider orientation="left">{{ key }} ({{ plugins[key].length }})</Divider>
                   <Space wrap :size="[8, 16]">
                     <Tooltip v-for="plugin in plugins[key]" :content="plugin.description" transfer v-bind:key="plugin.name">
-                      <Radio :label="plugin.name + ' ' + plugin.type">
-                        <Avatar :src="'/static/images/plugin/' + plugin.name.split(' ')[0] + '.png'" size="small"/>
+                      <Radio :label="plugin.name + '_' + plugin.type">
+                        <Avatar :src="'/static/images/plugin/' + plugin.name.split('_')[0].replace(' Community', '') + '.png'" size="small"/>
                         <span style="margin-left: 2px;">{{ plugin.name }}</span>
                       </Radio>
                     </Tooltip>
@@ -230,7 +229,7 @@ export default defineComponent({
     handlerSave()
     {
       this.loading.save = true;
-      const temp = clone(this.formState.type).split(' ');
+      const temp = clone(this.formState.type).split('_');
       let type = temp[1]
       let name = temp[0]
       if (temp.length === 3) {
@@ -257,7 +256,7 @@ export default defineComponent({
     handlerTest()
     {
       this.loading.test = true;
-      const temp = clone(this.formState.type).split(' ');
+      const temp = clone(this.formState.type).split('_');
       let type = temp[1]
       let name = temp[0]
       if (temp.length === 3) {
@@ -305,14 +304,9 @@ export default defineComponent({
     },
     handlerChangePlugin(value)
     {
-      const pluginAndType = value.replace(' Community', '').split(' ');
+      const pluginAndType = value.split('_');
       const applyPlugins: [] = this.plugins[pluginAndType[1]];
-      const applyPlugin = applyPlugins.filter(plugin => {
-        if (new String(plugin['name']).indexOf('Community') > 0) {
-          pluginAndType[0] = pluginAndType[0] + ' Community'
-        }
-        return plugin['name'] === pluginAndType[0]
-      })[0];
+      const applyPlugin = applyPlugins.filter(plugin => plugin['name'] === pluginAndType[0])[0];
       this.applyPlugin = applyPlugin['configure'];
       this.pluginConfigure = applyPlugin['configure']['configures'];
       // Clear

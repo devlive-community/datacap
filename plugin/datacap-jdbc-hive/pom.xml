@@ -85,6 +85,10 @@
                     <groupId>org.mortbay.jetty</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -104,9 +108,9 @@
                 <configuration>
                     <finalName>${plugin.name}</finalName>
                     <descriptors>
-                        <descriptor>../../configure/assembly/assembly-plugin.xml</descriptor>
+                        <descriptor>../../configure/assembly/plugin.xml</descriptor>
                     </descriptors>
-                    <outputDirectory>../../dist/plugins/${plugin.name}</outputDirectory>
+                    <outputDirectory>../../dist/plugins</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
