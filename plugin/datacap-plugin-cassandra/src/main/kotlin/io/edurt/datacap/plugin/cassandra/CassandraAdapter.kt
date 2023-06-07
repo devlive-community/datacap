@@ -1,6 +1,7 @@
 package io.edurt.datacap.plugin.cassandra
 
 import com.datastax.oss.driver.api.core.cql.ResultSet
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import io.edurt.datacap.spi.adapter.Adapter
 import io.edurt.datacap.spi.model.Configure
 import io.edurt.datacap.spi.model.Response
@@ -12,7 +13,11 @@ import java.util.*
 import kotlin.Any
 import kotlin.Exception
 import kotlin.String
+import kotlin.toString
 
+@SuppressFBWarnings(
+    value = ["RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"], justification = "I prefer to suppress these FindBugs warnings"
+)
 class CassandraAdapter : Adapter {
     private val log: Logger = getLogger(CassandraAdapter::class.java)
 
