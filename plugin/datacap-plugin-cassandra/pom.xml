@@ -14,7 +14,7 @@
     <description>DataCap - Apache Cassandra</description>
 
     <properties>
-        <plugin.name>plugin-cassandra</plugin.name>
+        <plugin.name>datacap-cassandra</plugin.name>
         <cassandra.driver.version>4.16.0</cassandra.driver.version>
     </properties>
 
@@ -51,6 +51,12 @@
             <groupId>com.datastax.oss</groupId>
             <artifactId>java-driver-core</artifactId>
             <version>${cassandra.driver.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-handler</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
