@@ -12,11 +12,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -72,4 +75,16 @@ public class TemplateSqlEntity
 
     @Column(name = "update_time", columnDefinition = "timestamp not null default current_timestamp")
     private Timestamp updateTime;
+
+    @PrePersist
+    void prePersist()
+    {
+        createTime = Timestamp.valueOf(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    void preUpdate()
+    {
+        updateTime = Timestamp.valueOf(LocalDateTime.now());
+    }
 }

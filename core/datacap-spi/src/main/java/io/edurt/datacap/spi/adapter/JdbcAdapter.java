@@ -33,7 +33,7 @@ public class JdbcAdapter
         this.jdbcConnection = jdbcConnection;
     }
 
-    protected Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
+    public Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
     {
         return FormatterFactory.createFormatter(format, headers, columns).formatter();
     }

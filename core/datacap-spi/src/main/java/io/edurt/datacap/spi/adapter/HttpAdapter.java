@@ -22,7 +22,7 @@ public class HttpAdapter
         this.httpConnection = httpConnection;
     }
 
-    protected Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
+    public Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
     {
         return FormatterFactory.createFormatter(format, headers, columns).formatter();
     }

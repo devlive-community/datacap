@@ -64,6 +64,7 @@ extra:
   status:
     new: Recently added
     1.10.0: 1.10.0
+    1.11.0: 1.11.0
   alternate:
     - name: English
       link: /en/
@@ -159,6 +160,7 @@ nav:
             - Sql: reference/admin/template/sql/home.md
       - Connecting to connectors:
         - reference/connectors/index.md
+        - Apache Cassandra: reference/connectors/cassandra.md
         - JDBC:
           - Hologres: reference/connectors/jdbc/hologres.md
           - StarRocks: reference/connectors/jdbc/starrocks.md
