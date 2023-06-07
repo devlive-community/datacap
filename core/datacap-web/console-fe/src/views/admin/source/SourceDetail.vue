@@ -206,7 +206,7 @@ export default defineComponent({
           .then(response => {
             if (response.status) {
               this.formState = reactive(response.data);
-              this.formState.type = this.formState.type + ' ' + this.formState.protocol;
+              this.formState.type = this.formState.type + '_' + this.formState.protocol;
               this.applyPlugin = response.data['schema'];
               this.pluginConfigure = response.data['schema']['configures'];
               // Clear

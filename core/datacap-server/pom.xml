@@ -465,6 +465,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>${assembly-plugin.version}</version>
                 <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
                         <descriptor>../../configure/assembly/server.xml</descriptor>
                     </descriptors>
