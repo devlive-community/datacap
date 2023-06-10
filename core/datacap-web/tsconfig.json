@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     // Property '...' has no initializer and is not definitely assigned in the constructor
     "strictPropertyInitialization": false,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "types": [
       "webpack-env"
     ],

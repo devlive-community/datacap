@@ -1,5 +1,5 @@
 import {createI18n} from 'vue-i18n';
-import messages from '@/i18n/langs/index';
+import messages from '@/i18n/langs';
 
 const language = (navigator.language || 'en').toLocaleLowerCase();
 

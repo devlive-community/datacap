@@ -35,7 +35,7 @@ job_runner_apply() {
 
     printf "Apply new version for web ...\n"
     # shellcheck disable=SC2164
-    cd "$HOME"/core/datacap-web/console-fe
+    cd "$HOME"/core/datacap-web
     npm version "$VERSION" --no-git-tag-version
     if [ $? -ne 0 ]; then
         printf "\nApply new version for web failed\n\n"
