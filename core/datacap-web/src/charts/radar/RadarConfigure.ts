@@ -1,4 +1,4 @@
-import {Radar} from "@/charts/radar/Radar";
+import {Radar} from "./Radar";
 
 export class RadarConfigure
 {

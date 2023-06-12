@@ -26,37 +26,37 @@
 
 </div>
 
-### What is datacap?
+### 什么是 datacap?
 
 ---
 
-DataCap is integrated software for data transformation, integration, and visualization. Support a variety of data sources, file types, big data related database, relational database, NoSQL database, etc. Through the software can realize the management of multiple data sources, the data under the source of various operations conversion, making data charts, monitoring data sources and other functions.
+DataCap 是用于数据转换、集成和可视化的集成软件。支持多种数据源、文件类型、大数据相关数据库、关系数据库、NoSQL数据库等。通过软件可以实现多数据源的管理，对源下的数据进行各种操作转换、制作数据图表、监控数据源和其他功能。
 
-**Example**: [try.datacap.edurt.io](http://try.datacap.edurt.io/)
+**范例**: [try.datacap.edurt.io](http://try.datacap.edurt.io/)
 
-| Username  | Password    |
+|    用户名    | 密码          |
 |:---------:|:------------|
 | `datacap` | `123456789` |
 |  `admin`  | `12345678`  |
 
-### Require
+### 要求
 
 ---
 
-> Must-read for users: Be sure to execute the following command after cloning the code locally
+> 用户必读：请务必在本地克隆代码后执行以下命令
 
 ```bash
 cp configure/git-hook/* .git/hooks
 chmod 700 .git/hooks/*
 ```
 
-## Supported Connectors
+## 支持的连接器
 
 ---
 
-DataCap can query data from any SQL-speaking datastore or data engine (ClickHouse, MySQL, Presto and more).
+DataCap 可以从任何使用 SQL 的数据存储或数据引擎（ClickHouse、MySQL、Presto 等）查询数据。
 
-Here are some of the major database solutions that are supported:
+以下是一些受支持的主要数据库解决方案：
 
 <p align="center">
     <a href="https://clickhouse.com" target="_blank">
@@ -187,37 +187,37 @@ Here are some of the major database solutions that are supported:
     </a>
 </p>
 
-## Stargazers over time
+## 贡献图谱
 
 ---
 
 [![Stargazers over time](https://starchart.cc/EdurtIO/datacap.svg)](https://starchart.cc/EdurtIO/datacap)
 
-## Join Us
+## 加入我们
 
 ---
 
-Open the DingTalk (left) or WeChat(right) software and scan the following QR code to join
+打开钉钉（左）或微信（右）软件扫描以下二维码加入
 
 <div>
   <img src="docs/docs/assets/dingtalk.png" width="200px" height="200px"/>
   <img src="docs/docs/assets/wechat.png" width="200px" height="200px"/>
 </div>
 
-## Thank you
+## 鸣谢
 
 ---
 
 [![Jetbrains](https://img.shields.io/badge/Development-Jetbrains-brightgreen?style=flat-square)](https://www.jetbrains.com/)
 [![App Store](https://img.shields.io/badge/App%20Store-Rainbond-brightgreen?style=flat-square)](https://www.rainbond.com/)
 
-## Installation and Configuration
+## 安装和配置
 
 ---
 
-[Extended documentation for DataCap](https://datacap.incubator.edurt.io)
+[DataCap 的扩展文档](https://datacap.incubator.edurt.io)
 
-## Contributors
+## 贡献者
 
 ---
 

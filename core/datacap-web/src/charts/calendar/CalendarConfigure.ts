@@ -1,4 +1,4 @@
-import {Calendar} from "@/charts/calendar/Calendar";
+import {Calendar} from "./Calendar";
 
 export class CalendarConfigure
 {
