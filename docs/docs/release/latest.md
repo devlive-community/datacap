@@ -6,54 +6,30 @@
 
 | Release Version | Release Time |
 |:---------------:|:------------:|
-|    `1.10.0`     | `2023-05-30` |
+|    `1.11.0`     | `2023-06-13` |
 
 #### General
 
 ---
 
-- Fix service start default connection mongo
-- Fixed h2 db update_time and create_time for sql template
-- Improve the H2 metadata management to obtain type
-- Improve the mysql metadata management to obtain type
-- Fixed metadata management data page default to 1
-- Reconstruct the data render table
-- Support column type
-- Add time consuming and view executing SQL
-- Support for selectable totals per page
-- Supports header hint data types
-- Supports replication of selected data results
-- Support for selecting specified column queries
-- Support filter
-- Fixed the default user creation time being null
-- Support Permission
-- Fixed user createTime is null
+- The number of rows returned by the query history is added
+- Fixed a 404 error on the home page
+- Strip plugins into separate folders
 
 #### Web
 
 ---
 
-- None Network authorization information is not cleared
-- Optimize data management to obtain data
-- Disable warnings output to console
-- Increased editor buffering prompt limit
-- Removes the default collation rule
-- Rename user dashboard path
-- Add dashboard chat style
-- Fix navigation style
-- Add data source load state
+- Refactor the folder
+- Add menu breadcrumbs
+- Synchronous server routing
+- Add not login page
+- Add source manager route
+- Fixed the callback exception of route construction failure
+- Fix data source type marker exception
 
 #### Plugins
 
 ---
 
-- Support apache pinot
-- Support mongo community
-
-#### Dependencies
-
----
-
-- Bump clickhouse-jdbc from `0.3.2-patch9` to `0.4.6`
-- Bump oracle-xe from `1.17.6` to `1.18.1`
-- Bump kyuubi-hive-jdbc-shaded from `1.6.0-incubating` to `1.7.1`
+- Support apache cassandra
