@@ -5,7 +5,9 @@ public interface Executor
     default String name()
     {
         // Intercept the suffix Executor to mark the executor name
-        return this.getClass().getSimpleName().replace("Executor", "");
+        return this.getClass().getSimpleName()
+                .replace("Executor", "")
+                .replace("Module", "");
     }
 
     default String description()

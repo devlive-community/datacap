@@ -26,7 +26,7 @@ public class ExecutorManager
     {
         log.info("Loading executor start ...");
         for (ExecutorModule plugin : this.externalModules) {
-            log.info("Install executor <{}>", plugin.getClass().getSimpleName());
+            log.info("Install executor <{}>", plugin.name());
             this.install(plugin);
         }
         log.info("Loading executor end ...");
