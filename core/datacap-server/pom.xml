@@ -471,7 +471,8 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>${assembly-plugin.version}</version>
                 <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>datacap</finalName>
+                    <outputDirectory>../../dist</outputDirectory>
                     <descriptors>
                         <descriptor>../../configure/assembly/server.xml</descriptor>
                     </descriptors>
@@ -485,6 +486,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${plugin.maven.nexus.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
