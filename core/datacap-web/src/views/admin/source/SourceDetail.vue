@@ -201,6 +201,7 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
+      this.formState.type = null
       if (this.id > 0) {
         SourceV2Service.getById(this.id)
           .then(response => {
