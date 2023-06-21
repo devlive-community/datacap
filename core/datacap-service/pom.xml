@@ -14,7 +14,7 @@
     <description>DataCap - server</description>
 
     <properties>
-        <snakeyaml.version>1.33</snakeyaml.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
         <useragent.version>1.21</useragent.version>
         <chatgpt.version>1.0.4</chatgpt.version>
     </properties>
