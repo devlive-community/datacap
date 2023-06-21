@@ -13,6 +13,12 @@
     <artifactId>datacap-service</artifactId>
     <description>DataCap - server</description>
 
+    <properties>
+        <snakeyaml.version>1.33</snakeyaml.version>
+        <useragent.version>1.21</useragent.version>
+        <chatgpt.version>1.0.4</chatgpt.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
@@ -51,14 +57,19 @@
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+        <dependency>
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
-            <version>1.21</version>
+            <version>${useragent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.unfbx</groupId>
             <artifactId>chatgpt-java</artifactId>
-            <version>1.0.4</version>
+            <version>${chatgpt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
