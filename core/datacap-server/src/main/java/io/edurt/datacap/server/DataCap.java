@@ -11,6 +11,8 @@ import java.io.File;
 
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @ComponentScans(value = {
+        @ComponentScan(value = "io.edurt.datacap.security"),
+        @ComponentScan(value = "io.edurt.datacap.service"),
         @ComponentScan(value = "io.edurt.datacap.schedule")
 })
 public class DataCap

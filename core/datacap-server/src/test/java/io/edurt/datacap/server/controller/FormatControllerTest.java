@@ -1,7 +1,7 @@
 package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.server.BaseParamTest;
-import io.edurt.datacap.server.common.JSON;
+import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.server.controller.user.FormatController;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -42,7 +42,7 @@ public class FormatControllerTest
     {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/format/sql")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JSON.objectmapper.writeValueAsString(BaseParamTest.builderFormat())))
+                        .content(JsonUtils.objectmapper.writeValueAsString(BaseParamTest.builderFormat())))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists())
                 .andDo(MockMvcResultHandlers.print())

@@ -1,10 +1,10 @@
 package io.edurt.datacap.server.authorize;
 
-import io.edurt.datacap.server.body.BaseUserBody;
-import io.edurt.datacap.server.common.ServiceState;
-import io.edurt.datacap.server.entity.UserEntity;
-import io.edurt.datacap.server.repository.SourceRepository;
-import io.edurt.datacap.server.security.UserDetailsService;
+import io.edurt.datacap.common.enums.ServiceState;
+import io.edurt.datacap.service.body.BaseUserBody;
+import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.repository.SourceRepository;
+import io.edurt.datacap.service.security.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

@@ -1,14 +1,14 @@
 package io.edurt.datacap.server.controller.admin;
 
-import io.edurt.datacap.server.body.FilterBody;
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.PageEntity;
-import io.edurt.datacap.server.entity.RoleEntity;
-import io.edurt.datacap.server.entity.admin.MenuEntity;
-import io.edurt.datacap.server.record.TreeRecord;
-import io.edurt.datacap.server.repository.RoleRepository;
-import io.edurt.datacap.server.service.RoleService;
-import io.edurt.datacap.server.validation.ValidationGroup;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.entity.MenuEntity;
+import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.entity.RoleEntity;
+import io.edurt.datacap.service.record.TreeRecord;
+import io.edurt.datacap.service.repository.RoleRepository;
+import io.edurt.datacap.service.service.RoleService;
+import io.edurt.datacap.service.validation.ValidationGroup;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,25 +39,25 @@ public class RoleController
     }
 
     @PostMapping(value = "list")
-    public Response<PageEntity<RoleEntity>> getAllByFilter(@RequestBody FilterBody filter)
+    public CommonResponse<PageEntity<RoleEntity>> getAllByFilter(@RequestBody FilterBody filter)
     {
         return this.roleService.getAll(roleRepository, filter);
     }
 
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    public Response<RoleEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) RoleEntity configure)
+    public CommonResponse<RoleEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) RoleEntity configure)
     {
         return this.roleService.saveOrUpdate(roleRepository, configure);
     }
 
     @GetMapping(value = "{id}")
-    public Response<RoleEntity> getInfo(@PathVariable(value = "id") Long id)
+    public CommonResponse<RoleEntity> getInfo(@PathVariable(value = "id") Long id)
     {
         return this.roleService.getById(roleRepository, id);
     }
 
     @RequestMapping(value = "{id}/menus", method = {RequestMethod.GET, RequestMethod.PUT})
-    public Response<? extends Object> getMenusByRoleId(@PathVariable(value = "id") Long id,
+    public CommonResponse<? extends Object> getMenusByRoleId(@PathVariable(value = "id") Long id,
             @RequestBody(required = false) List<TreeRecord> nodes)
     {
         if (ObjectUtils.isEmpty(nodes)) {

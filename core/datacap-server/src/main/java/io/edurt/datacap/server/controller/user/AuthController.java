@@ -1,11 +1,11 @@
 package io.edurt.datacap.server.controller.user;
 
-import io.edurt.datacap.server.body.AuthBody;
-import io.edurt.datacap.server.common.JwtResponse;
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.UserEntity;
-import io.edurt.datacap.server.service.UserService;
-import io.edurt.datacap.server.validation.ValidationGroup;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.common.response.JwtResponse;
+import io.edurt.datacap.service.body.AuthBody;
+import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.service.UserService;
+import io.edurt.datacap.service.validation.ValidationGroup;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +24,7 @@ public class AuthController
     }
 
     @PostMapping("/signin")
-    public Response<JwtResponse> authenticateUser(@RequestBody @Validated(ValidationGroup.Crud.Auth.class) AuthBody configure)
+    public CommonResponse<JwtResponse> authenticateUser(@RequestBody @Validated(ValidationGroup.Crud.Auth.class) AuthBody configure)
     {
         UserEntity user = new UserEntity();
         user.setUsername(configure.getUsername());
@@ -33,7 +33,7 @@ public class AuthController
     }
 
     @PostMapping("/signup")
-    public Response<?> registerUser(@RequestBody @Validated(ValidationGroup.Crud.Create.class) AuthBody configure)
+    public CommonResponse<?> registerUser(@RequestBody @Validated(ValidationGroup.Crud.Create.class) AuthBody configure)
     {
         UserEntity user = new UserEntity();
         user.setUsername(configure.getUsername());

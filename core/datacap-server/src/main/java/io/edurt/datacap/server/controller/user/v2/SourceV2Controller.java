@@ -1,10 +1,10 @@
 package io.edurt.datacap.server.controller.user.v2;
 
-import io.edurt.datacap.server.body.SourceBody;
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.SourceEntity;
-import io.edurt.datacap.server.service.SourceService;
-import io.edurt.datacap.server.validation.ValidationGroup;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.SourceBody;
+import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.service.SourceService;
+import io.edurt.datacap.service.validation.ValidationGroup;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,25 +27,25 @@ public class SourceV2Controller
     }
 
     @PostMapping(value = "test", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Response<Object> testConnectionV2(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceBody configure)
+    public CommonResponse<Object> testConnectionV2(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceBody configure)
     {
         return this.sourceService.testConnectionV2(configure);
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Response<SourceEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceBody configure)
+    public CommonResponse<SourceEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceBody configure)
     {
         return this.sourceService.saveOrUpdateV2(configure);
     }
 
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Response<SourceEntity> update(@RequestBody @Validated(ValidationGroup.Crud.Update.class) SourceBody configure)
+    public CommonResponse<SourceEntity> update(@RequestBody @Validated(ValidationGroup.Crud.Update.class) SourceBody configure)
     {
         return this.sourceService.saveOrUpdateV2(configure);
     }
 
     @GetMapping(value = "{id}")
-    public Response<SourceEntity> getInfo(@PathVariable(value = "id") Long id)
+    public CommonResponse<SourceEntity> getInfo(@PathVariable(value = "id") Long id)
     {
         return this.sourceService.getByIdV2(id);
     }

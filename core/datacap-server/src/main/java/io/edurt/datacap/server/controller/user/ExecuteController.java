@@ -1,9 +1,9 @@
 package io.edurt.datacap.server.controller.user;
 
-import io.edurt.datacap.server.body.ExecuteDslBody;
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.ExecuteEntity;
-import io.edurt.datacap.server.service.ExecuteService;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.ExecuteDslBody;
+import io.edurt.datacap.service.entity.ExecuteEntity;
+import io.edurt.datacap.service.service.ExecuteService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +22,13 @@ public class ExecuteController
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Response<Object> execute(@RequestBody ExecuteEntity configure)
+    public CommonResponse<Object> execute(@RequestBody ExecuteEntity configure)
     {
         return this.executeService.execute(configure);
     }
 
     @PostMapping(value = {"dsl"})
-    public Response<Object> executeDsl(@RequestBody ExecuteDslBody configure)
+    public CommonResponse<Object> executeDsl(@RequestBody ExecuteDslBody configure)
     {
         return this.executeService.execute(configure);
     }

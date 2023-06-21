@@ -69,6 +69,8 @@
         <module>executor/datacap-executor-seatunnel</module>
         <module>shaded/datacap-shaded-ydb</module>
         <module>shaded/datacap-shaded-pinot</module>
+        <module>core/datacap-service</module>
+        <module>core/datacap-security</module>
     </modules>
 
     <name>datacap</name>
@@ -127,6 +129,7 @@
         <springboot.version>2.7.4</springboot.version>
         <lombok.version>1.18.24</lombok.version>
         <junit.version>4.13.2</junit.version>
+        <jjwt.version>0.9.1</jjwt.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <findbugs.version>3.0.1</findbugs.version>
         <jackson.version>2.14.2</jackson.version>

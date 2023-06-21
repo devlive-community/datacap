@@ -2,10 +2,10 @@ package io.edurt.datacap.server.configure;
 
 import com.google.inject.Injector;
 import io.edurt.datacap.schedule.ScheduledCronRegistrar;
-import io.edurt.datacap.server.repository.ScheduledTaskRepository;
-import io.edurt.datacap.server.repository.SourceRepository;
-import io.edurt.datacap.server.repository.TemplateSqlRepository;
 import io.edurt.datacap.server.scheduled.SourceScheduledRunnable;
+import io.edurt.datacap.service.repository.ScheduledTaskRepository;
+import io.edurt.datacap.service.repository.SourceRepository;
+import io.edurt.datacap.service.repository.TemplateSqlRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;

@@ -1,11 +1,11 @@
 package io.edurt.datacap.server.controller.admin;
 
-import io.edurt.datacap.server.body.FilterBody;
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.PageEntity;
-import io.edurt.datacap.server.entity.ScheduledTaskEntity;
-import io.edurt.datacap.server.repository.ScheduledTaskRepository;
-import io.edurt.datacap.server.service.ScheduledTaskService;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.entity.ScheduledTaskEntity;
+import io.edurt.datacap.service.repository.ScheduledTaskRepository;
+import io.edurt.datacap.service.service.ScheduledTaskService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +25,7 @@ public class ScheduleTaskController
     }
 
     @PostMapping(value = "list")
-    public Response<PageEntity<ScheduledTaskEntity>> getAllByFilter(@RequestBody FilterBody filter)
+    public CommonResponse<PageEntity<ScheduledTaskEntity>> getAllByFilter(@RequestBody FilterBody filter)
     {
         return scheduledTaskService.getAll(scheduledTaskRepository, filter);
     }

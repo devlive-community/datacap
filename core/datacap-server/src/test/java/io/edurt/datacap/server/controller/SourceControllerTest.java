@@ -1,9 +1,9 @@
 package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.server.BaseParamTest;
-import io.edurt.datacap.server.common.JSON;
+import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.server.controller.user.SourceController;
-import io.edurt.datacap.server.entity.SourceEntity;
+import io.edurt.datacap.service.entity.SourceEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class SourceControllerTest
     {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/source")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JSON.objectmapper.writeValueAsString(BaseParamTest.builderSource())))
+                        .content(JsonUtils.objectmapper.writeValueAsString(BaseParamTest.builderSource())))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print())
@@ -67,7 +67,7 @@ public class SourceControllerTest
         source.setId(1L);
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/source")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JSON.objectmapper.writeValueAsString(source)))
+                        .content(JsonUtils.objectmapper.writeValueAsString(source)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andDo(MockMvcResultHandlers.print())
@@ -116,7 +116,7 @@ public class SourceControllerTest
     {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/source/test")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JSON.objectmapper.writeValueAsString(BaseParamTest.builderSource())))
+                        .content(JsonUtils.objectmapper.writeValueAsString(BaseParamTest.builderSource())))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").exists())
                 .andDo(MockMvcResultHandlers.print())

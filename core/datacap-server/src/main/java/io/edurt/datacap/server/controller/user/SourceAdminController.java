@@ -1,7 +1,7 @@
 package io.edurt.datacap.server.controller.user;
 
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.service.SourceService;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.service.SourceService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ public class SourceAdminController
     }
 
     @GetMapping(value = "count")
-    public Response<Long> count()
+    public CommonResponse<Long> count()
     {
         return this.sourceService.count();
     }
