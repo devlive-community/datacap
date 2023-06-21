@@ -1,12 +1,12 @@
 package io.edurt.datacap.server.controller.admin;
 
-import io.edurt.datacap.server.body.FilterBody;
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.PageEntity;
-import io.edurt.datacap.server.entity.admin.MenuEntity;
-import io.edurt.datacap.server.repository.admin.MenuRepository;
-import io.edurt.datacap.server.service.MenuService;
-import io.edurt.datacap.server.validation.ValidationGroup;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.entity.MenuEntity;
+import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.repository.admin.MenuRepository;
+import io.edurt.datacap.service.service.MenuService;
+import io.edurt.datacap.service.validation.ValidationGroup;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +33,7 @@ public class MenuController
     }
 
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-    public Response<MenuEntity> saveOrUpdate(@RequestBody @Validated(ValidationGroup.Crud.Create.class) MenuEntity configure)
+    public CommonResponse<MenuEntity> saveOrUpdate(@RequestBody @Validated(ValidationGroup.Crud.Create.class) MenuEntity configure)
     {
         if (StringUtils.isEmpty(configure.getCode())) {
             configure.setCode(UUID.randomUUID().toString());
@@ -42,13 +42,13 @@ public class MenuController
     }
 
     @PostMapping(value = "list")
-    public Response<PageEntity<MenuEntity>> getAllByFilter(@RequestBody FilterBody filter)
+    public CommonResponse<PageEntity<MenuEntity>> getAllByFilter(@RequestBody FilterBody filter)
     {
         return service.getAll(repository, filter);
     }
 
     @GetMapping(value = "{id}")
-    public Response<MenuEntity> getInfo(@PathVariable(value = "id") Long id)
+    public CommonResponse<MenuEntity> getInfo(@PathVariable(value = "id") Long id)
     {
         return service.getById(repository, id);
     }

@@ -1,7 +1,8 @@
 package io.edurt.datacap.server.repository;
 
 import io.edurt.datacap.server.BaseParamTest;
-import io.edurt.datacap.server.entity.SourceEntity;
+import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.repository.SourceRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

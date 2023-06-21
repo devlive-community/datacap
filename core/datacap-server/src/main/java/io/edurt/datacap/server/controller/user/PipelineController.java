@@ -1,12 +1,12 @@
 package io.edurt.datacap.server.controller.user;
 
-import io.edurt.datacap.server.body.FilterBody;
-import io.edurt.datacap.server.body.PipelineBody;
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.PageEntity;
-import io.edurt.datacap.server.entity.PipelineEntity;
-import io.edurt.datacap.server.repository.PipelineRepository;
-import io.edurt.datacap.server.service.PipelineService;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.body.PipelineBody;
+import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.entity.PipelineEntity;
+import io.edurt.datacap.service.repository.PipelineRepository;
+import io.edurt.datacap.service.service.PipelineService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,13 +26,13 @@ public class PipelineController
     }
 
     @PostMapping(value = "/create")
-    public Response<Object> create(@RequestBody PipelineBody configure)
+    public CommonResponse<Object> create(@RequestBody PipelineBody configure)
     {
         return pipelineService.submit(configure);
     }
 
     @PostMapping(value = "list")
-    public Response<PageEntity<PipelineEntity>> getAllByFilter(@RequestBody FilterBody filter)
+    public CommonResponse<PageEntity<PipelineEntity>> getAllByFilter(@RequestBody FilterBody filter)
     {
         return this.pipelineService.getAll(this.pipelineRepository, filter);
     }

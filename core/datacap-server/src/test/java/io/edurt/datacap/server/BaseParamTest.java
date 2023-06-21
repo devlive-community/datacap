@@ -1,9 +1,9 @@
 package io.edurt.datacap.server;
 
-import io.edurt.datacap.server.common.ProtocolEnum;
-import io.edurt.datacap.server.entity.ExecuteEntity;
-import io.edurt.datacap.server.entity.FormatEntity;
-import io.edurt.datacap.server.entity.SourceEntity;
+import io.edurt.datacap.common.enums.ProtocolEnum;
+import io.edurt.datacap.service.entity.ExecuteEntity;
+import io.edurt.datacap.service.entity.FormatEntity;
+import io.edurt.datacap.service.entity.SourceEntity;
 
 public class BaseParamTest
 {

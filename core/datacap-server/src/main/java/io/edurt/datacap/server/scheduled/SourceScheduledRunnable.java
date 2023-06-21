@@ -2,15 +2,15 @@ package io.edurt.datacap.server.scheduled;
 
 import com.google.inject.Injector;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.common.enums.Type;
+import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.schedule.ScheduledRunnable;
-import io.edurt.datacap.server.common.JSON;
-import io.edurt.datacap.server.common.PluginCommon;
-import io.edurt.datacap.server.common.Type;
-import io.edurt.datacap.server.entity.SourceEntity;
-import io.edurt.datacap.server.entity.TemplateSqlEntity;
-import io.edurt.datacap.server.itransient.SqlConfigure;
-import io.edurt.datacap.server.repository.SourceRepository;
-import io.edurt.datacap.server.repository.TemplateSqlRepository;
+import io.edurt.datacap.service.common.PluginUtils;
+import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.entity.TemplateSqlEntity;
+import io.edurt.datacap.service.itransient.SqlConfigure;
+import io.edurt.datacap.service.repository.SourceRepository;
+import io.edurt.datacap.service.repository.TemplateSqlRepository;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
@@ -61,7 +61,7 @@ public class SourceScheduledRunnable
     {
         this.sourceRepository.findAll().forEach(entity -> {
             log.info("==================== {} ---> {} started =================", this.getName(), entity.getName());
-            Optional<Plugin> pluginOptional = PluginCommon.getPluginByNameAndType(this.injector, entity.getType(), entity.getProtocol());
+            Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(this.injector, entity.getType(), entity.getProtocol());
             if (!pluginOptional.isPresent()) {
                 log.warn("The scheduled task <{}> source {} protocol {} is not available", this.getName(), entity.getType(), entity.getProtocol());
             }
@@ -109,7 +109,7 @@ public class SourceScheduledRunnable
         try {
             if (ObjectUtils.isNotEmpty(entity.getConfigure())) {
                 final String[] content = {entity.getContent()};
-                List<LinkedHashMap> configures = JSON.objectmapper.readValue(entity.getConfigure(), List.class);
+                List<LinkedHashMap> configures = JsonUtils.objectmapper.readValue(entity.getConfigure(), List.class);
                 configure.entrySet().forEach(value -> {
                     Optional<SqlConfigure> sqlConfigure = configures.stream().filter(v -> String.valueOf(v.get("column")).equalsIgnoreCase(value.getKey())).map(v -> {
                         SqlConfigure configure1 = new SqlConfigure();

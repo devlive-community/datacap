@@ -1,10 +1,10 @@
 package io.edurt.datacap.server.controller.user;
 
-import io.edurt.datacap.server.body.FilterBody;
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.PageEntity;
-import io.edurt.datacap.server.entity.PluginAuditEntity;
-import io.edurt.datacap.server.service.PluginAuditService;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.entity.PluginAuditEntity;
+import io.edurt.datacap.service.service.PluginAuditService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,20 +26,20 @@ public class PluginAuditController
 
     @GetMapping
     @Deprecated
-    public Response<PageEntity<PluginAuditEntity>> getAll(@RequestParam(value = "page", defaultValue = "1") int start,
+    public CommonResponse<PageEntity<PluginAuditEntity>> getAll(@RequestParam(value = "page", defaultValue = "1") int start,
             @RequestParam(value = "size", defaultValue = "10") int end)
     {
         return this.pluginAuditService.getAll(start, end);
     }
 
     @PostMapping
-    public Response<PageEntity<PluginAuditEntity>> getAllByFilter(@RequestBody FilterBody filter)
+    public CommonResponse<PageEntity<PluginAuditEntity>> getAllByFilter(@RequestBody FilterBody filter)
     {
         return this.pluginAuditService.getAllByFilter(filter);
     }
 
     @GetMapping(value = "{id}")
-    public Response<PluginAuditEntity> getInfo(@PathVariable(value = "id") Long id)
+    public CommonResponse<PluginAuditEntity> getInfo(@PathVariable(value = "id") Long id)
     {
         return this.pluginAuditService.getById(id);
     }

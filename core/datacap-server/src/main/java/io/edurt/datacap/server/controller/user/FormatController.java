@@ -1,8 +1,8 @@
 package io.edurt.datacap.server.controller.user;
 
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.FormatEntity;
-import io.edurt.datacap.server.service.FormatService;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.entity.FormatEntity;
+import io.edurt.datacap.service.service.FormatService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ public class FormatController
     }
 
     @PostMapping(value = "sql")
-    Response<String> formatterSql(@RequestBody FormatEntity configure)
+    CommonResponse<String> formatterSql(@RequestBody FormatEntity configure)
     {
         return this.formatService.formatterSql(configure.getSql());
     }

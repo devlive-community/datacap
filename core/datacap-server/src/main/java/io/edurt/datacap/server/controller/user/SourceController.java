@@ -1,15 +1,15 @@
 package io.edurt.datacap.server.controller.user;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.edurt.datacap.server.body.SharedSourceBody;
-import io.edurt.datacap.server.common.Response;
-import io.edurt.datacap.server.entity.PageEntity;
-import io.edurt.datacap.server.entity.PluginEntity;
-import io.edurt.datacap.server.entity.SourceEntity;
-import io.edurt.datacap.server.entity.UserEntity;
-import io.edurt.datacap.server.security.UserDetailsService;
-import io.edurt.datacap.server.service.SourceService;
-import io.edurt.datacap.server.validation.ValidationGroup;
+import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.SharedSourceBody;
+import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.entity.PluginEntity;
+import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.security.UserDetailsService;
+import io.edurt.datacap.service.service.SourceService;
+import io.edurt.datacap.service.validation.ValidationGroup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -51,59 +51,59 @@ public class SourceController
 
     @Deprecated
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Response<SourceEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceEntity configure)
+    public CommonResponse<SourceEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceEntity configure)
     {
         return this.sourceService.saveOrUpdate(configure);
     }
 
     @Deprecated
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Response<SourceEntity> update(@RequestBody @Validated(ValidationGroup.Crud.Update.class) SourceEntity configure)
+    public CommonResponse<SourceEntity> update(@RequestBody @Validated(ValidationGroup.Crud.Update.class) SourceEntity configure)
     {
         return this.sourceService.saveOrUpdate(configure);
     }
 
     @GetMapping
-    public Response<PageEntity<SourceEntity>> getAll(@RequestParam(value = "page", defaultValue = "1") int start, @RequestParam(value = "size", defaultValue = "10") int end)
+    public CommonResponse<PageEntity<SourceEntity>> getAll(@RequestParam(value = "page", defaultValue = "1") int start, @RequestParam(value = "size", defaultValue = "10") int end)
     {
         return this.sourceService.getAll(start, end);
     }
 
     @PreAuthorize(value = "@userAuthorize.validateSource(#id)")
     @DeleteMapping(value = "{id}")
-    public Response<Long> delete(@PathVariable(value = "id") Long id)
+    public CommonResponse<Long> delete(@PathVariable(value = "id") Long id)
     {
         return this.sourceService.delete(id);
     }
 
     @PostMapping(value = "test", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Response<Object> testConnection(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceEntity configure)
+    public CommonResponse<Object> testConnection(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceEntity configure)
     {
         return this.sourceService.testConnection(configure);
     }
 
     @GetMapping(value = "{id}")
-    public Response<SourceEntity> getInfo(@PathVariable(value = "id") Long id)
+    public CommonResponse<SourceEntity> getInfo(@PathVariable(value = "id") Long id)
     {
         return this.sourceService.getById(id);
     }
 
     @GetMapping(value = "plugins")
-    public Response<Map<String, List<PluginEntity>>> getPlugins()
+    public CommonResponse<Map<String, List<PluginEntity>>> getPlugins()
     {
         return this.sourceService.getPlugins();
     }
 
     @PreAuthorize(value = "@userAuthorize.validateUser(#configure)")
     @PutMapping(value = "shared")
-    public Response<Object> shared(@RequestBody SharedSourceBody configure)
+    public CommonResponse<Object> shared(@RequestBody SharedSourceBody configure)
     {
         return this.sourceService.shared(configure);
     }
 
     @SneakyThrows
     @PostMapping("uploadFile")
-    public Response<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestHeader("PluginType") String pluginType)
+    public CommonResponse<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestHeader("PluginType") String pluginType)
     {
         UserEntity user = UserDetailsService.getUser();
 
@@ -132,6 +132,6 @@ public class SourceController
         catch (IOException e) {
             log.warn("File upload exception on user {} by type {} ", user.getUsername(), pluginType, e);
         }
-        return Response.success(targetFile.getPath());
+        return CommonResponse.success(targetFile.getPath());
     }
 }

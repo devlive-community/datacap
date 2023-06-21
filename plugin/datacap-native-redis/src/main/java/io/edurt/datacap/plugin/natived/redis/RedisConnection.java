@@ -1,6 +1,6 @@
 package io.edurt.datacap.plugin.natived.redis;
 
-import io.edurt.datacap.common.OptionalUtils;
+import io.edurt.datacap.common.utils.OptionalUtils;
 import io.edurt.datacap.spi.connection.Connection;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
