@@ -43,6 +43,13 @@
             </FormItem>
           </Col>
           <Col span="12">
+            <FormItem :label="$t('common.redirect')" :label-width="80" prop="parent">
+              <Select v-model="formState['redirect']">
+                <Option v-for="menu in fullMenus" :value="menu.id" :key="menu.name">{{ menu.name }}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span="12">
             <FormItem :label="$t('common.i18nKey')" :label-width="80" prop="i18nKey">
               <Input v-model="formState['i18nKey']"/>
             </FormItem>

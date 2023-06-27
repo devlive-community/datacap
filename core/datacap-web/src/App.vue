@@ -8,14 +8,14 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import watermark from 'watermark-dom';
-import Common from "@/common/Common";
-import {AuthResponse} from "@/model/AuthResponse";
+import {TokenCommon} from "@/common/TokenCommon";
+import router from "@/router";
 
 export default defineComponent({
   mounted()
   {
     setTimeout(() => {
-      const authUser = JSON.parse(localStorage.getItem(Common.token) || '{}') as AuthResponse;
+      const authUser = TokenCommon.getAuthUser()
       if (authUser) {
         const applyWatermark = authUser.username ? authUser.username : 'DataCap';
         watermark['watermark'].load({
@@ -33,6 +33,9 @@ export default defineComponent({
           watermark_parent_width: 0,
           watermark_parent_height: 0
         });
+      }
+      else {
+        router.push('/common/token_invalid')
       }
     }, 100);
   }

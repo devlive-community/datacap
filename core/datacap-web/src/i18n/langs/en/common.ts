@@ -118,4 +118,5 @@ export default {
   icon: 'Icon',
   user: 'User',
   count: 'count',
+  redirect: 'Redirect'
 }

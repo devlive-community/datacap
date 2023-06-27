@@ -78,17 +78,17 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import Common from "@/common/Common";
-import {AuthResponse} from "@/model/AuthResponse";
 import router from "@/router";
 import config from '../../../../../package.json';
 import {createDefaultRouter, createRemoteRouter} from "@/router/default";
+import {TokenCommon} from "@/common/TokenCommon";
 
 export default defineComponent({
   name: "LayoutHeader",
   setup()
   {
     let username;
-    const authUser = JSON.parse(localStorage.getItem(Common.token) || '{}') as AuthResponse;
+    const authUser = TokenCommon.getAuthUser();
     if (authUser) {
       username = authUser.username;
     }

@@ -1,8 +1,8 @@
 import {ResponseModel} from "@/model/ResponseModel";
 import axios from 'axios';
-import Common from "@/common/Common";
 import {Message} from "view-ui-plus";
 import router from "@/router";
+import {TokenCommon} from "@/common/TokenCommon";
 
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
@@ -18,8 +18,7 @@ export class HttpCommon
     else {
       axios.defaults.baseURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
     }
-
-    const auth = JSON.parse(localStorage.getItem(Common.token) || '{}');
+    const auth = TokenCommon.getAuthUser();
     this.configure = {
       headers: {
         'Content-Type': 'application/json',

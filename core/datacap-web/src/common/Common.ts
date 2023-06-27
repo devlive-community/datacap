@@ -1,5 +1,5 @@
-const token = 'AuthToken';
-const menu = 'AvailableMenus';
+const token = 'DataCapAuthToken';
+const menu = 'DataCapAvailableMenus';
 const getCurrentUserId = () => {
   return JSON.parse(localStorage.getItem(token) || '{}').id;
 }

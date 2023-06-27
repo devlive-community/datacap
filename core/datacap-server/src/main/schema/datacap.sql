@@ -792,3 +792,5 @@ WHERE
   keyspace_name = ''${database:String}''
   and table_name = ''${table:String}''', 'Get the data column from the database and table', 'Cassandra',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', 1);
+alter table menus
+    add column `redirect` long default 0;

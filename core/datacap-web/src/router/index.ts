@@ -5,6 +5,7 @@ import "nprogress/nprogress.css";
 import Common from "@/common/Common";
 import LayoutWebErrorContainer from "@/views/layout/web-error/Layout.vue";
 import {createDefaultRouter, createRemoteRouter} from "@/router/default";
+import {TokenCommon} from "@/common/TokenCommon";
 
 NProgress.configure({
   easing: 'ease',
@@ -39,6 +40,11 @@ const commonRouters = [
         name: 'userNotLogin',
         path: 'not_login',
         component: () => import("../views/common/user-prepared/UserNotLogin.vue")
+      },
+      {
+        name: 'userTokenInvalid',
+        path: 'token_invalid',
+        component: () => import("../views/common/user-prepared/UserTokenInvalid.vue")
       }
     ]
   }
@@ -77,7 +83,7 @@ createRemoteRouter(JSON.parse(localStorage.getItem(Common.menu)), router)
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  const isLogin = JSON.parse(localStorage.getItem(Common.token));
+  const isLogin = TokenCommon.getAuthUser();
   if (to.matched.length === 0) {
     // When the user is not logged in, echo the not logged in page
     if (isLogin) {
