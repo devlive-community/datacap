@@ -26,30 +26,32 @@ export default defineComponent({
     handlerInitialize()
     {
       setTimeout(() => {
-        const indicators = Array<{ name: string, max: number }>();
-        const data = [];
-        this.configure.data.forEach(ele => {
-          indicators.push({name: ele.label, max: 100});
-          data.push(ele.percentage);
-        });
-        const calendarContainer = document.getElementById('radarContainer');
-        const calendarChart = echarts.init(calendarContainer);
-        calendarChart.setOption({
-          tooltip: {},
-          radar: {
-            shape: 'circle',
-            indicator: indicators
-          },
-          series: [
-            {
-              name: '',
-              type: 'radar',
-              data: [{
-                value: data
-              }]
-            }
-          ]
-        });
+        if (this.configure?.data) {
+          const indicators = Array<{ name: string, max: number }>();
+          const data = [];
+          this.configure.data.forEach(ele => {
+            indicators.push({name: ele.label, max: 100});
+            data.push(ele.percentage);
+          });
+          const calendarContainer = document.getElementById('radarContainer');
+          const calendarChart = echarts.init(calendarContainer);
+          calendarChart.setOption({
+            tooltip: {},
+            radar: {
+              shape: 'circle',
+              indicator: indicators
+            },
+            series: [
+              {
+                name: '',
+                type: 'radar',
+                data: [{
+                  value: data
+                }]
+              }
+            ]
+          });
+        }
       }, 0)
     }
   }
