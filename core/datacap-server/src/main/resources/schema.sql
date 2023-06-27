@@ -1,3 +1,4 @@
+
 -- --------------------------------
 -- Table for audit_plugin
 -- --------------------------------
@@ -283,7 +284,6 @@ VALUES ('datacap', '$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.
 -- --------------------------------
 alter table `audit_plugin`
     add column `count` bigint default 0;
-
 INSERT INTO `template_sql` (name, content, description, plugin, configure, `system`)
 VALUES ('getAllDatabase', 'SELECT keyspace_name AS name
 FROM system_schema.keyspaces', 'Gets a list of all databases', 'Cassandra', '[]', 1);

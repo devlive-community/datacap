@@ -73,6 +73,9 @@ public class MenuEntity
     @Column(name = "icon")
     private String icon;
 
+    @Column(name = "redirect")
+    private long redirect;
+
     @Column(name = "create_time")
     @CreatedDate
     private Timestamp createTime;
