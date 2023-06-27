@@ -1,6 +1,7 @@
 import LayoutContainer from "@/views/layout/common/Layout.vue";
 import ProfileLayout from "@/views/layout/user-profile/ProfileLayout.vue";
 import {Router} from "vue-router";
+import {TokenCommon} from "@/common/TokenCommon";
 
 interface RouterItem
 {
@@ -75,12 +76,15 @@ const createRemoteRouter = (items: RouterItem[], router: Router, parent?: any) =
 }
 
 const createDefaultRouter = (router: any) => {
-  const indexRouter = {
-    path: '/',
-    redirect: '/dashboard/index',
-    component: LayoutContainer
-  };
-  router.addRoute(indexRouter)
+  // Only when the token is valid, the redirection route will be built
+  if (TokenCommon.getAuthUser() !== undefined) {
+    const indexRouter = {
+      path: '/',
+      redirect: '/dashboard/index',
+      component: LayoutContainer
+    };
+    router.addRoute(indexRouter)
+  }
   const userRouters = {
     path: '/profile',
     redirect: '/profile/index',
