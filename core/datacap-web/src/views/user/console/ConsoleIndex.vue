@@ -2,7 +2,7 @@
   <div class="home">
     <Layout class="content">
       <Sider hide-trigger class="content">
-        <Card style="width:100%; min-height: 500px">
+        <Card style="width:100%; min-height: 500px" dis-hover>
           <template #title>
             <SourceSelect @changeValue="handlerChangeValue($event)"/>
           </template>
@@ -11,7 +11,7 @@
       </Sider>
       <Layout class="content" :style="{padding: '0 12px 12px'}">
         <Content>
-          <Card style="width:100%">
+          <Card style="width:100%" dis-hover>
             <template #title>
               <Space>
                 <Button type="primary" size="small" :loading="tableLoading" :disabled="!applySource || !activeEditorValue"

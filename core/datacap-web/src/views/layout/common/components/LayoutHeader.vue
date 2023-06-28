@@ -15,15 +15,18 @@
               <template #title>
                 <Icon v-if="menu?.icon" :type="menu.icon"/>
                 {{ $t(menu.i18nKey) }}
+                <span v-if="menu.new">&nbsp;<Badge text="new"/>&nbsp;</span>
               </template>
               <MenuItem v-for="children in menu.children" v-bind:key="children.id" :name="children.title" :to="children.url">
                 <Icon v-if="children?.icon" :type="children.icon"/>
                 {{ $t(children.i18nKey) }}
+                <span v-if="children.new">&nbsp;<Badge text="new"/>&nbsp;</span>
               </MenuItem>
             </Submenu>
             <MenuItem v-else :name="menu.title" :to="menu.url">
               <Icon v-if="menu?.icon" :type="menu.icon"/>
               {{ $t(menu.i18nKey) }}
+              <span v-if="menu.new">&nbsp;<Badge text="new"/>&nbsp;</span>
             </MenuItem>
           </div>
         </div>

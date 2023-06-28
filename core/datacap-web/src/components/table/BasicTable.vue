@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card :padding="5">
+    <Card :padding="5" dis-hover>
       <Space>
         <Button size="small" type="primary" @click="columnDrawerVisible = true" icon="md-list"/>
         <Tooltip :content="$t('tooltip.pageShow')">

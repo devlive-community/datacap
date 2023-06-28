@@ -337,6 +337,7 @@ public class UserServiceImpl
             menuList.forEach(menu -> {
                 if (menu.getParent() == 0) {
                     TreeRecord parent = TreeRecord.of(menu, true, true, Lists.newArrayList());
+                    parent.setNew(menu.isNew());
                     treeMap.put(menu.getId(), parent);
                 }
                 else {
@@ -346,6 +347,7 @@ public class UserServiceImpl
                         childrens = Lists.newArrayList();
                     }
                     TreeRecord children = TreeRecord.of(menu, true, true, Lists.newArrayList());
+                    children.setNew(menu.isNew());
                     childrens.add(children);
                     childrens.sort(Comparator.comparing(TreeRecord::getSorted));
                     temp.setChildren(childrens);

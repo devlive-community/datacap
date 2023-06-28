@@ -26,6 +26,7 @@ public class TreeRecord
     private String code;
     private String i18nKey;
     private String icon;
+    private boolean isNew;
     private Boolean checked = false;
     private Boolean selected = false;
 
