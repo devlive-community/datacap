@@ -698,7 +698,7 @@ CREATE TABLE IF NOT EXISTS `role_menu_relation`
     menu_id long
 );
 
-CREATE TABLE IF NOT EXISTS `menus`
+CREATE TABLE `menus`
 (
     `id`          bigint PRIMARY KEY AUTO_INCREMENT,
     `name`        varchar(255) NOT NULL,
@@ -710,8 +710,10 @@ CREATE TABLE IF NOT EXISTS `menus`
     `type`        varchar(10)  DEFAULT 'VIEW',
     `parent`      bigint       DEFAULT 0,
     `active`      boolean      DEFAULT 1,
-    `create_time` DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `update_time` DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    `i18n_key`    varchar(255) DEFAULT NULL,
+    `icon`        varchar(255) DEFAULT NULL,
+    `create_time` date         DEFAULT CURRENT_TIMESTAMP(5),
+    `update_time` date         DEFAULT CURRENT_TIMESTAMP(5)
 );
 
 insert into `menus` (name, code, description, url, group_name, sorted, type, parent, active, i18n_key, icon)
