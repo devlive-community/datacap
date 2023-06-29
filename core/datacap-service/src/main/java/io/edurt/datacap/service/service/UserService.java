@@ -8,10 +8,10 @@ import io.edurt.datacap.service.body.UserPasswordBody;
 import io.edurt.datacap.service.body.UserQuestionBody;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UserService
 {
@@ -25,7 +25,7 @@ public interface UserService
 
     CommonResponse<Long> changeUsername(UserNameBody configure);
 
-    CommonResponse<Long> changeThirdConfigure(Map<String, Map<String, Object>> configure);
+    CommonResponse<Long> changeThirdConfigure(AiModel configure);
 
     CommonResponse<Object> startChat(UserQuestionBody configure);
 

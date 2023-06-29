@@ -95,7 +95,7 @@ export default defineComponent({
       UserService.startChat(userQuestion)
         .then(response => {
           if (response.status) {
-            this.finalContent = response.data.toString();
+            this.finalContent = response.data.answer;
           }
           else {
             this.$Message.error(response.message);

@@ -5,6 +5,7 @@ import com.unfbx.chatgpt.OpenAiClient;
 import com.unfbx.chatgpt.entity.chat.ChatCompletion;
 import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
 import com.unfbx.chatgpt.entity.chat.Message;
+import com.unfbx.chatgpt.entity.common.Usage;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
@@ -23,6 +24,7 @@ import io.edurt.datacap.service.entity.RoleEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserChatEntity;
 import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 import io.edurt.datacap.service.repository.RoleRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
@@ -31,6 +33,7 @@ import io.edurt.datacap.service.repository.UserRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.JwtService;
 import io.edurt.datacap.service.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,11 +47,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -63,6 +65,7 @@ import java.util.stream.StreamSupport;
 
 @SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
 @Service
+@Slf4j
 public class UserServiceImpl
         implements UserService
 {
@@ -183,7 +186,7 @@ public class UserServiceImpl
     }
 
     @Override
-    public CommonResponse<Long> changeThirdConfigure(Map<String, Map<String, Object>> configure)
+    public CommonResponse<Long> changeThirdConfigure(AiModel configure)
     {
         Optional<UserEntity> userOptional = this.userRepository.findById(UserDetailsService.getUser().getId());
         if (!userOptional.isPresent()) {
@@ -215,92 +218,92 @@ public class UserServiceImpl
                 .createTime(Timestamp.valueOf(LocalDateTime.now()))
                 .isNew(configure.isNewChat())
                 .build();
-
-        List<String> content = new ArrayList<>();
+        String openApiHost = environment.getProperty("datacap.openai.backend");
+        String openApiToken = environment.getProperty("datacap.openai.token");
+        String openApiModel = environment.getProperty("datacap.openai.model");
+        if (StringUtils.isNotEmpty(configure.getModel())) {
+            openApiModel = configure.getModel();
+        }
+        // Build the default Open AI client
+        OpenAiClient openAiClient = OpenAiClient.builder()
+                .apiHost(openApiHost)
+                .apiKey(Collections.singletonList(openApiToken))
+                .build();
+        // If user-defined configuration, use user configuration information
         if (StringUtils.isNotEmpty(user.getThirdConfigure())) {
-            Map<String, Object> configureMap = JsonUtils.toMap(user.getThirdConfigure());
-            if (configureMap.containsKey("chatgpt")) {
-                Map<String, Object> chatGPTMap = (Map<String, Object>) configureMap.get("chatgpt");
-                if (chatGPTMap.containsKey("token")) {
-                    String token = (String) chatGPTMap.get("token");
-                    if (StringUtils.isNotEmpty(token)) {
-                        OpenAiClient openAiClient;
-                        Object isProxy = chatGPTMap.get("proxy");
-                        if (ObjectUtils.isNotEmpty(isProxy) && Boolean.valueOf(isProxy.toString())) {
-                            String host = (String) chatGPTMap.get("host");
-                            int port = (int) chatGPTMap.get("port");
-                            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-                            openAiClient = OpenAiClient.builder()
-                                    .apiKey(token)
-                                    .proxy(proxy)
-                                    .build();
-                        }
-                        else {
-                            openAiClient = OpenAiClient.builder()
-                                    .apiKey(token)
-                                    .build();
-                        }
-                        String forwardContent = configure.getContent();
-                        try {
-                            AiSupportUtils.AiSupportEnum type = AiSupportUtils.AiSupportEnum.valueOf(configure.getTransType());
-                            String replaceContent = AiSupportUtils.getValue(configure.getLocale(), type);
-                            Properties properties = new Properties();
-                            properties.put("sql", configure.getContent());
-                            if (ObjectUtils.isNotEmpty(configure.getEngine())) {
-                                properties.put("engine", configure.getEngine());
-                            }
-                            if (ObjectUtils.isNotEmpty(configure.getError())) {
-                                properties.put("error", configure.getError());
-                            }
-                            StrSubstitutor sub = new StrSubstitutor(properties);
-                            forwardContent = sub.replace(replaceContent);
-                        }
-                        catch (Exception exception) {
-                            // Ignore it
-                        }
-                        List<Message> messages = new ArrayList<>();
-                        // Extract database history for recording context if source is dialog mode
-                        boolean saved = false;
-                        if (StringUtils.isNotEmpty(configure.getFrom()) && configure.getFrom().equalsIgnoreCase("chat")) {
-                            if (!configure.isNewChat()) {
-                                this.userChatRepository.findTop5ByUserOrderByIdDesc(UserDetailsService.getUser())
-                                        .stream()
-                                        .sorted(Comparator.comparing(UserChatEntity::getId))
-                                        .forEach(userChatHistory -> {
-                                            Message question = Message.builder()
-                                                    .role(Message.Role.USER)
-                                                    .content(userChatHistory.getQuestion())
-                                                    .build();
-                                            messages.add(question);
-                                            Message answer = Message.builder()
-                                                    .role(Message.Role.ASSISTANT)
-                                                    .content(userChatHistory.getAnswer())
-                                                    .build();
-                                            messages.add(answer);
-                                        });
-                            }
-                            saved = true;
-                        }
-                        Message message = Message.builder()
-                                .role(Message.Role.USER)
-                                .content(forwardContent)
-                                .build();
-                        messages.add(message);
-                        ChatCompletion chatCompletion = ChatCompletion.builder()
-                                .messages(messages)
-                                .build();
-                        ChatCompletionResponse chatCompletionResponse = openAiClient.chatCompletion(chatCompletion);
-                        chatCompletionResponse.getChoices().forEach(e -> content.add(e.getMessage().getContent()));
-                        userChat.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
-                        userChat.setAnswer(String.join("\n", content));
-                        if (saved) {
-                            this.userChatRepository.save(userChat);
-                        }
-                    }
-                }
+            AiModel aiModel = JsonUtils.toObject(user.getThirdConfigure(), AiModel.class);
+            if (StringUtils.isNotEmpty(aiModel.getToken())) {
+                openAiClient = OpenAiClient.builder()
+                        .apiHost(aiModel.getHost())
+                        .apiKey(Collections.singletonList(aiModel.getToken()))
+                        .build();
             }
         }
-        return CommonResponse.success(content);
+        List<String> content = new ArrayList<>();
+        String forwardContent = configure.getContent();
+        try {
+            AiSupportUtils.AiSupportEnum type = AiSupportUtils.AiSupportEnum.valueOf(configure.getTransType());
+            String replaceContent = AiSupportUtils.getValue(configure.getLocale(), type);
+            Properties properties = new Properties();
+            properties.put("sql", configure.getContent());
+            if (ObjectUtils.isNotEmpty(configure.getEngine())) {
+                properties.put("engine", configure.getEngine());
+            }
+            if (ObjectUtils.isNotEmpty(configure.getError())) {
+                properties.put("error", configure.getError());
+            }
+            StrSubstitutor sub = new StrSubstitutor(properties);
+            forwardContent = sub.replace(replaceContent);
+        }
+        catch (Exception exception) {
+            log.warn("Ai analysis failed", exception);
+        }
+        List<Message> messages = new ArrayList<>();
+        // Extract database history for recording context if source is dialog mode
+        boolean saved = false;
+        if (StringUtils.isNotEmpty(configure.getFrom()) && configure.getFrom().equalsIgnoreCase("chat")) {
+            if (!configure.isNewChat()) {
+                this.userChatRepository.findTop5ByUserOrderByIdDesc(UserDetailsService.getUser())
+                        .stream()
+                        .sorted(Comparator.comparing(UserChatEntity::getId))
+                        .forEach(userChatHistory -> {
+                            Message question = Message.builder()
+                                    .role(Message.Role.USER)
+                                    .content(userChatHistory.getQuestion())
+                                    .build();
+                            messages.add(question);
+                            Message answer = Message.builder()
+                                    .role(Message.Role.ASSISTANT)
+                                    .content(userChatHistory.getAnswer())
+                                    .build();
+                            messages.add(answer);
+                        });
+            }
+            saved = true;
+        }
+        Message message = Message.builder()
+                .role(Message.Role.USER)
+                .content(forwardContent)
+                .build();
+        messages.add(message);
+        ChatCompletion chatCompletion = ChatCompletion.builder()
+                .messages(messages)
+                .model(openApiModel)
+                .build();
+        ChatCompletionResponse chatCompletionResponse = openAiClient.chatCompletion(chatCompletion);
+        chatCompletionResponse.getChoices()
+                .forEach(e -> content.add(e.getMessage().getContent()));
+        userChat.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
+        userChat.setAnswer(String.join("\n", content));
+        userChat.setModel(chatCompletionResponse.getModel());
+        Usage usage = chatCompletionResponse.getUsage();
+        userChat.setPromptTokens(usage.getPromptTokens());
+        userChat.setCompletionTokens(usage.getCompletionTokens());
+        userChat.setTotalTokens(usage.getTotalTokens());
+        if (saved) {
+            this.userChatRepository.save(userChat);
+        }
+        return CommonResponse.success(userChat);
     }
 
     @Override

@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <Layout>
-      <RouterLink to="/profile/chatgpt">
+      <RouterLink to="/chat/chatgpt">
         <Alert style="margin-bottom: 0px;" banner closable type="success">
           Support ChatGPT
         </Alert>

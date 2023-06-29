@@ -120,4 +120,5 @@ export default {
   count: 'count',
   redirect: 'Redirect',
   new: 'New',
+  chat: 'Chat',
 }

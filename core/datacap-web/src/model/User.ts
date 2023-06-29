@@ -1,7 +1,7 @@
 export interface User
 {
   username: string;
-  thirdConfigure: { chatgpt: ThirdConfigure };
+  thirdConfigure: ThirdConfigure;
   createTime?: string;
 }
 
@@ -19,14 +19,21 @@ export class UserQuestion
 
 export class UserQuestionItem
 {
-  content: string;
+  content: UserAnswer;
   isSelf: boolean;
+}
+
+export class UserAnswer {
+  answer: string;
+  completionTokens: number;
+  promptTokens: number;
+  totalTokens: number;
+  model: string;
 }
 
 export class ThirdConfigure
 {
   token = '';
-  proxy = false;
   host = '';
-  port = 0;
+  model = '';
 }

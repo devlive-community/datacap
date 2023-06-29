@@ -119,5 +119,6 @@ export default {
   user: '用户',
   count: '总数',
   redirect: '重定向',
-  new: '新'
+  new: '新',
+  chat: '对话'
 }

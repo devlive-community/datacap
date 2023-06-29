@@ -19,4 +19,5 @@ public class UserQuestionBody
     private String transType;
     private String from; // if from is chat is currently unable to associate context
     private boolean newChat = true;
+    private String model;
 }

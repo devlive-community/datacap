@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Card style="width:100%; minHeight: 150px;">
+    <Card dis-hover
+          style="width:100%; minHeight: 150px;">
       <template #title>
         {{ $t('common.chatgpt') }}
       </template>
@@ -13,32 +14,57 @@
         <Layout style="background-color: #FFFFFF;">
           <Content style="padding: 0px 0px 0px 10px;">
             <div ref="scrollDiv" style="height: 300px; max-height: 300px; overflow: auto;">
-              <List item-layout="vertical">
-                <ListItem v-for="item in userQuestionItems" :key="item">
-                  <ListItemMeta style="margin-bottom: 0px;">
-                    <template #title>
-                      {{ item.isSelf ? username : 'ChatGPT' }}
-                    </template>
-                    <template #avatar>
-                      <Avatar v-if="item.isSelf" icon="ios-person"></Avatar>
-                      <Avatar v-else icon="md-ionitron" style="background-color: #87d068;"></Avatar>
-                    </template>
-                  </ListItemMeta>
-                  <div style="margin: 0px 10px;">
-                    <VMarkdownView v-if="item.content" :mode="'light'" :content="item.content"></VMarkdownView>
-                  </div>
-                </ListItem>
-              </List>
+              <div v-for="item in userQuestionItems"
+                   :key="item">
+                <Divider :orientation="item.isSelf ? 'left' : 'right'">
+                  <Avatar v-if="item.isSelf" icon="ios-person"></Avatar>
+                  <Avatar v-else icon="md-ionitron" style="background-color: #87d068;"></Avatar>
+                </Divider>
+                <div :style="{margin: '0px 10px', float: item.isSelf ? '' : 'right'}">
+                  <Card dis-hover
+                        :bordered="false">
+                    <VMarkdownView v-if="item.content"
+                                   :mode="'light'"
+                                   :content="item.content.answer">
+                    </VMarkdownView>
+                    <div v-if="!item.isSelf"
+                         style="margin-top: 5px; float: right;">
+                      Model: {{ item.content.model }}
+                      <Divider type="vertical"/>
+                      PromptTokens:
+                      <CountUp :end="item.content.promptTokens"
+                               v-font="24">
+                      </CountUp>
+                      <Divider type="vertical"/>
+                      completionTokens:
+                      <CountUp :end="item.content.completionTokens"
+                               v-font="24">
+                      </CountUp>
+                      <Divider type="vertical"/>
+                      totalTokens:
+                      <CountUp :end="item.content.totalTokens"
+                               v-font="24">
+                      </CountUp>
+                    </div>
+                  </Card>
+                </div>
+              </div>
             </div>
           </Content>
+          <Divider></Divider>
           <Footer style="background-color: #FFFFFF;">
             <Row>
               <Col span="20">
-                <Input v-model="userQuestionContext" :disabled="!userInfo?.thirdConfigure?.chatgpt?.token" type="textarea" :autosize="{minRows: 2,maxRows: 5}"/>
+                <Input v-model="userQuestionContext"
+                       type="textarea" :autosize="{minRows: 2,maxRows: 5}">
+                </Input>
               </Col>
               <Col span="2" offset="1">
-                <Button :disabled="!userInfo?.thirdConfigure?.chatgpt?.token" type="primary" icon="md-send"
-                        :loading="startChatLoading" @click="handlerStartChat()">{{ $t('common.send') }}
+                <Button type="primary"
+                        icon="md-send"
+                        :loading="startChatLoading"
+                        @click="handlerStartChat()">
+                  {{ $t('common.send') }}
                 </Button>
               </Col>
             </Row>
@@ -52,16 +78,10 @@
            :mask-closable="false" :closable="false">
       <Form :label-width="80">
         <FormItem :label="$t('common.token')">
-          <Input v-model="userInfo.thirdConfigure.chatgpt.token" type="text" placeholder="example: sk-xxxx"/>
+          <Input v-model="userInfo.thirdConfigure.token" type="text" placeholder="example: sk-xxxx"/>
         </FormItem>
         <FormItem :label="$t('common.proxy')">
-          <Switch v-model="userInfo.thirdConfigure.chatgpt.proxy"/>
-        </FormItem>
-        <FormItem v-if="userInfo.thirdConfigure.chatgpt.proxy" :label="$t('common.host')">
-          <Input v-model="userInfo.thirdConfigure.chatgpt.host" type="text"/>
-        </FormItem>
-        <FormItem v-if="userInfo.thirdConfigure.chatgpt.proxy" :label="$t('common.port')">
-          <InputNumber v-model="userInfo.thirdConfigure.chatgpt.port"/>
+          <Input v-model="userInfo.thirdConfigure.host" type="text"/>
         </FormItem>
       </Form>
       <template #footer>
@@ -76,24 +96,11 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import UserService from "@/services/UserService";
-import {ThirdConfigure, User, UserQuestion, UserQuestionItem} from '@/model/User';
-import Common from "@/common/Common";
-import {AuthResponse} from "@/model/AuthResponse";
+import {User, UserAnswer, UserQuestion, UserQuestionItem} from '@/model/User';
 import {VMarkdownView} from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
 
 export default defineComponent({
-  setup()
-  {
-    let username;
-    const authUser = JSON.parse(localStorage.getItem(Common.token) || '{}') as AuthResponse;
-    if (authUser) {
-      username = authUser.username;
-    }
-    return {
-      username
-    }
-  },
   components: {VMarkdownView},
   created()
   {
@@ -119,15 +126,7 @@ export default defineComponent({
         .then(response => {
           if (response.status) {
             this.userInfo = response.data;
-            // If the initialization property has not been set
-            if (!this.userInfo.thirdConfigure) {
-              this.userInfo.thirdConfigure = {
-                chatgpt: new ThirdConfigure()
-              }
-            }
-            else {
-              this.userInfo.thirdConfigure = JSON.parse(this.userInfo.thirdConfigure);
-            }
+            this.userInfo.thirdConfigure = JSON.parse(this.userInfo.thirdConfigure);
           }
         })
         .finally(() => {
@@ -159,8 +158,10 @@ export default defineComponent({
       userQuestion.content = this.userQuestionContext;
       userQuestion.from = 'chat';
       userQuestion.newChat = this.userQuestionItems.length > 0 ? false : true;
+      const answer = new UserAnswer();
+      answer.answer = this.userQuestionContext;
       const question = new UserQuestionItem();
-      question.content = this.userQuestionContext;
+      question.content = answer;
       question.isSelf = true;
       this.userQuestionItems.push(question);
       this.handlerGoBottom();
@@ -170,7 +171,7 @@ export default defineComponent({
         .then(response => {
           if (response.status) {
             const answer = new UserQuestionItem();
-            answer.content = response.data.toString();
+            answer.content = response.data;
             answer.isSelf = false;
             this.userQuestionItems.push(answer);
             this.handlerGoBottom();
