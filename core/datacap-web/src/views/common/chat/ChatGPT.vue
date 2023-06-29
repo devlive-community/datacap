@@ -29,19 +29,19 @@
                     </VMarkdownView>
                     <div v-if="!item.isSelf"
                          style="margin-top: 5px; float: right;">
-                      Model: {{ item.content.model }}
+                      Model: <Text strong>{{ item.content.model }}</Text>
                       <Divider type="vertical"/>
-                      PromptTokens:
+                      Prompt Tokens:
                       <CountUp :end="item.content.promptTokens"
                                v-font="24">
                       </CountUp>
                       <Divider type="vertical"/>
-                      completionTokens:
+                      Completion Tokens:
                       <CountUp :end="item.content.completionTokens"
                                v-font="24">
                       </CountUp>
                       <Divider type="vertical"/>
-                      totalTokens:
+                      Total Tokens:
                       <CountUp :end="item.content.totalTokens"
                                v-font="24">
                       </CountUp>
@@ -56,12 +56,14 @@
             <Row>
               <Col span="20">
                 <Input v-model="userQuestionContext"
-                       type="textarea" :autosize="{minRows: 2,maxRows: 5}">
+                       type="textarea"
+                       :autosize="{minRows: 2,maxRows: 5}">
                 </Input>
               </Col>
               <Col span="2" offset="1">
                 <Button type="primary"
                         icon="md-send"
+                        :disabled="!userQuestionContext"
                         :loading="startChatLoading"
                         @click="handlerStartChat()">
                   {{ $t('common.send') }}
