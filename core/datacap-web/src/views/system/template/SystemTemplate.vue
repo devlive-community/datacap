@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.sql') + $t('common.template')">
+    <Card style="width:100%" :title="$t('common.sql') + $t('common.template')" dis-hover>
       <template #extra>
         <Tooltip>
           <template #content>{{ $t('common.create') }}</template>

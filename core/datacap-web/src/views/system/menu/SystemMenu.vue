@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.authority')">
+    <Card style="width:100%"
+          dis-hover
+          :title="$t('common.menu')">
       <template #extra>
         <Tooltip>
           <template #content>{{ $t('common.create') }}</template>

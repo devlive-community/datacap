@@ -111,11 +111,6 @@ const createDefaultRouter = (router: any) => {
             component: () => import("@/views/user/profile/ProfileLog.vue")
           },
           {
-            path: 'chatgpt',
-            meta: {title: 'common.chatgpt'},
-            component: () => import("@/views/user/profile/ProfileChatGPT.vue")
-          },
-          {
             path: 'account',
             meta: {title: 'setting.accountSetting'},
             component: () => import("@/views/user/profile/ProfileAccount.vue")
@@ -136,6 +131,19 @@ const createDefaultRouter = (router: any) => {
       component: () => import("../views/admin/source/SourceManager.vue")
     }]
   })
+  const chatRouters = {
+    path: "/chat",
+    component: LayoutContainer,
+    meta: {title: 'common.chat'},
+    children: [
+      {
+        path: 'chatgpt',
+        meta: {title: 'common.chatgpt'},
+        component: () => import("@/views/common/chat/ChatGPT.vue")
+      }
+    ]
+  }
+  router.addRoute(chatRouters)
 }
 
 export {

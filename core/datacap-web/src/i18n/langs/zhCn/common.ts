@@ -118,5 +118,7 @@ export default {
   icon: '图标',
   user: '用户',
   count: '总数',
-  redirect: '重定向'
+  redirect: '重定向',
+  new: '新',
+  chat: '对话'
 }

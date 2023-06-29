@@ -76,6 +76,9 @@ public class MenuEntity
     @Column(name = "redirect")
     private long redirect;
 
+    @Column(name = "is_new")
+    private boolean isNew;
+
     @Column(name = "create_time")
     @CreatedDate
     private Timestamp createTime;

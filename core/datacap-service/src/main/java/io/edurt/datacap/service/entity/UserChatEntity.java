@@ -63,6 +63,18 @@ public class UserChatEntity
     @Column(name = "is_new")
     private boolean isNew;
 
+    @Column(name = "model")
+    private String model;
+
+    @Column(name = "prompt_tokens")
+    private long promptTokens;
+
+    @Column(name = "completion_tokens")
+    private long completionTokens;
+
+    @Column(name = "total_tokens")
+    private long totalTokens;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIncludeProperties(value = {"id", "username"})

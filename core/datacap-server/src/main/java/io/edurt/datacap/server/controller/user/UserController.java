@@ -11,6 +11,7 @@ import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.RoleEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.entity.UserLogEntity;
+import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 import io.edurt.datacap.service.repository.RoleRepository;
 import io.edurt.datacap.service.service.UserLogService;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -63,7 +63,7 @@ public class UserController
     }
 
     @PutMapping(value = "changeThirdConfigure")
-    public CommonResponse<Long> changeThirdConfigure(@Validated @RequestBody Map<String, Map<String, Object>> configure)
+    public CommonResponse<Long> changeThirdConfigure(@Validated @RequestBody AiModel configure)
     {
         return this.userService.changeThirdConfigure(configure);
     }
