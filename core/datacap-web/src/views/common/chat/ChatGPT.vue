@@ -94,6 +94,13 @@
         <FormItem :label="$t('common.proxy')">
           <Input v-model="userInfo.thirdConfigure.host" type="text"/>
         </FormItem>
+        <FormItem :label="$t('common.timeout')">
+          <InputNumber v-model="userInfo.thirdConfigure.timeout"/>
+          <Text strong
+                style="margin-left: 5px;">
+            {{ $t('common.seconds') }}
+          </Text>
+        </FormItem>
       </Form>
       <template #footer>
         <Space>
@@ -110,9 +117,10 @@ import UserService from "@/services/UserService";
 import {User, UserAnswer, UserQuestion, UserQuestionItem} from '@/model/User';
 import {VMarkdownView} from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
+import {InputNumber} from "view-ui-plus";
 
 export default defineComponent({
-  components: {VMarkdownView},
+  components: {InputNumber, VMarkdownView},
   created()
   {
     this.handlerInitialize()
