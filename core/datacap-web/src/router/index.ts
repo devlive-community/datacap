@@ -85,11 +85,12 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   const isLogin = TokenCommon.getAuthUser();
   if (to.matched.length === 0) {
-    // When the user is not logged in, echo the not logged in page
+    // Restarting the background service causes the token to become invalid, and jumps to the re-login page
     if (isLogin) {
-      next({name: "routerNotFound"})
+      next('/auth/signin');
     }
     else {
+      // When the user is not logged in, echo the not logged in page
       next({name: "userNotLogin"})
     }
   }
