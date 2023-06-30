@@ -3,7 +3,15 @@
     <Card dis-hover
           style="width:100%; minHeight: 150px;">
       <template #title>
-        {{ $t('common.chatgpt') }}
+        {{ $t('common.chatgpt') }} &nbsp;
+        <Select v-model="gptModel"
+                style="width:200px">
+          <Option v-for="model in models"
+                  :value="model"
+                  v-bind:key="model">
+            {{ model }}
+          </Option>
+        </Select>
       </template>
       <template #extra>
         <Tooltip :content="$t('common.settings')" transfer>
@@ -29,7 +37,8 @@
                     </VMarkdownView>
                     <div v-if="!item.isSelf"
                          style="margin-top: 5px; float: right;">
-                      Model: <Text strong>{{ item.content.model }}</Text>
+                      Model:
+                      <Text strong>{{ item.content.model }}</Text>
                       <Divider type="vertical"/>
                       Prompt Tokens:
                       <CountUp :end="item.content.promptTokens"
@@ -116,7 +125,9 @@ export default defineComponent({
       startChatLoading: false,
       userInfo: null as User,
       userQuestionContext: null,
-      userQuestionItems: null as UserQuestionItem[]
+      userQuestionItems: null as UserQuestionItem[],
+      gptModel: 'gpt-3.5-turbo-0613',
+      models: ['gpt-3.5-turbo', 'gpt-3.5-turbo-0301', 'gpt-3.5-turbo-0613', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-0613', 'gpt-4', 'gpt-4-0314', 'gpt-4-0613']
     }
   },
   methods: {
@@ -160,6 +171,7 @@ export default defineComponent({
       userQuestion.content = this.userQuestionContext;
       userQuestion.from = 'chat';
       userQuestion.newChat = this.userQuestionItems.length > 0 ? false : true;
+      userQuestion.model = this.gptModel;
       const answer = new UserAnswer();
       answer.answer = this.userQuestionContext;
       const question = new UserQuestionItem();

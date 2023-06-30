@@ -15,6 +15,7 @@ export class UserQuestion
   error?: string;
   transType?: string;
   from?: string;
+  model?: string;
 }
 
 export class UserQuestionItem
