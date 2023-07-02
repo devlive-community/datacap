@@ -34,6 +34,7 @@ import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.JwtService;
 import io.edurt.datacap.service.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +61,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -221,24 +223,33 @@ public class UserServiceImpl
         String openApiHost = environment.getProperty("datacap.openai.backend");
         String openApiToken = environment.getProperty("datacap.openai.token");
         String openApiModel = environment.getProperty("datacap.openai.model");
+        long openApiTimeout = Long.valueOf(environment.getProperty("datacap.openai.timeout"));
         if (StringUtils.isNotEmpty(configure.getModel())) {
             openApiModel = configure.getModel();
         }
-        // Build the default Open AI client
-        OpenAiClient openAiClient = OpenAiClient.builder()
-                .apiHost(openApiHost)
-                .apiKey(Collections.singletonList(openApiToken))
-                .build();
         // If user-defined configuration, use user configuration information
         if (StringUtils.isNotEmpty(user.getThirdConfigure())) {
             AiModel aiModel = JsonUtils.toObject(user.getThirdConfigure(), AiModel.class);
             if (StringUtils.isNotEmpty(aiModel.getToken())) {
-                openAiClient = OpenAiClient.builder()
-                        .apiHost(aiModel.getHost())
-                        .apiKey(Collections.singletonList(aiModel.getToken()))
-                        .build();
+                openApiHost = aiModel.getHost();
+                openApiToken = aiModel.getToken();
+            }
+            if (aiModel.getTimeout() > 0) {
+                openApiTimeout = aiModel.getTimeout();
             }
         }
+        // Build the Open AI client
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(openApiTimeout, TimeUnit.SECONDS)
+                .writeTimeout(openApiTimeout, TimeUnit.SECONDS)
+                .readTimeout(openApiTimeout, TimeUnit.SECONDS)
+                .build();
+        OpenAiClient openAiClient = OpenAiClient.builder()
+                .apiHost(openApiHost)
+                .apiKey(Collections.singletonList(openApiToken))
+                .okHttpClient(okHttpClient)
+                .build();
+
         List<String> content = new ArrayList<>();
         String forwardContent = configure.getContent();
         try {

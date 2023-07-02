@@ -120,5 +120,7 @@ export default {
   count: '总数',
   redirect: '重定向',
   new: '新',
-  chat: '对话'
+  chat: '对话',
+  timeout: '超时时间',
+  seconds: '秒'
 }

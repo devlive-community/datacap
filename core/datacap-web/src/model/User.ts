@@ -15,6 +15,7 @@ export class UserQuestion
   error?: string;
   transType?: string;
   from?: string;
+  model?: string;
 }
 
 export class UserQuestionItem
@@ -23,7 +24,8 @@ export class UserQuestionItem
   isSelf: boolean;
 }
 
-export class UserAnswer {
+export class UserAnswer
+{
   answer: string;
   completionTokens: number;
   promptTokens: number;
@@ -36,4 +38,5 @@ export class ThirdConfigure
   token = '';
   host = '';
   model = '';
+  timeout: number = null;
 }

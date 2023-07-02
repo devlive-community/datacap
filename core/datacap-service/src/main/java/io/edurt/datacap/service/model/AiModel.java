@@ -16,4 +16,5 @@ public class AiModel
     private String type = "ChatGPT";
     private String host;
     private String token;
+    private long timeout;
 }

@@ -121,4 +121,6 @@ export default {
   redirect: 'Redirect',
   new: 'New',
   chat: 'Chat',
+  timeout: 'Timeout',
+  seconds: 'Seconds',
 }
