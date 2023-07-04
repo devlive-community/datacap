@@ -223,7 +223,7 @@ public class UserServiceImpl
         String openApiHost = environment.getProperty("datacap.openai.backend");
         String openApiToken = environment.getProperty("datacap.openai.token");
         String openApiModel = environment.getProperty("datacap.openai.model");
-        long openApiTimeout = Long.valueOf(environment.getProperty("datacap.openai.timeout"));
+        long openApiTimeout = Long.parseLong(environment.getProperty("datacap.openai.timeout"));
         if (StringUtils.isNotEmpty(configure.getModel())) {
             openApiModel = configure.getModel();
         }
@@ -267,7 +267,7 @@ public class UserServiceImpl
             forwardContent = sub.replace(replaceContent);
         }
         catch (Exception exception) {
-            log.warn("Ai analysis failed", exception);
+            log.warn("Ai type not set, ignore .");
         }
         List<Message> messages = new ArrayList<>();
         // Extract database history for recording context if source is dialog mode
