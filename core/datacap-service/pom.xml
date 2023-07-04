@@ -16,7 +16,7 @@
     <properties>
         <snakeyaml.version>2.0</snakeyaml.version>
         <useragent.version>1.21</useragent.version>
-        <chatgpt.version>1.0.14</chatgpt.version>
+        <openai.version>LATEST</openai.version>
     </properties>
 
     <dependencies>
@@ -67,9 +67,9 @@
             <version>${useragent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.unfbx</groupId>
-            <artifactId>chatgpt-java</artifactId>
-            <version>${chatgpt.version}</version>
+            <groupId>org.devlive.sdk</groupId>
+            <artifactId>openai-java-sdk</artifactId>
+            <version>${openai.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
