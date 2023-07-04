@@ -114,7 +114,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import UserService from "@/services/UserService";
-import {User, UserAnswer, UserQuestion, UserQuestionItem} from '@/model/User';
+import {ThirdConfigure, User, UserAnswer, UserQuestion, UserQuestionItem} from '@/model/User';
 import {VMarkdownView} from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
 import {InputNumber} from "view-ui-plus";
@@ -147,7 +147,12 @@ export default defineComponent({
         .then(response => {
           if (response.status) {
             this.userInfo = response.data;
-            this.userInfo.thirdConfigure = JSON.parse(this.userInfo.thirdConfigure);
+            if (this.userInfo.thirdConfigure) {
+              this.userInfo.thirdConfigure = JSON.parse(this.userInfo.thirdConfigure);
+            }
+            else {
+              this.userInfo.thirdConfigure = new ThirdConfigure();
+            }
           }
         })
         .finally(() => {

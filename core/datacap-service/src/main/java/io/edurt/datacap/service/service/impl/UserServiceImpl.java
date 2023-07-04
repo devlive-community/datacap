@@ -1,11 +1,6 @@
 package io.edurt.datacap.service.service.impl;
 
 import com.google.common.collect.Lists;
-import com.unfbx.chatgpt.OpenAiClient;
-import com.unfbx.chatgpt.entity.chat.ChatCompletion;
-import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
-import com.unfbx.chatgpt.entity.chat.Message;
-import com.unfbx.chatgpt.entity.common.Usage;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
@@ -38,6 +33,12 @@ import okhttp3.OkHttpClient;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.devlive.sdk.openai.OpenAiClient;
+import org.devlive.sdk.openai.entity.CompletionChatEntity;
+import org.devlive.sdk.openai.entity.CompletionMessageEntity;
+import org.devlive.sdk.openai.entity.UsageEntity;
+import org.devlive.sdk.openai.model.CompletionMessageModel;
+import org.devlive.sdk.openai.response.CompleteChatResponse;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -51,7 +52,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -246,8 +246,8 @@ public class UserServiceImpl
                 .build();
         OpenAiClient openAiClient = OpenAiClient.builder()
                 .apiHost(openApiHost)
-                .apiKey(Collections.singletonList(openApiToken))
-                .okHttpClient(okHttpClient)
+                .apiKey(openApiToken)
+                .client(okHttpClient)
                 .build();
 
         List<String> content = new ArrayList<>();
@@ -269,52 +269,57 @@ public class UserServiceImpl
         catch (Exception exception) {
             log.warn("Ai type not set, ignore .");
         }
-        List<Message> messages = new ArrayList<>();
-        // Extract database history for recording context if source is dialog mode
-        boolean saved = false;
-        if (StringUtils.isNotEmpty(configure.getFrom()) && configure.getFrom().equalsIgnoreCase("chat")) {
-            if (!configure.isNewChat()) {
-                this.userChatRepository.findTop5ByUserOrderByIdDesc(UserDetailsService.getUser())
-                        .stream()
-                        .sorted(Comparator.comparing(UserChatEntity::getId))
-                        .forEach(userChatHistory -> {
-                            Message question = Message.builder()
-                                    .role(Message.Role.USER)
-                                    .content(userChatHistory.getQuestion())
-                                    .build();
-                            messages.add(question);
-                            Message answer = Message.builder()
-                                    .role(Message.Role.ASSISTANT)
-                                    .content(userChatHistory.getAnswer())
-                                    .build();
-                            messages.add(answer);
-                        });
+        try {
+            List<CompletionMessageEntity> messages = new ArrayList<>();
+            // Extract database history for recording context if source is dialog mode
+            boolean saved = false;
+            if (StringUtils.isNotEmpty(configure.getFrom()) && configure.getFrom().equalsIgnoreCase("chat")) {
+                if (!configure.isNewChat()) {
+                    this.userChatRepository.findTop5ByUserOrderByIdDesc(UserDetailsService.getUser())
+                            .stream()
+                            .sorted(Comparator.comparing(UserChatEntity::getId))
+                            .forEach(userChatHistory -> {
+                                CompletionMessageEntity question = CompletionMessageEntity.builder()
+                                        .role(CompletionMessageModel.USER.getName())
+                                        .content(userChatHistory.getQuestion())
+                                        .build();
+                                messages.add(question);
+                                CompletionMessageEntity answer = CompletionMessageEntity.builder()
+                                        .role(CompletionMessageModel.ASSISTANT.getName())
+                                        .content(userChatHistory.getAnswer())
+                                        .build();
+                                messages.add(answer);
+                            });
+                }
+                saved = true;
             }
-            saved = true;
+            CompletionMessageEntity message = CompletionMessageEntity.builder()
+                    .role(CompletionMessageModel.USER.getName())
+                    .content(forwardContent)
+                    .build();
+            messages.add(message);
+            CompletionChatEntity chatCompletion = CompletionChatEntity.builder()
+                    .messages(messages)
+                    .model(openApiModel)
+                    .build();
+            CompleteChatResponse chatCompletionResponse = openAiClient.createChatCompletion(chatCompletion);
+            chatCompletionResponse.getChoices()
+                    .forEach(e -> content.add(e.getMessage().getContent()));
+            userChat.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
+            userChat.setAnswer(String.join("\n", content));
+            userChat.setModel(chatCompletionResponse.getModel());
+            UsageEntity usage = chatCompletionResponse.getUsage();
+            userChat.setPromptTokens(usage.getPromptTokens());
+            userChat.setCompletionTokens(usage.getCompletionTokens());
+            userChat.setTotalTokens(usage.getTotalTokens());
+            if (saved) {
+                this.userChatRepository.save(userChat);
+            }
+            return CommonResponse.success(userChat);
         }
-        Message message = Message.builder()
-                .role(Message.Role.USER)
-                .content(forwardContent)
-                .build();
-        messages.add(message);
-        ChatCompletion chatCompletion = ChatCompletion.builder()
-                .messages(messages)
-                .model(openApiModel)
-                .build();
-        ChatCompletionResponse chatCompletionResponse = openAiClient.chatCompletion(chatCompletion);
-        chatCompletionResponse.getChoices()
-                .forEach(e -> content.add(e.getMessage().getContent()));
-        userChat.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
-        userChat.setAnswer(String.join("\n", content));
-        userChat.setModel(chatCompletionResponse.getModel());
-        Usage usage = chatCompletionResponse.getUsage();
-        userChat.setPromptTokens(usage.getPromptTokens());
-        userChat.setCompletionTokens(usage.getCompletionTokens());
-        userChat.setTotalTokens(usage.getTotalTokens());
-        if (saved) {
-            this.userChatRepository.save(userChat);
+        catch (Exception e) {
+            return CommonResponse.failure(e.getMessage());
         }
-        return CommonResponse.success(userChat);
     }
 
     @Override
