@@ -1,5 +1,4 @@
-use
-    datacap;
+use datacap;
 
 -- --------------------------------
 -- Table for audit_plugin
@@ -69,15 +68,15 @@ create table role
     create_time datetime(5) default CURRENT_TIMESTAMP(5) null
 );
 
-INSERT INTO datacap.role (name, description)
+INSERT INTO role (name, description)
 VALUES ('Admin', 'Admin role');
-INSERT INTO datacap.role (name, description)
+INSERT INTO role (name, description)
 VALUES ('User', 'User role');
 
 -- --------------------------------
 -- Table structure for scheduled_task
 -- --------------------------------
-create table datacap.scheduled_task
+create table scheduled_task
 (
     id          int auto_increment primary key,
     name        varchar(255)                         not null,
@@ -89,13 +88,13 @@ create table datacap.scheduled_task
     update_time datetime                             null on update CURRENT_TIMESTAMP
 );
 
-INSERT INTO datacap.scheduled_task (name, description, expression, active, is_system)
+INSERT INTO scheduled_task (name, description, expression, active, is_system)
 VALUES ('Synchronize table structure', 'Synchronize the table structure of the data source library at 1 am every day', '0 20 * * * ?', 1, 1);
 
 -- --------------------------------
 -- Table structure for snippet
 -- --------------------------------
-create table datacap.snippet
+create table snippet
 (
     id          bigint auto_increment primary key,
     name        varchar(255)                        null comment ' ',
@@ -108,12 +107,12 @@ create table datacap.snippet
 
 create
     fulltext index full_text_index_for_code
-    on datacap.snippet (code);
+    on snippet (code);
 
 -- --------------------------------
 -- Table structure for source
 -- --------------------------------
-create table datacap.source
+create table source
 (
     id          bigint auto_increment primary key,
     _catalog    varchar(255)                         null,
@@ -139,7 +138,7 @@ create table datacap.source
 -- --------------------------------
 -- Table structure for template_sql
 -- --------------------------------
-create table datacap.template_sql
+create table template_sql
 (
     id          bigint auto_increment primary key,
     name        varchar(255)                         null comment 'Name of template',
@@ -152,28 +151,28 @@ create table datacap.template_sql
     `system`    tinyint(1) default 0                 null
 ) comment 'The system preset SQL template table';
 
-INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getAllDatabase', 'SHOW DATABASES', 'Gets a list of all databases', 'ClickHouse,MySQL,H2', '[]', '2022-12-08 18:38:39', '2022-12-08 18:38:39', 1);
 
-INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getAllTablesFromDatabase', 'SHOW TABLES FROM ${database:String}', 'Get the data table from the database', 'ClickHouse,MySQL,H2',
         '[{"column":"database","type":"String","expression":"${database:String}"}]', '2022-12-08 19:25:31', '2022-12-08 19:25:31', 1);
 
-INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getAllDatabaseAndTable', 'SELECT database as tableSchema, name as tableName
 FROM system.tables
 WHERE database NOT IN (\'system\')
 ORDER BY tableSchema, tableName', 'Get all databases (including all tables)', 'ClickHouse', '[]', '2022-12-08 22:52:59', '2022-12-08 22:52:59', 1);
 
-INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getAllDatabaseAndTable', 'SELECT t.table_schema AS tableSchema, t.table_name AS tableName
 FROM INFORMATION_SCHEMA.TABLES t
 ORDER BY t.table_schema, t.table_name', 'Get all databases (including all tables)', 'MySQL', '[]', '2022-12-08 23:04:45', '2022-12-08 23:04:45', 1);
 
-INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getAllDatabaseAndTables', 'show tables', 'show tables', 'ClickHouse', '[]', '2022-12-27 18:51:02', '2022-12-27 18:51:02', 0);
 
-INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getAllRunningProcess', 'SELECT
   query_id AS id,
   query AS content,
@@ -188,7 +187,7 @@ FROM
 WHERE
   round(elapsed, 1) > 0', 'Get a running list of all currently specified server nodes', 'ClickHouse', '[]', '2022-12-29 16:40:11', '2022-12-29 16:40:11', 0);
 
-INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getAllRunningProcess', 'SELECT
   id AS id,
   info AS content,
@@ -201,11 +200,11 @@ VALUES ('getAllRunningProcess', 'SELECT
 FROM
   information_schema.PROCESSLIST', 'Get a running list of all currently specified server nodes', 'MySQL', '[]', '2022-12-29 19:33:04', '2022-12-29 19:33:04', 0);
 
-INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getAllColumnsFromDatabaseAndTable', 'DESC ${table:String}', 'Get the data column from the database and table', 'MySQL,ClickHouse',
         '[{"column":"table","type":"String","expression":"${table:String}"}]', '2023-01-10 11:59:23', '2023-01-10 11:59:23', 0);
 
-INSERT INTO datacap.template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
+INSERT INTO template_sql (name, content, description, plugin, configure, create_time, update_time, `system`)
 VALUES ('getDataFromDatabaseAndTableLimited', 'SELECT *
 FROM ${table:String}
 LIMIT ${size:Integer}
@@ -254,22 +253,22 @@ create table user_log
 -- --------------------------------
 -- Table structure for user_roles
 -- --------------------------------
-create table datacap.user_roles
+create table user_roles
 (
     user_id bigint not null,
     role_id bigint not null
 );
 
-INSERT INTO datacap.user_roles (user_id, role_id)
+INSERT INTO user_roles (user_id, role_id)
 VALUES (1, 1);
 
-INSERT INTO datacap.user_roles (user_id, role_id)
+INSERT INTO user_roles (user_id, role_id)
 VALUES (2, 2);
 
 -- --------------------------------
 -- Table structure for users
 -- --------------------------------
-create table datacap.users
+create table users
 (
     id              bigint auto_increment
         primary key,
@@ -279,10 +278,10 @@ create table datacap.users
     third_configure text                                     null
 );
 
-INSERT INTO datacap.users (username, password)
+INSERT INTO users (username, password)
 VALUES ('admin', '$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG');
 
-INSERT INTO datacap.users (username, password)
+INSERT INTO users (username, password)
 VALUES ('datacap', '$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.');
 
 -- --------------------------------
@@ -712,8 +711,8 @@ CREATE TABLE `menus`
     `active`      boolean      DEFAULT 1,
     `i18n_key`    varchar(255) DEFAULT NULL,
     `icon`        varchar(255) DEFAULT NULL,
-    `create_time` date         DEFAULT CURRENT_TIMESTAMP(5),
-    `update_time` date         DEFAULT CURRENT_TIMESTAMP(5)
+    `create_time` datetime     DEFAULT CURRENT_TIMESTAMP,
+    `update_time` datetime     DEFAULT CURRENT_TIMESTAMP
 );
 
 insert into `menus` (name, code, description, url, group_name, sorted, type, parent, active, i18n_key, icon)
@@ -794,5 +793,5 @@ WHERE
   keyspace_name = ''${database:String}''
   and table_name = ''${table:String}''', 'Get the data column from the database and table', 'Cassandra',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', 1);
-alter table menus
-    add column `redirect` long default 0;
+alter table `menus`
+    add column `redirect` bigint default 0;
