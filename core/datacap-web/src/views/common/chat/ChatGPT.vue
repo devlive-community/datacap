@@ -1,126 +1,170 @@
 <template>
   <div>
-    <Card dis-hover
-          style="width:100%; minHeight: 150px;">
-      <template #title>
-        {{ $t('common.chatgpt') }} &nbsp;
-        <Select v-model="gptModel"
-                style="width:200px">
-          <Option v-for="model in models"
-                  :value="model"
-                  v-bind:key="model">
-            {{ model }}
-          </Option>
-        </Select>
-      </template>
-      <template #extra>
-        <Tooltip :content="$t('common.settings')" transfer>
-          <Button type="primary" size="small" shape="circle" icon="ios-cog" @click="handlerVisibleDetail(true)"></Button>
-        </Tooltip>
-      </template>
-      <div>
-        <Layout style="background-color: #FFFFFF;">
-          <Content style="padding: 0px 0px 0px 10px;">
-            <div ref="scrollDiv" style="height: 300px; max-height: 300px; overflow: auto;">
-              <div v-for="item in userQuestionItems"
-                   :key="item">
-                <Divider :orientation="item.isSelf ? 'left' : 'right'">
-                  <Avatar v-if="item.isSelf" icon="ios-person"></Avatar>
-                  <Avatar v-else icon="md-ionitron" style="background-color: #87d068;"></Avatar>
-                </Divider>
-                <div :style="{margin: '0px 10px', float: item.isSelf ? '' : 'right'}">
-                  <Card dis-hover
-                        :bordered="false">
-                    <VMarkdownView v-if="item.content"
-                                   :mode="'light'"
-                                   :content="item.content.answer">
-                    </VMarkdownView>
-                    <div v-if="!item.isSelf"
-                         style="margin-top: 5px; float: right;">
-                      Model:
-                      <Text strong>{{ item.content.model }}</Text>
-                      <Divider type="vertical"/>
-                      Prompt Tokens:
-                      <CountUp :end="item.content.promptTokens"
-                               v-font="24">
-                      </CountUp>
-                      <Divider type="vertical"/>
-                      Completion Tokens:
-                      <CountUp :end="item.content.completionTokens"
-                               v-font="24">
-                      </CountUp>
-                      <Divider type="vertical"/>
-                      Total Tokens:
-                      <CountUp :end="item.content.totalTokens"
-                               v-font="24">
-                      </CountUp>
-                    </div>
-                  </Card>
-                </div>
-              </div>
+    <Layout>
+      <Sider style="background-color: #FFFFFF">
+        <Card dis-hover
+              padding="0">
+          <template #title>
+            {{ $t('common.chat') }}
+          </template>
+          <template #extra>
+            <Tooltip :content="$t('common.create') + $t('common.chat')">
+              <Button type="primary"
+                      shape="circle"
+                      size="small"
+                      style="margin-top: -10px;"
+                      icon="md-add"
+                      @click="handlerCreateChat(true)">
+              </Button>
+            </Tooltip>
+          </template>
+          <RadioGroup v-model="selectedChat"
+                      vertical
+                      style="margin: 3px 3px 3px 3px; height: 500px; width: 100%; overflow: auto;"
+                      @on-change="handlerChangeChat">
+            <Radio v-for="item in chats"
+                   :key="item.id"
+                   :label="item"
+                   border
+                   style="margin-top: 3px; padding: 3px 5px; height: 40px;">
+              <Avatar v-if="item.avatar"
+                      :src="item.avatar">
+              </Avatar>
+              <Avatar v-else>
+                {{ item.name }}
+              </Avatar>
+              {{ item.name }}
+            </Radio>
+          </RadioGroup>
+          <CircularLoading v-if="loadingChats"
+                           :show="loadingChats">
+          </CircularLoading>
+        </Card>
+      </Sider>
+      <Content style="margin-left: 3px;">
+        <Card v-if="selectedChat"
+              dis-hover
+              style="width:100%; minHeight: 150px;">
+          <template #title>
+            <Text strong>{{ $t('common.chat') }}</Text>
+            : {{ selectedChat.name }} &nbsp;
+          </template>
+          <template #extra>
+            <div style="margin-top: -13px;">
+              Prompt Tokens:
+              <CountUp :end="promptTokens"
+                       v-font="24">
+              </CountUp>
+              <Divider type="vertical"/>
+              Completion Tokens:
+              <CountUp :end="completionTokens"
+                       v-font="24">
+              </CountUp>
+              <Divider type="vertical"/>
+              Total Tokens:
+              <CountUp :end="totalTokens"
+                       v-font="24">
+              </CountUp>
             </div>
-          </Content>
-          <Divider></Divider>
-          <Footer style="background-color: #FFFFFF;">
-            <Row>
-              <Col span="20">
-                <Input v-model="userQuestionContext"
-                       type="textarea"
-                       :autosize="{minRows: 2,maxRows: 5}">
-                </Input>
-              </Col>
-              <Col span="2" offset="1">
-                <Button type="primary"
-                        icon="md-send"
-                        :disabled="!userQuestionContext"
-                        :loading="startChatLoading"
-                        @click="handlerStartChat()">
-                  {{ $t('common.send') }}
-                </Button>
-              </Col>
-            </Row>
-          </Footer>
-        </Layout>
-      </div>
-      <Spin size="large" fix :show="loading"></Spin>
-    </Card>
-
-    <Modal v-if="visibleModel" v-model="visibleModel" :title="$t('common.chatgpt') +' ' + $t('common.settings')"
-           :mask-closable="false" :closable="false">
-      <Form :label-width="80">
-        <FormItem :label="$t('common.token')">
-          <Input v-model="userInfo.thirdConfigure.token" type="text" placeholder="example: sk-xxxx"/>
-        </FormItem>
-        <FormItem :label="$t('common.proxy')">
-          <Input v-model="userInfo.thirdConfigure.host" type="text"/>
-        </FormItem>
-        <FormItem :label="$t('common.timeout')">
-          <InputNumber v-model="userInfo.thirdConfigure.timeout"/>
-          <Text strong
-                style="margin-left: 5px;">
-            {{ $t('common.seconds') }}
-          </Text>
-        </FormItem>
-      </Form>
-      <template #footer>
-        <Space>
-          <Button type="error" @click="handlerVisibleDetail(false)">{{ $t('common.cancel') }}</Button>
-          <Button type="primary" icon="md-document" @click="handlerSave()">{{ $t('common.save') }}</Button>
-        </Space>
-      </template>
-    </Modal>
+          </template>
+          <Layout style="background-color: #FFFFFF;">
+            <Content style="padding: 0px 0px 0px 10px;">
+              <div ref="scrollDiv" style="height: 300px; max-height: 300px; overflow: auto;">
+                <div v-for="item in messages"
+                     :key="item">
+                  <Divider :orientation="item.type === 'question' ? 'left' : 'right'">
+                    <Avatar v-if="item.type === 'question'">
+                      {{ userInfo.username }}
+                    </Avatar>
+                    <Avatar v-else
+                            icon="md-ionitron"
+                            style="background-color: #87d068;">
+                    </Avatar>
+                  </Divider>
+                  <div :style="{margin: '0px 10px', float: item.type === 'question' ? '' : 'right'}">
+                    <Card dis-hover
+                          :bordered="false">
+                      <MarkdownView v-if="item.content"
+                                    :content="item.content">
+                      </MarkdownView>
+                      <div v-if="item.type === 'answer'"
+                           style="margin-top: 5px; float: right;">
+                        Model:
+                        <Text strong>{{ item.model }}</Text>
+                        <Divider type="vertical"/>
+                        Prompt Tokens:
+                        <CountUp :end="item.promptTokens"
+                                 v-font="24">
+                        </CountUp>
+                        <Divider type="vertical"/>
+                        Completion Tokens:
+                        <CountUp :end="item.completionTokens"
+                                 v-font="24">
+                        </CountUp>
+                        <Divider type="vertical"/>
+                        Total Tokens:
+                        <CountUp :end="item.totalTokens"
+                                 v-font="24">
+                        </CountUp>
+                      </div>
+                    </Card>
+                  </div>
+                </div>
+                <CircularLoading :show="loadingMessages">
+                </CircularLoading>
+              </div>
+            </Content>
+            <Divider></Divider>
+            <Footer style="background-color: #FFFFFF;">
+              <Row>
+                <Col span="20">
+                  <Input v-model="questionContext"
+                         type="textarea"
+                         :disabled="sendMessage"
+                         :autosize="{minRows: 2,maxRows: 5}">
+                  </Input>
+                </Col>
+                <Col span="2" offset="1">
+                  <Button type="primary"
+                          icon="md-send"
+                          :disabled="!questionContext"
+                          :loading="sendMessage"
+                          @click="handlerSendMessage()">
+                    {{ $t('common.send') }}
+                  </Button>
+                </Col>
+              </Row>
+            </Footer>
+          </Layout>
+        </Card>
+        <Card v-else
+              dis-hover>
+          <div style="text-align:center; margin: 248px 0px;">
+            No selection chat
+          </div>
+        </Card>
+      </Content>
+    </Layout>
+    <CreateChat v-if="createChatVisible"
+                :is-visible="createChatVisible"
+                :user-id="userInfo.id"
+                @close="handlerCreateChat(false)">
+    </CreateChat>
   </div>
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue';
-import UserService from "@/services/UserService";
-import {ThirdConfigure, User, UserAnswer, UserQuestion, UserQuestionItem} from '@/model/User';
-import {VMarkdownView} from 'vue3-markdown'
-import 'vue3-markdown/dist/style.css'
-import {InputNumber} from "view-ui-plus";
+import CreateChat from "@/views/common/chat/components/CreateChat.vue";
+import ChatService from '@/services/ChatService';
+import {Filter} from '@/model/Filter';
+import {AuthResponse} from '@/model/AuthResponse';
+import {TokenCommon} from '@/common/TokenCommon';
+import CircularLoading from "@/components/loading/CircularLoading.vue";
+import MessageService from "@/services/MessageService";
+import MarkdownView from "@/components/markdown/MarkdownView.vue";
 
 export default defineComponent({
-  components: {InputNumber, VMarkdownView},
+  components: {MarkdownView, CircularLoading, CreateChat},
   created()
   {
     this.handlerInitialize()
@@ -128,88 +172,82 @@ export default defineComponent({
   data()
   {
     return {
-      loading: false,
-      visibleModel: false,
-      startChatLoading: false,
-      userInfo: null as User,
-      userQuestionContext: null,
-      userQuestionItems: null as UserQuestionItem[],
-      gptModel: 'gpt-3.5-turbo-0613',
-      models: ['gpt-3.5-turbo', 'gpt-3.5-turbo-0301', 'gpt-3.5-turbo-0613', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-0613', 'gpt-4', 'gpt-4-0314', 'gpt-4-0613']
+      chats: [],
+      loadingChats: false,
+      selectedChat: null,
+      userInfo: null as AuthResponse,
+      messages: [],
+      loadingMessages: false,
+      createChatVisible: false,
+      questionContext: null,
+      sendMessage: false,
+      promptTokens: 0,
+      completionTokens: 0,
+      totalTokens: 0
     }
   },
   methods: {
     handlerInitialize()
     {
-      this.userQuestionItems = [];
-      this.loading = true;
-      UserService.getInfo()
+      this.userInfo = TokenCommon.getAuthUser()
+      this.loadingChats = true;
+      const filter = new Filter();
+      filter.size = 100
+      filter.orders = [{column: 'createTime', order: 'desc'}];
+      ChatService.getAll(filter)
         .then(response => {
-          if (response.status) {
-            this.userInfo = response.data;
-            if (this.userInfo.thirdConfigure) {
-              this.userInfo.thirdConfigure = JSON.parse(this.userInfo.thirdConfigure);
-            }
-            else {
-              this.userInfo.thirdConfigure = new ThirdConfigure();
-            }
-          }
+          this.chats = response.data?.content
         })
         .finally(() => {
-          this.loading = false;
+          this.loadingChats = false;
         });
     },
-    handlerVisibleDetail(value: boolean)
+    handlerCreateChat(opend: boolean)
     {
-      this.visibleModel = value;
-      if (!value) {
-        this.handlerInitialize();
+      this.createChatVisible = opend;
+      if (!opend) {
+        this.handlerInitialize()
       }
     },
-    handlerSave()
+    handlerChangeChat()
     {
-      UserService.changeThirdConfigure(this.userInfo.thirdConfigure)
+      this.loadingMessages = true;
+      ChatService.getMessages(this.selectedChat.id)
         .then(response => {
-          this.$Message.success(response.message);
-          this.handlerVisibleDetail(false);
+          this.messages = response.data
         })
         .finally(() => {
-          this.loading = false;
+          this.loadingMessages = false;
+          this.counterToken()
+          this.handlerGoBottom()
         });
     },
-    handlerStartChat()
+    handlerSendMessage()
     {
-      const userQuestion = new UserQuestion();
-      userQuestion.type = 'ChatGPT';
-      userQuestion.content = this.userQuestionContext;
-      userQuestion.from = 'chat';
-      userQuestion.newChat = this.userQuestionItems.length > 0 ? false : true;
-      userQuestion.model = this.gptModel;
-      const answer = new UserAnswer();
-      answer.answer = this.userQuestionContext;
-      const question = new UserQuestionItem();
-      question.content = answer;
-      question.isSelf = true;
-      this.userQuestionItems.push(question);
-      this.handlerGoBottom();
-      this.startChatLoading = true;
-      this.userQuestionContext = null;
-      UserService.startChat(userQuestion)
+      this.sendMessage = true;
+      const message = {
+        content: this.questionContext,
+        user: this.userInfo,
+        chat: this.selectedChat,
+        type: 'question'
+      }
+      this.messages.push(message)
+      this.handlerGoBottom()
+      this.questionContext = null;
+      MessageService.saveOrUpdate(message)
         .then(response => {
           if (response.status) {
-            const answer = new UserQuestionItem();
-            answer.content = response.data;
-            answer.isSelf = false;
-            this.userQuestionItems.push(answer);
-            this.handlerGoBottom();
+            this.messages.push(response.data)
           }
           else {
-            this.$Message.error(response.message);
+            this.$Message.error(response.message)
           }
         })
         .finally(() => {
-          this.startChatLoading = false;
-        });
+          this.sendMessage = false
+          this.counterToken()
+          this.handlerGoBottom()
+        })
     },
     handlerGoBottom()
     {
@@ -217,12 +255,16 @@ export default defineComponent({
       setTimeout(() => {
         scrollElem.scrollTo({top: scrollElem.scrollHeight, behavior: 'smooth'});
       }, 0);
+    },
+    counterToken()
+    {
+      const answers = this.messages.filter(message => message.type === 'answer')
+      this.promptTokens = answers.reduce((sum, message) => sum + message.promptTokens, 0)
+      this.completionTokens = answers.reduce((sum, message) => sum + message.completionTokens, 0)
+      this.totalTokens = answers.reduce((sum, message) => sum + message.totalTokens, 0)
     }
   }
 });
 </script>
 <style scoped>
-.content {
-  background-color: #FFFFFF;
-}
 </style>

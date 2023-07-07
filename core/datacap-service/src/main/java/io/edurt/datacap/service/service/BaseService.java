@@ -25,5 +25,9 @@ public interface BaseService<T>
         return CommonResponse.success(repository.save(configure));
     }
 
-    CommonResponse<Long> delete(Long id);
+    default CommonResponse<Long> deleteById(PagingAndSortingRepository repository, Long id)
+    {
+        repository.deleteById(id);
+        return CommonResponse.success(id);
+    }
 }

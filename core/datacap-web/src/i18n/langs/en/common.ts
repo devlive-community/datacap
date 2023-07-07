@@ -123,4 +123,5 @@ export default {
   chat: 'Chat',
   timeout: 'Timeout',
   seconds: 'Seconds',
+  avatar: 'Avatar',
 }

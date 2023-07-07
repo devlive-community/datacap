@@ -3,6 +3,7 @@ export interface User
   username: string;
   thirdConfigure: ThirdConfigure;
   createTime?: string;
+  id?: number;
 }
 
 export class UserQuestion

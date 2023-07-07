@@ -26,7 +26,7 @@ class Entity<T extends EntityProperties = EntityProperties>
   public static default(): Entity<Pick<EntityProperties, 'id' | 'name' | 'description'>>
   {
     return new Entity({
-      id: 1,
+      id: 0,
       name: 'admin',
       description: 'Administrator',
     });
@@ -35,9 +35,14 @@ class Entity<T extends EntityProperties = EntityProperties>
   /**
    * Get the value of the specified property.
    */
-  public get<K extends keyof T>(prop: K): T[K]
+  public field<K extends keyof T>(prop: K): T[K]
   {
     return this.props[prop];
+  }
+
+  public get(): T
+  {
+    return this.props;
   }
 }
 

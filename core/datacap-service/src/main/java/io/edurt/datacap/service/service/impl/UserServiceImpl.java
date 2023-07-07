@@ -5,40 +5,27 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.response.JwtResponse;
-import io.edurt.datacap.common.utils.AiSupportUtils;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.audit.AuditUserLog;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.UserNameBody;
 import io.edurt.datacap.service.body.UserPasswordBody;
-import io.edurt.datacap.service.body.UserQuestionBody;
 import io.edurt.datacap.service.entity.MenuEntity;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.RoleEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
-import io.edurt.datacap.service.entity.UserChatEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 import io.edurt.datacap.service.repository.RoleRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
-import io.edurt.datacap.service.repository.UserChatRepository;
 import io.edurt.datacap.service.repository.UserRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.JwtService;
 import io.edurt.datacap.service.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
-import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.devlive.sdk.openai.OpenAiClient;
-import org.devlive.sdk.openai.entity.CompletionChatEntity;
-import org.devlive.sdk.openai.entity.CompletionMessageEntity;
-import org.devlive.sdk.openai.entity.UsageEntity;
-import org.devlive.sdk.openai.model.CompletionMessageModel;
-import org.devlive.sdk.openai.response.CompleteChatResponse;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -49,19 +36,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -73,7 +55,6 @@ public class UserServiceImpl
 {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UserChatRepository userChatRepository;
     private final SourceRepository sourceRepository;
     private final PasswordEncoder encoder;
     private final AuthenticationManager authenticationManager;
@@ -81,11 +62,10 @@ public class UserServiceImpl
     private final RedisTemplate redisTemplate;
     private final Environment environment;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserChatRepository userChatRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate, Environment environment)
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate, Environment environment)
     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.userChatRepository = userChatRepository;
         this.sourceRepository = sourceRepository;
         this.encoder = encoder;
         this.authenticationManager = authenticationManager;
@@ -198,128 +178,6 @@ public class UserServiceImpl
         user.setThirdConfigure(JsonUtils.toJSON(configure));
         this.userRepository.save(user);
         return CommonResponse.success(user.getId());
-    }
-
-    @Override
-    public CommonResponse<Object> startChat(UserQuestionBody configure)
-    {
-        Optional<UserEntity> userOptional = this.userRepository.findById(UserDetailsService.getUser().getId());
-        if (!userOptional.isPresent()) {
-            return CommonResponse.failure(ServiceState.USER_NOT_FOUND);
-        }
-
-        if (!configure.getType().equals("ChatGPT")) {
-            return CommonResponse.failure("Not supported");
-        }
-        UserEntity user = userOptional.get();
-        UserChatEntity userChat = UserChatEntity.builder()
-                .question(configure.getContent())
-                .user(user)
-                .name(UUID.randomUUID().toString())
-                .type(configure.getType())
-                .createTime(Timestamp.valueOf(LocalDateTime.now()))
-                .isNew(configure.isNewChat())
-                .build();
-        String openApiHost = environment.getProperty("datacap.openai.backend");
-        String openApiToken = environment.getProperty("datacap.openai.token");
-        String openApiModel = environment.getProperty("datacap.openai.model");
-        long openApiTimeout = Long.parseLong(environment.getProperty("datacap.openai.timeout"));
-        if (StringUtils.isNotEmpty(configure.getModel())) {
-            openApiModel = configure.getModel();
-        }
-        // If user-defined configuration, use user configuration information
-        if (StringUtils.isNotEmpty(user.getThirdConfigure())) {
-            AiModel aiModel = JsonUtils.toObject(user.getThirdConfigure(), AiModel.class);
-            if (StringUtils.isNotEmpty(aiModel.getToken())) {
-                openApiHost = aiModel.getHost();
-                openApiToken = aiModel.getToken();
-            }
-            if (aiModel.getTimeout() > 0) {
-                openApiTimeout = aiModel.getTimeout();
-            }
-        }
-        // Build the Open AI client
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(openApiTimeout, TimeUnit.SECONDS)
-                .writeTimeout(openApiTimeout, TimeUnit.SECONDS)
-                .readTimeout(openApiTimeout, TimeUnit.SECONDS)
-                .build();
-        OpenAiClient openAiClient = OpenAiClient.builder()
-                .apiHost(openApiHost)
-                .apiKey(openApiToken)
-                .client(okHttpClient)
-                .build();
-
-        List<String> content = new ArrayList<>();
-        String forwardContent = configure.getContent();
-        try {
-            AiSupportUtils.AiSupportEnum type = AiSupportUtils.AiSupportEnum.valueOf(configure.getTransType());
-            String replaceContent = AiSupportUtils.getValue(configure.getLocale(), type);
-            Properties properties = new Properties();
-            properties.put("sql", configure.getContent());
-            if (ObjectUtils.isNotEmpty(configure.getEngine())) {
-                properties.put("engine", configure.getEngine());
-            }
-            if (ObjectUtils.isNotEmpty(configure.getError())) {
-                properties.put("error", configure.getError());
-            }
-            StrSubstitutor sub = new StrSubstitutor(properties);
-            forwardContent = sub.replace(replaceContent);
-        }
-        catch (Exception exception) {
-            log.warn("Ai type not set, ignore .");
-        }
-        try {
-            List<CompletionMessageEntity> messages = new ArrayList<>();
-            // Extract database history for recording context if source is dialog mode
-            boolean saved = false;
-            if (StringUtils.isNotEmpty(configure.getFrom()) && configure.getFrom().equalsIgnoreCase("chat")) {
-                if (!configure.isNewChat()) {
-                    this.userChatRepository.findTop5ByUserOrderByIdDesc(UserDetailsService.getUser())
-                            .stream()
-                            .sorted(Comparator.comparing(UserChatEntity::getId))
-                            .forEach(userChatHistory -> {
-                                CompletionMessageEntity question = CompletionMessageEntity.builder()
-                                        .role(CompletionMessageModel.USER.getName())
-                                        .content(userChatHistory.getQuestion())
-                                        .build();
-                                messages.add(question);
-                                CompletionMessageEntity answer = CompletionMessageEntity.builder()
-                                        .role(CompletionMessageModel.ASSISTANT.getName())
-                                        .content(userChatHistory.getAnswer())
-                                        .build();
-                                messages.add(answer);
-                            });
-                }
-                saved = true;
-            }
-            CompletionMessageEntity message = CompletionMessageEntity.builder()
-                    .role(CompletionMessageModel.USER.getName())
-                    .content(forwardContent)
-                    .build();
-            messages.add(message);
-            CompletionChatEntity chatCompletion = CompletionChatEntity.builder()
-                    .messages(messages)
-                    .model(openApiModel)
-                    .build();
-            CompleteChatResponse chatCompletionResponse = openAiClient.createChatCompletion(chatCompletion);
-            chatCompletionResponse.getChoices()
-                    .forEach(e -> content.add(e.getMessage().getContent()));
-            userChat.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
-            userChat.setAnswer(String.join("\n", content));
-            userChat.setModel(chatCompletionResponse.getModel());
-            UsageEntity usage = chatCompletionResponse.getUsage();
-            userChat.setPromptTokens(usage.getPromptTokens());
-            userChat.setCompletionTokens(usage.getCompletionTokens());
-            userChat.setTotalTokens(usage.getTotalTokens());
-            if (saved) {
-                this.userChatRepository.save(userChat);
-            }
-            return CommonResponse.success(userChat);
-        }
-        catch (Exception e) {
-            return CommonResponse.failure(e.getMessage());
-        }
     }
 
     @Override

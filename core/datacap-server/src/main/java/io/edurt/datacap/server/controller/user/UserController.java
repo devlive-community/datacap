@@ -5,7 +5,6 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.UserNameBody;
 import io.edurt.datacap.service.body.UserPasswordBody;
-import io.edurt.datacap.service.body.UserQuestionBody;
 import io.edurt.datacap.service.body.user.UserRole;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.RoleEntity;
@@ -72,12 +71,6 @@ public class UserController
     public CommonResponse<PageEntity<UserLogEntity>> getAllLogByFilter(@RequestBody FilterBody filter)
     {
         return this.userLogService.getAllByFilter(filter);
-    }
-
-    @PostMapping(value = "startChat")
-    public CommonResponse<Object> startChat(@RequestBody UserQuestionBody configure)
-    {
-        return this.userService.startChat(configure);
     }
 
     @GetMapping(value = "sugs/{id}")

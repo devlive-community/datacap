@@ -5,7 +5,6 @@ import io.edurt.datacap.common.response.JwtResponse;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.UserNameBody;
 import io.edurt.datacap.service.body.UserPasswordBody;
-import io.edurt.datacap.service.body.UserQuestionBody;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.model.AiModel;
@@ -26,8 +25,6 @@ public interface UserService
     CommonResponse<Long> changeUsername(UserNameBody configure);
 
     CommonResponse<Long> changeThirdConfigure(AiModel configure);
-
-    CommonResponse<Object> startChat(UserQuestionBody configure);
 
     CommonResponse<List<Object>> getSugs(Long id);
 
