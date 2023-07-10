@@ -9,6 +9,7 @@ import io.edurt.datacap.service.service.ChatService;
 import io.edurt.datacap.service.service.MessageService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +33,7 @@ public class ChatController
     }
 
     @Override
-    public CommonResponse list(FilterBody filter)
+    public CommonResponse list(@RequestBody FilterBody filter)
     {
         return this.service.getAllByUser(filter);
     }

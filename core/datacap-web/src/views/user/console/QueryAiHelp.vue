@@ -26,6 +26,7 @@ import {User, UserQuestion} from "@/model/User";
 import {VMarkdownView} from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
 import {Skeleton} from "view-ui-plus";
+import MessageService from "@/services/MessageService";
 
 export default defineComponent({
   name: 'QueryAiHelp',
@@ -92,10 +93,10 @@ export default defineComponent({
       userQuestion.engine = this.engine;
       userQuestion.error = this.error;
       userQuestion.locale = this.$i18n.locale;
-      UserService.startChat(userQuestion)
+      MessageService.aiReply(userQuestion)
         .then(response => {
           if (response.status) {
-            this.finalContent = response.data.answer;
+            this.finalContent = response.data.content;
           }
           else {
             this.$Message.error(response.message);
