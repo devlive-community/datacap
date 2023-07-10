@@ -83,7 +83,8 @@
                   </Divider>
                   <div :style="{margin: '0px 10px', float: item.type === 'question' ? '' : 'right'}">
                     <Card dis-hover
-                          :bordered="false">
+                          :bordered="false"
+                          padding="0">
                       <MarkdownView v-if="item.content"
                                     :content="item.content">
                       </MarkdownView>

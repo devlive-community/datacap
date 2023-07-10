@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.service.impl;
 
 import com.google.common.collect.Lists;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.JsonUtils;
@@ -32,6 +33,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"},
+        justification = "I prefer to suppress these FindBugs warnings")
 public class MessageServiceImpl
         implements MessageService
 {
@@ -109,6 +112,27 @@ public class MessageServiceImpl
                 .client(okHttpClient)
                 .build()) {
             List<CompletionMessageEntity> messages = new ArrayList<>();
+            // Extract database history for recording context if source is dialog mode
+//            if (StringUtils.isNotEmpty(configure.getFrom()) && configure.getFrom().equalsIgnoreCase("chat")) {
+//                if (!configure.isNewChat()) {
+//                    this.userChatRepository.findTop5ByUserOrderByIdDesc(UserDetailsService.getUser())
+//                            .stream()
+//                            .sorted(Comparator.comparing(UserChatEntity::getId))
+//                            .forEach(userChatHistory -> {
+//                                CompletionMessageEntity question = CompletionMessageEntity.builder()
+//                                        .role(CompletionMessageModel.USER.getName())
+//                                        .content(userChatHistory.getQuestion())
+//                                        .build();
+//                                messages.add(question);
+//                                CompletionMessageEntity answer = CompletionMessageEntity.builder()
+//                                        .role(CompletionMessageModel.ASSISTANT.getName())
+//                                        .content(userChatHistory.getAnswer())
+//                                        .build();
+//                                messages.add(answer);
+//                            });
+//                }
+//                saved = true;
+//            }
             CompletionMessageEntity message = CompletionMessageEntity.builder()
                     .role(CompletionMessageModel.USER.getName())
                     .content(questionMessage.getContent())

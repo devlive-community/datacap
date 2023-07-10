@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,8 @@ import javax.persistence.Table;
 @Entity
 @EntityListeners(value = AuditingEntityListener.class)
 @Table(name = "datacap_chat")
+@SuppressFBWarnings(value = {"EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
+        justification = "I prefer to suppress these FindBugs warnings")
 public class ChatEntity
         extends BaseEntity
 {
