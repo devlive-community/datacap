@@ -1,6 +1,7 @@
 package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.ChatEntity;
 import io.edurt.datacap.service.entity.MessageEntity;
 import io.edurt.datacap.service.repository.ChatRepository;
@@ -28,6 +29,12 @@ public class ChatController
         this.repository = repository;
         this.service = service;
         this.messageService = messageService;
+    }
+
+    @Override
+    public CommonResponse list(FilterBody filter)
+    {
+        return this.service.getAllByUser(filter);
     }
 
     @GetMapping(value = "{id}/messages")

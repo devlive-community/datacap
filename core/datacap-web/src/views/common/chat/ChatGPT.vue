@@ -203,10 +203,10 @@ export default defineComponent({
           this.loadingChats = false;
         });
     },
-    handlerCreateChat(opend: boolean)
+    handlerCreateChat(opened: boolean)
     {
-      this.createChatVisible = opend;
-      if (!opend) {
+      this.createChatVisible = opened;
+      if (!opened) {
         this.handlerInitialize()
       }
     },
