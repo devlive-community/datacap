@@ -488,3 +488,5 @@ values ('2', '7'),
 -- --------------------------------
 alter table `menus`
     add column `redirect` bigint default 0;
+ALTER TABLE `menus`
+    ADD COLUMN `is_new`   BOOLEAN DEFAULT FALSE;

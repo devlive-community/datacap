@@ -3,6 +3,7 @@ export interface User
   username: string;
   thirdConfigure: ThirdConfigure;
   createTime?: string;
+  id?: number;
 }
 
 export class UserQuestion
@@ -38,5 +39,6 @@ export class ThirdConfigure
   token = '';
   host = '';
   model = '';
-  timeout: number = null;
+  timeout = 30;
+  contentCount = 5
 }

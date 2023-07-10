@@ -52,11 +52,14 @@ export abstract class BaseService<T>
     }
   }
 
+  deleteById(id: number): Promise<ResponseModel>
+  {
+    return new HttpCommon().delete(`${this.baseUrl}/${id}`);
+  }
+
   /**
    * Filter the corresponding data according to the name
    * @param name
    */
   abstract getByName<T>(name: string): Promise<ResponseModel>;
-
-  abstract deleteById(id: number): Promise<ResponseModel>;
 }

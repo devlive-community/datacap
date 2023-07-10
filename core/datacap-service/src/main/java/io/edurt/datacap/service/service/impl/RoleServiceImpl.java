@@ -35,12 +35,6 @@ public class RoleServiceImpl
     }
 
     @Override
-    public CommonResponse<Long> delete(Long id)
-    {
-        return null;
-    }
-
-    @Override
     public CommonResponse<Object> getMenusByRoleId(Long roleId)
     {
         Optional<RoleEntity> optionalRole = repository.findById(roleId);

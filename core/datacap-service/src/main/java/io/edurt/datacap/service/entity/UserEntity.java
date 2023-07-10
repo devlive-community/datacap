@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.service.validation.ValidationGroup;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -33,11 +34,12 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Builder
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users",
+@Table(name = "datacap_user",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username")
         })
@@ -68,8 +70,11 @@ public class UserEntity
     @Column(name = "password")
     private String password;
 
-    @Column(name = "third_configure")
-    private String thirdConfigure;
+    @Column(name = "chat_configure")
+    private String chatConfigure;
+
+    @Column(name = "is_system")
+    private boolean system;
 
     @Column(name = "create_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
     private Timestamp createTime;

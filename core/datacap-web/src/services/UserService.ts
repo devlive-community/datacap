@@ -3,7 +3,6 @@ import {ResponseModel} from "@/model/ResponseModel";
 import {UserPassword} from "@/model/UserPassword";
 import {UserName} from "@/model/UserName";
 import {Filter} from "@/model/Filter";
-import {UserQuestion} from "@/model/User";
 
 const baseUrl = "/api/v1/user";
 
@@ -27,11 +26,6 @@ class UserService
   changeThirdConfigure(configure: any): Promise<ResponseModel>
   {
     return new HttpCommon().put(baseUrl + '/changeThirdConfigure', configure);
-  }
-
-  startChat(configure: UserQuestion): Promise<ResponseModel>
-  {
-    return new HttpCommon().post(baseUrl + '/startChat', configure);
   }
 
   getLogs(filter: Filter): Promise<ResponseModel>

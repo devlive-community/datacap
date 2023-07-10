@@ -9,4 +9,6 @@ public interface UserRepository
         extends PagingAndSortingRepository<UserEntity, Long>
 {
     Optional<UserEntity> findByUsername(String username);
+
+    UserEntity findByUsernameAndSystemTrue(String username);
 }

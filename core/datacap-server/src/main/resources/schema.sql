@@ -217,22 +217,6 @@ OFFSET ${page:Integer}', 'Get all data from table by limited', 'MySQL,ClickHouse
        , '[{"column":"table","type":"String","expression":"${table:String}"},{"column":"size","type":"Integer","expression":"${size:Integer}"},{"column":"page","type":"Integer","expression":"${page:Integer}"}]'
        , '2023-01-10 13:31:10', '2023-01-10 13:31:10', 0);
 -- --------------------------------
--- Table structure for user_chat
--- --------------------------------
-CREATE TABLE IF NOT EXISTS user_chat
-(
-    id          int PRIMARY KEY AUTO_INCREMENT,
-    name        varchar(255) NOT NULL,
-    question    text         NOT NULL,
-    answer      text         NULL,
-    type        varchar(100) NULL,
-    create_time date         NULL DEFAULT CURRENT_TIMESTAMP,
-    end_time    date         NULL ON UPDATE CURRENT_TIMESTAMP,
-    elapsed     bigint       NULL,
-    user_id     int          NOT NULL,
-    is_new      boolean      NULL DEFAULT 1
-);
--- --------------------------------
 -- Table structure for user_log
 -- --------------------------------
 CREATE TABLE IF NOT EXISTS user_log
@@ -263,22 +247,25 @@ VALUES (2, 2);
 -- --------------------------------
 -- Table structure for users
 -- --------------------------------
-CREATE TABLE IF NOT EXISTS users
+CREATE TABLE IF NOT EXISTS datacap_user
 (
     id              bigint PRIMARY KEY AUTO_INCREMENT,
     username        varchar(255) NULL COMMENT ' ',
     password        varchar(255) NULL COMMENT ' ',
     create_time     date         NULL DEFAULT CURRENT_TIMESTAMP(5),
-    third_configure text         NULL
+    chat_configure text         NULL
 );
-TRUNCATE TABLE users;
-ALTER TABLE users
+TRUNCATE TABLE datacap_user;
+ALTER TABLE datacap_user
     ALTER COLUMN id RESTART WITH 1;
-INSERT INTO users (username, password)
+ALTER TABLE datacap_user
+    ADD COLUMN `is_system` BOOLEAN DEFAULT FALSE;
+INSERT INTO datacap_user (username, password)
 VALUES ('admin', '$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG');
-INSERT INTO users (username, password)
+INSERT INTO datacap_user (username, password)
 VALUES ('datacap', '$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.');
-
+INSERT INTO datacap_user(username, is_system)
+VALUES ('Ai', TRUE);
 -- --------------------------------
 --       Update to 1.11.0        --
 -- --------------------------------
@@ -305,3 +292,50 @@ WHERE
   keyspace_name = ''${database:String}''
   and table_name = ''${table:String}''', 'Get the data column from the database and table', 'Cassandra',
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"}]', 1);
+
+-- --------------------------------
+--       Update to 1.12.0        --
+-- --------------------------------
+CREATE TABLE `datacap_chat`
+(
+    `id`          BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `name`        VARCHAR(255) NOT NULL,
+    `active`      BOOLEAN      DEFAULT TRUE,
+    `create_time` DATETIME     DEFAULT CURRENT_TIMESTAMP,
+    `update_time` DATETIME     DEFAULT CURRENT_TIMESTAMP,
+    `avatar`      VARCHAR(255) DEFAULT NULL,
+    `description` VARCHAR(255) DEFAULT NULL
+);
+
+CREATE TABLE `datacap_chat_user_relation`
+(
+    chat_id BIGINT,
+    user_id BIGINT
+);
+
+CREATE TABLE `datacap_message`
+(
+    `id`                BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `name`              VARCHAR(255) NOT NULL,
+    `active`            BOOLEAN      DEFAULT TRUE,
+    `create_time`       DATETIME     DEFAULT CURRENT_TIMESTAMP,
+    `update_time`       DATETIME     DEFAULT CURRENT_TIMESTAMP,
+    `content`           TEXT         DEFAULT NULL,
+    `model`             VARCHAR(255) DEFAULT NULL,
+    `type`              VARCHAR(100),
+    `prompt_tokens`     BIGINT       DEFAULT 0,
+    `completion_tokens` BIGINT       DEFAULT 0,
+    `total_tokens`      BIGINT       DEFAULT 0
+);
+
+CREATE TABLE `datacap_message_user_relation`
+(
+    message_id BIGINT,
+    user_id    BIGINT
+);
+
+CREATE TABLE `datacap_message_chat_relation`
+(
+    message_id BIGINT,
+    chat_id    BIGINT
+);

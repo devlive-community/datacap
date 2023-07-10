@@ -225,10 +225,4 @@ public class PipelineServiceImpl
         }
         properties.put(field.getField(), value);
     }
-
-    @Override
-    public CommonResponse<Long> delete(Long id)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

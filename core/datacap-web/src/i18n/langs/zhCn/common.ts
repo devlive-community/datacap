@@ -122,5 +122,6 @@ export default {
   new: '新',
   chat: '对话',
   timeout: '超时时间',
-  seconds: '秒'
+  seconds: '秒',
+  avatar: '头像'
 }
