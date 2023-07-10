@@ -6,8 +6,10 @@ ALTER TABLE `menus`
     ADD COLUMN `is_new`   BOOLEAN DEFAULT FALSE;
 
 RENAME TABLE `users` TO `datacap_user`;
+
 ALTER TABLE `datacap_user`
     ADD COLUMN `is_system` BOOLEAN DEFAULT FALSE;
+
 INSERT INTO `datacap_user`(`username`, `is_system`)
 VALUES ('Ai', TRUE);
 
