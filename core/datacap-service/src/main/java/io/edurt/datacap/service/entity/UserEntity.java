@@ -70,8 +70,8 @@ public class UserEntity
     @Column(name = "password")
     private String password;
 
-    @Column(name = "third_configure")
-    private String thirdConfigure;
+    @Column(name = "chat_configure")
+    private String chatConfigure;
 
     @Column(name = "is_system")
     private boolean system;

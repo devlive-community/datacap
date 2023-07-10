@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Card style="width:100%; minHeight: 150px;">
+    <Card
+      dis-hover
+      style="width:100%; minHeight: 150px;">
       <template #title>
         {{ $t('setting.accountSetting') }}
       </template>
@@ -18,6 +20,11 @@
                 <FormItem :label="$t('common.password')">
                   <Button type="text" style="float: right;" @click="handlerShowModal('password')">
                     {{ $t('setting.changePassword') }}
+                  </Button>
+                </FormItem>
+                <FormItem :label="$t('common.chatgpt')">
+                  <Button type="text" style="float: right;" @click="handlerChatGPT(true)">
+                    {{ $t('setting.changeChatGpt') }}
                   </Button>
                 </FormItem>
               </Form>
@@ -43,7 +50,14 @@
         <Button type="primary" :loading="loading" @click="handlerChangePassword()">{{ $t('common.save') }}</Button>
       </template>
     </Modal>
-    <ChangeUsername v-if="changeUsername" :isVisible="changeUsername" @close="changeUsername = false"/>
+    <ChangeUsername v-if="changeUsername"
+                    :isVisible="changeUsername"
+                    @close="changeUsername = false">
+    </ChangeUsername>
+    <ChangeChatGpt v-if="changeChatGpt"
+                   :is-visible="changeChatGpt"
+                   @close="handlerChatGPT(false)">
+    </ChangeChatGpt>
   </div>
 </template>
 <script lang="ts">
@@ -53,9 +67,10 @@ import {UserPassword} from "@/model/UserPassword";
 import Common from "@/common/Common";
 import router from "@/router";
 import ChangeUsername from "@/views/user/profile/components/ChangeUsername.vue";
+import ChangeChatGpt from "@/views/user/profile/components/ChangeChatGpt.vue";
 
 export default defineComponent({
-  components: {ChangeUsername},
+  components: {ChangeChatGpt, ChangeUsername},
   setup()
   {
     const formState = reactive<UserPassword>({
@@ -72,6 +87,7 @@ export default defineComponent({
     return {
       changePasswordVisible: false,
       changeUsername: false,
+      changeChatGpt: false,
       loading: false
     }
   },
@@ -107,6 +123,10 @@ export default defineComponent({
         .finally(() => {
           this.loading = false;
         });
+    },
+    handlerChatGPT(opened: boolean)
+    {
+      this.changeChatGpt = opened
     }
   }
 });

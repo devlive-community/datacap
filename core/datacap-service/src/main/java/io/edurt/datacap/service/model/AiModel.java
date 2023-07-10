@@ -17,4 +17,6 @@ public class AiModel
     private String host;
     private String token;
     private long timeout;
+    // Number of times a context needs to be associated
+    private int contentCount = 5;
 }

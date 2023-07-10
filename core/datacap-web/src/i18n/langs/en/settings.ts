@@ -8,5 +8,7 @@ export default {
   accountSetting: 'Account Setting',
   changeUsername: 'Change the username',
   newUsername: 'New username',
-  log: 'Login Log'
+  log: 'Login Log',
+  changeChatGpt: 'Change the chatgpt',
+  contentCount: 'Content Count',
 }

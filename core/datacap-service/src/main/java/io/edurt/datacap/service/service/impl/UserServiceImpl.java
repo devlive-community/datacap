@@ -175,7 +175,7 @@ public class UserServiceImpl
             return CommonResponse.failure(ServiceState.USER_NOT_FOUND);
         }
         UserEntity user = userOptional.get();
-        user.setThirdConfigure(JsonUtils.toJSON(configure));
+        user.setChatConfigure(JsonUtils.toJSON(configure));
         this.userRepository.save(user);
         return CommonResponse.success(user.getId());
     }

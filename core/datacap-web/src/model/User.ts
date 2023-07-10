@@ -39,5 +39,6 @@ export class ThirdConfigure
   token = '';
   host = '';
   model = '';
-  timeout: number = null;
+  timeout = 30;
+  contentCount = 5
 }

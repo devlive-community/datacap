@@ -22,11 +22,12 @@ import org.devlive.sdk.openai.entity.UsageEntity;
 import org.devlive.sdk.openai.model.CompletionMessageModel;
 import org.devlive.sdk.openai.response.CompleteChatResponse;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,32 +57,38 @@ public class MessageServiceImpl
         if (!userOptional.isPresent()) {
             return CommonResponse.failure(ServiceState.USER_NOT_FOUND);
         }
+        String openApiHost = environment.getProperty("datacap.openai.backend");
+        String openApiToken = environment.getProperty("datacap.openai.token");
+        String openApiModel = environment.getProperty("datacap.openai.model");
+        long openApiTimeout = Long.parseLong(environment.getProperty("datacap.openai.timeout"));
+
         UserEntity user = userOptional.get();
         MessageEntity questionMessage = MessageEntity.builder()
                 .user(user)
                 .chat(configure.getChat())
-                .model(configure.getModel())
+                .model(StringUtils.isNotEmpty(configure.getModel()) ? configure.getModel() : openApiModel)
                 .content(configure.getContent())
                 .name(UUID.randomUUID().toString())
                 .type(MessageType.question)
                 .build();
         this.repository.save(questionMessage);
-        String openApiHost = environment.getProperty("datacap.openai.backend");
-        String openApiToken = environment.getProperty("datacap.openai.token");
-        String openApiModel = environment.getProperty("datacap.openai.model");
-        long openApiTimeout = Long.parseLong(environment.getProperty("datacap.openai.timeout"));
+        int contentCount = 5;
+        boolean getContent = true;
         if (StringUtils.isNotEmpty(configure.getModel())) {
             openApiModel = configure.getModel();
         }
         // If user-defined configuration, use user configuration information
-        if (StringUtils.isNotEmpty(user.getThirdConfigure())) {
-            AiModel aiModel = JsonUtils.toObject(user.getThirdConfigure(), AiModel.class);
+        if (StringUtils.isNotEmpty(user.getChatConfigure())) {
+            AiModel aiModel = JsonUtils.toObject(user.getChatConfigure(), AiModel.class);
             if (StringUtils.isNotEmpty(aiModel.getToken())) {
                 openApiHost = aiModel.getHost();
                 openApiToken = aiModel.getToken();
             }
             if (aiModel.getTimeout() > 0) {
                 openApiTimeout = aiModel.getTimeout();
+            }
+            if (aiModel.getContentCount() > 0) {
+                contentCount = aiModel.getContentCount();
             }
         }
 //        try {
@@ -97,6 +104,7 @@ public class MessageServiceImpl
 //            }
 //            StrSubstitutor sub = new StrSubstitutor(properties);
 //            forwardContent = sub.replace(replaceContent);
+//        getContent = false;
 //        }
 //        catch (Exception exception) {
 //            log.warn("Ai type not set, ignore .");
@@ -112,27 +120,20 @@ public class MessageServiceImpl
                 .client(okHttpClient)
                 .build()) {
             List<CompletionMessageEntity> messages = new ArrayList<>();
-            // Extract database history for recording context if source is dialog mode
-//            if (StringUtils.isNotEmpty(configure.getFrom()) && configure.getFrom().equalsIgnoreCase("chat")) {
-//                if (!configure.isNewChat()) {
-//                    this.userChatRepository.findTop5ByUserOrderByIdDesc(UserDetailsService.getUser())
-//                            .stream()
-//                            .sorted(Comparator.comparing(UserChatEntity::getId))
-//                            .forEach(userChatHistory -> {
-//                                CompletionMessageEntity question = CompletionMessageEntity.builder()
-//                                        .role(CompletionMessageModel.USER.getName())
-//                                        .content(userChatHistory.getQuestion())
-//                                        .build();
-//                                messages.add(question);
-//                                CompletionMessageEntity answer = CompletionMessageEntity.builder()
-//                                        .role(CompletionMessageModel.ASSISTANT.getName())
-//                                        .content(userChatHistory.getAnswer())
-//                                        .build();
-//                                messages.add(answer);
-//                            });
-//                }
-//                saved = true;
-//            }
+            // Get the context in the conversation * 2
+            if (getContent) {
+                this.repository.findTopByChatOrderByCreateTimeDesc(configure.getChat(), questionMessage.getId(), Pageable.ofSize(contentCount * 2))
+                        .stream()
+                        .sorted(Comparator.comparing(MessageEntity::getId))
+                        .forEach(message -> {
+                            String role = message.getType() == MessageType.question ? CompletionMessageModel.USER.getName() : CompletionMessageModel.ASSISTANT.getName();
+                            CompletionMessageEntity completionMessage = CompletionMessageEntity.builder()
+                                    .role(role)
+                                    .content(message.getContent())
+                                    .build();
+                            messages.add(completionMessage);
+                        });
+            }
             CompletionMessageEntity message = CompletionMessageEntity.builder()
                     .role(CompletionMessageModel.USER.getName())
                     .content(questionMessage.getContent())
@@ -140,6 +141,7 @@ public class MessageServiceImpl
             messages.add(message);
             CompletionChatEntity chatCompletion = CompletionChatEntity.builder()
                     .messages(messages)
+                    .maxTokens(2048)
                     .model(openApiModel)
                     .build();
             CompleteChatResponse chatCompletionResponse = openAiClient.createChatCompletion(chatCompletion);
@@ -151,12 +153,12 @@ public class MessageServiceImpl
             MessageEntity answerEntity = MessageEntity.builder()
                     .user(aiUser)
                     .chat(configure.getChat())
+                    .model(openApiModel)
                     .content(String.join("\n", answer))
                     .type(MessageType.answer)
                     .promptTokens(usage.getPromptTokens())
                     .completionTokens(usage.getCompletionTokens())
                     .totalTokens(usage.getTotalTokens())
-                    .messages(Arrays.asList(questionMessage))
                     .name(UUID.randomUUID().toString())
                     .build();
             this.repository.save(answerEntity);

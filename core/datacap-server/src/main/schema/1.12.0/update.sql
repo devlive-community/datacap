@@ -54,9 +54,3 @@ CREATE TABLE `datacap_message_chat_relation`
     message_id BIGINT,
     chat_id    BIGINT
 );
-
-CREATE TABLE `datacap_message_link_relation`
-(
-    message_id      BIGINT,
-    message_link_id BIGINT
-);

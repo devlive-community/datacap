@@ -18,11 +18,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import java.util.List;
 
 @Data
 @SuperBuilder
@@ -69,14 +66,4 @@ public class MessageEntity
             inverseJoinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"))
     @JsonIgnoreProperties(value = {"user"})
     private ChatEntity chat;
-
-    /**
-     * Contextual information
-     */
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "datacap_message_link_relation",
-            joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "message_link_id", referencedColumnName = "id"))
-    @JsonIgnoreProperties(value = {"user"})
-    private List<MessageEntity> messages;
 }
