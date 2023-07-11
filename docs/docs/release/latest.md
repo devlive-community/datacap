@@ -6,30 +6,27 @@
 
 | Release Version | Release Time |
 |:---------------:|:------------:|
-|    `1.11.0`     | `2023-06-13` |
+|    `1.12.0`     | `2023-07-11` |
 
 #### General
 
 ---
 
-- The number of rows returned by the query history is added
-- Fixed a 404 error on the home page
-- Strip plugins into separate folders
+- Remove log default debug level
+- Split module
+- Fixed depend
+- Support redirect for menu
+- Fixed sql schema
+- Support whether to function menu
+- Replace openai sdk to `openai-java-sdk`
+- Refactor chat
 
 #### Web
 
 ---
 
-- Refactor the folder
-- Add menu breadcrumbs
-- Synchronous server routing
-- Add not login page
-- Add source manager route
-- Fixed the callback exception of route construction failure
-- Fix data source type marker exception
-
-#### Plugins
-
----
-
-- Support apache cassandra
+- Fixed cache not clear, need to click again
+- Fixed an error with invalid token
+- Adds buffer tag name
+- Fixed abnormal profile page using h2 database
+- 404 caused by repair service restart
