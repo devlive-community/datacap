@@ -852,3 +852,6 @@ CREATE TABLE `datacap_message_chat_relation`
     message_id BIGINT,
     chat_id    BIGINT
 );
+
+ALTER TABLE `datacap_user`
+    CHANGE `third_configure` `chat_configure` text;

@@ -41,6 +41,6 @@ public class ChatEntity
     @JoinTable(name = "datacap_chat_user_relation",
             joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    @JsonIgnoreProperties(value = {"roles", "thirdConfigure"})
+    @JsonIgnoreProperties(value = {"roles", "thirdConfigure", "sources"})
     private UserEntity user;
 }

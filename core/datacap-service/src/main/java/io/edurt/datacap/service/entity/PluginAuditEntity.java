@@ -3,9 +3,9 @@ package io.edurt.datacap.service.entity;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.State;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +20,8 @@ import javax.persistence.Table;
 
 import java.sql.Timestamp;
 
-@Data
-@ToString
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "audit_plugin")

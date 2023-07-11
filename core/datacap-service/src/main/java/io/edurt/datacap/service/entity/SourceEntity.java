@@ -8,9 +8,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.validation.ValidationGroup;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.CascadeType;
@@ -32,12 +32,12 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-@Data
-@ToString
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "source")
-@JsonIgnoreProperties(value = {"configure"})
+@JsonIgnoreProperties(value = {"configure", "pluginAudits"})
 @org.hibernate.annotations.Table(appliesTo = "source", comment = "The storage is used to query the data connection source")
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
         justification = "I prefer to suppress these FindBugs warnings")
