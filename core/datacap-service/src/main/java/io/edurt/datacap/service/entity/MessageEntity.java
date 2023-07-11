@@ -6,7 +6,6 @@ import io.edurt.datacap.service.enums.MessageType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -23,7 +22,6 @@ import javax.persistence.Table;
 
 @Data
 @SuperBuilder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

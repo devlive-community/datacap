@@ -7,8 +7,9 @@ import io.edurt.datacap.service.validation.ValidationGroup;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,7 +37,8 @@ import java.util.Set;
 @Entity
 @Builder
 @Data
-@ToString
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "datacap_user",
