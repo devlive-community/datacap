@@ -1,6 +1,7 @@
 package io.edurt.datacap.plugin.jdbc.kyuubi;
 
 import com.google.common.collect.Lists;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.adapter.JdbcAdapter;
 import io.edurt.datacap.spi.column.JdbcColumn;
 import io.edurt.datacap.spi.connection.JdbcConfigure;
@@ -8,7 +9,6 @@ import io.edurt.datacap.spi.connection.JdbcConnection;
 import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.spi.model.Time;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
+@SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"},
+        justification = "I prefer to suppress these FindBugs warnings")
 public class KyuubiAdapter
         extends JdbcAdapter
 {
@@ -38,35 +40,30 @@ public class KyuubiAdapter
         Response response = this.jdbcConnection.getResponse();
         Connection connection = (Connection) this.jdbcConnection.getConnection();
         JdbcConfigure configure = (JdbcConfigure) this.jdbcConnection.getConfigure();
-        PreparedStatement statement;
-        ResultSet resultSet = null;
         if (response.getIsConnected()) {
-            try {
-                statement = connection.prepareStatement(content);
+            try (PreparedStatement statement = connection.prepareStatement(content)) {
                 List<String> headers = new ArrayList<>();
                 List<String> types = new ArrayList<>();
                 List<Object> columns = new ArrayList<>();
-                try {
-                    // Split SQL
-                    List<String> setBuffer = Lists.newArrayList();
-                    List<String> buffer = Lists.newArrayList();
-                    Arrays.stream(content.split("\n"))
-                            .forEach(line -> {
-                                if (line.trim().toUpperCase().startsWith("SET ")) {
-                                    setBuffer.add(line);
-                                }
-                                else {
-                                    buffer.add(line);
-                                }
-                            });
-
-                    for (String sql : setBuffer) {
-                        statement.execute(sql);
-                    }
-
+                // Split SQL
+                List<String> setBuffer = Lists.newArrayList();
+                List<String> buffer = Lists.newArrayList();
+                Arrays.stream(content.split("\n"))
+                        .forEach(line -> {
+                            if (line.trim().toUpperCase().startsWith("SET ")) {
+                                setBuffer.add(line);
+                            }
+                            else {
+                                buffer.add(line);
+                            }
+                        });
+                // Execute SET
+                for (String sql : setBuffer) {
+                    statement.execute(sql);
+                }
+                try (PreparedStatement resetStatement = connection.prepareStatement(String.join("\n", buffer));
+                        ResultSet resultSet = resetStatement.executeQuery()) {
                     // Reset query SQL
-                    statement = connection.prepareStatement(String.join("\n", buffer));
-                    resultSet = statement.executeQuery();
                     boolean isPresent = true;
                     JdbcColumn jdbcColumn = new JdbcColumn(resultSet);
                     while (resultSet.next()) {
@@ -106,15 +103,6 @@ public class KyuubiAdapter
                     response.setTypes(types);
                     response.setColumns(columns);
                     response.setIsSuccessful(Boolean.TRUE);
-                    if (ObjectUtils.isNotEmpty(statement)) {
-                        statement.close();
-                    }
-                    if (ObjectUtils.isNotEmpty(resultSet)) {
-                        resultSet.close();
-                    }
-                    if (ObjectUtils.isNotEmpty(connection)) {
-                        connection.close();
-                    }
                 }
             }
             catch (SQLException ex) {
