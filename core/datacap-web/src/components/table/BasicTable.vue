@@ -34,10 +34,29 @@
             {{ $t('tooltip.smallTips') }}
           </template>
         </Poptip>
+        <RadioGroup v-model="type"
+                    type="button"
+                    size="small">
+          <Radio label="table">
+            {{ $t('common.table') }}
+          </Radio>
+          <Radio label="text">
+            {{ $t('common.text') }}
+          </Radio>
+        </RadioGroup>
       </Space>
-      <ag-grid-vue :key="timestamp" :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}" :pagination="isPage"
-                   class="ag-theme-datacap" :columnDefs="columnDefs" :rowData="configure.columns" :gridOptions="gridOptions">
+      <ag-grid-vue v-if="type === 'table'"
+                   :key="timestamp"
+                   :style="{width: configure.width + 'px', height: configure.height + 'px', 'margin-top': '2px'}"
+                   :pagination="isPage"
+                   class="ag-theme-datacap"
+                   :columnDefs="columnDefs"
+                   :rowData="configure.columns"
+                   :gridOptions="gridOptions">
       </ag-grid-vue>
+      <TextTable v-if="type === 'text'"
+                 :configure="configure">
+      </TextTable>
       <Drawer v-if="columnDrawerVisible" :title="$t('common.column')" placement="right" :mask-closable="false"
               v-model="columnDrawerVisible" :style="{ position: 'absolute' }">
         <template #close>
@@ -50,8 +69,11 @@
           </Checkbox>
         </CheckboxGroup>
       </Drawer>
-      <EchartsEditor v-if="visualizationDrawerVisible" :isVisible="visualizationDrawerVisible"
-                     @close="handlerVisualization(false)" :configure="visualizationConfigure"></EchartsEditor>
+      <EchartsEditor v-if="visualizationDrawerVisible"
+                     :isVisible="visualizationDrawerVisible"
+                     :configure="visualizationConfigure"
+                     @close="handlerVisualization(false)">
+      </EchartsEditor>
     </Card>
   </div>
 </template>
@@ -68,10 +90,11 @@ import {getTimestamp} from "@/common/DateCommon";
 import EchartsEditor from "@/components/editor/echarts/EchartsEditor.vue";
 import {EchartsConfigure} from "@/components/editor/echarts/EchartsConfigure";
 import TableGridOptions from "@/components/table/TableGridOptions";
+import TextTable from "@/components/text/TextTable.vue";
 
 export default defineComponent({
   name: "BasicTableComponent",
-  components: {EchartsEditor, AgGridVue},
+  components: {TextTable, EchartsEditor, AgGridVue},
   props: {
     configure: {
       type: TableConfigure,
@@ -100,7 +123,8 @@ export default defineComponent({
       visualizationConfigure: EchartsConfigure,
       visibleColumns: [],
       columnDefs: [],
-      isPage: true
+      isPage: true,
+      type: 'table'
     }
   },
   methods: {
