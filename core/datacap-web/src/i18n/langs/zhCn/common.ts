@@ -123,5 +123,6 @@ export default {
   chat: '对话',
   timeout: '超时时间',
   seconds: '秒',
-  avatar: '头像'
+  avatar: '头像',
+  text: '文本'
 }

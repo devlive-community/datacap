@@ -124,4 +124,5 @@ export default {
   timeout: 'Timeout',
   seconds: 'Seconds',
   avatar: 'Avatar',
+  text: 'Text',
 }
