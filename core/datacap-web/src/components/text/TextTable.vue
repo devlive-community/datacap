@@ -8,7 +8,8 @@
         <List size="small"
               item-layout="vertical">
           <ListItem v-for="column in configure.columns"
-                    :key="column">
+                    :key="column"
+                    style="white-space: nowrap;">
                 <span v-for="header in configure.headers"
                       :key="header">
                   <span v-for="line in column[header].split('\n')"
