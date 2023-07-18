@@ -112,6 +112,9 @@ public class KyuubiAdapter
                     if (ObjectUtils.isNotEmpty(resultSet)) {
                         resultSet.close();
                     }
+                    if (ObjectUtils.isNotEmpty(connection)) {
+                        connection.close();
+                    }
                 }
             }
             catch (SQLException ex) {
