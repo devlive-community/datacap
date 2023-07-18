@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.edurt.datacap</groupId>
         <artifactId>datacap</artifactId>
-        <version>1.12.0</version>
+        <version>1.13.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -16,7 +16,7 @@
     <properties>
         <snakeyaml.version>2.0</snakeyaml.version>
         <useragent.version>1.21</useragent.version>
-        <openai.version>LATEST</openai.version>
+        <openai.version>1.5.0</openai.version>
     </properties>
 
     <dependencies>
