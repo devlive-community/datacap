@@ -57,7 +57,7 @@ public class MySQLAdapter
                 ResultSet resultSet = null;
                 System.out.println("buffer:" + buffer);
                 for (String sql : buffer) {
-                    if (sql.trim().toUpperCase().startsWith("SELECT")) {
+                    if (sql.trim().toUpperCase().startsWith("SELECT") || sql.trim().toUpperCase().startsWith("SHOW")) {
                         resultSet = statement1.executeQuery(sql);
                         isSelect = true;
                         // If it is multiple result sets, return the first result set
