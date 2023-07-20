@@ -408,6 +408,39 @@ ORDER BY
         '[{"column":"database","type":"String","expression":"${database:String}"},{"column":"table","type":"String","expression":"${table:String}"},{"column":"type","type":"String","expression":"${type:String}"}]',
         TRUE);
 
+INSERT
+INTO
+    `template_sql` (
+    `name`,
+    `content`,
+    `description`,
+    `plugin`,
+    `configure`,
+    `system`)
+VALUES (
+           'getAllDatabase',
+           'SELECT USERNAME AS SCHEMA_NAME FROM ALL_USERS ORDER BY USERNAME',
+           'Gets a list of all databases',
+           'Oracle',
+           '[]',
+           1);
+INSERT
+INTO
+    `template_sql` (
+    `name`,
+    `content`,
+    `description`,
+    `plugin`,
+    `configure`,
+    `system`)
+VALUES (
+           'getAllTablesFromDatabase',
+           'SELECT T.TABLE_NAME AS tableName FROM ALL_TABLES T WHERE T.OWNER='${database:String}'',
+           'Get the data table from the database',
+           'Oracle',
+           '[{"column":"database","type":"String","expression":"${database:String}"}]',
+           0);
+
 CREATE TABLE IF NOT EXISTS `role_menu_relation`
 (
     role_id long,
