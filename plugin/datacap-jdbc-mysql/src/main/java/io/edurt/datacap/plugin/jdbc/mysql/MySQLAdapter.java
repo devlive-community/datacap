@@ -55,7 +55,6 @@ public class MySQLAdapter
                 Statement statement1 = connection.createStatement();
                 Boolean isSelect = false;
                 ResultSet resultSet = null;
-                System.out.println("buffer:" + buffer);
                 for (String sql : buffer) {
                     if (sql.trim().toUpperCase().startsWith("SELECT") || sql.trim().toUpperCase().startsWith("SHOW")) {
                         resultSet = statement1.executeQuery(sql);
@@ -76,6 +75,7 @@ public class MySQLAdapter
                     statement1.executeBatch();
                     resultSet = statement1.getResultSet();
                 }
+                statement1.close();
                 try {
                     // Reset query SQL
                     boolean isPresent = true;
