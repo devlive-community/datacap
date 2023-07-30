@@ -27,6 +27,8 @@ configures:
   - field: database
     type: String
     group: advanced
+    value: default
+    required: true
   - field: configures
     type: Array
     value: [ ]
