@@ -1,10 +1,10 @@
 package io.edurt.datacap.service.service;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.activity.HeatmapActivity;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.PluginAuditEntity;
-import io.edurt.datacap.service.itransient.ContributionHistory;
 import io.edurt.datacap.service.itransient.ContributionRadar;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public interface PluginAuditService
 
     CommonResponse<Long> count();
 
-    CommonResponse<List<ContributionHistory>> getAllContribution();
+    CommonResponse<List<HeatmapActivity>> getAllContribution();
 
     CommonResponse<List<ContributionRadar>> getContributionRadar();
 

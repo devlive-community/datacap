@@ -7,8 +7,15 @@
             {{ $t('common.contribution') }}
           </template>
           <div :style="{ background: '#fff', minHeight: '150px' }">
-            <Spin fix v-if="loading"/>
-            <CalendarChart v-else :configure="summary.contributionConfigure"></CalendarChart>
+            <Spin v-if="loading"
+                  fix>
+            </Spin>
+            <CalendarHeatmap v-else
+                             :end-date="endDate"
+                             :round="5"
+                             tooltip-unit="query"
+                             :values="heatmapActivity">
+            </CalendarHeatmap>
           </div>
         </Card>
       </Col>
@@ -28,21 +35,22 @@
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue';
-import CalendarChart from "@/charts/calendar/CalendarChart.vue";
 import {AdminService} from "@/services/AdminService";
 import RadarChart from "@/charts/radar/RadarChart.vue";
 import {HttpCommon} from "@/common/HttpCommon";
-import {CalendarConfigure} from "@/charts/calendar/CalendarConfigure";
 import {RadarConfigure} from "@/charts/radar/RadarConfigure";
+import {CalendarHeatmap} from "vue3-calendar-heatmap";
+import "@/css/vue3-calendar-heatmap.css"
 
 export default defineComponent({
-  components: {CalendarChart, RadarChart},
+  components: {RadarChart, CalendarHeatmap},
   data()
   {
     return {
       loading: false,
+      heatmapActivity: null,
+      endDate: null,
       summary: {
-        contributionConfigure: CalendarConfigure,
         radarConfigure: RadarConfigure
       }
     }
@@ -60,9 +68,8 @@ export default defineComponent({
       axios.all([adminService.getUserContribution(), adminService.getUserContributionRadar()])
         .then(axios.spread((contribution, contributionRadar) => {
           if (contribution.status) {
-            const contributionConfigure = new CalendarConfigure();
-            contributionConfigure.data = contribution.data;
-            this.summary.contributionConfigure = contributionConfigure;
+            this.heatmapActivity = contribution.data;
+            this.endDate = contribution.data[contribution.data.length - 1].date;
           }
           if (contributionRadar.status) {
             const radarConfigure = new RadarConfigure();
