@@ -6,14 +6,42 @@
           <template #title>
             {{ $t('common.contribution') }}
           </template>
-          <div :style="{ background: '#fff', minHeight: '150px' }">
+          <div :style="{ background: '#fff', minHeight: '250px' }">
             <Spin v-if="loading"
                   fix>
             </Spin>
             <CalendarHeatmap v-else
+                             :tooltip-unit="$t('calendarHeatmap.query')"
                              :end-date="endDate"
-                             :round="5"
-                             tooltip-unit="query"
+                             :round="50"
+                             :locale="{
+                                  months: [
+                                            $t('calendarHeatmap.jan'),
+                                            $t('calendarHeatmap.feb'),
+                                            $t('calendarHeatmap.mar'),
+                                            $t('calendarHeatmap.apr'),
+                                            $t('calendarHeatmap.mai'),
+                                            $t('calendarHeatmap.jun'),
+                                            $t('calendarHeatmap.jul'),
+                                            $t('calendarHeatmap.aug'),
+                                            $t('calendarHeatmap.sep'),
+                                            $t('calendarHeatmap.okt'),
+                                            $t('calendarHeatmap.nov'),
+                                            $t('calendarHeatmap.dez')
+                                          ],
+                                  days  : [
+                                            $t('calendarHeatmap.so'),
+                                            $t('calendarHeatmap.mo'),
+                                            $t('calendarHeatmap.di'),
+                                            $t('calendarHeatmap.mi'),
+                                            $t('calendarHeatmap.do'),
+                                            $t('calendarHeatmap.fr'),
+                                            $t('calendarHeatmap.sa')
+                                           ],
+                                  on    : $t('calendarHeatmap.am'),
+                                  less  : $t('calendarHeatmap.less'),
+                                  more  : $t('calendarHeatmap.more')
+                             }"
                              :values="heatmapActivity">
             </CalendarHeatmap>
           </div>
