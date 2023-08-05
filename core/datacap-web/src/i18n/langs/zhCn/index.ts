@@ -10,6 +10,7 @@ import alert from "@/i18n/langs/zhCn/alert";
 import monitor from "@/i18n/langs/zhCn/monitor";
 import ai from "@/i18n/langs/zhCn/ai";
 import copy from "@/i18n/langs/zhCn/copy";
+import calendarHeatmap from "@/i18n/langs/zhCn/calendarHeatmap";
 
 export default {
   ...zh,
@@ -23,5 +24,6 @@ export default {
   alert: alert,
   monitor: monitor,
   ai: ai,
-  copy: copy
+  copy: copy,
+  calendarHeatmap: calendarHeatmap
 }

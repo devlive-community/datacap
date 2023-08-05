@@ -10,6 +10,7 @@ import alert from "@/i18n/langs/en/alert";
 import monitor from "@/i18n/langs/en/monitor";
 import ai from "@/i18n/langs/en/ai";
 import copy from "@/i18n/langs/en/copy";
+import calendarHeatmap from "@/i18n/langs/en/calendarHeatmap";
 
 export default {
   ...en,
@@ -23,5 +24,6 @@ export default {
   alert: alert,
   monitor: monitor,
   ai: ai,
-  copy: copy
+  copy: copy,
+  calendarHeatmap: calendarHeatmap
 }
