@@ -14,7 +14,7 @@
     <description>DataCap - Apache Phoenix</description>
 
     <properties>
-        <phoenix.version>4.16.0</phoenix.version>
+        <phoenix.version>5.1.3</phoenix.version>
         <plugin.name>jdbc-phoenix</plugin.name>
     </properties>
 
