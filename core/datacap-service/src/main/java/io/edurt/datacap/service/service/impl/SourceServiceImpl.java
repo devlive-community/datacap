@@ -252,7 +252,8 @@ public class SourceServiceImpl
         if (StringUtils.isNotEmpty(configure.getVersion())) {
             source.setVersion(configure.getVersion());
             source.setAvailable(true);
-        } else {
+        }
+        else {
             source.setAvailable(false);
         }
         this.sourceRepository.save(source);
