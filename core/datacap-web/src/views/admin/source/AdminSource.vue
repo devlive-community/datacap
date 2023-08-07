@@ -19,8 +19,24 @@
         <template #host="{ row }">
           <Ellipsis :text="row.host" :length="8" tooltip transfer/>
         </template>
+        <template #version="{ row }">
+          <Tag v-if="row.version"
+               color="primary">
+            {{ row.version }}
+          </Tag>
+        </template>
+        <template #available="{ row }">
+          <Button :type="row.available ? 'success' : 'error'"
+                  :icon="row.available ? 'md-checkmark-circle' : 'md-close-circle'"
+                  shape="circle"
+                  size="small">
+          </Button>
+        </template>
         <template #public="{ row }">
-          <Switch v-model="row.public" :disabled="currentUserId !== row.user.id" @on-change="handlerShared(row.public, row.id)"/>
+          <Switch v-model="row.public"
+                  :disabled="currentUserId !== row.user.id"
+                  @on-change="handlerShared(row.public, row.id)">
+          </Switch>
         </template>
         <template #action="{ row }">
           <Space>

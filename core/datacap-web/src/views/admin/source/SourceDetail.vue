@@ -15,8 +15,10 @@
         <Col :span="6">
           <Card :bordered="false" dis-hover>
             <div style="text-align:center">
-              <Progress :percent="testInfo.percent" :status="(testInfo.connected && testInfo.successful) ? 'success' : 'wrong'">
+              <Progress :percent="testInfo.percent"
+                        :status="(testInfo.connected && testInfo.successful) ? 'success' : 'wrong'">
               </Progress>
+              {{ formState.version }}
             </div>
           </Card>
         </Col>
@@ -241,7 +243,8 @@ export default defineComponent({
         id: this.id,
         type: type,
         name: name,
-        configure: this.applyPlugin
+        configure: this.applyPlugin,
+        version: this.formState.version
       };
       SourceV2Service.saveAndUpdate(configure, this.isUpdate)
         .then((response) => {
@@ -277,6 +280,7 @@ export default defineComponent({
             this.$Message.success("Test successful");
             this.testInfo.connected = true;
             this.testInfo.successful = true;
+            this.formState.version = response.data?.columns[0]?.version;
           }
           else {
             this.$Message.error(response.message);

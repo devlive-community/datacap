@@ -249,7 +249,13 @@ public class SourceServiceImpl
         if (ObjectUtils.isNotEmpty(configure.getId()) && configure.getId() > 0) {
             source.setId(configure.getId());
         }
-
+        if (StringUtils.isNotEmpty(configure.getVersion())) {
+            source.setVersion(configure.getVersion());
+            source.setAvailable(true);
+        }
+        else {
+            source.setAvailable(false);
+        }
         this.sourceRepository.save(source);
         // Copy file to local data
         if (source.isUsedConfig()) {

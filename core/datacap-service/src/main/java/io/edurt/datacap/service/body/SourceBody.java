@@ -15,5 +15,6 @@ public class SourceBody
     private Long id;
     private String type;
     private String name;
+    private String version;
     private IConfigure configure;
 }

@@ -125,4 +125,6 @@ export default {
   seconds: 'Seconds',
   avatar: 'Avatar',
   text: 'Text',
+  version: 'Version',
+  available: 'Available',
 }

@@ -53,8 +53,26 @@ const createHeaders = (i18n: any) => {
       key: 'public'
     },
     {
+      title: i18n.t('common.version'),
+      slot: 'version',
+      align: 'center'
+    },
+    {
+      title: i18n.t('common.available'),
+      key: 'available',
+      slot: 'available',
+      ellipsis: true,
+      align: 'center'
+    },
+    {
       title: i18n.t('common.createTime'),
       key: 'createTime',
+      ellipsis: true,
+      tooltip: true
+    },
+    {
+      title: i18n.t('common.updateTime'),
+      key: 'updateTime',
       ellipsis: true,
       tooltip: true
     },
