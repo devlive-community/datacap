@@ -140,7 +140,7 @@
         <kotlin.version>1.8.20</kotlin.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <redis.version>3.8.0</redis.version>
-        <testcontainers.version>1.17.6</testcontainers.version>
+        <testcontainers.version>1.18.3</testcontainers.version>
         <assembly-plugin.version>3.5.0</assembly-plugin.version>
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
