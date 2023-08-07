@@ -144,7 +144,7 @@
         <assembly-plugin.version>3.5.0</assembly-plugin.version>
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
-        <plugin.maven.compiler.version>3.3</plugin.maven.compiler.version>
+        <plugin.maven.compiler.version>3.11.0</plugin.maven.compiler.version>
         <plugin.maven.cobertura.version>2.7</plugin.maven.cobertura.version>
         <plugin.maven.dependency.version>3.0.1</plugin.maven.dependency.version>
         <plugin.maven.source.version>2.2.1</plugin.maven.source.version>
