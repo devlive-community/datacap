@@ -14,7 +14,7 @@
     <description>DataCap - Aliyun OSS</description>
 
     <properties>
-        <alioss.version>3.16.1</alioss.version>
+        <alioss.version>3.17.1</alioss.version>
         <plugin.name>datacap-native-alioss</plugin.name>
     </properties>
 
