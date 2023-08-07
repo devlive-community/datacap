@@ -124,5 +124,7 @@ export default {
   timeout: '超时时间',
   seconds: '秒',
   avatar: '头像',
-  text: '文本'
+  text: '文本',
+  version: '版本',
+  available: '可用',
 }

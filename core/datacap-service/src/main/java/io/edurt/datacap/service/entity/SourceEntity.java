@@ -12,10 +12,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,6 +42,7 @@ import java.util.Map;
 @Entity
 @Table(name = "source")
 @JsonIgnoreProperties(value = {"configure", "pluginAudits"})
+@EntityListeners(AuditingEntityListener.class)
 @org.hibernate.annotations.Table(appliesTo = "source", comment = "The storage is used to query the data connection source")
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
         justification = "I prefer to suppress these FindBugs warnings")
@@ -82,9 +87,6 @@ public class SourceEntity
     @Column(name = "_database")
     private String database;
 
-    @Column(name = "create_time", columnDefinition = "datetime default CURRENT_TIMESTAMP()")
-    private Timestamp createTime;
-
     // Add from 1.1.0.20221115
     @Column(name = "_ssl", columnDefinition = "boolean default false")
     private Boolean ssl;
@@ -102,14 +104,31 @@ public class SourceEntity
     @JsonProperty(value = "configure")
     private String configure;
 
+    @Column(name = "used_config")
+    private boolean usedConfig;
+
+    @Column(name = "version")
+    private String version;
+
+    @Column(name = "available")
+    private Boolean available;
+
+    @Column(name = "message")
+    private String message;
+
+    @Column(name = "create_time")
+    @CreatedDate
+    private Timestamp createTime;
+
+    @Column(name = "update_time")
+    @LastModifiedDate
+    private Timestamp updateTime;
+
     @Transient
     private Map<String, Object> configures;
 
     @Transient
     private IConfigure schema;
-
-    @Column(name = "used_config")
-    private boolean usedConfig;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
