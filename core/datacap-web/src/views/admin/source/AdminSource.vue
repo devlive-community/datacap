@@ -13,7 +13,7 @@
         </template>
         <template #type="{ row }">
           <Tooltip transfer :content="row.type">
-            <Avatar :src="'/static/images/plugin/' + row.type.split(' ')[0] + '.png'" size="small" />
+            <Avatar :src="'/static/images/plugin/' + row.type.split(' ')[0] + '.png'" size="small"/>
           </Tooltip>
         </template>
         <template #host="{ row }">
@@ -22,14 +22,26 @@
         <template #version="{ row }">
           <Tag v-if="row.version"
                color="primary">
-            {{ row.version }}
+            <Ellipsis :length="10"
+                      :text="row.version "
+                      tooltip
+                      transfer>
+            </Ellipsis>
           </Tag>
         </template>
         <template #available="{ row }">
           <Button :type="row.available ? 'success' : 'error'"
-                  :icon="row.available ? 'md-checkmark-circle' : 'md-close-circle'"
                   shape="circle"
                   size="small">
+            <Tooltip v-if="!row.available"
+                     :content="row.message"
+                     max-width="auto"
+                     transfer>
+              <Icon type="md-close-circle"/>
+            </Tooltip>
+            <Icon v-else
+                  type="md-checkmark-circle">
+            </Icon>
           </Button>
         </template>
         <template #public="{ row }">
