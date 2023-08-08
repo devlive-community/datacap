@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.source')">
+    <Card style="width:100%"
+          :title="$t('common.source')"
+          dis-hover>
       <template #extra>
         <Tooltip>
           <template #content>{{ $t('common.create') }}</template>
@@ -23,7 +25,7 @@
           <Tag v-if="row.version"
                color="primary">
             <Ellipsis :length="10"
-                      :text="row.version "
+                      :text="row.version"
                       tooltip
                       transfer>
             </Ellipsis>
@@ -32,15 +34,19 @@
         <template #available="{ row }">
           <Button :type="row.available ? 'success' : 'error'"
                   shape="circle"
-                  size="small">
+                  size="small"
+                  style="padding: 0; height: auto;">
             <Tooltip v-if="!row.available"
                      :content="row.message"
                      max-width="auto"
                      transfer>
-              <Icon type="md-close-circle"/>
+              <Icon type="md-close-circle"
+                    size="25">
+              </Icon>
             </Tooltip>
             <Icon v-else
-                  type="md-checkmark-circle">
+                  type="md-checkmark-circle"
+                  size="25">
             </Icon>
           </Button>
         </template>
