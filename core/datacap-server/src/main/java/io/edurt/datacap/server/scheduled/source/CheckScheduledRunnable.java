@@ -45,12 +45,17 @@ public class CheckScheduledRunnable
                         Response response = plugin.execute(plugin.validator());
                         if (response.getIsSuccessful()) {
                             entity.setAvailable(true);
-                            if (response.getColumns().get(0) instanceof ArrayList) {
-                                ArrayList versions = (ArrayList) response.getColumns().get(0);
-                                entity.setVersion(versions.get(0).toString());
+                            if (response.getColumns().size() == 0) {
+                                entity.setVersion("-");
                             }
                             else {
-                                entity.setVersion(response.getColumns().get(0).toString());
+                                if (response.getColumns().get(0) instanceof ArrayList) {
+                                    ArrayList versions = (ArrayList) response.getColumns().get(0);
+                                    entity.setVersion(versions.get(0).toString());
+                                }
+                                else {
+                                    entity.setVersion(response.getColumns().get(0).toString());
+                                }
                             }
                         }
                         else {
