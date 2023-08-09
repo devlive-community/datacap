@@ -68,8 +68,12 @@
               </Poptip>
             </Tooltip>
             <Tooltip :content="$t('common.admin')" transfer>
-              <Button :disabled="currentUserId !== row.user.id" shape="circle" type="info" size="small" icon="md-construct"
-                      :to="'/admin/source/' + row.id + '/manager'"/>
+              <Button :disabled="currentUserId !== row.user.id || !row.available"
+                      shape="circle" type="info"
+                      size="small"
+                      icon="md-construct"
+                      :to="'/admin/source/' + row.id + '/manager'">
+              </Button>
             </Tooltip>
           </Space>
         </template>
