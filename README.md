@@ -191,7 +191,7 @@ Here are some of the major database solutions that are supported:
 
 ---
 
-[![Stargazers over time](https://starchart.cc/EdurtIO/datacap.svg)](https://starchart.cc/EdurtIO/datacap)
+[![Star History Chart](https://api.star-history.com/svg?repos=devlive-community/datacap&type=Timeline)](https://star-history.com/#devlive-community/datacap&Timeline)
 
 ## Join Us
 
@@ -215,7 +215,7 @@ Open the DingTalk (left) or WeChat(right) software and scan the following QR cod
 
 ---
 
-[Extended documentation for DataCap](https://datacap.incubator.edurt.io)
+[Extended documentation for DataCap](https://datacap.edurt.io)
 
 ## Contributors
 

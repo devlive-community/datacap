@@ -6,27 +6,43 @@
 
 | Release Version | Release Time |
 |:---------------:|:------------:|
-|    `1.12.0`     | `2023-07-11` |
+|    `1.13.0`     | `2023-08-09` |
 
 #### General
 
 ---
 
-- Remove log default debug level
-- Split module
-- Fixed depend
-- Support redirect for menu
-- Fixed sql schema
-- Support whether to function menu
-- Replace openai sdk to `openai-java-sdk`
-- Refactor chat
+- Fixed `openai-java-sdk` version
+- Add version for source
+- Add a data source scan task
+- Optimized status icon
+- Remove support for built-in H2 database
 
 #### Web
 
 ---
 
-- Fixed cache not clear, need to click again
-- Fixed an error with invalid token
-- Adds buffer tag name
-- Fixed abnormal profile page using h2 database
-- 404 caused by repair service restart
+- Support text
+- Fix div white-space
+- Added calendar heatmap chinease
+- Fixed data contribution graph error
+- When the data source is not available list disables selection
+
+#### Kyuubi
+
+---
+
+- Fix unable to execute set syntax sql
+- Fix connection not closed
+
+#### Oracle
+
+---
+
+- Support get DBName and TableName
+
+#### Clickhouse
+
+---
+
+- Fixed no query errors in the `default` database
