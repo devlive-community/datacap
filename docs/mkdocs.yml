@@ -3,16 +3,16 @@ site_url: https://databap.edurt.io/
 site_author: EdurtIO
 site_description: >-
   DataCap is integrated software for data transformation, integration and visualization.
-repo_name: EdurtIO/datacap
-repo_url: https://github.com/EdurtIO/datacap
-edit_uri: "https://github.com/EdurtIO/datacap/blob/dev/docs/docs"
+repo_name: devlive-community/datacap
+repo_url: https://github.com/devlive-community/datacap
+edit_uri: "https://github.com/devlive-community/datacap/blob/dev/docs/docs"
 
 banners:
-  - title: DataCap 1.12.0 is released
+  - title: DataCap 1.13.0 is released
     link: /release-latest.html
     description: <a href="https://github.com/EdurtIO/datacap"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
 
-copyright: Copyright &copy; 2022 EdurtIO
+copyright: Copyright &copy; 2023 DevLive
 
 theme:
   name: material
@@ -192,7 +192,8 @@ nav:
         - Java Implementation: developer_guide/plugin-java.md
         - Kotlin Implementation: developer_guide/plugin-kotlin.md
   - Release Note:
-      - 1.12.0 (latest): release/latest.md
+      - 1.13.0 (latest): release/latest.md
+      - 1.12.0: release/1.12.0.md
       - 1.11.0: release/1.11.0.md
       - 1.10.0: release/1.10.0.md
       - 1.9.0: release/1.9.0.md

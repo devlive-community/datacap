@@ -27,7 +27,7 @@ The current Trino release is version <img src="https://img.shields.io/github/v/r
 
     <br />
 
-    [datacap-server-1.11.0.tar.gz](http://downloads.edurt.io/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
+    [datacap-server-1.13.0.tar.gz](http://downloads.edurt.io/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
 
 - :material-application-outline: __Command line client__
 
@@ -37,7 +37,7 @@ The current Trino release is version <img src="https://img.shields.io/github/v/r
      
      <br />
   
-     [datacap-client-cli-1.11.0.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/1.11.0/datacap-client-cli-1.11.0.jar){ .md-button .md-button-primary }
+     [datacap-client-cli-1.13.0.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/1.13.0/datacap-client-cli-1.13.0.jar){ .md-button .md-button-primary }
   
 - :material-more: __More package__
 
@@ -47,7 +47,7 @@ The current Trino release is version <img src="https://img.shields.io/github/v/r
 
     <br />
 
-    [Source Code](https://github.com/EdurtIO/datacap){ .md-button .md-button-primary }
+    [Source Code](https://github.com/devlive-community/datacap){ .md-button .md-button-primary }
 
 </div>
 
@@ -58,7 +58,7 @@ The current Trino release is version <img src="https://img.shields.io/github/v/r
     ---
 
     * **Chat On Slack**: [edurtio.slack.com](https://edurtio.slack.com/archives/C02EU2YM2N8)
-    * **Issues**: [GitHub issues](https://github.com/EdurtIO/datacap/issues)
+    * **Issues**: [GitHub issues](https://github.com/devlive-community/datacap/issues)
     * **DingTalk**: [16160001608]()
 
 - __Getting help__

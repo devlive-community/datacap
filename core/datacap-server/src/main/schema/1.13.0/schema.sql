@@ -14,5 +14,5 @@ ALTER TABLE `datacap_scheduled`
 UPDATE `datacap_scheduled`
 SET `type` = 'SOURCE_SYNCHRONIZE';
 
-INSERT INTO datacap.datacap_scheduled (name, description, expression, active, is_system, type)
+INSERT INTO `datacap_scheduled` (name, description, expression, active, is_system, type)
 VALUES ('Check source available', 'Check the availability of the data source every 1 hour', '0 0 * * * ?', 1, 1, 'SOURCE_CHECK');

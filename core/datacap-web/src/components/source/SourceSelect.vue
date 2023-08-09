@@ -1,7 +1,10 @@
 <template>
   <div>
     <Select v-model="applySource" style="width: 160px" :loading="loading" @on-change="handlerChangeValue">
-      <Option v-for="column in columns" :value="column.id + ':' + column.type" v-bind:key="column.id">
+      <Option v-for="column in columns"
+              :value="column.id + ':' + column.type"
+              v-bind:key="column.id"
+              :disabled="!column.available">
         <Tooltip transfer :content="column.type">
           <Avatar :src="'/static/images/plugin/' + column.type.split(' ')[0] + '.png'" size="small"/>
           {{ column.name }}
