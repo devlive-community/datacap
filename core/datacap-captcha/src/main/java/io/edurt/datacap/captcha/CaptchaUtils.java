@@ -9,6 +9,9 @@ import java.awt.Color;
 
 public class CaptchaUtils
 {
+    private CaptchaUtils()
+    {}
+
     /**
      * Generates a random background color.
      *
@@ -18,8 +21,8 @@ public class CaptchaUtils
     {
         int color = (int) (Math.random() * 255);
         int _color = (int) (Math.random() * 255);
-        int color_ = (int) (Math.random() * 255);
-        return new Color(color, _color, color_);
+        int colorNew = (int) (Math.random() * 255);
+        return new Color(color, _color, colorNew);
     }
 
     /**

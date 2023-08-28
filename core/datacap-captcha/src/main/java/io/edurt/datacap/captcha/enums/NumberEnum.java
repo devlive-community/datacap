@@ -2,7 +2,6 @@ package io.edurt.datacap.captcha.enums;
 
 public enum NumberEnum
 {
-
     ONE("1", "壹"),
     TWO("2", "贰"),
     THREE("3", "叁"),
@@ -14,22 +13,22 @@ public enum NumberEnum
     NINE("9", "玖"),
     ZERO("0", "零");
 
-    private final String value_en;
-    private final String value_zh;
+    private final String valueEn;
+    private final String valueZh;
 
-    NumberEnum(String value_en, String value_zh)
+    NumberEnum(String valueEn, String valueZh)
     {
-        this.value_en = value_en;
-        this.value_zh = value_zh;
+        this.valueEn = valueEn;
+        this.valueZh = valueZh;
     }
 
     public String getValueEn()
     {
-        return value_en;
+        return valueEn;
     }
 
     public String getValueZh()
     {
-        return value_zh;
+        return valueZh;
     }
 }

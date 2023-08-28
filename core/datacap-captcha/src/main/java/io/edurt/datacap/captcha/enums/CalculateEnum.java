@@ -2,29 +2,28 @@ package io.edurt.datacap.captcha.enums;
 
 public enum CalculateEnum
 {
-
     ADD("+", "加"),
     SUBTRACT("-", "减"),
     MULTIPLY("*", "乘"),
     DIVIDE("÷", "除"),
     EQUAL("=", "等");
 
-    private final String value_en;
-    private final String value_zh;
+    private final String valueEn;
+    private final String valueZh;
 
-    CalculateEnum(String value_en, String value_zh)
+    CalculateEnum(String valueEn, String valueZh)
     {
-        this.value_en = value_en;
-        this.value_zh = value_zh;
+        this.valueEn = valueEn;
+        this.valueZh = valueZh;
     }
 
     public String getValueEn()
     {
-        return value_en;
+        return valueEn;
     }
 
     public String getValueZh()
     {
-        return value_zh;
+        return valueZh;
     }
 }
