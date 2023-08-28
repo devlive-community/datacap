@@ -124,6 +124,7 @@ export default defineComponent({
               }
               else {
                 this.$Message.error(response.message);
+                this.handlerRefererCaptcha()
               }
             })
         }
