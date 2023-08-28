@@ -1,54 +1,26 @@
 package io.edurt.datacap.captcha.entity;
 
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
+import lombok.Data;
 
+@Data
 public class ResultEntity
+        implements Cloneable
 {
     // Calculation formula
     private String[] expression;
     // Calculated result
-    private int result;
+    private Integer result;
     // Image object
-    private BufferedImage image;
-
-    public BufferedImage getImage()
-    {
-        return image;
-    }
-
-    public void setImage(BufferedImage image)
-    {
-        this.image = image;
-    }
-
-    public String[] getExpression()
-    {
-        return expression;
-    }
-
-    public void setExpression(String[] expression)
-    {
-        this.expression = expression;
-    }
-
-    public int getResult()
-    {
-        return result;
-    }
-
-    public void setResult(int result)
-    {
-        this.result = result;
-    }
+    private String image;
 
     @Override
-    public String toString()
+    public ResultEntity clone()
     {
-        return "ResultEntity{" +
-                "expression=" + Arrays.toString(expression) +
-                ", result=" + result +
-                ", image=" + image +
-                '}';
+        try {
+            return (ResultEntity) super.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

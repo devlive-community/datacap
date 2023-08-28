@@ -12,4 +12,11 @@
 
     <artifactId>datacap-captcha</artifactId>
     <description>DataCap - Captcha</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
 </project>
