@@ -20,7 +20,9 @@ public class ResultEntity
 
     public void setExpression(String[] expression)
     {
-        this.expression = expression.clone();
+        if (expression != null) {
+            this.expression = expression.clone();
+        }
     }
 
     @Override

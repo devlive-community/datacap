@@ -25,7 +25,19 @@
                 </div>
               </template>
             </Poptip>
-            <Password name="passwordConfirm" :rules="passwordConfirmRule" placeholder="确认密码"/>
+            <Password name="passwordConfirm"
+                      :rules="passwordConfirmRule"
+                      placeholder="确认密码">
+            </Password>
+            <Captcha v-if="showCaptcha"
+                     class="datacap-login-captcha"
+                     name="captcha"
+                     :count-down="0"
+                     @on-get-captcha="handlerRefererCaptcha">
+              <template #text>
+                <img :src="'data:image/png;base64,' + captchaImage">
+              </template>
+            </Captcha>
             <Submit>{{ $t('common.register') }}</Submit>
             <Button style="width: 100%; margin-top: 5px;" type="dashed" @click="handlerGoSignIn">{{ $t('common.login') }}</Button>
           </Login>
@@ -40,6 +52,8 @@ import {defineComponent} from 'vue';
 import {AuthService} from "@/services/AuthService";
 import router from "@/router";
 import {AuthUser} from "@/model/AuthUser";
+import CaptchaService from "@/services/CaptchaService";
+import "@/css/datacap-login-captcha.css"
 
 export default defineComponent({
   data()
@@ -68,7 +82,11 @@ export default defineComponent({
         },
         {validator: validatePassCheck, trigger: 'change'}
       ],
-      passwordLen: 0
+      passwordLen: 0,
+      loading: false,
+      showCaptcha: false,
+      captchaImage: null,
+      timestamp: null
     }
   },
   computed: {
@@ -97,17 +115,38 @@ export default defineComponent({
       }
     }
   },
+  created()
+  {
+    this.handlerInitialize();
+  },
   methods: {
+    handlerInitialize()
+    {
+      this.loading = true
+      this.timestamp = Date.parse(new Date().toString());
+      CaptchaService.getCaptcha(this.timestamp)
+        .then(response => {
+          if (response.data !== false) {
+            this.showCaptcha = true
+            this.captchaImage = response.data?.image
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
     handlerChangePassword(val)
     {
       this.passwordLen = val.length;
     },
-    handlerSubmit(valid, {username, password, passwordConfirm})
+    handlerSubmit(valid, {username, password, captcha})
     {
       if (valid) {
         const authUser: AuthUser = {
           username: username,
-          password: password
+          password: password,
+          timestamp: this.timestamp,
+          captcha: captcha
         }
         new AuthService().signup(authUser)
           .then(response => {
@@ -116,9 +155,20 @@ export default defineComponent({
             }
             else {
               this.$Message.error(response.message);
+              this.handlerRefererCaptcha()
             }
           });
       }
+    },
+    handlerRefererCaptcha()
+    {
+      this.timestamp = Date.parse(new Date().toString());
+      CaptchaService.getCaptcha(this.timestamp)
+        .then(response => {
+          if (response.data !== false) {
+            this.captchaImage = response.data?.image
+          }
+        })
     },
     handlerGoSignIn()
     {

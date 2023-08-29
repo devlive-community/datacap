@@ -22,11 +22,10 @@ import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.devlive.sdk.openai.OpenAiClient;
-import org.devlive.sdk.openai.entity.CompletionChatEntity;
-import org.devlive.sdk.openai.entity.CompletionMessageEntity;
 import org.devlive.sdk.openai.entity.UsageEntity;
-import org.devlive.sdk.openai.model.CompletionMessageModel;
-import org.devlive.sdk.openai.response.CompleteChatResponse;
+import org.devlive.sdk.openai.model.CompletionModel;
+import org.devlive.sdk.openai.model.MessageModel;
+import org.devlive.sdk.openai.response.ChatResponse;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -109,32 +108,32 @@ public class MessageServiceImpl
                 .apiKey(openApiToken)
                 .client(okHttpClient)
                 .build()) {
-            List<CompletionMessageEntity> messages = new ArrayList<>();
+            List<org.devlive.sdk.openai.entity.MessageEntity> messages = new ArrayList<>();
             // Get the context in the conversation * 2
             if (getContent) {
                 this.repository.findTopByChatOrderByCreateTimeDesc(configure.getChat(), questionMessage.getId(), Pageable.ofSize(contentCount * 2))
                         .stream()
                         .sorted(Comparator.comparing(MessageEntity::getId))
                         .forEach(message -> {
-                            String role = message.getType() == MessageType.question ? CompletionMessageModel.USER.getName() : CompletionMessageModel.ASSISTANT.getName();
-                            CompletionMessageEntity completionMessage = CompletionMessageEntity.builder()
+                            String role = message.getType() == MessageType.question ? MessageModel.USER.getName() : MessageModel.ASSISTANT.getName();
+                            org.devlive.sdk.openai.entity.MessageEntity completionMessage = org.devlive.sdk.openai.entity.MessageEntity.builder()
                                     .role(role)
                                     .content(message.getContent())
                                     .build();
                             messages.add(completionMessage);
                         });
             }
-            CompletionMessageEntity message = CompletionMessageEntity.builder()
-                    .role(CompletionMessageModel.USER.getName())
+            org.devlive.sdk.openai.entity.MessageEntity message = org.devlive.sdk.openai.entity.MessageEntity.builder()
+                    .role(MessageModel.USER.getName())
                     .content(questionMessage.getContent())
                     .build();
             messages.add(message);
-            CompletionChatEntity chatCompletion = CompletionChatEntity.builder()
+            org.devlive.sdk.openai.entity.ChatEntity chatCompletion = org.devlive.sdk.openai.entity.ChatEntity.builder()
                     .messages(messages)
                     .maxTokens(2048)
-                    .model(openApiModel)
+                    .model(CompletionModel.valueOf(openApiModel))
                     .build();
-            CompleteChatResponse chatCompletionResponse = openAiClient.createChatCompletion(chatCompletion);
+            ChatResponse chatCompletionResponse = openAiClient.createChatCompletion(chatCompletion);
             List<String> answer = Lists.newArrayList();
             chatCompletionResponse.getChoices()
                     .forEach(e -> answer.add(e.getMessage().getContent()));
@@ -218,16 +217,16 @@ public class MessageServiceImpl
                 .apiKey(openApiToken)
                 .client(okHttpClient)
                 .build()) {
-            List<CompletionMessageEntity> messages = Lists.newArrayList(CompletionMessageEntity.builder()
-                    .role(CompletionMessageModel.USER.getName())
+            List<org.devlive.sdk.openai.entity.MessageEntity> messages = Lists.newArrayList(org.devlive.sdk.openai.entity.MessageEntity.builder()
+                    .role(MessageModel.USER.getName())
                     .content(forwardContent)
                     .build());
-            CompletionChatEntity chatCompletion = CompletionChatEntity.builder()
+            org.devlive.sdk.openai.entity.ChatEntity chatCompletion = org.devlive.sdk.openai.entity.ChatEntity.builder()
                     .messages(messages)
                     .maxTokens(2048)
-                    .model(openApiModel)
+                    .model(CompletionModel.valueOf(openApiModel))
                     .build();
-            CompleteChatResponse chatCompletionResponse = openAiClient.createChatCompletion(chatCompletion);
+            ChatResponse chatCompletionResponse = openAiClient.createChatCompletion(chatCompletion);
             List<String> answer = Lists.newArrayList();
             chatCompletionResponse.getChoices()
                     .forEach(e -> answer.add(e.getMessage().getContent()));

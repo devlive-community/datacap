@@ -105,7 +105,7 @@ public class UserServiceImpl
 
     @AuditUserLog
     @Override
-    public CommonResponse<JwtResponse> authenticate(UserEntity configure)
+    public CommonResponse<Object> authenticate(UserEntity configure)
     {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(configure.getUsername(), configure.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);

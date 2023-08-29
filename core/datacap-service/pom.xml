@@ -16,7 +16,7 @@
     <properties>
         <snakeyaml.version>2.0</snakeyaml.version>
         <useragent.version>1.21</useragent.version>
-        <openai.version>1.5.0</openai.version>
+        <openai.version>1.9.0</openai.version>
     </properties>
 
     <dependencies>

@@ -1,7 +1,6 @@
 package io.edurt.datacap.service.service;
 
 import io.edurt.datacap.common.response.CommonResponse;
-import io.edurt.datacap.common.response.JwtResponse;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.UserNameBody;
 import io.edurt.datacap.service.body.UserPasswordBody;
@@ -16,7 +15,7 @@ public interface UserService
 {
     CommonResponse<UserEntity> saveOrUpdate(UserEntity configure);
 
-    CommonResponse<JwtResponse> authenticate(UserEntity configure);
+    CommonResponse<Object> authenticate(UserEntity configure);
 
     CommonResponse<UserEntity> info(Long userId);
 
