@@ -39,7 +39,7 @@ public class AuthController
             if (entity == null) {
                 return CommonResponse.failure("Captcha not exists");
             }
-            if (entity.getResult() != configure.getCaptcha()) {
+            if (!entity.getResult().equals(configure.getCaptcha())) {
                 initializer.getCache().invalidate(configure.getTimestamp());
                 return CommonResponse.failure("The calculation result is incorrect");
             }

@@ -6,6 +6,7 @@ import io.edurt.datacap.captcha.enums.CalculateEnum;
 import io.edurt.datacap.captcha.enums.NumberEnum;
 
 import java.awt.Color;
+import java.util.Random;
 
 public class CaptchaUtils
 {
@@ -19,10 +20,11 @@ public class CaptchaUtils
      */
     public static Color getBackgroundColor()
     {
-        int color = (int) (Math.random() * 255);
-        int _color = (int) (Math.random() * 255);
-        int colorNew = (int) (Math.random() * 255);
-        return new Color(color, _color, colorNew);
+        Random random = new Random();
+        int rColor = random.nextInt(256);
+        int gColor = random.nextInt(256);
+        int bColor = random.nextInt(256);
+        return new Color(rColor, gColor, bColor);
     }
 
     /**
@@ -33,27 +35,28 @@ public class CaptchaUtils
      */
     private static CaptchaEntity generateCalcNumber()
     {
+        Random random = new Random();
         int firstNumber;
         int lastNumber;
         int calc;
         int number;
-        number = (int) (Math.random() * 2);
-        firstNumber = (int) (Math.random() * 10);
-        lastNumber = (int) (Math.random() * 10);
-        calc = (int) (Math.random() * 4);
+        number = random.nextInt(2);
+        firstNumber = random.nextInt(10);
+        lastNumber = random.nextInt(10);
+        calc = random.nextInt(4);
         /**
          * When the calculation method is subtraction by 1
          * The minuend cannot be less than the subtrahend, when it is less than, the calculation data will be regenerated 1 - 9
          */
         while (calc == 1 && firstNumber - lastNumber < 0) {
-            lastNumber = (int) (Math.random() * 10);
+            lastNumber = random.nextInt(10);
         }
         /**
          * When the calculation method is division by 3
          * > The dividend cannot be 0, when it is 0, the calculation data will be regenerated
          */
         while (calc == 3 && lastNumber == 0) {
-            lastNumber = (int) (Math.random() * 10);
+            lastNumber = random.nextInt(10);
         }
         /**
          * When the calculation method is division by 3 and the dividend is greater than 0
@@ -61,7 +64,7 @@ public class CaptchaUtils
          * > When the divisor is equal to 0, add 1 to the divisor
          */
         while (calc == 3 && (firstNumber % lastNumber) > 0) {
-            lastNumber = (int) (Math.random() * 10);
+            lastNumber = random.nextInt(10);
             if (lastNumber == 0) {
                 lastNumber = 1;
             }
@@ -128,7 +131,7 @@ public class CaptchaUtils
         int calc = entity.getCalc();
         int firstNumber = entity.getFirstNumber();
         int lastNumber = entity.getLastNumber();
-        int result = 0;
+        int result;
         switch (calc) {
             case 0:
                 result = firstNumber + lastNumber;
@@ -142,6 +145,8 @@ public class CaptchaUtils
             case 3:
                 result = firstNumber / lastNumber;
                 break;
+            default:
+                result = 0;
         }
         return result;
     }
@@ -172,6 +177,8 @@ public class CaptchaUtils
             case 4:
                 result = CalculateEnum.EQUAL.getValueEn();
                 break;
+            default:
+                throw new RuntimeException("Invalid calculation method");
         }
         return result;
     }
@@ -202,6 +209,8 @@ public class CaptchaUtils
             case 4:
                 result = CalculateEnum.EQUAL.getValueZh();
                 break;
+            default:
+                throw new RuntimeException("Invalid calculation method");
         }
         return result;
     }
