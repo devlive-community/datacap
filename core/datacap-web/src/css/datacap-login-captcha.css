@@ -1,0 +1,10 @@
+.datacap-login-captcha .ivu-btn {
+    padding: 0;
+}
+
+.datacap-login-captcha .ivu-btn img {
+    height: 28px;
+    width: 100px;
+    position: relative;
+    top: 4px;
+}
