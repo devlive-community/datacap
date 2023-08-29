@@ -68,6 +68,10 @@ public class AuthController
     @PostMapping("/signup")
     public CommonResponse<?> registerUser(@RequestBody @Validated(ValidationGroup.Crud.Create.class) AuthBody configure)
     {
+        if (!initializer.getRegistrationEnable()) {
+            return CommonResponse.failure("Registration is disabled");
+        }
+
         CommonResponse<?> captchaResponse = validateCaptcha(configure);
         if (captchaResponse != null) {
             return captchaResponse;
