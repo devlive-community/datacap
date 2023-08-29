@@ -12,8 +12,20 @@
           <Login @on-submit="handlerAuthSignIn">
             <UserName name="username"/>
             <Password name="password"/>
+            <Captcha v-if="showCaptcha"
+                     class="datacap-login-captcha"
+                     name="captcha"
+                     :count-down="0"
+                     @on-get-captcha="handlerRefererCaptcha">
+              <template #text>
+                <img :src="'data:image/png;base64,' + captchaImage">
+              </template>
+            </Captcha>
             <Submit>{{ $t('common.login') }}</Submit>
             <Button style="width: 100%; margin-top: 5px;" type="dashed" @click="handlerGoSignup">{{ $t('common.register') }}</Button>
+            <Spin fix
+                  :show="loading">
+            </Spin>
           </Login>
         </div>
       </template>
@@ -30,6 +42,7 @@ import router from "@/router";
 import UserService from "@/services/UserService";
 import {createDefaultRouter, createRemoteRouter} from "@/router/default";
 import {useI18n} from "vue-i18n";
+import CaptchaService from '@/services/CaptchaService';
 
 export default defineComponent({
   setup()
@@ -43,14 +56,54 @@ export default defineComponent({
       handlerGoSignup
     };
   },
+  data()
+  {
+    return {
+      loading: false,
+      showCaptcha: false,
+      captchaImage: null,
+      timestamp: null
+    }
+  },
+  created()
+  {
+    this.handlerInitialize();
+  },
   methods:
     {
-      handlerAuthSignIn(valid, {username, password})
+      handlerInitialize()
+      {
+        this.loading = true
+        this.timestamp = Date.parse(new Date().toString());
+        CaptchaService.getCaptcha(this.timestamp)
+          .then(response => {
+            if (response.data !== false) {
+              this.showCaptcha = true
+              this.captchaImage = response.data?.image
+            }
+          })
+          .finally(() => {
+            this.loading = false
+          })
+      },
+      handlerRefererCaptcha()
+      {
+        this.timestamp = Date.parse(new Date().toString());
+        CaptchaService.getCaptcha(this.timestamp)
+          .then(response => {
+            if (response.data !== false) {
+              this.captchaImage = response.data?.image
+            }
+          })
+      },
+      handlerAuthSignIn(valid, {username, password, captcha})
       {
         if (valid) {
           const authUser: AuthUser = {
             username: username,
-            password: password
+            password: password,
+            captcha: captcha,
+            timestamp: this.timestamp
           }
           new AuthService().signin(authUser)
             .then(response => {
@@ -71,6 +124,7 @@ export default defineComponent({
               }
               else {
                 this.$Message.error(response.message);
+                this.handlerRefererCaptcha()
               }
             })
         }
@@ -78,7 +132,7 @@ export default defineComponent({
     }
 });
 </script>
-<style>
+<style scoped>
 .datacap-login {
   width: 400px;
   margin: 0 auto !important;
@@ -86,5 +140,16 @@ export default defineComponent({
 
 .datacap-auto-login a {
   float: right;
+}
+
+.datacap-login-captcha .ivu-btn {
+  padding: 0;
+}
+
+.datacap-login-captcha .ivu-btn img {
+  height: 28px;
+  width: 100px;
+  position: relative;
+  top: 4px;
 }
 </style>

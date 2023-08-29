@@ -366,7 +366,9 @@ export default defineComponent({
       this.applySourceType = idAndType[1];
       this.engine = idAndType[1];
       setTimeout(() => {
-        this.editorCompletionProvider.dispose();
+        if (this.editorCompletionProvider) {
+          this.editorCompletionProvider.dispose();
+        }
         this.handlerEditorDidMount(editorMap.get(activeKey.value), idAndType[1]);
       }, 200)
     },

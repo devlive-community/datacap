@@ -12,6 +12,9 @@
         <module>core/datacap-parser</module>
         <module>core/datacap-spi</module>
         <module>core/datacap-server</module>
+        <module>core/datacap-service</module>
+        <module>core/datacap-security</module>
+        <module>core/datacap-captcha</module>
         <module>lib/datacap-http</module>
         <module>lib/datacap-logger</module>
         <module>lib/datacap-shell</module>
@@ -69,8 +72,6 @@
         <module>executor/datacap-executor-seatunnel</module>
         <module>shaded/datacap-shaded-ydb</module>
         <module>shaded/datacap-shaded-pinot</module>
-        <module>core/datacap-service</module>
-        <module>core/datacap-security</module>
     </modules>
 
     <name>datacap</name>

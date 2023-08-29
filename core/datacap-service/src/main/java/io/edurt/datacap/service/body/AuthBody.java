@@ -30,4 +30,6 @@ public class AuthBody
     })
     @Size(max = 120)
     private String password;
+    private Integer captcha;
+    private Long timestamp;
 }
