@@ -1,7 +1,19 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.pipeline')">
-      <Table :loading="loading" :columns="headers" :data="finalData?.content">
+    <Card style="width:100%"
+          :title="$t('common.pipeline')"
+          dis-hover>
+      <template #extra>
+        <Button type="primary"
+                size="small"
+                icon="md-add"
+                @click="handlerCreatePipeline">
+          {{ $t('common.create') }}
+        </Button>
+      </template>
+      <Table :loading="loading"
+             :columns="headers"
+             :data="finalData?.content">
         <template #from="{row}">
           <Tooltip transfer :content="row.from.name">
             <Avatar :src="'/static/images/plugin/' + row.from.type + '.png'" size="small"/>

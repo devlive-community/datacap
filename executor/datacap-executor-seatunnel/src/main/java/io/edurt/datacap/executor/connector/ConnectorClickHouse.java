@@ -3,6 +3,7 @@ package io.edurt.datacap.executor.connector;
 import io.edurt.datacap.spi.executor.PipelineField;
 
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectorClickHouse
@@ -17,7 +18,12 @@ public class ConnectorClickHouse
     public Map<String, Object> formatToMap()
     {
         Map<String, Object> node = new ConcurrentHashMap<>();
-        node.put("Clickhouse", this.configure.getConfigure());
+        Properties properties = new Properties();
+        this.configure.getConfigure().entrySet()
+                .stream()
+                .filter(entry -> !String.valueOf(entry.getValue()).equals("None"))
+                .forEach(entry -> properties.put(entry.getKey(), entry.getValue()));
+        node.put("Clickhouse", properties);
         return node;
     }
 }

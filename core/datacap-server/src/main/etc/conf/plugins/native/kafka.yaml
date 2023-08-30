@@ -31,7 +31,7 @@ pipelines:
         origin: host
         required: true
       - field: topic
-        origin: database
+        origin: topic
         required: true
         override: true
         input: true

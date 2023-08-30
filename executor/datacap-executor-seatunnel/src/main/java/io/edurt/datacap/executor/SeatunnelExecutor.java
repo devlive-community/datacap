@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.google.common.base.Preconditions;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.executor.connector.Connector;
 import io.edurt.datacap.executor.connector.ConnectorFactory;
@@ -21,9 +20,10 @@ import io.edurt.datacap.spi.executor.PipelineField;
 import io.edurt.datacap.spi.executor.PipelineResponse;
 import io.edurt.datacap.spi.executor.PipelineState;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
@@ -33,7 +33,7 @@ public class SeatunnelExecutor
         implements Executor
 {
     @Override
-    public void before(Pipeline configure)
+    public String before(Pipeline configure, Logger logger)
     {
         JsonFactory jsonFactory = new JsonFactory();
         String workFile = String.join(File.separator, configure.getWork(), configure.getPipelineName() + ".configure");
@@ -44,21 +44,32 @@ public class SeatunnelExecutor
             this.writeChild("source", jsonGenerator, configure.getFrom());
             this.writeChild("sink", jsonGenerator, configure.getTo());
             jsonGenerator.writeEndObject();
+            return null;
         }
-        catch (IOException exception) {
-            Preconditions.checkArgument(false, exception);
+        catch (Exception exception) {
+            logger.error("Build configure file failed", exception);
+            return exception.getMessage();
         }
     }
 
     @Override
     public PipelineResponse start(Pipeline configure)
     {
-        before(configure);
         SeaTunnelCommander commander = new SeaTunnelCommander(
                 configure.getHome() + "/bin",
                 String.join(File.separator, configure.getWork(), configure.getPipelineName() + ".configure"),
                 configure.getPipelineName());
         LoggerExecutor loggerExecutor = new LogbackExecutor(configure.getWork(), configure.getPipelineName() + ".log");
+        String result = before(configure, loggerExecutor.getLogger());
+        if (StringUtils.isNotEmpty(result)) {
+            return PipelineResponse.builder()
+                    .state(PipelineState.FAILURE)
+                    .timeout(false)
+                    .successful(false)
+                    .message(result)
+                    .build();
+        }
+
         ShellConfigure shellConfigure = ShellConfigure.builder()
                 .directory(configure.getWork())
                 .loggerExecutor(loggerExecutor)
@@ -78,7 +89,7 @@ public class SeatunnelExecutor
     }
 
     private void writeChild(String type, JsonGenerator jsonGenerator, PipelineField configure)
-            throws IOException
+            throws Exception
     {
         jsonGenerator.writeFieldName(type);
         if (ObjectUtils.isNotEmpty(configure)) {

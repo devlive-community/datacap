@@ -52,7 +52,11 @@ pipelines:
         input: true
       - field: username
         required: true
+        override: true
       - field: password
+        required: false
+        override: true
+      - field: result_table_name
         required: false
   - executor: Seatunnel
     type: SINK
@@ -67,8 +71,10 @@ pipelines:
         override: true
         required: true
       - field: username
+        override: true
         required: true
       - field: password
+        override: true
         required: true
       - field: fields
         override: true
