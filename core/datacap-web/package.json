@@ -1,5 +1,5 @@
 {
-  "name": "datacap-fe",
+  "name": "datacap-console",
   "description": "DataCap console",
   "version": "1.14.0-SNAPSHOT",
   "private": true,

@@ -1,7 +1,18 @@
 <template>
   <div class="layout">
     <layout>
-      <layout-content style="background-color: #FFFFFF; padding: 0; min-height: 500px"/>
+      <Header>
+        <Menu mode="horizontal" theme="dark" active-name="dashboard" :style="{'z-index':99}">
+          <div class="layout-logo">
+            <div class="layout-logo logo-text">
+              <RouterLink to="/">
+                <Avatar style="width: 45px; height: 45px;" src="/static/images/logo.png"></Avatar>
+              </RouterLink>
+            </div>
+          </div>
+        </Menu>
+      </Header>
+      <layout-content style="background-color: #FFFFFF; padding: 10px 0px; min-height: 500px"/>
       <layout-footer/>
       <layout-affix/>
     </layout>
