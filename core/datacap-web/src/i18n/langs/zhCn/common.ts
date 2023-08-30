@@ -127,4 +127,5 @@ export default {
   text: '文本',
   version: '版本',
   available: '可用',
+  success: '成功',
 }

@@ -127,4 +127,5 @@ export default {
   text: 'Text',
   version: 'Version',
   available: 'Available',
+  success: 'Success',
 }

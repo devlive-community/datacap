@@ -11,6 +11,7 @@ import monitor from "@/i18n/langs/en/monitor";
 import ai from "@/i18n/langs/en/ai";
 import copy from "@/i18n/langs/en/copy";
 import calendarHeatmap from "@/i18n/langs/en/calendarHeatmap";
+import pipeline from "@/i18n/langs/en/pipeline";
 
 export default {
   ...en,
@@ -25,5 +26,6 @@ export default {
   monitor: monitor,
   ai: ai,
   copy: copy,
-  calendarHeatmap: calendarHeatmap
+  calendarHeatmap: calendarHeatmap,
+  pipeline: pipeline
 }

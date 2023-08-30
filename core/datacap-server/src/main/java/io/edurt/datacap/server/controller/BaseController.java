@@ -5,6 +5,7 @@ import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.service.BaseService;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +44,15 @@ public abstract class BaseController<T>
         return service.saveOrUpdate(repository, configure);
     }
 
+    @Deprecated
     @DeleteMapping
     public CommonResponse delete(@RequestParam(value = "id") Long id)
+    {
+        return service.deleteById(repository, id);
+    }
+
+    @DeleteMapping(value = "{id}")
+    public CommonResponse deleteForPath(@PathVariable(value = "id") Long id)
     {
         return service.deleteById(repository, id);
     }
