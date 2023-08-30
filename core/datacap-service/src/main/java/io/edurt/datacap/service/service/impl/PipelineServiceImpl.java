@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.service.impl;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
@@ -33,7 +34,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -65,128 +65,141 @@ public class PipelineServiceImpl
     public CommonResponse<Object> submit(PipelineBody configure)
     {
         Optional<SourceEntity> fromSourceOptional = repository.findById(configure.getFrom().getId());
+        if (!fromSourceOptional.isPresent()) {
+            return CommonResponse.failure(String.format("From source [ %s ] not found", configure.getFrom().getId()));
+        }
+
         Optional<SourceEntity> toSourceOptional = repository.findById(configure.getTo().getId());
+        if (!toSourceOptional.isPresent()) {
+            return CommonResponse.failure(String.format("To source [ %s ] not found", configure.getTo().getId()));
+        }
 
-        if (fromSourceOptional.isPresent() && toSourceOptional.isPresent()) {
-            SourceEntity fromSource = fromSourceOptional.get();
-            IConfigure fromConfigure = PluginUtils.loadYamlConfigure(fromSource.getProtocol(), fromSource.getType(), fromSource.getType(), environment);
-            // Check if Pipeline is supported
-            if (ObjectUtils.isEmpty(fromConfigure.getPipelines())) {
-                String message = String.format("Source %s is not supported pipeline, type %s", fromSource.getId(), fromSource.getType());
-                return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE, message);
-            }
-            Optional<IConfigureExecutor> fromConfigureExecutor = fromConfigure.getPipelines()
-                    .stream()
-                    .filter(v -> v.getExecutor().equals(configure.getExecutor()) && v.getType().equals(IConfigurePipelineType.SOURCE))
-                    .findFirst();
-            if (!fromConfigureExecutor.isPresent()) {
-                String message = String.format("Source %s type %s is not supported pipeline type %s", fromSource.getId(), fromSource.getType(), IConfigurePipelineType.SOURCE);
-                return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE_TYPE, message);
-            }
+        SourceEntity fromSource = fromSourceOptional.get();
+        IConfigure fromConfigure = PluginUtils.loadYamlConfigure(fromSource.getProtocol(), fromSource.getType(), fromSource.getType(), environment);
+        // Check if Pipeline is supported
+        if (ObjectUtils.isEmpty(fromConfigure.getPipelines())) {
+            String message = String.format("From source [ %s ] is not supported pipeline, type [ %s ]", fromSource.getId(), fromSource.getType());
+            return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE, message);
+        }
+        Optional<IConfigureExecutor> fromConfigureExecutor = fromConfigure.getPipelines()
+                .stream()
+                .filter(v -> v.getExecutor().equals(configure.getExecutor()) && v.getType().equals(IConfigurePipelineType.SOURCE))
+                .findFirst();
+        if (!fromConfigureExecutor.isPresent()) {
+            String message = String.format("From source [ %s ] type [ %s ] is not supported pipeline type [ %s ]", fromSource.getId(), fromSource.getType(), IConfigurePipelineType.SOURCE);
+            return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE_TYPE, message);
+        }
 
-            SourceEntity toSource = toSourceOptional.get();
-            IConfigure toConfigure = PluginUtils.loadYamlConfigure(toSource.getProtocol(), toSource.getType(), toSource.getType(), environment);
-            if (ObjectUtils.isEmpty(toConfigure.getPipelines())) {
-                String message = String.format("Source %s is not supported pipeline, type %s", toSource.getId(), toSource.getType());
-                return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE, message);
-            }
-            Optional<IConfigureExecutor> toConfigureExecutor = toConfigure.getPipelines()
-                    .stream()
-                    .filter(v -> v.getExecutor().equals(configure.getExecutor()) && v.getType().equals(IConfigurePipelineType.SINK))
-                    .findFirst();
-            if (!toConfigureExecutor.isPresent()) {
-                String message = String.format("Source %s type %s is not supported pipeline type %s", toSource.getId(), toSource.getType(), IConfigurePipelineType.SINK);
-                return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE_TYPE, message);
-            }
+        SourceEntity toSource = toSourceOptional.get();
+        IConfigure toConfigure = PluginUtils.loadYamlConfigure(toSource.getProtocol(), toSource.getType(), toSource.getType(), environment);
+        if (ObjectUtils.isEmpty(toConfigure.getPipelines())) {
+            String message = String.format("To source [ %s ] is not supported pipeline, type [ %s ]", toSource.getId(), toSource.getType());
+            return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE, message);
+        }
+        Optional<IConfigureExecutor> toConfigureExecutor = toConfigure.getPipelines()
+                .stream()
+                .filter(v -> v.getExecutor().equals(configure.getExecutor()) && v.getType().equals(IConfigurePipelineType.SINK))
+                .findFirst();
+        if (!toConfigureExecutor.isPresent()) {
+            String message = String.format("To source [ %s ] type [ %s ] is not supported pipeline type [ %s ]", toSource.getId(), toSource.getType(), IConfigurePipelineType.SINK);
+            return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE_TYPE, message);
+        }
 
-            Optional<Executor> executorOptional = injector.getInstance(Key.get(new TypeLiteral<Set<Executor>>() {}))
-                    .stream()
-                    .filter(executor -> executor.name().equals(configure.getExecutor()))
-                    .findFirst();
+        Optional<Executor> executorOptional = injector.getInstance(Key.get(new TypeLiteral<Set<Executor>>() {}))
+                .stream()
+                .filter(executor -> executor.name().equals(configure.getExecutor()))
+                .findFirst();
 
-            // FROM source
-            Properties fromOriginProperties = configure.getFrom().getConfigures();
+        // FROM source
+        Properties fromOriginProperties = configure.getFrom().getConfigures();
+        if (!fromOriginProperties.containsKey("context")) {
             fromOriginProperties.setProperty("context", configure.getContent());
-            Properties fromProperties = this.merge(fromSource, fromConfigureExecutor.get().getFields(), fromOriginProperties);
-            Set<String> fromOptions = new HashSet<>();
-            fromConfigureExecutor.get()
-                    .getFields()
-                    .stream()
-                    .filter(v -> v.isRequired())
-                    .forEach(v -> fromOptions.add(v.getField()));
-            PipelineField fromField = PipelineField.builder()
-                    .type(fromSource.getType())
-                    .configure(fromProperties)
-                    .supportOptions(fromOptions)
-                    .build();
+        }
+        Properties fromProperties = this.merge(fromSource, fromConfigureExecutor.get().getFields(), fromOriginProperties);
+        Set<String> fromOptions = Sets.newHashSet();
+        fromConfigureExecutor.get()
+                .getFields()
+                .stream()
+                .filter(v -> v.isRequired())
+                .forEach(v -> fromOptions.add(v.getField()));
+        PipelineField fromField = PipelineField.builder()
+                .type(fromSource.getType())
+                .configure(fromProperties)
+                .supportOptions(fromOptions)
+                .build();
 
-            // TO source
-            Properties toOriginProperties = configure.getTo().getConfigures();
-            Properties toProperties = this.merge(toSource, toConfigureExecutor.get().getFields(), toOriginProperties);
-            Set<String> toOptions = new HashSet<>();
-            toConfigureExecutor.get()
-                    .getFields()
-                    .stream()
-                    .filter(v -> v.isRequired())
-                    .forEach(v -> toOptions.add(v.getField()));
-            PipelineField toField = PipelineField.builder()
-                    .type(toSource.getType())
-                    .configure(toProperties)
-                    .supportOptions(toOptions)
-                    .build();
+        // TO source
+        Properties toOriginProperties = configure.getTo().getConfigures();
+        Properties toProperties = this.merge(toSource, toConfigureExecutor.get().getFields(), toOriginProperties);
+        Set<String> toOptions = Sets.newHashSet();
+        toConfigureExecutor.get()
+                .getFields()
+                .stream()
+                .filter(v -> v.isRequired())
+                .forEach(v -> toOptions.add(v.getField()));
+        PipelineField toField = PipelineField.builder()
+                .type(toSource.getType())
+                .configure(toProperties)
+                .supportOptions(toOptions)
+                .build();
 
-            String executorHome = environment.getProperty("datacap.executor.data");
-            if (StringUtils.isEmpty(executorHome)) {
-                executorHome = String.join(File.separator, System.getProperty("user.dir"), "data");
-            }
+        String executorHome = environment.getProperty("datacap.executor.data");
+        if (StringUtils.isEmpty(executorHome)) {
+            executorHome = String.join(File.separator, System.getProperty("user.dir"), "data");
+        }
 
-            String username = UserDetailsService.getUser().getUsername();
-            String pipelineHome = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMddHHmmssSSS");
-            String work = String.join(File.separator, executorHome, username, pipelineHome);
-            String pipelineName = String.join("_", username, configure.getExecutor().toLowerCase(), "from", String.valueOf(fromSource.getId()), "to", String.valueOf(toSource.getId()), pipelineHome);
-            try {
-                FileUtils.forceMkdir(new File(work));
-            }
-            catch (Exception e) {
-                log.warn("Failed to create temporary directory", e);
-            }
-            Pipeline pipeline = Pipeline.builder()
-                    .work(work)
-                    .home(environment.getProperty(String.format("datacap.executor.%s.home", configure.getExecutor().toLowerCase(Locale.ROOT))))
-                    .pipelineName(pipelineName)
-                    .username(UserDetailsService.getUser().getUsername())
-                    .from(fromField)
-                    .to(toField)
-                    .timeout(600)
-                    .build();
+        String username = UserDetailsService.getUser().getUsername();
+        String pipelineHome = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMddHHmmssSSS");
+        String work = String.join(File.separator, executorHome, username, pipelineHome);
+        String pipelineName = String.join("_",
+                username,
+                configure.getExecutor().toLowerCase(),
+                "from",
+                String.valueOf(fromSource.getId()),
+                "to",
+                String.valueOf(toSource.getId()),
+                pipelineHome);
+        try {
+            FileUtils.forceMkdir(new File(work));
+        }
+        catch (Exception e) {
+            log.warn("Failed to create temporary directory", e);
+        }
+        Pipeline pipeline = Pipeline.builder()
+                .work(work)
+                .home(environment.getProperty(String.format("datacap.executor.%s.home", configure.getExecutor().toLowerCase(Locale.ROOT))))
+                .pipelineName(pipelineName)
+                .username(UserDetailsService.getUser().getUsername())
+                .from(fromField)
+                .to(toField)
+                .timeout(600)
+                .build();
 
-            PipelineEntity pipelineEntity = new PipelineEntity();
-            pipelineEntity.setName(pipelineName);
-            pipelineEntity.setContent(configure.getContent());
-            pipelineEntity.setState(PipelineState.CREATED);
-            pipelineEntity.setWork(work);
-            pipelineEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
-            pipelineEntity.setUser(UserDetailsService.getUser());
-            pipelineEntity.setFrom(fromSource);
-            pipelineEntity.setFromConfigures(fromProperties);
-            pipelineEntity.setTo(toSource);
-            pipelineEntity.setToConfigures(toProperties);
+        PipelineEntity pipelineEntity = new PipelineEntity();
+        pipelineEntity.setName(pipelineName);
+        pipelineEntity.setContent(configure.getContent());
+        pipelineEntity.setState(PipelineState.CREATED);
+        pipelineEntity.setWork(work);
+        pipelineEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
+        pipelineEntity.setUser(UserDetailsService.getUser());
+        pipelineEntity.setFrom(fromSource);
+        pipelineEntity.setFromConfigures(fromProperties);
+        pipelineEntity.setTo(toSource);
+        pipelineEntity.setToConfigures(toProperties);
+        pipelineRepository.save(pipelineEntity);
+
+        executorService.submit(() -> {
+            pipelineEntity.setState(PipelineState.RUNNING);
             pipelineRepository.save(pipelineEntity);
 
-            executorService.submit(() -> {
-                pipelineEntity.setState(PipelineState.RUNNING);
-                pipelineRepository.save(pipelineEntity);
-
-                PipelineResponse response = executorOptional.get().start(pipeline);
-                pipelineEntity.setEndTime(new Timestamp(System.currentTimeMillis()));
-                pipelineEntity.setState(response.getState());
-                pipelineEntity.setMessage(response.getMessage());
-                pipelineEntity.setElapsed(pipelineEntity.getElapsed());
-                pipelineRepository.save(pipelineEntity);
-            });
-            return CommonResponse.success(pipelineEntity.getId());
-        }
-        return CommonResponse.failure(ServiceState.SOURCE_NOT_FOUND);
+            PipelineResponse response = executorOptional.get().start(pipeline);
+            pipelineEntity.setEndTime(new Timestamp(System.currentTimeMillis()));
+            pipelineEntity.setState(response.getState());
+            pipelineEntity.setMessage(response.getMessage());
+            pipelineEntity.setElapsed(pipelineEntity.getElapsed());
+            pipelineRepository.save(pipelineEntity);
+        });
+        return CommonResponse.success(pipelineEntity.getId());
     }
 
     private Properties merge(SourceEntity entity, List<IConfigureExecutorField> fields, Properties configure)
@@ -206,7 +219,7 @@ public class PipelineServiceImpl
 
     private void setProperty(IConfigureExecutorField field, Properties properties, Properties configure)
     {
-        Object value = "";
+        Object value = "None";
         if (ObjectUtils.isNotEmpty(field.getOrigin())) {
             String[] split = String.valueOf(field.getOrigin()).split("\\|");
             if (split.length > 1) {

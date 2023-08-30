@@ -11,6 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class PipelineBody
 {
+    private Long id;
     private PipelineFieldBody from;
     private PipelineFieldBody to;
     private String content;

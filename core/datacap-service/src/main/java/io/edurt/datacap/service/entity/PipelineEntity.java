@@ -93,6 +93,9 @@ public class PipelineEntity
         if (ObjectUtils.isNotEmpty(getEndTime())) {
             elapsed = (getEndTime().getTime() - getStartTime().getTime()) / 1000;
         }
+        else {
+            elapsed = 0L;
+        }
         return elapsed;
     }
 }

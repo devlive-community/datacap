@@ -26,7 +26,7 @@ export default defineComponent({
     handlerInitialize()
     {
       setTimeout(() => {
-        if (this.configure?.data) {
+        if (this.configure.data.length > 0) {
           const indicators = Array<{ name: string, max: number }>();
           const data = [];
           this.configure.data.forEach(ele => {

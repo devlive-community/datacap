@@ -12,11 +12,6 @@ class PipelineService
     super(baseUrl);
   }
 
-  deleteById(id: number): Promise<ResponseModel>
-  {
-    throw new Error('Method not implemented.');
-  }
-
   getByName<T>(name: string): Promise<ResponseModel>
   {
     return Promise.resolve(undefined);

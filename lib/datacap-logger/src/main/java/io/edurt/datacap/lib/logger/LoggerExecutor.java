@@ -1,5 +1,7 @@
 package io.edurt.datacap.lib.logger;
 
+import org.slf4j.Logger;
+
 public abstract class LoggerExecutor<T>
 {
     protected String directory;
@@ -11,7 +13,7 @@ public abstract class LoggerExecutor<T>
         this.name = name;
     }
 
-    public abstract T getLogger();
+    public abstract Logger getLogger();
 
     public abstract void destroy();
 }

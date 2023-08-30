@@ -53,6 +53,7 @@ const authRouters = [
   {
     path: "/auth",
     name: "auth",
+    component: LayoutWebErrorContainer,
     children: [
       {
         name: "signin",

@@ -313,7 +313,7 @@ export default defineComponent({
           });
         }));
       setTimeout(() => {
-        editorMap.values().next().value?.layout({width: this.$refs.editorContainer.offsetWidth, height: 300})
+        editorMap.values().next().value?.layout({width: this.$refs.editorContainer?.offsetWidth, height: 300})
       }, 200)
     },
     handlerRun()

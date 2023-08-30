@@ -1,7 +1,19 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.pipeline')">
-      <Table :loading="loading" :columns="headers" :data="finalData?.content">
+    <Card style="width:100%"
+          :title="$t('common.pipeline')"
+          dis-hover>
+      <template #extra>
+        <Button type="primary"
+                size="small"
+                icon="md-add"
+                @click="handlerCreatePipeline">
+          {{ $t('common.create') }}
+        </Button>
+      </template>
+      <Table :loading="loading"
+             :columns="headers"
+             :data="finalData?.content">
         <template #from="{row}">
           <Tooltip transfer :content="row.from.name">
             <Avatar :src="'/static/images/plugin/' + row.from.type + '.png'" size="small"/>
@@ -14,9 +26,19 @@
         </template>
         <template #action="{ row }">
           <Space>
-            <Tooltip :content="$t('common.error')" transfer>
+            <Tooltip :content="$t('common.error')"
+                     transfer>
               <Button shape="circle" :disabled="row.state !== 'FAILURE'" type="error" size="small" icon="md-bug"
                       @click="handlerVisibleMarkdownPreview(row.message, true)"/>
+            </Tooltip>
+            <Tooltip :content="$t('common.delete')"
+                     transfer>
+              <Button :disabled="row.state == 'RUNNING'"
+                      icon="md-trash"
+                      shape="circle"
+                      size="small"
+                      type="error"
+                      @click="handlerDelete(row, true)"/>
             </Tooltip>
           </Space>
         </template>
@@ -26,8 +48,17 @@
               @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
       </p>
     </Card>
-    <MarkdownPreview v-if="visibleWarning" :isVisible="visibleWarning" :content="finalContent"
-                     @close="handlerVisibleMarkdownPreview(null, $event)"/>
+    <MarkdownPreview v-if="visibleWarning"
+                     :isVisible="visibleWarning"
+                     :content="finalContent"
+                     @close="handlerVisibleMarkdownPreview(null, $event)">
+    </MarkdownPreview>
+
+    <DeletePipeline v-if="deleted"
+                    :is-visible="deleted"
+                    :info="info"
+                    @close="handlerDelete(null, false)">
+    </DeletePipeline>
   </div>
 </template>
 
@@ -40,12 +71,13 @@ import {Pagination, PaginationBuilder} from "@/model/Pagination";
 import {createHeaders} from "@/views/admin/pipeline/PipelineGenerate";
 import PipelineService from "@/services/user/PipelineService";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
+import DeletePipeline from "@/views/admin/pipeline/DeletePipeline.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
   name: 'UserPipelineHome',
-  components: {MarkdownPreview},
+  components: {DeletePipeline, MarkdownPreview},
   setup()
   {
     const i18n = useI18n();
@@ -62,7 +94,9 @@ export default defineComponent({
       loading: false,
       visibleWarning: false,
       finalContent: null,
-      finalData: null as ResponsePage
+      finalData: null as ResponsePage,
+      deleted: false,
+      info: null
     }
   },
   created()
@@ -107,6 +141,14 @@ export default defineComponent({
       this.visibleWarning = isOpen;
       if (content) {
         this.finalContent = '```java\n' + content + '\n```';
+      }
+    },
+    handlerDelete(row: any, isOpen: boolean)
+    {
+      this.deleted = isOpen;
+      this.info = row
+      if (!isOpen) {
+        this.handlerInitialize(this.filter);
       }
     }
   }

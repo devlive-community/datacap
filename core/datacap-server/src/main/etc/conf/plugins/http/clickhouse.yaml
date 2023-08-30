@@ -27,17 +27,22 @@ pipelines:
         origin: host|port
         required: true
       - field: database
-        origin: database
         required: true
+        override: true
+        input: true
       - field: sql
         origin: context
         required: true
+        override: true
+        input: true
       - field: username
-        origin: username
         required: true
+        override: true
       - field: password
-        origin: password
-        required: true
+        required: false
+        override: true
+      - field: result_table_name
+        required: false
   - executor: Seatunnel
     type: SINK
     fields:
@@ -45,14 +50,17 @@ pipelines:
         origin: host|port
         required: true
       - field: database
-        origin: database
+        override: true
         required: true
-      - field: sql
-        origin: context
+      - field: table
+        override: true
         required: true
       - field: username
-        origin: username
+        override: true
         required: true
       - field: password
-        origin: password
+        override: true
+        required: true
+      - field: fields
+        override: true
         required: true
