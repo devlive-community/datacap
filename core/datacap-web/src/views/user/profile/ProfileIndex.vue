@@ -53,8 +53,12 @@
             {{ $t('profile.radar7Days') }}
           </template>
           <div :style="{ minHeight: '150px' }">
-            <Spin fix v-if="loading"/>
-            <RadarChart v-else :configure="summary.radarConfigure"></RadarChart>
+            <Spin v-if="loading"
+                  fix>
+            </Spin>
+            <RadarChart v-else
+                        :configure="summary.radarConfigure">
+            </RadarChart>
           </div>
         </Card>
       </Col>
@@ -69,6 +73,7 @@ import {HttpCommon} from "@/common/HttpCommon";
 import {RadarConfigure} from "@/charts/radar/RadarConfigure";
 import {CalendarHeatmap} from "vue3-calendar-heatmap";
 import "@/css/vue3-calendar-heatmap.css"
+import moment from "moment/moment";
 
 export default defineComponent({
   components: {RadarChart, CalendarHeatmap},
@@ -97,7 +102,12 @@ export default defineComponent({
         .then(axios.spread((contribution, contributionRadar) => {
           if (contribution.status) {
             this.heatmapActivity = contribution.data;
-            this.endDate = contribution.data[contribution.data.length - 1].date;
+            if (contribution.data.length > 0) {
+              this.endDate = contribution.data[contribution.data.length - 1].date;
+            }
+            else {
+              this.endDate = moment().format('YYYY-MM-DD');
+            }
           }
           if (contributionRadar.status) {
             const radarConfigure = new RadarConfigure();
