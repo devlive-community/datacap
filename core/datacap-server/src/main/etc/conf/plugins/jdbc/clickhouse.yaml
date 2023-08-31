@@ -67,15 +67,18 @@ pipelines:
       - field: database
         override: true
         required: true
+        input: true
       - field: table
         override: true
         required: true
+        input: true
       - field: username
-        override: true
+        override: false
         required: true
       - field: password
-        override: true
+        override: false
         required: true
       - field: fields
         override: true
         required: true
+        input: true

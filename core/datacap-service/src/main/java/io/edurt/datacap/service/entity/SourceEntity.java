@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.service.configure.IConfigure;
+import io.edurt.datacap.service.configure.IConfigureExecutor;
 import io.edurt.datacap.service.validation.ValidationGroup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -129,6 +130,9 @@ public class SourceEntity
 
     @Transient
     private IConfigure schema;
+
+    @Transient
+    private List<IConfigureExecutor> pipelines;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
