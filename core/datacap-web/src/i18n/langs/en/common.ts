@@ -129,4 +129,5 @@ export default {
   available: 'Available',
   success: 'Success',
   publish: 'Publish',
+  executor: 'Executor',
 }

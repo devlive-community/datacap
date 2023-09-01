@@ -26,6 +26,7 @@ const createHeaders = (i18n: any) => {
       key: 'startTime',
       ellipsis: true,
       tooltip: true,
+      align: 'center',
       width: 200
     },
     {
@@ -33,6 +34,7 @@ const createHeaders = (i18n: any) => {
       key: 'startTime',
       ellipsis: true,
       tooltip: true,
+      align: 'center',
       width: 200
     },
     {
@@ -44,16 +46,26 @@ const createHeaders = (i18n: any) => {
       width: 100
     },
     {
+      title: i18n.t('common.executor'),
+      key: 'executor',
+      ellipsis: true,
+      tooltip: true,
+      align: 'center',
+      width: 100
+    },
+    {
       title: i18n.t('common.from'),
       key: 'from',
       slot: 'from',
       align: 'center',
+      width: 100
     },
     {
       title: i18n.t('common.to'),
       key: 'to',
       slot: 'to',
-      align: 'center'
+      align: 'center',
+      width: 100
     },
     {
       title: i18n.t('common.state'),

@@ -19,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -29,7 +30,7 @@ import java.util.Properties;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "pipeline")
+@Table(name = "datacap_pipeline")
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class PipelineEntity
@@ -65,10 +66,8 @@ public class PipelineEntity
     @Column(name = "elapsed")
     private Long elapsed;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIncludeProperties(value = {"id", "username"})
-    private UserEntity user;
+    @Column(name = "executor")
+    private String executor = "Seatunnel";
 
     @ManyToOne
     @JoinColumn(name = "from_id")
@@ -87,6 +86,13 @@ public class PipelineEntity
     @Column(name = "to_configures")
     @Convert(converter = PropertiesConverter.class)
     private Properties toConfigures;
+
+    @ManyToOne
+    @JoinTable(name = "pipeline_user_relation",
+            joinColumns = @JoinColumn(name = "pipeline_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonIncludeProperties(value = {"id", "username"})
+    private UserEntity user;
 
     public long getElapsed()
     {

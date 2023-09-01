@@ -1,11 +1,21 @@
 <template>
   <div>
-    <Modal :title="$t('common.content')" width="80%" :closable="false" v-model="visible" :maskClosable="false" :z-index="9">
+    <Modal :title="$t('common.content')"
+           v-model="visible"
+           width="80%"
+           :closable="false"
+           :maskClosable="false">
       <div style="height: 350px; max-height: 350px;">
-        <VMarkdownView v-if="content" :mode="'light'" :content="content"></VMarkdownView>
+        <VMarkdownView v-if="content"
+                       :mode="'light'"
+                       :content="content">
+        </VMarkdownView>
       </div>
       <div class="datacap-drawer-footer">
-        <Button type="error" @click="handlerCancel()">{{ $t('common.cancel') }}</Button>
+        <Button type="error"
+                @click="handlerCancel()">
+          {{ $t('common.cancel') }}
+        </Button>
       </div>
     </Modal>
   </div>

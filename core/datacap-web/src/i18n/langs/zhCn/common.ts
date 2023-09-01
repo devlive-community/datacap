@@ -129,4 +129,5 @@ export default {
   available: '可用',
   success: '成功',
   publish: '发布',
+  executor: '执行器',
 }
