@@ -24,6 +24,31 @@ pipelines:
         required: true
         override: true
         input: true
+        type: INPUT
+      - field: pattern
+        origin: pattern
+        required: false
+        override: false
+        input: true
+        value: false
+        width: 45
+        type: SWITCH
+      - field: consumer.group
+        origin: group
+        required: false
+        override: false
+        input: true
+        value: DataCap-Pipeline-Group
+        width: 300
+        type: INPUT
+      - field: commit_on_checkpoint
+        origin: commit_on_checkpoint
+        required: false
+        override: false
+        input: true
+        value: true
+        width: 45
+        type: SWITCH
   - executor: Seatunnel
     type: SINK
     fields:

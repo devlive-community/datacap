@@ -25,4 +25,5 @@ public class IConfigureExecutorField
     // Component type
     private FieldType type = FieldType.INPUT;
     private String tooltip;
+    private Object value;
 }
