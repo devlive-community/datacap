@@ -7,7 +7,7 @@
         <Button type="primary"
                 size="small"
                 icon="md-add"
-                @click="handlerCreatePipeline">
+                @click="handlerDetail(true)">
           {{ $t('common.create') }}
         </Button>
       </template>
@@ -59,6 +59,11 @@
                     :info="info"
                     @close="handlerDelete(null, false)">
     </DeletePipeline>
+
+    <DetailsPipeline v-if="detail"
+                     is-visible="detail"
+                     @close="handlerDetail(false)">
+    </DetailsPipeline>
   </div>
 </template>
 
@@ -72,12 +77,13 @@ import {createHeaders} from "@/views/admin/pipeline/PipelineGenerate";
 import PipelineService from "@/services/user/PipelineService";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import DeletePipeline from "@/views/admin/pipeline/DeletePipeline.vue";
+import DetailsPipeline from "@/views/admin/pipeline/DetailPipeline.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
   name: 'UserPipelineHome',
-  components: {DeletePipeline, MarkdownPreview},
+  components: {DetailsPipeline, DeletePipeline, MarkdownPreview},
   setup()
   {
     const i18n = useI18n();
@@ -96,7 +102,9 @@ export default defineComponent({
       finalContent: null,
       finalData: null as ResponsePage,
       deleted: false,
-      info: null
+      info: null,
+      // Pipeline detail
+      detail: false
     }
   },
   created()
@@ -147,6 +155,13 @@ export default defineComponent({
     {
       this.deleted = isOpen;
       this.info = row
+      if (!isOpen) {
+        this.handlerInitialize(this.filter);
+      }
+    },
+    handlerDetail(isOpen: boolean)
+    {
+      this.detail = isOpen
       if (!isOpen) {
         this.handlerInitialize(this.filter);
       }

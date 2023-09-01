@@ -7,7 +7,7 @@ on:
 env:
   APP_NAME: datacap
   GITHUB_REGISTRY: ghcr.io
-  APP_GITHUB_GROUP: edurtio
+  APP_GITHUB_GROUP: devlive-community
   APP_DOCKER_GROUP: qianmoq
 
 jobs:

@@ -43,13 +43,18 @@ pipelines:
         required: true
       - field: database
         required: true
-        override: true
+        override: false
         input: true
+        width: 300
+        type: INPUT
       - field: sql
         origin: context
         required: true
         override: true
         input: true
+        width: 300
+        type: TEXT
+        tooltip: If this value is entered, the default sql statement will be replaced
       - field: username
         required: true
         override: true
@@ -67,15 +72,18 @@ pipelines:
       - field: database
         override: true
         required: true
+        input: true
       - field: table
         override: true
         required: true
+        input: true
       - field: username
-        override: true
+        override: false
         required: true
       - field: password
-        override: true
+        override: false
         required: true
       - field: fields
         override: true
         required: true
+        input: true

@@ -31,6 +31,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +76,17 @@ public class SourceServiceImpl
     {
         Pageable pageable = PageRequestAdapter.of(offset, limit);
         UserEntity user = UserDetailsService.getUser();
-        return CommonResponse.success(PageEntity.build(this.sourceRepository.findAllByUserOrPublishIsTrue(user, pageable)));
+        Page<SourceEntity> page = this.sourceRepository.findAllByUserOrPublishIsTrue(user, pageable);
+        // Populate pipeline configuration information
+        page.getContent()
+                .stream()
+                .forEach(item -> {
+                    IConfigure fromConfigure = PluginUtils.loadYamlConfigure(item.getProtocol(), item.getType(), item.getType(), environment);
+                    if (fromConfigure != null) {
+                        item.setPipelines(fromConfigure.getPipelines());
+                    }
+                });
+        return CommonResponse.success(PageEntity.build(page));
     }
 
     @SneakyThrows

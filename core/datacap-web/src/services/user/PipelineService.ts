@@ -1,5 +1,7 @@
 import {ResponseModel} from '@/model/ResponseModel'
 import {BaseService} from "@/services/BaseService";
+import {HttpCommon} from "@/common/HttpCommon";
+import {PipelineModel} from "@/model/Pipeline";
 
 const baseUrl = '/api/v1/pipeline'
 
@@ -10,6 +12,13 @@ class PipelineService
   constructor()
   {
     super(baseUrl);
+  }
+
+  submit(configure: PipelineModel): Promise<ResponseModel>
+  {
+    configure.from.source = undefined
+    configure.to.source = undefined
+    return new HttpCommon().post(`${baseUrl}/submit`, configure);
   }
 
   getByName<T>(name: string): Promise<ResponseModel>
