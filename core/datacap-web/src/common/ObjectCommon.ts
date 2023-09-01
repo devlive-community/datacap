@@ -10,7 +10,7 @@ export class ObjectCommon
   public static getDynamicObject(key: string, value: any): { [key: string]: any }
   {
     const dynamicObject: { [key: string]: any } = {};
-    dynamicObject[key] = value;
+    dynamicObject[key] = value ? value : null;
     return dynamicObject;
   }
 }

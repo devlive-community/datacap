@@ -26,8 +26,8 @@ public class PipelineController
         this.pipelineService = pipelineService;
     }
 
-    @PostMapping(value = "/create")
-    public CommonResponse<Object> create(@RequestBody PipelineBody configure)
+    @PostMapping(value = "/submit")
+    public CommonResponse<Object> submit(@RequestBody PipelineBody configure)
     {
         return pipelineService.submit(configure);
     }

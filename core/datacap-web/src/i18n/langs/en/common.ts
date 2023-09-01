@@ -128,4 +128,5 @@ export default {
   version: 'Version',
   available: 'Available',
   success: 'Success',
+  publish: 'Publish',
 }

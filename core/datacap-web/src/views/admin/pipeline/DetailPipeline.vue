@@ -2,15 +2,27 @@
   <div>
     <Modal v-model="visible"
            :title="$t('common.create') + $t('common.pipeline')"
-           :width="'70%'"
+           :width="'60%'"
            :closable="false"
            :maskClosable="false"
            :styles="{}">
       <Form :model="formState"
             :show-message="false"
-            :label-width="80">
+            :label-width="100">
         <Tabs :animated="false"
               style="min-height: 200px;">
+          <TabPane icon="md-cafe"
+                   style="height: 100%;"
+                   :label="$t('common.description')">
+            <FormItem :label="$t('common.sql')"
+                      label-position="top">
+              <Input v-model="formState.content"
+                     type="textarea"
+                     show-word-limit
+                     :rows="16">
+              </Input>
+            </FormItem>
+          </TabPane>
           <TabPane icon="md-appstore"
                    style="height: 100%;"
                    :label="$t('common.from')">
@@ -26,28 +38,11 @@
                 </Option>
               </Select>
             </FormItem>
-            <FormItem v-if="pipelineFromItem"
-                      :label="$t('common.configure')"
-                      label-position="top">
-              <div v-for="item in pipelineFromItem[0]['fields']"
-                   :key="item"
-                   style="margin-top: 10px;">
-                <FormItem v-if="item.input"
-                          :required="item.required"
-                          :prop="item.field"
-                          :label-width="100"
-                          :label="item.field">
-                  <Row>
-                    <Col span="18">
-                      <Input v-model="item.value">
-                      </Input>
-                    </Col>
-                  </Row>
-                </FormItem>
-              </div>
-            </FormItem>
+            <FormItemPropertyPipeline v-if="pipelineFromItem"
+                                      :pipeline-from-items="pipelineFromItem[0]['fields']">
+            </FormItemPropertyPipeline>
           </TabPane>
-          <TabPane icon="md-appstore"
+          <TabPane icon="md-medkit"
                    :label="$t('common.to')">
             <FormItem :label="$t('common.source')"
                       label-position="top">
@@ -61,35 +56,20 @@
                 </Option>
               </Select>
             </FormItem>
-            <FormItem v-if="pipelineToItem"
-                      :label="$t('common.configure')"
-                      label-position="top">
-              <div v-for="item in pipelineToItem[0]['fields']"
-                   :key="item"
-                   style="margin-top: 10px;">
-                <FormItem v-if="item.input"
-                          :required="item.required"
-                          :prop="item.field"
-                          :label-width="100"
-                          :label="item.field">
-                  <Row>
-                    <Col span="18">
-                      <Input v-model="item.value">
-                      </Input>
-                    </Col>
-                  </Row>
-                </FormItem>
-              </div>
-            </FormItem>
+            <FormItemPropertyPipeline v-if="pipelineToItem"
+                                      :pipeline-from-items="pipelineToItem[0]['fields']">
+            </FormItemPropertyPipeline>
           </TabPane>
         </Tabs>
       </Form>
       <template #footer>
         <Button style="margin-right: 8px"
+                :disabled="submitted"
                 @click="handlerCancel()">
           {{ $t('common.cancel') }}
         </Button>
         <Button type="primary"
+                :loading="submitted"
                 @click="handlerSave()">
           {{ $t('common.submit') }}
         </Button>
@@ -101,14 +81,16 @@
 import {PipelineMetaModel, PipelineModel} from '@/model/Pipeline';
 import {defineComponent} from 'vue';
 import {SourceService} from "@/services/SourceService";
-import {ObjectCommon} from '@/common/ObjectCommon';
-import {clone} from "lodash";
+import {clone, cloneDeep} from "lodash";
+import FormItemPropertyPipeline from "@/views/admin/pipeline/components/FormItemPropertyPipeline.vue";
+import PipelineService from '@/services/user/PipelineService';
 
 const source = 'SOURCE';
 const sink = 'SINK';
 
 export default defineComponent({
   name: 'DetailsPipeline',
+  components: {FormItemPropertyPipeline},
   props: {
     isVisible: {
       type: Boolean,
@@ -122,7 +104,8 @@ export default defineComponent({
       sourceItems: [],
       pipelineFromItem: null,
       pipelineToItem: null,
-      formState: null as PipelineModel
+      formState: null as PipelineModel,
+      submitted: false
     }
   },
   created()
@@ -142,9 +125,7 @@ export default defineComponent({
         .then((response) => {
           if (response.status) {
             this.sourceItems = response.data.content
-              .filter((item: { pipelines: any; }) => {
-                return item.pipelines != null
-              })
+              .filter((item: { pipelines: any; }) => item.pipelines != null)
           }
         })
         .finally(() => {
@@ -168,15 +149,26 @@ export default defineComponent({
     },
     handlerSave()
     {
+      this.submitted = true
       this.formState.from.id = this.formState.from.source.id
       this.formState.from.configures = this.filterConfigure(this.formState.from, source)
-      this.formState.from.source = null
 
       this.formState.to.id = this.formState.to.source.id
       this.formState.to.configures = this.filterConfigure(this.formState.to, sink);
-      this.formState.to.source = null
-      console.log(this.formState)
-      this.handlerCancel()
+
+      PipelineService.submit(cloneDeep(this.formState))
+        .then((response) => {
+          if (response.status) {
+            this.$Message.success(`${this.$t('common.publish')} [ ${response.data} ] ${this.$t('common.success')}`)
+            this.handlerCancel()
+          }
+          else {
+            this.$Message.error(response.message)
+          }
+        })
+        .finally(() => {
+          this.submitted = false
+        })
     },
     handlerCancel()
     {
@@ -195,10 +187,18 @@ export default defineComponent({
     },
     filterConfigure(meta: PipelineMetaModel, type: string)
     {
-      return meta.source['pipelines']
+      const result = {};
+      meta.source['pipelines']
         .filter((item: { type: string; }) => item.type === type)[0]['fields']
         .filter((item: { input: any; }) => item.input)
-        .map((item: { origin: any; field: any; value: any; }) => ObjectCommon.getDynamicObject(item.origin ? item.origin : item.field, item.value))
+        .forEach((item: { [x: string]: any; }) => {
+          const key = Object.keys(item)[0];
+          const value = item[key];
+          if (value !== null) {
+            result[key] = value;
+          }
+        })
+      return result
     }
   },
   computed: {
@@ -215,15 +215,3 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-.datacap-drawer-footer {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-top: 1px solid #e8e8e8;
-  padding: 10px 16px;
-  text-align: right;
-  background: #fff;
-}
-</style>

@@ -128,4 +128,5 @@ export default {
   version: '版本',
   available: '可用',
   success: '成功',
+  publish: '发布',
 }

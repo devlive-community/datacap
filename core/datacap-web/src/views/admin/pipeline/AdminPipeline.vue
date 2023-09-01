@@ -162,6 +162,9 @@ export default defineComponent({
     handlerDetail(isOpen: boolean)
     {
       this.detail = isOpen
+      if (!isOpen) {
+        this.handlerInitialize(this.filter);
+      }
     }
   }
 })
