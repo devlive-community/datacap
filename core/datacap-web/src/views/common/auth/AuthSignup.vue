@@ -39,8 +39,16 @@
               </template>
             </Captcha>
             <Submit>{{ $t('common.register') }}</Submit>
-            <Button style="width: 100%; margin-top: 5px;" type="dashed" @click="handlerGoSignIn">{{ $t('common.login') }}</Button>
+            <Button style="width: 100%; margin-top: 5px; margin-bottom: 15px;"
+                    type="dashed"
+                    @click="handlerGoSignIn">
+              {{ $t('common.login') }}
+            </Button>
           </Login>
+          <Spin fix
+                size="large"
+                :show="loading">
+          </Spin>
         </div>
       </template>
     </Result>
@@ -181,6 +189,8 @@ export default defineComponent({
 .datacap-register {
   width: 400px;
   margin: 0 auto !important;
+  display: inline-block;
+  position: relative;
 }
 
 .datacap-register .ivu-poptip, .datacap-register .ivu-poptip-rel {
