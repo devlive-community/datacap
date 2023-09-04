@@ -50,6 +50,7 @@ const createHeaders = (i18n: any) => {
       key: 'executor',
       ellipsis: true,
       tooltip: true,
+      slot: 'executor',
       align: 'center',
       width: 100
     },
