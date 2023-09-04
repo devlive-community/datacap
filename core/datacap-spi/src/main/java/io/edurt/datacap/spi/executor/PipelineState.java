@@ -7,5 +7,6 @@ public enum PipelineState
     QUEUE,
     RUNNING,
     FAILURE,
-    SUCCESS
+    SUCCESS,
+    STOPPED
 }
