@@ -1,4 +1,4 @@
-package io.edurt.datacap.server.loader;
+package io.edurt.datacap.service.loader;
 
 import com.google.common.cache.CacheLoader;
 import io.edurt.datacap.captcha.entity.ResultEntity;

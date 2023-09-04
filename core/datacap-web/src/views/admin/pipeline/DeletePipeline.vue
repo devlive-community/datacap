@@ -3,9 +3,7 @@
     <Modal v-model="visible"
            :title="title"
            :closable="false"
-           :maskClosable="false"
-           :z-index="9"
-           :styles="{}">
+           :maskClosable="false">
       <List>
         <ListItem>{{ $t('pipeline.delete.deleteTip1') }}</ListItem>
         <ListItem>{{ $t('pipeline.delete.deleteTip2') }}</ListItem>

@@ -31,7 +31,7 @@
             <filtered>true</filtered>
         </fileSet>
         <fileSet>
-            <directory>src/main/etc/conf</directory>
+            <directory>${project.parent.basedir}/configure/etc/conf</directory>
             <outputDirectory>configure</outputDirectory>
             <includes>
                 <include>**/*.xml</include>

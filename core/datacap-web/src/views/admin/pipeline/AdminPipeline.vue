@@ -14,6 +14,14 @@
       <Table :loading="loading"
              :columns="headers"
              :data="finalData?.content">
+        <template #executor="{row}">
+          <Tooltip transfer
+                   :content="row.executor">
+            <Avatar :src="`/static/images/executor/${row.executor}.png`"
+                    size="small">
+            </Avatar>
+          </Tooltip>
+        </template>
         <template #from="{row}">
           <Tooltip transfer :content="row.from.name">
             <Avatar :src="'/static/images/plugin/' + row.from.type + '.png'" size="small"/>

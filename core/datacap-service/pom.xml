@@ -93,5 +93,10 @@
             <artifactId>jjwt</artifactId>
             <version>${jjwt.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-captcha</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

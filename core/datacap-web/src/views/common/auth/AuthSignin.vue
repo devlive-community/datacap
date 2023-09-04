@@ -23,10 +23,11 @@
             </Captcha>
             <Submit>{{ $t('common.login') }}</Submit>
             <Button style="width: 100%; margin-top: 5px;" type="dashed" @click="handlerGoSignup">{{ $t('common.register') }}</Button>
-            <Spin fix
-                  :show="loading">
-            </Spin>
           </Login>
+          <Spin fix
+                size="large"
+                :show="loading">
+          </Spin>
         </div>
       </template>
     </Result>
@@ -136,6 +137,8 @@ export default defineComponent({
 .datacap-login {
   width: 400px;
   margin: 0 auto !important;
+  display: inline-block;
+  position: relative;
 }
 
 .datacap-auto-login a {

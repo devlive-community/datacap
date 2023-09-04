@@ -50,6 +50,7 @@ const createHeaders = (i18n: any) => {
       key: 'executor',
       ellipsis: true,
       tooltip: true,
+      slot: 'executor',
       align: 'center',
       width: 100
     },
@@ -72,7 +73,8 @@ const createHeaders = (i18n: any) => {
       key: 'state',
       tooltip: true,
       align: 'center',
-      width: 100
+      fixed: 'right',
+      width: 120
     },
     {
       title: i18n.t('common.action'),
