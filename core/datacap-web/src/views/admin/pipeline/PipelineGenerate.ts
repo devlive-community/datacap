@@ -73,7 +73,8 @@ const createHeaders = (i18n: any) => {
       key: 'state',
       tooltip: true,
       align: 'center',
-      width: 100
+      fixed: 'right',
+      width: 120
     },
     {
       title: i18n.t('common.action'),

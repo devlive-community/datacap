@@ -1,9 +1,11 @@
-package io.edurt.datacap.server.configure;
+package io.edurt.datacap.service.initializer;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Maps;
 import io.edurt.datacap.captcha.entity.ResultEntity;
-import io.edurt.datacap.server.loader.CaptchaCacheLoader;
+import io.edurt.datacap.service.entity.PipelineEntity;
+import io.edurt.datacap.service.loader.CaptchaCacheLoader;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -12,6 +14,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -34,8 +40,20 @@ public class InitializerConfigure
     @Value(value = "${datacap.cache.expiration}")
     private Long cacheExpiration;
 
+    @Value(value = "${datacap.pipeline.maxRunning}")
+    private Integer maxRunning;
+
+    @Value(value = "${datacap.pipeline.maxQueue}")
+    private Integer maxQueue;
+
     @Getter
     private LoadingCache<Long, ResultEntity> cache;
+
+    @Getter
+    private BlockingQueue<PipelineEntity> taskQueue;
+
+    @Getter
+    private Map<String, ExecutorService> taskExecutors;
 
     /**
      * Initializes the function.
@@ -66,5 +84,44 @@ public class InitializerConfigure
                     .maximumSize(cacheMaximum)
                     .build(new CaptchaCacheLoader());
         }
+
+        if (ObjectUtils.isEmpty(maxRunning)) {
+            maxRunning = 100;
+        }
+        log.info("Datacap pipeline max running: {}", this.maxRunning);
+
+        if (ObjectUtils.isEmpty(maxQueue)) {
+            maxQueue = 200;
+        }
+        log.info("Datacap pipeline max queue: {}", this.maxQueue);
+
+        this.taskQueue = new LinkedBlockingQueue<>(this.maxQueue);
+        this.taskExecutors = Maps.newConcurrentMap();
+    }
+
+    /**
+     * Check if the task queue is full.
+     *
+     * @return true if the task queue is full, false otherwise
+     */
+    public boolean isQueueFull()
+    {
+        if (this.taskQueue.size() >= this.maxQueue) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the task is ready for submission.
+     *
+     * @return true if the number of task executors is equal to or greater than the maximum allowed running tasks, false otherwise
+     */
+    public boolean isSubmit()
+    {
+        if (this.taskExecutors.size() >= this.maxRunning) {
+            return true;
+        }
+        return false;
     }
 }

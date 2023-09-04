@@ -2,7 +2,7 @@ package io.edurt.datacap.server.controller.user;
 
 import io.edurt.datacap.captcha.entity.ResultEntity;
 import io.edurt.datacap.common.response.CommonResponse;
-import io.edurt.datacap.server.configure.InitializerConfigure;
+import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.body.AuthBody;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.service.UserService;

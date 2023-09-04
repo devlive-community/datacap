@@ -3,7 +3,7 @@ package io.edurt.datacap.server.controller;
 import io.edurt.datacap.captcha.CalculateUtils;
 import io.edurt.datacap.captcha.entity.ResultEntity;
 import io.edurt.datacap.common.response.CommonResponse;
-import io.edurt.datacap.server.configure.InitializerConfigure;
+import io.edurt.datacap.service.initializer.InitializerConfigure;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

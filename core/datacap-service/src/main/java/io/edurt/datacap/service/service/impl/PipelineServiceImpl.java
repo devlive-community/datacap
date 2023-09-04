@@ -8,6 +8,7 @@ import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.BeanToPropertiesUtils;
 import io.edurt.datacap.service.body.PipelineBody;
+import io.edurt.datacap.service.body.PipelineFieldBody;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.configure.IConfigureExecutor;
@@ -15,6 +16,7 @@ import io.edurt.datacap.service.configure.IConfigureExecutorField;
 import io.edurt.datacap.service.configure.IConfigurePipelineType;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.repository.PipelineRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
@@ -47,18 +49,19 @@ import java.util.concurrent.Executors;
 public class PipelineServiceImpl
         implements PipelineService
 {
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final SourceRepository repository;
     private final Injector injector;
     private final Environment environment;
     private final PipelineRepository pipelineRepository;
+    private final InitializerConfigure initializer;
 
-    public PipelineServiceImpl(SourceRepository repository, Injector injector, Environment environment, PipelineRepository pipelineRepository)
+    public PipelineServiceImpl(SourceRepository repository, Injector injector, Environment environment, PipelineRepository pipelineRepository, InitializerConfigure initializer)
     {
         this.repository = repository;
         this.injector = injector;
         this.environment = environment;
         this.pipelineRepository = pipelineRepository;
+        this.initializer = initializer;
     }
 
     @Override
@@ -105,10 +108,7 @@ public class PipelineServiceImpl
             return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE_TYPE, message);
         }
 
-        Optional<Executor> executorOptional = injector.getInstance(Key.get(new TypeLiteral<Set<Executor>>() {}))
-                .stream()
-                .filter(executor -> executor.name().equals(configure.getExecutor()))
-                .findFirst();
+        PipelineEntity pipelineEntity = new PipelineEntity();
 
         // FROM source
         Properties fromOriginProperties = configure.getFrom().getConfigures();
@@ -142,63 +142,100 @@ public class PipelineServiceImpl
                 .configure(toProperties)
                 .supportOptions(toOptions)
                 .build();
-
-        String executorHome = environment.getProperty("datacap.executor.data");
-        if (StringUtils.isEmpty(executorHome)) {
-            executorHome = String.join(File.separator, System.getProperty("user.dir"), "data");
+        if (ObjectUtils.isNotEmpty(configure.getId())) {
+            pipelineEntity = this.pipelineRepository.findById(configure.getId()).get();
+        }
+        else {
+            String executorHome = environment.getProperty("datacap.executor.data");
+            if (StringUtils.isEmpty(executorHome)) {
+                executorHome = String.join(File.separator, System.getProperty("user.dir"), "data");
+            }
+            String username = UserDetailsService.getUser().getUsername();
+            String pipelineHome = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMddHHmmssSSS");
+            String work = String.join(File.separator, executorHome, username, pipelineHome);
+            String pipelineName = String.join("_",
+                    username,
+                    configure.getExecutor().toLowerCase(),
+                    "from",
+                    String.valueOf(fromSource.getId()),
+                    "to",
+                    String.valueOf(toSource.getId()),
+                    pipelineHome);
+            pipelineEntity.setName(pipelineName);
+            pipelineEntity.setContent(configure.getContent());
+            pipelineEntity.setState(PipelineState.CREATED);
+            pipelineEntity.setWork(work);
+            pipelineEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
+            pipelineEntity.setUser(UserDetailsService.getUser());
+            pipelineEntity.setFrom(fromSource);
+            pipelineEntity.setFromConfigures(fromProperties);
+            pipelineEntity.setTo(toSource);
+            pipelineEntity.setToConfigures(toProperties);
         }
 
-        String username = UserDetailsService.getUser().getUsername();
-        String pipelineHome = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMddHHmmssSSS");
-        String work = String.join(File.separator, executorHome, username, pipelineHome);
-        String pipelineName = String.join("_",
-                username,
-                configure.getExecutor().toLowerCase(),
-                "from",
-                String.valueOf(fromSource.getId()),
-                "to",
-                String.valueOf(toSource.getId()),
-                pipelineHome);
-        try {
-            FileUtils.forceMkdir(new File(work));
+        String pipelineName = pipelineEntity.getName();
+        String work = pipelineEntity.getWork();
+        if (initializer.isSubmit()) {
+            log.info("Pipeline containers is full, submit to queue [ {} ]", pipelineName);
+            pipelineEntity.setState(PipelineState.QUEUE);
+            pipelineRepository.save(pipelineEntity);
+            if (initializer.getTaskQueue().offer(pipelineEntity)) {
+                log.info("Pipeline containers is full, submit to executor [ {} ]", pipelineName);
+            }
         }
-        catch (Exception e) {
-            log.warn("Failed to create temporary directory", e);
-        }
-        Pipeline pipeline = Pipeline.builder()
-                .work(work)
-                .home(environment.getProperty(String.format("datacap.executor.%s.home", configure.getExecutor().toLowerCase(Locale.ROOT))))
-                .pipelineName(pipelineName)
-                .username(UserDetailsService.getUser().getUsername())
-                .from(fromField)
-                .to(toField)
-                .timeout(600)
-                .build();
-
-        PipelineEntity pipelineEntity = new PipelineEntity();
-        pipelineEntity.setName(pipelineName);
-        pipelineEntity.setContent(configure.getContent());
-        pipelineEntity.setState(PipelineState.CREATED);
-        pipelineEntity.setWork(work);
-        pipelineEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
-        pipelineEntity.setUser(UserDetailsService.getUser());
-        pipelineEntity.setFrom(fromSource);
-        pipelineEntity.setFromConfigures(fromProperties);
-        pipelineEntity.setTo(toSource);
-        pipelineEntity.setToConfigures(toProperties);
-        pipelineRepository.save(pipelineEntity);
-
-        executorService.submit(() -> {
+        else {
+            log.info("Pipeline containers is not full, submit to executor [ {} ]", pipelineName);
             pipelineEntity.setState(PipelineState.RUNNING);
             pipelineRepository.save(pipelineEntity);
+            Optional<Executor> executorOptional = injector.getInstance(Key.get(new TypeLiteral<Set<Executor>>() {}))
+                    .stream()
+                    .filter(executor -> executor.name().equals(configure.getExecutor()))
+                    .findFirst();
 
-            PipelineResponse response = executorOptional.get().start(pipeline);
-            pipelineEntity.setEndTime(new Timestamp(System.currentTimeMillis()));
-            pipelineEntity.setState(response.getState());
-            pipelineEntity.setMessage(response.getMessage());
-            pipelineEntity.setElapsed(pipelineEntity.getElapsed());
-            pipelineRepository.save(pipelineEntity);
-        });
+            try {
+                FileUtils.forceMkdir(new File(work));
+            }
+            catch (Exception e) {
+                log.warn("Failed to create temporary directory", e);
+            }
+            Pipeline pipeline = Pipeline.builder()
+                    .work(work)
+                    .home(environment.getProperty(String.format("datacap.executor.%s.home", configure.getExecutor().toLowerCase(Locale.ROOT))))
+                    .pipelineName(pipelineName)
+                    .username(UserDetailsService.getUser().getUsername())
+                    .from(fromField)
+                    .to(toField)
+                    .timeout(600)
+                    .build();
+
+            final ExecutorService executorService = Executors.newCachedThreadPool();
+            PipelineEntity finalPipelineEntity = pipelineEntity;
+            executorService.submit(() -> {
+                initializer.getTaskExecutors()
+                        .put(pipelineName, executorService);
+                PipelineResponse response = executorOptional.get()
+                        .start(pipeline);
+                finalPipelineEntity.setEndTime(new Timestamp(System.currentTimeMillis()));
+                finalPipelineEntity.setState(response.getState());
+                finalPipelineEntity.setMessage(response.getMessage());
+                finalPipelineEntity.setElapsed(finalPipelineEntity.getElapsed());
+                pipelineRepository.save(finalPipelineEntity);
+                initializer.getTaskExecutors()
+                        .remove(pipelineName);
+                executorService.shutdownNow();
+                log.info("Pipeline [ {} ] finished", pipelineName);
+
+                PipelineEntity entity = initializer.getTaskQueue()
+                        .poll();
+                if (ObjectUtils.isNotEmpty(entity)) {
+                    log.info("Extract tasks from the queue [ {} ] and start execution", entity.getName());
+                    this.submit(entityToBody(entity));
+                }
+                else {
+                    log.warn("The queue extraction task failed. Please check whether there are tasks in the queue. The current number of queue tasks: [ {} ]", initializer.getTaskQueue().size());
+                }
+            });
+        }
         return CommonResponse.success(pipelineEntity.getId());
     }
 
@@ -237,5 +274,30 @@ public class PipelineServiceImpl
             }
         }
         properties.put(field.getField(), value);
+    }
+
+    /**
+     * Converts a PipelineEntity object to a PipelineBody object.
+     *
+     * @param entity the PipelineEntity object to convert
+     * @return the converted PipelineBody object
+     */
+    private PipelineBody entityToBody(PipelineEntity entity)
+    {
+        PipelineFieldBody from = PipelineFieldBody.builder()
+                .id(entity.getFrom().getId())
+                .configures(entity.getFromConfigures())
+                .build();
+        PipelineFieldBody to = PipelineFieldBody.builder()
+                .id(entity.getTo().getId())
+                .configures(entity.getToConfigures())
+                .build();
+        return PipelineBody.builder()
+                .id(entity.getId())
+                .content(entity.getContent())
+                .from(from)
+                .to(to)
+                .executor(entity.getExecutor())
+                .build();
     }
 }
