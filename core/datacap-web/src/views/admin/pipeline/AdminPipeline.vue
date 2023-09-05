@@ -23,21 +23,47 @@
           </Tooltip>
         </template>
         <template #from="{row}">
-          <Tooltip transfer :content="row.from.name">
-            <Avatar :src="'/static/images/plugin/' + row.from.type + '.png'" size="small"/>
+          <Tooltip transfer
+                   :content="row.from.name">
+            <Avatar :src="'/static/images/plugin/' + row.from.type + '.png'"
+                    size="small">
+            </Avatar>
           </Tooltip>
         </template>
         <template #to="{row}">
-          <Tooltip transfer :content="row.to.name">
-            <Avatar :src="'/static/images/plugin/' + row.to.type + '.png'" size="small"/>
+          <Tooltip transfer
+                   :content="row.to.name">
+            <Avatar :src="'/static/images/plugin/' + row.to.type + '.png'"
+                    size="small">
+            </Avatar>
           </Tooltip>
+        </template>
+        <template #state="{row}">
+          <Tag :color="getColor(row.state)">
+            {{ getStateText(row.state) }}
+          </Tag>
         </template>
         <template #action="{ row }">
           <Space>
             <Tooltip :content="$t('common.error')"
                      transfer>
-              <Button shape="circle" :disabled="row.state !== 'FAILURE'" type="error" size="small" icon="md-bug"
-                      @click="handlerVisibleMarkdownPreview(row.message, true)"/>
+              <Button shape="circle"
+                      :disabled="row.state !== 'FAILURE'"
+                      type="error"
+                      size="small"
+                      icon="md-bug"
+                      @click="handlerVisibleMarkdownPreview(row.message, true)">
+              </Button>
+            </Tooltip>
+            <Tooltip :content="$t('common.stop')"
+                     transfer>
+              <Button shape="circle"
+                      :disabled="row.state === 'STOPPED' || row.state === 'SUCCESS' || row.state === 'FAILURE' || row.state === 'TIMEOUT'"
+                      type="warning"
+                      size="small"
+                      icon="md-square"
+                      @click="handlerStop(row, true)">
+              </Button>
             </Tooltip>
             <Tooltip :content="$t('common.delete')"
                      transfer>
@@ -51,11 +77,20 @@
           </Space>
         </template>
       </Table>
-      <p v-if="!loading" style="margin-top: 10px;">
-        <Page v-model="pagination.current" :total="pagination.total" :page-size="pagination.size" show-sizer show-elevator show-total
-              @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
+      <p v-if="!loading"
+         style="margin-top: 10px;">
+        <Page v-model="pagination.current"
+              :total="pagination.total"
+              :page-size="pagination.size"
+              show-sizer
+              show-elevator
+              show-total
+              @on-page-size-change="handlerSizeChange"
+              @on-change="handlerIndexChange">
+        </Page>
       </p>
     </Card>
+
     <MarkdownPreview v-if="visibleWarning"
                      :isVisible="visibleWarning"
                      :content="finalContent"
@@ -69,9 +104,15 @@
     </DeletePipeline>
 
     <DetailsPipeline v-if="detail"
-                     is-visible="detail"
+                     :is-visible="detail"
                      @close="handlerDetail(false)">
     </DetailsPipeline>
+
+    <StopPipeline v-if="stopped"
+                  :is-visible="stopped"
+                  :info="info"
+                  @close="handlerStop(null, false)">
+    </StopPipeline>
   </div>
 </template>
 
@@ -81,17 +122,19 @@ import {useI18n} from 'vue-i18n';
 import {Filter} from "@/model/Filter";
 import {ResponsePage} from "@/model/ResponsePage";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
-import {createHeaders} from "@/views/admin/pipeline/PipelineGenerate";
+import {createHeaders, getColor, getText} from "@/views/admin/pipeline/PipelineGenerate";
 import PipelineService from "@/services/user/PipelineService";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import DeletePipeline from "@/views/admin/pipeline/DeletePipeline.vue";
 import DetailsPipeline from "@/views/admin/pipeline/DetailPipeline.vue";
+import StopPipeline from "@/views/admin/pipeline/StopPipeline.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
+
 export default defineComponent({
   name: 'UserPipelineHome',
-  components: {DetailsPipeline, DeletePipeline, MarkdownPreview},
+  components: {StopPipeline, DetailsPipeline, DeletePipeline, MarkdownPreview},
   setup()
   {
     const i18n = useI18n();
@@ -99,7 +142,8 @@ export default defineComponent({
     return {
       headers,
       filter,
-      pagination
+      pagination,
+      i18n
     }
   },
   data()
@@ -112,7 +156,8 @@ export default defineComponent({
       deleted: false,
       info: null,
       // Pipeline detail
-      detail: false
+      detail: false,
+      stopped: false
     }
   },
   created()
@@ -120,6 +165,8 @@ export default defineComponent({
     this.handlerInitialize(this.filter);
   },
   methods: {
+    getColor,
+    getText,
     handlerInitialize(filter: Filter)
     {
       this.loading = true;
@@ -173,6 +220,18 @@ export default defineComponent({
       if (!isOpen) {
         this.handlerInitialize(this.filter);
       }
+    },
+    handlerStop(row: any, isOpen: boolean)
+    {
+      this.stopped = isOpen
+      this.info = row
+      if (!isOpen) {
+        this.handlerInitialize(this.filter);
+      }
+    },
+    getStateText(origin: string): string
+    {
+      return getText(this.i18n, origin);
     }
   }
 })

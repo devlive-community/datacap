@@ -72,6 +72,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.state'),
       key: 'state',
       tooltip: true,
+      slot: 'state',
       align: 'center',
       fixed: 'right',
       width: 120
@@ -87,6 +88,59 @@ const createHeaders = (i18n: any) => {
   ];
 };
 
+/**
+ * Retrieves the text based on the given origin value.
+ *
+ * @param {any} i18n - the internationalization object
+ * @param {string} origin - the origin value to determine the text to retrieve
+ * @return {string} the text based on the origin value
+ */
+const getText = (i18n: any, origin: string): string => {
+  switch (origin) {
+    case 'CREATED':
+      return i18n.t('pipeline.common.create');
+    case 'RUNNING':
+      return i18n.t('pipeline.common.running');
+    case 'SUCCESS':
+      return i18n.t('pipeline.common.success');
+    case 'FAILURE':
+      return i18n.t('pipeline.common.failure');
+    case 'STOPPED':
+      return i18n.t('pipeline.common.stop');
+    case 'TIMEOUT':
+      return i18n.t('pipeline.common.timeout');
+    default:
+      return origin;
+  }
+}
+
+/**
+ * Returns the color based on the origin.
+ *
+ * @param {string} origin - The origin value.
+ * @return {string} The color based on the origin.
+ */
+const getColor = (origin: string): string => {
+  switch (origin) {
+    case 'CREATED':
+      return 'cyan';
+    case 'RUNNING':
+      return 'primary';
+    case 'SUCCESS':
+      return 'success';
+    case 'FAILURE':
+      return 'error';
+    case 'STOPPED':
+      return '#17233d';
+    case 'TIMEOUT':
+      return 'warning';
+    default:
+      return 'blue';
+  }
+}
+
 export {
-  createHeaders
+  createHeaders,
+  getText,
+  getColor
 }

@@ -57,6 +57,11 @@ export abstract class BaseService<T>
     return new HttpCommon().delete(`${this.baseUrl}/${id}`);
   }
 
+  stop(id: number): Promise<ResponseModel>
+  {
+    return new HttpCommon().put(`${this.baseUrl}/stop/${id}`);
+  }
+
   /**
    * Filter the corresponding data according to the name
    * @param name
