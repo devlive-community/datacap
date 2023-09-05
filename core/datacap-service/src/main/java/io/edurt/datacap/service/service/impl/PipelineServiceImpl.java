@@ -49,30 +49,30 @@ import java.util.concurrent.Executors;
 public class PipelineServiceImpl
         implements PipelineService
 {
-    private final SourceRepository repository;
+    private final SourceRepository sourceRepository;
     private final Injector injector;
     private final Environment environment;
-    private final PipelineRepository pipelineRepository;
+    private final PipelineRepository repository;
     private final InitializerConfigure initializer;
 
-    public PipelineServiceImpl(SourceRepository repository, Injector injector, Environment environment, PipelineRepository pipelineRepository, InitializerConfigure initializer)
+    public PipelineServiceImpl(SourceRepository sourceRepository, Injector injector, Environment environment, PipelineRepository repository, InitializerConfigure initializer)
     {
-        this.repository = repository;
+        this.sourceRepository = sourceRepository;
         this.injector = injector;
         this.environment = environment;
-        this.pipelineRepository = pipelineRepository;
+        this.repository = repository;
         this.initializer = initializer;
     }
 
     @Override
     public CommonResponse<Object> submit(PipelineBody configure)
     {
-        Optional<SourceEntity> fromSourceOptional = repository.findById(configure.getFrom().getId());
+        Optional<SourceEntity> fromSourceOptional = sourceRepository.findById(configure.getFrom().getId());
         if (!fromSourceOptional.isPresent()) {
             return CommonResponse.failure(String.format("From source [ %s ] not found", configure.getFrom().getId()));
         }
 
-        Optional<SourceEntity> toSourceOptional = repository.findById(configure.getTo().getId());
+        Optional<SourceEntity> toSourceOptional = sourceRepository.findById(configure.getTo().getId());
         if (!toSourceOptional.isPresent()) {
             return CommonResponse.failure(String.format("To source [ %s ] not found", configure.getTo().getId()));
         }
@@ -143,7 +143,7 @@ public class PipelineServiceImpl
                 .supportOptions(toOptions)
                 .build();
         if (ObjectUtils.isNotEmpty(configure.getId())) {
-            pipelineEntity = this.pipelineRepository.findById(configure.getId()).get();
+            pipelineEntity = this.repository.findById(configure.getId()).get();
         }
         else {
             String executorHome = environment.getProperty("datacap.executor.data");
@@ -178,7 +178,7 @@ public class PipelineServiceImpl
         if (initializer.isSubmit()) {
             log.info("Pipeline containers is full, submit to queue [ {} ]", pipelineName);
             pipelineEntity.setState(PipelineState.QUEUE);
-            pipelineRepository.save(pipelineEntity);
+            repository.save(pipelineEntity);
             if (initializer.getTaskQueue().offer(pipelineEntity)) {
                 log.info("Pipeline containers is full, submit to executor [ {} ]", pipelineName);
             }
@@ -186,7 +186,7 @@ public class PipelineServiceImpl
         else {
             log.info("Pipeline containers is not full, submit to executor [ {} ]", pipelineName);
             pipelineEntity.setState(PipelineState.RUNNING);
-            pipelineRepository.save(pipelineEntity);
+            repository.save(pipelineEntity);
             Optional<Executor> executorOptional = injector.getInstance(Key.get(new TypeLiteral<Set<Executor>>() {}))
                     .stream()
                     .filter(executor -> executor.name().equals(configure.getExecutor()))
@@ -219,7 +219,7 @@ public class PipelineServiceImpl
                 finalPipelineEntity.setState(response.getState());
                 finalPipelineEntity.setMessage(response.getMessage());
                 finalPipelineEntity.setElapsed(finalPipelineEntity.getElapsed());
-                pipelineRepository.save(finalPipelineEntity);
+                repository.save(finalPipelineEntity);
                 initializer.getTaskExecutors()
                         .remove(pipelineName);
                 executorService.shutdownNow();
@@ -237,6 +237,41 @@ public class PipelineServiceImpl
             });
         }
         return CommonResponse.success(pipelineEntity.getId());
+    }
+
+    @Override
+    public CommonResponse<Boolean> stop(Long id)
+    {
+        Optional<PipelineEntity> pipelineOptional = this.repository.findById(id);
+        if (!pipelineOptional.isPresent()) {
+            return CommonResponse.failure(String.format("Pipeline [ %s ] not found", id));
+        }
+
+        PipelineEntity entity = pipelineOptional.get();
+        if (entity.getState().equals(PipelineState.STOPPED)
+                || entity.getState().equals(PipelineState.FAILURE)
+                || entity.getState().equals(PipelineState.SUCCESS)
+                || entity.getState().equals(PipelineState.TIMEOUT)) {
+            return CommonResponse.failure(String.format("Pipeline [ %s ] is already stopped", entity.getName()));
+        }
+
+        ExecutorService service = initializer.getTaskExecutors()
+                .get(entity.getName());
+        if (service != null) {
+            service.shutdownNow();
+        }
+        entity.setState(PipelineState.STOPPED);
+        this.repository.save(entity);
+
+        // Consume queue data for execution
+        if (initializer.getTaskQueue().size() > 0) {
+            PipelineEntity queueEntity = initializer.getTaskQueue()
+                    .poll();
+            if (queueEntity != null) {
+                this.submit(entityToBody(queueEntity));
+            }
+        }
+        return CommonResponse.success(true);
     }
 
     private Properties merge(SourceEntity entity, List<IConfigureExecutorField> fields, Properties configure)

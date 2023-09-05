@@ -1,4 +1,12 @@
 export default {
+  common: {
+    create: 'Created',
+    running: 'Running',
+    success: 'Success',
+    failure: 'Failure',
+    stop: 'Stopped',
+    timeout: 'Timeout'
+  },
   delete: {
     deleteTip1: 'This action cannot be undone.',
     deleteTip2: 'Are you sure you want to delete this pipeline?',

@@ -7,4 +7,6 @@ public interface PipelineService
         extends BaseService
 {
     CommonResponse<Object> submit(PipelineBody configure);
+
+    CommonResponse<Boolean> stop(Long id);
 }
