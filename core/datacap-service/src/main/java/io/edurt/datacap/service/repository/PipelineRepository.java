@@ -14,5 +14,5 @@ public interface PipelineRepository
 {
     Page<PipelineEntity> findAllByUser(UserEntity user, Pageable pageable);
 
-    List<PipelineEntity> findAllByStateIs(PipelineState state);
+    List<PipelineEntity> findAllByStateIn(List<PipelineState> state);
 }

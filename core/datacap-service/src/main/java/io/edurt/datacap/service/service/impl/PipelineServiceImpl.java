@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -27,6 +28,7 @@ import io.edurt.datacap.spi.executor.PipelineResponse;
 import io.edurt.datacap.spi.executor.PipelineState;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -34,6 +36,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Locale;
@@ -260,6 +264,7 @@ public class PipelineServiceImpl
             service.shutdownNow();
         }
         entity.setState(PipelineState.STOPPED);
+        entity.setMessage(null);
         this.repository.save(entity);
 
         // Consume queue data for execution
@@ -271,6 +276,37 @@ public class PipelineServiceImpl
             }
         }
         return CommonResponse.success(true);
+    }
+
+    /**
+     * Retrieves the log for a given pipeline ID.
+     *
+     * @param id the ID of the pipeline
+     * @return a response containing the log lines as a list of strings
+     */
+    @Override
+    public CommonResponse<List<String>> log(Long id)
+    {
+        Optional<PipelineEntity> pipelineOptional = this.repository.findById(id);
+        if (!pipelineOptional.isPresent()) {
+            return CommonResponse.failure(String.format("Pipeline [ %s ] not found", id));
+        }
+
+        PipelineEntity entity = pipelineOptional.get();
+        if (entity.getState().equals(PipelineState.QUEUE)
+                || entity.getState().equals(PipelineState.CREATED)) {
+            return CommonResponse.failure(String.format("Pipeline [ %s ] is not running", entity.getName()));
+        }
+
+        List<String> lines = Lists.newArrayList();
+        try (FileInputStream stream = new FileInputStream(new File(String.format("%s/%s.log", entity.getWork(), entity.getName())))) {
+            IOUtils.readLines(stream, "UTF-8")
+                    .forEach(lines::add);
+        }
+        catch (IOException e) {
+            log.error("Failed to read pipeline [ {} ] log ", entity.getName(), e);
+        }
+        return CommonResponse.success(lines);
     }
 
     private Properties merge(SourceEntity entity, List<IConfigureExecutorField> fields, Properties configure)

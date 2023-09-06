@@ -55,6 +55,16 @@
                       @click="handlerVisibleMarkdownPreview(row.message, true)">
               </Button>
             </Tooltip>
+            <Tooltip :content="$t('common.log')"
+                     transfer>
+              <Button shape="circle"
+                      :disabled="row.state === 'QUEUE' || row.state === 'CREATED'"
+                      type="primary"
+                      size="small"
+                      icon="md-bulb"
+                      @click="handlerVisibleMarkdownPreview(row.message, true)">
+              </Button>
+            </Tooltip>
             <Tooltip :content="$t('common.stop')"
                      transfer>
               <Button shape="circle"

@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.runner;
 
+import com.clearspring.analytics.util.Lists;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.repository.PipelineRepository;
 import io.edurt.datacap.service.service.PipelineService;
@@ -45,7 +46,11 @@ public class PipelineResetRunner
             resetState = PipelineState.STOPPED;
         }
 
-        List<PipelineEntity> pipelines = repository.findAllByStateIs(PipelineState.RUNNING);
+        List<PipelineState> states = Lists.newArrayList();
+        states.add(PipelineState.RUNNING);
+        states.add(PipelineState.CREATED);
+        states.add(PipelineState.QUEUE);
+        List<PipelineEntity> pipelines = repository.findAllByStateIn(states);
         for (PipelineEntity pipeline : pipelines) {
             log.info("Reset pipeline [ {} ] user [ {} ]", pipeline.getName(), pipeline.getUser().getUsername());
             pipeline.setState(resetState);
