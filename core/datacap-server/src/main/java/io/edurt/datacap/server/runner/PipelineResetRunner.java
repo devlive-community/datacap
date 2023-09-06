@@ -1,7 +1,6 @@
 package io.edurt.datacap.server.runner;
 
 import io.edurt.datacap.service.entity.PipelineEntity;
-import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.repository.PipelineRepository;
 import io.edurt.datacap.service.service.PipelineService;
 import io.edurt.datacap.spi.executor.PipelineState;
@@ -28,14 +27,12 @@ public class PipelineResetRunner
     private final EntityManager entityManager;
     private final PipelineRepository repository;
     private final PipelineService service;
-    private final InitializerConfigure initializer;
 
-    public PipelineResetRunner(EntityManager entityManager, PipelineRepository repository, PipelineService service, InitializerConfigure initializer)
+    public PipelineResetRunner(EntityManager entityManager, PipelineRepository repository, PipelineService service)
     {
         this.entityManager = entityManager;
         this.repository = repository;
         this.service = service;
-        this.initializer = initializer;
     }
 
     @Override
