@@ -21,6 +21,11 @@ class PipelineService
     return new HttpCommon().post(`${baseUrl}/submit`, configure);
   }
 
+  logger(id: number): Promise<ResponseModel>
+  {
+    return new HttpCommon().get(`${baseUrl}/log/${id}`);
+  }
+
   getByName<T>(name: string): Promise<ResponseModel>
   {
     return Promise.resolve(undefined);

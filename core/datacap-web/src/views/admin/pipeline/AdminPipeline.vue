@@ -48,11 +48,21 @@
             <Tooltip :content="$t('common.error')"
                      transfer>
               <Button shape="circle"
-                      :disabled="row.state !== 'FAILURE'"
+                      :disabled="row.state !== 'FAILURE' && !(row.state == 'STOPPED' && row.message)"
                       type="error"
                       size="small"
                       icon="md-bug"
                       @click="handlerVisibleMarkdownPreview(row.message, true)">
+              </Button>
+            </Tooltip>
+            <Tooltip :content="$t('common.log')"
+                     transfer>
+              <Button shape="circle"
+                      :disabled="row.state === 'QUEUE' || row.state === 'CREATED'"
+                      type="primary"
+                      size="small"
+                      icon="md-bulb"
+                      @click="handlerLogger(row, true)">
               </Button>
             </Tooltip>
             <Tooltip :content="$t('common.stop')"
@@ -113,6 +123,12 @@
                   :info="info"
                   @close="handlerStop(null, false)">
     </StopPipeline>
+
+    <LoggerPipeline v-if="logger"
+                    :is-visible="logger"
+                    :info="info"
+                    @close="handlerLogger(null, false)">
+    </LoggerPipeline>
   </div>
 </template>
 
@@ -128,13 +144,14 @@ import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import DeletePipeline from "@/views/admin/pipeline/DeletePipeline.vue";
 import DetailsPipeline from "@/views/admin/pipeline/DetailPipeline.vue";
 import StopPipeline from "@/views/admin/pipeline/StopPipeline.vue";
+import LoggerPipeline from "@/views/admin/pipeline/components/LoggerPipeline.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 
 export default defineComponent({
   name: 'UserPipelineHome',
-  components: {StopPipeline, DetailsPipeline, DeletePipeline, MarkdownPreview},
+  components: {LoggerPipeline, StopPipeline, DetailsPipeline, DeletePipeline, MarkdownPreview},
   setup()
   {
     const i18n = useI18n();
@@ -157,7 +174,8 @@ export default defineComponent({
       info: null,
       // Pipeline detail
       detail: false,
-      stopped: false
+      stopped: false,
+      logger: false
     }
   },
   created()
@@ -228,6 +246,11 @@ export default defineComponent({
       if (!isOpen) {
         this.handlerInitialize(this.filter);
       }
+    },
+    handlerLogger(row: any, isOpen: boolean)
+    {
+      this.logger = isOpen
+      this.info = row
     },
     getStateText(origin: string): string
     {
