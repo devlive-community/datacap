@@ -48,7 +48,7 @@
             <Tooltip :content="$t('common.error')"
                      transfer>
               <Button shape="circle"
-                      :disabled="row.state !== 'FAILURE'"
+                      :disabled="row.state !== 'FAILURE' && !(row.state == 'STOPPED' && row.message)"
                       type="error"
                       size="small"
                       icon="md-bug"
