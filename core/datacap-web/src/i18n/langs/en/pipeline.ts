@@ -5,7 +5,8 @@ export default {
     success: 'Success',
     failure: 'Failure',
     stop: 'Stopped',
-    timeout: 'Timeout'
+    timeout: 'Timeout',
+    queue: 'Queue'
   },
   delete: {
     deleteTip1: 'This action cannot be undone.',

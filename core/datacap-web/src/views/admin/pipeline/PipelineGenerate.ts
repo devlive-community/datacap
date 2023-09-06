@@ -109,6 +109,8 @@ const getText = (i18n: any, origin: string): string => {
       return i18n.t('pipeline.common.stop');
     case 'TIMEOUT':
       return i18n.t('pipeline.common.timeout');
+    case 'QUEUE':
+      return i18n.t('pipeline.common.queue');
     default:
       return origin;
   }

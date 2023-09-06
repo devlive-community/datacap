@@ -76,7 +76,7 @@ public class LogbackExecutor
         PatternLayoutEncoder encoder = new PatternLayoutEncoder();
         ENCODER_CONTAINER.put(this.name, encoder);
         encoder.setContext(context);
-        String pattern = "%date %level [%thread] %logger{10} [%file:%line] %msg%n";
+        String pattern = "%date %highlight(%-5level) %boldMagenta([%thread]) %cyan([%file:%line]) %msg%n";
         encoder.setPattern(pattern);
         encoder.setCharset(Charset.forName("utf-8"));
         encoder.start();
