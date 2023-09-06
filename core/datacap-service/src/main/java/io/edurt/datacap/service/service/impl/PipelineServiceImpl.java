@@ -33,6 +33,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.core.env.Environment;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -309,6 +310,33 @@ public class PipelineServiceImpl
         return CommonResponse.success(lines);
     }
 
+    @Override
+    public CommonResponse<Long> deleteById(PagingAndSortingRepository repository, Long id)
+    {
+        Optional<PipelineEntity> pipelineOptional = this.repository.findById(id);
+        if (!pipelineOptional.isPresent()) {
+            return CommonResponse.failure(String.format("Pipeline [ %s ] not found", id));
+        }
+
+        PipelineEntity entity = pipelineOptional.get();
+        log.info("Delete pipeline [ {} ] work home", entity.getName());
+        try {
+            FileUtils.deleteDirectory(new File(entity.getWork()));
+        }
+        catch (IOException e) {
+            log.warn("Failed to delete pipeline [ {} ] work home {}", entity.getName(), e);
+        }
+        return PipelineService.super.deleteById(repository, id);
+    }
+
+    /**
+     * Merges the properties of a source entity with a list of fields and a configuration.
+     *
+     * @param entity the source entity
+     * @param fields the list of fields
+     * @param configure the configuration
+     * @return the merged properties
+     */
     private Properties merge(SourceEntity entity, List<IConfigureExecutorField> fields, Properties configure)
     {
         Properties properties = new Properties();
@@ -324,6 +352,13 @@ public class PipelineServiceImpl
         return properties;
     }
 
+    /**
+     * Sets the property value for the given field.
+     *
+     * @param field the field to set the property value for
+     * @param properties the properties object to store the property
+     * @param configure the configuration properties object
+     */
     private void setProperty(IConfigureExecutorField field, Properties properties, Properties configure)
     {
         Object value = "None";
