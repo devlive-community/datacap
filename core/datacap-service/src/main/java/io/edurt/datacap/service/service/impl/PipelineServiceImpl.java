@@ -8,7 +8,6 @@ import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.BeanToPropertiesUtils;
 import io.edurt.datacap.service.body.PipelineBody;
-import io.edurt.datacap.service.body.PipelineFieldBody;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.configure.IConfigureExecutor;
@@ -229,7 +228,7 @@ public class PipelineServiceImpl
                         .poll();
                 if (ObjectUtils.isNotEmpty(entity)) {
                     log.info("Extract tasks from the queue [ {} ] and start execution", entity.getName());
-                    this.submit(entityToBody(entity));
+                    this.submit(entity.entityToBody());
                 }
                 else {
                     log.warn("The queue extraction task failed. Please check whether there are tasks in the queue. The current number of queue tasks: [ {} ]", initializer.getTaskQueue().size());
@@ -268,7 +267,7 @@ public class PipelineServiceImpl
             PipelineEntity queueEntity = initializer.getTaskQueue()
                     .poll();
             if (queueEntity != null) {
-                this.submit(entityToBody(queueEntity));
+                this.submit(entity.entityToBody());
             }
         }
         return CommonResponse.success(true);
@@ -309,30 +308,5 @@ public class PipelineServiceImpl
             }
         }
         properties.put(field.getField(), value);
-    }
-
-    /**
-     * Converts a PipelineEntity object to a PipelineBody object.
-     *
-     * @param entity the PipelineEntity object to convert
-     * @return the converted PipelineBody object
-     */
-    private PipelineBody entityToBody(PipelineEntity entity)
-    {
-        PipelineFieldBody from = PipelineFieldBody.builder()
-                .id(entity.getFrom().getId())
-                .configures(entity.getFromConfigures())
-                .build();
-        PipelineFieldBody to = PipelineFieldBody.builder()
-                .id(entity.getTo().getId())
-                .configures(entity.getToConfigures())
-                .build();
-        return PipelineBody.builder()
-                .id(entity.getId())
-                .content(entity.getContent())
-                .from(from)
-                .to(to)
-                .executor(entity.getExecutor())
-                .build();
     }
 }

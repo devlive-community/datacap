@@ -3,6 +3,8 @@ package io.edurt.datacap.service.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.service.body.PipelineBody;
+import io.edurt.datacap.service.body.PipelineFieldBody;
 import io.edurt.datacap.service.converter.PropertiesConverter;
 import io.edurt.datacap.spi.executor.PipelineState;
 import lombok.Data;
@@ -91,7 +93,6 @@ public class PipelineEntity
     @JoinTable(name = "pipeline_user_relation",
             joinColumns = @JoinColumn(name = "pipeline_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @JsonIncludeProperties(value = {"id", "username"})
     private UserEntity user;
 
     public long getElapsed()
@@ -103,5 +104,29 @@ public class PipelineEntity
             elapsed = 0L;
         }
         return elapsed;
+    }
+
+    /**
+     * Converts a PipelineEntity object to a PipelineBody object.
+     *
+     * @return the converted PipelineBody object
+     */
+    public PipelineBody entityToBody()
+    {
+        PipelineFieldBody from = PipelineFieldBody.builder()
+                .id(this.getFrom().getId())
+                .configures(this.getFromConfigures())
+                .build();
+        PipelineFieldBody to = PipelineFieldBody.builder()
+                .id(this.getTo().getId())
+                .configures(this.getToConfigures())
+                .build();
+        return PipelineBody.builder()
+                .id(this.getId())
+                .content(this.getContent())
+                .from(from)
+                .to(to)
+                .executor(this.getExecutor())
+                .build();
     }
 }
