@@ -138,7 +138,7 @@
         <slf4j.version>1.7.36</slf4j.version>
         <sql-formatter.version>2.0.3</sql-formatter.version>
         <guava.version>32.1.2-jre</guava.version>
-        <kotlin.version>1.8.20</kotlin.version>
+        <kotlin.version>1.9.10</kotlin.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <redis.version>3.8.0</redis.version>
         <testcontainers.version>1.17.6</testcontainers.version>
