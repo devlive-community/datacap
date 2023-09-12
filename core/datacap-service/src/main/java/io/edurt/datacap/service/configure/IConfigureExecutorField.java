@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Data
 @ToString
 @NoArgsConstructor
@@ -34,4 +36,6 @@ public class IConfigureExecutorField
     private boolean hidden = false;
     // The description
     private String description;
+    // If the type is SELECT , the default data passed in is required
+    private List<String> defaultValues;
 }
