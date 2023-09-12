@@ -9,8 +9,16 @@
                   :required="item.required"
                   :prop="item.field.replace('.', ' ')"
                   :label-width="150"
-                  :label="item.field"
                   label-position="top">
+          <template #label>
+            {{ item.field }}
+            <Tooltip v-if="item.description"
+                     :content="item.description"
+                     max-width="300"
+                     transfer>
+              <Icon type="md-help-circle"/>
+            </Tooltip>
+          </template>
           <Row v-if="item.type === 'INPUT'">
             <Input v-model="item.value"
                    type="text"

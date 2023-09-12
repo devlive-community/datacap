@@ -43,6 +43,8 @@ pipelines:
         required: true
       - field: database
         required: true
+        hidden: true
+        description: The ClickHouse database
         override: false
         input: true
         width: 300
@@ -50,6 +52,8 @@ pipelines:
       - field: sql
         origin: context
         required: true
+        hidden: true
+        description: The query sql used to search data though Clickhouse server
         override: true
         input: true
         width: 300
