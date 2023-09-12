@@ -10,6 +10,7 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.BeanToPropertiesUtils;
 import io.edurt.datacap.service.body.PipelineBody;
 import io.edurt.datacap.service.common.PluginUtils;
+import io.edurt.datacap.service.configure.FieldType;
 import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.configure.IConfigureExecutor;
 import io.edurt.datacap.service.configure.IConfigureExecutorField;
@@ -96,6 +97,10 @@ public class PipelineServiceImpl
             String message = String.format("From source [ %s ] type [ %s ] is not supported pipeline type [ %s ]", fromSource.getId(), fromSource.getType(), IConfigurePipelineType.SOURCE);
             return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE_TYPE, message);
         }
+        List<String> errorList = this.checkField(fromConfigureExecutor.get().getFields(), configure.getFrom().getConfigures(), fromSource.getName(), IConfigurePipelineType.SOURCE.name());
+        if (errorList.size() > 0) {
+            return CommonResponse.failure(String.join("\n", errorList));
+        }
 
         SourceEntity toSource = toSourceOptional.get();
         IConfigure toConfigure = PluginUtils.loadYamlConfigure(toSource.getProtocol(), toSource.getType(), toSource.getType(), environment);
@@ -111,9 +116,12 @@ public class PipelineServiceImpl
             String message = String.format("To source [ %s ] type [ %s ] is not supported pipeline type [ %s ]", toSource.getId(), toSource.getType(), IConfigurePipelineType.SINK);
             return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED_PIPELINE_TYPE, message);
         }
+        errorList = this.checkField(toConfigureExecutor.get().getFields(), configure.getTo().getConfigures(), toSource.getName(), IConfigurePipelineType.SINK.name());
+        if (errorList.size() > 0) {
+            return CommonResponse.failure(String.join("<br/>", errorList));
+        }
 
         PipelineEntity pipelineEntity = new PipelineEntity();
-
         // FROM source
         Properties fromOriginProperties = configure.getFrom().getConfigures();
         if (!fromOriginProperties.containsKey("context")) {
@@ -379,5 +387,25 @@ public class PipelineServiceImpl
             }
         }
         properties.put(field.getField(), value);
+    }
+
+    private List<String> checkField(List<IConfigureExecutorField> fields, Properties configures, String name, String type)
+    {
+        List<String> list = Lists.newArrayList();
+        fields.stream()
+                .filter(field -> field.isInput())
+                .forEach(field -> {
+                    if (field.isRequired() && field.isInput() && !field.isOverride()) {
+                        if (ObjectUtils.isEmpty(configures.get(field.getField()))) {
+                            list.add(String.format("The pipeline type [ %s ] of the [ %s ] field [ %s ] is a required field, please be sure to enter", type, name, field.getField()));
+                        }
+                    }
+                    if (field.getType().equals(FieldType.SELECT)) {
+                        if (!field.getDefaultValues().contains(configures.get(field.getField()))) {
+                            list.add(String.format("The pipeline type [ %s ] of the [ %s ] field [ %s ] support the default value %s", type, name, field.getField(), String.join(",", field.getDefaultValues())));
+                        }
+                    }
+                });
+        return list;
     }
 }

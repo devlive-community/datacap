@@ -20,12 +20,17 @@ pipelines:
         origin: host
         required: true
       - field: topic
+        description: |
+          Kafka topic name. If there are multiple topics, use , to split, for example: "tpc1,tpc2".
         origin: database
+        hidden: false
         required: true
-        override: true
+        override: false
         input: true
         type: INPUT
       - field: pattern
+        description: |
+          If pattern is set to true,the regular expression for a pattern of topic names to read from. All topics in clients with names that match the specified regular expression will be subscribed by the consumer.
         origin: pattern
         required: false
         override: false
@@ -34,6 +39,8 @@ pipelines:
         width: 45
         type: SWITCH
       - field: consumer.group
+        description: |
+          Kafka consumer group id, used to distinguish different consumer groups.
         origin: group
         required: false
         override: false
@@ -42,6 +49,8 @@ pipelines:
         width: 300
         type: INPUT
       - field: commit_on_checkpoint
+        description: |
+          If true the consumer's offset will be periodically committed in the background.
         origin: commit_on_checkpoint
         required: false
         override: false
@@ -49,6 +58,43 @@ pipelines:
         value: true
         width: 45
         type: SWITCH
+      - field: format
+        description: |
+          Data format. The default format is json. Optional text format. The default field separator is ", ". If you customize the delimiter, add the "field_delimiter" option.
+        origin: format
+        required: false
+        override: false
+        input: true
+        value: json
+        width: 300
+        type: INPUT
+      - field: field_delimiter
+        description: |
+          Customize the field delimiter for data format.
+        origin: field_delimiter
+        required: false
+        override: false
+        input: true
+        value: |
+          ,
+        width: 300
+        type: INPUT
+      - field: start_mode
+        description: |
+          The initial consumption pattern of consumers,there are several types: [earliest],[group_offsets],[latest],[specific_offsets],[timestamp]
+        defaultValues:
+          - earliest
+          - group_offsets
+          - latest
+          - specific_offsets
+          - timestamp
+        origin: start_mode
+        required: false
+        override: false
+        input: true
+        value: group_offsets
+        width: 300
+        type: SELECT
   - executor: Seatunnel
     type: SINK
     fields:
@@ -58,5 +104,5 @@ pipelines:
       - field: topic
         origin: topic
         required: true
-        override: true
+        override: false
         input: true

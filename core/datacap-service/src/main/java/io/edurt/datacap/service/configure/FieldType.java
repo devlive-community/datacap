@@ -4,5 +4,6 @@ public enum FieldType
 {
     INPUT,
     TEXT,
-    SWITCH
+    SWITCH,
+    SELECT
 }

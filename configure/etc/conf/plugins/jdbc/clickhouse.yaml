@@ -43,13 +43,17 @@ pipelines:
         required: true
       - field: database
         required: true
+        hidden: false
+        description: The ClickHouse database
         override: false
         input: true
         width: 300
         type: INPUT
       - field: sql
         origin: context
-        required: true
+        required: false
+        hidden: false
+        description: The query sql used to search data though Clickhouse server
         override: true
         input: true
         width: 300
@@ -62,7 +66,12 @@ pipelines:
         required: false
         override: true
       - field: result_table_name
+        description: |
+          When result_table_name is not specified, the data processed by this plugin will not be registered as a data set (dataStream/dataset) that can be directly accessed by other plugins, or called a temporary table (table) ;
+          When result_table_name is specified, the data processed by this plugin will be registered as a data set (dataStream/dataset) that can be directly accessed by other plugins, or called a temporary table (table) . The data set (dataStream/dataset) registered here can be directly accessed by other plugins by specifying source_table_name .
         required: false
+        hidden: true
+        input: true
   - executor: Seatunnel
     type: SINK
     fields:
@@ -70,11 +79,11 @@ pipelines:
         origin: host|port
         required: true
       - field: database
-        override: true
+        override: false
         required: true
         input: true
       - field: table
-        override: true
+        override: false
         required: true
         input: true
       - field: username
@@ -84,6 +93,6 @@ pipelines:
         override: false
         required: true
       - field: fields
-        override: true
+        override: false
         required: true
         input: true

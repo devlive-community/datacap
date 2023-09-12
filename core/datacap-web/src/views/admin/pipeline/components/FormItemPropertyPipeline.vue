@@ -8,9 +8,17 @@
         <FormItem v-if="item.input"
                   :required="item.required"
                   :prop="item.field.replace('.', ' ')"
-                  :label-width="150"
-                  :label="item.field"
+                  :label-width="200"
                   label-position="top">
+          <template #label>
+            {{ item.field }}
+            <Tooltip v-if="item.description"
+                     :content="item.description"
+                     max-width="300"
+                     transfer>
+              <Icon type="md-help-circle"/>
+            </Tooltip>
+          </template>
           <Row v-if="item.type === 'INPUT'">
             <Input v-model="item.value"
                    type="text"
@@ -26,7 +34,6 @@
               </Checkbox>
             </Tooltip>
           </Row>
-
           <Row v-if="item.type === 'TEXT'">
             <Input v-model="item.value"
                    type="textarea"
@@ -44,12 +51,31 @@
               </Checkbox>
             </Tooltip>
           </Row>
-
           <Row v-if="item.type === 'SWITCH'">
             <i-switch v-model="item.value"
                       :disabled="item.override"
                       :style="{width: item.width + 'px'}">
             </i-switch>
+            <Tooltip v-if="item.tooltip"
+                     :content="item.tooltip"
+                     max-width="300"
+                     transfer>
+              <Checkbox v-model="item.override"
+                        style="margin-left: 5px;">
+              </Checkbox>
+            </Tooltip>
+          </Row>
+          <Row v-if="item.type === 'SELECT'">
+            <Select v-model="item.value"
+                    :disabled="item.override && item.tooltip"
+                    :style="{width: item.width + 'px'}"
+                    transfer>
+              <Option v-for="option in item.defaultValues"
+                      :key="option"
+                      :value="option">
+                {{ option }}
+              </Option>
+            </Select>
             <Tooltip v-if="item.tooltip"
                      :content="item.tooltip"
                      max-width="300"
