@@ -9,6 +9,13 @@
       <Form :model="formState"
             :show-message="false"
             :label-width="100">
+        <Alert v-if="errors"
+               type="error">
+          <p v-for="error in String(errors).split('<br/>')"
+             :key="error">
+            {{ error }}
+          </p>
+        </Alert>
         <Tabs :animated="false"
               style="min-height: 200px;">
           <TabPane icon="md-cafe"
@@ -70,6 +77,7 @@
         </Button>
         <Button type="primary"
                 :loading="submitted"
+                :disabled="!(formState.from.source?.id && formState.to.source?.id)"
                 @click="handlerSave()">
           {{ $t('common.submit') }}
         </Button>
@@ -105,7 +113,8 @@ export default defineComponent({
       pipelineFromItem: null,
       pipelineToItem: null,
       formState: null as PipelineModel,
-      submitted: false
+      submitted: false,
+      errors: null
     }
   },
   created()
@@ -163,7 +172,7 @@ export default defineComponent({
             this.handlerCancel()
           }
           else {
-            this.$Message.error(response.message)
+            this.errors = response.message
           }
         })
         .finally(() => {
@@ -191,9 +200,9 @@ export default defineComponent({
       meta.source['pipelines']
         .filter((item: { type: string; }) => item.type === type)[0]['fields']
         .filter((item: { input: any; }) => item.input)
-        .forEach((item: { [x: string]: any; }) => {
-          const key = Object.keys(item)[0];
-          const value = item[key];
+        .forEach((item: { field: any; value: any; }) => {
+          const key = item.field;
+          const value = item.value;
           if (value !== null) {
             result[key] = value;
           }

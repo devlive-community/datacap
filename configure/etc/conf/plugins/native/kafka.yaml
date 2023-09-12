@@ -25,7 +25,7 @@ pipelines:
         origin: database
         hidden: false
         required: true
-        override: true
+        override: false
         input: true
         type: INPUT
       - field: pattern
@@ -104,5 +104,5 @@ pipelines:
       - field: topic
         origin: topic
         required: true
-        override: true
+        override: false
         input: true

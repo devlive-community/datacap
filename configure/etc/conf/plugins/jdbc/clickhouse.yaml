@@ -51,7 +51,7 @@ pipelines:
         type: INPUT
       - field: sql
         origin: context
-        required: true
+        required: false
         hidden: false
         description: The query sql used to search data though Clickhouse server
         override: true
@@ -79,11 +79,11 @@ pipelines:
         origin: host|port
         required: true
       - field: database
-        override: true
+        override: false
         required: true
         input: true
       - field: table
-        override: true
+        override: false
         required: true
         input: true
       - field: username
@@ -93,6 +93,6 @@ pipelines:
         override: false
         required: true
       - field: fields
-        override: true
+        override: false
         required: true
         input: true
