@@ -227,6 +227,7 @@ public class PipelineServiceImpl
                         .put(pipelineName, executorService);
                 PipelineResponse response = executorOptional.get()
                         .start(pipeline);
+                log.info("Pipeline [ {} ] executed successfully", pipelineName);
                 finalPipelineEntity.setEndTime(new Timestamp(System.currentTimeMillis()));
                 finalPipelineEntity.setState(response.getState());
                 finalPipelineEntity.setMessage(response.getMessage());

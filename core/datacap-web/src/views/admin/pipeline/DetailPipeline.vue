@@ -39,6 +39,7 @@
                       label-position="top">
               <Select v-model="formState.from.source"
                       style="width:200px"
+                      transfer
                       @on-change="handlerSourceChange('SOURCE')">
                 <Option v-for="item in sourceItems"
                         :value="item"
@@ -58,6 +59,7 @@
                       label-position="top">
               <Select v-model="formState.to.source"
                       style="width:200px"
+                      transfer
                       @on-change="handlerSourceChange('SINK')">
                 <Option v-for="item in sinkItems"
                         :value="item"
