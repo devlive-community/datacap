@@ -4,7 +4,9 @@ import com.google.common.base.Preconditions;
 import io.edurt.datacap.spi.executor.PipelineField;
 
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class Connector
 {
@@ -29,5 +31,15 @@ public abstract class Connector
         }
     }
 
-    public abstract Map<String, Object> formatToMap();
+    public Map<String, Object> formatToMap()
+    {
+        Map<String, Object> node = new ConcurrentHashMap<>();
+        Properties properties = new Properties();
+        this.configure.getConfigure().entrySet()
+                .stream()
+                .filter(entry -> !String.valueOf(entry.getValue()).equals("None"))
+                .forEach(entry -> properties.put(entry.getKey(), entry.getValue()));
+        node.put(this.type.name(), properties);
+        return node;
+    }
 }

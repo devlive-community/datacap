@@ -218,6 +218,8 @@ public class PipelineServiceImpl
                     .from(fromField)
                     .to(toField)
                     .timeout(600)
+                    .mode(environment.getProperty("datacap.executor.mode"))
+                    .way(environment.getProperty("datacap.executor.way"))
                     .build();
 
             final ExecutorService executorService = Executors.newCachedThreadPool();
@@ -227,6 +229,7 @@ public class PipelineServiceImpl
                         .put(pipelineName, executorService);
                 PipelineResponse response = executorOptional.get()
                         .start(pipeline);
+                log.info("Pipeline [ {} ] executed successfully", pipelineName);
                 finalPipelineEntity.setEndTime(new Timestamp(System.currentTimeMillis()));
                 finalPipelineEntity.setState(response.getState());
                 finalPipelineEntity.setMessage(response.getMessage());
@@ -395,7 +398,7 @@ public class PipelineServiceImpl
         fields.stream()
                 .filter(field -> field.isInput())
                 .forEach(field -> {
-                    if (field.isRequired() && field.isInput() && !field.isOverride()) {
+                    if (field.isRequired() && field.isInput() && field.isOverride()) {
                         if (ObjectUtils.isEmpty(configures.get(field.getField()))) {
                             list.add(String.format("The pipeline type [ %s ] of the [ %s ] field [ %s ] is a required field, please be sure to enter", type, name, field.getField()));
                         }

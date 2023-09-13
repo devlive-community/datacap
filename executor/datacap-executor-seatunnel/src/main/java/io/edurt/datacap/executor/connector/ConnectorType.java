@@ -4,5 +4,6 @@ public enum ConnectorType
 {
     ClickHouse,
     Kafka,
-    Console
+    Console,
+    Redis
 }

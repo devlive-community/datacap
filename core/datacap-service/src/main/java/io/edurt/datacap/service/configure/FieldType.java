@@ -5,5 +5,6 @@ public enum FieldType
     INPUT,
     TEXT,
     SWITCH,
-    SELECT
+    SELECT,
+    NUMBER
 }

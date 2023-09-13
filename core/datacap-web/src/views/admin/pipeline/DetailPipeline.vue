@@ -22,6 +22,7 @@
                    style="height: 100%;"
                    :label="$t('common.description')">
             <FormItem :label="$t('common.sql')"
+                      required
                       label-position="top">
               <Input v-model="formState.content"
                      type="textarea"
@@ -34,9 +35,11 @@
                    style="height: 100%;"
                    :label="$t('common.from')">
             <FormItem :label="$t('common.source')"
+                      required
                       label-position="top">
               <Select v-model="formState.from.source"
                       style="width:200px"
+                      transfer
                       @on-change="handlerSourceChange('SOURCE')">
                 <Option v-for="item in sourceItems"
                         :value="item"
@@ -52,11 +55,13 @@
           <TabPane icon="md-medkit"
                    :label="$t('common.to')">
             <FormItem :label="$t('common.source')"
+                      required
                       label-position="top">
               <Select v-model="formState.to.source"
                       style="width:200px"
+                      transfer
                       @on-change="handlerSourceChange('SINK')">
-                <Option v-for="item in sourceItems"
+                <Option v-for="item in sinkItems"
                         :value="item"
                         :key="item.id">
                   {{ item.name }}
@@ -77,7 +82,7 @@
         </Button>
         <Button type="primary"
                 :loading="submitted"
-                :disabled="!(formState.from.source?.id && formState.to.source?.id)"
+                :disabled="!(formState.from.source?.id && formState.to.source?.id && formState.content)"
                 @click="handlerSave()">
           {{ $t('common.submit') }}
         </Button>
@@ -110,6 +115,7 @@ export default defineComponent({
     return {
       loading: false,
       sourceItems: [],
+      sinkItems: [],
       pipelineFromItem: null,
       pipelineToItem: null,
       formState: null as PipelineModel,
@@ -133,8 +139,8 @@ export default defineComponent({
         .getSources(1, 1000)
         .then((response) => {
           if (response.status) {
-            this.sourceItems = response.data.content
-              .filter((item: { pipelines: any; }) => item.pipelines != null)
+            this.sourceItems = this.filterPipeline(response.data.content, source)
+            this.sinkItems = this.filterPipeline(response.data.content, sink)
           }
         })
         .finally(() => {
@@ -194,14 +200,20 @@ export default defineComponent({
     {
       return clone(pipelines.filter((item: { type: string; }) => item.type === type))
     },
+    filterPipeline(pipelines: [], type: string): Array<any>
+    {
+      const array = pipelines.filter((item: { pipelines: any; }) => item.pipelines != null)
+        .filter((item: { pipelines: any; }) => item.pipelines.filter((item: { type: string; }) => item.type === type).length > 0)
+      return clone(array)
+    },
     filterConfigure(meta: PipelineMetaModel, type: string)
     {
       const result = {};
       meta.source['pipelines']
         .filter((item: { type: string; }) => item.type === type)[0]['fields']
         .filter((item: { input: any; }) => item.input)
-        .forEach((item: { field: any; value: any; }) => {
-          const key = item.field;
+        .forEach((item: { origin: any; value: any; }) => {
+          const key = item.origin;
           const value = item.value;
           if (value !== null) {
             result[key] = value;

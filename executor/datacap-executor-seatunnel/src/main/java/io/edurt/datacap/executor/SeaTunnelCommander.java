@@ -24,6 +24,16 @@ public class SeaTunnelCommander
         this.applicationName = applicationName;
     }
 
+    public SeaTunnelCommander(String bin, String master, String deployMode, String config, String applicationName)
+    {
+        this.bin = bin;
+        this.startScript = "start-seatunnel-spark-connector-v2.sh";
+        this.master = master;
+        this.deployMode = deployMode;
+        this.config = config;
+        this.applicationName = applicationName;
+    }
+
     public String toCommand()
     {
         StringBuffer buffer = new StringBuffer();

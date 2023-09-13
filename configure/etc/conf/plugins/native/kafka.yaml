@@ -22,10 +22,10 @@ pipelines:
       - field: topic
         description: |
           Kafka topic name. If there are multiple topics, use , to split, for example: "tpc1,tpc2".
-        origin: database
+        origin: topic
         hidden: false
         required: true
-        override: false
+        override: true
         input: true
         type: INPUT
       - field: pattern
@@ -33,27 +33,27 @@ pipelines:
           If pattern is set to true,the regular expression for a pattern of topic names to read from. All topics in clients with names that match the specified regular expression will be subscribed by the consumer.
         origin: pattern
         required: false
-        override: false
+        override: true
         input: true
         value: false
         width: 45
         type: SWITCH
-      - field: consumer.group
+      - field: group
         description: |
           Kafka consumer group id, used to distinguish different consumer groups.
-        origin: group
+        origin: consumer.group
         required: false
-        override: false
+        override: true
         input: true
         value: DataCap-Pipeline-Group
         width: 300
         type: INPUT
-      - field: commit_on_checkpoint
+      - field: checkpoint
         description: |
           If true the consumer's offset will be periodically committed in the background.
         origin: commit_on_checkpoint
         required: false
-        override: false
+        override: true
         input: true
         value: true
         width: 45
@@ -63,20 +63,19 @@ pipelines:
           Data format. The default format is json. Optional text format. The default field separator is ", ". If you customize the delimiter, add the "field_delimiter" option.
         origin: format
         required: false
-        override: false
+        override: true
         input: true
         value: json
         width: 300
         type: INPUT
-      - field: field_delimiter
+      - field: delimiter
         description: |
           Customize the field delimiter for data format.
         origin: field_delimiter
         required: false
-        override: false
+        override: true
         input: true
-        value: |
-          ,
+        value: ','
         width: 300
         type: INPUT
       - field: start_mode
@@ -90,7 +89,7 @@ pipelines:
           - timestamp
         origin: start_mode
         required: false
-        override: false
+        override: true
         input: true
         value: group_offsets
         width: 300
@@ -103,6 +102,77 @@ pipelines:
         required: true
       - field: topic
         origin: topic
+        description: |
+          Kafka Topic.
         required: true
-        override: false
+        override: true
         input: true
+      - field: semantic
+        origin: semantic
+        description: |
+          Semantics that can be chosen EXACTLY_ONCE/AT_LEAST_ONCE/NON, default NON.
+        required: false
+        override: true
+        input: true
+        value: NON
+        type: SELECT
+        defaultValues:
+          - EXACTLY_ONCE
+          - AT_LEAST_ONCE
+          - NON
+      - field: partition_key_fields
+        origin: partition_key_fields
+        description: |
+          Configure which fields are used as the key of the kafka message.
+  
+          For example, if you want to use value of fields from upstream data as key, you can assign field names to this property.
+
+          If there are multiple values, each value needs to be one row.
+        required: false
+        override: true
+        input: true
+        type: TEXT
+      - field: partition
+        origin: partition
+        description: |
+          We can specify the partition, all messages will be sent to this partition.
+        required: false
+        override: true
+        input: true
+        type: NUMBER
+      - field: assign_partitions
+        origin: assign_partitions
+        description: |
+          We can decide which partition to send based on the content of the message. The function of this parameter is to distribute information.
+        required: false
+        override: true
+        input: true
+        type: TEXT
+      - field: transaction_prefix
+        origin: transaction_prefix
+        description: |
+          If semantic is specified as EXACTLY_ONCE, the producer will write all messages in a Kafka transaction. Kafka distinguishes different transactions by different transactionId. This parameter is prefix of kafka transactionId, make sure different job use different prefix.
+        required: false
+        override: true
+        input: true
+        type: INPUT
+      - field: format
+        description: |
+          Data format. The default format is json. Optional text format. The default field separator is ", ". If you customize the delimiter, add the "field_delimiter" option.
+        origin: format
+        required: false
+        override: true
+        input: true
+        value: json
+        width: 300
+        type: INPUT
+      - field: delimiter
+        description: |
+          Customize the field delimiter for data format.
+        origin: field_delimiter
+        required: false
+        override: true
+        input: true
+        value: ','
+        width: 300
+        type: INPUT

@@ -39,7 +39,7 @@
                    type="textarea"
                    show-word-limit
                    :rows="3"
-                   :disabled="item.override"
+                   :disabled="item.override && item.tooltip"
                    :style="{width: item.width + 'px'}">
             </Input>
             <Tooltip v-if="item.tooltip"
@@ -53,7 +53,7 @@
           </Row>
           <Row v-if="item.type === 'SWITCH'">
             <i-switch v-model="item.value"
-                      :disabled="item.override"
+                      :disabled="item.override && item.tooltip"
                       :style="{width: item.width + 'px'}">
             </i-switch>
             <Tooltip v-if="item.tooltip"
@@ -76,6 +76,21 @@
                 {{ option }}
               </Option>
             </Select>
+            <Tooltip v-if="item.tooltip"
+                     :content="item.tooltip"
+                     max-width="300"
+                     transfer>
+              <Checkbox v-model="item.override"
+                        style="margin-left: 5px;">
+              </Checkbox>
+            </Tooltip>
+          </Row>
+          <Row v-if="item.type === 'NUMBER'">
+            <InputNumber v-model="item.value"
+                         :disabled="item.override && item.tooltip"
+                         :style="{width: item.width + 'px'}"
+                         transfer>
+            </InputNumber>
             <Tooltip v-if="item.tooltip"
                      :content="item.tooltip"
                      max-width="300"

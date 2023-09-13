@@ -19,6 +19,7 @@ import io.edurt.datacap.spi.executor.Pipeline;
 import io.edurt.datacap.spi.executor.PipelineField;
 import io.edurt.datacap.spi.executor.PipelineResponse;
 import io.edurt.datacap.spi.executor.PipelineState;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 
 @SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"})
+@Slf4j
 public class SeatunnelExecutor
         implements Executor
 {
@@ -57,6 +59,8 @@ public class SeatunnelExecutor
     {
         SeaTunnelCommander commander = new SeaTunnelCommander(
                 configure.getHome() + "/bin",
+                configure.getWay(),
+                configure.getMode(),
                 String.join(File.separator, configure.getWork(), configure.getPipelineName() + ".configure"),
                 configure.getPipelineName());
         LoggerExecutor loggerExecutor = new LogbackExecutor(configure.getWork(), configure.getPipelineName() + ".log");
@@ -79,12 +83,20 @@ public class SeatunnelExecutor
                 .build();
         ShellCommander shellExecutor = new ProcessBuilderCommander(shellConfigure);
         ShellResponse response = shellExecutor.execute();
+        log.info("Pipeline [ {} ] executed code [ {} ]", configure.getPipelineName(), response.getCode());
         PipelineState state = response.getSuccessful() ? PipelineState.SUCCESS : PipelineState.FAILURE;
+        log.info("Pipeline [ {} ] executed state [ {} ]", configure.getPipelineName(), state);
+
+        String message = null;
+        if (response.getErrors() != null && !response.getSuccessful()) {
+            message = String.join("\n", response.getErrors());
+        }
+
         return PipelineResponse.builder()
                 .state(state)
                 .timeout(response.isTimeout())
                 .successful(response.getSuccessful())
-                .message(String.join("\n", response.getErrors()))
+                .message(message)
                 .build();
     }
 
@@ -99,7 +111,17 @@ public class SeatunnelExecutor
                 jsonGenerator.writeObjectFieldStart(entry.getKey());
                 if (entry.getValue() instanceof Properties) {
                     for (Map.Entry<Object, Object> property : ((Properties) entry.getValue()).entrySet()) {
-                        jsonGenerator.writeStringField(property.getKey().toString(), (String) property.getValue());
+                        String[] split = property.getValue().toString().split("\n");
+                        if (split.length > 1 && !String.valueOf(property.getKey()).equalsIgnoreCase("sql")) {
+                            jsonGenerator.writeArrayFieldStart(property.getKey().toString());
+                            for (String line : split) {
+                                jsonGenerator.writeString(line);
+                            }
+                            jsonGenerator.writeEndArray();
+                        }
+                        else {
+                            jsonGenerator.writeStringField(property.getKey().toString(), (String) property.getValue());
+                        }
                     }
                 }
                 jsonGenerator.writeEndObject();
