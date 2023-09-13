@@ -23,4 +23,6 @@ public class Pipeline
     private long timeout = 600;
     private PipelineField from;
     private PipelineField to;
+    private String way;
+    private String mode;
 }

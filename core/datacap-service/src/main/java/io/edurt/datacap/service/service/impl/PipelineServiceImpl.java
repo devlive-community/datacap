@@ -218,6 +218,8 @@ public class PipelineServiceImpl
                     .from(fromField)
                     .to(toField)
                     .timeout(600)
+                    .mode(environment.getProperty("datacap.executor.mode"))
+                    .way(environment.getProperty("datacap.executor.way"))
                     .build();
 
             final ExecutorService executorService = Executors.newCachedThreadPool();

@@ -59,6 +59,8 @@ public class SeatunnelExecutor
     {
         SeaTunnelCommander commander = new SeaTunnelCommander(
                 configure.getHome() + "/bin",
+                configure.getWay(),
+                configure.getMode(),
                 String.join(File.separator, configure.getWork(), configure.getPipelineName() + ".configure"),
                 configure.getPipelineName());
         LoggerExecutor loggerExecutor = new LogbackExecutor(configure.getWork(), configure.getPipelineName() + ".log");
