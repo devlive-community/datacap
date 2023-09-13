@@ -99,7 +99,17 @@ public class SeatunnelExecutor
                 jsonGenerator.writeObjectFieldStart(entry.getKey());
                 if (entry.getValue() instanceof Properties) {
                     for (Map.Entry<Object, Object> property : ((Properties) entry.getValue()).entrySet()) {
-                        jsonGenerator.writeStringField(property.getKey().toString(), (String) property.getValue());
+                        String[] split = property.getValue().toString().split("\n");
+                        if (split.length > 1) {
+                            jsonGenerator.writeArrayFieldStart(property.getKey().toString());
+                            for (String line : split) {
+                                jsonGenerator.writeString(line);
+                            }
+                            jsonGenerator.writeEndArray();
+                        }
+                        else {
+                            jsonGenerator.writeStringField(property.getKey().toString(), (String) property.getValue());
+                        }
                     }
                 }
                 jsonGenerator.writeEndObject();
