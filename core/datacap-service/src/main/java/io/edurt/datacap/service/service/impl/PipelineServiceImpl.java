@@ -395,7 +395,7 @@ public class PipelineServiceImpl
         fields.stream()
                 .filter(field -> field.isInput())
                 .forEach(field -> {
-                    if (field.isRequired() && field.isInput() && !field.isOverride()) {
+                    if (field.isRequired() && field.isInput() && field.isOverride()) {
                         if (ObjectUtils.isEmpty(configures.get(field.getField()))) {
                             list.add(String.format("The pipeline type [ %s ] of the [ %s ] field [ %s ] is a required field, please be sure to enter", type, name, field.getField()));
                         }

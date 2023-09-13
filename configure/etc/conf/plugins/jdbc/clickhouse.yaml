@@ -108,6 +108,7 @@ pipelines:
         origin: fields
         description: |
           The data field that needs to be output to ClickHouse , if not configured, it will be automatically adapted according to the sink table schema .
+
           If there are multiple values, each value needs to be one row.
         override: true
         required: true
@@ -127,6 +128,34 @@ pipelines:
         origin: split_mode
         description: |
           This mode only support clickhouse table which engine is 'Distributed'.And internal_replication option should be true. They will split distributed table data in seatunnel and perform write directly on each shard. The shard weight define is clickhouse will be counted.
+        override: true
+        required: false
+        input: true
+        value: false
+        width: 45
+        type: SWITCH
+      - field: sharding_key
+        origin: sharding_key
+        description: |
+          When use split_mode, which node to send data to is a problem, the default is random selection, but the 'sharding_key' parameter can be used to specify the field for the sharding algorithm. This option only worked when 'split_mode' is true.
+        override: true
+        required: false
+        input: true
+        width: 100
+        type: INPUT
+      - field: primary_key
+        origin: primary_key
+        description: |
+          Mark the primary key column from clickhouse table, and based on primary key execute INSERT/UPDATE/DELETE to clickhouse table
+        override: true
+        required: false
+        input: true
+        width: 100
+        type: INPUT
+      - field: support_upsert
+        origin: support_upsert
+        description: |
+          Support upsert row by query primary key
         override: true
         required: false
         input: true

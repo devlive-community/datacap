@@ -12,7 +12,7 @@ The configurations we can provide are:
 |     `field`     |  `String`   |                          Field name                           |
 |    `origin`     |  `String`   | The default is equal to the field value, and the custom column name is used. If it is in `host|port` format, the system will splice the fields through `:`  |
 |   `required`    |  `Boolean`  |                 When the value is `true`, it means that the field is required                 |
-|   `override`    |  `Boolean`  | If this flag is `true`, it means that the field is extracted through user configuration, the default data will be discarded, and currently only the `sql` field can be replaced |
+|   `override`    |  `Boolean`  | If this flag is `true`, it means that the field is extracted through user configuration, the default data will be discarded |
 |     `input`     |  `Boolean`  |                        Whether it is an input parameter                         |
 |     `width`     |  `Integer`  |                     Component width, default `300`                     |
 |     `type`      | `FieldType` |                    Field type, default `INPUT`                    |

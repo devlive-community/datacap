@@ -22,6 +22,7 @@
                    style="height: 100%;"
                    :label="$t('common.description')">
             <FormItem :label="$t('common.sql')"
+                      required
                       label-position="top">
               <Input v-model="formState.content"
                      type="textarea"
@@ -34,6 +35,7 @@
                    style="height: 100%;"
                    :label="$t('common.from')">
             <FormItem :label="$t('common.source')"
+                      required
                       label-position="top">
               <Select v-model="formState.from.source"
                       style="width:200px"
@@ -52,6 +54,7 @@
           <TabPane icon="md-medkit"
                    :label="$t('common.to')">
             <FormItem :label="$t('common.source')"
+                      required
                       label-position="top">
               <Select v-model="formState.to.source"
                       style="width:200px"
@@ -200,8 +203,8 @@ export default defineComponent({
       meta.source['pipelines']
         .filter((item: { type: string; }) => item.type === type)[0]['fields']
         .filter((item: { input: any; }) => item.input)
-        .forEach((item: { field: any; value: any; }) => {
-          const key = item.field;
+        .forEach((item: { origin: any; value: any; }) => {
+          const key = item.origin;
           const value = item.value;
           if (value !== null) {
             result[key] = value;
