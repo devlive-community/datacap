@@ -77,7 +77,7 @@
         </Button>
         <Button type="primary"
                 :loading="submitted"
-                :disabled="!(formState.from.source?.id && formState.to.source?.id)"
+                :disabled="!(formState.from.source?.id && formState.to.source?.id && formState.content)"
                 @click="handlerSave()">
           {{ $t('common.submit') }}
         </Button>
