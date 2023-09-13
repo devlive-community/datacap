@@ -59,7 +59,7 @@
               <Select v-model="formState.to.source"
                       style="width:200px"
                       @on-change="handlerSourceChange('SINK')">
-                <Option v-for="item in sourceItems"
+                <Option v-for="item in sinkItems"
                         :value="item"
                         :key="item.id">
                   {{ item.name }}
@@ -113,6 +113,7 @@ export default defineComponent({
     return {
       loading: false,
       sourceItems: [],
+      sinkItems: [],
       pipelineFromItem: null,
       pipelineToItem: null,
       formState: null as PipelineModel,
@@ -136,8 +137,8 @@ export default defineComponent({
         .getSources(1, 1000)
         .then((response) => {
           if (response.status) {
-            this.sourceItems = response.data.content
-              .filter((item: { pipelines: any; }) => item.pipelines != null)
+            this.sourceItems = this.filterPipeline(response.data.content, source)
+            this.sinkItems = this.filterPipeline(response.data.content, sink)
           }
         })
         .finally(() => {
@@ -196,6 +197,12 @@ export default defineComponent({
     filterPipelineFromItem(pipelines: [], type: string): Array<any>
     {
       return clone(pipelines.filter((item: { type: string; }) => item.type === type))
+    },
+    filterPipeline(pipelines: [], type: string): Array<any>
+    {
+      const array = pipelines.filter((item: { pipelines: any; }) => item.pipelines != null)
+        .filter((item: { pipelines: any; }) => item.pipelines.filter((item: { type: string; }) => item.type === type).length > 0)
+      return clone(array)
     },
     filterConfigure(meta: PipelineMetaModel, type: string)
     {
