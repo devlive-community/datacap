@@ -5,7 +5,7 @@
            width="80%"
            :closable="false"
            :maskClosable="false">
-      <div style="height: 350px; max-height: 350px;">
+      <div>
         <VMarkdownView v-if="content"
                        :mode="'light'"
                        :content="content">

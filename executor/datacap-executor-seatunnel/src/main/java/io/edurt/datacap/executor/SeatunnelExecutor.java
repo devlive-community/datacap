@@ -100,7 +100,7 @@ public class SeatunnelExecutor
                 if (entry.getValue() instanceof Properties) {
                     for (Map.Entry<Object, Object> property : ((Properties) entry.getValue()).entrySet()) {
                         String[] split = property.getValue().toString().split("\n");
-                        if (split.length > 1) {
+                        if (split.length > 1 && !String.valueOf(property.getKey()).equalsIgnoreCase("sql")) {
                             jsonGenerator.writeArrayFieldStart(property.getKey().toString());
                             for (String line : split) {
                                 jsonGenerator.writeString(line);
