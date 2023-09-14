@@ -6,43 +6,61 @@
 
 |   发布版本   |     发布时间     |
 |:--------:|:------------:|
-| `1.13.0` | `2023-08-09` |
+| `1.14.0` | `2023-09-14` |
 
 #### General
 
 ---
 
-- 修复了 `openai-java-sdk` 版本
-- 添加数据源版本
-- 添加数据源扫描任务
-- 优化状态图标
-- 删除对内置 H2 数据库的支持
+- 修复数据源检查任务返回空的问题
+- 添加验证码
+- 支持登录验证码
+- 支持验证码失败自动刷新
+- 支持注册验证码
+- 支持注册启用
+- 移动 etc 到 configure
 
 #### Web
 
 ---
 
-- 支持文字
-- 修复 div 空白
-- 添加了日历热图中文
-- 修复了数据贡献图错误
-- 当数据源不可用时列表禁用选择
+- 修复空编辑器破坏异常
+- 公共页面增加布局
+- 修复了个人资料页面错误
+- 修复登录页面样式异常的问题
 
-#### Kyuubi
-
----
-
-- 修复无法执行set语法sql的问题
-- 修复连接未关闭的问题
-
-#### Oracle
+#### Pipeline (Apache Seatunnel)
 
 ---
 
-- 支持获取DBName和TableName
+- 支持 Kafka 输入｜输出
+- 支持 ClickHouse 输入｜输出
+- 支持删除
+- 构建管道页面
+- 支持提交
+- 支持 SWITCH 字段类型
+- 添加执行者标志
+- 支持限流排队
+- 支持停止
+- 服务重启时重置流水线
+- 添加日志界面并优化UI
+- 支持字段描述
+- 支持字段 SELECT 类型
+- 支持字段检查
+- 支持字段数组
+- 支持 Redis 输出
+- 支持指定运行时机制
 
-#### Clickhouse
+#### Dependencies
 
 ---
 
-- 修复了 `default` 数据库中没有查询错误的问题
+- 将 com.google.guava:guava 从 31.1-jre 更改为 32.1.2-jre
+- 将 org.devlive.sdk:openai-java-sdk 从 1.5.0 升级到 1.9.0
+- 将 com.h2database:h2 从 2.1.214 提升到 2.2.220
+- 将 org.projectlombok:lombok 从 1.18.24 更改为 1.18.28
+- 将 org.apache.kafka:kafka-clients 从 2.8.0 升级到 2.8.1
+- 将 org.duckdb:duckdb_jdbc 从 0.7.0 升级到 0.8.1
+- 将 com.github.eirslett:frontend-maven-plugin 从 1.12.1 升级到 1.13.4
+- 将 kotlin.version 从 1.8.20 升级到 1.9.10
+- 将 org.sonatype.plugins:nexus-staging-maven-plugin 从 1.6 升级到 1.6.13
