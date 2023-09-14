@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for macos13.0 (arm64)
+-- MySQL dump 10.13  Distrib 8.1.0, for macos13.3 (arm64)
 --
 -- Host: localhost    Database: datacap
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.1.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -174,6 +174,41 @@ LOCK TABLES `datacap_message_user_relation` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `datacap_pipeline`
+--
+
+DROP TABLE IF EXISTS `datacap_pipeline`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `datacap_pipeline` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `message` text,
+  `work` text,
+  `start_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `end_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `elapsed` bigint DEFAULT NULL,
+  `from_id` int NOT NULL,
+  `from_configures` text,
+  `to_id` int NOT NULL,
+  `to_configures` text,
+  `executor` varchar(20) NOT NULL DEFAULT 'Seatunnel',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `datacap_pipeline`
+--
+
+LOCK TABLES `datacap_pipeline` WRITE;
+/*!40000 ALTER TABLE `datacap_pipeline` DISABLE KEYS */;
+/*!40000 ALTER TABLE `datacap_pipeline` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `datacap_scheduled`
 --
 
@@ -200,7 +235,7 @@ CREATE TABLE `datacap_scheduled` (
 
 LOCK TABLES `datacap_scheduled` WRITE;
 /*!40000 ALTER TABLE `datacap_scheduled` DISABLE KEYS */;
-INSERT INTO `datacap_scheduled` VALUES (1,'Synchronize table structure','Synchronize the table structure of the data source library at 1 am every day','0 20 * * * ?',1,1,'2023-07-04 21:47:24','2023-08-08 11:58:25','SOURCE_SYNCHRONIZE'),(2,'Check source available','Check the availability of the data source every 1 hour','0 0 * * * ?',1,1,'2023-08-08 11:54:01','2023-08-08 15:36:31','SOURCE_CHECK');
+INSERT INTO `datacap_scheduled` VALUES (1,'Synchronize table structure','Synchronize the table structure of the data source library at 1 am every day','0 20 * * * ?',1,1,'2023-07-04 21:47:24','2023-08-08 11:58:25','SOURCE_SYNCHRONIZE'),(2,'Check source available','Check the availability of the data source every 1 hour','0 0 * * * ?',1,1,'2023-08-08 11:54:01','2023-08-09 18:25:26','SOURCE_CHECK');
 /*!40000 ALTER TABLE `datacap_scheduled` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +254,7 @@ CREATE TABLE `datacap_user` (
   `chat_configure` text,
   `is_system` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10002 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +263,7 @@ CREATE TABLE `datacap_user` (
 
 LOCK TABLES `datacap_user` WRITE;
 /*!40000 ALTER TABLE `datacap_user` DISABLE KEYS */;
-INSERT INTO `datacap_user` VALUES (1,'admin','$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG','2023-07-04 21:47:24.57480','',0),(2,'datacap','$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.','2023-07-04 21:47:24.57542','',0),(10000,'Ai',NULL,'2023-07-10 19:08:25.95841',NULL,0);
+INSERT INTO `datacap_user` VALUES (1,'admin','$2a$10$ee2yg.Te14GpHppDUROAi.HzYR5Q.q2/5vrZvAr4TFY3J2iT663JG','2023-07-04 21:47:24.57480','',0),(2,'datacap','$2a$10$bZ4XBRlYUjKfkBovWT9TuuXlEF7lpRxVrXS8iqyCjCHUqy4RPTL8.','2023-07-04 21:47:24.57542','',0),(10000,'Ai',NULL,'2023-07-10 19:08:25.95841',NULL,0),(10001,'captcha','$2a$10$eWebg/za0PcfvUd2En5YFuyXnJspHQhpit94FvedqGzUsU70/Lw9y','2023-08-29 14:45:14.14400',NULL,0);
 /*!40000 ALTER TABLE `datacap_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,38 +336,25 @@ INSERT INTO `menus` VALUES (1,'全局 - 首页','HOME','全局路由：所有用
 UNLOCK TABLES;
 
 --
--- Table structure for table `pipeline`
+-- Table structure for table `pipeline_user_relation`
 --
 
-DROP TABLE IF EXISTS `pipeline`;
+DROP TABLE IF EXISTS `pipeline_user_relation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pipeline` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `content` text NOT NULL,
-  `state` varchar(100) DEFAULT NULL,
-  `message` text,
-  `work` text,
-  `start_time` datetime DEFAULT CURRENT_TIMESTAMP,
-  `end_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `elapsed` bigint DEFAULT NULL,
-  `user_id` int NOT NULL,
-  `from_id` int NOT NULL,
-  `from_configures` text,
-  `to_id` int NOT NULL,
-  `to_configures` text,
-  PRIMARY KEY (`id`)
+CREATE TABLE `pipeline_user_relation` (
+  `pipeline_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pipeline`
+-- Dumping data for table `pipeline_user_relation`
 --
 
-LOCK TABLES `pipeline` WRITE;
-/*!40000 ALTER TABLE `pipeline` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pipeline` ENABLE KEYS */;
+LOCK TABLES `pipeline_user_relation` WRITE;
+/*!40000 ALTER TABLE `pipeline_user_relation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pipeline_user_relation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -506,7 +528,7 @@ CREATE TABLE `user_log` (
   `user_id` bigint NOT NULL,
   `create_time` datetime(5) DEFAULT CURRENT_TIMESTAMP(5),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='User login log';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='User login log';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -515,7 +537,6 @@ CREATE TABLE `user_log` (
 
 LOCK TABLES `user_log` WRITE;
 /*!40000 ALTER TABLE `user_log` DISABLE KEYS */;
-INSERT INTO `user_log` VALUES (1,'Computer','Chrome 11','0:0:0:0:0:0:0:1',NULL,'SUCCESS','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188',2,'2023-08-09 15:22:27.62800');
 /*!40000 ALTER TABLE `user_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -538,7 +559,7 @@ CREATE TABLE `user_roles` (
 
 LOCK TABLES `user_roles` WRITE;
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` VALUES (1,1),(2,2);
+INSERT INTO `user_roles` VALUES (1,1),(2,2),(10001,2);
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -551,4 +572,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-09 15:22:41
+-- Dump completed on 2023-09-14 15:34:11
