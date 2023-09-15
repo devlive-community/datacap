@@ -22,8 +22,6 @@
 ![GitHub contributors](https://img.shields.io/github/contributors-anon/EdurtIO/datacap?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/EdurtIO/datacap?style=flat-square)
 
-[![Security Status](https://www.murphysec.com/platform3/v3/badge/1629055559743877120.svg)](https://www.murphysec.com/accept?code=d1f9c5849bfdc699127f6141c8e0978c&type=1&from=2)
-
 </div>
 
 ### 什么是 datacap?
