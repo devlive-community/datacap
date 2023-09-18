@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.entity.metadata;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.service.entity.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -7,15 +8,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import java.util.List;
 
 @Getter
 @ToString
@@ -25,7 +32,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "datacap_metadata_table")
 @EntityListeners(AuditingEntityListener.class)
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"})
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_DOESNT_OVERRIDE_EQUALS"})
 public class TableEntity
         extends BaseEntity
 {
@@ -56,9 +63,14 @@ public class TableEntity
     @Column(name = "comment")
     private String comment;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinTable(name = "datacap_metadata_table_database_relation",
             joinColumns = @JoinColumn(name = "table_id"),
             inverseJoinColumns = @JoinColumn(name = "database_id"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private DatabaseEntity database;
+
+    @OneToMany(mappedBy = "table", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<ColumnEntity> columns;
 }

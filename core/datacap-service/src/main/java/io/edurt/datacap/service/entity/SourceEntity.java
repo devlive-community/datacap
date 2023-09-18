@@ -8,6 +8,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.configure.IConfigureExecutor;
+import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
 import io.edurt.datacap.service.validation.ValidationGroup;
 import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.model.Configure;
@@ -141,6 +142,10 @@ public class SourceEntity
     @JoinColumn(name = "user_id")
     @JsonIncludeProperties(value = {"id", "username"})
     private UserEntity user;
+
+    @OneToMany(mappedBy = "source", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<DatabaseEntity> databases;
 
     public void setConfigure(String configure)
     {
