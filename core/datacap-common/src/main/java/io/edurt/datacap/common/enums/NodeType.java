@@ -6,7 +6,16 @@ public enum NodeType
 {
     CATALOG("CATALOG"),
     SCHEMA("SCHEMA"),
-    CHARSET("CHARSET");
+    CHARSET("CHARSET"),
+    TABLE("TABLE"),
+    TYPE("TYPE"),
+    ENGINE("ENGINE"),
+    FORMAT("FORMAT"),
+    ROWS("ROWS"),
+    CREATE_TIME("CREATE_TIME"),
+    UPDATE_TIME("UPDATE_TIME"),
+    COLLATION("COLLATION"),
+    COMMENT("COMMENT");
 
     @Getter
     private String value;

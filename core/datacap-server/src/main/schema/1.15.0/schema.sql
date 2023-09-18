@@ -22,13 +22,20 @@ CREATE TABLE `datacap_metadata_database_source_relation`
 
 CREATE TABLE `datacap_metadata_table`
 (
-    id          INT PRIMARY KEY AUTO_INCREMENT,
-    name        VARCHAR(255),
-    active      TINYINT(1) DEFAULT 1,
-    create_time DATETIME,
-    update_time DATETIME,
-    type        VARCHAR(255),
-    description VARCHAR(1000)
+    id             INT PRIMARY KEY AUTO_INCREMENT,
+    name           VARCHAR(255),
+    active         TINYINT(1) DEFAULT 1,
+    create_time    DATETIME,
+    update_time    DATETIME,
+    type           VARCHAR(255),
+    engine         VARCHAR(255),
+    format         VARCHAR(255),
+    in_rows        VARCHAR(255),
+    in_create_time VARCHAR(255),
+    in_update_time VARCHAR(255),
+    collation      VARCHAR(255),
+    comment        VARCHAR(1000),
+    description    VARCHAR(1000)
 );
 
 CREATE TABLE `datacap_metadata_table_database_relation`

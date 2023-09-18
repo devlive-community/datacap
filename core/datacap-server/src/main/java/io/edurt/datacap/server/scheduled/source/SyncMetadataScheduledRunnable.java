@@ -12,6 +12,7 @@ import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.TemplateSqlEntity;
 import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
+import io.edurt.datacap.service.entity.metadata.TableEntity;
 import io.edurt.datacap.service.itransient.SqlConfigure;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.repository.TemplateSqlRepository;
@@ -51,6 +52,9 @@ public class SyncMetadataScheduledRunnable
         this.templateHandler = templateHandler;
     }
 
+    /**
+     * Executes the run method of the Runnable interface.
+     */
     @Override
     public void run()
     {
@@ -137,7 +141,7 @@ public class SyncMetadataScheduledRunnable
         String templateName = "SYSTEM_FOR_GET_ALL_DATABASES";
         TemplateSqlEntity template = templateHandler.findByNameAndPluginContaining(templateName, entity.getType());
         if (template == null) {
-            log.warn("The scheduled task [ {} ] source [ {} ] protocol [ {} ] template [ {} ] is not available", this.getName(), entity.getType(), entity.getProtocol(), templateName);
+            log.warn("The scheduled task [ {} ] source [ {} ] protocol [ {} ] template [ {} ] is not available, skip sync database", this.getName(), entity.getType(), entity.getProtocol(), templateName);
         }
         else {
             plugin.connect(entity.toConfigure());
@@ -167,6 +171,7 @@ public class SyncMetadataScheduledRunnable
                                     .filter(node -> node.getName().equals(item.get(NodeType.SCHEMA)) && node.getCatalog().equals(item.get(NodeType.CATALOG)))
                                     .findAny();
                             if (optionalDatabase.isPresent()) {
+                                this.startSyncTable(entity, optionalDatabase.get(), plugin);
                                 return false;
                             }
                             else {
@@ -182,6 +187,9 @@ public class SyncMetadataScheduledRunnable
                                     .build();
                             log.info("Added catalog [ {} ] schema [ {} ] to source [ {} ]", database.getCatalog(), database.getName(), entity.getName());
                             databaseHandler.save(database);
+                            log.info("==================== Sync metadata table  [ {} ] started =================", database.getName());
+                            this.startSyncTable(entity, database, plugin);
+                            log.info("==================== Sync metadata table  [ {} ] end =================", database.getName());
                         });
                 // Delete invalid data that no longer exists
                 origin.stream()
@@ -189,6 +197,68 @@ public class SyncMetadataScheduledRunnable
                         .forEach(item -> {
                             log.info("Removed catalog [ {} ] schema [ {} ] to source [ {} ]", item.getCatalog(), item.getName(), entity.getName());
                             databaseHandler.delete(item);
+                        });
+            }
+        }
+    }
+
+    private void startSyncTable(SourceEntity entity, DatabaseEntity database, Plugin plugin)
+    {
+        String templateName = "SYSTEM_FOR_GET_ALL_TABLES";
+        TemplateSqlEntity template = templateHandler.findByNameAndPluginContaining(templateName, entity.getType());
+        if (template == null) {
+            log.warn("The scheduled task [ {} ] source [ {} ] protocol [ {} ] template [ {} ] is not available, skip sync table", this.getName(), entity.getType(), entity.getProtocol(), templateName);
+        }
+        else {
+            plugin.connect(entity.toConfigure());
+            Map<String, String> configure = Maps.newConcurrentMap();
+            configure.put("database", database.getName());
+            Response response = plugin.execute(getSqlContext(template, configure));
+            if (!response.getIsSuccessful()) {
+                log.error("The scheduled task [ {} ] source [ {} ] protocol [ {} ] sync metadata tables  [ {} ] failed", this.getName(), entity.getType(), entity.getProtocol(), response.getMessage());
+            }
+            else {
+                List<TableEntity> origin = tableHandler.findAllByDatabase(database);
+                List<TableEntity> maps = response.getColumns()
+                        .stream()
+                        .map(item -> {
+                            String name = getNodeText(item, NodeType.TABLE);
+                            return TableEntity.builder()
+                                    .name(name)
+                                    .description(String.format("Table [ %s ] of database [ %s ] ", name, getNodeText(item, NodeType.SCHEMA)))
+                                    .type(getNodeText(item, NodeType.TYPE))
+                                    .engine(getNodeText(item, NodeType.ENGINE))
+                                    .format(getNodeText(item, NodeType.FORMAT))
+                                    .inCreateTime(getNodeText(item, NodeType.CREATE_TIME))
+                                    .inUpdateTime(getNodeText(item, NodeType.UPDATE_TIME))
+                                    .collation(getNodeText(item, NodeType.COLLATION))
+                                    .rows(getNodeText(item, NodeType.ROWS))
+                                    .comment(getNodeText(item, NodeType.COMMENT))
+                                    .database(database)
+                                    .build();
+                        })
+                        .collect(Collectors.toList());
+                maps.stream()
+                        .filter(item -> {
+                            Optional<TableEntity> optionalTable = origin.stream()
+                                    .filter(node -> node.getName().equals(item.getName()))
+                                    .findAny();
+                            if (optionalTable.isPresent()) {
+                                return false;
+                            }
+                            else {
+                                return true;
+                            }
+                        })
+                        .forEach(item -> {
+                            log.info("Added table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
+                            tableHandler.save(item);
+                        });
+                origin.stream()
+                        .filter(node -> maps.stream().noneMatch(item -> node.getName().equals(item.getName())))
+                        .forEach(item -> {
+                            log.info("Removed table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
+                            tableHandler.delete(item);
                         });
             }
         }
