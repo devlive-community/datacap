@@ -9,6 +9,8 @@ import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.configure.IConfigureExecutor;
 import io.edurt.datacap.service.validation.ValidationGroup;
+import io.edurt.datacap.spi.FormatType;
+import io.edurt.datacap.spi.model.Configure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +38,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -153,5 +156,25 @@ public class SourceEntity
             this.setConfigures(JsonUtils.toMap(this.configure));
         }
         return configures;
+    }
+
+    /**
+     * Converts the current object to a Configure object.
+     *
+     * @return The Configure object created from the current object.
+     */
+    public Configure toConfigure()
+    {
+        Configure configure = new Configure();
+        configure.setHost(this.getHost());
+        configure.setPort(this.getPort());
+        configure.setUsername(Optional.ofNullable(this.getUsername()));
+        configure.setPassword(Optional.ofNullable(this.getPassword()));
+        Optional<String> database = StringUtils.isNotEmpty(this.getDatabase()) ? Optional.ofNullable(this.getDatabase()) : Optional.empty();
+        configure.setDatabase(database);
+        configure.setSsl(Optional.ofNullable(this.getSsl()));
+        configure.setEnv(Optional.ofNullable(this.getConfigures()));
+        configure.setFormat(FormatType.JSON);
+        return configure;
     }
 }
