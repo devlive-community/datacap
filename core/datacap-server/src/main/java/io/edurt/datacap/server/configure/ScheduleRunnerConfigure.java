@@ -4,9 +4,13 @@ import com.google.inject.Injector;
 import io.edurt.datacap.schedule.ScheduledCronRegistrar;
 import io.edurt.datacap.server.scheduled.SourceScheduledRunnable;
 import io.edurt.datacap.server.scheduled.source.CheckScheduledRunnable;
+import io.edurt.datacap.server.scheduled.source.SyncMetadataScheduledRunnable;
 import io.edurt.datacap.service.repository.ScheduledRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.repository.TemplateSqlRepository;
+import io.edurt.datacap.service.repository.metadata.ColumnRepository;
+import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
+import io.edurt.datacap.service.repository.metadata.TableRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.env.Environment;
@@ -21,16 +25,22 @@ public class ScheduleRunnerConfigure
     private final Injector injector;
     private final ScheduledRepository scheduledRepository;
     private final SourceRepository sourceRepository;
+    private final DatabaseRepository databaseHandler;
+    private final TableRepository tableHandler;
+    private final ColumnRepository columnHandler;
     private final TemplateSqlRepository templateSqlRepository;
     private final ScheduledCronRegistrar scheduledCronRegistrar;
     private final RedisTemplate redisTemplate;
     private final Environment environment;
 
-    public ScheduleRunnerConfigure(Injector injector, ScheduledRepository scheduledRepository, SourceRepository sourceRepository, TemplateSqlRepository templateSqlRepository, ScheduledCronRegistrar scheduledCronRegistrar, RedisTemplate redisTemplate, Environment environment)
+    public ScheduleRunnerConfigure(Injector injector, ScheduledRepository scheduledRepository, SourceRepository sourceRepository, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, TemplateSqlRepository templateSqlRepository, ScheduledCronRegistrar scheduledCronRegistrar, RedisTemplate redisTemplate, Environment environment)
     {
         this.injector = injector;
         this.scheduledRepository = scheduledRepository;
         this.sourceRepository = sourceRepository;
+        this.databaseHandler = databaseHandler;
+        this.tableHandler = tableHandler;
+        this.columnHandler = columnHandler;
         this.templateSqlRepository = templateSqlRepository;
         this.scheduledCronRegistrar = scheduledCronRegistrar;
         this.redisTemplate = redisTemplate;
@@ -56,5 +66,8 @@ public class ScheduleRunnerConfigure
                             log.warn("Unsupported task type " + task.getType());
                     }
                 });
+
+        SyncMetadataScheduledRunnable runnable = new SyncMetadataScheduledRunnable("dd", injector, sourceRepository, databaseHandler, tableHandler, columnHandler, templateSqlRepository);
+        this.scheduledCronRegistrar.addCronTask(runnable, "*/20 * * * * ?");
     }
 }
