@@ -2,9 +2,9 @@ package io.edurt.datacap.server.configure;
 
 import com.google.inject.Injector;
 import io.edurt.datacap.schedule.ScheduledCronRegistrar;
-import io.edurt.datacap.server.scheduled.SourceScheduledRunnable;
 import io.edurt.datacap.server.scheduled.source.CheckScheduledRunnable;
 import io.edurt.datacap.server.scheduled.source.SyncMetadataScheduledRunnable;
+import io.edurt.datacap.service.repository.ScheduledHistoryRepository;
 import io.edurt.datacap.service.repository.ScheduledRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.repository.TemplateSqlRepository;
@@ -28,12 +28,13 @@ public class ScheduleRunnerConfigure
     private final DatabaseRepository databaseHandler;
     private final TableRepository tableHandler;
     private final ColumnRepository columnHandler;
+    private final ScheduledHistoryRepository scheduledHistoryHandler;
     private final TemplateSqlRepository templateSqlRepository;
     private final ScheduledCronRegistrar scheduledCronRegistrar;
     private final RedisTemplate redisTemplate;
     private final Environment environment;
 
-    public ScheduleRunnerConfigure(Injector injector, ScheduledRepository scheduledRepository, SourceRepository sourceRepository, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, TemplateSqlRepository templateSqlRepository, ScheduledCronRegistrar scheduledCronRegistrar, RedisTemplate redisTemplate, Environment environment)
+    public ScheduleRunnerConfigure(Injector injector, ScheduledRepository scheduledRepository, SourceRepository sourceRepository, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, ScheduledHistoryRepository scheduledHistoryHandler, TemplateSqlRepository templateSqlRepository, ScheduledCronRegistrar scheduledCronRegistrar, RedisTemplate redisTemplate, Environment environment)
     {
         this.injector = injector;
         this.scheduledRepository = scheduledRepository;
@@ -41,6 +42,7 @@ public class ScheduleRunnerConfigure
         this.databaseHandler = databaseHandler;
         this.tableHandler = tableHandler;
         this.columnHandler = columnHandler;
+        this.scheduledHistoryHandler = scheduledHistoryHandler;
         this.templateSqlRepository = templateSqlRepository;
         this.scheduledCronRegistrar = scheduledCronRegistrar;
         this.redisTemplate = redisTemplate;
@@ -55,8 +57,8 @@ public class ScheduleRunnerConfigure
                     log.info("Add new task " + task.getName() + " to scheduler");
                     switch (task.getType()) {
                         case SOURCE_SYNCHRONIZE:
-                            SourceScheduledRunnable scheduled = new SourceScheduledRunnable(task.getName(), this.injector, this.sourceRepository, templateSqlRepository, redisTemplate, environment);
-                            this.scheduledCronRegistrar.addCronTask(scheduled, task.getExpression());
+                            SyncMetadataScheduledRunnable syncMetadataScheduledRunnable = new SyncMetadataScheduledRunnable("dd", injector, sourceRepository, databaseHandler, tableHandler, columnHandler, templateSqlRepository, scheduledHistoryHandler, task);
+                            this.scheduledCronRegistrar.addCronTask(syncMetadataScheduledRunnable, task.getExpression());
                             break;
                         case SOURCE_CHECK:
                             CheckScheduledRunnable runnable = new CheckScheduledRunnable(task.getName(), this.injector, this.sourceRepository);
@@ -66,8 +68,5 @@ public class ScheduleRunnerConfigure
                             log.warn("Unsupported task type " + task.getType());
                     }
                 });
-
-        SyncMetadataScheduledRunnable runnable = new SyncMetadataScheduledRunnable("dd", injector, sourceRepository, databaseHandler, tableHandler, columnHandler, templateSqlRepository);
-        this.scheduledCronRegistrar.addCronTask(runnable, "*/20 * * * * ?");
     }
 }
