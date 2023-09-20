@@ -1,7 +1,11 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.schedule')">
-      <Table :loading="loading" :columns="headers" :data="finalData?.content">
+    <Card style="width:100%"
+          dis-hover
+          :title="$t('common.schedule')">
+      <Table :loading="loading"
+             :columns="headers"
+             :data="finalData?.content">
         <template #name="{row}">
           <Tooltip transfer :content="row.description" :max-width="'10%'">
             {{ row.name }}
@@ -15,17 +19,37 @@
         </template>
         <template #action="{ row }">
           <Space>
-            <Tooltip :content="$t('common.modify')" transfer>
-              <Button shape="circle" :disabled="row.default" type="primary" size="small" icon="md-create" @click="handlerVisibleDetail(row.id, true)"/>
+            <Tooltip transfer
+                     :content="$t('common.history')">
+              <Button shape="circle"
+                      type="primary"
+                      size="small"
+                      icon="md-eye"
+                      @click="handlerVisibleHistory(row.id,  row.name, true)">
+              </Button>
             </Tooltip>
           </Space>
         </template>
       </Table>
-      <p v-if="!loading" style="margin-top: 10px;">
-        <Page v-model="pagination.current" :total="pagination.total" :page-size="pagination.size" show-sizer show-elevator show-total
-              @on-page-size-change="handlerSizeChange" @on-change="handlerIndexChange"/>
+      <p v-if="!loading"
+         style="margin-top: 10px;">
+        <Page v-model="pagination.current"
+              :total="pagination.total"
+              :page-size="pagination.size"
+              show-sizer
+              show-elevator
+              show-total
+              @on-page-size-change="handlerSizeChange"
+              @on-change="handlerIndexChange">
+        </Page>
       </p>
     </Card>
+    <ScheduleHistory v-if="visibleHistory"
+                     :is-visible="visibleHistory"
+                     :id="applyId"
+                     :name="applyName"
+                     @close="handlerVisibleHistory(null, null,false)">
+    </ScheduleHistory>
   </div>
 </template>
 
@@ -37,11 +61,13 @@ import {ResponsePage} from "@/model/ResponsePage";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
 import {createHeaders} from "@/views/system/schedule/GenertateSchedule";
 import ScheduleService from "@/services/admin/ScheduleService";
+import ScheduleHistory from "@/views/system/schedule/compoments/ScheduleHistory.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
   name: 'AdminScheduleHome',
+  components: {ScheduleHistory},
   setup()
   {
     const i18n = useI18n();
@@ -56,8 +82,9 @@ export default defineComponent({
   {
     return {
       loading: false,
-      visibleDetail: false,
+      visibleHistory: false,
       applyId: null,
+      applyName: null,
       finalData: null as ResponsePage
     }
   },
@@ -80,16 +107,11 @@ export default defineComponent({
           this.loading = false
         })
     },
-    handlerVisibleDetail(value: number, isOpened: boolean)
+    handlerVisibleHistory(value: number, name: string, isOpened: boolean)
     {
-      if (isOpened) {
-        this.applyId = value;
-        this.visibleDetail = true;
-      }
-      else {
-        this.applyId = null;
-        this.visibleDetail = false;
-      }
+      this.applyId = value;
+      this.applyName = name;
+      this.visibleHistory = isOpened;
     },
     handlerSizeChange(size: number)
     {

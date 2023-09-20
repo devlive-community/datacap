@@ -10,18 +10,22 @@ import io.edurt.datacap.common.enums.Type;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.schedule.ScheduledRunnable;
 import io.edurt.datacap.service.common.PluginUtils;
+import io.edurt.datacap.service.entity.ScheduledEntity;
+import io.edurt.datacap.service.entity.ScheduledHistoryEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.TemplateSqlEntity;
 import io.edurt.datacap.service.entity.metadata.ColumnEntity;
 import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
 import io.edurt.datacap.service.itransient.SqlConfigure;
+import io.edurt.datacap.service.repository.ScheduledHistoryRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.repository.TemplateSqlRepository;
 import io.edurt.datacap.service.repository.metadata.ColumnRepository;
 import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.spi.Plugin;
+import io.edurt.datacap.spi.executor.PipelineState;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -30,6 +34,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -43,8 +49,16 @@ public class SyncMetadataScheduledRunnable
     private final TableRepository tableHandler;
     private final ColumnRepository columnHandler;
     private final TemplateSqlRepository templateHandler;
+    private final ScheduledHistoryRepository scheduledHistoryHandler;
+    private final ScheduledEntity scheduledEntity;
+    private AtomicInteger databaseAddedCount;
+    private AtomicInteger databaseRemovedCount;
+    private AtomicInteger tableAddedCount;
+    private AtomicInteger tableRemovedCount;
+    private AtomicInteger columnAddedCount;
+    private AtomicInteger columnRemovedCount;
 
-    public SyncMetadataScheduledRunnable(String name, Injector injector, SourceRepository sourceHandler, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, TemplateSqlRepository templateHandler)
+    public SyncMetadataScheduledRunnable(String name, Injector injector, SourceRepository sourceHandler, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, TemplateSqlRepository templateHandler, ScheduledHistoryRepository scheduledHistoryHandler, ScheduledEntity scheduledEntity)
     {
         super(name);
         this.injector = injector;
@@ -53,6 +67,8 @@ public class SyncMetadataScheduledRunnable
         this.tableHandler = tableHandler;
         this.columnHandler = columnHandler;
         this.templateHandler = templateHandler;
+        this.scheduledHistoryHandler = scheduledHistoryHandler;
+        this.scheduledEntity = scheduledEntity;
     }
 
     /**
@@ -63,6 +79,18 @@ public class SyncMetadataScheduledRunnable
     {
         sourceHandler.findAll()
                 .forEach(entity -> {
+                    databaseAddedCount = new AtomicInteger(0);
+                    databaseRemovedCount = new AtomicInteger(0);
+                    tableAddedCount = new AtomicInteger(0);
+                    tableRemovedCount = new AtomicInteger(0);
+                    columnAddedCount = new AtomicInteger(0);
+                    columnRemovedCount = new AtomicInteger(0);
+                    ScheduledHistoryEntity scheduledHistory = ScheduledHistoryEntity.builder()
+                            .name(String.format("Sync source [ %s ]", entity.getName()))
+                            .scheduled(scheduledEntity)
+                            .state(PipelineState.RUNNING)
+                            .build();
+                    scheduledHistoryHandler.save(scheduledHistory);
                     log.info("==================== Sync metadata  [ {} ] started =================", entity.getName());
                     Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(this.injector, entity.getType(), entity.getProtocol());
                     if (!pluginOptional.isPresent()) {
@@ -72,6 +100,16 @@ public class SyncMetadataScheduledRunnable
                         this.startSyncDatabase(entity, pluginOptional.get());
                     }
                     log.info("==================== Sync metadata  [ {} ] finished =================", entity.getName());
+                    Properties info = new Properties();
+                    info.put("databaseAddedCount", databaseAddedCount.get());
+                    info.put("databaseRemovedCount", databaseRemovedCount.get());
+                    info.put("tableAddedCount", tableAddedCount.get());
+                    info.put("tableRemovedCount", tableRemovedCount.get());
+                    info.put("columnAddedCount", columnAddedCount.get());
+                    info.put("columnRemovedCount", columnRemovedCount.get());
+                    scheduledHistory.setInfo(info);
+                    scheduledHistory.setState(PipelineState.SUCCESS);
+                    scheduledHistoryHandler.save(scheduledHistory);
                 });
     }
 
@@ -207,6 +245,7 @@ public class SyncMetadataScheduledRunnable
                             databaseHandler.save(database);
                             log.info("==================== Sync metadata table  [ {} ] started =================", database.getName());
                             this.startSyncTable(entity, database, plugin);
+                            databaseAddedCount.addAndGet(1);
                             log.info("==================== Sync metadata table  [ {} ] end =================", database.getName());
                         });
                 // Delete invalid data that no longer exists
@@ -215,6 +254,7 @@ public class SyncMetadataScheduledRunnable
                         .forEach(item -> {
                             log.info("Removed catalog [ {} ] schema [ {} ] to source [ {} ]", item.getCatalog(), item.getName(), entity.getName());
                             databaseHandler.delete(item);
+                            databaseRemovedCount.addAndGet(1);
                         });
             }
         }
@@ -282,6 +322,7 @@ public class SyncMetadataScheduledRunnable
                         .forEach(item -> {
                             log.info("Added table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
                             tableHandler.save(item);
+                            tableAddedCount.addAndGet(1);
                             log.info("==================== Sync metadata column  [ {} ] started =================", item.getName());
                             this.startSyncColumn(entity, database, item, plugin);
                             log.info("==================== Sync metadata column  [ {} ] end =================", item.getName());
@@ -291,6 +332,7 @@ public class SyncMetadataScheduledRunnable
                         .forEach(item -> {
                             log.info("Removed table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
                             tableHandler.delete(item);
+                            tableRemovedCount.addAndGet(1);
                         });
             }
         }
@@ -356,12 +398,14 @@ public class SyncMetadataScheduledRunnable
                         .forEach(item -> {
                             log.info("Added column [ {} ] type [ {} ] to table [ {} ]", item.getName(), item.getType(), table.getName());
                             columnHandler.save(item);
+                            columnAddedCount.addAndGet(1);
                         });
                 origin.stream()
                         .filter(node -> maps.stream().noneMatch(item -> node.getName().equals(item.getName())))
                         .forEach(item -> {
                             log.info("Removed table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getType(), table.getName());
                             columnHandler.delete(item);
+                            columnRemovedCount.addAndGet(1);
                         });
             }
         }

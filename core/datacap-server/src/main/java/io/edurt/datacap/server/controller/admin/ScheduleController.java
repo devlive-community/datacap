@@ -4,8 +4,10 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.ScheduledEntity;
+import io.edurt.datacap.service.entity.ScheduledHistoryEntity;
 import io.edurt.datacap.service.repository.ScheduledRepository;
 import io.edurt.datacap.service.service.ScheduledService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +30,12 @@ public class ScheduleController
     public CommonResponse<PageEntity<ScheduledEntity>> getAllByFilter(@RequestBody FilterBody filter)
     {
         return scheduledService.getAll(scheduledRepository, filter);
+    }
+
+    @PostMapping(value = "{id}/history")
+    public CommonResponse<PageEntity<ScheduledHistoryEntity>> getHistory(@PathVariable(value = "id") Long id,
+            @RequestBody FilterBody filter)
+    {
+        return scheduledService.getHistory(id, filter);
     }
 }
