@@ -144,7 +144,7 @@ export default defineComponent({
     },
     toMarkdown(content: string)
     {
-      return '```json\n' + JSON.stringify(content) + '\n```';
+      return '```json\n' + JSON.stringify(content, null, 4) + '\n```';
     }
   },
   computed: {
