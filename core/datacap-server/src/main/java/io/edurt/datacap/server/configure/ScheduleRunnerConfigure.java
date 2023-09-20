@@ -54,10 +54,10 @@ public class ScheduleRunnerConfigure
     {
         this.scheduledRepository.findAllByActiveIsTrueAndIsSystemIsTrue()
                 .forEach(task -> {
-                    log.info("Add new task " + task.getName() + " to scheduler");
+                    log.info("Add new task [ {} ] to scheduler", task.getName());
                     switch (task.getType()) {
                         case SOURCE_SYNCHRONIZE:
-                            SyncMetadataScheduledRunnable syncMetadataScheduledRunnable = new SyncMetadataScheduledRunnable("dd", injector, sourceRepository, databaseHandler, tableHandler, columnHandler, templateSqlRepository, scheduledHistoryHandler, task);
+                            SyncMetadataScheduledRunnable syncMetadataScheduledRunnable = new SyncMetadataScheduledRunnable(task.getName(), injector, sourceRepository, databaseHandler, tableHandler, columnHandler, templateSqlRepository, scheduledHistoryHandler, task);
                             this.scheduledCronRegistrar.addCronTask(syncMetadataScheduledRunnable, task.getExpression());
                             break;
                         case SOURCE_CHECK:
@@ -65,7 +65,7 @@ public class ScheduleRunnerConfigure
                             this.scheduledCronRegistrar.addCronTask(runnable, task.getExpression());
                             break;
                         default:
-                            log.warn("Unsupported task type " + task.getType());
+                            log.warn("Unsupported task type [ {} ]", task.getType());
                     }
                 });
     }

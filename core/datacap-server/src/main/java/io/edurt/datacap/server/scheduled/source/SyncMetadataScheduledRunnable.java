@@ -25,6 +25,7 @@ import io.edurt.datacap.service.repository.metadata.ColumnRepository;
 import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.spi.Plugin;
+import io.edurt.datacap.spi.executor.PipelineState;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -33,6 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -83,13 +85,12 @@ public class SyncMetadataScheduledRunnable
                     tableRemovedCount = new AtomicInteger(0);
                     columnAddedCount = new AtomicInteger(0);
                     columnRemovedCount = new AtomicInteger(0);
-
                     ScheduledHistoryEntity scheduledHistory = ScheduledHistoryEntity.builder()
                             .name(String.format("Sync source [ %s ]", entity.getName()))
                             .scheduled(scheduledEntity)
+                            .state(PipelineState.RUNNING)
                             .build();
                     scheduledHistoryHandler.save(scheduledHistory);
-
                     log.info("==================== Sync metadata  [ {} ] started =================", entity.getName());
                     Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(this.injector, entity.getType(), entity.getProtocol());
                     if (!pluginOptional.isPresent()) {
@@ -99,12 +100,15 @@ public class SyncMetadataScheduledRunnable
                         this.startSyncDatabase(entity, pluginOptional.get());
                     }
                     log.info("==================== Sync metadata  [ {} ] finished =================", entity.getName());
-                    scheduledHistory.setDatabaseAddedCount(databaseAddedCount.longValue());
-                    scheduledHistory.setDatabaseRemovedCount(databaseRemovedCount.longValue());
-                    scheduledHistory.setTableAddedCount(tableAddedCount.longValue());
-                    scheduledHistory.setTableRemovedCount(tableRemovedCount.longValue());
-                    scheduledHistory.setColumnAddedCount(columnAddedCount.longValue());
-                    scheduledHistory.setColumnRemovedCount(columnRemovedCount.longValue());
+                    Properties info = new Properties();
+                    info.put("databaseAddedCount", databaseAddedCount.get());
+                    info.put("databaseRemovedCount", databaseRemovedCount.get());
+                    info.put("tableAddedCount", tableAddedCount.get());
+                    info.put("tableRemovedCount", tableRemovedCount.get());
+                    info.put("columnAddedCount", columnAddedCount.get());
+                    info.put("columnRemovedCount", columnRemovedCount.get());
+                    scheduledHistory.setInfo(info);
+                    scheduledHistory.setState(PipelineState.SUCCESS);
                     scheduledHistoryHandler.save(scheduledHistory);
                 });
     }

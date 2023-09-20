@@ -1,6 +1,8 @@
 package io.edurt.datacap.service.entity;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.service.converter.PropertiesConverter;
+import io.edurt.datacap.spi.executor.PipelineState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +12,17 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import java.util.Properties;
 
 @Getter
 @Setter
@@ -30,23 +37,13 @@ import javax.persistence.Table;
 public class ScheduledHistoryEntity
         extends BaseEntity
 {
-    @Column(name = "database_added_count")
-    private Long databaseAddedCount;
+    @Column(name = "info")
+    @Convert(converter = PropertiesConverter.class)
+    private Properties info;
 
-    @Column(name = "database_removed_count")
-    private Long databaseRemovedCount;
-
-    @Column(name = "table_added_count")
-    private Long tableAddedCount;
-
-    @Column(name = "table_removed_count")
-    private Long tableRemovedCount;
-
-    @Column(name = "column_added_count")
-    private Long columnAddedCount;
-
-    @Column(name = "column_removed_count")
-    private Long columnRemovedCount;
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
+    private PipelineState state;
 
     @ManyToOne
     @JoinTable(name = "datacap_scheduled_history_relation",

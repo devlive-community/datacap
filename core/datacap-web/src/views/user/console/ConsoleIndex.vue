@@ -445,7 +445,6 @@ export default defineComponent({
     handlerVisibleHelp(value: boolean)
     {
       this.visibleAiHelp = value;
-      console.log(1)
     }
   },
   // Prevents errors from affecting other components

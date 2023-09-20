@@ -87,17 +87,13 @@ VALUES ('SYSTEM_FOR_GET_ALL_COLUMNS',
 
 CREATE TABLE `datacap_scheduled_history`
 (
-    id                     BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name                   VARCHAR(255),
-    active                 BOOLEAN DEFAULT TRUE,
-    create_time            DATETIME,
-    update_time            DATETIME,
-    database_added_count   BIGINT,
-    database_removed_count BIGINT,
-    table_added_count      BIGINT,
-    table_removed_count    BIGINT,
-    column_added_count     BIGINT,
-    column_removed_count   BIGINT
+    id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name        VARCHAR(255),
+    active      BOOLEAN DEFAULT TRUE,
+    create_time DATETIME,
+    update_time DATETIME,
+    info        TEXT,
+    state       VARCHAR(100)
 );
 
 CREATE TABLE `datacap_scheduled_history_relation`
