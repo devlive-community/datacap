@@ -6,7 +6,7 @@
             size=18
             class="spin-icon-load">
       </Icon>
-      <div>Loading</div>
+      <div>{{ $t('common.loading') }}</div>
     </Spin>
   </div>
 </template>

@@ -6,7 +6,9 @@
           <template #title>
             <SourceSelect @changeValue="handlerChangeValue($event)"/>
           </template>
-          <DataLazyTree v-if="applySource" :id="applySource"></DataLazyTree>
+          <DataStructureLazyTree v-if="applySource"
+                                 :id="applySource">
+          </DataStructureLazyTree>
         </Card>
       </Sider>
       <Layout class="content" :style="{padding: '0 12px 12px'}">
@@ -104,12 +106,12 @@ import BasicTableComponent from "@/components/table/BasicTable.vue";
 import {AuditService} from "@/services/AuditService";
 import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
-import DataLazyTree from "@/components/common/DataLazyTree.vue";
 import QueryAiHelp from "@/views/user/console/QueryAiHelp.vue";
 import {HttpCommon} from "@/common/HttpCommon";
 import SnippetService from "@/services/SnippetService";
 import UserService from "@/services/UserService";
 import {join} from "lodash";
+import DataStructureLazyTree from "@/components/common/DataStructureLazyTree.vue";
 
 const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
   {title: 'Editor', key: '1', closable: false}
@@ -120,7 +122,7 @@ const editorValueMap = new Map<string, string>();
 
 export default defineComponent({
   name: "ConsoleIndex",
-  components: {QueryAiHelp, DataLazyTree, BasicTableComponent, SnippetDetails, SourceSelect, MonacoEditor},
+  components: {DataStructureLazyTree, QueryAiHelp, BasicTableComponent, SnippetDetails, SourceSelect, MonacoEditor},
   unmounted()
   {
     if (this.editorCompletionProvider) {

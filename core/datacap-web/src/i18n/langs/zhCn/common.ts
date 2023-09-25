@@ -130,5 +130,6 @@ export default {
   success: '成功',
   publish: '发布',
   executor: '执行器',
-  result: '结果'
+  result: '结果',
+  loading: '加载中',
 }

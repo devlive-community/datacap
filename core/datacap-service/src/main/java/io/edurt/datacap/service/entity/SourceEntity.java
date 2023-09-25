@@ -15,6 +15,7 @@ import io.edurt.datacap.spi.model.Configure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -44,6 +45,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @NoArgsConstructor
+@SuperBuilder
 @Entity
 @Table(name = "source")
 @JsonIgnoreProperties(value = {"configure", "pluginAudits"})
