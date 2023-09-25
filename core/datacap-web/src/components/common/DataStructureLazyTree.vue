@@ -11,7 +11,7 @@
 </template>
 <script lang="ts">
 import {DataStructureModel} from "@/model/DataStructure";
-import {defineComponent, watch} from "vue";
+import {defineComponent, resolveComponent, watch} from "vue";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import DatabaseService from "@/services/Database";
 import TableService from "@/services/Table";
@@ -54,6 +54,17 @@ export default defineComponent({
               structure.title = item.name;
               structure.catalog = item.catalog;
               structure.applyId = item.id;
+              structure.render = (h, {data}) => {
+                return h('div', [
+                  h('span', [
+                    h(resolveComponent('FontAwesomeIcon'), {
+                      icon: "database",
+                      style: {marginRight: '6px'}
+                    }),
+                    h('span', data.title)
+                  ])
+                ]);
+              }
               this.dataTreeArray.push(structure);
             });
           }
@@ -78,6 +89,17 @@ export default defineComponent({
                 structure.level = DataStructureEnum.TABLE;
                 structure.type = item.type;
                 structure.engine = item.engine;
+                structure.render = (h, {data}) => {
+                  return h('div', [
+                    h('span', [
+                      h(resolveComponent('FontAwesomeIcon'), {
+                        icon: "table",
+                        style: {marginRight: '6px'}
+                      }),
+                      h('span', data.title)
+                    ])
+                  ]);
+                }
                 dataChildArray.push(structure);
               });
             }
@@ -100,6 +122,17 @@ export default defineComponent({
                 structure.level = DataStructureEnum.COLUMN;
                 structure.type = item.type;
                 structure.engine = item.engine;
+                structure.render = (h, {data}) => {
+                  return h('div', [
+                    h('span', [
+                      h(resolveComponent('FontAwesomeIcon'), {
+                        icon: "columns",
+                        style: {marginRight: '6px'}
+                      }),
+                      h('span', data.title)
+                    ])
+                  ]);
+                }
                 dataChildArray.push(structure);
               });
             }
