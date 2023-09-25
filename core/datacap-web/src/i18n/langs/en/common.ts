@@ -130,5 +130,6 @@ export default {
   success: 'Success',
   publish: 'Publish',
   executor: 'Executor',
-  result: 'Result'
+  result: 'Result',
+  loading: 'Loading',
 }
