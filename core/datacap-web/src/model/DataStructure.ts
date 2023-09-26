@@ -8,6 +8,8 @@ export class DataStructureModel
   table: null;
   applyId: null;
   type: null;
+  dataType: null;
+  extra: null;
   engine: null;
   level: DataStructureEnum = DataStructureEnum.DATABASE;
   loading = false;

@@ -30,6 +30,7 @@
               </template>
               <div style="height: 470px; overflow: auto;">
                 <Tree :data="dataTreeArray"
+                      style="margin-left: 6px;"
                       :load-data="handlerLoadChildData">
                 </Tree>
                 <CircularLoading v-if="dataTreeLoading"
@@ -155,6 +156,8 @@ export default defineComponent({
               catalog: null;
               id: null;
               type: null;
+              dataType: null;
+              extra: null;
               engine: null;
               isKey: null;
               defaultValue: null;
@@ -168,6 +171,8 @@ export default defineComponent({
               structure.applyId = item.id;
               structure.level = DataStructureEnum.COLUMN;
               structure.type = item.type;
+              structure.extra = item.extra;
+              structure.dataType = item.dataType;
               structure.engine = item.engine;
               structure.isKey = item.isKey;
               structure.defaultValue = item.defaultValue;
@@ -185,7 +190,7 @@ export default defineComponent({
                           color: '#c5c8ce'
                         },
                       },
-                      this.getColumnTitle(data.type, data.title, data.isKey, data.defaultValue)),
+                        this.getColumnTitle(data.type, data.extra, data.isKey, data.defaultValue)),
                   ])
                 ]);
               }
@@ -212,12 +217,16 @@ export default defineComponent({
         return 'columns';
       }
     },
-    getColumnTitle(type: string, title: string, isKey: string, defaultValue: string)
+    getColumnTitle(dataType: string, extra: string, isKey: string, defaultValue: string)
     {
-      if (defaultValue && defaultValue !== 'null') {
-        return `${title} = ${defaultValue}`
+      let title = dataType;
+      if (isKey === 'PRI') {
+        title = `${title} (${extra.replace('_', ' ')})`;
       }
-      return type;
+      if (defaultValue && defaultValue !== 'null') {
+        title = `${title} = ${defaultValue}`
+      }
+      return title;
     }
   }
 });
