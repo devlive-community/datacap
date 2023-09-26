@@ -142,6 +142,10 @@ export default defineComponent({
     handlerLoadChildData(item: DataStructureModel, callback)
     {
       const dataChildArray = [];
+      if (item.level === DataStructureEnum.COLUMN) {
+        callback(dataChildArray);
+        return;
+      }
       ColumnService.getAllByTable(item.applyId)
         .then(response => {
           if (response.status) {
@@ -153,6 +157,7 @@ export default defineComponent({
               type: null;
               engine: null;
               isKey: null;
+              defaultValue: null;
               table: { name: null, database: { name: null } };
             }) => {
               const structure = new DataStructureModel();
@@ -165,6 +170,7 @@ export default defineComponent({
               structure.type = item.type;
               structure.engine = item.engine;
               structure.isKey = item.isKey;
+              structure.defaultValue = item.defaultValue;
               structure.render = (h, {data}) => {
                 return h('div', [
                   h('span', [
@@ -172,7 +178,14 @@ export default defineComponent({
                       icon: this.getColumnIcon(data.isKey),
                       style: {marginRight: '6px'}
                     }),
-                    h('span', data.title)
+                    h('span', data.title),
+                    h('span', {
+                        style: {
+                          marginLeft: '6px',
+                          color: '#c5c8ce'
+                        },
+                      },
+                      this.getColumnTitle(data.type, data.title, data.isKey, data.defaultValue)),
                   ])
                 ]);
               }
@@ -198,6 +211,13 @@ export default defineComponent({
       else {
         return 'columns';
       }
+    },
+    getColumnTitle(type: string, title: string, isKey: string, defaultValue: string)
+    {
+      if (defaultValue && defaultValue !== 'null') {
+        return `${title} = ${defaultValue}`
+      }
+      return type;
     }
   }
 });

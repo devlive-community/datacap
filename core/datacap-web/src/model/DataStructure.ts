@@ -13,5 +13,6 @@ export class DataStructureModel
   loading = false;
   render: any;
   isKey: null;
+  defaultValue: null;
   children: DataStructureModel[] = [];
 }
