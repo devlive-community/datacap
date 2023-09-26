@@ -1,7 +1,8 @@
 <template>
   <div>
     <Spin fix
-          :show="show">
+          :show="show"
+          style="position: inherit;">
       <Icon type="ios-loading"
             size=18
             class="spin-icon-load">

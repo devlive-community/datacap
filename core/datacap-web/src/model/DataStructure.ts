@@ -12,5 +12,6 @@ export class DataStructureModel
   level: DataStructureEnum = DataStructureEnum.DATABASE;
   loading = false;
   render: any;
+  isKey: null;
   children: DataStructureModel[] = [];
 }

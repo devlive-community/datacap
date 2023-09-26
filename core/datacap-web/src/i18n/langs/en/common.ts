@@ -132,4 +132,5 @@ export default {
   executor: 'Executor',
   result: 'Result',
   loading: 'Loading',
+  beta: 'Beta',
 }

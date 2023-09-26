@@ -132,4 +132,5 @@ export default {
   executor: '执行器',
   result: '结果',
   loading: '加载中',
+  beta: 'Beta',
 }

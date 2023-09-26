@@ -75,6 +75,16 @@
                       :to="'/admin/source/' + row.id + '/manager'">
               </Button>
             </Tooltip>
+            <Tooltip :content="$t('common.admin') + $t('common.beta')"
+                     transfer>
+              <Button :disabled="currentUserId !== row.user.id || !row.available"
+                      shape="circle"
+                      type="info"
+                      size="small"
+                      icon="md-construct"
+                      :to="'/admin/source/' + row.id + '/managerBeta'">
+              </Button>
+            </Tooltip>
           </Space>
         </template>
       </Table>
