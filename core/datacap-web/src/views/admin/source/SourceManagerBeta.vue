@@ -112,7 +112,16 @@ export default defineComponent({
       TableService.getAllByDatabase(this.applyValue.database)
         .then(response => {
           if (response.status) {
-            response.data.forEach((item: { name: null; title: null; catalog: null; id: null; type: null; engine: null; database: { name: null }; }) => {
+            response.data.forEach((item: {
+              name: null;
+              title: null;
+              catalog: null;
+              id: null;
+              type: null;
+              engine: null;
+              comment: null;
+              database: { name: null };
+            }) => {
               const structure = new DataStructureModel();
               structure.title = item.name;
               structure.database = item.database.name;
@@ -121,6 +130,7 @@ export default defineComponent({
               structure.type = item.type;
               structure.level = DataStructureEnum.TABLE;
               structure.engine = item.engine;
+              structure.comment = item.comment;
               structure.render = (h, {data}) => {
                 return h('div', [
                   h('span', [
@@ -128,7 +138,7 @@ export default defineComponent({
                       icon: "table",
                       style: {marginRight: '6px'}
                     }),
-                    h('span', data.title)
+                    this.resolveTableComponent(h, data)
                   ])
                 ]);
               }
@@ -190,7 +200,7 @@ export default defineComponent({
                           color: '#c5c8ce'
                         },
                       },
-                        this.getColumnTitle(data.type, data.extra, data.isKey, data.defaultValue)),
+                      this.getColumnTitle(data.type, data.extra, data.isKey, data.defaultValue)),
                   ])
                 ]);
               }
@@ -227,6 +237,21 @@ export default defineComponent({
         title = `${title} = ${defaultValue}`
       }
       return title;
+    },
+    resolveTableComponent(h, data: { comment: undefined; title: undefined })
+    {
+      if (data.comment) {
+        return h(resolveComponent('Tooltip'), {
+            content: data.comment,
+            placement: 'bottom-start',
+            transfer: true,
+            delay: 1000
+          },
+          h('span', data.title));
+      }
+      else {
+        return h('span', data.title);
+      }
     }
   }
 });

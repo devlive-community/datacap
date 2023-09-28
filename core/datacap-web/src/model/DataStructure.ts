@@ -16,5 +16,6 @@ export class DataStructureModel
   render: any;
   isKey: null;
   defaultValue: null;
+  comment: null;
   children: DataStructureModel[] = [];
 }
