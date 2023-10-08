@@ -139,18 +139,14 @@
         </Row>
       </CellGroup>
       <Divider orientation="left"/>
-      <Row style="margin-left: 10px;">
-        <Col span="1">
-          {{ $t('common.comment') }}
-        </Col>
-        <Col span="23">
+      <Form :label-width="80">
+        <FormItem :label="$t('common.comment')">
           <Input v-model="info.comment"
                  type="textarea"
-                 :rows="4"
-                 disabled>
+                 :rows="4">
           </Input>
-        </Col>
-      </Row>
+        </FormItem>
+      </Form>
     </div>
   </div>
 </template>

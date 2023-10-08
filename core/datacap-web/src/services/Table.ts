@@ -1,6 +1,7 @@
 import {BaseService} from "@/services/BaseService";
 import {ResponseModel} from "@/model/ResponseModel";
 import {HttpCommon} from "@/common/HttpCommon";
+import {TableFilter} from "@/model/TableFilter";
 
 const baseUrl = '/api/v1/table';
 
@@ -26,6 +27,21 @@ class TableService
   getAllByDatabase(id: number): Promise<ResponseModel>
   {
     return new HttpCommon().post(`${baseUrl}/database/${id}`);
+  }
+
+  /**
+   * Retrieves data for a specific ID using the provided table filter configuration.
+   *
+   * @param {number} id - The ID of the data to retrieve.
+   * @param {TableFilter} configure - The table filter configuration.
+   * @return {Promise<ResponseModel>} - A promise that resolves to the response model.
+   */
+  getData(id: number, configure: TableFilter): Promise<ResponseModel>
+  {
+    if (!configure) {
+      configure = <TableFilter>{};
+    }
+    return new HttpCommon().post(`${baseUrl}/${id}`, configure);
   }
 }
 

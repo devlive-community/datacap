@@ -67,6 +67,12 @@
                            :id="applyValue.node.applyId">
                 </TableInfo>
               </TabPane>
+              <TabPane :label="tabPane.data"
+                       name="data">
+                <TableData v-if="applyValue.tabType === 'data'"
+                           :id="applyValue.node.applyId">
+                </TableData>
+              </TabPane>
             </Tabs>
           </Card>
         </template>
@@ -86,10 +92,11 @@ import CircularLoading from "@/components/loading/CircularLoading.vue";
 import {DataStructureModel} from "@/model/DataStructure";
 import {DataStructureEnum} from "@/enum/DataStructure";
 import TableInfo from "@/views/admin/source/components/TableInfo.vue";
+import TableData from "@/views/admin/source/components/TableData.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
-  components: {TableInfo, CircularLoading},
+  components: {TableData, TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
@@ -127,6 +134,7 @@ export default defineComponent({
       },
       tabPane: {
         info: (h) => this.resolveTabPaneComponent(h, 'circle-info', 'common.info'),
+        data: (h) => this.resolveTabPaneComponent(h, 'table', 'common.data'),
       }
     }
   },
