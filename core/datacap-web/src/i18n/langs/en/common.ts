@@ -133,4 +133,10 @@ export default {
   result: 'Result',
   loading: 'Loading',
   beta: 'Beta',
+  info: 'Info',
+  engine: 'Engine',
+  collation: 'Collation',
+  basic: 'Basic',
+  totalRows: 'Total Rows',
+  comment: 'Comment',
 }

@@ -133,4 +133,10 @@ export default {
   result: '结果',
   loading: '加载中',
   beta: 'Beta',
+  info: '信息',
+  engine: '引擎',
+  collation: '排序',
+  basic: '基本',
+  totalRows: '总行数',
+  comment: '评论'
 }

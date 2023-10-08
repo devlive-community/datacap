@@ -31,7 +31,8 @@
               <div style="height: 470px; overflow: auto;">
                 <Tree :data="dataTreeArray"
                       style="margin-left: 6px;"
-                      :load-data="handlerLoadChildData">
+                      :load-data="handlerLoadChildData"
+                      @on-select-change="handlerSelectNode">
                 </Tree>
                 <CircularLoading v-if="dataTreeLoading"
                                  :show="dataTreeLoading">
@@ -39,6 +40,35 @@
               </div>
             </Card>
           </div>
+        </template>
+        <template #right>
+          <Card v-if="!applyValue.node"
+                padding="0 10"
+                :bordered="false"
+                dis-hover>
+            <Result type="warning"
+                    :title="$t('tooltip.notSelectedNodeTitle')">
+              <template #desc>
+                <span>{{ $t('tooltip.notSelectedNodeDesc') }}</span>
+              </template>
+            </Result>
+          </Card>
+          <Card v-else
+                style="width:100%;"
+                padding="0 10"
+                :bordered="false"
+                :title="null"
+                dis-hover>
+            <Tabs v-model="applyValue.tabType"
+                  :animated="false">
+              <TabPane :label="tabPane.info"
+                       name="info">
+                <TableInfo v-if="applyValue.tabType === 'info'"
+                           :info="applyValue.node">
+                </TableInfo>
+              </TabPane>
+            </Tabs>
+          </Card>
         </template>
       </Split>
     </div>
@@ -55,15 +85,31 @@ import ColumnService from "@/services/Column";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import {DataStructureModel} from "@/model/DataStructure";
 import {DataStructureEnum} from "@/enum/DataStructure";
+import TableInfo from "@/views/admin/source/components/TableInfo.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
-  components: {CircularLoading},
+  components: {TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
+    const resolveTabPaneComponent = (h, icon: string, key: string) => {
+      return h('div', [
+        h(resolveComponent('FontAwesomeIcon'), {
+          icon: icon,
+          style: {fontSize: '25px'}
+        }),
+        h('p', {
+            style: {
+              fontSize: '12px',
+            }
+          },
+          i18n.t(key))
+      ])
+    }
     return {
-      i18n
+      i18n,
+      resolveTabPaneComponent
     }
   },
   data()
@@ -71,11 +117,16 @@ export default defineComponent({
     return {
       loading: false,
       dataTreeLoading: false,
-      splitValue: 0.20,
+      splitValue: 0.15,
       databaseArray: Array<DataStructureModel>(),
       dataTreeArray: Array<DataStructureModel>(),
       applyValue: {
-        database: null
+        database: null,
+        node: null,
+        tabType: 'info'
+      },
+      tabPane: {
+        info: (h) => this.resolveTabPaneComponent(h, 'circle-info', 'common.info'),
       }
     }
   },
@@ -131,6 +182,7 @@ export default defineComponent({
               structure.level = DataStructureEnum.TABLE;
               structure.engine = item.engine;
               structure.comment = item.comment;
+              structure.origin = item;
               structure.render = (h, {data}) => {
                 return h('div', [
                   h('span', [
@@ -211,6 +263,15 @@ export default defineComponent({
         .finally(() => {
           callback(dataChildArray);
         });
+    },
+    handlerSelectNode(node: Array<DataStructureModel>)
+    {
+      if (node.length === 0) {
+        // Prevent selection clearing after repeated clicks
+        this.applyValue.node.selected = true;
+        return;
+      }
+      this.applyValue.node = node[0];
     },
     getColumnIcon(type: string)
     {
