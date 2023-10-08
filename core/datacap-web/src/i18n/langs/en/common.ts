@@ -139,4 +139,6 @@ export default {
   basic: 'Basic',
   totalRows: 'Total Rows',
   comment: 'Comment',
+  previousPage: 'Previous Page',
+  nextPage: 'Next Page',
 }

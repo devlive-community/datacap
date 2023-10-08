@@ -22,4 +22,5 @@ public class Response
     private Time connection;
     private Time processor;
     private String content;
+    private Pagination pagination;
 }

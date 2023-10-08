@@ -8,7 +8,7 @@
       </RouterLink>
       <LayoutHeader @changeLanguage="setLangCondition($event)"/>
       <layout-breadcrumb></layout-breadcrumb>
-      <LayoutContent style="background-color: #FFFFFF; padding: 0; min-height: 500px"/>
+      <LayoutContent style="background-color: #FFFFFF; padding: 0; min-height: 560px"/>
       <LayoutFooter/>
       <LayoutAffix/>
     </Layout>

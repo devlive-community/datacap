@@ -11,6 +11,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class TableFilter
 {
-    private long limit = 500;
-    private long offset = 1;
+    private int pageSize = 500;
+    private int currentPage = 1;
 }

@@ -138,5 +138,7 @@ export default {
   collation: '排序',
   basic: '基本',
   totalRows: '总行数',
-  comment: '评论'
+  comment: '评论',
+  previousPage: '上一页',
+  nextPage: '下一页',
 }

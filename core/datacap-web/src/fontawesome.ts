@@ -1,6 +1,8 @@
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {
+  faArrowLeft,
+  faArrowRight,
   faArrowUpAZ,
   faCircle,
   faCircleInfo,
@@ -24,7 +26,23 @@ import {
  * @param {any} app - The app object.
  */
 const createIcons = (app: any) => {
-  library.add(faFilter, faDatabase, faTable, faColumns, faKey, faRepeat, faDroplet, faCircle, faCircleInfo, faTimes, faClock, faFont, faArrowUpAZ, faSun, faTextHeight)
+  library.add(faArrowRight,
+    faFilter,
+    faDatabase,
+    faTable,
+    faColumns,
+    faKey,
+    faRepeat,
+    faDroplet,
+    faCircle,
+    faCircleInfo,
+    faTimes,
+    faClock,
+    faFont,
+    faArrowUpAZ,
+    faSun,
+    faTextHeight,
+    faArrowLeft)
   app.component('FontAwesomeIcon', FontAwesomeIcon)
 }
 

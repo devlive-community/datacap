@@ -14,10 +14,10 @@ import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.metadata.ColumnEntity;
 import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
-import io.edurt.datacap.service.repository.TemplateSqlRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.service.service.TableService;
 import io.edurt.datacap.spi.Plugin;
+import io.edurt.datacap.spi.model.Pagination;
 import io.edurt.datacap.spi.model.Response;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +30,11 @@ public class TableServiceImpl
 {
     private final Injector injector;
     private final TableRepository repository;
-    private final TemplateSqlRepository templateHandler;
 
-    public TableServiceImpl(Injector injector, TableRepository repository, TemplateSqlRepository templateHandler)
+    public TableServiceImpl(Injector injector, TableRepository repository)
     {
         this.injector = injector;
         this.repository = repository;
-        this.templateHandler = templateHandler;
     }
 
     @Override
@@ -69,13 +67,14 @@ public class TableServiceImpl
                     .column(column.getName())
                     .build());
         }
+        int offset = configure.getPageSize() * (configure.getCurrentPage() - 1);
         SqlBody body = SqlBody.builder()
                 .type(SqlType.SELECT)
                 .database(table.getDatabase().getName())
                 .table(table.getName())
                 .columns(columns)
-                .limit(configure.getLimit())
-                .offset(configure.getOffset())
+                .limit(configure.getPageSize())
+                .offset(offset)
                 .build();
         SqlBuilder builder = new SqlBuilder(body);
         String sql = builder.getSql();
@@ -85,6 +84,8 @@ public class TableServiceImpl
         Response response = plugin.execute(sql);
         response.setContent(sql);
         plugin.destroy();
+        Pagination pagination = Pagination.newInstance(configure.getPageSize(), configure.getCurrentPage(), Integer.parseInt(table.getRows()));
+        response.setPagination(pagination);
         return CommonResponse.success(response);
     }
 }
