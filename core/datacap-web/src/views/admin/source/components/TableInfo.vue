@@ -159,20 +159,10 @@ export default defineComponent({
       type: DataStructureModel
     }
   },
-  created()
-  {
-    this.handlerInitialize();
-  },
   data()
   {
     return {
       gridOptions: null
-    }
-  },
-  methods: {
-    handlerInitialize()
-    {
-      console.log(1)
     }
   }
 });

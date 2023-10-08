@@ -18,5 +18,6 @@ export class DataStructureModel
   defaultValue: null;
   comment: null;
   origin: any;
+  selected: boolean;
   children: DataStructureModel[] = [];
 }

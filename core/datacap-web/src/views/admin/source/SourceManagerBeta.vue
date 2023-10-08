@@ -271,7 +271,13 @@ export default defineComponent({
         this.applyValue.node.selected = true;
         return;
       }
-      this.applyValue.node = node[0];
+      const currentNode = node[0];
+      if (currentNode.level === DataStructureEnum.COLUMN) {
+        this.applyValue.node.selected = true;
+        currentNode.selected = false;
+        return;
+      }
+      this.applyValue.node = currentNode;
     },
     getColumnIcon(type: string)
     {
