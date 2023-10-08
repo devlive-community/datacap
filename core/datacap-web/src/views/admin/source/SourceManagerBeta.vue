@@ -298,7 +298,12 @@ export default defineComponent({
     {
       let title = dataType;
       if (isKey === 'PRI') {
-        title = `${title} (${extra.replace('_', ' ')})`;
+        if (extra) {
+          title = `${title} (${extra.replace('_', ' ')})`;
+        }
+        else {
+          title = `${title}`;
+        }
       }
       if (defaultValue && defaultValue !== 'null') {
         title = `${title} = ${defaultValue}`
