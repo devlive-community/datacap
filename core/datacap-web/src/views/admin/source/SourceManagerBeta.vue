@@ -64,7 +64,7 @@
               <TabPane :label="tabPane.info"
                        name="info">
                 <TableInfo v-if="applyValue.tabType === 'info'"
-                           :info="applyValue.node">
+                           :id="applyValue.node.applyId">
                 </TableInfo>
               </TabPane>
             </Tabs>
@@ -122,7 +122,7 @@ export default defineComponent({
       dataTreeArray: Array<DataStructureModel>(),
       applyValue: {
         database: null,
-        node: null,
+        node: null as DataStructureModel,
         tabType: 'info'
       },
       tabPane: {
