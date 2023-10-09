@@ -45,6 +45,7 @@ public class DatabaseEntity
     @JoinTable(name = "datacap_metadata_database_source_relation",
             joinColumns = @JoinColumn(name = "source_id"),
             inverseJoinColumns = @JoinColumn(name = "database_id"))
+    @JsonIgnore
     private SourceEntity source;
 
     @OneToMany(mappedBy = "database", cascade = CascadeType.REMOVE)

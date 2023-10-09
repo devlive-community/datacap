@@ -1,6 +1,26 @@
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
-import {faColumns, faDatabase, faFilter, faTable} from '@fortawesome/free-solid-svg-icons'
+import {
+  faAnglesLeft,
+  faAnglesRight,
+  faArrowLeft,
+  faArrowRight,
+  faArrowUpAZ,
+  faCircle,
+  faCircleInfo,
+  faClock,
+  faColumns,
+  faDatabase,
+  faDroplet,
+  faFilter,
+  faFont,
+  faKey,
+  faRepeat,
+  faSun,
+  faTable,
+  faTextHeight,
+  faTimes
+} from '@fortawesome/free-solid-svg-icons'
 
 /**
  * Creates icons for the given app.
@@ -8,7 +28,25 @@ import {faColumns, faDatabase, faFilter, faTable} from '@fortawesome/free-solid-
  * @param {any} app - The app object.
  */
 const createIcons = (app: any) => {
-  library.add(faFilter, faDatabase, faTable, faColumns)
+  library.add(faArrowRight,
+    faAnglesLeft,
+    faAnglesRight,
+    faFilter,
+    faDatabase,
+    faTable,
+    faColumns,
+    faKey,
+    faRepeat,
+    faDroplet,
+    faCircle,
+    faCircleInfo,
+    faTimes,
+    faClock,
+    faFont,
+    faArrowUpAZ,
+    faSun,
+    faTextHeight,
+    faArrowLeft)
   app.component('FontAwesomeIcon', FontAwesomeIcon)
 }
 

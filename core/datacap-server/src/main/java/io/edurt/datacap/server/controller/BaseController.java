@@ -5,6 +5,7 @@ import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.service.BaseService;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,5 +56,17 @@ public abstract class BaseController<T>
     public CommonResponse deleteForPath(@PathVariable(value = "id") Long id)
     {
         return service.deleteById(repository, id);
+    }
+
+    /**
+     * Retrieves information for a specific path.
+     *
+     * @param id the identifier of the path
+     * @return the information for the specified path
+     */
+    @GetMapping(value = "{id}")
+    public CommonResponse<T> getInfoForPath(@PathVariable(value = "id") Long id)
+    {
+        return service.getById(repository, id);
     }
 }

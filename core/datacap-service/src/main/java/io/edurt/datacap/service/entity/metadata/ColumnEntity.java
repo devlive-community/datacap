@@ -61,6 +61,12 @@ public class ColumnEntity
     @Column(name = "privileges")
     private String privileges;
 
+    @Column(name = "data_type")
+    private String dataType;
+
+    @Column(name = "extra")
+    private String extra;
+
     @ManyToOne
     @JoinTable(name = "datacap_metadata_column_table_relation",
             joinColumns = @JoinColumn(name = "column_id"),

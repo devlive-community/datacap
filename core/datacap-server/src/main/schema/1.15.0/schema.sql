@@ -52,7 +52,7 @@ CREATE TABLE `datacap_metadata_column`
     create_time    DATETIME,
     update_time    DATETIME,
     description    VARCHAR(1000),
-    type           VARCHAR(255),
+    type           TEXT,
     comment        VARCHAR(1000),
     default_value  VARCHAR(500),
     position       VARCHAR(100),
@@ -60,7 +60,9 @@ CREATE TABLE `datacap_metadata_column`
     maximum_length VARCHAR(100),
     collation      VARCHAR(100),
     is_key         VARCHAR(100),
-    privileges     VARCHAR(1000)
+    privileges     VARCHAR(1000),
+    data_type      VARCHAR(100),
+    extra          VARCHAR(250)
 );
 
 CREATE TABLE `datacap_metadata_column_table_relation`
@@ -101,3 +103,5 @@ CREATE TABLE `datacap_scheduled_history_relation`
     scheduled_id INT,
     history_id   INT
 );
+
+

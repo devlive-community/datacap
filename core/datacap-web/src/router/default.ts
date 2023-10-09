@@ -124,12 +124,20 @@ const createDefaultRouter = (router: any) => {
     path: "/admin",
     component: LayoutContainer,
     meta: {title: 'common.admin'},
-    children: [{
-      path: "source/:id/manager",
-      meta: {title: 'common.source'},
-      layout: LayoutContainer,
-      component: () => import("../views/admin/source/SourceManager.vue")
-    }]
+    children: [
+      {
+        path: "source/:id/manager",
+        meta: {title: 'common.source'},
+        layout: LayoutContainer,
+        component: () => import("../views/admin/source/SourceManager.vue")
+      },
+      {
+        path: "source/:id/managerBeta",
+        meta: {title: 'common.source'},
+        layout: LayoutContainer,
+        component: () => import("../views/admin/source/SourceManagerBeta.vue")
+      }
+    ]
   })
   const chatRouters = {
     path: "/chat",

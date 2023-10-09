@@ -9,6 +9,7 @@ public enum NodeType
     CHARSET("CHARSET"),
     TABLE("TABLE"),
     TYPE("TYPE"),
+    COLUMN_TYPE("COLUMN_TYPE"),
     ENGINE("ENGINE"),
     FORMAT("FORMAT"),
     ROWS("ROWS"),
@@ -23,7 +24,9 @@ public enum NodeType
     OCTET_LENGTH("OCTET_LENGTH"),
     KEY("KEY"),
     PRIVILEGES("PRIVILEGES"),
-    COLUMN("COLUMN");
+    COLUMN("COLUMN"),
+    DATA_TYPE("DATA_TYPE"),
+    EXTRA("EXTRA");
 
     @Getter
     private String value;

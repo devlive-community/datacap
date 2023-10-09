@@ -304,25 +304,23 @@ public class SyncMetadataScheduledRunnable
                         })
                         .collect(Collectors.toList());
                 maps.stream()
-                        .filter(item -> {
+                        .forEach(item -> {
                             Optional<TableEntity> optionalTable = origin.stream()
                                     .filter(node -> node.getName().equals(item.getName()))
                                     .findAny();
                             if (optionalTable.isPresent()) {
-                                TableEntity table = optionalTable.get();
-                                log.info("==================== Sync metadata column  [ {} ] started =================", table.getName());
-                                this.startSyncColumn(entity, database, table, plugin);
-                                log.info("==================== Sync metadata column  [ {} ] end =================", table.getName());
-                                return false;
+                                TableEntity node = optionalTable.get();
+                                log.info("Updated table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
+                                item.setId(node.getId());
+                                item.setCreateTime(node.getCreateTime());
+                                tableHandler.save(item);
                             }
                             else {
-                                return true;
+                                log.info("Added table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
+                                tableHandler.save(item);
+                                tableAddedCount.addAndGet(1);
                             }
-                        })
-                        .forEach(item -> {
-                            log.info("Added table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
-                            tableHandler.save(item);
-                            tableAddedCount.addAndGet(1);
+
                             log.info("==================== Sync metadata column  [ {} ] started =================", item.getName());
                             this.startSyncColumn(entity, database, item, plugin);
                             log.info("==================== Sync metadata column  [ {} ] end =================", item.getName());
@@ -371,7 +369,7 @@ public class SyncMetadataScheduledRunnable
                             return ColumnEntity.builder()
                                     .name(name)
                                     .description(String.format("Table [ %s ] of column [ %s ] ", table.getName(), name))
-                                    .type(getNodeText(item, NodeType.TYPE))
+                                    .type(getNodeText(item, NodeType.COLUMN_TYPE))
                                     .comment(getNodeText(item, NodeType.COMMENT))
                                     .defaultValue(getNodeText(item, NodeType.DEFAULT))
                                     .position(getNodeText(item, NodeType.POSITION))
@@ -379,26 +377,30 @@ public class SyncMetadataScheduledRunnable
                                     .collation(getNodeText(item, NodeType.COLLATION))
                                     .isKey(getNodeText(item, NodeType.KEY))
                                     .privileges(getNodeText(item, NodeType.FORMAT))
+                                    .dataType(getNodeText(item, NodeType.DATA_TYPE))
+                                    .extra(getNodeText(item, NodeType.EXTRA))
+                                    .isNullable(getNodeText(item, NodeType.NULLABLE))
                                     .table(table)
                                     .build();
                         })
                         .collect(Collectors.toList());
                 maps.stream()
-                        .filter(item -> {
+                        .forEach(item -> {
                             Optional<ColumnEntity> optionalColumn = origin.stream()
                                     .filter(node -> node.getName().equals(item.getName()))
                                     .findAny();
                             if (optionalColumn.isPresent()) {
-                                return false;
+                                ColumnEntity column = optionalColumn.get();
+                                log.info("Updated column [ {} ] type [ {} ] to table [ {} ]", item.getName(), item.getType(), table.getName());
+                                item.setCreateTime(column.getCreateTime());
+                                item.setId(column.getId());
+                                columnHandler.save(item);
                             }
                             else {
-                                return true;
+                                log.info("Added column [ {} ] type [ {} ] to table [ {} ]", item.getName(), item.getType(), table.getName());
+                                columnHandler.save(item);
+                                columnAddedCount.addAndGet(1);
                             }
-                        })
-                        .forEach(item -> {
-                            log.info("Added column [ {} ] type [ {} ] to table [ {} ]", item.getName(), item.getType(), table.getName());
-                            columnHandler.save(item);
-                            columnAddedCount.addAndGet(1);
                         });
                 origin.stream()
                         .filter(node -> maps.stream().noneMatch(item -> node.getName().equals(item.getName())))
