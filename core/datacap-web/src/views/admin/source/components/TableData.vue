@@ -134,6 +134,7 @@ export default defineComponent({
       watch(
         () => this.id,
         () => {
+          this.configure.pagination.currentPage = 1;
           this.handlerInitialize();
         }
       );
