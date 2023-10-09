@@ -143,4 +143,5 @@ export default {
   nextPage: '下一页',
   firstPage: '第一页',
   lastPage: '最后一页',
+  row: '行',
 }

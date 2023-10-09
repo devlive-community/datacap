@@ -36,6 +36,12 @@
             </Tooltip>
           </Button>
         </ButtonGroup>
+        <Space style="margin-left: 10px;">
+          [<Text strong> {{ configure.pagination.startIndex + 1 }} / {{ configure.pagination.endIndex + 1 }} </Text>]
+          of
+          <Text strong>{{ configure.pagination.totalRecords }}</Text>
+          {{ $t('common.row') }}
+        </Space>
       </div>
       <AgGridVue class="ag-theme-datacap"
                  style="width: 100%; min-height: 460px; height: 460px;"
@@ -121,7 +127,6 @@ export default defineComponent({
       else if (operator === PaginationEnum.LAST) {
         this.configure.pagination.currentPage = this.configure.pagination.totalPages;
       }
-      console.log(this.configure.pagination)
       this.handlerInitialize();
     },
     watchId()
