@@ -299,6 +299,10 @@ public class SyncMetadataScheduledRunnable
                                     .collation(getNodeText(item, NodeType.COLLATION))
                                     .rows(getNodeText(item, NodeType.ROWS))
                                     .comment(getNodeText(item, NodeType.COMMENT))
+                                    .avgRowLength(getNodeText(item, NodeType.AVG_ROW))
+                                    .dataLength(getNodeText(item, NodeType.DATA))
+                                    .indexLength(getNodeText(item, NodeType.INDEX))
+                                    .autoIncrement(getNodeText(item, NodeType.AUTO_INCREMENT))
                                     .database(database)
                                     .build();
                         })

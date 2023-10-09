@@ -26,7 +26,11 @@ public enum NodeType
     PRIVILEGES("PRIVILEGES"),
     COLUMN("COLUMN"),
     DATA_TYPE("DATA_TYPE"),
-    EXTRA("EXTRA");
+    EXTRA("EXTRA"),
+    AVG_ROW("AVG_ROW"),
+    DATA("DATA"),
+    INDEX("INDEX"),
+    AUTO_INCREMENT("AUTO_INCREMENT");
 
     @Getter
     private String value;

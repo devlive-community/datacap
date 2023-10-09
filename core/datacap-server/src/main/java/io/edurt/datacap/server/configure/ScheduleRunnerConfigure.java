@@ -13,9 +13,10 @@ import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.env.Environment;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
@@ -31,10 +32,9 @@ public class ScheduleRunnerConfigure
     private final ScheduledHistoryRepository scheduledHistoryHandler;
     private final TemplateSqlRepository templateSqlRepository;
     private final ScheduledCronRegistrar scheduledCronRegistrar;
-    private final RedisTemplate redisTemplate;
-    private final Environment environment;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public ScheduleRunnerConfigure(Injector injector, ScheduledRepository scheduledRepository, SourceRepository sourceRepository, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, ScheduledHistoryRepository scheduledHistoryHandler, TemplateSqlRepository templateSqlRepository, ScheduledCronRegistrar scheduledCronRegistrar, RedisTemplate redisTemplate, Environment environment)
+    public ScheduleRunnerConfigure(Injector injector, ScheduledRepository scheduledRepository, SourceRepository sourceRepository, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, ScheduledHistoryRepository scheduledHistoryHandler, TemplateSqlRepository templateSqlRepository, ScheduledCronRegistrar scheduledCronRegistrar)
     {
         this.injector = injector;
         this.scheduledRepository = scheduledRepository;
@@ -45,8 +45,6 @@ public class ScheduleRunnerConfigure
         this.scheduledHistoryHandler = scheduledHistoryHandler;
         this.templateSqlRepository = templateSqlRepository;
         this.scheduledCronRegistrar = scheduledCronRegistrar;
-        this.redisTemplate = redisTemplate;
-        this.environment = environment;
     }
 
     @Override
@@ -59,10 +57,12 @@ public class ScheduleRunnerConfigure
                         case SOURCE_SYNCHRONIZE:
                             SyncMetadataScheduledRunnable syncMetadataScheduledRunnable = new SyncMetadataScheduledRunnable(task.getName(), injector, sourceRepository, databaseHandler, tableHandler, columnHandler, templateSqlRepository, scheduledHistoryHandler, task);
                             this.scheduledCronRegistrar.addCronTask(syncMetadataScheduledRunnable, task.getExpression());
+                            executorService.submit(() -> syncMetadataScheduledRunnable.run());
                             break;
                         case SOURCE_CHECK:
-                            CheckScheduledRunnable runnable = new CheckScheduledRunnable(task.getName(), this.injector, this.sourceRepository);
-                            this.scheduledCronRegistrar.addCronTask(runnable, task.getExpression());
+                            CheckScheduledRunnable checkScheduledRunnable = new CheckScheduledRunnable(task.getName(), this.injector, this.sourceRepository);
+                            this.scheduledCronRegistrar.addCronTask(checkScheduledRunnable, task.getExpression());
+                            executorService.submit(() -> checkScheduledRunnable.run());
                             break;
                         default:
                             log.warn("Unsupported task type [ {} ]", task.getType());
