@@ -147,4 +147,13 @@ export default {
   showPageSize: 'Show Page Size',
   row: 'Row',
   jump: 'Jump',
+  avgRowLength: 'Avg Row Length',
+  dataSize: 'Data Size',
+  indexSize: 'Index Size',
+  autoIncrement: 'Auto Increment',
+  notSpecifiedPrimaryKey: 'Not Specified Primary Key',
+  notSpecifiedEngine: 'Not Specified Engine',
+  notSpecifiedCollation: 'Not Specified Collation',
+  notSpecifiedFormat: 'Not Specified Format',
+  notUpdated: 'Not Update',
 }

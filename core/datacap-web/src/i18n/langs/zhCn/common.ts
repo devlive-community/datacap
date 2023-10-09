@@ -147,4 +147,13 @@ export default {
   showPageSize: '显示条数',
   row: '行',
   jump: '跳转',
+  avgRowLength: '平均行长度',
+  dataSize: '数据大小',
+  indexSize: '索引大小',
+  autoIncrement: '自增编码',
+  notSpecifiedPrimaryKey: '未指定主键',
+  notSpecifiedEngine: '未指定引擎',
+  notSpecifiedCollation: '未指定排序',
+  notSpecifiedFormat: '未指定格式',
+  notUpdated: '未更新',
 }

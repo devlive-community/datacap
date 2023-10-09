@@ -3,8 +3,11 @@ import {library} from '@fortawesome/fontawesome-svg-core'
 import {
   faAnglesLeft,
   faAnglesRight,
+  faArrowDown19,
+  faArrowDown91,
   faArrowLeft,
   faArrowRight,
+  faArrowUp19,
   faArrowUpAZ,
   faCircle,
   faCircleInfo,
@@ -13,14 +16,16 @@ import {
   faDatabase,
   faDroplet,
   faFilter,
+  faFlag,
   faFont,
+  faGear,
   faKey,
+  faMagnifyingGlass,
   faRepeat,
   faSun,
   faTable,
   faTextHeight,
-  faTimes,
-  faGear
+  faTimes
 } from '@fortawesome/free-solid-svg-icons'
 
 /**
@@ -30,6 +35,11 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faArrowUp19,
+    faArrowDown91,
+    faFlag,
+    faMagnifyingGlass,
+    faArrowDown19,
     faGear,
     faAnglesLeft,
     faAnglesRight,
