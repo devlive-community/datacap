@@ -143,5 +143,7 @@ export default {
   nextPage: '下一页',
   firstPage: '第一页',
   lastPage: '最后一页',
+  jumpPage: '跳转到',
   row: '行',
+  jump: '跳转',
 }

@@ -143,5 +143,7 @@ export default {
   nextPage: 'Next Page',
   firstPage: 'First Page',
   lastPage: 'Last Page',
+  jumpPage: 'Jump to Page',
   row: 'Row',
+  jump: 'Jump',
 }

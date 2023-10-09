@@ -19,7 +19,8 @@ import {
   faSun,
   faTable,
   faTextHeight,
-  faTimes
+  faTimes,
+  faGear
 } from '@fortawesome/free-solid-svg-icons'
 
 /**
@@ -29,6 +30,7 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faGear,
     faAnglesLeft,
     faAnglesRight,
     faFilter,

@@ -35,9 +35,32 @@
               <FontAwesomeIcon icon="angles-right"/>
             </Tooltip>
           </Button>
+          <Poptip placement="bottom"
+                  style="margin-left: 10px;"
+                  transfer>
+            <Button size="small">
+              <FontAwesomeIcon icon="gear"/>
+            </Button>
+            <template #content>
+              <Space>
+                {{ $t('common.jumpPage') }}
+                <InputNumber v-model="configure.pagination.currentPage"
+                             size="small"
+                             min="1"
+                             :max="configure.pagination.totalPages">
+                </InputNumber>
+                <Button size="small"
+                        @click="handlerApplyPagination(configure.operator.JUMP)">
+                  {{ $t('common.jump') }}
+                </Button>
+              </Space>
+            </template>
+          </Poptip>
         </ButtonGroup>
         <Space style="margin-left: 10px;">
-          [<Text strong> {{ configure.pagination.startIndex + 1 }} / {{ configure.pagination.endIndex + 1 }} </Text>]
+          [
+          <Text strong> {{ configure.pagination.startIndex + 1 }} / {{ configure.pagination.endIndex + 1 }}</Text>
+          ]
           of
           <Text strong>{{ configure.pagination.totalRecords }}</Text>
           {{ $t('common.row') }}
@@ -66,10 +89,11 @@ import TableGridOptions from "@/components/table/TableGridOptions";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {Pagination} from "@/entity/Pagination";
 import {Pagination as PaginationEnum} from "@/enum/Pagination";
+import {InputNumber} from "view-ui-plus";
 
 export default defineComponent({
   name: "TableData",
-  components: {FontAwesomeIcon, CircularLoading, AgGridVue},
+  components: {InputNumber, FontAwesomeIcon, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
