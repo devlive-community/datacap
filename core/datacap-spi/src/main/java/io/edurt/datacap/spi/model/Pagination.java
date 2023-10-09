@@ -59,4 +59,3 @@ public class Pagination
         return currentPage < getTotalPages();
     }
 }
-

@@ -5,6 +5,7 @@ export class Pagination
   totalRecords: number;
   startIndex: number;
   endIndex: number;
+  totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
 }

@@ -141,4 +141,6 @@ export default {
   comment: 'Comment',
   previousPage: 'Previous Page',
   nextPage: 'Next Page',
+  firstPage: 'First Page',
+  lastPage: 'Last Page',
 }

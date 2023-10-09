@@ -141,4 +141,6 @@ export default {
   comment: '评论',
   previousPage: '上一页',
   nextPage: '下一页',
+  firstPage: '第一页',
+  lastPage: '最后一页',
 }

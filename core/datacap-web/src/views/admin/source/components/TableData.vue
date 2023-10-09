@@ -8,17 +8,31 @@
       <div style="margin-top: -12px; margin-bottom: 5px;">
         <ButtonGroup size="small">
           <Button :disabled="!configure.pagination.hasPreviousPage"
-                  @click="handlerApplyPagination(true)">
+                  @click="handlerApplyPagination(configure.operator.FIRST)">
+            <Tooltip :content="$t('common.firstPage')"
+                     transfer>
+              <FontAwesomeIcon icon="angles-left"/>
+            </Tooltip>
+          </Button>
+          <Button :disabled="!configure.pagination.hasPreviousPage"
+                  @click="handlerApplyPagination(configure.operator.PREVIOUS)">
             <Tooltip :content="$t('common.previousPage')"
                      transfer>
               <FontAwesomeIcon icon="arrow-left"/>
             </Tooltip>
           </Button>
           <Button :disabled="!configure.pagination.hasNextPage"
-                  @click="handlerApplyPagination(false)">
+                  @click="handlerApplyPagination(configure.operator.NEXT)">
             <Tooltip :content="$t('common.nextPage')"
                      transfer>
               <FontAwesomeIcon icon="arrow-right"/>
+            </Tooltip>
+          </Button>
+          <Button :disabled="!configure.pagination.hasNextPage"
+                  @click="handlerApplyPagination(configure.operator.LAST)">
+            <Tooltip :content="$t('common.lastPage')"
+                     transfer>
+              <FontAwesomeIcon icon="angles-right"/>
             </Tooltip>
           </Button>
         </ButtonGroup>
@@ -45,6 +59,7 @@ import {useI18n} from "vue-i18n";
 import TableGridOptions from "@/components/table/TableGridOptions";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {Pagination} from "@/entity/Pagination";
+import {Pagination as PaginationEnum} from "@/enum/Pagination";
 
 export default defineComponent({
   name: "TableData",
@@ -70,7 +85,8 @@ export default defineComponent({
       configure: {
         headers: [],
         columns: [],
-        pagination: null as Pagination
+        pagination: null as Pagination,
+        operator: PaginationEnum
       }
     }
   },
@@ -91,14 +107,21 @@ export default defineComponent({
         })
         .finally(() => this.loading = false)
     },
-    handlerApplyPagination(isPrevious: boolean)
+    handlerApplyPagination(operator: PaginationEnum)
     {
-      if (isPrevious) {
+      if (operator === PaginationEnum.PREVIOUS) {
         this.configure.pagination.currentPage--;
       }
-      else {
+      else if (operator === PaginationEnum.NEXT) {
         this.configure.pagination.currentPage++;
       }
+      else if (operator === PaginationEnum.FIRST) {
+        this.configure.pagination.currentPage = 1;
+      }
+      else if (operator === PaginationEnum.LAST) {
+        this.configure.pagination.currentPage = this.configure.pagination.totalPages;
+      }
+      console.log(this.configure.pagination)
       this.handlerInitialize();
     },
     watchId()
