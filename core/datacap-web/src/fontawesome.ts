@@ -15,6 +15,7 @@ import {
   faColumns,
   faDatabase,
   faDroplet,
+  faEye,
   faFilter,
   faFlag,
   faFont,
@@ -35,6 +36,7 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faEye,
     faArrowUp19,
     faArrowDown91,
     faFlag,

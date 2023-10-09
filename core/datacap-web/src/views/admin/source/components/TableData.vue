@@ -75,6 +75,12 @@
           <Text strong>{{ configure.pagination.totalRecords }}</Text>
           {{ $t('common.row') }}
         </Space>
+        <div style="float: right;">
+          <Button size="small"
+                  @click="handlerVisibleContent(true)">
+            <FontAwesomeIcon icon="eye"/>
+          </Button>
+        </div>
       </div>
       <AgGridVue class="ag-theme-datacap"
                  style="width: 100%; min-height: 460px; height: 460px;"
@@ -83,6 +89,12 @@
                  :rowData="configure.columns"
                  :tooltipShowDelay="100">
       </AgGridVue>
+
+      <MarkdownPreview v-if="visibleContent.show"
+                       :isVisible="visibleContent.show"
+                       :content="visibleContent.content"
+                       @close="handlerVisibleContent(false)">
+      </MarkdownPreview>
     </div>
   </div>
 </template>
@@ -100,10 +112,11 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {Pagination} from "@/entity/Pagination";
 import {Pagination as PaginationEnum} from "@/enum/Pagination";
 import {InputNumber} from "view-ui-plus";
+import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 
 export default defineComponent({
   name: "TableData",
-  components: {InputNumber, FontAwesomeIcon, CircularLoading, AgGridVue},
+  components: {MarkdownPreview, InputNumber, FontAwesomeIcon, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
@@ -127,7 +140,11 @@ export default defineComponent({
         columns: [],
         pagination: null as Pagination,
         operator: PaginationEnum
-      }
+      },
+      visibleContent: {
+        show: false,
+        content: null
+      },
     }
   },
   methods: {
@@ -140,6 +157,7 @@ export default defineComponent({
             this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
             this.configure.columns = response.data.columns;
             this.configure.pagination = response.data.pagination;
+            this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
           }
           else {
             this.$Message.error(response.message);
@@ -162,6 +180,10 @@ export default defineComponent({
         this.configure.pagination.currentPage = this.configure.pagination.totalPages;
       }
       this.handlerInitialize();
+    },
+    handlerVisibleContent(show: boolean)
+    {
+      this.visibleContent.show = show;
     },
     watchId()
     {
