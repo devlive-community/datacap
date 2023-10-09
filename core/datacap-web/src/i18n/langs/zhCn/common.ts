@@ -144,6 +144,7 @@ export default {
   firstPage: '第一页',
   lastPage: '最后一页',
   jumpPage: '跳转到',
+  showPageSize: '显示条数',
   row: '行',
   jump: '跳转',
 }

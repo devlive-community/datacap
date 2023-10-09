@@ -41,7 +41,7 @@
             <Button size="small">
               <FontAwesomeIcon icon="gear"/>
             </Button>
-            <template #content>
+            <template #title>
               <Space>
                 {{ $t('common.jumpPage') }}
                 <InputNumber v-model="configure.pagination.currentPage"
@@ -51,8 +51,18 @@
                 </InputNumber>
                 <Button size="small"
                         @click="handlerApplyPagination(configure.operator.JUMP)">
-                  {{ $t('common.jump') }}
+                  {{ $t('common.apply') }}
                 </Button>
+              </Space>
+            </template>
+            <template #content>
+              <Space>
+                {{ $t('common.showPageSize') }}
+                <InputNumber v-model="configure.pagination.pageSize"
+                             size="small"
+                             min="1"
+                             :max="10000">
+                </InputNumber>
               </Space>
             </template>
           </Poptip>
@@ -158,7 +168,7 @@ export default defineComponent({
       watch(
         () => this.id,
         () => {
-          this.configure.pagination.currentPage = 1;
+          this.configure.pagination = null as Pagination;
           this.handlerInitialize();
         }
       );
