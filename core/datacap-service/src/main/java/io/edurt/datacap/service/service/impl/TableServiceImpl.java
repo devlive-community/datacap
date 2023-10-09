@@ -64,7 +64,7 @@ public class TableServiceImpl
         List<SqlColumn> columns = Lists.newArrayList();
         for (ColumnEntity column : table.getColumns()) {
             columns.add(SqlColumn.builder()
-                    .column(column.getName())
+                    .column(String.format("\"%s\"", column.getName()))
                     .build());
         }
         int offset = configure.getPageSize() * (configure.getCurrentPage() - 1);
