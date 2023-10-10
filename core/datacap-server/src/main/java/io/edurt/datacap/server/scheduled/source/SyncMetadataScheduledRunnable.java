@@ -52,11 +52,18 @@ public class SyncMetadataScheduledRunnable
     private final ScheduledHistoryRepository scheduledHistoryHandler;
     private final ScheduledEntity scheduledEntity;
     private AtomicInteger databaseAddedCount;
+    private AtomicInteger databaseUpdatedCount;
     private AtomicInteger databaseRemovedCount;
     private AtomicInteger tableAddedCount;
+    private AtomicInteger tableUpdatedCount;
     private AtomicInteger tableRemovedCount;
     private AtomicInteger columnAddedCount;
+    private AtomicInteger columnUpdatedCount;
     private AtomicInteger columnRemovedCount;
+    private Map<String, DatabaseEntity> databaseCache = Maps.newHashMap();
+    private Map<String, List<TableEntity>> databaseTableCache = Maps.newHashMap();
+    private Map<String, TableEntity> tableCache = Maps.newHashMap();
+    private Map<String, List<ColumnEntity>> tableColumnCache = Maps.newHashMap();
 
     public SyncMetadataScheduledRunnable(String name, Injector injector, SourceRepository sourceHandler, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, TemplateSqlRepository templateHandler, ScheduledHistoryRepository scheduledHistoryHandler, ScheduledEntity scheduledEntity)
     {
@@ -80,10 +87,13 @@ public class SyncMetadataScheduledRunnable
         sourceHandler.findAll()
                 .forEach(entity -> {
                     databaseAddedCount = new AtomicInteger(0);
+                    databaseUpdatedCount = new AtomicInteger(0);
                     databaseRemovedCount = new AtomicInteger(0);
                     tableAddedCount = new AtomicInteger(0);
+                    tableUpdatedCount = new AtomicInteger(0);
                     tableRemovedCount = new AtomicInteger(0);
                     columnAddedCount = new AtomicInteger(0);
+                    columnUpdatedCount = new AtomicInteger(0);
                     columnRemovedCount = new AtomicInteger(0);
                     ScheduledHistoryEntity scheduledHistory = ScheduledHistoryEntity.builder()
                             .name(String.format("Sync source [ %s ]", entity.getName()))
@@ -102,14 +112,21 @@ public class SyncMetadataScheduledRunnable
                     log.info("==================== Sync metadata  [ {} ] finished =================", entity.getName());
                     Properties info = new Properties();
                     info.put("databaseAddedCount", databaseAddedCount.get());
+                    info.put("databaseUpdatedCount", databaseUpdatedCount.get());
                     info.put("databaseRemovedCount", databaseRemovedCount.get());
                     info.put("tableAddedCount", tableAddedCount.get());
+                    info.put("tableUpdatedCount", tableUpdatedCount.get());
                     info.put("tableRemovedCount", tableRemovedCount.get());
                     info.put("columnAddedCount", columnAddedCount.get());
+                    info.put("columnUpdatedCount", columnUpdatedCount.get());
                     info.put("columnRemovedCount", columnRemovedCount.get());
                     scheduledHistory.setInfo(info);
                     scheduledHistory.setState(PipelineState.SUCCESS);
                     scheduledHistoryHandler.save(scheduledHistory);
+                    databaseCache.clear();
+                    databaseTableCache.clear();
+                    tableCache.clear();
+                    tableColumnCache.clear();
                 });
     }
 
@@ -204,59 +221,46 @@ public class SyncMetadataScheduledRunnable
             }
             else {
                 List<DatabaseEntity> origin = databaseHandler.findAllBySource(entity);
-                List<Map<NodeType, String>> maps = response.getColumns()
+                List<DatabaseEntity> entities = response.getColumns()
                         .stream()
                         .map(item -> {
-                            Map<NodeType, String> map = Maps.newConcurrentMap();
-                            String schema = getNodeText(item, NodeType.SCHEMA);
-                            map.put(NodeType.SCHEMA, schema);
-                            String catalog = getNodeText(item, NodeType.CATALOG);
-                            map.put(NodeType.CATALOG, catalog);
-                            String charset = getNodeText(item, NodeType.CHARSET);
-                            map.put(NodeType.CHARSET, charset);
-                            return map;
+                            DatabaseEntity database = DatabaseEntity.builder()
+                                    .name(getNodeText(item, NodeType.SCHEMA))
+                                    .catalog(getNodeText(item, NodeType.CATALOG))
+                                    .description(String.format("[ %s ] of [ %s ]", getNodeText(item, NodeType.SCHEMA), item, getNodeText(item, NodeType.CATALOG)))
+                                    .source(entity)
+                                    .build();
+                            Optional<DatabaseEntity> optionalDatabase = origin.stream()
+                                    .filter(node -> node.getName().equals(database.getName()))
+                                    .findAny();
+                            if (optionalDatabase.isPresent()) {
+                                database.setId(optionalDatabase.get().getId());
+                                database.setCreateTime(optionalDatabase.get().getCreateTime());
+                                databaseUpdatedCount.addAndGet(1);
+                            }
+                            else {
+                                databaseAddedCount.addAndGet(1);
+                            }
+                            return database;
                         })
                         .collect(Collectors.toList());
                 // Write the new data retrieved to the database
-                maps.stream()
-                        .filter(item -> {
-                            Optional<DatabaseEntity> optionalDatabase = origin.stream()
-                                    .filter(node -> node.getName().equals(item.get(NodeType.SCHEMA)) && node.getCatalog().equals(item.get(NodeType.CATALOG)))
-                                    .findAny();
-                            if (optionalDatabase.isPresent()) {
-                                DatabaseEntity database = optionalDatabase.get();
-                                log.info("==================== Sync metadata table  [ {} ] started =================", database.getName());
-                                this.startSyncTable(entity, database, plugin);
-                                log.info("==================== Sync metadata table  [ {} ] end =================", database.getName());
-                                return false;
-                            }
-                            else {
-                                return true;
-                            }
-                        })
-                        .forEach(item -> {
-                            DatabaseEntity database = DatabaseEntity.builder()
-                                    .name(item.get(NodeType.SCHEMA))
-                                    .catalog(item.get(NodeType.CATALOG))
-                                    .description(String.format("[ %s ] of [ %s ] charset [ %s ]", item.get(NodeType.SCHEMA), item.get(NodeType.CATALOG), item.get(NodeType.CHARSET)))
-                                    .source(entity)
-                                    .build();
-                            log.info("Added catalog [ {} ] schema [ {} ] to source [ {} ]", database.getCatalog(), database.getName(), entity.getName());
-                            databaseHandler.save(database);
-                            log.info("==================== Sync metadata table  [ {} ] started =================", database.getName());
-                            this.startSyncTable(entity, database, plugin);
-                            databaseAddedCount.addAndGet(1);
-                            log.info("==================== Sync metadata table  [ {} ] end =================", database.getName());
-                        });
+                log.info("Added database size [ {} ] to source [ {} ]", entities.size(), entity.getName());
+                databaseHandler.saveAll(entities);
+                entities.forEach(item -> {
+                    String key = String.format("%s_%s", item.getCatalog(), item.getName());
+                    databaseCache.put(key, item);
+                    databaseTableCache.put(key, this.tableHandler.findAllByDatabase(item));
+                });
                 // Delete invalid data that no longer exists
-                origin.stream()
-                        .filter(node -> maps.stream().noneMatch(item -> node.getName().equals(item.get(NodeType.SCHEMA)) && node.getCatalog().equals(item.get(NodeType.CATALOG))))
-                        .forEach(item -> {
-                            log.info("Removed catalog [ {} ] schema [ {} ] to source [ {} ]", item.getCatalog(), item.getName(), entity.getName());
-                            databaseHandler.delete(item);
-                            databaseRemovedCount.addAndGet(1);
-                        });
+                List<DatabaseEntity> deleteEntities = origin.stream()
+                        .filter(node -> entities.stream().noneMatch(item -> node.getName().equals(item.getName())))
+                        .collect(Collectors.toList());
+                log.info("Removed database size [ {} ] from source [ {} ]", deleteEntities.size(), entity.getName());
+                databaseHandler.deleteAll(deleteEntities);
+                databaseRemovedCount.addAndGet(deleteEntities.size());
             }
+            this.startSyncTable(entity, plugin);
         }
     }
 
@@ -264,10 +268,9 @@ public class SyncMetadataScheduledRunnable
      * Starts the synchronization of a table.
      *
      * @param entity the source entity object
-     * @param database the database entity object
      * @param plugin the plugin object
      */
-    private void startSyncTable(SourceEntity entity, DatabaseEntity database, Plugin plugin)
+    private void startSyncTable(SourceEntity entity, Plugin plugin)
     {
         String templateName = "SYSTEM_FOR_GET_ALL_TABLES";
         TemplateSqlEntity template = getTemplate(templateName, entity);
@@ -276,19 +279,18 @@ public class SyncMetadataScheduledRunnable
         }
         else {
             plugin.connect(entity.toConfigure());
-            Map<String, String> configure = Maps.newConcurrentMap();
-            configure.put("database", database.getName());
-            Response response = plugin.execute(getSqlContext(template, configure));
+            Response response = plugin.execute(getSqlContext(template, null));
             if (!response.getIsSuccessful()) {
                 log.error("The scheduled task [ {} ] source [ {} ] protocol [ {} ] sync metadata tables  [ {} ] failed", this.getName(), entity.getType(), entity.getProtocol(), response.getMessage());
             }
             else {
-                List<TableEntity> origin = tableHandler.findAllByDatabase(database);
-                List<TableEntity> maps = response.getColumns()
+                List<TableEntity> entities = response.getColumns()
                         .stream()
                         .map(item -> {
+                            String key = String.format("%s_%s", getNodeText(item, NodeType.CATALOG), getNodeText(item, NodeType.SCHEMA));
+                            DatabaseEntity database = databaseCache.get(key);
                             String name = getNodeText(item, NodeType.TABLE);
-                            return TableEntity.builder()
+                            TableEntity table = TableEntity.builder()
                                     .name(name)
                                     .description(String.format("Table [ %s ] of database [ %s ] ", name, getNodeText(item, NodeType.SCHEMA)))
                                     .type(getNodeText(item, NodeType.TYPE))
@@ -305,37 +307,49 @@ public class SyncMetadataScheduledRunnable
                                     .autoIncrement(getNodeText(item, NodeType.AUTO_INCREMENT))
                                     .database(database)
                                     .build();
+                            return table;
                         })
                         .collect(Collectors.toList());
-                maps.stream()
-                        .forEach(item -> {
-                            Optional<TableEntity> optionalTable = origin.stream()
-                                    .filter(node -> node.getName().equals(item.getName()))
-                                    .findAny();
-                            if (optionalTable.isPresent()) {
-                                TableEntity node = optionalTable.get();
-                                log.info("Updated table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
-                                item.setId(node.getId());
-                                item.setCreateTime(node.getCreateTime());
-                                tableHandler.save(item);
-                            }
-                            else {
-                                log.info("Added table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
-                                tableHandler.save(item);
-                                tableAddedCount.addAndGet(1);
-                            }
 
-                            log.info("==================== Sync metadata column  [ {} ] started =================", item.getName());
-                            this.startSyncColumn(entity, database, item, plugin);
-                            log.info("==================== Sync metadata column  [ {} ] end =================", item.getName());
-                        });
-                origin.stream()
-                        .filter(node -> maps.stream().noneMatch(item -> node.getName().equals(item.getName())))
-                        .forEach(item -> {
-                            log.info("Removed table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getEngine(), database.getName());
-                            tableHandler.delete(item);
-                            tableRemovedCount.addAndGet(1);
-                        });
+                Map<String, List<TableEntity>> groupEntities = entities
+                        .stream()
+                        .collect(Collectors.groupingBy(item -> String.format("%s_%s", item.getDatabase().getCatalog(), item.getDatabase().getName())));
+
+                groupEntities.forEach((key, groupItem) -> {
+                    // Detect data that needs to be updated
+                    List<TableEntity> origin = databaseTableCache.get(key);
+                    groupItem.forEach(item -> {
+                        Optional<TableEntity> optionalTable = origin.stream()
+                                .filter(node -> node.getName().equals(item.getName()))
+                                .findAny();
+                        if (optionalTable.isPresent()) {
+                            TableEntity node = optionalTable.get();
+                            item.setId(node.getId());
+                            item.setCreateTime(node.getCreateTime());
+                            tableUpdatedCount.addAndGet(1);
+                        }
+                        else {
+                            tableAddedCount.addAndGet(1);
+                        }
+                    });
+
+                    log.info("Added table size [ {} ] to database [ {} ]", groupItem.size(), key);
+                    tableHandler.saveAll(groupItem);
+                    groupItem.forEach(item -> {
+                        String tableCacheKey = String.format("%s_%s", item.getDatabase().getName(), item.getName());
+                        tableCache.put(tableCacheKey, item);
+                        tableColumnCache.put(tableCacheKey, this.columnHandler.findAllByTable(item));
+                    });
+
+                    List<TableEntity> deleteEntities = origin.stream()
+                            .filter(node -> groupItem.stream().noneMatch(item -> node.getName().equals(item.getName())))
+                            .collect(Collectors.toList());
+                    log.info("Removed table size [ {} ] from database [ {} ]", deleteEntities.size(), key);
+                    tableHandler.deleteAll(deleteEntities);
+                    tableRemovedCount.addAndGet(deleteEntities.size());
+                });
+
+                this.startSyncColumn(entity, plugin);
             }
         }
     }
@@ -344,11 +358,9 @@ public class SyncMetadataScheduledRunnable
      * Starts the synchronization of a specific column.
      *
      * @param entity the source entity
-     * @param database the database entity
-     * @param table the table entity
      * @param plugin the plugin to use for synchronization
      */
-    private void startSyncColumn(SourceEntity entity, DatabaseEntity database, TableEntity table, Plugin plugin)
+    private void startSyncColumn(SourceEntity entity, Plugin plugin)
     {
         String templateName = "SYSTEM_FOR_GET_ALL_COLUMNS";
         TemplateSqlEntity template = getTemplate(templateName, entity);
@@ -357,20 +369,18 @@ public class SyncMetadataScheduledRunnable
         }
         else {
             plugin.connect(entity.toConfigure());
-            Map<String, String> configure = Maps.newConcurrentMap();
-            configure.put("database", database.getName());
-            configure.put("table", table.getName());
-            Response response = plugin.execute(getSqlContext(template, configure));
+            Response response = plugin.execute(getSqlContext(template, null));
             if (!response.getIsSuccessful()) {
                 log.error("The scheduled task [ {} ] source [ {} ] protocol [ {} ] sync metadata columns  [ {} ] failed", this.getName(), entity.getType(), entity.getProtocol(), response.getMessage());
             }
             else {
-                List<ColumnEntity> origin = columnHandler.findAllByTable(table);
-                List<ColumnEntity> maps = response.getColumns()
+                List<ColumnEntity> entities = response.getColumns()
                         .stream()
                         .map(item -> {
+                            String key = String.format("%s_%s", getNodeText(item, NodeType.CATALOG), getNodeText(item, NodeType.SCHEMA));
+                            TableEntity table = tableCache.get(key);
                             String name = getNodeText(item, NodeType.COLUMN);
-                            return ColumnEntity.builder()
+                            ColumnEntity column = ColumnEntity.builder()
                                     .name(name)
                                     .description(String.format("Table [ %s ] of column [ %s ] ", table.getName(), name))
                                     .type(getNodeText(item, NodeType.COLUMN_TYPE))
@@ -386,33 +396,42 @@ public class SyncMetadataScheduledRunnable
                                     .isNullable(getNodeText(item, NodeType.NULLABLE))
                                     .table(table)
                                     .build();
+                            return column;
                         })
                         .collect(Collectors.toList());
-                maps.stream()
-                        .forEach(item -> {
-                            Optional<ColumnEntity> optionalColumn = origin.stream()
-                                    .filter(node -> node.getName().equals(item.getName()))
-                                    .findAny();
-                            if (optionalColumn.isPresent()) {
-                                ColumnEntity column = optionalColumn.get();
-                                log.info("Updated column [ {} ] type [ {} ] to table [ {} ]", item.getName(), item.getType(), table.getName());
-                                item.setCreateTime(column.getCreateTime());
-                                item.setId(column.getId());
-                                columnHandler.save(item);
-                            }
-                            else {
-                                log.info("Added column [ {} ] type [ {} ] to table [ {} ]", item.getName(), item.getType(), table.getName());
-                                columnHandler.save(item);
-                                columnAddedCount.addAndGet(1);
-                            }
-                        });
-                origin.stream()
-                        .filter(node -> maps.stream().noneMatch(item -> node.getName().equals(item.getName())))
-                        .forEach(item -> {
-                            log.info("Removed table [ {} ] engine [ {} ] to database [ {} ]", item.getName(), item.getType(), table.getName());
-                            columnHandler.delete(item);
-                            columnRemovedCount.addAndGet(1);
-                        });
+
+                Map<String, List<ColumnEntity>> groupEntities = entities
+                        .stream()
+                        .collect(Collectors.groupingBy(item -> String.format("%s_%s", item.getTable().getDatabase().getName(), item.getTable().getName())));
+
+                groupEntities.forEach((key, groupItem) -> {
+                    // Detect data that needs to be updated
+                    List<ColumnEntity> origin = tableColumnCache.get(key);
+                    groupItem.forEach(item -> {
+                        Optional<ColumnEntity> optionalColumn = origin.stream()
+                                .filter(node -> node.getName().equals(item.getName()))
+                                .findAny();
+                        if (optionalColumn.isPresent()) {
+                            ColumnEntity node = optionalColumn.get();
+                            item.setId(node.getId());
+                            item.setCreateTime(node.getCreateTime());
+                            columnUpdatedCount.addAndGet(1);
+                        }
+                        else {
+                            columnAddedCount.addAndGet(1);
+                        }
+                    });
+
+                    log.info("Added column size [ {} ] to table [ {} ]", groupItem.size(), key);
+                    columnHandler.saveAll(groupItem);
+
+                    List<ColumnEntity> deleteEntities = origin.stream()
+                            .filter(node -> groupItem.stream().noneMatch(item -> node.getName().equals(item.getName())))
+                            .collect(Collectors.toList());
+                    log.info("Removed column size [ {} ] from table [ {} ]", deleteEntities.size(), key);
+                    columnHandler.deleteAll(deleteEntities);
+                    tableRemovedCount.addAndGet(deleteEntities.size());
+                });
             }
         }
     }
