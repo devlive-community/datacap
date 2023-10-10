@@ -155,5 +155,7 @@ export default {
   notSpecifiedEngine: '未指定引擎',
   notSpecifiedCollation: '未指定排序',
   notSpecifiedFormat: '未指定格式',
+  notSpecifiedIndex: '未指定索引',
   notUpdated: '未更新',
+  notSpecified: '未指定'
 }

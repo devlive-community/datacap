@@ -38,7 +38,7 @@
               <Tooltip :content="$t('common.createTime')"
                        transfer>
                 <Text strong>
-                  {{ info.inCreateTime }}
+                  {{ info.inCreateTime === 'null' ? $t('common.notSpecified') : info.inCreateTime }}
                 </Text>
               </Tooltip>
               <template #icon>
@@ -141,7 +141,7 @@
               <Tooltip :content="$t('common.avgRowLength')"
                        transfer>
                 <Text strong>
-                  {{ info.avgRowLength }}
+                  {{ info.avgRowLength === 'null' ? 0 : info.avgRowLength }}
                 </Text>
               </Tooltip>
               <template #icon>
@@ -157,7 +157,7 @@
               <Tooltip :content="$t('common.dataSize')"
                        transfer>
                 <Text strong>
-                  {{ info.dataLength }}
+                  {{ info.dataLength === 'null' ? 0 : info.dataLength }}
                 </Text>
               </Tooltip>
               <template #icon>
@@ -173,7 +173,7 @@
               <Tooltip :content="$t('common.indexSize')"
                        transfer>
                 <Text strong>
-                  {{ info.indexLength }}
+                  {{ info.indexLength === 'null' ? $t('common.notSpecifiedIndex') : info.indexLength }}
                 </Text>
               </Tooltip>
               <template #icon>

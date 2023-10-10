@@ -155,5 +155,7 @@ export default {
   notSpecifiedEngine: 'Not Specified Engine',
   notSpecifiedCollation: 'Not Specified Collation',
   notSpecifiedFormat: 'Not Specified Format',
+  notSpecifiedIndex: 'Not Specified Index',
   notUpdated: 'Not Update',
+  notSpecified: 'Not Specified'
 }
