@@ -19,8 +19,8 @@ public class SqlBody
     private String table;
     private List<SqlColumn> columns;
     private List<SqlColumn> orders;
-    private long limit = 10;
-    private long offset = 1;
+    private Integer limit;
+    private Integer offset;
     private String where;
     private SqlType type;
 }
