@@ -38,7 +38,7 @@
               <Tooltip :content="$t('common.createTime')"
                        transfer>
                 <Text strong>
-                  {{ info.inCreateTime }}
+                  {{ info.inCreateTime === 'null' ? $t('common.notSpecified') : info.inCreateTime }}
                 </Text>
               </Tooltip>
               <template #icon>
@@ -54,7 +54,7 @@
               <Tooltip :content="$t('common.updateTime')"
                        transfer>
                 <Text strong>
-                  {{ info.inUpdateTime }}
+                  {{ info.inUpdateTime === 'null' ? $t('common.notUpdated') : info.inUpdateTime }}
                 </Text>
               </Tooltip>
               <template #icon>
@@ -70,7 +70,7 @@
               <Tooltip :content="$t('common.engine')"
                        transfer>
                 <Text strong>
-                  {{ info.engine }}
+                  {{ info.engine === 'null' ? $t('common.notSpecifiedEngine') : info.engine }}
                 </Text>
               </Tooltip>
               <template #icon>
@@ -86,7 +86,7 @@
               <Tooltip :content="$t('common.collation')"
                        transfer>
                 <Text strong>
-                  {{ info.collation }}
+                  {{ info.collation === 'null' ? $t('common.notSpecifiedCollation') : info.collation }}
                 </Text>
               </Tooltip>
               <template #icon>
@@ -113,7 +113,7 @@
                 </Text>
               </Tooltip>
               <template #icon>
-                <FontAwesomeIcon icon="sun"
+                <FontAwesomeIcon icon="arrow-up-1-9"
                                  size="lg"
                                  style="margin-right: 10px;">
                 </FontAwesomeIcon>
@@ -125,11 +125,75 @@
               <Tooltip :content="$t('common.format')"
                        transfer>
                 <Text strong>
-                  {{ info.format }}
+                  {{ info.format === 'null' ? $t('common.notSpecifiedFormat') : info.format }}
                 </Text>
               </Tooltip>
               <template #icon>
                 <FontAwesomeIcon icon="text-height"
+                                 size="lg"
+                                 style="margin-right: 10px;">
+                </FontAwesomeIcon>
+              </template>
+            </Cell>
+          </Col>
+          <Col span="12">
+            <Cell>
+              <Tooltip :content="$t('common.avgRowLength')"
+                       transfer>
+                <Text strong>
+                  {{ info.avgRowLength === 'null' ? 0 : info.avgRowLength }}
+                </Text>
+              </Tooltip>
+              <template #icon>
+                <FontAwesomeIcon icon="arrow-down-1-9"
+                                 size="lg"
+                                 style="margin-right: 10px;">
+                </FontAwesomeIcon>
+              </template>
+            </Cell>
+          </Col>
+          <Col span="12">
+            <Cell>
+              <Tooltip :content="$t('common.dataSize')"
+                       transfer>
+                <Text strong>
+                  {{ info.dataLength === 'null' ? 0 : info.dataLength }}
+                </Text>
+              </Tooltip>
+              <template #icon>
+                <FontAwesomeIcon icon="arrow-down-9-1"
+                                 size="lg"
+                                 style="margin-right: 10px;">
+                </FontAwesomeIcon>
+              </template>
+            </Cell>
+          </Col>
+          <Col span="12">
+            <Cell>
+              <Tooltip :content="$t('common.indexSize')"
+                       transfer>
+                <Text strong>
+                  {{ info.indexLength === 'null' ? $t('common.notSpecifiedIndex') : info.indexLength }}
+                </Text>
+              </Tooltip>
+              <template #icon>
+                <FontAwesomeIcon icon="magnifying-glass"
+                                 size="lg"
+                                 style="margin-right: 10px;">
+                </FontAwesomeIcon>
+              </template>
+            </Cell>
+          </Col>
+          <Col span="12">
+            <Cell>
+              <Tooltip :content="$t('common.autoIncrement')"
+                       transfer>
+                <Text strong>
+                  {{ info.autoIncrement === 'null' ? $t('common.notSpecifiedPrimaryKey') : info.autoIncrement }}
+                </Text>
+              </Tooltip>
+              <template #icon>
+                <FontAwesomeIcon icon="flag"
                                  size="lg"
                                  style="margin-right: 10px;">
                 </FontAwesomeIcon>

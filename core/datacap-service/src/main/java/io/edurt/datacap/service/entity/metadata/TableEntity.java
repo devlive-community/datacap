@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -65,6 +66,18 @@ public class TableEntity
     @Column(name = "comment")
     private String comment;
 
+    @Column(name = "avg_row_length")
+    private String avgRowLength;
+
+    @Column(name = "data_length")
+    private String dataLength;
+
+    @Column(name = "index_length")
+    private String indexLength;
+
+    @Column(name = "auto_increment")
+    private String autoIncrement;
+
     @ManyToOne()
     @JoinTable(name = "datacap_metadata_table_database_relation",
             joinColumns = @JoinColumn(name = "table_id"),
@@ -75,4 +88,9 @@ public class TableEntity
     @OneToMany(mappedBy = "table", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<ColumnEntity> columns;
+
+    public TableEntity(Long id, String name, Date createTime)
+    {
+        super(id, name, null, createTime, null);
+    }
 }

@@ -45,7 +45,8 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.loading = true
+      this.dataTreeArray = [];
+      this.loading = true;
       DatabaseService.getAllBySource(this.id)
         .then(response => {
           if (response.status) {

@@ -74,8 +74,13 @@ public class SqlBuilder
             SelectBuilder.ORDER_BY(applyOrderByColumns());
         }
 
-        SelectBuilder.LIMIT(configure.getLimit());
-        SelectBuilder.OFFSET(configure.getOffset());
+        if (configure.getLimit() != null) {
+            SelectBuilder.LIMIT(configure.getLimit());
+        }
+
+        if (configure.getOffset() != null) {
+            SelectBuilder.OFFSET(configure.getOffset());
+        }
         return SelectBuilder.SQL();
     }
 }
