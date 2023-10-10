@@ -11,7 +11,6 @@ import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.service.body.TableFilter;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.SourceEntity;
-import io.edurt.datacap.service.entity.metadata.ColumnEntity;
 import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
@@ -21,6 +20,7 @@ import io.edurt.datacap.spi.model.Pagination;
 import io.edurt.datacap.spi.model.Response;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,11 +62,13 @@ public class TableServiceImpl
         }
 
         List<SqlColumn> columns = Lists.newArrayList();
-        for (ColumnEntity column : table.getColumns()) {
-            columns.add(SqlColumn.builder()
-                    .column(String.format("`%s`", column.getName()))
-                    .build());
-        }
+
+        table.getColumns()
+                .stream()
+                .sorted(Comparator.comparing(item -> Integer.parseInt(item.getPosition())))
+                .forEach(column -> columns.add(SqlColumn.builder()
+                        .column(String.format("`%s`", column.getName()))
+                        .build()));
         int offset = configure.getPageSize() * (configure.getCurrentPage() - 1);
         SqlBody body = SqlBody.builder()
                 .type(SqlType.SELECT)

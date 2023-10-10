@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -87,4 +88,9 @@ public class TableEntity
     @OneToMany(mappedBy = "table", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<ColumnEntity> columns;
+
+    public TableEntity(Long id, String name, Date createTime)
+    {
+        super(id, name, null, createTime, null);
+    }
 }

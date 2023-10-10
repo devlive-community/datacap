@@ -250,7 +250,7 @@ public class SyncMetadataScheduledRunnable
                 entities.forEach(item -> {
                     String key = String.format("%s_%s", item.getCatalog(), item.getName());
                     databaseCache.put(key, item);
-                    databaseTableCache.put(key, this.tableHandler.findAllByDatabase(item));
+                    databaseTableCache.put(key, this.tableHandler.findSimpleAllByDatabase(item));
                 });
                 // Delete invalid data that no longer exists
                 List<DatabaseEntity> deleteEntities = origin.stream()
@@ -338,7 +338,7 @@ public class SyncMetadataScheduledRunnable
                     groupItem.forEach(item -> {
                         String tableCacheKey = String.format("%s_%s", item.getDatabase().getName(), item.getName());
                         tableCache.put(tableCacheKey, item);
-                        tableColumnCache.put(tableCacheKey, this.columnHandler.findAllByTable(item));
+                        tableColumnCache.put(tableCacheKey, this.columnHandler.findSimpleAllByTable(item));
                     });
 
                     List<TableEntity> deleteEntities = origin.stream()

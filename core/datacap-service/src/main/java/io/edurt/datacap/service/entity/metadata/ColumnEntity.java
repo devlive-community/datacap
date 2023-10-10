@@ -19,6 +19,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import java.util.Date;
+
 @Getter
 @ToString
 @SuperBuilder
@@ -73,4 +75,9 @@ public class ColumnEntity
             inverseJoinColumns = @JoinColumn(name = "table_id"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TableEntity table;
+
+    public ColumnEntity(Long id, String name, Date createTime)
+    {
+        super(id, name, null, createTime, null);
+    }
 }
