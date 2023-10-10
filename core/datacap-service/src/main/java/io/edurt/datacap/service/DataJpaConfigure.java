@@ -1,5 +1,6 @@
 package io.edurt.datacap.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -23,11 +24,14 @@ import javax.sql.DataSource;
 @EnableJpaAuditing
 public class DataJpaConfigure
 {
+    @Value(value = "${datacap.audit.sql.print}")
+    private boolean sqlPrint;
+
     @Bean
     public JpaVendorAdapter jpaVendorAdapter()
     {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-        jpaVendorAdapter.setShowSql(true);
+        jpaVendorAdapter.setShowSql(sqlPrint);
         jpaVendorAdapter.setGenerateDdl(false);
         return jpaVendorAdapter;
     }
