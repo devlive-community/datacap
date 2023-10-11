@@ -51,19 +51,6 @@ public class SyncMetadataScheduledRunnable
     private final TemplateSqlRepository templateHandler;
     private final ScheduledHistoryRepository scheduledHistoryHandler;
     private final ScheduledEntity scheduledEntity;
-    private AtomicInteger databaseAddedCount;
-    private AtomicInteger databaseUpdatedCount;
-    private AtomicInteger databaseRemovedCount;
-    private AtomicInteger tableAddedCount;
-    private AtomicInteger tableUpdatedCount;
-    private AtomicInteger tableRemovedCount;
-    private AtomicInteger columnAddedCount;
-    private AtomicInteger columnUpdatedCount;
-    private AtomicInteger columnRemovedCount;
-    private Map<String, DatabaseEntity> databaseCache = Maps.newHashMap();
-    private Map<String, List<TableEntity>> databaseTableCache = Maps.newHashMap();
-    private Map<String, TableEntity> tableCache = Maps.newHashMap();
-    private Map<String, List<ColumnEntity>> tableColumnCache = Maps.newHashMap();
 
     public SyncMetadataScheduledRunnable(String name, Injector injector, SourceRepository sourceHandler, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, TemplateSqlRepository templateHandler, ScheduledHistoryRepository scheduledHistoryHandler, ScheduledEntity scheduledEntity)
     {
@@ -85,16 +72,22 @@ public class SyncMetadataScheduledRunnable
     public void run()
     {
         sourceHandler.findAll()
+                .stream()
+                .parallel()
                 .forEach(entity -> {
-                    databaseAddedCount = new AtomicInteger(0);
-                    databaseUpdatedCount = new AtomicInteger(0);
-                    databaseRemovedCount = new AtomicInteger(0);
-                    tableAddedCount = new AtomicInteger(0);
-                    tableUpdatedCount = new AtomicInteger(0);
-                    tableRemovedCount = new AtomicInteger(0);
-                    columnAddedCount = new AtomicInteger(0);
-                    columnUpdatedCount = new AtomicInteger(0);
-                    columnRemovedCount = new AtomicInteger(0);
+                    AtomicInteger databaseAddedCount = new AtomicInteger(0);
+                    AtomicInteger databaseUpdatedCount = new AtomicInteger(0);
+                    AtomicInteger databaseRemovedCount = new AtomicInteger(0);
+                    AtomicInteger tableAddedCount = new AtomicInteger(0);
+                    AtomicInteger tableUpdatedCount = new AtomicInteger(0);
+                    AtomicInteger tableRemovedCount = new AtomicInteger(0);
+                    AtomicInteger columnAddedCount = new AtomicInteger(0);
+                    AtomicInteger columnUpdatedCount = new AtomicInteger(0);
+                    AtomicInteger columnRemovedCount = new AtomicInteger(0);
+                    Map<String, DatabaseEntity> databaseCache = Maps.newHashMap();
+                    Map<String, List<TableEntity>> databaseTableCache = Maps.newHashMap();
+                    Map<String, TableEntity> tableCache = Maps.newHashMap();
+                    Map<String, List<ColumnEntity>> tableColumnCache = Maps.newHashMap();
                     ScheduledHistoryEntity scheduledHistory = ScheduledHistoryEntity.builder()
                             .name(String.format("Sync source [ %s ]", entity.getName()))
                             .scheduled(scheduledEntity)
@@ -107,7 +100,34 @@ public class SyncMetadataScheduledRunnable
                         log.warn("The scheduled task [ {} ] source [ {} ] protocol [ {} ] is not available", this.getName(), entity.getType(), entity.getProtocol());
                     }
                     else {
-                        this.startSyncDatabase(entity, pluginOptional.get());
+                        try {
+                            Plugin plugin = pluginOptional.get();
+                            plugin.connect(entity.toConfigure());
+                            Response response = plugin.execute(plugin.validator());
+                            if (!response.getIsSuccessful()) {
+                                log.error("The scheduled task [ {} ] source [ {} ] not available", this.getName(), entity.getName());
+                            }
+                            else {
+                                this.startSyncDatabase(entity,
+                                        plugin,
+                                        databaseCache,
+                                        databaseTableCache,
+                                        tableCache,
+                                        tableColumnCache,
+                                        databaseAddedCount,
+                                        databaseUpdatedCount,
+                                        databaseRemovedCount,
+                                        tableAddedCount,
+                                        tableUpdatedCount,
+                                        tableRemovedCount,
+                                        columnAddedCount,
+                                        columnUpdatedCount,
+                                        columnRemovedCount);
+                            }
+                        }
+                        catch (Exception e) {
+                            log.error("The scheduled task [ {} ] source [ {} ] not available ", this.getName(), entity.getName(), e);
+                        }
                     }
                     log.info("==================== Sync metadata  [ {} ] finished =================", entity.getName());
                     Properties info = new Properties();
@@ -203,10 +223,37 @@ public class SyncMetadataScheduledRunnable
     /**
      * Starts the synchronization of the database.
      *
-     * @param entity the source entity to sync
-     * @param plugin the plugin used for synchronization
+     * @param entity the SourceEntity object representing the entity
+     * @param plugin the Plugin object representing the plugin
+     * @param databaseCache the Map object representing the database cache
+     * @param databaseTableCache the Map object representing the database table cache
+     * @param tableCache the Map object representing the table cache
+     * @param tableColumnCache the Map object representing the table column cache
+     * @param databaseAddedCount the AtomicInteger object representing the count of added databases
+     * @param databaseUpdatedCount the AtomicInteger object representing the count of updated databases
+     * @param databaseRemovedCount the AtomicInteger object representing the count of removed databases
+     * @param tableAddedCount the AtomicInteger object representing the count of added tables
+     * @param tableUpdatedCount the AtomicInteger object representing the count of updated tables
+     * @param tableRemovedCount the AtomicInteger object representing the count of removed tables
+     * @param columnAddedCount the AtomicInteger object representing the count of added columns
+     * @param columnUpdatedCount the AtomicInteger object representing the count of updated columns
+     * @param columnRemovedCount the AtomicInteger object representing the count of removed columns
      */
-    private void startSyncDatabase(SourceEntity entity, Plugin plugin)
+    private void startSyncDatabase(SourceEntity entity,
+            Plugin plugin,
+            Map<String, DatabaseEntity> databaseCache,
+            Map<String, List<TableEntity>> databaseTableCache,
+            Map<String, TableEntity> tableCache,
+            Map<String, List<ColumnEntity>> tableColumnCache,
+            AtomicInteger databaseAddedCount,
+            AtomicInteger databaseUpdatedCount,
+            AtomicInteger databaseRemovedCount,
+            AtomicInteger tableAddedCount,
+            AtomicInteger tableUpdatedCount,
+            AtomicInteger tableRemovedCount,
+            AtomicInteger columnAddedCount,
+            AtomicInteger columnUpdatedCount,
+            AtomicInteger columnRemovedCount)
     {
         String templateName = "SYSTEM_FOR_GET_ALL_DATABASES";
         TemplateSqlEntity template = getTemplate(templateName, entity);
@@ -260,17 +307,49 @@ public class SyncMetadataScheduledRunnable
                 databaseHandler.deleteAll(deleteEntities);
                 databaseRemovedCount.addAndGet(deleteEntities.size());
             }
-            this.startSyncTable(entity, plugin);
+            this.startSyncTable(entity,
+                    plugin,
+                    databaseCache,
+                    databaseTableCache,
+                    tableCache,
+                    tableColumnCache,
+                    tableAddedCount,
+                    tableUpdatedCount,
+                    tableRemovedCount,
+                    columnAddedCount,
+                    columnUpdatedCount,
+                    columnRemovedCount);
         }
     }
 
     /**
      * Starts the synchronization of a table.
      *
-     * @param entity the source entity object
-     * @param plugin the plugin object
+     * @param entity the source entity
+     * @param plugin the plugin
+     * @param databaseCache the database cache
+     * @param databaseTableCache the database table cache
+     * @param tableCache the table cache
+     * @param tableColumnCache the table column cache
+     * @param tableAddedCount the table added count
+     * @param tableUpdatedCount the table updated count
+     * @param tableRemovedCount the table removed count
+     * @param columnAddedCount the column added count
+     * @param columnUpdatedCount the column updated count
+     * @param columnRemovedCount the column removed count
      */
-    private void startSyncTable(SourceEntity entity, Plugin plugin)
+    private void startSyncTable(SourceEntity entity,
+            Plugin plugin,
+            Map<String, DatabaseEntity> databaseCache,
+            Map<String, List<TableEntity>> databaseTableCache,
+            Map<String, TableEntity> tableCache,
+            Map<String, List<ColumnEntity>> tableColumnCache,
+            AtomicInteger tableAddedCount,
+            AtomicInteger tableUpdatedCount,
+            AtomicInteger tableRemovedCount,
+            AtomicInteger columnAddedCount,
+            AtomicInteger columnUpdatedCount,
+            AtomicInteger columnRemovedCount)
     {
         String templateName = "SYSTEM_FOR_GET_ALL_TABLES";
         TemplateSqlEntity template = getTemplate(templateName, entity);
@@ -349,18 +428,29 @@ public class SyncMetadataScheduledRunnable
                     tableRemovedCount.addAndGet(deleteEntities.size());
                 });
 
-                this.startSyncColumn(entity, plugin);
+                this.startSyncColumn(entity, plugin, tableCache, tableColumnCache, columnAddedCount, columnUpdatedCount, columnRemovedCount);
             }
         }
     }
 
     /**
-     * Starts the synchronization of a specific column.
+     * Synchronizes the columns of a source entity with the corresponding table in the database.
      *
-     * @param entity the source entity
-     * @param plugin the plugin to use for synchronization
+     * @param entity the source entity to sync the columns for
+     * @param plugin the plugin to connect to the database
+     * @param tableCache a cache of table entities for efficient lookup
+     * @param tableColumnCache a cache of column entities for efficient lookup
+     * @param columnAddedCount an atomic counter for tracking the number of columns added
+     * @param columnUpdatedCount an atomic counter for tracking the number of columns updated
+     * @param columnRemovedCount an atomic counter for tracking the number of columns removed
      */
-    private void startSyncColumn(SourceEntity entity, Plugin plugin)
+    private void startSyncColumn(SourceEntity entity,
+            Plugin plugin,
+            Map<String, TableEntity> tableCache,
+            Map<String, List<ColumnEntity>> tableColumnCache,
+            AtomicInteger columnAddedCount,
+            AtomicInteger columnUpdatedCount,
+            AtomicInteger columnRemovedCount)
     {
         String templateName = "SYSTEM_FOR_GET_ALL_COLUMNS";
         TemplateSqlEntity template = getTemplate(templateName, entity);
@@ -430,7 +520,7 @@ public class SyncMetadataScheduledRunnable
                             .collect(Collectors.toList());
                     log.info("Removed column size [ {} ] from table [ {} ]", deleteEntities.size(), key);
                     columnHandler.deleteAll(deleteEntities);
-                    tableRemovedCount.addAndGet(deleteEntities.size());
+                    columnRemovedCount.addAndGet(deleteEntities.size());
                 });
             }
         }
