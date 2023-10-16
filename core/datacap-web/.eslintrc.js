@@ -16,6 +16,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-array-constructor": "off",
-    "vue/no-mutating-props": "off"
+    "vue/no-mutating-props": "off",
+    '@typescript-eslint/no-this-alias': 'off'
   }
 }

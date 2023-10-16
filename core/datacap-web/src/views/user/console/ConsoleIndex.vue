@@ -2,7 +2,8 @@
   <div class="home">
     <Layout class="content">
       <Sider hide-trigger class="content">
-        <Card style="width:100%; min-height: 500px" dis-hover>
+        <Card style="width:100%; min-height: 500px"
+              dis-hover>
           <template #title>
             <SourceSelect @changeValue="handlerChangeValue($event)"/>
           </template>
@@ -11,82 +12,140 @@
           </DataStructureLazyTree>
         </Card>
       </Sider>
-      <Layout class="content" :style="{padding: '0 12px 12px'}">
+      <Layout class="content"
+              :style="{padding: '0 12px 12px'}">
         <Content>
-          <Card style="width:100%" dis-hover>
+          <Card style="width:100%"
+                dis-hover>
             <template #title>
               <Space>
-                <Button type="primary" size="small" :loading="tableLoading" :disabled="!applySource || !activeEditorValue"
-                        icon="md-arrow-dropright-circle" @click="handlerRun()">
+                <Button type="primary"
+                        size="small"
+                        icon="md-arrow-dropright-circle"
+                        :loading="tableLoading"
+                        :disabled="!applySource"
+                        @click="handlerRun()">
                   {{ $t('common.run') }}
                 </Button>
-                <Button type="dashed" size="small" :disabled="!applySource || !activeEditorValue" icon="md-code" @click="handlerFormat()">
+                <Button type="dashed"
+                        size="small"
+                        icon="md-code"
+                        :disabled="!applySource"
+                        @click="handlerFormat()">
                   {{ $t('common.format') }}
                 </Button>
-                <Button type="error" size="small" :disabled="!applySource || !tableLoading"
-                        icon="md-close-circle" @click="handlerCancel()">
+                <Button type="error"
+                        size="small"
+                        icon="md-close-circle"
+                        :disabled="!applySource || !tableLoading"
+                        @click="handlerCancel()">
                   {{ $t('common.cancel') }}
                 </Button>
-                <Button v-if="tableConfigure" type="primary" size="small" icon="md-add" @click="handlerCreateSnippet()">
+                <Button v-if="tableConfigure"
+                        type="primary"
+                        size="small"
+                        icon="md-add"
+                        @click="handlerCreateSnippet()">
                   {{ $t('common.snippet') }}
                 </Button>
-                <Poptip v-if="response.data" placement="bottom">
-                  <Button icon="md-clock" size="small">
+                <Poptip v-if="response.data"
+                        placement="bottom">
+                  <Button icon="md-clock"
+                          size="small">
                     {{ response.data.processor.elapsed }} ms
                   </Button>
                   <template #content>
                     <Space :size="20">
                       <template #split> |</template>
-                      <NumberInfo class="center" :total="response.data.connection.elapsed">
+                      <NumberInfo class="center"
+                                  :total="response.data.connection.elapsed">
                         <template #title>
                           <span>Connection</span>
-                          <Tooltip content="Connection time!" placement="bottom">
-                            <Icon type="md-help-circle" style="margin-left: 3px"/>
+                          <Tooltip content="Connection time!"
+                                   placement="bottom">
+                            <Icon type="md-help-circle"
+                                  style="margin-left: 3px"/>
                           </Tooltip>
                         </template>
                       </NumberInfo>
-                      <NumberInfo class="center" :total="response.data.processor.elapsed">
+                      <NumberInfo class="center"
+                                  :total="response.data.processor.elapsed">
                         <template #title>
                           <span>Execute</span>
-                          <Tooltip content="Execute time!" placement="bottom">
-                            <Icon type="md-help-circle" style="margin-left: 3px"/>
+                          <Tooltip content="Execute time!"
+                                   placement="bottom">
+                            <Icon type="md-help-circle"
+                                  style="margin-left: 3px"/>
                           </Tooltip>
                         </template>
                       </NumberInfo>
                     </Space>
                   </template>
                 </Poptip>
-                <Badge v-if="applySource && activeEditorValue" :count="aiSupportType.length">
-                  <Button type="primary" size="small" icon="md-ionitron" @click="handlerVisibleHelp(true)"></Button>
+                <Badge v-if="applySource && (response.data || !response.status)"
+                       :count="aiSupportType.length">
+                  <Button type="primary"
+                          size="small"
+                          icon="md-ionitron"
+                          @click="handlerVisibleHelp(true)">
+                  </Button>
                 </Badge>
               </Space>
             </template>
             <div ref="editorContainer">
-              <Tabs v-model="activeKey" type="card" :animated="false" @on-tab-remove="handlerMinusEditor" @on-click="handlerChangeEditor">
+              <Tabs v-model="activeKey"
+                    type="card"
+                    :animated="false"
+                    @on-tab-remove="handlerMinusEditor"
+                    @on-click="handlerChangeEditor">
                 <template #extra>
-                  <Button @click="handlerPlusEditor" size="small" type="primary" icon="md-add"/>
+                  <Button size="small"
+                          type="primary"
+                          icon="md-add"
+                          @click="handlerPlusEditor">
+                  </Button>
                 </template>
-                <TabPane v-for="editor in editors" :key="editor.key" :name="editor.key" :label="editor.title" :closable="editor.closable">
+                <TabPane v-for="editor in editorMaps.values()"
+                         :key="editor.key"
+                         :name="editor.key"
+                         :label="editor.title"
+                         :closable="editor.closable">
+                  <VAceEditor lang="mysql"
+                              theme="chrome"
+                              style="height: 300px"
+                              :key="editor.key"
+                              :options="{enableSnippets: true, enableLiveAutocompletion: true}"
+                              @init="handlerEditorDidMount($event, 'mysql', editor.key)">
+                  </VAceEditor>
                 </TabPane>
-                <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"
-                              :key="activeKey.value" @change="handlerChangeEditorValue" :width="'100%'"
-                              v-model:value="activeEditorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">
-                </MonacoEditor>
+                <!--                <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"-->
+                <!--                              :key="activeKey.value" @change="handlerChangeEditorValue" :width="'100%'"-->
+                <!--                              v-model:value="activeEditorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">-->
+                <!--                </MonacoEditor>-->
               </Tabs>
             </div>
           </Card>
           <div style="margin-top: 5px;">
-            <BasicTableComponent v-if="tableConfigure" :configure="tableConfigure"></BasicTableComponent>
+            <BasicTableComponent v-if="tableConfigure"
+                                 :configure="tableConfigure">
+            </BasicTableComponent>
           </div>
         </Content>
       </Layout>
     </Layout>
-    <SnippetDetails v-if="snippetDetails" :isVisible="snippetDetails"
-                    :codeSnippet="activeEditorValue" @close="handlerCloseSnippetDetails($event)">
+    <SnippetDetails v-if="snippetDetails"
+                    :isVisible="snippetDetails"
+                    :codeSnippet="content"
+                    @close="handlerCloseSnippetDetails($event)">
     </SnippetDetails>
-    <QueryAiHelp v-if="visibleAiHelp" :isVisible="visibleAiHelp" :content="activeEditorValue"
-                 :aiSupports="aiSupportType" :error="error"
-                 :engine="engine" @close="handlerVisibleHelp($event)"></QueryAiHelp>
+    <QueryAiHelp v-if="visibleAiHelp"
+                 :isVisible="visibleAiHelp"
+                 :content="content"
+                 :aiSupports="aiSupportType"
+                 :error="error"
+                 :engine="engine"
+                 @close="handlerVisibleHelp($event)">
+    </QueryAiHelp>
   </div>
 </template>
 
@@ -95,39 +154,44 @@ import {ExecuteModel} from "@/model/ExecuteModel";
 import {ExecuteService} from "@/services/ExecuteService";
 import {FormatService} from "@/services/FormatService";
 import axios, {CancelTokenSource} from "axios";
-import * as monaco from 'monaco-editor';
-import MonacoEditor from 'monaco-editor-vue3';
-import {defineComponent, ref} from "vue";
+import {defineComponent} from "vue";
 import {useRouter} from "vue-router";
 import {TableConfigure} from "@/components/table/TableConfigure";
 import SourceSelect from "@/components/source/SourceSelect.vue";
 import SnippetDetails from "@/views/admin/snippet/SnippetDetails.vue";
 import BasicTableComponent from "@/components/table/BasicTable.vue";
 import {AuditService} from "@/services/AuditService";
-import FunctionsService from "@/services/settings/functions/FunctionsService";
 import {useI18n} from "vue-i18n";
 import QueryAiHelp from "@/views/user/console/QueryAiHelp.vue";
-import {HttpCommon} from "@/common/HttpCommon";
 import SnippetService from "@/services/SnippetService";
-import UserService from "@/services/UserService";
-import {join} from "lodash";
 import DataStructureLazyTree from "@/components/common/DataStructureLazyTree.vue";
+import {VAceEditor} from 'vue3-ace-editor';
+import {Ace} from "ace-builds";
+import {ResponseModel} from "@/model/ResponseModel";
+import 'ace-builds/src-noconflict/mode-mysql';
+import 'ace-builds/src-noconflict/theme-chrome';
+import langTools from 'ace-builds/src-noconflict/ext-language_tools';
+import {HttpCommon} from "@/common/HttpCommon";
+import FunctionsService from "@/services/settings/functions/FunctionsService";
+import Editor = Ace.Editor;
 
-const editors = ref<{ title: string; key: string; closable?: boolean }[]>([
-  {title: 'Editor', key: '1', closable: false}
-]);
-const activeKey = ref(editors.value[0].key);
-const editorMap = new Map<string, monaco.editor.ICodeEditor>();
-const editorValueMap = new Map<string, string>();
+interface EditorInstance
+{
+  title: string;
+  key: string;
+  closable?: boolean,
+  instance?: Editor
+}
 
 export default defineComponent({
   name: "ConsoleIndex",
-  components: {DataStructureLazyTree, QueryAiHelp, BasicTableComponent, SnippetDetails, SourceSelect, MonacoEditor},
-  unmounted()
-  {
-    if (this.editorCompletionProvider) {
-      this.editorCompletionProvider.dispose();
-    }
+  components: {
+    VAceEditor,
+    DataStructureLazyTree,
+    QueryAiHelp,
+    BasicTableComponent,
+    SnippetDetails,
+    SourceSelect
   },
   setup()
   {
@@ -146,13 +210,11 @@ export default defineComponent({
       tableColumns: [],
       tableLoading: false,
       cancelToken: {} as CancelTokenSource,
-      response: {},
-      editorCompletionProvider: {} as monaco.IDisposable,
+      response: {} as ResponseModel,
       snippetDetails: false,
-      activeEditorValue: '',
-      editors,
-      activeKey,
-      editorValueMap,
+      editorMaps: new Map<string, EditorInstance>(),
+      activeKey: null,
+      content: null,
       visibleAiHelp: false,
       engine: null,
       aiSupportType: ['ANALYSIS', 'OPTIMIZE'],
@@ -163,17 +225,15 @@ export default defineComponent({
   {
     this.handlerInitialize();
   },
-  mounted()
-  {
-    window.onresize = () => {
-      if (editorMap.values().next().value) {
-        editorMap.values().next().value.layout({width: this.$refs.editorContainer.offsetWidth, height: 300})
-      }
-    }
-  },
   methods: {
     handlerInitialize()
     {
+      const defaultEditor: EditorInstance = {
+        title: 'New Query',
+        key: Date.now().toString()
+      };
+      this.activeKey = defaultEditor.key;
+      this.editorMaps.set(defaultEditor.key, defaultEditor);
       const router = useRouter();
       if (router.currentRoute?.value?.query) {
         const id = router.currentRoute.value.query.id as unknown as number;
@@ -199,124 +259,71 @@ export default defineComponent({
         }
       }
     },
-    handlerEditorDidMount(editor: any, language: string, newEditor?: string)
+    handlerInitializeCompleter(editor: Editor, language: string)
     {
       try {
-        this.editorCompletionProvider.dispose();
+        langTools.addCompleter({
+          getCompletions: function (editor, session, pos, prefix, callback) {
+            return callback(null, []);
+          }
+        });
+
+        // Clear default keywords and code snippets
+        editor.completers = [];
+        const that = this;
+        const client = new HttpCommon().getAxios();
+        client.all([FunctionsService.getByPlugin(language.toLowerCase()), SnippetService.getSnippets(0, 100000)])
+          .then(client.spread((keyword, snippet) => {
+            if (keyword.status) {
+              const keywordCompleter = {
+                getCompletions: function (editor, session, pos, prefix, callback) {
+                  return callback(null, keyword.data.content.map(function (item: { example: string; name: string; type: any; description: string; }) {
+                    return {
+                      value: item.example,
+                      caption: item.name,
+                      meta: that.i18n.t('common.' + item.type.toLowerCase()),
+                      docHTML: '<div>' +
+                        '<strong>' + item.name + '</strong><br/><hr/>'
+                        + that.i18n.t('common.description') + ':\n' + item.description + '<br/><hr/>'
+                        + that.i18n.t('common.example') + ':\n' + item.example + '<br/><hr/>'
+                        + '</div>'
+                    };
+                  }));
+                }
+              };
+              editor.completers.push(keywordCompleter);
+            }
+            if (snippet.status) {
+              const snippetCompleter = {
+                getCompletions: function (editor, session, pos, prefix, callback) {
+                  return callback(null, snippet.data.content.map(function (item: { code: any; name: string; description: string; }) {
+                    return {
+                      value: item.code,
+                      caption: item.name,
+                      meta: that.i18n.t('common.snippet'),
+                      docHTML: '<div>' +
+                        '<strong>' + item.name + '</strong><br/><hr/>'
+                        + that.i18n.t('common.description') + ':\n' + item.description + '<br/><hr/>'
+                        + '</div>'
+                    };
+                  }));
+                }
+              };
+              editor.completers.push(snippetCompleter);
+            }
+          }));
       }
       catch (e) {
-        console.log(e);
+        console.error(e)
       }
-
-      if (newEditor) {
-        editorMap.set(newEditor, editor);
-        editorValueMap.set(activeKey.value, '');
+    },
+    handlerEditorDidMount(editor: Editor, language: string, key?: string | number)
+    {
+      if (key) {
+        this.editorMaps.get(key).instance = editor;
       }
-      else {
-        editorMap.set(activeKey.value, editor);
-      }
-      const client = new HttpCommon().getAxios();
-      client.all([FunctionsService.getByPlugin(language), SnippetService.getSnippets(0, 100000), UserService.getSugs(this.applySource)])
-        .then(client.spread((pluginResponse, snippetResponse, sugsResponse) => {
-          const languageSugs = [];
-          if (pluginResponse.status) {
-            pluginResponse.data.content.forEach(value => {
-              let kind = monaco.languages.CompletionItemKind.Text;
-              switch (value.type.toLowerCase()) {
-                case 'keyword':
-                  kind = monaco.languages.CompletionItemKind.Keyword;
-                  break
-                case 'function':
-                  kind = monaco.languages.CompletionItemKind.Function;
-                  break
-                case 'operator':
-                  kind = monaco.languages.CompletionItemKind.Operator;
-                  break
-              }
-              languageSugs.push({
-                label: value.name,
-                detail: this.i18n.t('common.' + value.type.toLowerCase()),
-                kind: kind,
-                documentation: this.i18n.t('common.description') + ':\n' + value.description + '\n\n' + this.i18n.t('common.example') + ':\n' + value.example,
-                insertText: value.content
-              });
-            });
-          }
-          if (snippetResponse.status) {
-            snippetResponse.data?.content.forEach(value => {
-              let kind = monaco.languages.CompletionItemKind.Snippet;
-              languageSugs.push({
-                label: value.name,
-                detail: this.i18n.t('common.snippet'),
-                kind: kind,
-                documentation: this.i18n.t('common.description') + ':\n' + value.description + '\n\n' + this.i18n.t('common.example') + ':\n' + value.code,
-                insertText: value.code
-              });
-            });
-          }
-          if (sugsResponse.status) {
-            const databaseSet = new Set();
-            const tableSet = new Set();
-            const columnSet = new Set();
-            sugsResponse.data.forEach(value => {
-              const array = value.split('.');
-              // Build database prompt
-              if (!databaseSet.has(array[0])) {
-                databaseSet.add(array[0]);
-                const database = monaco.languages.CompletionItemKind.Class;
-                languageSugs.push({
-                  label: array[0],
-                  detail: this.i18n.t('common.database'),
-                  kind: database,
-                  documentation: this.i18n.t('common.description') + ':\n' + array[0],
-                  insertText: array[0]
-                });
-              }
-              // Build table prompt
-              const tableName = join([array[0], array[1]], ".");
-              if (!tableSet.has(tableName)) {
-                tableSet.add(tableName);
-                const table = monaco.languages.CompletionItemKind.Method;
-                languageSugs.push({
-                  label: tableName,
-                  detail: this.i18n.t('common.table'),
-                  kind: table,
-                  documentation: this.i18n.t('common.description') + ':\n\t' + this.i18n.t('common.database') + ': ' + array[0]
-                    + '\n\t' + this.i18n.t('common.table') + ': ' + array[1],
-                  insertText: tableName
-                });
-              }
-              // Build column prompt
-              if (!columnSet.has(value)) {
-                columnSet.add(value);
-                const column = monaco.languages.CompletionItemKind.Field;
-                languageSugs.push({
-                  label: value,
-                  detail: this.i18n.t('common.column'),
-                  kind: column,
-                  documentation: this.i18n.t('common.description') + ':\n\t' + this.i18n.t('common.database') + ': ' + array[0]
-                    + '\n\t' + this.i18n.t('common.table') + ': ' + array[1]
-                    + '\n\t' + this.i18n.t('common.column') + ': ' + array[2],
-                  insertText: value
-                });
-              }
-            });
-          }
-          this.editorCompletionProvider = monaco.languages.registerCompletionItemProvider("sql", {
-            provideCompletionItems(): any
-            {
-              return {
-                suggestions: languageSugs.map((item) => ({
-                  ...item
-                }))
-              };
-            },
-            triggerCharacters: ['.']
-          });
-        }));
-      setTimeout(() => {
-        editorMap.values().next().value?.layout({width: this.$refs.editorContainer?.offsetWidth, height: 300})
-      }, 200)
+      // Initializes the completer
+      this.handlerInitializeCompleter(editor, language);
     },
     handlerRun()
     {
@@ -327,9 +334,10 @@ export default defineComponent({
       this.cancelToken = axios.CancelToken.source();
       this.tableLoading = true;
       const editorContainer: HTMLElement = this.$refs.editorContainer as HTMLElement;
+      const editorInstance = this.editorMaps.get(this.activeKey);
       const configure: ExecuteModel = {
         name: this.applySource,
-        content: this.activeEditorValue,
+        content: editorInstance.instance.getValue(),
         format: "JSON"
       };
       new ExecuteService()
@@ -367,24 +375,19 @@ export default defineComponent({
       this.applySource = idAndType[0];
       this.applySourceType = idAndType[1];
       this.engine = idAndType[1];
-      setTimeout(() => {
-        if (this.editorCompletionProvider) {
-          this.editorCompletionProvider.dispose();
-        }
-        this.handlerEditorDidMount(editorMap.get(activeKey.value), idAndType[1]);
-      }, 200)
+      this.handlerEditorDidMount(this.editorMaps.get(this.activeKey).instance, idAndType[1]);
     },
     handlerFormat()
     {
+      const editorInstance = this.editorMaps.get(this.activeKey);
       const configure = {
-        sql: this.activeEditorValue
+        sql: editorInstance.instance.getValue()
       };
       new FormatService()
         .formatSql(configure)
         .then((response) => {
           if (response.status) {
-            this.activeEditorValue = response.data;
-            editorValueMap.set(activeKey.value, this.activeEditorValue);
+            editorInstance.instance.setValue(response.data);
           }
           else {
             this.$Message.error(response.message);
@@ -397,6 +400,8 @@ export default defineComponent({
     },
     handlerCreateSnippet()
     {
+      const editorInstance = this.editorMaps.get(this.activeKey);
+      this.content = editorInstance.instance.getValue();
       this.snippetDetails = true;
     },
     handlerCloseSnippetDetails(value: boolean)
@@ -407,42 +412,22 @@ export default defineComponent({
     {
       this.error = null;
       this.aiSupportType = ['ANALYSIS', 'OPTIMIZE'];
-      activeKey.value = 'newTab' + activeKey.value + Date.parse(new Date().toString());
-      editors.value.push({title: 'New Tab', key: activeKey.value, closable: true});
-      editorValueMap.set(activeKey.value, '');
-      this.handlerEditorDidMount(null, this.applySourceType, activeKey.value);
-      this.activeEditorValue = editorValueMap.get(activeKey.value) as string;
+      const newEditor: EditorInstance = {
+        title: 'New Query',
+        key: Date.now().toString(),
+        closable: true
+      };
+      this.activeKey = newEditor.key;
+      this.editorMaps.set(newEditor.key, newEditor);
     },
     handlerMinusEditor(targetKey: string)
     {
-      let lastIndex = 0;
-      editors.value.forEach((editor, i) => {
-        if (editor.key === targetKey) {
-          lastIndex = i - 1;
-        }
-      });
-      editors.value = editors.value.filter(editor => editor.key !== targetKey);
-      if (editors.value.length && activeKey.value === targetKey) {
-        if (lastIndex >= 0) {
-          activeKey.value = editors.value[lastIndex].key;
-        }
-        else {
-          activeKey.value = editors.value[0].key;
-        }
-      }
-      editorMap.delete(targetKey as string);
-      editorValueMap.delete(targetKey as string);
-      this.handlerChangeEditor(activeKey.value);
+      this.editorMaps.delete(targetKey);
     },
     handlerChangeEditor(targetKey: string)
     {
       this.error = null;
       this.aiSupportType = ['ANALYSIS', 'OPTIMIZE'];
-      this.activeEditorValue = editorValueMap.get(targetKey) as string;
-    },
-    handlerChangeEditorValue(value: string)
-    {
-      editorValueMap.set(activeKey.value, value);
     },
     handlerVisibleHelp(value: boolean)
     {
