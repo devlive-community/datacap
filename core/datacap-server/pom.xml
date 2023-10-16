@@ -380,8 +380,6 @@
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>${frontend-maven-plugin.version}</version>
                 <configuration>
-                    <nodeDownloadRoot>https://npm.taobao.org/mirrors/node/</nodeDownloadRoot>
-                    <npmDownloadRoot>https://registry.npm.taobao.org/npm/-/</npmDownloadRoot>
                     <installDirectory>../datacap-web/</installDirectory>
                     <workingDirectory>../datacap-web/</workingDirectory>
                     <nodeVersion>${node.version}</nodeVersion>
