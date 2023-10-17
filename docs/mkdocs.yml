@@ -12,7 +12,7 @@ banners:
     link: /release-latest.html
     description: <a href="https://github.com/devlive-community/datacap"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
 
-copyright: Copyright &copy; 2023 DevLive
+copyright: Copyright &copy; 2023 devlive-community
 
 theme:
   name: material
@@ -142,9 +142,9 @@ nav:
     - index.md
   - Documentation:
       - Installation:
-        - Deploying in Self Host: reference/get_started/install.md
-        - Deploying in Docker: reference/get_started/install_containers.md
-        - Deploying in Rainbond: reference/get_started/install_rainbond.md
+        - reference/get_started/install.md
+        - reference/get_started/install_containers.md
+        - reference/get_started/install_rainbond.md
       - Query: reference/get_started/query.md
       - Clients:
         - reference/clients/cli.md
@@ -218,4 +218,4 @@ nav:
       - 1.0.0.20221015: release/1.0.0.20221015.md
   - Resources:
     - Functions: resources/functions/home.md
-  - Powered By: powered_by.md
+  - powered_by.md

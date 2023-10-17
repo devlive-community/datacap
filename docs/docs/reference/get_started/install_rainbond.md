@@ -1,6 +1,5 @@
 ---
 title: Deploying in Rainbond
-status: new
 ---
 
 If you are unfamiliar with Kubernetes, and want to install DataCap in Kubernetes, you can use Rainbond to deploy. [Rainbond](http://www.rainbond.com/) is a cloud-native application management platform built on Kubernetes and simplifies the application deployment to Kubernetes.
