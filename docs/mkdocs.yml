@@ -152,11 +152,10 @@ nav:
           - Admin:
             - reference/admin/datasource/home.md
             - reference/admin/snippet/home.md
+            - reference/admin/history/query/home.md
+            - reference/admin/pipeline/home.md
           - Monitor:
             - Processor: reference/admin/processor/home.md
-          - History:
-            - Query History: reference/get_started/history.md
-          - reference/admin/pipeline/home.md
       - System Setting:
           - Basic:
             - Functions: reference/admin/functions/home.md
