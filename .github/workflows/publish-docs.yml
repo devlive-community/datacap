@@ -12,7 +12,6 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
-      - run: cd docs/ && pip install git+https://${GH_TOKEN}@github.com/qianmoq/mkdocs-material-insiders.git
       - run: cd docs/ && pip install -r requirements.txt
       - run: cd docs/ && mkdocs gh-deploy --force
 
