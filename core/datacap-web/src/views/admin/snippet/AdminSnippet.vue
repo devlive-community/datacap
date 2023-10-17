@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.snippet')">
+    <Card style="width:100%" :title="$t('common.snippet')"
+          dis-hover>
       <template #extra>
         <Tooltip>
           <template #content>{{ $t('common.create') }}</template>

@@ -149,9 +149,9 @@ nav:
       - Clients:
         - reference/clients/cli.md
       - User Manager:
-          - Basic:
-            - DataSource: reference/admin/datasource/home.md
-            - Snippet: reference/admin/snippet/home.md
+          - Admin:
+            - reference/admin/datasource/home.md
+            - reference/admin/snippet/home.md
           - Monitor:
             - Processor: reference/admin/processor/home.md
           - History:
