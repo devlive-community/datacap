@@ -1,6 +1,7 @@
-mkdocs-static-i18n>=0.43
+mkdocs-static-i18n
 mkdocs-git-revision-date-localized-plugin
 mkdocs-redirects
 mkdocs-material-extensions
 mkdocs-git-committers-plugin-2
 mkdocs-git-authors-plugin
+mkdocs-material

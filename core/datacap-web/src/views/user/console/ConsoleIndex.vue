@@ -243,7 +243,8 @@ export default defineComponent({
             SnippetService.getById(id)
               .then((response) => {
                 if (response.status && response.data?.code) {
-                  this.activeEditorValue = response.data.code;
+                  const instance = this.editorMaps.get(this.activeKey);
+                  instance.instance.setValue(response.data.code);
                 }
               });
           }
@@ -251,7 +252,8 @@ export default defineComponent({
             new AuditService().getById(id)
               .then((response) => {
                 if (response.status && response.data?.content) {
-                  this.activeEditorValue = response.data.content;
+                  const instance = this.editorMaps.get(this.activeKey);
+                  instance.instance.setValue(response.data.content);
                   this.handlerChangeValue(response.data.plugin.id + ':' + response.data.plugin.type);
                 }
               });

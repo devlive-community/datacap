@@ -1,78 +1,120 @@
-!!! note
-
-    Through the data source function, you can add support for various custom data sources, and perform subsequent data source operations, etc.
-
-### Add data source
-
+---
+title: Data Source
 ---
 
-After entering the system, click the corresponding `DataSource` submenu under the top `Admin` menu to go to the function configuration function
+!!! note
+
+    Through the data source feature, you can add support for various custom data sources, perform subsequent data source operations, and so on.
+
+Move the mouse over the `Admin` logo of the top menu, the drop-down box will pop up, click the first submenu in the drop-down box. A window similar to the following pops up, the default list is empty, you need to add it yourself.
 
 ![img.png](img.png)
 
-Click the Add button on the far right of the content area (it's a + icon), After clicking, the Add Data Source window will pop up as follows
+If you added a data source, a page similar to the following appears
 
 ![img_1.png](img_1.png)
 
-When we select a certain type of data source, the data source configuration information will be displayed in the top tab bar
+### Add a data source
+
+---
+
+Click the Add button on the right side of the list display area (it is a `+` icon), and after clicking it, the Add Data Source window will pop up as follows
 
 ![img_2.png](img_2.png)
 
-Fill in the relevant configuration information according to the data source tab. After the information is entered, click the `Test` button at the bottom. After the test is successful, you can click the `Save` button to save.
+When we select a certain type of data source, the data source configuration information will be displayed in the top tab bar, different data sources have different configuration items, and its configuration order is in the specified directory of service startup.
+
+When we select the source of type `MySQL`, a window similar to the following pops up
 
 ![img_3.png](img_3.png)
 
-After the data source is saved, the data source list will be automatically refreshed, roughly as follows
+4 tabs appear in the configuration page, click on the different tabs to fill in the relevant information, and then click the `Test` button at the bottom, the following page will pop up:
 
 ![img_4.png](img_4.png)
 
-### Modify data source
+When the data source is successfully tested, the version number of the current service will be displayed at the top, and you can save the data by clicking the `Save` button at the bottom.
+
+!!! note
+
+    After the data source is saved, the list of data sources is automatically refreshed.
+
+### Modify the data source
 
 ---
 
-Click the first button in `Action` in a data source in the list to modify the data source, the operation is similar to `Add data source` operation
+Click the first button in `Action` in a data source in the list to modify the data source, similar to the `Add Data Source` action
 
-### Delete data source
+### Delete the data source
 
 ---
 
-Click the second button in `Action` of a data source in the list to delete the data source, and the following content will pop up after clicking
+Click the second button in `Action` for a data source in the list to delete the data source, and the following will pop up after clicking
 
 ![img_5.png](img_5.png)
 
-Click the small window that pops up and click `OK` to delete the data source
+Click the small pop-up window and click `OK` to delete the selected data source.
 
 !!! danger
 
-    It should be noted that after deleting the data source, the query history related to the data source will be deleted.
+    It is important to note that when a data source is deleted, the query history associated with the data source is deleted.
 
 ### Data source management
 
 ---
 
-Click the third button in `Action` of a data source in the list to jump to the data source management page.
+Click the third or fourth button in the `Action` of the data source in the list to jump to the data source management page.
 
 ![img_6.png](img_6.png)
 
-The page is divided into left and right parts. The left side mainly displays the basic information of the data source, including:
+The page is divided into two parts: left and right. The left side mainly displays the basic information of the data source, including:
 
-- Database list
-- Data table & data column tree list
+- Select the relevant metadata for the data source
 
-When we select a database and a data table on the left, the content on the right is displayed as follows
+#### Information module
+
+When we select the database and data table on the left, the content on the right is displayed as follows
 
 ![img_7.png](img_7.png)
 
-Under the data table in the right content, you can select the previous page and next page operations of the current database table data.
+Two tabs appear in the right content:
 
-On the top right we can use the sorter to reorder the data
+- `Info`（Default options）
+- `Data`
+
+!!! note
+
+    By default, information about the current table is displayed under the Current tab.
+
+#### Data modules
+
+Click the `Data` tab and a page similar to the following will appear, which displays the relevant data of the currently selected table.
 
 ![img_8.png](img_8.png)
 
-When we activate the sorter, we click the `Apply` button to apply the current sorter by selecting the data column and sorting rules, and the data below will be changed according to the sorter
+The four buttons at the top are:
+
+- `First Page`
+- `Previous Page`
+- `Next Page`
+- `Last Page`
+
+The next button is to set the configuration for the data query:
+
+![img_9.png](img_9.png)
+
+- `Jump to Page`
+- `Show Page Size`
+
+Once the configuration is populated, click the `Apply` button to apply the current configuration information.
+
+There is also a button on the right, which will display the detailed `SQL` content used by the current query
+
+![img_10.png](img_10.png)
+
+!!! note
+
+    The current SQL generation is based on the order in which it is synchronized to the metadata.
 
 !!! danger
 
-    If the current data source does not support the management function, the following page will be displayed
-
-![img_9.png](img_9.png)
+    At present, not all data sources support management, you can add your own templates if needed. If you are interested, you can contribute the source code to us.

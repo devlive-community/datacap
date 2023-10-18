@@ -1,5 +1,6 @@
 ---
 template: main.html
+title: Use cases
 
 hide:
 - navigation

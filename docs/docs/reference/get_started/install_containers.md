@@ -1,5 +1,5 @@
 ---
-title: DataCap in a Docker container
+title: Deploying in a Docker container
 ---
 
 The DataCap project provides the [qianmoq/datacap](https://hub.docker.com/r/qianmoq/datacap) Docker image that includes the DataCap server and a default configuration. The Docker image is published to Docker Hub and can be used with the Docker runtime, among several others.
@@ -26,4 +26,4 @@ CONTAINER ID   IMAGE                    COMMAND               CREATED      STATU
 
 ### Cleaning up
 
-You can stop and start the container, using the `docker stop datacap` and `docker start datacap` commands. To fully remove the stopped container, run docker rm datacap.
+You can stop and start the container, using the `docker stop datacap` and `docker start datacap` commands. To fully remove the stopped container, run `docker rm datacap`.

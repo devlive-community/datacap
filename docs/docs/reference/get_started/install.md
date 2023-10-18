@@ -1,3 +1,7 @@
+---
+title: Deploying in Self Host
+---
+
 DataCap is a software for data transformation, integration and visualization.
 
 #### System Requirements
@@ -30,31 +34,14 @@ DataCap is a software for data transformation, integration and visualization.
 Run the following command after downloading the binary to your local
 
 ```bash
-tar -xvzf datacap-<VERSION>-release.tar.gz
+tar -xvzf datacap-release.tar.gz
 ```
 
-`VERSION` After referring to the downloaded binary file version
-
 ##### Configuration software
-
-!!! warning
-
-    If MySQL is not configured for the first installation, the h2 built-in database will be used by default.
 
 For the first installation of the software, you need to import the sql scripts in the `schema/datacap.sql` file to the MySQL server. Note that the scripts that need to be imported are matched according to the downloaded software package
 
 After importing the `SQL` script, modify the `configure/application.properties` configuration file to modify the configuration information of the MySQL server
-
-If MySQL, Remove configuration
-
-```bash
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.url=jdbc:h2:mem:datacap
-spring.datasource.username=h2
-spring.datasource.password=h2
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-spring.h2.console.enabled=true
-```
 
 Add configuration
 
@@ -101,13 +88,13 @@ Stop the service and execute the following script
 - Clone the source code to this machine
 
 ```bash
-git clone https://github.com/EdurtIO/datacap.git
+git clone https://github.com/devlive-community/datacap.git
 ```
 
 - Compile and build the application
 
 ```bash
-./mvnw clean install package -DskipTests
+./mvnw clean install package -DskipTests -Dgpg.skip
 ```
 
 !!! warning

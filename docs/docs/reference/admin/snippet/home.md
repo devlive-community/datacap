@@ -1,60 +1,69 @@
-!!! note
-
-    Through the snippet function, you can add support for various custom snippet, and perform subsequent snippet operations, etc.
-
-### Add snippet
-
+---
+title: Snippet
 ---
 
-After entering the system, click the corresponding `Snippet` submenu under the top `Admin` menu to go to the function configuration function
+!!! note
+
+    The snippet feature allows you to add support for various custom snippets, perform subsequent snippet operations, and more. The added code snippet is then added to the editor.
+
+Move your mouse over the `Admin` icon in the top menu to pop up the drop-down box, click the `Snippet` submenu in the drop-down box. A window similar to the following pops up, the default list is empty, you need to add it yourself.
 
 ![img.png](img.png)
 
-Click the Add button on the far right of the content area (it's a + icon), After clicking, the Add snippet window will pop up as follows
+If you added a fragment, a page similar to the following appears
 
 ![img_1.png](img_1.png)
 
-In the window we need to enter the following
+### Add Snippet
 
-|     Field     |                      Description                      |
-|:-------------:|:-----------------------------------------------------:|
-|    `Name`     |     Tokenize the name of the current code snippet     |
-| `Description` |       Description of the current code fragment        |
-|   `Snippet`   | The specific SQL content of the current code fragment |
+---
 
-After filling in the above content, click the `Submit` button at the bottom to save the code snippet
-
-After the snippet is saved, the snippet list will be automatically refreshed, roughly as follows
+Click the Add button on the right side of the list display area (it is a `+` icon), and after clicking it, the Add Data Source window will pop up as follows
 
 ![img_2.png](img_2.png)
 
-### View snippet content
+In the window, we need to enter the following
+
+|   Attribute   |                     Description                      |
+|:-------------:|:----------------------------------------------------:|
+|    `Name`     |        Marks the name of the current snippet         |
+| `Description` |      A description of the current code snippet       |
+|   `Snippet`   | The specific SQL content of the current code snippet |
+
+After filling in the above, click the `Submit` button at the bottom to save the code snippet.
+
+!!! note
+
+    After the data is saved, the list of data sources is automatically refreshed.
+
+### Review the snippet content
 
 ---
 
-Click the first button in `Action` in a certain data in the list to view the specific code snippet content, it will pop up a dialog box, roughly as follows
+Click the first button in `Action` in a data in the list to view the specific code snippet content, and a dialog box will pop up, which is roughly as follows
 
 ![img_3.png](img_3.png)
 
-Click `OK` or `Cancel` to close the dialog
+Click `OK` or `Cancel` to close the dialog box
 
-### Modify snippet
-
----
-
-Click the second button in `Action` in a data in the list to modify the snippet, the operation is similar to `Add snippet` operation
-
-### Quote snippet
+### Modify the code snippet
 
 ---
 
-Click the third button in `Action` of a data in the list to reference the current code fragment, it will jump to the query page, and the fragment content will be directly input into the editor.
+Click the second button in `Action` in one of the data in the list to modify the snippet, similar to the `Add Snippet` action.
 
-### Delete snippet
+### Quote Snippet
 
 ---
-Click the fourth button in `Action` of a data in the list to delete the snippet, and the following content will pop up after clicking
+
+Click the third button in `Action` of a piece of data in the list, reference the current code snippet, and you will be taken to the query page, and the fragment content will be entered directly into the editor.
+
+### Delete the snippet
+
+---
+
+Click the fourth button in `Action` of a piece of data in the list to delete the snippet, and the following will pop up after clicking
 
 ![img_4.png](img_4.png)
 
-Click the small window that pops up and click OK to delete the snippet
+Click the small pop-up window and click `OK` to remove the snippet.
