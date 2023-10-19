@@ -9,7 +9,7 @@
         <meta name="description" content="DataCap is integrated software for data transformation, integration and visualization.">
       
       
-        <meta name="author" content="EdurtIO">
+        <meta name="author" content="devlive-community">
       
       
         <link rel="canonical" href="https://databap.edurt.io/zh/release/latest.html">
@@ -18,33 +18,29 @@
         <link rel="prev" href="../developer_guide/pipeline/home.html">
       
       
-        <link rel="next" href="1.13.0.html">
-      
-      
-        
-          <link rel="alternate" href="/en/release/latest.html" hreflang="en">
-        
-          <link rel="alternate" href="/zh/release/latest.html" hreflang="zh">
-        
+        <link rel="next" href="1.14.0.html">
       
       
       <link rel="icon" href="../../assets/logo.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18+insiders-4.36.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
     
     
       
-        <title>1.14.0 (latest) - DataCap</title>
+        <title>1.15.0 (latest) - DataCap</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.cac7c1ad.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35e1ed30.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc776e4.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
+
     
+    
+      
     
     
       
@@ -64,6 +60,7 @@
     
       
 
+    
     
     
 <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
@@ -95,6 +92,9 @@
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
@@ -119,7 +119,7 @@
             <a class="announce-link" href="/release-latest.html">
                 <span class="twemoji">
                   DataCap 1.14.0 is released
-                </span> <a href="https://github.com/EdurtIO/datacap"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
+                </span> <a href="https://github.com/devlive-community/datacap"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
             </a>
         </div>
         
@@ -147,6 +147,7 @@
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
+      
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
@@ -159,7 +160,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              1.14.0 (latest)
+              1.15.0 (latest)
             
           </span>
         </div>
@@ -168,62 +169,60 @@
     
       
         <form class="md-header__option" data-md-component="palette">
-          
-            
-            
-            
-            <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
-            
-              <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
-              </label>
-            
-          
-            
-            
-            
-            <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
-            
-              <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
-              </label>
-            
-          
-        </form>
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+      </label>
+    
+  
+</form>
       
     
     
-      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
-    
-    
       <div class="md-header__option">
-        <div class="md-select">
-          
-          <button class="md-header__button md-icon" aria-label="选择当前语言">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04M18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12m-2.62 7 1.62-4.33L19.12 17h-3.24Z"/></svg>
-          </button>
-          <div class="md-select__inner">
-            <ul class="md-select__list">
-              
-                <li class="md-select__item">
-                  <a href="/en/release/latest.html" hreflang="en" class="md-select__link">
-                    English
-                  </a>
-                </li>
-              
-                <li class="md-select__item">
-                  <a href="/zh/release/latest.html" hreflang="zh" class="md-select__link">
-                    Chinese (Simplified)
-                  </a>
-                </li>
-              
-            </ul>
-          </div>
-        </div>
-      </div>
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04M18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12m-2.62 7 1.62-4.33L19.12 17h-3.24Z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../release/latest.html" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="latest.html" hreflang="zh" class="md-select__link">
+              Chinese (Simplified)
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
     
     
       <label class="md-header__button md-icon" for="__search">
+        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
       </label>
       <div class="md-search" data-md-component="search" role="dialog">
@@ -232,16 +231,20 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
+        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="查找">
         
           <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
           </a>
         
         <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
@@ -267,7 +270,7 @@
         <a href="https://github.com/devlive-community/datacap" title="前往仓库" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     devlive-community/datacap
@@ -366,8 +369,8 @@
   
     
     
-      <li class="md-tabs__item">
-        <a href="latest.html" class="md-tabs__link md-tabs__link--active">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="latest.html" class="md-tabs__link">
           
   
     
@@ -410,7 +413,7 @@
   
     
   
-  Powered By
+  使用案例
 
       </a>
     </li>
@@ -451,7 +454,7 @@
       <a href="https://github.com/devlive-community/datacap" title="前往仓库" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     devlive-community/datacap
@@ -475,9 +478,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
@@ -490,14 +497,8 @@
               
   
   <span class="md-ellipsis">
-    
-  
     Home
-  
-
-    
   </span>
-  
   
 
             </a>
@@ -507,11 +508,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Home
-  
-
+            Home
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -546,26 +543,25 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     Documentation
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -574,11 +570,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Documentation
-  
-
+            Documentation
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -598,6 +590,9 @@
       
     
     
+    
+    
+      
       
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
@@ -605,21 +600,15 @@
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
         
-          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     Installation
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -628,11 +617,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_1">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Installation
-  
-
+            Installation
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -646,14 +631,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
-    Deploying in Self Host
-  
-
-    
+    在自主机中部署
   </span>
-  
   
 
       </a>
@@ -672,14 +651,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
-    Deploying in Docker
-  
-
-    
+    在 Docker 中部署
   </span>
-  
   
 
       </a>
@@ -698,22 +671,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
-    Deploying in Rainbond
-  
-
-    
+    在 Rainbond 中部署
   </span>
-  
-  
-    
-  
-  
-    <span class="md-status md-status--new" title="Recently added">
-    </span>
-  
-
   
 
       </a>
@@ -740,14 +699,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Query
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -768,6 +721,9 @@
       
     
     
+    
+    
+      
       
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
@@ -775,21 +731,15 @@
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
         
-          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     Clients
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -798,11 +748,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_3">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Clients
-  
-
+            Clients
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -816,14 +762,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     命令行界面
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -852,12 +792,11 @@
       
         
       
-        
-      
-        
-      
     
     
+    
+    
+      
       
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
@@ -865,21 +804,15 @@
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
         
-          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     User Manager
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -888,11 +821,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_4">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    User Manager
-  
-
+            User Manager
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -908,6 +837,12 @@
       
         
       
+        
+      
+        
+      
+    
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
@@ -915,21 +850,15 @@
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_1" >
         
+          
           <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    
-  
-    Basic
-  
-
-    
+    Admin
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -938,11 +867,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_4_1">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Basic
-  
-
+            Admin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -956,14 +881,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
-    DataSource
-  
-
-    
+    数据源
   </span>
-  
   
 
       </a>
@@ -982,14 +901,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
-    Snippet
-  
-
-    
+    代码片段
   </span>
-  
   
 
       </a>
@@ -997,62 +910,6 @@
   
 
               
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-    
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" >
-        
-          <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    
-  
-    Monitor
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_4_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Monitor
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -1060,111 +917,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/admin/processor/home.html" class="md-nav__link">
+      <a href="../reference/admin/history/query/home.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    
-  
-    Processor
-  
-
-    
+    查询历史
   </span>
-  
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-    
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3" >
-        
-          <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    
-  
-    History
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_4_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    History
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/get_started/history.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    
-  
-    Query History
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1180,14 +941,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     流水线
-  
-
-    
   </span>
-  
   
     
   
@@ -1222,10 +977,89 @@
       
         
       
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Monitor
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Monitor
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/admin/processor/home.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Processor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
         
       
     
     
+    
+    
+      
       
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
@@ -1233,21 +1067,15 @@
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
         
-          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     System Setting
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1256,11 +1084,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_5">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    System Setting
-  
-
+            System Setting
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1276,26 +1100,22 @@
       
     
     
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_1" >
         
+          
           <label class="md-nav__link" for="__nav_2_5_1" id="__nav_2_5_1_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    
-  
     Basic
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1304,11 +1124,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_5_1">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Basic
-  
-
+            Basic
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1322,14 +1138,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Functions
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -1358,26 +1168,22 @@
       
     
     
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_2" >
         
+          
           <label class="md-nav__link" for="__nav_2_5_2" id="__nav_2_5_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    
-  
     Template
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1386,11 +1192,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_5_2">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Template
-  
-
+            Template
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1404,14 +1206,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Sql
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -1458,11 +1254,13 @@
       
     
     
+    
+    
+      
       
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
-        
         
         
         
@@ -1475,19 +1273,14 @@
               
   
   <span class="md-ellipsis">
-    
-  
     Connecting to connectors
-  
-
-    
   </span>
-  
   
 
             </a>
             
-              <label class="md-nav__link " for="__nav_2_6">
+              
+              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -1496,11 +1289,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_6">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Connecting to connectors
-  
-
+            Connecting to connectors
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1516,14 +1305,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Apache Cassandra
-  
-
-    
   </span>
-  
   
     
   
@@ -1566,26 +1349,22 @@
       
     
     
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_3" >
         
+          
           <label class="md-nav__link" for="__nav_2_6_3" id="__nav_2_6_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    
-  
     JDBC
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1594,11 +1373,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_6_3">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    JDBC
-  
-
+            JDBC
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1612,14 +1387,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Hologres
-  
-
-    
   </span>
-  
   
     
   
@@ -1646,14 +1415,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     StarRocks
-  
-
-    
   </span>
-  
   
     
   
@@ -1680,14 +1443,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Apache Doris
-  
-
-    
   </span>
-  
   
     
   
@@ -1714,14 +1471,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     DuckDB
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -1740,14 +1491,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Yandex Database
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -1766,14 +1511,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Snowflake
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -1792,14 +1531,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     MySQL
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -1818,14 +1551,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     ClickHouse
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -1866,26 +1593,22 @@
       
     
     
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_4" >
         
+          
           <label class="md-nav__link" for="__nav_2_6_4" id="__nav_2_6_4_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    
-  
     Native
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1894,11 +1617,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_6_4">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Native
-  
-
+            Native
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1912,14 +1631,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Apache Pinot
-  
-
-    
   </span>
-  
   
     
   
@@ -1948,26 +1661,22 @@
       
     
     
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_4_2" >
         
+          
           <label class="md-nav__link" for="__nav_2_6_4_2" id="__nav_2_6_4_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    
-  
     Apache Hadoop
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1976,11 +1685,7 @@
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_6_4_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_6_4_2">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Apache Hadoop
-  
-
+            Apache Hadoop
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1994,14 +1699,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     HDFS
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2028,14 +1727,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     H2 Database
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2066,9 +1759,10 @@
       
     
     
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         
@@ -2081,19 +1775,14 @@
               
   
   <span class="md-ellipsis">
-    
-  
     Apache Kafka
-  
-
-    
   </span>
-  
   
 
             </a>
             
-              <label class="md-nav__link " for="__nav_2_6_4_4">
+              
+              <label class="md-nav__link " for="__nav_2_6_4_4" id="__nav_2_6_4_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -2102,11 +1791,7 @@
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_6_4_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_6_4_4">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Apache Kafka
-  
-
+            Apache Kafka
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2122,14 +1807,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     SHOW TOPICS
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2148,14 +1827,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     SHOW CONSUMERS
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2174,14 +1847,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     SHOW DATABASES
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2200,14 +1867,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     SHOW TABLES
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2234,14 +1895,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Aliyun OSS
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2260,14 +1915,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Zookeeper
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2286,14 +1935,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Redis
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2328,26 +1971,22 @@
       
     
     
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_5" >
         
+          
           <label class="md-nav__link" for="__nav_2_6_5" id="__nav_2_6_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    
-  
     Http
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -2356,11 +1995,7 @@
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_6_5">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Http
-  
-
+            Http
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2374,14 +2009,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     QuestDB
-  
-
-    
   </span>
-  
   
     
   
@@ -2408,14 +2037,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     GreptimeDB
-  
-
-    
   </span>
-  
   
     
   
@@ -2442,14 +2065,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     CeresDB
-  
-
-    
   </span>
-  
   
     
   
@@ -2476,14 +2093,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     ClickHouse
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2531,26 +2142,25 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     Developer guide
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -2559,11 +2169,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Developer guide
-  
-
+            Developer guide
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2579,14 +2185,8 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 6H4c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1h1v9h14V9h1c.55 0 1-.45 1-1V7c0-.55-.45-1-1-1m-3 10H7V9h10v7Z"/></svg>
   
   <span class="md-ellipsis">
-    
-  
     Development environment
-  
-
-    
   </span>
-  
   
     
   
@@ -2617,6 +2217,9 @@
       
     
     
+    
+    
+      
       
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
@@ -2624,21 +2227,15 @@
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
         
-          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     Add a Plugin
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -2647,11 +2244,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Add a Plugin
-  
-
+            Add a Plugin
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2665,14 +2258,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Java 实现
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2691,14 +2278,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Kotlin 实现
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -2727,6 +2308,9 @@
       
     
     
+    
+    
+      
       
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
@@ -2734,21 +2318,15 @@
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
         
-          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     Other
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -2757,11 +2335,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Other
-  
-
+            Other
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2775,14 +2349,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     流水线
-  
-
-    
   </span>
-  
   
     
   
@@ -2854,28 +2422,29 @@
       
         
       
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
         
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     Release Note
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -2884,11 +2453,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Release Note
-  
-
+            Release Note
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2909,14 +2474,8 @@
           
   
   <span class="md-ellipsis">
-    
-  
-    1.14.0 (latest)
-  
-
-    
+    1.15.0 (latest)
   </span>
-  
   
 
           <span class="md-nav__icon md-icon"></span>
@@ -2926,14 +2485,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
-    1.14.0 (latest)
-  
-
-    
+    1.15.0 (latest)
   </span>
-  
   
 
       </a>
@@ -2953,44 +2506,21 @@
       
         <li class="md-nav__item">
   <a href="#general" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        General
-      
-    </span>
+    General
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#web" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Web
-      
-    </span>
+  <a href="#editor" class="md-nav__link">
+    Editor
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pipeline-apache-seatunnel" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pipeline (Apache Seatunnel)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Dependencies
-      
-    </span>
+  <a href="#docs" class="md-nav__link">
+    Docs
   </a>
   
 </li>
@@ -3010,18 +2540,32 @@
   
   
     <li class="md-nav__item">
+      <a href="1.14.0.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.14.0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="1.13.0.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    
-  
     1.13.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3040,14 +2584,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.12.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3066,14 +2604,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.11.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3092,14 +2624,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.10.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3118,14 +2644,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.9.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3144,14 +2664,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.8.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3170,14 +2684,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.7.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3196,14 +2704,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.6.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3222,14 +2724,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.5.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3248,14 +2744,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.4.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3274,14 +2764,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.3.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3300,14 +2784,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.2.0
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3326,14 +2804,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.1.0.20221115
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3352,14 +2824,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     1.0.0.20221015
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3387,26 +2853,25 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    
-  
     Resources
-  
-
-    
   </span>
-  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -3415,11 +2880,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            
-  
-    Resources
-  
-
+            Resources
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3433,14 +2894,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
     Functions
-  
-
-    
   </span>
-  
   
 
       </a>
@@ -3466,14 +2921,8 @@
         
   
   <span class="md-ellipsis">
-    
-  
-    Powered By
-  
-
-    
+    使用案例
   </span>
-  
   
 
       </a>
@@ -3507,44 +2956,21 @@
       
         <li class="md-nav__item">
   <a href="#general" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        General
-      
-    </span>
+    General
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#web" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Web
-      
-    </span>
+  <a href="#editor" class="md-nav__link">
+    Editor
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pipeline-apache-seatunnel" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pipeline (Apache Seatunnel)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Dependencies
-      
-    </span>
+  <a href="#docs" class="md-nav__link">
+    Docs
   </a>
   
 </li>
@@ -3559,53 +2985,6 @@
           
           
             <div class="md-content" data-md-component="content">
-              
-                
-
-
-
-  
-
-
-  <nav class="md-path" aria-label="导航栏" >
-    <ol class="md-path__list">
-      
-        
-  
-    <li class="md-path__item">
-      <a href="../index.html" class="md-path__link">
-        
-  <span class="md-ellipsis">
-    
-  </span>
-
-      </a>
-    </li>
-  
-
-      
-      
-        
-  
-    
-    
-      <li class="md-path__item">
-        <a href="latest.html" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Release Note
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-    </ol>
-  </nav>
-
-              
               <article class="md-content__inner md-typeset">
                 
 
@@ -3615,7 +2994,7 @@
   
 
 
-  <h1>1.14.0 (latest)</h1>
+  <h1>1.15.0 (latest)</h1>
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -3625,113 +3004,53 @@
 <table>
 <thead>
 <tr>
-<th align="center">发布版本</th>
-<th align="center">发布时间</th>
+<th style="text-align: center;">发布版本</th>
+<th style="text-align: center;">发布时间</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><code>1.14.0</code></td>
-<td align="center"><code>2023-09-14</code></td>
+<td style="text-align: center;"><code>1.15.0</code></td>
+<td style="text-align: center;"><code>2023-10-18</code></td>
 </tr>
 </tbody>
 </table>
 <h4 id="general">General<a class="headerlink" href="#general" title="Permanent link">&para;</a></h4>
 <hr />
 <ul>
-<li>修复数据源检查任务返回空的问题</li>
-<li>添加验证码</li>
-<li>支持登录验证码</li>
-<li>支持验证码失败自动刷新</li>
-<li>支持注册验证码</li>
-<li>支持注册启用</li>
-<li>移动 etc 到 configure</li>
+<li>支持数据库同步</li>
+<li>支持表同步</li>
+<li>支持列同步</li>
+<li>添加调度程序历史记录</li>
+<li>重构元数据模块</li>
+<li>改进 SQL 文件</li>
 </ul>
-<h4 id="web">Web<a class="headerlink" href="#web" title="Permanent link">&para;</a></h4>
+<h4 id="editor">Editor<a class="headerlink" href="#editor" title="Permanent link">&para;</a></h4>
 <hr />
 <ul>
-<li>修复空编辑器破坏异常</li>
-<li>公共页面增加布局</li>
-<li>修复了个人资料页面错误</li>
-<li>修复登录页面样式异常的问题</li>
+<li>替换 <code>monaco</code> 为 <code>ace</code></li>
 </ul>
-<h4 id="pipeline-apache-seatunnel">Pipeline (Apache Seatunnel)<a class="headerlink" href="#pipeline-apache-seatunnel" title="Permanent link">&para;</a></h4>
+<h4 id="docs">Docs<a class="headerlink" href="#docs" title="Permanent link">&para;</a></h4>
 <hr />
 <ul>
-<li>支持 Kafka 输入｜输出</li>
-<li>支持 ClickHouse 输入｜输出</li>
-<li>支持删除</li>
-<li>构建管道页面</li>
-<li>支持提交</li>
-<li>支持 SWITCH 字段类型</li>
-<li>添加执行者标志</li>
-<li>支持限流排队</li>
-<li>支持停止</li>
-<li>服务重启时重置流水线</li>
-<li>添加日志界面并优化UI</li>
-<li>支持字段描述</li>
-<li>支持字段 SELECT 类型</li>
-<li>支持字段检查</li>
-<li>支持字段数组</li>
-<li>支持 Redis 输出</li>
-<li>支持指定运行时机制</li>
-</ul>
-<h4 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h4>
-<hr />
-<ul>
-<li>将 com.google.guava:guava 从 31.1-jre 更改为 32.1.2-jre</li>
-<li>将 org.devlive.sdk:openai-java-sdk 从 1.5.0 升级到 1.9.0</li>
-<li>将 com.h2database:h2 从 2.1.214 提升到 2.2.220</li>
-<li>将 org.projectlombok:lombok 从 1.18.24 更改为 1.18.28</li>
-<li>将 org.apache.kafka:kafka-clients 从 2.8.0 升级到 2.8.1</li>
-<li>将 org.duckdb:duckdb_jdbc 从 0.7.0 升级到 0.8.1</li>
-<li>将 com.github.eirslett:frontend-maven-plugin 从 1.12.1 升级到 1.13.4</li>
-<li>将 kotlin.version 从 1.8.20 升级到 1.9.10</li>
-<li>将 org.sonatype.plugins:nexus-staging-maven-plugin 从 1.6 升级到 1.6.13</li>
+<li>添加中文部署文档</li>
+<li>优化片段和数据来源中文文档</li>
 </ul>
 
-  
+  <hr>
+<div class="md-source-file">
+  <small>
     
-  
-  
-    
-  
-
-
-  <aside class="md-source-file">
-    
-      <span class="md-source-file__fact">
-        <span class="md-icon" title="最后更新">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
-        </span>
-        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2023年9月14日</span>
-      </span>
-    
-    
-      <span class="md-source-file__fact">
-        <span class="md-icon" title="创建日期">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2Z"/></svg>
-        </span>
-        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2023年5月4日</span>
-      </span>
-    
-    
+      最后更新:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 19, 2023</span>
       
-      <span class="md-source-file__fact">
-        <span class="md-icon" title="贡献者">
-          
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 5.5A3.5 3.5 0 0 1 15.5 9a3.5 3.5 0 0 1-3.5 3.5A3.5 3.5 0 0 1 8.5 9 3.5 3.5 0 0 1 12 5.5M5 8c.56 0 1.08.15 1.53.42-.15 1.43.27 2.85 1.13 3.96C7.16 13.34 6.16 14 5 14a3 3 0 0 1-3-3 3 3 0 0 1 3-3m14 0a3 3 0 0 1 3 3 3 3 0 0 1-3 3c-1.16 0-2.16-.66-2.66-1.62a5.536 5.536 0 0 0 1.13-3.96c.45-.27.97-.42 1.53-.42M5.5 18.25c0-2.07 2.91-3.75 6.5-3.75s6.5 1.68 6.5 3.75V20h-13v-1.75M0 20v-1.5c0-1.39 1.89-2.56 4.45-2.9-.59.68-.95 1.62-.95 2.65V20H0m24 0h-3.5v-1.75c0-1.03-.36-1.97-.95-2.65 2.56.34 4.45 1.51 4.45 2.9V20Z"/></svg>
-          
-        </span>
-        <nav>
-          
-            <a href="mailto:shicheng@ttxit.com">qianmoQ</a>, 
-            <a href="mailto:shicheng@devlive.org">qianmoQ</a>
-        </nav>
-      </span>
+        <br>
+        创建日期:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">May 4, 2023</span>
+      
     
-    
-  </aside>
+  </small>
+</div>
 
 
 
@@ -3792,13 +3111,13 @@
           
   <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
 
-<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
-            回到页面顶部
-          </button>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  回到页面顶部
+</button>
         
       </main>
       
@@ -3809,13 +3128,13 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2023 DevLive
+      Copyright &copy; 2023 devlive-community
     </div>
   
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs Insiders
+      Material for MkDocs
     </a>
   
 </div>
@@ -3829,8 +3148,8 @@
       
       
     
-    <a href="https://github.com/EdurtIO" target="_blank" rel="noopener" title="github.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    <a href="https://github.com/devlive-community" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
     </a>
   
     
@@ -3841,7 +3160,7 @@
       
     
     <a href="https://linkedin.com/in/qianmoQ/" target="_blank" rel="noopener" title="linkedin.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
     </a>
   
 </div>
@@ -3855,15 +3174,14 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate", "content.tabs.link", "navigation.indexes", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "content.tooltips", "content.code.copy"], "search": "../../assets/javascripts/workers/search.6c7302c4.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate", "content.tabs.link", "navigation.indexes", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "content.tooltips", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
     
     
 
-      <script src="../../assets/javascripts/bundle.7c5c0157.min.js"></script>
+      <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
       
-        
-          <script src="../../js/datacap.js"></script>
-        
+        <script src="../../js/datacap.js"></script>
       
     
 <script src="../../assets/javascripts/bundle.39654835.min.js"></script>
