@@ -6,60 +6,28 @@
 
 | Release Version | Release Time |
 |:---------------:|:------------:|
-|    `1.14.0`     | `2023-09-14` |
+|    `1.15.0`     | `2023-10-18` |
 
 #### General
 
 ---
 
-- Fix the issue where the data source check task returns an empty
-- Add captcha
-- Support login verification code
-- Automatic refresh of verification code failure is supported
-- Support signup verification code
-- Support signup enable
-- Move etc to configure
+- Support database synchronization
+- Support table synchronization
+- Support column synchronization
+- Add scheduler history
+- Refactor metadata module
+- Improve SQL files
 
-#### Web
-
----
-
-- Fixed empty editor destruction exception
-- Global public page adds layout
-- Fixed the profile page error
-- Fixed the abnormal login page style
-
-#### Pipeline (Apache Seatunnel)
+#### Editor
 
 ---
 
-- Support kafka source and sink
-- Support delete
-- Build pipeline page
-- Support submit
-- Support SWITCH field type
-- Add executor logo
-- Supports traffic limiting queuing
-- Support stop
-- Reset the pipeline when the service restarts
-- Add logging interface and optimize UI
-- Support field description
-- Support field select type
-- Support field checker
-- Support field array
-- Support redis sink
-- Supports specifying the runtime mechanism
+- Replace `monaco` to `ace`
 
-#### Dependencies
+#### Docs
 
 ---
 
-- Bump com.google.guava:guava from 31.1-jre to 32.1.2-jre
-- Bump org.devlive.sdk:openai-java-sdk from 1.5.0 to 1.9.0
-- Bump com.h2database:h2 from 2.1.214 to 2.2.220
-- Bump org.projectlombok:lombok from 1.18.24 to 1.18.28
-- Bump org.apache.kafka:kafka-clients from 2.8.0 to 2.8.1
-- Bump org.duckdb:duckdb_jdbc from 0.7.0 to 0.8.1
-- Bump com.github.eirslett:frontend-maven-plugin from 1.12.1 to 1.13.4
-- Bump kotlin.version from 1.8.20 to 1.9.10
-- Bump org.sonatype.plugins:nexus-staging-maven-plugin from 1.6 to 1.6.13
+- Add deployment documents in Chinese
+- Refine the fragment and data source Chinese documentation
