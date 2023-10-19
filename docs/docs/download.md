@@ -27,7 +27,7 @@ The current Trino release is version <img src="https://img.shields.io/github/v/r
 
     <br />
 
-    [datacap-server-1.14.0.tar.gz](http://downloads.edurt.io/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
+    [datacap-server-1.15.0.tar.gz](http://downloads.edurt.io/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
 
 - :material-application-outline: __Command line client__
 
@@ -37,7 +37,7 @@ The current Trino release is version <img src="https://img.shields.io/github/v/r
      
      <br />
   
-     [datacap-client-cli-1.14.0.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/1.14.0/datacap-client-cli-1.14.0.jar){ .md-button .md-button-primary }
+     [datacap-client-cli-1.15.0.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/1.15.0/datacap-client-cli-1.15.0.jar){ .md-button .md-button-primary }
   
 - :material-more: __More package__
 

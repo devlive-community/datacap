@@ -6,61 +6,28 @@
 
 |   发布版本   |     发布时间     |
 |:--------:|:------------:|
-| `1.14.0` | `2023-09-14` |
+| `1.15.0` | `2023-10-18` |
 
 #### General
 
 ---
 
-- 修复数据源检查任务返回空的问题
-- 添加验证码
-- 支持登录验证码
-- 支持验证码失败自动刷新
-- 支持注册验证码
-- 支持注册启用
-- 移动 etc 到 configure
+- 支持数据库同步
+- 支持表同步
+- 支持列同步
+- 添加调度程序历史记录
+- 重构元数据模块
+- 改进 SQL 文件
 
-#### Web
-
----
-
-- 修复空编辑器破坏异常
-- 公共页面增加布局
-- 修复了个人资料页面错误
-- 修复登录页面样式异常的问题
-
-#### Pipeline (Apache Seatunnel)
+#### Editor
 
 ---
 
-- 支持 Kafka 输入｜输出
-- 支持 ClickHouse 输入｜输出
-- 支持删除
-- 构建管道页面
-- 支持提交
-- 支持 SWITCH 字段类型
-- 添加执行者标志
-- 支持限流排队
-- 支持停止
-- 服务重启时重置流水线
-- 添加日志界面并优化UI
-- 支持字段描述
-- 支持字段 SELECT 类型
-- 支持字段检查
-- 支持字段数组
-- 支持 Redis 输出
-- 支持指定运行时机制
+- 替换 `monaco` 为 `ace`
 
-#### Dependencies
+#### Docs
 
 ---
 
-- 将 com.google.guava:guava 从 31.1-jre 更改为 32.1.2-jre
-- 将 org.devlive.sdk:openai-java-sdk 从 1.5.0 升级到 1.9.0
-- 将 com.h2database:h2 从 2.1.214 提升到 2.2.220
-- 将 org.projectlombok:lombok 从 1.18.24 更改为 1.18.28
-- 将 org.apache.kafka:kafka-clients 从 2.8.0 升级到 2.8.1
-- 将 org.duckdb:duckdb_jdbc 从 0.7.0 升级到 0.8.1
-- 将 com.github.eirslett:frontend-maven-plugin 从 1.12.1 升级到 1.13.4
-- 将 kotlin.version 从 1.8.20 升级到 1.9.10
-- 将 org.sonatype.plugins:nexus-staging-maven-plugin 从 1.6 升级到 1.6.13
+- 添加中文部署文档
+- 优化片段和数据来源中文文档
