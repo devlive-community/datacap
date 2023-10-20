@@ -51,3 +51,4 @@ shaded/*/dependency-reduced-pom.xml
 # datacap #
 cache/
 config/
+docs/site/

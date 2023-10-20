@@ -32,6 +32,7 @@ export default {
   state: '状态',
   elapsed: '消耗',
   run: '运行',
+  runSelection: '运行选择内容',
   cancel: '取消',
   format: '格式化',
   snippet: '片段',
