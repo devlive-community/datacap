@@ -25,7 +25,7 @@
                         :loading="tableLoading"
                         :disabled="!applySource"
                         @click="handlerRun()">
-                  {{ $t('common.run') }}
+                  {{ buttonRunText }}
                 </Button>
                 <Button type="dashed"
                         size="small"
@@ -218,7 +218,9 @@ export default defineComponent({
       visibleAiHelp: false,
       engine: null,
       aiSupportType: ['ANALYSIS', 'OPTIMIZE'],
-      error: null
+      error: null,
+      buttonRunText: null,
+      isSelection: false
     }
   },
   created()
@@ -228,6 +230,7 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
+      this.buttonRunText = this.i18n.t('common.run');
       const defaultEditor: EditorInstance = {
         title: 'New Query',
         key: Date.now().toString()
@@ -264,12 +267,24 @@ export default defineComponent({
     handlerInitializeCompleter(editor: Editor, language: string)
     {
       try {
+        // The configuration editor selects content events
+        editor.selection.on('changeSelection', () => {
+          const selection = editor.getSelection();
+          if (selection.isEmpty()) {
+            this.buttonRunText = this.i18n.t('common.run');
+            this.isSelection = false;
+          }
+          else {
+            this.buttonRunText = this.i18n.t('common.runSelection');
+            this.isSelection = true;
+          }
+        })
+
         langTools.addCompleter({
           getCompletions: function (editor, session, pos, prefix, callback) {
             return callback(null, []);
           }
         });
-
         // Clear default keywords and code snippets
         editor.completers = [];
         const that = this;
@@ -339,7 +354,7 @@ export default defineComponent({
       const editorInstance = this.editorMaps.get(this.activeKey);
       const configure: ExecuteModel = {
         name: this.applySource,
-        content: editorInstance.instance.getValue(),
+        content: this.isSelection ? editorInstance.instance.getSelectedText() : editorInstance.instance.getValue(),
         format: "JSON"
       };
       new ExecuteService()

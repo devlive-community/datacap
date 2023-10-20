@@ -32,6 +32,7 @@ export default {
   state: 'State',
   elapsed: 'Elapsed',
   run: 'Run',
+  runSelection: 'Run Selection',
   cancel: 'Cancel',
   format: 'Format',
   snippet: 'Snippet',
