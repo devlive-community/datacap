@@ -3,6 +3,7 @@ import {ResponseModel} from "@/model/ResponseModel";
 import {UserPassword} from "@/model/UserPassword";
 import {UserName} from "@/model/UserName";
 import {Filter} from "@/model/Filter";
+import {EditorConfigure} from "@/model/User";
 
 const baseUrl = "/api/v1/user";
 
@@ -41,6 +42,11 @@ class UserService
   getMenus(): Promise<ResponseModel>
   {
     return new HttpCommon().get(baseUrl + '/menus');
+  }
+
+  changeEditorConfigure(configure: EditorConfigure): Promise<ResponseModel>
+  {
+    return new HttpCommon().put(`${baseUrl}/changeEditorConfigure`, configure);
   }
 }
 

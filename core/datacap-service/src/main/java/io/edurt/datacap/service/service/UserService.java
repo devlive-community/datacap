@@ -6,6 +6,7 @@ import io.edurt.datacap.service.body.UserNameBody;
 import io.edurt.datacap.service.body.UserPasswordBody;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.entity.itransient.user.UserEditorEntity;
 import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 
@@ -30,4 +31,6 @@ public interface UserService
     CommonResponse<List<TreeRecord>> getMenus();
 
     CommonResponse<PageEntity<UserEntity>> getAll(FilterBody filter);
+
+    CommonResponse<Long> changeEditorConfigure(UserEditorEntity configure);
 }

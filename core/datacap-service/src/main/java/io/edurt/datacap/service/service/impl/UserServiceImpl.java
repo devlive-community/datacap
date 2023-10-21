@@ -16,6 +16,7 @@ import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.RoleEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.entity.itransient.user.UserEditorEntity;
 import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 import io.edurt.datacap.service.repository.RoleRepository;
@@ -242,5 +243,18 @@ public class UserServiceImpl
     {
         Pageable pageable = PageRequestAdapter.of(filter);
         return CommonResponse.success(PageEntity.build(this.userRepository.findAll(pageable)));
+    }
+
+    @Override
+    public CommonResponse<Long> changeEditorConfigure(UserEditorEntity configure)
+    {
+        Optional<UserEntity> userOptional = this.userRepository.findById(UserDetailsService.getUser().getId());
+        if (!userOptional.isPresent()) {
+            return CommonResponse.failure(ServiceState.USER_NOT_FOUND);
+        }
+        UserEntity user = userOptional.get();
+        user.setEditorConfigure(configure);
+        this.userRepository.save(user);
+        return CommonResponse.success(user.getId());
     }
 }

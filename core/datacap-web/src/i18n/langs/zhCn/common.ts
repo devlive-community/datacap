@@ -158,5 +158,9 @@ export default {
   notSpecifiedFormat: '未指定格式',
   notSpecifiedIndex: '未指定索引',
   notUpdated: '未更新',
-  notSpecified: '未指定'
+  notSpecified: '未指定',
+  editor: '编辑器',
+  fontSize: '字体大小',
+  theme: '主题',
+  preview: '预览'
 }

@@ -3,6 +3,8 @@ package io.edurt.datacap.service.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.service.converter.UserEditorConverter;
+import io.edurt.datacap.service.entity.itransient.user.UserEditorEntity;
 import io.edurt.datacap.service.validation.ValidationGroup;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +15,7 @@ import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -77,6 +80,10 @@ public class UserEntity
 
     @Column(name = "is_system")
     private boolean system;
+
+    @Column(name = "editor_configure")
+    @Convert(converter = UserEditorConverter.class)
+    private UserEditorEntity editorConfigure;
 
     @Column(name = "create_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
     private Timestamp createTime;

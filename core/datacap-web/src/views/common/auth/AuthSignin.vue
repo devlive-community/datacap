@@ -44,6 +44,7 @@ import UserService from "@/services/UserService";
 import {createDefaultRouter, createRemoteRouter} from "@/router/default";
 import {useI18n} from "vue-i18n";
 import CaptchaService from '@/services/CaptchaService';
+import {HttpCommon} from "@/common/HttpCommon";
 
 export default defineComponent({
   setup()
@@ -110,18 +111,21 @@ export default defineComponent({
             .then(response => {
               if (response.status) {
                 localStorage.setItem(Common.token, JSON.stringify(response.data));
-                UserService.getMenus()
-                  .then(menuResponse => {
-                    if (menuResponse.status) {
-                      localStorage.setItem(Common.menu, JSON.stringify(menuResponse.data))
+                const client = new HttpCommon().getAxios();
+                client.all([UserService.getMenus(), UserService.getInfo()])
+                  .then(client.spread((fetchMenu, fetchInfo) => {
+                    if (fetchMenu.status && fetchInfo.status) {
+                      localStorage.setItem(Common.menu, JSON.stringify(fetchMenu.data))
                       createDefaultRouter(router)
-                      createRemoteRouter(menuResponse.data, router)
+                      createRemoteRouter(fetchMenu.data, router)
+                      localStorage.setItem(Common.userEditorConfigure, JSON.stringify(fetchInfo.data.editorConfigure))
                       router.push('/dashboard/index');
                     }
                     else {
-                      this.$Message.error(menuResponse.message)
+                      this.$Message.error(fetchMenu.message);
+                      this.$Message.error(fetchInfo.message);
                     }
-                  })
+                  }));
               }
               else {
                 this.$Message.error(response.message);

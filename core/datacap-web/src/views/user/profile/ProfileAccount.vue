@@ -27,6 +27,13 @@
                     {{ $t('setting.changeChatGpt') }}
                   </Button>
                 </FormItem>
+                <FormItem :label="$t('common.editor')">
+                  <Button type="text"
+                          style="float: right;"
+                          @click="handlerEditor(true)">
+                    {{ $t('setting.changeEditor') }}
+                  </Button>
+                </FormItem>
               </Form>
             </Content>
           </Layout>
@@ -58,6 +65,10 @@
                    :is-visible="changeChatGpt"
                    @close="handlerChatGPT(false)">
     </ChangeChatGpt>
+    <ChangeEditor v-if="changeEditor"
+                  :is-visible="changeEditor"
+                  @close="handlerEditor(false)">
+    </ChangeEditor>
   </div>
 </template>
 <script lang="ts">
@@ -68,9 +79,10 @@ import Common from "@/common/Common";
 import router from "@/router";
 import ChangeUsername from "@/views/user/profile/components/ChangeUsername.vue";
 import ChangeChatGpt from "@/views/user/profile/components/ChangeChatGpt.vue";
+import ChangeEditor from "@/views/user/profile/components/ChangeEditor.vue";
 
 export default defineComponent({
-  components: {ChangeChatGpt, ChangeUsername},
+  components: {ChangeEditor, ChangeChatGpt, ChangeUsername},
   setup()
   {
     const formState = reactive<UserPassword>({
@@ -88,6 +100,7 @@ export default defineComponent({
       changePasswordVisible: false,
       changeUsername: false,
       changeChatGpt: false,
+      changeEditor: false,
       loading: false
     }
   },
@@ -127,6 +140,10 @@ export default defineComponent({
     handlerChatGPT(opened: boolean)
     {
       this.changeChatGpt = opened
+    },
+    handlerEditor(opened: boolean)
+    {
+      this.changeEditor = opened
     }
   }
 });

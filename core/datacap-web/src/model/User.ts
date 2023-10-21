@@ -42,3 +42,9 @@ export class ThirdConfigure
   timeout = 30;
   contentCount = 5
 }
+
+export class EditorConfigure
+{
+  fontSize = 12;
+  theme = "chrome";
+}

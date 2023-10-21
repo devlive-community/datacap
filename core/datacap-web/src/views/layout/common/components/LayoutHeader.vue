@@ -98,10 +98,11 @@ export default defineComponent({
 
     const handlerLogout = () => {
       localStorage.removeItem(Common.token);
-      localStorage.removeItem(Common.menu)
-      createDefaultRouter(router)
-      createRemoteRouter([], router)
-      router.push('/auth/signin')
+      localStorage.removeItem(Common.menu);
+      localStorage.removeItem(Common.userEditorConfigure);
+      createDefaultRouter(router);
+      createRemoteRouter([], router);
+      router.push('/auth/signin');
     }
     const language = 'zh_cn';
     const version = config.version;
