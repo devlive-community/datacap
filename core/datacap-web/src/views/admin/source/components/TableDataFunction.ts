@@ -14,7 +14,10 @@ const createColumnDefs = (headers: any[], types: any[]): any[] => {
       headerName: header,
       field: header,
       headerTooltip: header + ' [' + types[index] + ']',
-      unSortIcon: true
+      unSortIcon: true,
+      cellRenderer: params => {
+        return '<div style="white-space: pre-wrap;">' + params.value + '</div>';
+      }
     };
     columnDefs.push(columnDef);
   })

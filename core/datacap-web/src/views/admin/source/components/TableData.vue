@@ -198,7 +198,6 @@ export default defineComponent({
       }));
       const configure: TableFilter = new TableFilter();
       configure.pagination = this.configure.pagination;
-      console.log(this.configure.pagination)
       configure.orders = orders;
 
       TableService.getData(this.id, configure)
