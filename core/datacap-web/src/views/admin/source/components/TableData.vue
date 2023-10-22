@@ -88,6 +88,7 @@
                  :columnDefs="configure.headers"
                  :rowData="configure.columns"
                  :tooltipShowDelay="100"
+                 :sortingOrder="['desc', 'asc', null]"
                  @grid-ready="handlerGridReady"
                  @sortChanged="handleSortChanged">
       </AgGridVue>
@@ -112,7 +113,6 @@ import TableService from "@/services/Table";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import {createColumnDefs, createDataEditorOptions} from "@/views/admin/source/components/TableDataFunction";
 import {useI18n} from "vue-i18n";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {Pagination} from "@/entity/Pagination";
 import {Pagination as PaginationEnum} from "@/enum/Pagination";
 import {InputNumber} from "view-ui-plus";
@@ -122,7 +122,7 @@ import {TableFilter} from "@/model/TableFilter";
 
 export default defineComponent({
   name: "TableData",
-  components: {MarkdownPreview, InputNumber, FontAwesomeIcon, CircularLoading, AgGridVue},
+  components: {MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
