@@ -183,12 +183,13 @@ export default defineComponent({
     handleSortChanged()
     {
       this.configure.columns = [];
+      this.gridOptions.overlayNoRowsTemplate = '<span></span>';
+      this.refererLoading = true;
       const columnState = this.gridColumnApi.getColumnState();
       const orders = columnState.map((column: { colId: any; sort: any; }) => ({
         column: column.colId,
         order: column.sort
       }));
-      this.refererLoading = true;
       const configure: TableFilter = new TableFilter();
       configure.pagination = this.configure.pagination;
       configure.orders = orders;
@@ -197,6 +198,9 @@ export default defineComponent({
         .then(response => {
           if (response.status && response.data) {
             this.configure.columns = response.data.columns;
+            if (this.configure.columns.length <= 0) {
+              this.gridOptions.overlayNoRowsTemplate = '<span>No Rows To Show</span>';
+            }
             this.configure.pagination = response.data.pagination;
             this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
           }
