@@ -5,15 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class TableFilter
+public class OrderFilter
 {
-    private int pageSize = 500;
-    private int currentPage = 1;
-    private List<OrderFilter> orders;
+    private String column;
+    private String order;
 }
