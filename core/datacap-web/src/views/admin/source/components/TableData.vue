@@ -231,7 +231,7 @@ export default defineComponent({
       else if (operator === PaginationEnum.LAST) {
         this.configure.pagination.currentPage = this.configure.pagination.totalPages;
       }
-      this.handlerInitialize();
+      this.handleSortChanged();
     },
     handlerVisibleContent(show: boolean)
     {
