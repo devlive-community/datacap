@@ -102,13 +102,13 @@ public class TableServiceImpl
                 .forEach(column -> columns.add(SqlColumn.builder()
                         .column(String.format("`%s`", column.getName()))
                         .build()));
-        int offset = configure.getPageSize() * (configure.getCurrentPage() - 1);
+        int offset = configure.getPagination().getPageSize() * (configure.getPagination().getCurrentPage() - 1);
         SqlBody body = SqlBody.builder()
                 .type(SqlType.SELECT)
                 .database(table.getDatabase().getName())
                 .table(table.getName())
                 .columns(columns)
-                .limit(configure.getPageSize())
+                .limit(configure.getPagination().getPageSize())
                 .offset(offset)
                 .build();
 
@@ -130,7 +130,7 @@ public class TableServiceImpl
         Response response = plugin.execute(sql);
         response.setContent(sql);
         plugin.destroy();
-        Pagination pagination = Pagination.newInstance(configure.getPageSize(), configure.getCurrentPage(), totalRows);
+        Pagination pagination = Pagination.newInstance(configure.getPagination().getPageSize(), configure.getPagination().getCurrentPage(), totalRows);
         response.setPagination(pagination);
         return CommonResponse.success(response);
     }

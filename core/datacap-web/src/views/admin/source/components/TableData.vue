@@ -160,8 +160,14 @@ export default defineComponent({
     handlerInitialize()
     {
       this.gridOptions = createDataEditorOptions(this.i18n);
+      if (!this.configure.pagination) {
+        const pagination = new Pagination();
+        pagination.currentPage = 1;
+        pagination.pageSize = 500;
+        this.configure.pagination = pagination;
+      }
       this.loading = true;
-      TableService.getData(this.id, this.configure.pagination)
+      TableService.getData(this.id, this.configure)
         .then(response => {
           if (response.status && response.data) {
             this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
@@ -192,6 +198,7 @@ export default defineComponent({
       }));
       const configure: TableFilter = new TableFilter();
       configure.pagination = this.configure.pagination;
+      console.log(this.configure.pagination)
       configure.orders = orders;
 
       TableService.getData(this.id, configure)

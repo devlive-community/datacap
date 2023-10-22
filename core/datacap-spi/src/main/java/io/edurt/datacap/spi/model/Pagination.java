@@ -1,5 +1,8 @@
 package io.edurt.datacap.spi.model;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class Pagination
 {
     private int pageSize;

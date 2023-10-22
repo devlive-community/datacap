@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.body;
 
+import io.edurt.datacap.spi.model.Pagination;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class TableFilter
 {
-    private int pageSize = 500;
-    private int currentPage = 1;
+    private Pagination pagination;
     private List<OrderFilter> orders;
 }
