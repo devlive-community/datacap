@@ -1,5 +1,8 @@
+import {OrderFilter} from "@/model/OrderFilter";
+import {Pagination} from "@/entity/Pagination";
+
 export class TableFilter
 {
-  limit: number;
-  offset: number;
+  pagination: Pagination;
+  orders: Array<OrderFilter>;
 }

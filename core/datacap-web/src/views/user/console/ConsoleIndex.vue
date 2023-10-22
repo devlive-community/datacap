@@ -118,10 +118,6 @@
                               @init="handlerEditorDidMount($event, 'mysql', editor.key)">
                   </VAceEditor>
                 </TabPane>
-                <!--                <MonacoEditor theme="vs" :options="{theme: 'vs-dark', fontSize: 15}" language="sql" :height="300"-->
-                <!--                              :key="activeKey.value" @change="handlerChangeEditorValue" :width="'100%'"-->
-                <!--                              v-model:value="activeEditorValue" @editorDidMount="handlerEditorDidMount($event, 'mysql')">-->
-                <!--                </MonacoEditor>-->
               </Tabs>
             </div>
           </Card>

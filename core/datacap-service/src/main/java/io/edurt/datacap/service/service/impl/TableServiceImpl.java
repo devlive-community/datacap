@@ -7,6 +7,7 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.sql.SqlBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
+import io.edurt.datacap.common.sql.configure.SqlOrder;
 import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.service.body.TableFilter;
 import io.edurt.datacap.service.common.PluginUtils;
@@ -20,6 +21,7 @@ import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Pagination;
 import io.edurt.datacap.spi.model.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -100,22 +102,35 @@ public class TableServiceImpl
                 .forEach(column -> columns.add(SqlColumn.builder()
                         .column(String.format("`%s`", column.getName()))
                         .build()));
-        int offset = configure.getPageSize() * (configure.getCurrentPage() - 1);
+        int offset = configure.getPagination().getPageSize() * (configure.getPagination().getCurrentPage() - 1);
         SqlBody body = SqlBody.builder()
                 .type(SqlType.SELECT)
                 .database(table.getDatabase().getName())
                 .table(table.getName())
                 .columns(columns)
-                .limit(configure.getPageSize())
+                .limit(configure.getPagination().getPageSize())
                 .offset(offset)
                 .build();
+
+        if (configure.getOrders() != null) {
+            List<SqlColumn> orderColumns = Lists.newArrayList();
+            configure.getOrders()
+                    .stream()
+                    .filter(item -> StringUtils.isNotEmpty(item.getOrder()))
+                    .forEach(item -> orderColumns.add(SqlColumn.builder()
+                            .column(item.getColumn())
+                            .order(SqlOrder.valueOf(item.getOrder().toUpperCase()))
+                            .build()));
+            body.setOrders(orderColumns);
+        }
+
         SqlBuilder builder = new SqlBuilder(body);
         String sql = builder.getSql();
         plugin.connect(entity.toConfigure());
         Response response = plugin.execute(sql);
         response.setContent(sql);
         plugin.destroy();
-        Pagination pagination = Pagination.newInstance(configure.getPageSize(), configure.getCurrentPage(), totalRows);
+        Pagination pagination = Pagination.newInstance(configure.getPagination().getPageSize(), configure.getPagination().getCurrentPage(), totalRows);
         response.setPagination(pagination);
         return CommonResponse.success(response);
     }

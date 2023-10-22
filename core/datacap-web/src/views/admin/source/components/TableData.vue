@@ -87,8 +87,14 @@
                  :gridOptions="gridOptions"
                  :columnDefs="configure.headers"
                  :rowData="configure.columns"
-                 :tooltipShowDelay="100">
+                 :tooltipShowDelay="100"
+                 :sortingOrder="['desc', 'asc', null]"
+                 @grid-ready="handlerGridReady"
+                 @sortChanged="handleSortChanged">
       </AgGridVue>
+      <CircularLoading v-if="refererLoading"
+                       :show="refererLoading">
+      </CircularLoading>
 
       <MarkdownPreview v-if="visibleContent.show"
                        :isVisible="visibleContent.show"
@@ -105,18 +111,18 @@ import "ag-grid-community/styles/ag-grid.css";
 import "@/components/table/ag-theme-datacap.css";
 import TableService from "@/services/Table";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
-import {createColumnDefs} from "@/views/admin/source/components/TableDataFunction";
+import {createColumnDefs, createDataEditorOptions} from "@/views/admin/source/components/TableDataFunction";
 import {useI18n} from "vue-i18n";
-import TableGridOptions from "@/components/table/TableGridOptions";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {Pagination} from "@/entity/Pagination";
 import {Pagination as PaginationEnum} from "@/enum/Pagination";
 import {InputNumber} from "view-ui-plus";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
+import {ColumnApi, GridApi} from "ag-grid-community";
+import {TableFilter} from "@/model/TableFilter";
 
 export default defineComponent({
   name: "TableData",
-  components: {MarkdownPreview, InputNumber, FontAwesomeIcon, CircularLoading, AgGridVue},
+  components: {MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
@@ -125,16 +131,19 @@ export default defineComponent({
   },
   created()
   {
-    const i18n = useI18n();
-    this.gridOptions = TableGridOptions.createDataEditorOptions(i18n);
+    this.i18n = useI18n();
     this.handlerInitialize();
     this.watchId();
   },
   data()
   {
     return {
+      i18n: null,
       loading: false,
+      refererLoading: false,
       gridOptions: null,
+      gridApi: null as GridApi,
+      gridColumnApi: null as ColumnApi,
       configure: {
         headers: [],
         columns: [],
@@ -150,8 +159,15 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
+      this.gridOptions = createDataEditorOptions(this.i18n);
+      if (!this.configure.pagination) {
+        const pagination = new Pagination();
+        pagination.currentPage = 1;
+        pagination.pageSize = 500;
+        this.configure.pagination = pagination;
+      }
       this.loading = true;
-      TableService.getData(this.id, this.configure.pagination)
+      TableService.getData(this.id, this.configure)
         .then(response => {
           if (response.status && response.data) {
             this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
@@ -164,6 +180,42 @@ export default defineComponent({
           }
         })
         .finally(() => this.loading = false)
+    },
+    handlerGridReady(params: { api: GridApi; columnApi: ColumnApi; })
+    {
+      this.gridApi = params.api;
+      this.gridColumnApi = params.columnApi;
+    },
+    handleSortChanged()
+    {
+      this.configure.columns = [];
+      this.gridOptions.overlayNoRowsTemplate = '<span></span>';
+      this.refererLoading = true;
+      const columnState = this.gridColumnApi.getColumnState();
+      const orders = columnState.map((column: { colId: any; sort: any; }) => ({
+        column: column.colId,
+        order: column.sort
+      }));
+      const configure: TableFilter = new TableFilter();
+      configure.pagination = this.configure.pagination;
+      console.log(this.configure.pagination)
+      configure.orders = orders;
+
+      TableService.getData(this.id, configure)
+        .then(response => {
+          if (response.status && response.data) {
+            this.configure.columns = response.data.columns;
+            if (this.configure.columns.length <= 0) {
+              this.gridOptions.overlayNoRowsTemplate = '<span>No Rows To Show</span>';
+            }
+            this.configure.pagination = response.data.pagination;
+            this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
+          }
+          else {
+            this.$Message.error(response.message);
+          }
+        })
+        .finally(() => this.refererLoading = false)
     },
     handlerApplyPagination(operator: PaginationEnum)
     {
@@ -179,7 +231,7 @@ export default defineComponent({
       else if (operator === PaginationEnum.LAST) {
         this.configure.pagination.currentPage = this.configure.pagination.totalPages;
       }
-      this.handlerInitialize();
+      this.handleSortChanged();
     },
     handlerVisibleContent(show: boolean)
     {
