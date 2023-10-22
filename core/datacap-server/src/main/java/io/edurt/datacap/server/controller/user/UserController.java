@@ -10,6 +10,7 @@ import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.RoleEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.entity.UserLogEntity;
+import io.edurt.datacap.service.entity.itransient.user.UserEditorEntity;
 import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 import io.edurt.datacap.service.repository.RoleRepository;
@@ -107,5 +108,11 @@ public class UserController
                 });
         user.setRoles(roles);
         return this.userService.saveOrUpdate(user);
+    }
+
+    @PutMapping(value = "changeEditorConfigure")
+    public CommonResponse<Long> changeEditorConfigure(@Validated @RequestBody UserEditorEntity configure)
+    {
+        return this.userService.changeEditorConfigure(configure);
     }
 }

@@ -158,5 +158,9 @@ export default {
   notSpecifiedFormat: 'Not Specified Format',
   notSpecifiedIndex: 'Not Specified Index',
   notUpdated: 'Not Update',
-  notSpecified: 'Not Specified'
+  notSpecified: 'Not Specified',
+  editor: 'Editor',
+  fontSize: 'Font Size',
+  theme: 'Theme',
+  preview: 'Preview',
 }

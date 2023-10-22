@@ -111,10 +111,10 @@
                          :label="editor.title"
                          :closable="editor.closable">
                   <VAceEditor lang="mysql"
-                              theme="chrome"
-                              style="height: 300px"
+                              :theme="editor.configure.theme"
+                              :style="{ height: '300px', fontSize: editor.configure.fontSize + 'px' }"
                               :key="editor.key"
-                              :options="{enableSnippets: true, enableLiveAutocompletion: true}"
+                              :options="{ enableSnippets: true, enableLiveAutocompletion: true }"
                               @init="handlerEditorDidMount($event, 'mysql', editor.key)">
                   </VAceEditor>
                 </TabPane>
@@ -173,6 +173,9 @@ import 'ace-builds/src-noconflict/theme-chrome';
 import langTools from 'ace-builds/src-noconflict/ext-language_tools';
 import {HttpCommon} from "@/common/HttpCommon";
 import FunctionsService from "@/services/settings/functions/FunctionsService";
+import Common from "@/common/Common";
+import {EditorConfigure} from "@/model/User";
+import '@/ace-editor-theme';
 import Editor = Ace.Editor;
 
 interface EditorInstance
@@ -180,7 +183,8 @@ interface EditorInstance
   title: string;
   key: string;
   closable?: boolean,
-  instance?: Editor
+  instance?: Editor,
+  configure?: EditorConfigure
 }
 
 export default defineComponent({
@@ -213,6 +217,7 @@ export default defineComponent({
       response: {} as ResponseModel,
       snippetDetails: false,
       editorMaps: new Map<string, EditorInstance>(),
+      editorConfigure: null,
       activeKey: null,
       content: null,
       visibleAiHelp: false,
@@ -230,10 +235,13 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
+      const localEditorConfigure = localStorage.getItem(Common.userEditorConfigure);
+      this.editorConfigure = localEditorConfigure ? JSON.parse(localEditorConfigure) : new EditorConfigure();
       this.buttonRunText = this.i18n.t('common.run');
       const defaultEditor: EditorInstance = {
         title: 'New Query',
-        key: Date.now().toString()
+        key: Date.now().toString(),
+        configure: this.editorConfigure
       };
       this.activeKey = defaultEditor.key;
       this.editorMaps.set(defaultEditor.key, defaultEditor);
@@ -432,7 +440,8 @@ export default defineComponent({
       const newEditor: EditorInstance = {
         title: 'New Query',
         key: Date.now().toString(),
-        closable: true
+        closable: true,
+        configure: this.editorConfigure
       };
       this.activeKey = newEditor.key;
       this.editorMaps.set(newEditor.key, newEditor);

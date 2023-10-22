@@ -10,5 +10,6 @@ export default {
   newUsername: '新用户名',
   log: '登录日志',
   changeChatGpt: '修改 ChatGPT',
-  contentCount: '上下文关联数'
+  contentCount: '上下文关联数',
+  changeEditor: '修改编辑器',
 }

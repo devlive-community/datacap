@@ -11,4 +11,5 @@ export default {
   log: 'Login Log',
   changeChatGpt: 'Change the chatgpt',
   contentCount: 'Content Count',
+  changeEditor: 'Change the editor',
 }
