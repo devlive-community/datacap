@@ -43,6 +43,11 @@ class TableService
     }
     return new HttpCommon().post(`${baseUrl}/${id}`, configure);
   }
+
+  putData(id: number, configure: TableFilter): Promise<ResponseModel>
+  {
+    return new HttpCommon().put(`${baseUrl}/${id}`, configure);
+  }
 }
 
 export default new TableService();

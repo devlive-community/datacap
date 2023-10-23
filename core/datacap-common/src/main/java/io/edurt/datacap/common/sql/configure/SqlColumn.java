@@ -14,5 +14,7 @@ import lombok.ToString;
 public class SqlColumn
 {
     private String column;
+    private String value;
+    private SqlOperator operator;
     private SqlOrder order;
 }

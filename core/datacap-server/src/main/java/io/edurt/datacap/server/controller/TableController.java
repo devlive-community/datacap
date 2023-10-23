@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,9 +35,9 @@ public class TableController
         return this.service.getAllByDatabase(id);
     }
 
-    @PostMapping(value = "{id}")
+    @RequestMapping(value = "{id}", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public CommonResponse<Object> fetchDataById(@PathVariable Long id, @RequestBody TableFilter configure)
     {
-        return this.service.getDataById(id, configure);
+        return this.service.fetchDataById(id, configure);
     }
 }

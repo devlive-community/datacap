@@ -90,7 +90,8 @@
                  :tooltipShowDelay="100"
                  :sortingOrder="['desc', 'asc', null]"
                  @grid-ready="handlerGridReady"
-                 @sortChanged="handleSortChanged">
+                 @sortChanged="handlerSortChanged"
+                 @cellValueChanged="handlerCellValueChanged">
       </AgGridVue>
       <CircularLoading v-if="refererLoading"
                        :show="refererLoading">
@@ -186,7 +187,7 @@ export default defineComponent({
       this.gridApi = params.api;
       this.gridColumnApi = params.columnApi;
     },
-    handleSortChanged()
+    handlerSortChanged()
     {
       this.configure.columns = [];
       this.gridOptions.overlayNoRowsTemplate = '<span></span>';
@@ -216,6 +217,28 @@ export default defineComponent({
         })
         .finally(() => this.refererLoading = false)
     },
+    handlerCellValueChanged(event)
+    {
+      const columns = [];
+      columns.push({
+        column: event.colDef.field,
+        value: event.newValue
+      });
+      const configure = {
+        columns: columns,
+        original: event.data,
+        type: 'UPDATE'
+      }
+      TableService.putData(this.id, configure)
+        .then(response => {
+          if (response.status && response.data) {
+            this.$Message.success(`${this.i18n.t('common.success')}`);
+          }
+          else {
+            this.$Message.error(response.message);
+          }
+        })
+    },
     handlerApplyPagination(operator: PaginationEnum)
     {
       if (operator === PaginationEnum.PREVIOUS) {
@@ -230,7 +253,7 @@ export default defineComponent({
       else if (operator === PaginationEnum.LAST) {
         this.configure.pagination.currentPage = this.configure.pagination.totalPages;
       }
-      this.handleSortChanged();
+      this.handlerSortChanged();
     },
     handlerVisibleContent(show: boolean)
     {

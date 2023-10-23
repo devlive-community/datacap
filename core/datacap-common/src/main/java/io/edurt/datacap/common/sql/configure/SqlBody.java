@@ -21,6 +21,6 @@ public class SqlBody
     private List<SqlColumn> orders;
     private Integer limit;
     private Integer offset;
-    private String where;
+    private List<SqlColumn> where;
     private SqlType type;
 }

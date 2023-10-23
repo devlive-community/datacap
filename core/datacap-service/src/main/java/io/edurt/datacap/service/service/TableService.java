@@ -24,5 +24,5 @@ public interface TableService
      * @param configure the table filter to apply to the data retrieval
      * @return a common response object containing the retrieved data
      */
-    CommonResponse<Object> getDataById(Long id, TableFilter configure);
+    CommonResponse<Object> fetchDataById(Long id, TableFilter configure);
 }
