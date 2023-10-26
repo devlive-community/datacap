@@ -20,6 +20,8 @@ public class TableFilter
     private Pagination pagination;
     private List<OrderFilter> orders;
     private SqlType type = SqlType.SELECT;
+    // If it is in preview mode, only the executed SQL is returned, and the specific content is executed
+    private boolean preview = false;
     // If it is UPDATE | INSERT uses the following configuration
     private List<SqlColumn> columns;
     private Properties original;

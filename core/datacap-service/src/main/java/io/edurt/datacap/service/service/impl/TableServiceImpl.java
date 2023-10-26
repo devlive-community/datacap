@@ -186,9 +186,22 @@ public class TableServiceImpl
                     .where(wheres)
                     .build();
             String sql = new SqlBuilder(body).getSql();
-            Response response = plugin.execute(sql);
-            plugin.destroy();
-            response.setContent(sql);
+            Response response;
+            if (configure.isPreview()) {
+                response = Response.builder()
+                        .isSuccessful(true)
+                        .isConnected(true)
+                        .headers(Lists.newArrayList())
+                        .columns(Lists.newArrayList())
+                        .types(Lists.newArrayList())
+                        .content(sql)
+                        .build();
+            }
+            else {
+                response = plugin.execute(sql);
+                plugin.destroy();
+                response.setContent(sql);
+            }
             return CommonResponse.success(response);
         }
         catch (Exception ex) {

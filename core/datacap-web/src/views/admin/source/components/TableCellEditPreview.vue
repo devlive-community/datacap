@@ -1,0 +1,104 @@
+<template>
+  <div style="min-height: 300px;">
+    <Modal v-model="visible"
+           width="70%"
+           :title="$t('source.manager.previewDML')"
+           :closable="false"
+           :mask-closable="false"
+           @cancel="handlerCancel()">
+      <CircularLoading v-if="loading"
+                       style="padding: 20px 0px;"
+                       :show="loading">
+      </CircularLoading>
+      <VAceEditor v-else
+                  lang="mysql"
+                  :theme="configure.theme"
+                  :style="{height: '200px', fontSize: configure.fontSize + 'px'}"
+                  :value="contentDML"
+                  :options="{readOnly: true}">
+      </VAceEditor>
+    </Modal>
+  </div>
+</template>
+<script lang="ts">
+import {defineComponent} from "vue";
+import {VAceEditor} from "vue3-ace-editor";
+import TableService from "@/services/Table";
+import {EditorConfigure} from "@/model/User";
+import '@/ace-editor-theme';
+import Common from "@/common/Common";
+import {SqlColumn, SqlType, TableFilter} from "@/model/TableFilter";
+import CircularLoading from "@/components/loading/CircularLoading.vue";
+
+export default defineComponent({
+  name: "TableCellEditPreview",
+  components: {CircularLoading, VAceEditor},
+  props: {
+    isVisible: {
+      type: Boolean
+    },
+    tableId: {
+      type: Number
+    },
+    event: {
+      type: Object
+    }
+  },
+  created()
+  {
+    this.configure = Common.getEditorConfigure;
+    this.handlerInitialize();
+  },
+  data()
+  {
+    return {
+      loading: false,
+      configure: {} as EditorConfigure,
+      contentDML: null,
+      contentConfigure: {} as TableFilter
+    }
+  },
+  methods: {
+    handlerInitialize()
+    {
+      this.loading = true;
+      const columns = Array<SqlColumn>();
+      const column: SqlColumn = {
+        column: this.event.colDef.field,
+        value: this.event.newValue
+      };
+      columns.push(column);
+      this.contentConfigure.columns = columns;
+      this.contentConfigure.type = SqlType.UPDATE;
+      this.contentConfigure.original = this.event.data;
+      this.contentConfigure.preview = true;
+      TableService.putData(this.tableId, this.contentConfigure)
+        .then(response => {
+          if (response.status && response.data) {
+            this.contentDML = response.data.content;
+          }
+          else {
+            this.$Message.error(response.message);
+          }
+        })
+        .finally(() => this.loading = false);
+    },
+    handlerCancel()
+    {
+      this.visible = false;
+    }
+  },
+  computed: {
+    visible: {
+      get(): boolean
+      {
+        return this.isVisible;
+      },
+      set(value: boolean)
+      {
+        this.$emit('close', value);
+      }
+    }
+  }
+});
+</script>

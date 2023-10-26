@@ -75,11 +75,24 @@
           <Text strong>{{ configure.pagination.totalRecords }}</Text>
           {{ $t('common.row') }}
         </Space>
+        <Space style="margin-left: 30px;">
+          <Tooltip :content="$t('source.manager.previewPendingChanges')"
+                   transfer>
+            <Button size="small"
+                    :disabled="!dataCellChanged.changed"
+                    @click="handlerCellChangedPreview(true)">
+              <FontAwesomeIcon icon="upload"/>
+            </Button>
+          </Tooltip>
+        </Space>
         <div style="float: right;">
-          <Button size="small"
-                  @click="handlerVisibleContent(true)">
-            <FontAwesomeIcon icon="eye"/>
-          </Button>
+          <Tooltip :content="$t('common.preview')"
+                   transfer>
+            <Button size="small"
+                    @click="handlerVisibleContent(true)">
+              <FontAwesomeIcon icon="eye"/>
+            </Button>
+          </Tooltip>
         </div>
       </div>
       <AgGridVue class="ag-theme-datacap"
@@ -102,6 +115,13 @@
                        :content="visibleContent.content"
                        @close="handlerVisibleContent(false)">
       </MarkdownPreview>
+      <!-- Preview components after data editing -->
+      <TableCellEditPreview v-if="dataCellChanged.pending"
+                            :isVisible="dataCellChanged.pending"
+                            :event="dataCellChanged.event"
+                            :tableId="id"
+                            @close="handlerCellChangedPreview(false)">
+      </TableCellEditPreview>
     </div>
   </div>
 </template>
@@ -120,10 +140,11 @@ import {InputNumber} from "view-ui-plus";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import {ColumnApi, GridApi} from "ag-grid-community";
 import {TableFilter} from "@/model/TableFilter";
+import TableCellEditPreview from "@/views/admin/source/components/TableCellEditPreview.vue";
 
 export default defineComponent({
   name: "TableData",
-  components: {MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
+  components: {TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
@@ -155,6 +176,11 @@ export default defineComponent({
         show: false,
         content: null
       },
+      dataCellChanged: {
+        changed: false,
+        pending: false,
+        event: null
+      }
     }
   },
   methods: {
@@ -219,25 +245,12 @@ export default defineComponent({
     },
     handlerCellValueChanged(event)
     {
-      const columns = [];
-      columns.push({
-        column: event.colDef.field,
-        value: event.newValue
-      });
-      const configure = {
-        columns: columns,
-        original: event.data,
-        type: 'UPDATE'
-      }
-      TableService.putData(this.id, configure)
-        .then(response => {
-          if (response.status && response.data) {
-            this.$Message.success(`${this.i18n.t('common.success')}`);
-          }
-          else {
-            this.$Message.error(response.message);
-          }
-        })
+      this.dataCellChanged.changed = true;
+      this.dataCellChanged.event = event;
+    },
+    handlerCellChangedPreview(isOpen: boolean)
+    {
+      this.dataCellChanged.pending = isOpen;
     },
     handlerApplyPagination(operator: PaginationEnum)
     {

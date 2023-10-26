@@ -44,6 +44,13 @@ class TableService
     return new HttpCommon().post(`${baseUrl}/${id}`, configure);
   }
 
+  /**
+   * A description of the entire function.
+   *
+   * @param {number} id - The identifier of the data.
+   * @param {any} configure - The configuration object.
+   * @return {Promise<ResponseModel>} A promise that resolves to the response model.
+   */
   putData(id: number, configure: TableFilter): Promise<ResponseModel>
   {
     return new HttpCommon().put(`${baseUrl}/${id}`, configure);

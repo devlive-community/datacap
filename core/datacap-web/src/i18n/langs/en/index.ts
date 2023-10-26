@@ -12,6 +12,7 @@ import ai from "@/i18n/langs/en/ai";
 import copy from "@/i18n/langs/en/copy";
 import calendarHeatmap from "@/i18n/langs/en/calendarHeatmap";
 import pipeline from "@/i18n/langs/en/pipeline";
+import manager from "@/i18n/langs/en/source/manager";
 
 export default {
   ...en,
@@ -27,5 +28,8 @@ export default {
   ai: ai,
   copy: copy,
   calendarHeatmap: calendarHeatmap,
-  pipeline: pipeline
+  pipeline: pipeline,
+  source: {
+    manager: manager
+  }
 }

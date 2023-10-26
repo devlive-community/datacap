@@ -26,7 +26,8 @@ import {
   faSun,
   faTable,
   faTextHeight,
-  faTimes
+  faTimes,
+  faUpload
 } from '@fortawesome/free-solid-svg-icons'
 
 /**
@@ -36,6 +37,7 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faUpload,
     faEye,
     faArrowUp19,
     faArrowDown91,
