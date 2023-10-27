@@ -75,6 +75,9 @@ public class TableServiceImpl
         else if (configure.getType().equals(SqlType.UPDATE)) {
             return this.fetchUpdate(plugin, table, source, configure);
         }
+        else if (configure.getType().equals(SqlType.DELETE)) {
+            return this.fetchDelete(plugin, table, source, configure);
+        }
         return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
     }
 
@@ -160,6 +163,15 @@ public class TableServiceImpl
         }
     }
 
+    /**
+     * Fetches and updates data from a table using the specified plugin, table, source, and configure.
+     *
+     * @param plugin the plugin to be used for fetching and updating data
+     * @param table the table from which the data will be fetched and updated
+     * @param source the source entity containing the data source configuration
+     * @param configure the table filter configuration for fetching and updating the data
+     * @return the response containing the fetched and updated data
+     */
     private CommonResponse<Object> fetchUpdate(Plugin plugin, TableEntity table, SourceEntity source, TableFilter configure)
     {
         try {
@@ -183,6 +195,71 @@ public class TableServiceImpl
                     .database(table.getDatabase().getName())
                     .table(table.getName())
                     .columns(configure.getColumns())
+                    .where(wheres)
+                    .build();
+            String sql = new SqlBuilder(body).getSql();
+            Response response;
+            if (configure.isPreview()) {
+                response = Response.builder()
+                        .isSuccessful(true)
+                        .isConnected(true)
+                        .headers(Lists.newArrayList())
+                        .columns(Lists.newArrayList())
+                        .types(Lists.newArrayList())
+                        .content(sql)
+                        .build();
+            }
+            else {
+                response = plugin.execute(sql);
+                plugin.destroy();
+                response.setContent(sql);
+            }
+            return CommonResponse.success(response);
+        }
+        catch (Exception ex) {
+            return CommonResponse.failure(ExceptionUtils.getMessage(ex));
+        }
+    }
+
+    /**
+     * Fetches and deletes data from the database.
+     *
+     * @param plugin the plugin to use for connecting to the database
+     * @param table the table from which to delete the data
+     * @param source the source entity to use for configuring the connection
+     * @param configure the table filter to use for filtering the data to be deleted
+     * @return the response containing the result of the delete operation
+     */
+    private CommonResponse<Object> fetchDelete(Plugin plugin, TableEntity table, SourceEntity source, TableFilter configure)
+    {
+        try {
+            Configure updateConfigure = source.toConfigure();
+            updateConfigure.setFormat(FormatType.NONE);
+            plugin.connect(updateConfigure);
+
+            // If the table contains a primary key, update the data using the primary key as a condition
+            List<SqlColumn> wheres = Lists.newArrayList();
+            table.getColumns()
+                    .stream()
+                    .filter(item -> item.getIsKey().equals("PRI"))
+                    .forEach(item -> {
+                        Optional<SqlColumn> columnOptional = configure.getColumns()
+                                .stream()
+                                .filter(c -> c.getOriginal().containsKey(item.getName()))
+                                .findAny();
+                        if (columnOptional.isPresent()) {
+                            wheres.add(SqlColumn.builder()
+                                    .column(item.getName())
+                                    .operator(SqlOperator.EQ)
+                                    .value(String.valueOf(columnOptional.get().getOriginal().get(item.getName())))
+                                    .build());
+                        }
+                    });
+
+            SqlBody body = SqlBody.builder()
+                    .type(SqlType.DELETE)
+                    .database(table.getDatabase().getName())
+                    .table(table.getName())
                     .where(wheres)
                     .build();
             String sql = new SqlBuilder(body).getSql();

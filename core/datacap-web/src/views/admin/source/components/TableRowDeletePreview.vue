@@ -22,7 +22,7 @@
                 @click="handlerCancel">
           {{ $t('common.cancel') }}
         </Button>
-        <Button type="primary"
+        <Button type="danger"
                 :loading="loadingChange"
                 @click="handlerSave()">
           {{ $t('common.submit') }}
@@ -43,7 +43,7 @@ import CircularLoading from "@/components/loading/CircularLoading.vue";
 import {useI18n} from "vue-i18n";
 
 export default defineComponent({
-  name: "TableCellEditPreview",
+  name: "TableRowDeletePreview",
   components: {CircularLoading, VAceEditor},
   props: {
     isVisible: {
@@ -52,8 +52,8 @@ export default defineComponent({
     tableId: {
       type: Number
     },
-    event: {
-      type: Object
+    columns: {
+      type: Array
     }
   },
   setup()
@@ -82,15 +82,10 @@ export default defineComponent({
     handlerInitialize()
     {
       this.loading = true;
-      const columns = Array<SqlColumn>();
-      const column: SqlColumn = {
-        column: this.event.colDef.field,
-        value: this.event.newValue
-      };
-      columns.push(column);
-      this.contentConfigure.columns = columns;
-      this.contentConfigure.type = SqlType.UPDATE;
-      this.contentConfigure.original = this.event.data;
+      const originalColumns = Array<SqlColumn>();
+      this.columns.forEach(item => originalColumns.push({original: item}))
+      this.contentConfigure.columns = originalColumns;
+      this.contentConfigure.type = SqlType.DELETE;
       this.contentConfigure.preview = true;
       TableService.putData(this.tableId, this.contentConfigure)
         .then(response => {
