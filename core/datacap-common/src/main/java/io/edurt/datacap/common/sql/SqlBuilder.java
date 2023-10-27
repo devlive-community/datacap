@@ -3,6 +3,7 @@ package io.edurt.datacap.common.sql;
 import com.google.common.base.Preconditions;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.sql.builder.SelectBuilder;
+import io.edurt.datacap.common.sql.builder.UpdateBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
 import org.apache.commons.lang3.ArrayUtils;
@@ -29,6 +30,9 @@ public class SqlBuilder
         switch (configure.getType()) {
             case SELECT:
                 sql = getSelect();
+                break;
+            case UPDATE:
+                sql = getUpdate();
                 break;
             default:
                 Preconditions.checkArgument(false, "Not support type");
@@ -66,10 +70,6 @@ public class SqlBuilder
         SelectBuilder.SELECT(applySelectColumns());
         SelectBuilder.FROM(applyDatabaseAndTable());
 
-        if (StringUtils.isNotEmpty(configure.getWhere())) {
-            SelectBuilder.WHERE(configure.getWhere());
-        }
-
         if (ObjectUtils.isNotEmpty(configure.getOrders())) {
             SelectBuilder.ORDER_BY(applyOrderByColumns());
         }
@@ -82,5 +82,46 @@ public class SqlBuilder
             SelectBuilder.OFFSET(configure.getOffset());
         }
         return SelectBuilder.SQL();
+    }
+
+    /**
+     * Generates a list of update columns based on the configured columns.
+     *
+     * @return A list of update columns in the format "`column` = 'value'".
+     */
+    private List<String> applyUpdateColumns()
+    {
+        Preconditions.checkArgument(ArrayUtils.isNotEmpty(configure.getColumns().toArray(new SqlColumn[0])), "The columns must be specified");
+        return configure.getColumns()
+                .stream()
+                .map(column -> String.format("`%s` = '%s'", column.getColumn(), column.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    public List<String> applyUpdateWhere()
+    {
+        return configure.getWhere()
+                .stream()
+                .map(column -> String.format("`%s` %s '%s'", column.getColumn(), column.getOperator().getSymbol(), column.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieves the update SQL statement based on the specified database and table,
+     * update columns, and optional WHERE clause.
+     *
+     * @return The update SQL statement.
+     */
+    private String getUpdate()
+    {
+        UpdateBuilder.BEGIN();
+        UpdateBuilder.UPDATE(applyDatabaseAndTable());
+
+        UpdateBuilder.SET(applyUpdateColumns());
+
+        if (configure.getWhere() != null) {
+            UpdateBuilder.WHERE(applyUpdateWhere());
+        }
+        return UpdateBuilder.SQL();
     }
 }

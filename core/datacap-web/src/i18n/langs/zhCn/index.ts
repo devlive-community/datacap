@@ -12,6 +12,7 @@ import ai from "@/i18n/langs/zhCn/ai";
 import copy from "@/i18n/langs/zhCn/copy";
 import calendarHeatmap from "@/i18n/langs/zhCn/calendarHeatmap";
 import pipeline from "@/i18n/langs/zhCn/pipeline";
+import manager from "@/i18n/langs/zhCn/source/manager";
 
 export default {
   ...zh,
@@ -27,5 +28,8 @@ export default {
   ai: ai,
   copy: copy,
   calendarHeatmap: calendarHeatmap,
-  pipeline: pipeline
+  pipeline: pipeline,
+  source: {
+    manager: manager
+  }
 }

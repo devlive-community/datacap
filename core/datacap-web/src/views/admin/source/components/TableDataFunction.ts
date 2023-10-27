@@ -14,7 +14,13 @@ const createColumnDefs = (headers: any[], types: any[]): any[] => {
       headerName: header,
       field: header,
       headerTooltip: header + ' [' + types[index] + ']',
-      unSortIcon: true
+      unSortIcon: true,
+      cellRenderer: params => {
+        return '<div style="white-space: pre-wrap;">' + params.value + '</div>';
+      },
+      cellEditorPopup: true,
+      cellEditor: 'agLargeTextCellEditor',
+      cellEditorParams: {maxLength: 9999999999999, rows: 10}
     };
     columnDefs.push(columnDef);
   })
@@ -39,6 +45,7 @@ const createDataEditorOptions = (i18n: any): object => {
       sortable: true,
       resizable: true,
       wrapText: true,
+      editable: true,
       // Prevents the front-end from reordering data
       comparator: (valueA, valueB, nodeA, nodeB, isDescending) => 0
     }
