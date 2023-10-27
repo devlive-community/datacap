@@ -17,6 +17,17 @@
                   :value="contentDML"
                   :options="{readOnly: true}">
       </VAceEditor>
+      <template #footer>
+        <Button danger
+                @click="handlerCancel">
+          {{ $t('common.cancel') }}
+        </Button>
+        <Button type="primary"
+                :loading="loadingChange"
+                @click="handlerSave()">
+          {{ $t('common.save') }}
+        </Button>
+      </template>
     </Modal>
   </div>
 </template>
@@ -29,6 +40,7 @@ import '@/ace-editor-theme';
 import Common from "@/common/Common";
 import {SqlColumn, SqlType, TableFilter} from "@/model/TableFilter";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
+import {useI18n} from "vue-i18n";
 
 export default defineComponent({
   name: "TableCellEditPreview",
@@ -44,6 +56,13 @@ export default defineComponent({
       type: Object
     }
   },
+  setup()
+  {
+    const i18n = useI18n();
+    return {
+      i18n
+    }
+  },
   created()
   {
     this.configure = Common.getEditorConfigure;
@@ -53,6 +72,7 @@ export default defineComponent({
   {
     return {
       loading: false,
+      loadingChange: false,
       configure: {} as EditorConfigure,
       contentDML: null,
       contentConfigure: {} as TableFilter
@@ -82,6 +102,22 @@ export default defineComponent({
           }
         })
         .finally(() => this.loading = false);
+    },
+    handlerSave()
+    {
+      this.loadingChange = false;
+      this.contentConfigure.preview = false;
+      TableService.putData(this.tableId, this.contentConfigure)
+        .then(response => {
+          if (response.status && response.data) {
+            this.$Message.success(this.i18n.t('source.manager.updateSuccess'));
+            this.handlerCancel();
+          }
+          else {
+            this.$Message.error(response.message);
+          }
+        })
+        .finally(() => this.loadingChange = false);
     },
     handlerCancel()
     {
