@@ -11,10 +11,10 @@ import io.edurt.datacap.spi.model.Time;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,11 +47,11 @@ public class JdbcAdapter
         Connection connection = (Connection) this.jdbcConnection.getConnection();
         JdbcConfigure configure = (JdbcConfigure) this.jdbcConnection.getConfigure();
         if (response.getIsConnected()) {
-            try (PreparedStatement statement = connection.prepareStatement(content)) {
+            try (Statement statement = connection.createStatement()) {
                 List<String> headers = new ArrayList<>();
                 List<String> types = new ArrayList<>();
                 List<Object> columns = new ArrayList<>();
-                try (ResultSet resultSet = statement.executeQuery()) {
+                try (ResultSet resultSet = statement.executeQuery(content)) {
                     boolean isPresent = true;
                     JdbcColumn jdbcColumn = new JdbcColumn(resultSet);
                     while (resultSet.next()) {
@@ -75,10 +75,27 @@ public class JdbcAdapter
                             headers.add("result");
                             types.add(Integer.class.getSimpleName());
                             List<Object> _columns = new ArrayList<>();
-                            _columns.add(statement.executeUpdate());
+                            connection.setAutoCommit(false);
+                            String[] parts = content.replaceAll("[\\r\\n|\\r|\\n]+", " ")
+                                    .split("(?<=\\);)|(?<=\\r\\n)|(?<=\\r)|(?<=\\n)|(?<=\\n;)|(?<=\\r;)|(?<=\\r\\n;)|(?<=;)");
+                            int count = 0;
+                            for (String part : parts) {
+                                if (!part.trim().isEmpty()) {
+                                    count += statement.executeUpdate(part);
+                                }
+                            }
+                            _columns.add(count);
+                            connection.commit();
                             columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
                         }
                         catch (SQLException updateEx) {
+                            try {
+                                connection.rollback();
+                            }
+                            catch (SQLException rollbackEx) {
+                                log.error("Rollback failed ", rollbackEx);
+                                throw new SQLException(rollbackEx);
+                            }
                             throw new SQLException(updateEx);
                         }
                     }
