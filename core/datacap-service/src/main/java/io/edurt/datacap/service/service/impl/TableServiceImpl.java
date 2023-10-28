@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TableServiceImpl
@@ -184,18 +185,22 @@ public class TableServiceImpl
             table.getColumns()
                     .stream()
                     .filter(item -> item.getIsKey().equals("PRI"))
-                    .forEach(item -> wheres.add(SqlColumn.builder()
-                            .column(item.getName())
-                            .operator(SqlOperator.EQ)
-                            .value(String.valueOf(configure.getOriginal().get(item.getName())))
-                            .build()));
+                    .forEach(item -> configure.getColumns()
+                            .stream()
+                            .forEach(v -> wheres.add(SqlColumn.builder()
+                                    .column(item.getName())
+                                    .operator(SqlOperator.EQ)
+                                    .value(String.valueOf(v.getOriginal().get(item.getName())))
+                                    .build())));
 
             SqlBody body = SqlBody.builder()
                     .type(SqlType.UPDATE)
                     .database(table.getDatabase().getName())
                     .table(table.getName())
                     .columns(configure.getColumns())
-                    .where(wheres)
+                    .where(wheres.stream()
+                            .distinct()
+                            .collect(Collectors.toList()))
                     .build();
             String sql = new SqlBuilder(body).getSql();
             Response response;

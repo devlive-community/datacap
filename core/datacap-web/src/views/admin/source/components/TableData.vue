@@ -89,7 +89,7 @@
                    transfer>
             <Button size="small"
                     shape="circle"
-                    :disabled="!dataCellChanged.changed"
+                    :disabled="!dataCellChanged.changed && dataCellChanged.columns.length === 0"
                     @click="handlerCellChangedPreview(true)">
               <FontAwesomeIcon icon="upload"/>
             </Button>
@@ -130,7 +130,7 @@
       <!-- Preview components after data editing -->
       <TableCellEditPreview v-if="dataCellChanged.pending"
                             :isVisible="dataCellChanged.pending"
-                            :event="dataCellChanged.event"
+                            :columns="dataCellChanged.columns"
                             :tableId="id"
                             @close="handlerCellChangedPreview(false)">
       </TableCellEditPreview>
@@ -158,9 +158,10 @@ import {Pagination as PaginationEnum} from "@/enum/Pagination";
 import {InputNumber} from "view-ui-plus";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import {ColumnApi, GridApi} from "ag-grid-community";
-import {TableFilter} from "@/model/TableFilter";
+import {SqlColumn, TableFilter} from "@/model/TableFilter";
 import TableCellEditPreview from "@/views/admin/source/components/TableCellEditPreview.vue";
 import TableRowDeletePreview from "@/views/admin/source/components/TableRowDeletePreview.vue";
+import {cloneDeep} from "lodash";
 
 export default defineComponent({
   name: "TableData",
@@ -199,7 +200,7 @@ export default defineComponent({
       dataCellChanged: {
         changed: false,
         pending: false,
-        event: null
+        columns: []
       },
       dataSelectedChanged: {
         changed: false,
@@ -268,14 +269,26 @@ export default defineComponent({
         })
         .finally(() => this.refererLoading = false)
     },
-    handlerCellValueChanged(event)
+    handlerCellValueChanged(event: { data: any; colDef: { field: string; }; oldValue: any; newValue: any; })
     {
+      const oldColumn = event.data;
+      const originalColumn = cloneDeep(oldColumn);
+      originalColumn[event.colDef.field] = event.oldValue;
       this.dataCellChanged.changed = true;
-      this.dataCellChanged.event = event;
+      const column: SqlColumn = {
+        column: event.colDef.field,
+        value: event.newValue,
+        original: originalColumn
+      }
+      this.dataCellChanged.columns.push(column);
     },
     handlerCellChangedPreview(isOpen: boolean)
     {
       this.dataCellChanged.pending = isOpen;
+      if (!isOpen) {
+        this.dataCellChanged.changed = false;
+        this.dataCellChanged.columns = [];
+      }
     },
     handlerSelectionChanged()
     {

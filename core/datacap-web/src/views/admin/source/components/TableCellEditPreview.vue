@@ -38,7 +38,7 @@ import TableService from "@/services/Table";
 import {EditorConfigure} from "@/model/User";
 import '@/ace-editor-theme';
 import Common from "@/common/Common";
-import {SqlColumn, SqlType, TableFilter} from "@/model/TableFilter";
+import {SqlType, TableFilter} from "@/model/TableFilter";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import {useI18n} from "vue-i18n";
 
@@ -52,8 +52,8 @@ export default defineComponent({
     tableId: {
       type: Number
     },
-    event: {
-      type: Object
+    columns: {
+      type: Array
     }
   },
   setup()
@@ -82,15 +82,8 @@ export default defineComponent({
     handlerInitialize()
     {
       this.loading = true;
-      const columns = Array<SqlColumn>();
-      const column: SqlColumn = {
-        column: this.event.colDef.field,
-        value: this.event.newValue
-      };
-      columns.push(column);
-      this.contentConfigure.columns = columns;
+      this.contentConfigure.columns = this.columns;
       this.contentConfigure.type = SqlType.UPDATE;
-      this.contentConfigure.original = this.event.data;
       this.contentConfigure.preview = true;
       TableService.putData(this.tableId, this.contentConfigure)
         .then(response => {
