@@ -22,7 +22,7 @@
                 @click="handlerCancel">
           {{ $t('common.cancel') }}
         </Button>
-        <Button type="danger"
+        <Button type="primary"
                 :loading="loadingChange"
                 @click="handlerSave()">
           {{ $t('common.submit') }}
@@ -89,7 +89,7 @@ export default defineComponent({
       this.contentConfigure.preview = true;
       TableService.putData(this.tableId, this.contentConfigure)
         .then(response => {
-          if (response.status && response.data) {
+          if (response.status && response.data && response.data.isSuccessful) {
             this.contentDML = response.data.content;
           }
           else {
@@ -104,12 +104,12 @@ export default defineComponent({
       this.contentConfigure.preview = false;
       TableService.putData(this.tableId, this.contentConfigure)
         .then(response => {
-          if (response.status && response.data) {
-            this.$Message.success(this.i18n.t('source.manager.updateSuccess'));
+          if (response.status && response.data && response.data.isSuccessful) {
+            this.$Message.success(this.i18n.t('source.manager.deleteSuccess'));
             this.handlerCancel();
           }
           else {
-            this.$Message.error(response.message);
+            this.$Message.error(response.data.message);
           }
         })
         .finally(() => this.loadingChange = false);

@@ -242,19 +242,12 @@ public class TableServiceImpl
             table.getColumns()
                     .stream()
                     .filter(item -> item.getIsKey().equals("PRI"))
-                    .forEach(item -> {
-                        Optional<SqlColumn> columnOptional = configure.getColumns()
-                                .stream()
-                                .filter(c -> c.getOriginal().containsKey(item.getName()))
-                                .findAny();
-                        if (columnOptional.isPresent()) {
-                            wheres.add(SqlColumn.builder()
+                    .forEach(item -> configure.getColumns()
+                            .forEach(v -> wheres.add(SqlColumn.builder()
                                     .column(item.getName())
                                     .operator(SqlOperator.EQ)
-                                    .value(String.valueOf(columnOptional.get().getOriginal().get(item.getName())))
-                                    .build());
-                        }
-                    });
+                                    .value(String.valueOf(v.getOriginal().get(item.getName())))
+                                    .build())));
 
             SqlBody body = SqlBody.builder()
                     .type(SqlType.DELETE)

@@ -286,6 +286,7 @@ export default defineComponent({
     handlerSelectedChangedPreview(isOpen: boolean)
     {
       this.dataSelectedChanged.pending = isOpen;
+      this.dataSelectedChanged.changed = false;
       if (!isOpen) {
         this.handlerInitialize();
       }

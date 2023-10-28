@@ -5,7 +5,7 @@ import java.util.List;
 public class DeleteBuilder
 {
     private static final ThreadLocal<BaseBuilder> localSQL = new ThreadLocal<>();
-    private static String symbol = ", ";
+    private static String symbol = " OR ";
 
     static {
         BEGIN();
