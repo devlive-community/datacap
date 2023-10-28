@@ -7,6 +7,7 @@ import io.edurt.datacap.common.sql.builder.SelectBuilder;
 import io.edurt.datacap.common.sql.builder.UpdateBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -98,7 +99,7 @@ public class SqlBuilder
         Preconditions.checkArgument(ArrayUtils.isNotEmpty(configure.getColumns().toArray(new SqlColumn[0])), "The columns must be specified");
         return configure.getColumns()
                 .stream()
-                .map(column -> String.format("`%s` = '%s'", column.getColumn(), column.getValue()))
+                .map(column -> String.format("`%s` = '%s'", column.getColumn(), StringEscapeUtils.escapeSql(column.getValue())))
                 .collect(Collectors.toList());
     }
 
@@ -106,7 +107,7 @@ public class SqlBuilder
     {
         return configure.getWhere()
                 .stream()
-                .map(column -> String.format("`%s` %s '%s'", column.getColumn(), column.getOperator().getSymbol(), column.getValue()))
+                .map(column -> String.format("`%s` %s '%s'", column.getColumn(), column.getOperator().getSymbol(), StringEscapeUtils.escapeSql(column.getValue())))
                 .collect(Collectors.toList());
     }
 
