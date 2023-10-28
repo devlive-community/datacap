@@ -13,6 +13,7 @@ import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.service.body.TableFilter;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.entity.metadata.ColumnEntity;
 import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
@@ -179,26 +180,12 @@ public class TableServiceImpl
             Configure updateConfigure = source.toConfigure();
             updateConfigure.setFormat(FormatType.NONE);
             plugin.connect(updateConfigure);
-
-            // If the table contains a primary key, update the data using the primary key as a condition
-            List<SqlColumn> wheres = Lists.newArrayList();
-            table.getColumns()
-                    .stream()
-                    .filter(item -> item.getIsKey().equals("PRI"))
-                    .forEach(item -> configure.getColumns()
-                            .stream()
-                            .forEach(v -> wheres.add(SqlColumn.builder()
-                                    .column(item.getName())
-                                    .operator(SqlOperator.EQ)
-                                    .value(String.valueOf(v.getOriginal().get(item.getName())))
-                                    .build())));
-
             SqlBody body = SqlBody.builder()
                     .type(SqlType.UPDATE)
                     .database(table.getDatabase().getName())
                     .table(table.getName())
                     .columns(configure.getColumns())
-                    .where(wheres.stream()
+                    .where(applyColumns(table, configure).stream()
                             .distinct()
                             .collect(Collectors.toList()))
                     .build();
@@ -241,24 +228,11 @@ public class TableServiceImpl
             Configure updateConfigure = source.toConfigure();
             updateConfigure.setFormat(FormatType.NONE);
             plugin.connect(updateConfigure);
-
-            // If the table contains a primary key, update the data using the primary key as a condition
-            List<SqlColumn> wheres = Lists.newArrayList();
-            table.getColumns()
-                    .stream()
-                    .filter(item -> item.getIsKey().equals("PRI"))
-                    .forEach(item -> configure.getColumns()
-                            .forEach(v -> wheres.add(SqlColumn.builder()
-                                    .column(item.getName())
-                                    .operator(SqlOperator.EQ)
-                                    .value(String.valueOf(v.getOriginal().get(item.getName())))
-                                    .build())));
-
             SqlBody body = SqlBody.builder()
                     .type(SqlType.DELETE)
                     .database(table.getDatabase().getName())
                     .table(table.getName())
-                    .where(wheres)
+                    .where(applyColumns(table, configure))
                     .build();
             String sql = new SqlBuilder(body).getSql();
             Response response;
@@ -282,5 +256,36 @@ public class TableServiceImpl
         catch (Exception ex) {
             return CommonResponse.failure(ExceptionUtils.getMessage(ex));
         }
+    }
+
+    private List<SqlColumn> applyColumns(TableEntity table, TableFilter configure)
+    {
+        List<SqlColumn> wheres = Lists.newArrayList();
+        List<ColumnEntity> originColumns = table.getColumns()
+                .stream()
+                .filter(item -> item.getIsKey().equals("PRI"))
+                .collect(Collectors.toList());
+        if (originColumns.size() > 0) {
+            // If the table contains a primary key, update the data using the primary key as a condition
+            originColumns.forEach(item -> configure.getColumns()
+                    .stream()
+                    .forEach(v -> wheres.add(SqlColumn.builder()
+                            .column(item.getName())
+                            .operator(SqlOperator.EQ)
+                            .value(String.valueOf(v.getOriginal().get(item.getName())))
+                            .build())));
+        }
+        else {
+            // If the current data does not have a primary key, it is updated based on all data columns
+            table.getColumns()
+                    .forEach(item -> configure.getColumns()
+                            .stream()
+                            .forEach(v -> wheres.add(SqlColumn.builder()
+                                    .column(item.getName())
+                                    .operator(SqlOperator.EQ)
+                                    .value(String.valueOf(v.getOriginal().get(item.getName())))
+                                    .build())));
+        }
+        return wheres;
     }
 }

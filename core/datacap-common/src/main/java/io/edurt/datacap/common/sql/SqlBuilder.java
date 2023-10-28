@@ -107,7 +107,7 @@ public class SqlBuilder
     {
         return configure.getWhere()
                 .stream()
-                .map(column -> String.format("`%s` %s '%s'", column.getColumn(), column.getOperator().getSymbol(), column.getValue()))
+                .map(column -> String.format("`%s` %s '%s'", column.getColumn(), column.getOperator().getSymbol(), StringEscapeUtils.escapeSql(column.getValue())))
                 .collect(Collectors.toList());
     }
 
