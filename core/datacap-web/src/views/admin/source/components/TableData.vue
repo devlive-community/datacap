@@ -76,9 +76,19 @@
           {{ $t('common.row') }}
         </Space>
         <Space style="margin-left: 30px;">
+          <Tooltip :content="$t('source.manager.deleteRows')"
+                   transfer>
+            <Button size="small"
+                    shape="circle"
+                    :disabled="!dataSelectedChanged.changed"
+                    @click="handlerSelectedChangedPreview(true)">
+              <FontAwesomeIcon icon="minus"/>
+            </Button>
+          </Tooltip>
           <Tooltip :content="$t('source.manager.previewPendingChanges')"
                    transfer>
             <Button size="small"
+                    shape="circle"
                     :disabled="!dataCellChanged.changed"
                     @click="handlerCellChangedPreview(true)">
               <FontAwesomeIcon icon="upload"/>
@@ -102,9 +112,11 @@
                  :rowData="configure.columns"
                  :tooltipShowDelay="100"
                  :sortingOrder="['desc', 'asc', null]"
+                 :rowSelection="'multiple'"
                  @grid-ready="handlerGridReady"
                  @sortChanged="handlerSortChanged"
-                 @cellValueChanged="handlerCellValueChanged">
+                 @cellValueChanged="handlerCellValueChanged"
+                 @selectionChanged="handlerSelectionChanged">
       </AgGridVue>
       <CircularLoading v-if="refererLoading"
                        :show="refererLoading">
@@ -122,6 +134,13 @@
                             :tableId="id"
                             @close="handlerCellChangedPreview(false)">
       </TableCellEditPreview>
+      <!-- Preview components after data deleting -->
+      <TableRowDeletePreview v-if="dataSelectedChanged.pending"
+                             :isVisible="dataSelectedChanged.pending"
+                             :tableId="id"
+                             :columns="dataSelectedChanged.columns"
+                             @close="handlerSelectedChangedPreview(false)">
+      </TableRowDeletePreview>
     </div>
   </div>
 </template>
@@ -141,10 +160,11 @@ import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import {ColumnApi, GridApi} from "ag-grid-community";
 import {TableFilter} from "@/model/TableFilter";
 import TableCellEditPreview from "@/views/admin/source/components/TableCellEditPreview.vue";
+import TableRowDeletePreview from "@/views/admin/source/components/TableRowDeletePreview.vue";
 
 export default defineComponent({
   name: "TableData",
-  components: {TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
+  components: {TableRowDeletePreview, TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
@@ -180,6 +200,11 @@ export default defineComponent({
         changed: false,
         pending: false,
         event: null
+      },
+      dataSelectedChanged: {
+        changed: false,
+        pending: false,
+        columns: []
       }
     }
   },
@@ -251,6 +276,20 @@ export default defineComponent({
     handlerCellChangedPreview(isOpen: boolean)
     {
       this.dataCellChanged.pending = isOpen;
+    },
+    handlerSelectionChanged()
+    {
+      const selectedRows = this.gridApi.getSelectedRows();
+      this.dataSelectedChanged.changed = true;
+      this.dataSelectedChanged.columns = selectedRows;
+    },
+    handlerSelectedChangedPreview(isOpen: boolean)
+    {
+      this.dataSelectedChanged.pending = isOpen;
+      this.dataSelectedChanged.changed = false;
+      if (!isOpen) {
+        this.handlerInitialize();
+      }
     },
     handlerApplyPagination(operator: PaginationEnum)
     {

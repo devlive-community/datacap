@@ -14,11 +14,13 @@ export class TableFilter
 export enum SqlType
 {
   SELECT = 'SELECT',
-  UPDATE = 'UPDATE'
+  UPDATE = 'UPDATE',
+  DELETE = 'DELETE'
 }
 
 export class SqlColumn
 {
-  column: string;
-  value: string;
+  column?: string;
+  value?: string;
+  original?: Map<string, object>;
 }

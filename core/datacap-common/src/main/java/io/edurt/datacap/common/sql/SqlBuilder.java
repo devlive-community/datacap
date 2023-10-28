@@ -2,6 +2,7 @@ package io.edurt.datacap.common.sql;
 
 import com.google.common.base.Preconditions;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.common.sql.builder.DeleteBuilder;
 import io.edurt.datacap.common.sql.builder.SelectBuilder;
 import io.edurt.datacap.common.sql.builder.UpdateBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
@@ -33,6 +34,9 @@ public class SqlBuilder
                 break;
             case UPDATE:
                 sql = getUpdate();
+                break;
+            case DELETE:
+                sql = getDelete();
                 break;
             default:
                 Preconditions.checkArgument(false, "Not support type");
@@ -123,5 +127,21 @@ public class SqlBuilder
             UpdateBuilder.WHERE(applyUpdateWhere());
         }
         return UpdateBuilder.SQL();
+    }
+
+    /**
+     * Generates a SQL DELETE statement based on the provided configuration.
+     *
+     * @return The generated SQL DELETE statement.
+     */
+    private String getDelete()
+    {
+        DeleteBuilder.BEGIN();
+        DeleteBuilder.DELETE_FROM(applyDatabaseAndTable());
+
+        if (configure.getWhere() != null) {
+            DeleteBuilder.WHERE(applyUpdateWhere());
+        }
+        return DeleteBuilder.SQL();
     }
 }
