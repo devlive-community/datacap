@@ -127,6 +127,8 @@ public class SqlBuilder
         if (configure.getWhere() != null) {
             UpdateBuilder.WHERE(applyUpdateWhere());
         }
+
+        UpdateBuilder.END();
         return UpdateBuilder.SQL();
     }
 
@@ -143,6 +145,8 @@ public class SqlBuilder
         if (configure.getWhere() != null) {
             DeleteBuilder.WHERE(applyUpdateWhere());
         }
+
+        DeleteBuilder.END();
         return DeleteBuilder.SQL();
     }
 }

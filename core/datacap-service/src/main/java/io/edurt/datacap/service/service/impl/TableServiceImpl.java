@@ -180,33 +180,22 @@ public class TableServiceImpl
             Configure updateConfigure = source.toConfigure();
             updateConfigure.setFormat(FormatType.NONE);
             plugin.connect(updateConfigure);
-            SqlBody body = SqlBody.builder()
-                    .type(SqlType.UPDATE)
-                    .database(table.getDatabase().getName())
-                    .table(table.getName())
-                    .columns(configure.getColumns())
-                    .where(applyColumns(table, configure).stream()
-                            .distinct()
-                            .collect(Collectors.toList()))
-                    .build();
-            String sql = new SqlBuilder(body).getSql();
-            Response response;
-            if (configure.isPreview()) {
-                response = Response.builder()
-                        .isSuccessful(true)
-                        .isConnected(true)
-                        .headers(Lists.newArrayList())
-                        .columns(Lists.newArrayList())
-                        .types(Lists.newArrayList())
-                        .content(sql)
+            List<String> allSql = Lists.newArrayList();
+            configure.getColumns().forEach(v -> {
+                SqlBody body = SqlBody.builder()
+                        .type(SqlType.UPDATE)
+                        .database(table.getDatabase().getName())
+                        .table(table.getName())
+                        .columns(Arrays.asList(v))
+                        .where(applyColumns(table, configure, v)
+                                .stream()
+                                .distinct()
+                                .collect(Collectors.toList()))
                         .build();
-            }
-            else {
-                response = plugin.execute(sql);
-                plugin.destroy();
-                response.setContent(sql);
-            }
-            return CommonResponse.success(response);
+                allSql.add(new SqlBuilder(body).getSql());
+            });
+            String sql = String.join("\n\n", allSql);
+            return CommonResponse.success(getResponse(configure, plugin, sql));
         }
         catch (Exception ex) {
             return CommonResponse.failure(ExceptionUtils.getMessage(ex));
@@ -228,37 +217,33 @@ public class TableServiceImpl
             Configure updateConfigure = source.toConfigure();
             updateConfigure.setFormat(FormatType.NONE);
             plugin.connect(updateConfigure);
-            SqlBody body = SqlBody.builder()
-                    .type(SqlType.DELETE)
-                    .database(table.getDatabase().getName())
-                    .table(table.getName())
-                    .where(applyColumns(table, configure))
-                    .build();
-            String sql = new SqlBuilder(body).getSql();
-            Response response;
-            if (configure.isPreview()) {
-                response = Response.builder()
-                        .isSuccessful(true)
-                        .isConnected(true)
-                        .headers(Lists.newArrayList())
-                        .columns(Lists.newArrayList())
-                        .types(Lists.newArrayList())
-                        .content(sql)
+            List<String> allSql = Lists.newArrayList();
+            configure.getColumns().forEach(v -> {
+                SqlBody body = SqlBody.builder()
+                        .type(SqlType.DELETE)
+                        .database(table.getDatabase().getName())
+                        .table(table.getName())
+                        .where(applyColumns(table, configure, v))
                         .build();
-            }
-            else {
-                response = plugin.execute(sql);
-                plugin.destroy();
-                response.setContent(sql);
-            }
-            return CommonResponse.success(response);
+                allSql.add(new SqlBuilder(body).getSql());
+            });
+            String sql = String.join("\n\n", allSql);
+            return CommonResponse.success(getResponse(configure, plugin, sql));
         }
         catch (Exception ex) {
             return CommonResponse.failure(ExceptionUtils.getMessage(ex));
         }
     }
 
-    private List<SqlColumn> applyColumns(TableEntity table, TableFilter configure)
+    /**
+     * Applies the columns of a table to a given configuration.
+     *
+     * @param table the table entity containing the columns
+     * @param configure the table filter configuration to apply the columns to
+     * @param column the SQL column to apply
+     * @return a list of SQL columns that match the applied configuration
+     */
+    private List<SqlColumn> applyColumns(TableEntity table, TableFilter configure, SqlColumn column)
     {
         List<SqlColumn> wheres = Lists.newArrayList();
         List<ColumnEntity> originColumns = table.getColumns()
@@ -267,25 +252,50 @@ public class TableServiceImpl
                 .collect(Collectors.toList());
         if (originColumns.size() > 0) {
             // If the table contains a primary key, update the data using the primary key as a condition
-            originColumns.forEach(item -> configure.getColumns()
-                    .stream()
-                    .forEach(v -> wheres.add(SqlColumn.builder()
-                            .column(item.getName())
-                            .operator(SqlOperator.EQ)
-                            .value(String.valueOf(v.getOriginal().get(item.getName())))
-                            .build())));
+            originColumns.forEach(item -> wheres.add(SqlColumn.builder()
+                    .column(item.getName())
+                    .operator(SqlOperator.EQ)
+                    .value(String.valueOf(column.getOriginal().get(item.getName())))
+                    .build()));
         }
         else {
             // If the current data does not have a primary key, it is updated based on all data columns
             table.getColumns()
-                    .forEach(item -> configure.getColumns()
-                            .stream()
-                            .forEach(v -> wheres.add(SqlColumn.builder()
-                                    .column(item.getName())
-                                    .operator(SqlOperator.EQ)
-                                    .value(String.valueOf(v.getOriginal().get(item.getName())))
-                                    .build())));
+                    .forEach(item -> wheres.add(SqlColumn.builder()
+                            .column(item.getName())
+                            .operator(SqlOperator.EQ)
+                            .value(String.valueOf(column.getOriginal().get(item.getName())))
+                            .build()));
         }
         return wheres;
+    }
+
+    /**
+     * Retrieves a response based on the provided table filter, plugin, and SQL query.
+     *
+     * @param configure the table filter to configure the response
+     * @param plugin the plugin to execute the SQL query
+     * @param sql the SQL query to execute
+     * @return the response containing the result of the SQL query
+     */
+    private Response getResponse(TableFilter configure, Plugin plugin, String sql)
+    {
+        Response response;
+        if (configure.isPreview()) {
+            response = Response.builder()
+                    .isSuccessful(true)
+                    .isConnected(true)
+                    .headers(Lists.newArrayList())
+                    .columns(Lists.newArrayList())
+                    .types(Lists.newArrayList())
+                    .content(sql)
+                    .build();
+        }
+        else {
+            response = plugin.execute(sql);
+            plugin.destroy();
+            response.setContent(sql);
+        }
+        return response;
     }
 }
