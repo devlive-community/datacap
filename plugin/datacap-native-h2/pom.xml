@@ -14,7 +14,7 @@
     <description>DataCap - H2</description>
 
     <properties>
-        <h2.version>2.1.214</h2.version>
+        <h2.version>2.2.224</h2.version>
         <plugin.name>native-h2</plugin.name>
     </properties>
 
