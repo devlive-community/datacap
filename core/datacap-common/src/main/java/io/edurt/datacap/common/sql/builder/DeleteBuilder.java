@@ -5,7 +5,7 @@ import java.util.List;
 public class DeleteBuilder
 {
     private static final ThreadLocal<BaseBuilder> localSQL = new ThreadLocal<>();
-    private static String symbol = " OR ";
+    private static String symbol = " AND ";
 
     static {
         BEGIN();
@@ -38,6 +38,11 @@ public class DeleteBuilder
     public static void WHERE(List<String> conditions)
     {
         sql().WHERE(String.join(symbol, conditions));
+    }
+
+    public static void END()
+    {
+        sql().END();
     }
 
     public static String SQL()

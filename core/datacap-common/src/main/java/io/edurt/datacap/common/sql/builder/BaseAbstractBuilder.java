@@ -403,6 +403,12 @@ abstract class BaseAbstractBuilder<T>
         return getSelf();
     }
 
+    public T END()
+    {
+        sql().end = true;
+        return getSelf();
+    }
+
     private SQLStatement sql()
     {
         return sql;
@@ -513,6 +519,7 @@ abstract class BaseAbstractBuilder<T>
         List<String> columns = new ArrayList<>();
         List<List<String>> valuesList = new ArrayList<>();
         boolean distinct;
+        boolean end;
         String offset;
         String limit;
         LimitingRowsStrategy limitingRowsStrategy = LimitingRowsStrategy.NOP;
@@ -580,6 +587,9 @@ abstract class BaseAbstractBuilder<T>
             for (int i = 0; i < valuesList.size(); i++) {
                 sqlClause(builder, i > 0 ? "," : "VALUES", valuesList.get(i), "(", ")", ", ");
             }
+            if (end) {
+                builder.append(";");
+            }
             return builder.toString();
         }
 
@@ -588,6 +598,9 @@ abstract class BaseAbstractBuilder<T>
             sqlClause(builder, "DELETE FROM", tables, "", "", "");
             sqlClause(builder, "WHERE", where, "(", ")", " AND ");
             limitingRowsStrategy.appendClause(builder, null, limit);
+            if (end) {
+                builder.append(";");
+            }
             return builder.toString();
         }
 
@@ -598,6 +611,9 @@ abstract class BaseAbstractBuilder<T>
             sqlClause(builder, "SET", sets, "", "", ", ");
             sqlClause(builder, "WHERE", where, "(", ")", " AND ");
             limitingRowsStrategy.appendClause(builder, null, limit);
+            if (end) {
+                builder.append(";");
+            }
             return builder.toString();
         }
 
