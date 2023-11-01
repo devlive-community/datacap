@@ -15,7 +15,7 @@ hide:
 </style>
 
 <div class="font-center" style="text-align: center; margin-top: -20px; margin-left: -30px;">
-  <a href="https://github.com/EdurtIO/datacap/blob/master/docs/docs/powered_by.md"> <i class="fa fa-plus"> </i> Add Your or Company</a>
+  <a href="https://github.com/devlive-community/datacap/blob/dev/docs/docs/powered_by.md"> <i class="fa fa-plus"> </i> Add Your or Company</a>
 </div>
 
 !!! note

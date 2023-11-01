@@ -8,7 +8,7 @@ repo_url: https://github.com/devlive-community/datacap
 edit_uri: "https://github.com/devlive-community/datacap/blob/dev/docs/docs"
 
 banners:
-  - title: DataCap 1.15.0 is released
+  - title: DataCap 1.16.0 is released
     link: /release-latest.html
     description: <a href="https://github.com/devlive-community/datacap"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
 
@@ -25,7 +25,6 @@ theme:
   features:
     - content.code.annotate
     - content.tabs.link
-#    - navigation.expand
     - navigation.indexes
     - navigation.path
     - navigation.sections
@@ -37,8 +36,8 @@ theme:
     - search.suggest
     - content.tooltips
     - content.code.copy
-#    - content.action.edit
-#    - content.action.view
+    - content.action.edit
+    - content.action.view
   palette:
     - scheme: default
       toggle:
@@ -149,11 +148,11 @@ nav:
       - Clients:
         - reference/clients/cli.md
       - User Manager:
-          - Admin:
-            - reference/admin/datasource/home.md
-            - reference/admin/snippet/home.md
-            - reference/admin/history/query/home.md
-            - reference/admin/pipeline/home.md
+          - reference/admin/profile/home.md
+          - reference/admin/datasource/home.md
+          - reference/admin/snippet/home.md
+          - reference/admin/history/query/home.md
+          - reference/admin/pipeline/home.md
           - Monitor:
             - Processor: reference/admin/processor/home.md
       - System Setting:
@@ -200,7 +199,8 @@ nav:
       - Other:
         - developer_guide/pipeline/home.md
   - Release Note:
-      - 1.15.0 (latest): release/latest.md
+      - 1.16.0 (latest): release/latest.md
+      - 1.15.0: release/1.15.0.md
       - 1.14.0: release/1.14.0.md
       - 1.13.0: release/1.13.0.md
       - 1.12.0: release/1.12.0.md
