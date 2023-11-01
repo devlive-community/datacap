@@ -23,17 +23,17 @@ hide:
     <p/>
     DataCap 是用于数据转换、集成和可视化的集成软件。支持多种数据源、文件类型、大数据相关数据库、关系数据库、NoSQL数据库等。通过软件可以实现多数据源的管理，对源下的数据进行各种操作转换、制作数据图表、监控数据源和其他功能。
     <p/>
-    <a target="_blank" class="connector-logo-index" href="https://gitee.com/EdurtIO/datacap/members">
-        <img src='https://gitee.com/EdurtIO/datacap/badge/fork.svg?theme=white' alt='fork'/>
+    <a target="_blank" class="connector-logo-index" href="https://gitee.com/devlive-community/datacap/members">
+        <img src='https://gitee.com/devlive-community/datacap/badge/fork.svg?theme=white' alt='fork'/>
     </a>
-    <a target="_blank" class="connector-logo-index" href="https://gitee.com/EdurtIO/datacap/stargazers">
-        <img src='https://gitee.com/EdurtIO/datacap/badge/star.svg?theme=white' alt='star'/>
+    <a target="_blank" class="connector-logo-index" href="https://gitee.com/devlive-community/datacap/stargazers">
+        <img src='https://gitee.com/devlive-community/datacap/badge/star.svg?theme=white' alt='star'/>
     </a>
-    <a target="_blank" class="connector-logo-index" href="https://github.com/EdurtIO/datacap/fork">
-        <img alt="GitHub stars" src="https://img.shields.io/github/forks/EdurtIO/datacap?logo=github">
+    <a target="_blank" class="connector-logo-index" href="https://github.com/devlive-community/datacap/fork">
+        <img alt="GitHub stars" src="https://img.shields.io/github/forks/devlive-community/datacap?logo=github">
     </a>
-    <a target="_blank" class="connector-logo-index" href="https://github.com/EdurtIO/datacap/stargazers">
-        <img alt="GitHub stars" src="https://img.shields.io/github/stars/EdurtIO/datacap?logo=github">
+    <a target="_blank" class="connector-logo-index" href="https://github.com/devlive-community/datacap/stargazers">
+        <img alt="GitHub stars" src="https://img.shields.io/github/stars/devlive-community/datacap?logo=github">
     </a>
     <p/> 
     <p/>

@@ -25,7 +25,6 @@ theme:
   features:
     - content.code.annotate
     - content.tabs.link
-#    - navigation.expand
     - navigation.indexes
     - navigation.path
     - navigation.sections
@@ -37,8 +36,8 @@ theme:
     - search.suggest
     - content.tooltips
     - content.code.copy
-#    - content.action.edit
-#    - content.action.view
+    - content.action.edit
+    - content.action.view
   palette:
     - scheme: default
       toggle:
@@ -149,11 +148,11 @@ nav:
       - Clients:
         - reference/clients/cli.md
       - User Manager:
-          - Admin:
-            - reference/admin/datasource/home.md
-            - reference/admin/snippet/home.md
-            - reference/admin/history/query/home.md
-            - reference/admin/pipeline/home.md
+          - reference/admin/profile/home.md
+          - reference/admin/datasource/home.md
+          - reference/admin/snippet/home.md
+          - reference/admin/history/query/home.md
+          - reference/admin/pipeline/home.md
           - Monitor:
             - Processor: reference/admin/processor/home.md
       - System Setting:

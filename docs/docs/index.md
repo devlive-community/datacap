@@ -23,17 +23,17 @@ hide:
     <p/>
     DataCap is integrated software for data transformation, integration, and visualization. Support a variety of data sources, file types, big data related database, relational database, NoSQL database, etc. Through the software can realize the management of multiple data sources, the data under the source of various operations conversion, making data charts, monitoring data sources and other functions.
     <p/>
-    <a target="_blank" class="connector-logo-index" href="https://gitee.com/EdurtIO/datacap/members">
-        <img src='https://gitee.com/EdurtIO/datacap/badge/fork.svg?theme=white' alt='fork'/>
+    <a target="_blank" class="connector-logo-index" href="https://gitee.com/devlive-community/datacap/members">
+        <img src='https://gitee.com/devlive-community/datacap/badge/fork.svg?theme=white' alt='fork'/>
     </a>
-    <a target="_blank" class="connector-logo-index" href="https://gitee.com/EdurtIO/datacap/stargazers">
-        <img src='https://gitee.com/EdurtIO/datacap/badge/star.svg?theme=white' alt='star'/>
+    <a target="_blank" class="connector-logo-index" href="https://gitee.com/devlive-community/datacap/stargazers">
+        <img src='https://gitee.com/devlive-community/datacap/badge/star.svg?theme=white' alt='star'/>
     </a>
-    <a target="_blank" class="connector-logo-index" href="https://github.com/EdurtIO/datacap/fork">
-        <img alt="GitHub stars" src="https://img.shields.io/github/forks/EdurtIO/datacap?logo=github">
+    <a target="_blank" class="connector-logo-index" href="https://github.com/devlive-community/datacap/fork">
+        <img alt="GitHub stars" src="https://img.shields.io/github/forks/devlive-community/datacap?logo=github">
     </a>
-    <a target="_blank" class="connector-logo-index" href="https://github.com/EdurtIO/datacap/stargazers">
-        <img alt="GitHub stars" src="https://img.shields.io/github/stars/EdurtIO/datacap?logo=github">
+    <a target="_blank" class="connector-logo-index" href="https://github.com/devlive-community/datacap/stargazers">
+        <img alt="GitHub stars" src="https://img.shields.io/github/stars/devlive-community/datacap?logo=github">
     </a>
     <p/> 
     <p/>
