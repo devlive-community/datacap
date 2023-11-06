@@ -1,8 +1,8 @@
 ---
-name: Other issue
+name: Other issues
 about: Describe this issue template's purpose here.
-title: ''
-labels: ''
+title: 🚀[Other] This is title
+labels: 
+  - other
 assignees: ''
-
 ---

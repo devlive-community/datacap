@@ -1,5 +1,5 @@
 name: Bug Report
-title: Bug report xxx
+title: 🐛[Bug] This is a bug name
 description: Report a bug
 labels:
   - bug
@@ -9,7 +9,7 @@ body:
       label: Contribution guidelines
       description: Please read the contribution guidelines before proceeding.
       options:
-        - label: I've read the [contribution guidelines](https://github.com/EdurtIO/datacap/blob/master/CONTRIBUTING.md) and wholeheartedly agree
+        - label: I've read the [contribution guidelines](https://github.com/devlive-community/datacap/blob/dev/CONTRIBUTING.md) and wholeheartedly agree
           required: true
   - type: checkboxes
     attributes:
