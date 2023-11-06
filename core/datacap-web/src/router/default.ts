@@ -130,12 +130,6 @@ const createDefaultRouter = (router: any) => {
         meta: {title: 'common.source'},
         layout: LayoutContainer,
         component: () => import("../views/admin/source/SourceManager.vue")
-      },
-      {
-        path: "source/:id/managerBeta",
-        meta: {title: 'common.source'},
-        layout: LayoutContainer,
-        component: () => import("../views/admin/source/SourceManagerBeta.vue")
       }
     ]
   })

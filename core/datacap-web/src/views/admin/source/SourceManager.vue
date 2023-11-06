@@ -1,177 +1,145 @@
 <template>
   <div style="padding: 0">
-    <SourceNotSupported v-if="!isSupported" :templateName="templateArray" style="margin-top: 50px;"></SourceNotSupported>
-    <div v-else ref="splitContainer" class="split-container">
-      <Split v-model="splitModel" :min="0.15">
+    <CircularLoading v-if="loading"
+                     :show="loading">
+    </CircularLoading>
+    <div v-else
+         ref="splitContainer"
+         class="split-container">
+      <Split v-model="splitValue"
+             :min="0.15">
         <template #left>
-          <div ref="splitContainerLeftPane" class="split-container-pane">
-            <Card style="width:100%;" :padding="0" :bordered="false" dis-hover>
+          <div ref="splitContainerLeftPane"
+               class="split-container-pane">
+            <Card style="width:100%;"
+                  :padding="0"
+                  :bordered="false"
+                  dis-hover>
               <template #title>
-                <Row>
-                  <Col span="4" style="margin-top: 3px;">
-                    <Tooltip v-if="data" transfer :content="data.name" placement="bottom-start">
-                      <Avatar :src="'/static/images/plugin/' + data.type + '.png'" size="small"/>
-                    </Tooltip>
-                  </Col>
-                  <Col span="20">
-                    <Select v-model="currentDatabase" @on-change="handlerChangeDatabase">
-                      <Option v-for="database in databaseArray" :value="database" :key="database">
-                        {{ database }}
-                      </Option>
-                    </Select>
-                  </Col>
-                </Row>
+                <Select v-model="applyValue.database"
+                        @on-change="handlerChangeDatabase">
+                  <Option v-for="item in databaseArray"
+                          :value="item.applyId"
+                          :key="item.title">
+                    <FontAwesomeIcon icon="database"
+                                     style="margin-right: 6px;">
+                    </FontAwesomeIcon>
+                    {{ item.title }}
+                  </Option>
+                </Select>
               </template>
               <div style="height: 470px; overflow: auto;">
-                <Tree :data="dataTreeArray" :load-data="handlerLoadChild" @on-select-change="handlerSelectNode"></Tree>
-                <Spin size="large" fix :show="tableLoading"></Spin>
+                <Tree :data="dataTreeArray"
+                      style="margin-left: 6px;"
+                      :load-data="handlerLoadChildData"
+                      @on-select-change="handlerSelectNode">
+                </Tree>
+                <CircularLoading v-if="dataTreeLoading"
+                                 :show="dataTreeLoading">
+                </CircularLoading>
               </div>
-              <Spin size="large" fix :show="loading"></Spin>
             </Card>
           </div>
         </template>
         <template #right>
-          <div ref="splitContainerRightPane" class="split-container-pane">
-            <Card v-if="!isShowData" dis-hover :bordered="false">
-              <Result type="warning" style="margin-top: 10px;">
-                <template #desc>
-                  {{ $t('alert.managerRequiredTreeData') }}
-                </template>
-              </Result>
-            </Card>
-            <div v-if="isShowData && !dataLoading && tableConfigure">
-              <!-- Paging related components -->
-              <div style="margin: 3px 0px 3px 10px;">
-                <Space>
-                  <Button :disabled="currentPageNumber === 1" shape="circle" type="text"
-                          size="small" icon="md-arrow-back" @click="handlerChangePage(false)"/>
-                  <Select v-model="configure.limit" size="small" style="width: 60px" @on-change="handlerExecute">
-                    <Option v-for="item in limitOptions" :value="item" :key="item">{{ item }}</Option>
-                  </Select>
-                  <Input v-model="currentPageNumber" size="small" style="max-width: 50px;"/>
-                  <Button :disabled="tableConfigure?.columns.length < configure.limit" shape="circle" type="text"
-                          size="small" icon="md-arrow-forward" @click="handlerChangePage(true)"/>
-                  <Tooltip :content="$t('common.elapsed')">
-                    <Button size="small" icon="md-clock" type="default">{{ tableConfigure.elapsed }} ms</Button>
-                  </Tooltip>
-                  <Tooltip content="DDL">
-                    <Button size="small" icon="md-eye" type="text" shape="circle" @click="handlerControlModal(false)"></Button>
-                  </Tooltip>
-                  <Dropdown v-if="selectedRows.length > 0" placement="bottom-start">
-                    <Button style="margin-top: -8px;" size="small" type="text" icon="ios-download">
-                      [<span style="font-size: 12px; color: #19BE6B; font-weight: bold;">{{ selectedRows.length }}</span>]
-                    </Button>
-                    <template #list>
-                      <DropdownMenu>
-                        <DropdownItem @click="handlerCopyWith(true)">
-                          <Icon type="md-copy"/>
-                          {{ $t('copy.copyWithHeadersRow') }}
-                        </DropdownItem>
-                        <DropdownItem @click="handlerCopyWith(false)">
-                          <Icon type="md-copy"/>
-                          {{ $t('copy.copyDataOnlyRow') }}
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </template>
-                  </Dropdown>
-                </Space>
-              </div>
-              <!-- Filter component -->
-              <div style="margin: 3px 0px -4px 10px;">
-                <Space>
-                  <Input v-model="currentOrder.inputValue" size="small" clearable style="width: auto;" @on-enter="handlerGetValue">
-                    <template #prepend>
-                      <Icon type="md-list"/>
-                      ORDER BY
-                    </template>
-                  </Input>
-                  <Input v-model="currentWhere" size="small" clearable style="width: auto;" @on-enter="handlerGetValue">
-                    <template #prepend>
-                      <FontAwesomeIcon icon="filter" />
-                      WHERE
-                    </template>
-                  </Input>
-                </Space>
-              </div>
-            </div>
-            <TablePreview v-if="tableConfigure"
-                          :configure="tableConfigure"
-                          :sortColumns="tableSortColumns"
-                          @on-sorted="handlerOnSorted"
-                          @on-selected="handlerOnSelected">
-            </TablePreview>
-            <Spin size="large" fix :show="dataLoading"></Spin>
-          </div>
+          <Card v-if="!applyValue.node"
+                padding="0 10"
+                :bordered="false"
+                dis-hover>
+            <Result type="warning"
+                    :title="$t('tooltip.notSelectedNodeTitle')">
+              <template #desc>
+                <span>{{ $t('tooltip.notSelectedNodeDesc') }}</span>
+              </template>
+            </Result>
+          </Card>
+          <Card v-else
+                style="width:100%;"
+                padding="0 10"
+                :bordered="false"
+                :title="null"
+                dis-hover>
+            <Tabs v-model="applyValue.tabType"
+                  :animated="false">
+              <TabPane :label="tabPane.info"
+                       name="info">
+                <TableInfo v-if="applyValue.tabType === 'info'"
+                           :id="applyValue.node.applyId">
+                </TableInfo>
+              </TabPane>
+              <TabPane :label="tabPane.data"
+                       name="data">
+                <TableData v-if="applyValue.tabType === 'data'"
+                           :id="applyValue.node.applyId">
+                </TableData>
+              </TabPane>
+            </Tabs>
+          </Card>
         </template>
       </Split>
     </div>
-    <SqlDetail v-if="modalVisible"
-               :isVisible="modalVisible"
-               :content="tableConfigure.context"
-               @close="handlerControlModal(true)">
-    </SqlDetail>
   </div>
 </template>
-
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, resolveComponent} from "vue";
 import {useRouter} from "vue-router";
-import {SourceService} from "@/services/SourceService";
-import {join, toNumber} from "lodash";
-import {SourceModel} from "@/model/SourceModel";
-import MangerService from "@/services/source/MangerService";
-import {Sql} from "@/model/sql/Sql";
+import {toNumber} from "lodash";
 import {useI18n} from "vue-i18n";
-import SourceNotSupported from "@/components/common/SourceNotSupported.vue";
-import {TableConfigure} from "@/components/table/TableConfigure";
-import TablePreview from "@/views/admin/source/components/TablePreview.vue";
-import {Sort} from "@/model/sql/Sort";
-import SqlDetail from "@/components/sql/SqlDetail.vue";
-import useClipboard from "vue-clipboard3";
+import DatabaseService from "@/services/Database";
+import TableService from "@/services/Table";
+import ColumnService from "@/services/Column";
+import CircularLoading from "@/components/loading/CircularLoading.vue";
+import {DataStructureModel} from "@/model/DataStructure";
+import {DataStructureEnum} from "@/enum/DataStructure";
+import TableInfo from "@/views/admin/source/components/TableInfo.vue";
+import TableData from "@/views/admin/source/components/TableData.vue";
 
 export default defineComponent({
-  name: "SourceManager",
-  components: {SqlDetail, TablePreview, SourceNotSupported},
+  name: "SourceManagerBeta",
+  components: {TableData, TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
+    const resolveTabPaneComponent = (h, icon: string, key: string) => {
+      return h('div', [
+        h(resolveComponent('FontAwesomeIcon'), {
+          icon: icon,
+          style: {fontSize: '25px'}
+        }),
+        h('p', {
+            style: {
+              fontSize: '12px',
+            }
+          },
+          i18n.t(key))
+      ])
+    }
     return {
-      i18n
+      i18n,
+      resolveTabPaneComponent
     }
   },
   data()
   {
     return {
-      templateArray: ['getAllDatabase', 'getAllTablesFromDatabase', 'getAllColumnsFromDatabaseAndTable'],
-      sourceId: 0,
       loading: false,
-      tableLoading: false,
-      dataLoading: false,
-      isSupported: false,
-      isShowData: false,
-      data: null as SourceModel,
-      currentDatabase: null,
-      currentTable: null,
-      currentItem: null,
-      currentPageNumber: 1,
-      currentOrder: {
-        inputValue: null
+      dataTreeLoading: false,
+      splitValue: 0.15,
+      databaseArray: Array<DataStructureModel>(),
+      dataTreeArray: Array<DataStructureModel>(),
+      applyValue: {
+        database: null,
+        node: null as DataStructureModel,
+        tabType: 'info'
       },
-      currentWhere: null,
-      databaseArray: [],
-      dataTreeArray: [],
-      configure: null as Sql,
-      splitModel: 0.15,
-      tableConfigure: null as TableConfigure,
-      tableSortColumns: [],
-      modalVisible: false,
-      limitOptions: [5, 10, 15, 20, 50, 100],
-      selectedRows: []
+      tabPane: {
+        info: (h) => this.resolveTabPaneComponent(h, 'circle-info', 'common.info'),
+        data: (h) => this.resolveTabPaneComponent(h, 'table', 'common.data'),
+      }
     }
   },
   created()
   {
-    this.configure = new Sql();
     this.handlerInitialize();
   },
   methods: {
@@ -180,306 +148,190 @@ export default defineComponent({
       this.loading = true;
       const router = useRouter();
       const id = router.currentRoute?.value?.params['id'];
-      this.sourceId = toNumber(id);
-      new SourceService().getById(this.sourceId)
+      DatabaseService.getAllBySource(toNumber(id))
         .then(response => {
           if (response.status) {
-            if (response.data) {
-              this.data = response.data;
-              this.isSupported = true;
-            }
+            response.data.forEach((item: { name: null; catalog: null; id: null }) => {
+              const structure = new DataStructureModel();
+              structure.title = item.name;
+              structure.catalog = item.catalog;
+              structure.applyId = item.id;
+              this.databaseArray.push(structure);
+            });
           }
         })
         .finally(() => {
           this.loading = false;
         });
-
-      MangerService.getDatabases(this.sourceId)
-        .then(response => {
-          if (response.status) {
-            const header = response.data.headers[0];
-            response.data.columns.forEach(column => {
-              this.databaseArray.push(column[header]);
-            });
-          }
-          else {
-            this.isSupported = false;
-          }
-        });
     },
     handlerChangeDatabase()
     {
-      this.tableLoading = true;
-      MangerService.findTableTypeByDatabase(this.sourceId, this.currentDatabase)
+      this.dataTreeLoading = true;
+      this.dataTreeArray = [];
+      TableService.getAllByDatabase(this.applyValue.database)
         .then(response => {
           if (response.status) {
-            const header = response.data.headers[0];
-            this.dataTreeArray = [];
-            response.data.columns.forEach(column => {
-              this.dataTreeArray.push({
-                title: this.i18n.t('common.' + column[header]),
-                level: 'GetDataForTableType',
-                action: column[header],
-                loading: false,
-                type: 'action',
-                children: []
-              });
+            response.data.forEach((item: {
+              name: null;
+              title: null;
+              catalog: null;
+              id: null;
+              type: null;
+              engine: null;
+              comment: null;
+              database: { name: null };
+            }) => {
+              const structure = new DataStructureModel();
+              structure.title = item.name;
+              structure.database = item.database.name;
+              structure.catalog = item.catalog;
+              structure.applyId = item.id;
+              structure.type = item.type;
+              structure.level = DataStructureEnum.TABLE;
+              structure.engine = item.engine;
+              structure.comment = item.comment;
+              structure.origin = item;
+              structure.render = (h, {data}) => {
+                return h('div', [
+                  h('span', [
+                    h(resolveComponent('FontAwesomeIcon'), {
+                      icon: "table",
+                      style: {marginRight: '6px'}
+                    }),
+                    this.resolveTableComponent(h, data)
+                  ])
+                ]);
+              }
+              this.dataTreeArray.push(structure);
             });
           }
         })
         .finally(() => {
-          this.tableLoading = false;
+          this.dataTreeLoading = false;
         });
     },
-    handlerLoadChild(item, callback)
+    handlerLoadChildData(item: DataStructureModel, callback)
     {
-      this.currentTable = item.title;
-      // Load all tables under the database according to type
-      if (item.level === 'GetDataForTableType') {
-        MangerService.getTableDataByDatabaseAndType(this.sourceId, this.currentDatabase, item.action)
-          .then(response => {
-            if (response.status) {
-              const dataTreeColumnArray = [];
-              // Add the total amount of data to the parent class header
-              item.title = item.title + ' [' + response.data.columns.length + ']';
-              response.data.columns.forEach(column => {
-                dataTreeColumnArray.push({
-                  title: column['TABLE_NAME'],
-                  level: 'FindColumnType',
-                  database: this.currentDatabase,
-                  catalog: column['TABLE_CATALOG'],
-                  loading: false,
-                  type: 'data',
-                  children: []
-                });
-              });
-              callback(dataTreeColumnArray);
-            }
-            else {
-              this.$Message.error(response.message);
-            }
-          })
-          .finally(() => {
-            this.tableLoading = false;
-          });
+      const dataChildArray = [];
+      if (item.level === DataStructureEnum.COLUMN) {
+        callback(dataChildArray);
+        return;
       }
-      // Gets a collection of related data based on the specified database and data type
-      else if (item.level === 'FindColumnType') {
-        MangerService.findColumnTypeByDatabaseAndTable(this.sourceId, item.catalog, this.currentTable)
-          .then(response => {
-            if (response.status) {
-              const dataTreeColumnArray = [];
-              const types = [];
-              response.data.columns.forEach(column => {
-                column['COLUMN_TYPE'].split(',').forEach(type => {
-                  if (types.indexOf(type) === -1) {
-                    dataTreeColumnArray.push({
-                      title: this.i18n.t('common.' + type),
-                      level: 'GetColumnDataForTableType',
-                      action: type,
-                      catalog: column['TABLE_CATALOG'],
-                      database: this.currentDatabase,
-                      table: this.currentTable,
-                      loading: false,
-                      type: 'action',
-                      children: []
-                    });
-                  }
-                  types.push(type);
-                })
-              });
-              callback(dataTreeColumnArray);
-            }
-            else {
-              this.$Message.error(response.message);
-            }
-          })
-          .finally(() => {
-            this.tableLoading = false;
-          });
-      }
-      // Gets a collection of related data based on the specified database, table, and data type
-      else if (item.level === 'GetColumnDataForTableType') {
-        MangerService.getColumnDataByDatabaseAndTableAndType(this.sourceId, item.catalog, item.table, item.action)
-          .then(response => {
-            if (response.status) {
-              const dataTreeColumnArray = [];
-              item.title = item.title + ' [' + response.data.columns.length + ']';
-              response.data.columns.forEach(column => {
-                dataTreeColumnArray.push({
-                  catalog: column['TABLE_CATALOG'],
-                  database: this.currentDatabase,
-                  table: column['TABLE_NAME'],
-                  column: column['COLUMN_NAME'],
-                  title: column['COLUMN_NAME'] + ' [' + column['DATA_TYPE'] + ']',
-                  level: 'GetColumnDataForTable',
-                  type: 'data',
-                  dataType: column['DATA_TYPE'],
-                  children: []
-                });
-              })
-              callback(dataTreeColumnArray);
-            }
-            else {
-              this.$Message.error(response.message);
-            }
-          })
-          .finally(() => {
-            this.tableLoading = false;
-          });
-      }
+      ColumnService.getAllByTable(item.applyId)
+        .then(response => {
+          if (response.status) {
+            response.data.forEach((item: {
+              name: null;
+              title: null;
+              catalog: null;
+              id: null;
+              type: null;
+              dataType: null;
+              extra: null;
+              engine: null;
+              isKey: null;
+              defaultValue: null;
+              table: { name: null, database: { name: null } };
+            }) => {
+              const structure = new DataStructureModel();
+              structure.title = item.name;
+              structure.database = item.table.database.name;
+              structure.table = item.table.name;
+              structure.catalog = item.catalog;
+              structure.applyId = item.id;
+              structure.level = DataStructureEnum.COLUMN;
+              structure.type = item.type;
+              structure.extra = item.extra;
+              structure.dataType = item.dataType;
+              structure.engine = item.engine;
+              structure.isKey = item.isKey;
+              structure.defaultValue = item.defaultValue;
+              structure.render = (h, {data}) => {
+                return h('div', [
+                  h('span', [
+                    h(resolveComponent('FontAwesomeIcon'), {
+                      icon: this.getColumnIcon(data.isKey),
+                      style: {marginRight: '6px'}
+                    }),
+                    h('span', data.title),
+                    h('span', {
+                        style: {
+                          marginLeft: '6px',
+                          color: '#c5c8ce'
+                        },
+                      },
+                      this.getColumnTitle(data.type, data.extra, data.isKey, data.defaultValue)),
+                  ])
+                ]);
+              }
+              dataChildArray.push(structure);
+            });
+          }
+        })
+        .finally(() => {
+          callback(dataChildArray);
+        });
     },
-    handlerSelectNode(item)
+    handlerSelectNode(node: Array<DataStructureModel>)
     {
-      if (item.length > 0) {
-        const data = item[0];
-        if (data.type === 'action') {
-          return
-        }
-        this.currentItem = item;
-        this.headers = [];
-        this.columns = [];
-        this.isShowData = true;
-        this.dataLoading = true;
-        this.selectedRows = [];
-        // Reinitialize when switching to a new table
-        if (this.currentTable !== data.title) {
-          this.configure = new Sql();
-          this.currentPageNumber = 1;
-          this.currentOrder.inputValue = null;
-          this.currentWhere = null;
-          this.configure.offset = this.currentPageNumber;
-          this.tableSortColumns = null;
-        }
-        this.currentTable = data.title;
-        this.configure.database = data.catalog;
-        this.configure.table = this.currentTable;
-        if (data.level === 'GetColumnDataForTable') {
-          this.configure.table = data.table;
-          this.configure.columns = [data.column];
-        }
-        this.handlerExecute();
+      if (node.length === 0) {
+        // Prevent selection clearing after repeated clicks
+        this.applyValue.node.selected = true;
+        return;
       }
+      const currentNode = node[0];
+      if (currentNode.level === DataStructureEnum.COLUMN) {
+        this.applyValue.node.selected = true;
+        currentNode.selected = false;
+        return;
+      }
+      this.applyValue.node = currentNode;
     },
-    handlerChangePage(nexted: boolean)
+    getColumnIcon(type: string)
     {
-      if (nexted) {
-        this.configure.offset = this.currentPageNumber * this.configure.limit + 1;
-        this.currentPageNumber += 1;
+      if (type === 'PRI') {
+        return 'key';
+      }
+      else if (type === 'MUL') {
+        return 'repeat';
+      }
+      else if (type === 'UNI') {
+        return 'circle';
       }
       else {
-        this.currentPageNumber -= 1;
-        this.configure.offset = (this.currentPageNumber - 1) * this.configure.limit + 1;
+        return 'columns';
       }
-      this.handlerSelectNode(this.currentItem);
     },
-    handlerExecute()
+    getColumnTitle(dataType: string, extra: string, isKey: string, defaultValue: string)
     {
-      this.tableConfigure = null;
-      this.dataLoading = true;
-      const splitContainerLeftPane: HTMLElement = this.$refs.splitContainerLeftPane as HTMLElement;
-      const splitContainer: HTMLElement = this.$refs.splitContainer as HTMLElement;
-      MangerService.getDataByConfigure(this.sourceId, this.configure)
-        .then(response => {
-          if (response.status) {
-            response.data.headers.forEach(header => {
-              this.headers.push(
-                {
-                  title: header,
-                  key: header,
-                  'minWidth': 200,
-                  ellipsis: true,
-                  tooltip: true
-                }
-              );
-            });
-            const tConfigure: TableConfigure = {
-              headers: response.data.headers,
-              columns: response.data.columns,
-              types: response.data.types,
-              height: splitContainerLeftPane.offsetHeight - 57,
-              width: splitContainer.offsetWidth - splitContainerLeftPane.offsetWidth,
-              showSeriesNumber: false,
-              elapsed: response?.data?.processor?.elapsed,
-              context: response?.data?.content
-            };
-            this.tableConfigure = tConfigure;
-          }
-          else {
-            this.$Message.error(response.message);
-          }
-        })
-        .finally(() => {
-          this.tableLoading = false;
-          this.dataLoading = false;
-        });
-    },
-    handlerGetValue()
-    {
-      if (this.currentOrder.inputValue) {
-        const value = this.currentOrder.inputValue;
-        if (value) {
-          const sort: Array<Sort> = new Array<Sort>();
-          value.split(',').forEach(item => {
-            const array = item.trim().split(' ')
-            sort.push({
-              column: array[0],
-              sort: array[1]
-            })
-          })
-          this.configure.sort = sort;
+      let title = dataType;
+      if (isKey === 'PRI') {
+        if (extra) {
+          title = `${title} (${extra.replace('_', ' ')})`;
         }
         else {
-          const sort: Array<Sort> = new Array<Sort>();
-          const array = value.trim().split(' ')
-          sort.push({
-            column: array[0],
-            sort: array[1]
-          })
-          this.configure.sort = sort;
+          title = `${title}`;
         }
-        this.tableSortColumns = this.configure.sort;
       }
-
-      if (this.currentWhere) {
-        this.configure.where = this.currentWhere;
+      if (defaultValue && defaultValue !== 'null') {
+        title = `${title} = ${defaultValue}`
       }
-      this.handlerExecute();
+      return title;
     },
-    handlerOnSorted(sort: Array<Sort>)
+    resolveTableComponent(h, data: { comment: undefined; title: undefined })
     {
-      this.configure.sort = sort;
-      this.tableSortColumns = sort;
-      this.currentOrder.inputValue = join(sort.map(item => item.column + ' ' + item.sort));
-      this.handlerExecute();
-    },
-    handlerControlModal(value: boolean)
-    {
-      this.modalVisible = !value;
-    },
-    handlerOnSelected(nodes: Array<any>)
-    {
-      this.selectedRows = nodes;
-    },
-    handlerCopyWith(withHeaders: boolean)
-    {
-      const headers = [];
-      const copyRows = [];
-      this.selectedRows.forEach(row => {
-        const values = [];
-        Object.keys(row)
-          .forEach(key => {
-            headers.push(key);
-            values.push(row[key]);
-          });
-        copyRows.push(join(values, ','));
-      });
-      if (withHeaders) {
-        copyRows.unshift(join(headers, ','));
+      if (data.comment) {
+        return h(resolveComponent('Tooltip'), {
+            content: data.comment,
+            placement: 'bottom-start',
+            transfer: true,
+            delay: 1000
+          },
+          h('span', data.title));
       }
-      useClipboard()
-        .toClipboard(join(copyRows, '\n'))
-        .then(() => this.$Message.info('Copy Successfully'));
+      else {
+        return h('span', data.title);
+      }
     }
   }
 });
