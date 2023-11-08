@@ -163,4 +163,6 @@ export default {
   fontSize: 'Font Size',
   theme: 'Theme',
   preview: 'Preview',
+  documentation: 'Documentation',
+  releaseNote: 'Release Note',
 }

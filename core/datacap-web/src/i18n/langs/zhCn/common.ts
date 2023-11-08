@@ -162,5 +162,7 @@ export default {
   editor: '编辑器',
   fontSize: '字体大小',
   theme: '主题',
-  preview: '预览'
+  preview: '预览',
+  documentation: '文档',
+  releaseNote: '发行说明',
 }
