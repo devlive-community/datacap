@@ -281,7 +281,9 @@ export default defineComponent({
       }
       const currentNode = node[0];
       if (currentNode.level === DataStructureEnum.COLUMN) {
-        this.applyValue.node.selected = true;
+        if (this.applyValue.node) {
+          this.applyValue.node.selected = true;
+        }
         currentNode.selected = false;
         return;
       }

@@ -1,5 +1,5 @@
-name: Release notes
-title: Release notes for xxx
+name: 🆕 Release new version
+title: 🆕 [Release] Release notes for xxx
 description: New version released
 labels:
   - release
