@@ -1,5 +1,5 @@
-name: Feature
-title: ✨[Feature] This is a feature name
+name: ✨ Feature
+title: ✨ [Feature] This is a feature name
 description: Suggest an idea
 labels:
   - feature
@@ -10,7 +10,7 @@ body:
       label: Contribution guidelines
       description: Please read the contribution guidelines before proceeding.
       options:
-        - label: I've read the [contribution guidelines](https://github.com/EdurtIO/datacap/blob/master/CONTRIBUTING.md) and wholeheartedly agree
+        - label: I've read the [contribution guidelines](https://github.com/devlive-community/datacap/blob/dev/CONTRIBUTING.md) and wholeheartedly agree
           required: true
   - type: checkboxes
     attributes:

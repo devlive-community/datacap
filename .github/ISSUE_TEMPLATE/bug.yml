@@ -1,5 +1,5 @@
-name: Bug Report
-title: 🐛[Bug] This is a bug name
+name: 🐛 Bug Report
+title: 🐛 [Bug] This is a bug name
 description: Report a bug
 labels:
   - bug
