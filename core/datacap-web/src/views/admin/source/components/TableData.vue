@@ -96,13 +96,22 @@
           </Tooltip>
         </Space>
         <div style="float: right;">
-          <Tooltip :content="$t('common.preview')"
-                   transfer>
-            <Button size="small"
-                    @click="handlerVisibleContent(true)">
-              <FontAwesomeIcon icon="eye"/>
-            </Button>
-          </Tooltip>
+          <Space>
+            <Tooltip :content="$t('common.preview')"
+                     transfer>
+              <Button size="small"
+                      @click="handlerVisibleContent(true)">
+                <FontAwesomeIcon icon="eye"/>
+              </Button>
+            </Tooltip>
+            <Tooltip :content="$t('source.manager.visibleColumn')"
+                     transfer>
+              <Button size="small"
+                      @click="handlerVisibleColumn(true)">
+                <FontAwesomeIcon icon="columns"/>
+              </Button>
+            </Tooltip>
+          </Space>
         </div>
       </div>
       <AgGridVue class="ag-theme-datacap"
@@ -116,7 +125,8 @@
                  @grid-ready="handlerGridReady"
                  @sortChanged="handlerSortChanged"
                  @cellValueChanged="handlerCellValueChanged"
-                 @selectionChanged="handlerSelectionChanged">
+                 @selectionChanged="handlerSelectionChanged"
+                 @columnVisible="handlerColumnVisible">
       </AgGridVue>
       <CircularLoading v-if="refererLoading"
                        :show="refererLoading">
@@ -141,6 +151,12 @@
                              :columns="dataSelectedChanged.columns"
                              @close="handlerSelectedChangedPreview(false)">
       </TableRowDeletePreview>
+      <!-- Displays the currently selected and unchecked columns -->
+      <TableColumn v-if="visibleColumn.show"
+                   :isVisible="visibleColumn.show"
+                   :columns="visibleColumn.columns"
+                   @close="handlerVisibleColumn(false)">
+      </TableColumn>
     </div>
   </div>
 </template>
@@ -162,10 +178,11 @@ import {SqlColumn, TableFilter} from "@/model/TableFilter";
 import TableCellEditPreview from "@/views/admin/source/components/TableCellEditPreview.vue";
 import TableRowDeletePreview from "@/views/admin/source/components/TableRowDeletePreview.vue";
 import {cloneDeep} from "lodash";
+import TableColumn from "@/views/admin/source/components/TableColumn.vue";
 
 export default defineComponent({
   name: "TableData",
-  components: {TableRowDeletePreview, TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
+  components: {TableColumn, TableRowDeletePreview, TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
@@ -205,6 +222,10 @@ export default defineComponent({
       dataSelectedChanged: {
         changed: false,
         pending: false,
+        columns: []
+      },
+      visibleColumn: {
+        show: false,
         columns: []
       }
     }
@@ -323,6 +344,21 @@ export default defineComponent({
     handlerVisibleContent(show: boolean)
     {
       this.visibleContent.show = show;
+    },
+    handlerColumnVisible(event: { visible: any; column: { visible: any; colId: any; }; })
+    {
+      if (!event.visible) {
+        this.configure.headers.map((column: { field: any; checked: boolean; }) => {
+          if (column.field === event.column.colId) {
+            column.checked = false;
+          }
+        })
+      }
+    },
+    handlerVisibleColumn(show: boolean)
+    {
+      this.visibleColumn.show = show;
+      this.visibleColumn.columns = this.configure.headers;
     },
     watchId()
     {

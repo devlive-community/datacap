@@ -20,7 +20,8 @@ const createColumnDefs = (headers: any[], types: any[]): any[] => {
       },
       cellEditorPopup: true,
       cellEditor: 'agLargeTextCellEditor',
-      cellEditorParams: {maxLength: 9999999999999, rows: 10}
+      cellEditorParams: {maxLength: 9999999999999, rows: 10},
+      checked: true
     };
     columnDefs.push(columnDef);
   })

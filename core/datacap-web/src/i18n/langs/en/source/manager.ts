@@ -4,4 +4,5 @@ export default {
   updateSuccess: 'Update Success',
   deleteRows: 'Delete Rows',
   deleteSuccess: 'Delete Success',
+  visibleColumn: 'Visible Column',
 }

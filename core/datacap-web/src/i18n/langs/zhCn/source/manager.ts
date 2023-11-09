@@ -4,4 +4,5 @@ export default {
   updateSuccess: '更新成功',
   deleteRows: '删除行',
   deleteSuccess: '删除成功',
+  visibleColumn: '可见列',
 }
