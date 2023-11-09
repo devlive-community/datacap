@@ -126,7 +126,8 @@
                  @sortChanged="handlerSortChanged"
                  @cellValueChanged="handlerCellValueChanged"
                  @selectionChanged="handlerSelectionChanged"
-                 @columnVisible="handlerColumnVisible">
+                 @columnVisible="handlerColumnVisible"
+                 @columnMoved="handlerColumnMoved">
       </AgGridVue>
       <CircularLoading v-if="refererLoading"
                        :show="refererLoading">
@@ -260,20 +261,11 @@ export default defineComponent({
       this.gridApi = params.api;
       this.gridColumnApi = params.columnApi;
     },
-    handlerSortChanged()
+    handlerRefererData(configure: TableFilter)
     {
       this.configure.columns = [];
       this.gridOptions.overlayNoRowsTemplate = '<span></span>';
       this.refererLoading = true;
-      const columnState = this.gridColumnApi.getColumnState();
-      const orders = columnState.map((column: { colId: any; sort: any; }) => ({
-        column: column.colId,
-        order: column.sort
-      }));
-      const configure: TableFilter = new TableFilter();
-      configure.pagination = this.configure.pagination;
-      configure.orders = orders;
-
       TableService.getData(this.id, configure)
         .then(response => {
           if (response.status && response.data) {
@@ -289,6 +281,12 @@ export default defineComponent({
           }
         })
         .finally(() => this.refererLoading = false)
+    },
+    handlerSortChanged()
+    {
+      const configure: TableFilter = new TableFilter();
+      this.getSortConfigure(configure)
+      this.handlerRefererData(configure)
     },
     handlerCellValueChanged(event: { data: any; colDef: { field: string; }; oldValue: any; newValue: any; })
     {
@@ -359,6 +357,32 @@ export default defineComponent({
     {
       this.visibleColumn.show = show;
       this.visibleColumn.columns = this.configure.headers;
+    },
+    handlerColumnMoved(event)
+    {
+      if (event.finished) {
+        const configure: TableFilter = new TableFilter()
+        this.getSortConfigure(configure)
+        this.getVisibleColumn(configure)
+        this.handlerRefererData(configure)
+      }
+    },
+    getSortConfigure(configure: TableFilter)
+    {
+      const columnState = this.gridColumnApi.getColumnState();
+      const orders = columnState.map((column: { colId: any; sort: any; }) => ({
+        column: column.colId,
+        order: column.sort
+      }));
+      configure.pagination = this.configure.pagination;
+      configure.orders = orders;
+    },
+    getVisibleColumn(configure: TableFilter)
+    {
+      const columns = this.gridColumnApi.getColumnState()
+        .filter(item => !item.hide)
+        .map((item: { colId: any; }) => ({column: item.colId}))
+      configure.columns = columns
     },
     watchId()
     {

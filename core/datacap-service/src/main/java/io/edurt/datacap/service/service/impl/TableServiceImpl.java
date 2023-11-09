@@ -122,12 +122,21 @@ public class TableServiceImpl
                 }
             }
 
-            table.getColumns()
-                    .stream()
-                    .sorted(Comparator.comparing(item -> Integer.parseInt(item.getPosition())))
-                    .forEach(column -> columns.add(SqlColumn.builder()
-                            .column(String.format("`%s`", column.getName()))
-                            .build()));
+            // If the columns of the query are not passed, they are obtained through metadata
+            if (configure.getColumns() == null || configure.getColumns().size() == 0) {
+                table.getColumns()
+                        .stream()
+                        .sorted(Comparator.comparing(item -> Integer.parseInt(item.getPosition())))
+                        .forEach(column -> columns.add(SqlColumn.builder()
+                                .column(String.format("`%s`", column.getName()))
+                                .build()));
+            }
+            else {
+                configure.getColumns()
+                        .forEach(column -> columns.add(SqlColumn.builder()
+                                .column(String.format("`%s`", column.getColumn()))
+                                .build()));
+            }
             int offset = configure.getPagination().getPageSize() * (configure.getPagination().getCurrentPage() - 1);
             SqlBody body = SqlBody.builder()
                     .type(SqlType.SELECT)
