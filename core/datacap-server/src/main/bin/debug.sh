@@ -9,7 +9,7 @@ check_java_version() {
     local java_version=$("$JAVA_HOME"/bin/java -version 2>&1 | awk -F '"' '/version/ {print $2}')
     local major_version=$(echo "$java_version" | awk -F. '{print $1}')
     if [ "$major_version" != "1" ] && [ "$major_version" != "11" ]; then
-        printf "Error: Java version %s is not supported. Please use Java 1.8 or 11.\n" "$java_version"
+        printf "Error: Java version [ %s ] is not supported. Please use Java 1.8 or 11.\n" "$java_version"
         exit 1
     fi
 }

@@ -96,13 +96,22 @@
           </Tooltip>
         </Space>
         <div style="float: right;">
-          <Tooltip :content="$t('common.preview')"
-                   transfer>
-            <Button size="small"
-                    @click="handlerVisibleContent(true)">
-              <FontAwesomeIcon icon="eye"/>
-            </Button>
-          </Tooltip>
+          <Space>
+            <Tooltip :content="$t('common.preview')"
+                     transfer>
+              <Button size="small"
+                      @click="handlerVisibleContent(true)">
+                <FontAwesomeIcon icon="eye"/>
+              </Button>
+            </Tooltip>
+            <Tooltip :content="$t('source.manager.visibleColumn')"
+                     transfer>
+              <Button size="small"
+                      @click="handlerVisibleColumn(null, true)">
+                <FontAwesomeIcon icon="columns"/>
+              </Button>
+            </Tooltip>
+          </Space>
         </div>
       </div>
       <AgGridVue class="ag-theme-datacap"
@@ -116,7 +125,9 @@
                  @grid-ready="handlerGridReady"
                  @sortChanged="handlerSortChanged"
                  @cellValueChanged="handlerCellValueChanged"
-                 @selectionChanged="handlerSelectionChanged">
+                 @selectionChanged="handlerSelectionChanged"
+                 @columnVisible="handlerColumnVisible"
+                 @columnMoved="handlerColumnMoved">
       </AgGridVue>
       <CircularLoading v-if="refererLoading"
                        :show="refererLoading">
@@ -141,6 +152,13 @@
                              :columns="dataSelectedChanged.columns"
                              @close="handlerSelectedChangedPreview(false)">
       </TableRowDeletePreview>
+      <!-- Displays the currently selected and unchecked columns -->
+      <TableColumn v-if="visibleColumn.show"
+                   :isVisible="visibleColumn.show"
+                   :columns="visibleColumn.columns"
+                   @close="handlerVisibleColumn($event, false)"
+                   @onClose="handlerVisibleColumn($event, false)">
+      </TableColumn>
     </div>
   </div>
 </template>
@@ -162,10 +180,11 @@ import {SqlColumn, TableFilter} from "@/model/TableFilter";
 import TableCellEditPreview from "@/views/admin/source/components/TableCellEditPreview.vue";
 import TableRowDeletePreview from "@/views/admin/source/components/TableRowDeletePreview.vue";
 import {cloneDeep} from "lodash";
+import TableColumn from "@/views/admin/source/components/TableColumn.vue";
 
 export default defineComponent({
   name: "TableData",
-  components: {TableRowDeletePreview, TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
+  components: {TableColumn, TableRowDeletePreview, TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
@@ -187,6 +206,7 @@ export default defineComponent({
       gridOptions: null,
       gridApi: null as GridApi,
       gridColumnApi: null as ColumnApi,
+      originalColumns: [],
       configure: {
         headers: [],
         columns: [],
@@ -206,6 +226,10 @@ export default defineComponent({
         changed: false,
         pending: false,
         columns: []
+      },
+      visibleColumn: {
+        show: false,
+        columns: []
       }
     }
   },
@@ -224,6 +248,7 @@ export default defineComponent({
         .then(response => {
           if (response.status && response.data) {
             this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
+            this.originalColumns = this.configure.headers
             this.configure.columns = response.data.columns;
             this.configure.pagination = response.data.pagination;
             this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
@@ -239,23 +264,15 @@ export default defineComponent({
       this.gridApi = params.api;
       this.gridColumnApi = params.columnApi;
     },
-    handlerSortChanged()
+    handlerRefererData(configure: TableFilter)
     {
       this.configure.columns = [];
       this.gridOptions.overlayNoRowsTemplate = '<span></span>';
       this.refererLoading = true;
-      const columnState = this.gridColumnApi.getColumnState();
-      const orders = columnState.map((column: { colId: any; sort: any; }) => ({
-        column: column.colId,
-        order: column.sort
-      }));
-      const configure: TableFilter = new TableFilter();
-      configure.pagination = this.configure.pagination;
-      configure.orders = orders;
-
       TableService.getData(this.id, configure)
         .then(response => {
           if (response.status && response.data) {
+            this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
             this.configure.columns = response.data.columns;
             if (this.configure.columns.length <= 0) {
               this.gridOptions.overlayNoRowsTemplate = '<span>No Rows To Show</span>';
@@ -268,6 +285,12 @@ export default defineComponent({
           }
         })
         .finally(() => this.refererLoading = false)
+    },
+    handlerSortChanged()
+    {
+      const configure: TableFilter = new TableFilter();
+      this.getSortConfigure(configure)
+      this.handlerRefererData(configure)
     },
     handlerCellValueChanged(event: { data: any; colDef: { field: string; }; oldValue: any; newValue: any; })
     {
@@ -323,6 +346,65 @@ export default defineComponent({
     handlerVisibleContent(show: boolean)
     {
       this.visibleContent.show = show;
+    },
+    handlerColumnVisible(event: { visible: any; column: { visible: any; colId: any; }; })
+    {
+      if (!event.visible) {
+        this.configure.headers.map((column: { field: any; checked: boolean; }) => {
+          if (column.field === event.column.colId) {
+            column.checked = false;
+          }
+        })
+      }
+    },
+    handlerVisibleColumn(event, show: boolean)
+    {
+      this.visibleColumn.show = show;
+      if (event) {
+        const configure: TableFilter = new TableFilter()
+        this.getSortConfigure(configure)
+        this.getVisibleColumn(configure)
+        const columns = event.map((item: string) => ({column: item}))
+        configure.columns = columns
+        // Remove the reduced column is not selected
+        this.originalColumns.filter((item: { field: string; }) => !event.includes(item.field))
+          .map((item: { checked: boolean; }) => {
+            item.checked = false
+          })
+        // Add new Column is selected
+        this.originalColumns.filter((item: { field: string; }) => event.includes(item.field))
+          .map((item: { checked: boolean; }) => {
+            item.checked = true
+          })
+        this.handlerRefererData(configure)
+      }
+      this.visibleColumn.columns = this.originalColumns
+    },
+    handlerColumnMoved(event: { finished: any; })
+    {
+      if (event.finished) {
+        const configure: TableFilter = new TableFilter()
+        this.getSortConfigure(configure)
+        this.getVisibleColumn(configure)
+        this.handlerRefererData(configure)
+      }
+    },
+    getSortConfigure(configure: TableFilter)
+    {
+      const columnState = this.gridColumnApi.getColumnState();
+      const orders = columnState.map((column: { colId: any; sort: any; }) => ({
+        column: column.colId,
+        order: column.sort
+      }));
+      configure.pagination = this.configure.pagination;
+      configure.orders = orders;
+    },
+    getVisibleColumn(configure: TableFilter)
+    {
+      const columns = this.gridColumnApi.getColumnState()
+        .filter(item => !item.hide)
+        .map((item: { colId: any; }) => ({column: item.colId}))
+      configure.columns = columns
     },
     watchId()
     {
