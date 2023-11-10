@@ -107,7 +107,7 @@
             <Tooltip :content="$t('source.manager.visibleColumn')"
                      transfer>
               <Button size="small"
-                      @click="handlerVisibleColumn(true)">
+                      @click="handlerVisibleColumn(null, true)">
                 <FontAwesomeIcon icon="columns"/>
               </Button>
             </Tooltip>
@@ -156,7 +156,8 @@
       <TableColumn v-if="visibleColumn.show"
                    :isVisible="visibleColumn.show"
                    :columns="visibleColumn.columns"
-                   @close="handlerVisibleColumn(false)">
+                   @close="handlerVisibleColumn($event, false)"
+                   @onClose="handlerVisibleColumn($event, false)">
       </TableColumn>
     </div>
   </div>
@@ -205,6 +206,7 @@ export default defineComponent({
       gridOptions: null,
       gridApi: null as GridApi,
       gridColumnApi: null as ColumnApi,
+      originalColumns: [],
       configure: {
         headers: [],
         columns: [],
@@ -246,6 +248,7 @@ export default defineComponent({
         .then(response => {
           if (response.status && response.data) {
             this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
+            this.originalColumns = this.configure.headers
             this.configure.columns = response.data.columns;
             this.configure.pagination = response.data.pagination;
             this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
@@ -269,6 +272,7 @@ export default defineComponent({
       TableService.getData(this.id, configure)
         .then(response => {
           if (response.status && response.data) {
+            this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
             this.configure.columns = response.data.columns;
             if (this.configure.columns.length <= 0) {
               this.gridOptions.overlayNoRowsTemplate = '<span>No Rows To Show</span>';
@@ -353,12 +357,30 @@ export default defineComponent({
         })
       }
     },
-    handlerVisibleColumn(show: boolean)
+    handlerVisibleColumn(event, show: boolean)
     {
       this.visibleColumn.show = show;
-      this.visibleColumn.columns = this.configure.headers;
+      if (event) {
+        const configure: TableFilter = new TableFilter()
+        this.getSortConfigure(configure)
+        this.getVisibleColumn(configure)
+        const columns = event.map((item: string) => ({column: item}))
+        configure.columns = columns
+        // Remove the reduced column is not selected
+        this.originalColumns.filter((item: { field: string; }) => !event.includes(item.field))
+          .map((item: { checked: boolean; }) => {
+            item.checked = false
+          })
+        // Add new Column is selected
+        this.originalColumns.filter((item: { field: string; }) => event.includes(item.field))
+          .map((item: { checked: boolean; }) => {
+            item.checked = true
+          })
+        this.handlerRefererData(configure)
+      }
+      this.visibleColumn.columns = this.originalColumns
     },
-    handlerColumnMoved(event)
+    handlerColumnMoved(event: { finished: any; })
     {
       if (event.finished) {
         const configure: TableFilter = new TableFilter()

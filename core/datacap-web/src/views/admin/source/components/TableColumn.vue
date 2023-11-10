@@ -13,6 +13,17 @@
           </ListItem>
         </List>
       </CheckboxGroup>
+      <template #close>
+        <Tooltip :content="$t('common.apply')"
+                 transfer>
+          <Button size="small"
+                  type="primary"
+                  :style="{marginTop: '3px'}"
+                  @click="handlerCancel">
+            {{ $t('common.apply') }}
+          </Button>
+        </Tooltip>
+      </template>
     </Drawer>
   </div>
 </template>
@@ -45,12 +56,13 @@ export default defineComponent({
     {
       this.columns.filter((item: { checked: any; }) => item.checked)
         .forEach((item: { field: any; }) => {
-          this.applyColumns.push(item.field);
+          this.applyColumns.push(item.field)
         })
     },
     handlerCancel()
     {
-      this.visible = false;
+      this.$emit('onClose', this.applyColumns)
+      this.visible = false
     }
   },
   computed: {
