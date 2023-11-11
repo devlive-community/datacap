@@ -14,6 +14,13 @@ check_java_version() {
     fi
 }
 
+#获取jvm.conf配置项
+get_jvm_conf() {
+    printf "\n\tget jvm.conf \n"
+    jvm_conf=`grep -v  "^#" $HOME/configure/jvm.conf | awk '/-/{printf $0" "}' `
+}
+
+
 job_before_echo_basic() {
     printf "\n\tJob before echo basic \n"
     printf "============================================\n"
@@ -48,7 +55,7 @@ job_runner_debug_server() {
     printf "Server starting                        | %s\n" "$APPLICATION_NAME"
     cd "$HOME"
     PLUGIN_DIR=`find plugins/* -type d | sed 's/\(.*\)/\1\/\*/' | xargs | tr ' ' ':'`
-    "$JAVA_HOME"/bin/java -classpath "lib/*:$PLUGIN_DIR" "$APPLICATION_NAME" \
+    "$JAVA_HOME"/bin/java -classpath "lib/*:$PLUGIN_DIR" "${jvm_conf}"  "$APPLICATION_NAME" \
         --spring.config.location="$HOME/configure/"
 }
 
