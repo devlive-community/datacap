@@ -93,4 +93,17 @@ public class TableEntity
     {
         super(id, name, null, createTime, null);
     }
+
+    public String getRows()
+    {
+        if (isStringNull(rows)) {
+            return "0";
+        }
+        return rows;
+    }
+
+    private boolean isStringNull(String cs)
+    {
+        return "null".equals(cs);
+    }
 }
