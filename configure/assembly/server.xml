@@ -24,7 +24,7 @@
 
     <fileSets>
         <fileSet>
-            <directory>src/main/bin</directory>
+            <directory>${project.parent.basedir}/configure/etc/bin</directory>
             <outputDirectory>bin</outputDirectory>
             <fileMode>0755</fileMode>
             <lineEnding>unix</lineEnding>
