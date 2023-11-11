@@ -23,13 +23,9 @@ job_before_echo_basic() {
     printf "============================================\n\n"
 }
 
-
-#获取jvm.conf配置项
 get_jvm_conf() {
-    printf "\n\tget jvm.conf \n"
-    jvm_conf=`grep -v  "^#" $HOME/configure/jvm.conf | awk '/-/{printf $0" "}' `
+    JVM_CONF=`grep -v  "^#" $HOME/configure/jvm.conf | awk '/-/{printf $0" "}' `
 }
-
 
 job_before_apply_server() {
     APPLICATION_PID=$(pgrep -f "$APPLICATION_NAME" | awk '{print $1}')
@@ -57,8 +53,8 @@ job_runner_start_server() {
     cd "$HOME"
     get_jvm_conf
     PLUGIN_DIR=`find plugins/* -type d | sed 's/\(.*\)/\1\/\*/' | xargs | tr ' ' ':'`
-    nohup "$JAVA_HOME"/bin/java -classpath "lib/*:$PLUGIN_DIR"  "${jvm_conf}" "$APPLICATION_NAME" \
-        --spring.config.location="$HOME/configure/" > /dev/null 2>&1 &
+    nohup "$JAVA_HOME"/bin/java -cp "$HOME/lib/*:$PLUGIN_DIR" ${JVM_CONF} "$APPLICATION_NAME" \
+                  --spring.config.location="$HOME/configure/" > /dev/null 2>&1 &
     sleep 5
     job_before_apply_server
     if test -z "$APPLICATION_PID"; then

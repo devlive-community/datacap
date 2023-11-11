@@ -24,7 +24,7 @@
 
     <fileSets>
         <fileSet>
-            <directory>src/main/bin</directory>
+            <directory>${project.parent.basedir}/configure/etc/bin</directory>
             <outputDirectory>bin</outputDirectory>
             <fileMode>0755</fileMode>
             <lineEnding>unix</lineEnding>
@@ -39,6 +39,7 @@
                 <include>**/*.yml</include>
                 <include>**/*.json</include>
                 <include>**/*.yaml</include>
+                <include>**/*.conf</include>
             </includes>
             <filtered>true</filtered>
         </fileSet>
