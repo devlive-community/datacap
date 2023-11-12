@@ -118,7 +118,7 @@
                  style="width: 100%; min-height: 460px; height: 460px;"
                  :gridOptions="gridOptions"
                  :columnDefs="configure.headers"
-                 :rowData="configure.columns"
+                 :rowData="configure.datasets"
                  :tooltipShowDelay="100"
                  :sortingOrder="['desc', 'asc', null]"
                  :rowSelection="'multiple'"
@@ -210,6 +210,7 @@ export default defineComponent({
       configure: {
         headers: [],
         columns: [],
+        datasets: [],
         pagination: null as Pagination,
         operator: PaginationEnum
       },
@@ -249,7 +250,7 @@ export default defineComponent({
           if (response.status && response.data) {
             this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
             this.originalColumns = this.configure.headers
-            this.configure.columns = response.data.columns;
+            this.configure.datasets = response.data.columns;
             this.configure.pagination = response.data.pagination;
             this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
           }
@@ -266,15 +267,15 @@ export default defineComponent({
     },
     handlerRefererData(configure: TableFilter)
     {
-      this.configure.columns = [];
+      this.configure.datasets = [];
       this.gridOptions.overlayNoRowsTemplate = '<span></span>';
       this.refererLoading = true;
       TableService.getData(this.id, configure)
         .then(response => {
           if (response.status && response.data) {
             this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
-            this.configure.columns = response.data.columns;
-            if (this.configure.columns.length <= 0) {
+            this.configure.datasets = response.data.columns;
+            if (this.configure.datasets.length <= 0) {
               this.gridOptions.overlayNoRowsTemplate = '<span>No Rows To Show</span>';
             }
             this.configure.pagination = response.data.pagination;
