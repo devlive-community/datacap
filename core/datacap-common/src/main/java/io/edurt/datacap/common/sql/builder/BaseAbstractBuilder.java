@@ -4,6 +4,7 @@ package io.edurt.datacap.common.sql.builder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 // CHECKSTYLE:DISABLE:<CheckName>
@@ -409,6 +410,19 @@ abstract class BaseAbstractBuilder<T>
         return getSelf();
     }
 
+    public T ALTER_TABLE(String table)
+    {
+        sql().statementType = SQLStatement.StatementType.ALTER;
+        sql().tables.add(table);
+        return getSelf();
+    }
+
+    public T AUTO_INCREMENT(String value)
+    {
+        sql().autoIncrement = value;
+        return getSelf();
+    }
+
     private SQLStatement sql()
     {
         return sql;
@@ -464,7 +478,7 @@ abstract class BaseAbstractBuilder<T>
 
         public enum StatementType
         {
-            DELETE, INSERT, SELECT, UPDATE
+            DELETE, INSERT, SELECT, UPDATE, ALTER
         }
 
         private enum LimitingRowsStrategy
@@ -520,6 +534,7 @@ abstract class BaseAbstractBuilder<T>
         List<List<String>> valuesList = new ArrayList<>();
         boolean distinct;
         boolean end;
+        String autoIncrement;
         String offset;
         String limit;
         LimitingRowsStrategy limitingRowsStrategy = LimitingRowsStrategy.NOP;
@@ -617,6 +632,17 @@ abstract class BaseAbstractBuilder<T>
             return builder.toString();
         }
 
+        private String alterSQL(SafeAppendable builder)
+        {
+            sqlClause(builder, "ALTER TABLE", tables, "", "", "");
+            sqlClause(builder, "AUTO_INCREMENT", Collections.singletonList(autoIncrement), "= ", "", "");
+            limitingRowsStrategy.appendClause(builder, null, limit);
+            if (end) {
+                builder.append(";");
+            }
+            return builder.toString();
+        }
+
         public String sql(Appendable a)
         {
             SafeAppendable builder = new SafeAppendable(a);
@@ -641,6 +667,10 @@ abstract class BaseAbstractBuilder<T>
 
                 case UPDATE:
                     answer = updateSQL(builder);
+                    break;
+
+                case ALTER:
+                    answer = alterSQL(builder);
                     break;
 
                 default:

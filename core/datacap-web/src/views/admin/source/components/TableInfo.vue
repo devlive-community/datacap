@@ -198,6 +198,32 @@
                                  style="margin-right: 10px;">
                 </FontAwesomeIcon>
               </template>
+              <template #extra>
+                <Poptip v-if="info.autoIncrement !== 'null'"
+                        placement="right"
+                        transfer>
+                  <Tooltip :content="$t('source.manager.resetAutoIncrement')"
+                           placement="bottom-end"
+                           transfer>
+                    <FontAwesomeIcon icon="gear"
+                                     size="lg">
+                    </FontAwesomeIcon>
+                  </Tooltip>
+                  <template #content>
+                    {{ $t('source.manager.resetTo') }}
+                    <InputNumber v-model="autoIncrement"
+                                 size="small"
+                                 min="0">
+                    </InputNumber>
+                    <Button size="small"
+                            :loading="loadingAutoIncrement"
+                            :style="{marginLeft: '5px'}"
+                            @click="handlerApply">
+                      {{ $t('common.apply') }}
+                    </Button>
+                  </template>
+                </Poptip>
+              </template>
             </Cell>
           </Col>
         </Row>
@@ -218,6 +244,8 @@
 import {defineComponent, watch} from "vue";
 import TableService from "@/services/Table";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
+import {cloneDeep} from "lodash";
+import {SqlType, TableFilter} from "@/model/TableFilter";
 
 export default defineComponent({
   name: "TableInfo",
@@ -237,7 +265,9 @@ export default defineComponent({
   {
     return {
       loading: false,
-      info: null
+      loadingAutoIncrement: false,
+      info: null,
+      autoIncrement: 0
     }
   },
   methods: {
@@ -248,9 +278,27 @@ export default defineComponent({
         .then(response => {
           if (response.status) {
             this.info = response.data;
+            this.autoIncrement = cloneDeep(this.info.autoIncrement);
           }
         })
         .finally(() => this.loading = false)
+    },
+    handlerApply()
+    {
+      this.loadingAutoIncrement = true;
+      const configure = new TableFilter();
+      configure.type = SqlType.ALTER;
+      configure.value = this.autoIncrement;
+      TableService.getData(this.id, configure)
+        .then(response => {
+          if (response.status) {
+            this.$Message.success(response.message);
+          }
+          else {
+            this.$Message.error(response.message);
+          }
+        })
+        .finally(() => this.loadingAutoIncrement = false)
     },
     watchId()
     {

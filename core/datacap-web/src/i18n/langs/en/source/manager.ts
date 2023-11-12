@@ -5,4 +5,6 @@ export default {
   deleteRows: 'Delete Rows',
   deleteSuccess: 'Delete Success',
   visibleColumn: 'Visible Column',
+  resetAutoIncrement: 'Reset AutoIncrement',
+  resetTo: 'Reset To',
 }
