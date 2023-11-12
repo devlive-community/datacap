@@ -25,4 +25,5 @@ public class TableFilter
     // If it is UPDATE | INSERT uses the following configuration
     private List<SqlColumn> columns;
     private Properties original;
+    private String value;
 }

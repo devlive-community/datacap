@@ -80,6 +80,9 @@ public class TableServiceImpl
         else if (configure.getType().equals(SqlType.DELETE)) {
             return this.fetchDelete(plugin, table, source, configure);
         }
+        else if (configure.getType().equals(SqlType.ALTER)) {
+            return this.fetchAlter(plugin, table, source, configure);
+        }
         return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
     }
 
@@ -238,6 +241,34 @@ public class TableServiceImpl
             });
             String sql = String.join("\n\n", allSql);
             return CommonResponse.success(getResponse(configure, plugin, sql));
+        }
+        catch (Exception ex) {
+            return CommonResponse.failure(ExceptionUtils.getMessage(ex));
+        }
+    }
+
+    /**
+     * Fetches an alter operation for a given plugin, table, source, and table filter.
+     *
+     * @param plugin the plugin to use for the alter operation
+     * @param table the table entity to perform the alter operation on
+     * @param source the source entity to configure the alter operation
+     * @param configure the table filter to apply to the alter operation
+     * @return a CommonResponse object containing the result of the alter operation
+     */
+    private CommonResponse<Object> fetchAlter(Plugin plugin, TableEntity table, SourceEntity source, TableFilter configure)
+    {
+        try {
+            Configure alterConfigure = source.toConfigure();
+            alterConfigure.setFormat(FormatType.NONE);
+            plugin.connect(alterConfigure);
+            SqlBody body = SqlBody.builder()
+                    .type(SqlType.ALTER)
+                    .database(table.getDatabase().getName())
+                    .table(table.getName())
+                    .value(configure.getValue())
+                    .build();
+            return CommonResponse.success(getResponse(configure, plugin, new SqlBuilder(body).getSql()));
         }
         catch (Exception ex) {
             return CommonResponse.failure(ExceptionUtils.getMessage(ex));

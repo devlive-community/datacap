@@ -9,13 +9,15 @@ export class TableFilter
   columns?: Array<SqlColumn>;
   original?: Map<string, string>;
   preview?: boolean;
+  value?: string;
 }
 
 export enum SqlType
 {
   SELECT = 'SELECT',
   UPDATE = 'UPDATE',
-  DELETE = 'DELETE'
+  DELETE = 'DELETE',
+  ALTER = 'ALTER',
 }
 
 export class SqlColumn

@@ -5,4 +5,6 @@ export default {
   deleteRows: '删除行',
   deleteSuccess: '删除成功',
   visibleColumn: '可见列',
+  resetAutoIncrement: '重置自增列',
+  resetTo: '重置为',
 }

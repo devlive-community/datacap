@@ -2,6 +2,7 @@ package io.edurt.datacap.common.sql;
 
 import com.google.common.base.Preconditions;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.common.sql.builder.AlterBuilder;
 import io.edurt.datacap.common.sql.builder.DeleteBuilder;
 import io.edurt.datacap.common.sql.builder.SelectBuilder;
 import io.edurt.datacap.common.sql.builder.UpdateBuilder;
@@ -38,6 +39,9 @@ public class SqlBuilder
                 break;
             case DELETE:
                 sql = getDelete();
+                break;
+            case ALTER:
+                sql = getAlter();
                 break;
             default:
                 Preconditions.checkArgument(false, "Not support type");
@@ -148,5 +152,18 @@ public class SqlBuilder
 
         DeleteBuilder.END();
         return DeleteBuilder.SQL();
+    }
+
+    /**
+     * Generate the function comment for the given function body in a markdown code block with the correct language syntax.
+     *
+     * @return The generated function comment.
+     */
+    private String getAlter()
+    {
+        AlterBuilder.BEGIN();
+        AlterBuilder.ALTER_TABLE(applyDatabaseAndTable());
+        AlterBuilder.AUTO_INCREMENT(configure.getValue());
+        return AlterBuilder.SQL();
     }
 }

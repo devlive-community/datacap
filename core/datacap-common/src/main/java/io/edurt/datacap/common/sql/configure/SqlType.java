@@ -4,5 +4,6 @@ public enum SqlType
 {
     SELECT,
     UPDATE,
-    DELETE
+    DELETE,
+    ALTER
 }
