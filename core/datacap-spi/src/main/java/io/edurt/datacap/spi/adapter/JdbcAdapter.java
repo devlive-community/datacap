@@ -52,20 +52,18 @@ public class JdbcAdapter
                 List<String> types = new ArrayList<>();
                 List<Object> columns = new ArrayList<>();
                 try (ResultSet resultSet = statement.executeQuery(content)) {
-                    boolean isPresent = true;
                     JdbcColumn jdbcColumn = new JdbcColumn(resultSet);
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    int columnCount = metaData.getColumnCount();
+                    for (int i = 1; i <= columnCount; i++) {
+                        headers.add(metaData.getColumnName(i));
+                        types.add(metaData.getColumnTypeName(i));
+                    }
                     while (resultSet.next()) {
-                        ResultSetMetaData metaData = resultSet.getMetaData();
-                        int columnCount = metaData.getColumnCount();
                         List<Object> _columns = new ArrayList<>();
                         for (int i = 1; i <= columnCount; i++) {
-                            if (isPresent) {
-                                headers.add(metaData.getColumnName(i));
-                                types.add(metaData.getColumnTypeName(i));
-                            }
                             _columns.add(jdbcColumn.convert(metaData.getColumnTypeName(i), i));
                         }
-                        isPresent = false;
                         columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
                     }
                 }
