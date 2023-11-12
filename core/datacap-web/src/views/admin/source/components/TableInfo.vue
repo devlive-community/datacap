@@ -293,6 +293,7 @@ export default defineComponent({
         .then(response => {
           if (response.status) {
             this.$Message.success(response.message);
+            this.handlerInitialize();
           }
           else {
             this.$Message.error(response.message);

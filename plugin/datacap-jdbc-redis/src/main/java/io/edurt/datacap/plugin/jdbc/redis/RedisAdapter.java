@@ -54,7 +54,7 @@ public class RedisAdapter
                             headers.add(metaData.getColumnName(i));
                             types.add(metaData.getColumnTypeName(i));
                         }
-                        _columns.add(jdbcColumn.convert(metaData.getColumnTypeName(i), i));
+                        _columns.add(jdbcColumn.mappingColumnData(metaData.getColumnTypeName(i), i));
                     }
                     isPresent = false;
                     columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
