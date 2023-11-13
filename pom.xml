@@ -127,7 +127,7 @@
     </organization>
 
     <properties>
-        <springboot.version>2.7.4</springboot.version>
+        <springboot.version>3.1.5</springboot.version>
         <lombok.version>1.18.28</lombok.version>
         <junit.version>4.13.2</junit.version>
         <jjwt.version>0.9.1</jjwt.version>
