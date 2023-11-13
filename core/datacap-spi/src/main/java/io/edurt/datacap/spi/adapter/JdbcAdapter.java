@@ -2,6 +2,7 @@ package io.edurt.datacap.spi.adapter;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.FormatType;
+import io.edurt.datacap.spi.column.Column;
 import io.edurt.datacap.spi.column.JdbcColumn;
 import io.edurt.datacap.spi.connection.JdbcConfigure;
 import io.edurt.datacap.spi.connection.JdbcConnection;
@@ -52,17 +53,17 @@ public class JdbcAdapter
                 List<String> types = new ArrayList<>();
                 List<Object> columns = new ArrayList<>();
                 try (ResultSet resultSet = statement.executeQuery(content)) {
-                    JdbcColumn jdbcColumn = new JdbcColumn(resultSet);
+                    Column jdbcColumn = new JdbcColumn(resultSet);
                     ResultSetMetaData metaData = resultSet.getMetaData();
                     int columnCount = metaData.getColumnCount();
                     for (int i = 1; i <= columnCount; i++) {
                         headers.add(metaData.getColumnName(i));
-                        types.add(metaData.getColumnTypeName(i));
+                        types.add(jdbcColumn.mappingColumnType(metaData.getColumnTypeName(i)));
                     }
                     while (resultSet.next()) {
                         List<Object> _columns = new ArrayList<>();
                         for (int i = 1; i <= columnCount; i++) {
-                            _columns.add(jdbcColumn.convert(metaData.getColumnTypeName(i), i));
+                            _columns.add(jdbcColumn.mappingColumnData(metaData.getColumnTypeName(i), i));
                         }
                         columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
                     }
