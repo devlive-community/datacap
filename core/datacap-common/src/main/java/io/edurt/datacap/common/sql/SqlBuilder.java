@@ -5,6 +5,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.sql.builder.AlterBuilder;
 import io.edurt.datacap.common.sql.builder.DeleteBuilder;
 import io.edurt.datacap.common.sql.builder.SelectBuilder;
+import io.edurt.datacap.common.sql.builder.ShowBuilder;
 import io.edurt.datacap.common.sql.builder.UpdateBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
@@ -42,6 +43,9 @@ public class SqlBuilder
                 break;
             case ALTER:
                 sql = getAlter();
+                break;
+            case SHOW:
+                sql = showCreateTable();
                 break;
             default:
                 Preconditions.checkArgument(false, "Not support type");
@@ -165,5 +169,17 @@ public class SqlBuilder
         AlterBuilder.ALTER_TABLE(applyDatabaseAndTable());
         AlterBuilder.AUTO_INCREMENT(configure.getValue());
         return AlterBuilder.SQL();
+    }
+
+    /**
+     * Generate the function comment for the given function body in a markdown code block with the correct language syntax.
+     *
+     * @return The generated function comment in markdown format.
+     */
+    private String showCreateTable()
+    {
+        ShowBuilder.BEGIN();
+        ShowBuilder.SHOW_CREATE_TABLE(applyDatabaseAndTable());
+        return ShowBuilder.SQL();
     }
 }

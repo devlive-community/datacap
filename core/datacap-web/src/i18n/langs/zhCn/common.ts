@@ -165,4 +165,5 @@ export default {
   preview: '预览',
   documentation: '文档',
   releaseNote: '发行说明',
+  statement: '语句',
 }

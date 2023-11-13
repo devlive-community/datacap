@@ -5,5 +5,6 @@ public enum SqlType
     SELECT,
     UPDATE,
     DELETE,
-    ALTER
+    ALTER,
+    SHOW
 }

@@ -26,6 +26,7 @@ import {
   faRepeat,
   faSun,
   faTable,
+  faTablet,
   faTextHeight,
   faTimes,
   faUpload
@@ -38,6 +39,7 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faTablet,
     faMinus,
     faUpload,
     faEye,

@@ -165,4 +165,5 @@ export default {
   preview: 'Preview',
   documentation: 'Documentation',
   releaseNote: 'Release Note',
+  statement: 'Statement',
 }
