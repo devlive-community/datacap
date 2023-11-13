@@ -73,6 +73,12 @@
                            :id="applyValue.node.applyId">
                 </TableData>
               </TabPane>
+              <TabPane :label="tabPane.statement"
+                       name="statement">
+                <TableStatement v-if="applyValue.tabType === 'statement'"
+                                :id="applyValue.node.applyId">
+                </TableStatement>
+              </TabPane>
             </Tabs>
           </Card>
         </template>
@@ -93,10 +99,12 @@ import {DataStructureModel} from "@/model/DataStructure";
 import {DataStructureEnum} from "@/enum/DataStructure";
 import TableInfo from "@/views/admin/source/components/TableInfo.vue";
 import TableData from "@/views/admin/source/components/TableData.vue";
+import {TabPane} from "view-ui-plus";
+import TableStatement from "@/views/admin/source/components/TableStatement.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
-  components: {TableData, TableInfo, CircularLoading},
+  components: {TableStatement, TabPane, TableData, TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
@@ -135,6 +143,7 @@ export default defineComponent({
       tabPane: {
         info: (h) => this.resolveTabPaneComponent(h, 'circle-info', 'common.info'),
         data: (h) => this.resolveTabPaneComponent(h, 'table', 'common.data'),
+        statement: (h) => this.resolveTabPaneComponent(h, 'tablet', 'common.statement')
       }
     }
   },

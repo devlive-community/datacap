@@ -423,6 +423,13 @@ abstract class BaseAbstractBuilder<T>
         return getSelf();
     }
 
+    public T SHOW_CREATE_TABLE(String table)
+    {
+        sql().statementType = SQLStatement.StatementType.SHOW;
+        sql().tables.add(table);
+        return getSelf();
+    }
+
     private SQLStatement sql()
     {
         return sql;
@@ -478,7 +485,7 @@ abstract class BaseAbstractBuilder<T>
 
         public enum StatementType
         {
-            DELETE, INSERT, SELECT, UPDATE, ALTER
+            DELETE, INSERT, SELECT, UPDATE, ALTER, SHOW
         }
 
         private enum LimitingRowsStrategy
@@ -643,6 +650,16 @@ abstract class BaseAbstractBuilder<T>
             return builder.toString();
         }
 
+        private String showSQL(SafeAppendable builder)
+        {
+            sqlClause(builder, "SHOW CREATE TABLE", tables, "", "", "");
+            limitingRowsStrategy.appendClause(builder, null, limit);
+            if (end) {
+                builder.append(";");
+            }
+            return builder.toString();
+        }
+
         public String sql(Appendable a)
         {
             SafeAppendable builder = new SafeAppendable(a);
@@ -671,6 +688,10 @@ abstract class BaseAbstractBuilder<T>
 
                 case ALTER:
                     answer = alterSQL(builder);
+                    break;
+
+                case SHOW:
+                    answer = showSQL(builder);
                     break;
 
                 default:

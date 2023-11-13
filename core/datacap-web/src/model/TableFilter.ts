@@ -18,6 +18,7 @@ export enum SqlType
   UPDATE = 'UPDATE',
   DELETE = 'DELETE',
   ALTER = 'ALTER',
+  SHOW = 'SHOW'
 }
 
 export class SqlColumn

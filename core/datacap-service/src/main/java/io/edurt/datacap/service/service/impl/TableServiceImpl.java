@@ -83,6 +83,9 @@ public class TableServiceImpl
         else if (configure.getType().equals(SqlType.ALTER)) {
             return this.fetchAlter(plugin, table, source, configure);
         }
+        else if (configure.getType().equals(SqlType.SHOW)) {
+            return this.fetchShowCreateTable(plugin, table, source, configure);
+        }
         return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
     }
 
@@ -267,6 +270,24 @@ public class TableServiceImpl
                     .database(table.getDatabase().getName())
                     .table(table.getName())
                     .value(configure.getValue())
+                    .build();
+            return CommonResponse.success(getResponse(configure, plugin, new SqlBuilder(body).getSql()));
+        }
+        catch (Exception ex) {
+            return CommonResponse.failure(ExceptionUtils.getMessage(ex));
+        }
+    }
+
+    private CommonResponse<Object> fetchShowCreateTable(Plugin plugin, TableEntity table, SourceEntity source, TableFilter configure)
+    {
+        try {
+            Configure alterConfigure = source.toConfigure();
+            alterConfigure.setFormat(FormatType.NONE);
+            plugin.connect(alterConfigure);
+            SqlBody body = SqlBody.builder()
+                    .type(SqlType.SHOW)
+                    .database(table.getDatabase().getName())
+                    .table(table.getName())
                     .build();
             return CommonResponse.success(getResponse(configure, plugin, new SqlBuilder(body).getSql()));
         }
