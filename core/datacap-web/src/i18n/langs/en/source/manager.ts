@@ -7,5 +7,6 @@ export default {
   visibleColumn: 'Visible Column',
   resetAutoIncrement: 'Reset AutoIncrement',
   resetTo: 'Reset To',
-  filter: 'Filter'
+  filter: 'Filter',
+  addFilter: 'Add Filter',
 }

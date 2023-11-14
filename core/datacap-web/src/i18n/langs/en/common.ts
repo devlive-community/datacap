@@ -166,4 +166,5 @@ export default {
   documentation: 'Documentation',
   releaseNote: 'Release Note',
   statement: 'Statement',
+  condition: 'Condition',
 }

@@ -10,17 +10,79 @@
                        style="margin-top: 150px;">
       </CircularLoading>
       <div v-else>
+        <Form :model="formState"
+              :label-width="80">
+          <FormItem :label="$t('common.condition')"
+                    :style="{marginBottom: '0px'}">
+            <Row>
+              <Col span="6">
+                <Select v-model="formState.condition"
+                        size="small">
+                  <Option value="AND">AND</Option>
+                  <Option value="OR">OR</Option>
+                </Select>
+              </Col>
+            </Row>
+          </FormItem>
+          <Divider orientation="left"
+                   size="small"
+                   :style="{margin: '0'}">
+            {{ $t('source.manager.filter') }}
+          </Divider>
+          <template v-for="(item, index) in formState.filters">
+            <FormItem :key="index"
+                      :style="{marginBottom: '0px'}">
+              <Row>
+                <Col span="6"
+                     offset="1">
+                  <Select v-model="item.column"
+                          size="small">
+                  </Select>
+                </Col>
+                <Col span="6"
+                     offset="1">
+                  <Select v-model="item.filter"
+                          size="small">
+                  </Select>
+                </Col>
+                <Col span="6"
+                     offset="1">
+                  <Input v-model="item.filter"
+                         size="small">
+                  </Input>
+                </Col>
+                <Col span="1"
+                     offset="1">
+                  <Button size="small"
+                          type="error"
+                          shape="circle"
+                          icon="md-remove"
+                          @click="handlerRemoveFilter(index)">
+                  </Button>
+                </Col>
+              </Row>
+            </FormItem>
+          </template>
+          <FormItem :style="{marginBottom: '0px'}">
+            <Row>
+              <Col span="6"
+                   offset="1">
+                <Button type="dashed"
+                        @click="handlerAddFilter"
+                        size="small"
+                        icon="md-add">
+                  {{ $t('source.manager.addFilter') }}
+                </Button>
+              </Col>
+            </Row>
+          </FormItem>
+        </Form>
       </div>
       <template #footer>
         <Button danger
                 @click="handlerCancel">
           {{ $t('common.cancel') }}
         </Button>
-        <!--        <Button type="primary"-->
-        <!--                :loading="loadingChange"-->
-        <!--                @click="handlerSave()">-->
-        <!--          {{ $t('common.submit') }}-->
-        <!--        </Button>-->
       </template>
     </Modal>
   </div>
@@ -45,13 +107,30 @@ export default defineComponent({
   data()
   {
     return {
-      loading: false
+      loading: false,
+      formState: {
+        condition: 'AND',
+        filters: []
+      }
     }
   },
   methods: {
     handlerInitialize()
     {
       console.log(1)
+    },
+    handlerAddFilter()
+    {
+      const filter = {
+        column: null,
+        filter: null,
+        value: null
+      }
+      this.formState.filters.push(filter);
+    },
+    handlerRemoveFilter(index: number)
+    {
+      this.formState.filters.splice(index, 1);
     },
     handlerCancel()
     {

@@ -166,4 +166,5 @@ export default {
   documentation: '文档',
   releaseNote: '发行说明',
   statement: '语句',
+  condition: '条件',
 }
