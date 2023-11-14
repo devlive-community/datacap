@@ -7,4 +7,5 @@ export default {
   visibleColumn: '可见列',
   resetAutoIncrement: '重置自增列',
   resetTo: '重置为',
+  filter: '筛选器'
 }

@@ -94,17 +94,26 @@
               <FontAwesomeIcon icon="upload"/>
             </Button>
           </Tooltip>
+          <Tooltip :content="$t('common.preview')"
+                   transfer>
+            <Button size="small"
+                    @click="handlerVisibleContent(true)">
+              <FontAwesomeIcon icon="eye"/>
+            </Button>
+          </Tooltip>
         </Space>
         <div style="float: right;">
           <Space>
-            <Tooltip :content="$t('common.preview')"
+            <Tooltip :content="$t('source.manager.filter')"
+                     placement="bottom-end"
                      transfer>
               <Button size="small"
-                      @click="handlerVisibleContent(true)">
-                <FontAwesomeIcon icon="eye"/>
+                      @click="handlerFilterConfigure(true)">
+                <FontAwesomeIcon icon="filter"/>
               </Button>
             </Tooltip>
             <Tooltip :content="$t('source.manager.visibleColumn')"
+                     placement="bottom-end"
                      transfer>
               <Button size="small"
                       @click="handlerVisibleColumn(null, true)">
@@ -159,6 +168,10 @@
                    @close="handlerVisibleColumn($event, false)"
                    @onClose="handlerVisibleColumn($event, false)">
       </TableColumn>
+      <TableColumnFilter v-if="filterConfigure.show"
+                         :isVisible="filterConfigure.show"
+                         @close="handlerFilterConfigure(false)">
+      </TableColumnFilter>
     </div>
   </div>
 </template>
@@ -181,10 +194,11 @@ import TableCellEditPreview from "@/views/admin/source/components/TableCellEditP
 import TableRowDeletePreview from "@/views/admin/source/components/TableRowDeletePreview.vue";
 import {cloneDeep} from "lodash";
 import TableColumn from "@/views/admin/source/components/TableColumn.vue";
+import TableColumnFilter from "@/views/admin/source/components/TableColumnFilter.vue";
 
 export default defineComponent({
   name: "TableData",
-  components: {TableColumn, TableRowDeletePreview, TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
+  components: {TableColumnFilter, TableColumn, TableRowDeletePreview, TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
@@ -231,6 +245,9 @@ export default defineComponent({
       visibleColumn: {
         show: false,
         columns: []
+      },
+      filterConfigure: {
+        show: false
       }
     }
   },
@@ -389,6 +406,10 @@ export default defineComponent({
         this.getVisibleColumn(configure)
         this.handlerRefererData(configure)
       }
+    },
+    handlerFilterConfigure(show: boolean)
+    {
+      this.filterConfigure.show = show;
     },
     getSortConfigure(configure: TableFilter)
     {
