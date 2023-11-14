@@ -27,3 +27,12 @@ export class SqlColumn
   value?: string;
   original?: Map<string, object>;
 }
+
+export class ColumnFilter
+{
+  index: number;
+  column: string;
+  operation: string;
+  operations: Array<string>;
+  value: any
+}

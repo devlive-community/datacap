@@ -170,6 +170,8 @@
       </TableColumn>
       <TableColumnFilter v-if="filterConfigure.show"
                          :isVisible="filterConfigure.show"
+                         :columns="filterConfigure.columns"
+                         :types="filterConfigure.types"
                          @close="handlerFilterConfigure(false)">
       </TableColumnFilter>
     </div>
@@ -247,7 +249,9 @@ export default defineComponent({
         columns: []
       },
       filterConfigure: {
-        show: false
+        show: false,
+        columns: [],
+        types: []
       }
     }
   },
@@ -270,6 +274,8 @@ export default defineComponent({
             this.configure.datasets = response.data.columns;
             this.configure.pagination = response.data.pagination;
             this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
+            this.filterConfigure.columns = cloneDeep(response.data.headers)
+            this.filterConfigure.types = cloneDeep(response.data.types)
           }
           else {
             this.$Message.error(response.message);
@@ -297,6 +303,8 @@ export default defineComponent({
             }
             this.configure.pagination = response.data.pagination;
             this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
+            this.filterConfigure.columns = cloneDeep(response.data.headers)
+            this.filterConfigure.types = cloneDeep(response.data.types)
           }
           else {
             this.$Message.error(response.message);
