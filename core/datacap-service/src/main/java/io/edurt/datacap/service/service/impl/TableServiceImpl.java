@@ -114,6 +114,10 @@ public class TableServiceImpl
                             .column("COUNT(1)")
                             .build()))
                     .build();
+            if (configure.getFilter() != null) {
+                countBody.setCondition(configure.getFilter().getCondition());
+                countBody.setWhere(configure.getFilter().getFilters());
+            }
             SqlBuilder countBuilder = new SqlBuilder(countBody);
             String countSql = countBuilder.getSql();
             Response countResponse = plugin.execute(countSql);
@@ -163,6 +167,11 @@ public class TableServiceImpl
                                 .order(SqlOrder.valueOf(item.getOrder().toUpperCase()))
                                 .build()));
                 body.setOrders(orderColumns);
+            }
+
+            if (configure.getFilter() != null) {
+                body.setCondition(configure.getFilter().getCondition());
+                body.setWhere(configure.getFilter().getFilters());
             }
 
             SqlBuilder builder = new SqlBuilder(body);

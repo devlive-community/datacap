@@ -1,5 +1,6 @@
 import {OrderFilter} from "@/model/OrderFilter";
 import {Pagination} from "@/entity/Pagination";
+import {Operator} from "@/enum/Operator";
 
 export class TableFilter
 {
@@ -33,8 +34,8 @@ export class ColumnFilter
 {
   index: number;
   column: string;
-  operation: string;
-  operations: Array<string>;
+  operator: string;
+  operations: Array<Operator>;
   value: any
 }
 

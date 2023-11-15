@@ -77,6 +77,14 @@ public class SqlBuilder
                 .collect(Collectors.toList());
     }
 
+    private String applyWhere()
+    {
+        return configure.getWhere()
+                .stream()
+                .map(v -> String.format("`%s` %s '%s'", v.getColumn(), v.getOperator().getSymbol(), StringEscapeUtils.escapeSql(v.getValue())))
+                .collect(Collectors.joining(configure.getCondition()));
+    }
+
     private String getSelect()
     {
         SelectBuilder.BEGIN();
@@ -85,6 +93,10 @@ public class SqlBuilder
 
         if (ObjectUtils.isNotEmpty(configure.getOrders())) {
             SelectBuilder.ORDER_BY(applyOrderByColumns());
+        }
+
+        if (configure.getWhere() != null && !configure.getWhere().isEmpty()) {
+            SelectBuilder.WHERE(applyWhere());
         }
 
         if (configure.getLimit() != null) {

@@ -48,12 +48,12 @@
               </Col>
               <Col span="6"
                    offset="1">
-                <Select v-model="item.operation"
+                <Select v-model="item.operator"
                         size="small">
                   <Option v-for="operation in item.operations"
                           :label="operation"
                           :key="operation"
-                          :value="operation">
+                          :value="Object.keys(OPERATOR)[Object.values(OPERATOR).indexOf(operation)]">
                   </Option>
                 </Select>
               </Col>
@@ -107,6 +107,7 @@ import {defineComponent, watch} from "vue";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import {ColumnFilter} from "@/model/TableFilter";
 import {cloneDeep} from "lodash";
+import {Operator} from "@/enum/Operator";
 
 export default defineComponent({
   name: "TableFilter",
@@ -135,6 +136,7 @@ export default defineComponent({
   data()
   {
     return {
+      OPERATOR: Operator,
       loading: false,
       formState: {
         condition: 'AND',
@@ -157,10 +159,10 @@ export default defineComponent({
       const type = this.types[value];
       filter.column = this.columns[value];
       if (type === 'Long' || type === 'Double' || type === 'Integer') {
-        filter.operations = ['=', '!=', '>', '<', '>=', '<='];
+        filter.operations = [Operator.EQ, Operator.NEQ, Operator.GT, Operator.LT, Operator.GTE, Operator.LTE];
       }
       else {
-        filter.operations = ['=', '!=', 'LIKE', 'NOT LIKE', 'IS NULL', 'IS NOT NULL'];
+        filter.operations = [Operator.EQ, Operator.NEQ, Operator.LIKE, Operator.NLINK, Operator.NULL, Operator.NNULL];
       }
     },
     handlerApplyFilter()

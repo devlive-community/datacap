@@ -26,4 +26,5 @@ public class TableFilter
     private List<SqlColumn> columns;
     private Properties original;
     private String value;
+    private ColumnFilter filter;
 }

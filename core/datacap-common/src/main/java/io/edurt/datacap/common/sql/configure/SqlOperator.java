@@ -7,7 +7,11 @@ public enum SqlOperator
     GT(">"),
     GTE(">="),
     LT("<"),
-    LTE("<=");
+    LTE("<="),
+    LIKE("LIKE"),
+    NLIKE("NOT LIKE"),
+    NULL("IS NULL"),
+    NNULL("IS NOT NULL");
 
     private final String symbol;
 
