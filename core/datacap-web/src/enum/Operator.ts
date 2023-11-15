@@ -7,7 +7,7 @@ export enum Operator
   LT = ("<"),
   LTE = ("<="),
   LIKE = ("LIKE"),
-  NLINK = ("NOT LIKE"),
+  NLIKE = ("NOT LIKE"),
   NULL = ("IS NULL"),
   NNULL = ("IS NOT NULL")
 }

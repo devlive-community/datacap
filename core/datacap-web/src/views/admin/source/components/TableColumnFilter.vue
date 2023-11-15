@@ -162,7 +162,7 @@ export default defineComponent({
         filter.operations = [Operator.EQ, Operator.NEQ, Operator.GT, Operator.LT, Operator.GTE, Operator.LTE];
       }
       else {
-        filter.operations = [Operator.EQ, Operator.NEQ, Operator.LIKE, Operator.NLINK, Operator.NULL, Operator.NNULL];
+        filter.operations = [Operator.EQ, Operator.NEQ, Operator.LIKE, Operator.NLIKE, Operator.NULL, Operator.NNULL];
       }
     },
     handlerApplyFilter()
