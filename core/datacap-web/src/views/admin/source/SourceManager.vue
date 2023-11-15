@@ -74,6 +74,7 @@
                 </TableData>
               </TabPane>
               <TabPane :label="tabPane.statement"
+                       :style="{textAlign: 'center'}"
                        name="statement">
                 <TableStatement v-if="applyValue.tabType === 'statement'"
                                 :id="applyValue.node.applyId">

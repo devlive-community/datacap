@@ -9,6 +9,7 @@ import io.edurt.datacap.common.sql.builder.ShowBuilder;
 import io.edurt.datacap.common.sql.builder.UpdateBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
+import io.edurt.datacap.common.sql.configure.SqlOperator;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -77,6 +78,23 @@ public class SqlBuilder
                 .collect(Collectors.toList());
     }
 
+    private String applyWhere()
+    {
+        return configure.getWhere()
+                .stream()
+                .map(column -> {
+                    String value = StringEscapeUtils.escapeSql(column.getValue());
+                    if (column.getOperator().equals(SqlOperator.LIKE) || column.getOperator().equals(SqlOperator.NLIKE)) {
+                        value = StringEscapeUtils.escapeSql(String.format("%%%s%%", value));
+                    }
+                    else if (column.getOperator().equals(SqlOperator.NULL) || column.getOperator().equals(SqlOperator.NNULL)) {
+                        return String.format("`%s` %s", column.getColumn(), column.getOperator().getSymbol());
+                    }
+                    return String.format("`%s` %s '%s'", column.getColumn(), column.getOperator().getSymbol(), value);
+                })
+                .collect(Collectors.joining(configure.getCondition()));
+    }
+
     private String getSelect()
     {
         SelectBuilder.BEGIN();
@@ -85,6 +103,10 @@ public class SqlBuilder
 
         if (ObjectUtils.isNotEmpty(configure.getOrders())) {
             SelectBuilder.ORDER_BY(applyOrderByColumns());
+        }
+
+        if (configure.getWhere() != null && !configure.getWhere().isEmpty()) {
+            SelectBuilder.WHERE(applyWhere());
         }
 
         if (configure.getLimit() != null) {

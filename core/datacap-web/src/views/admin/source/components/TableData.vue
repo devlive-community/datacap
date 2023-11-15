@@ -94,17 +94,26 @@
               <FontAwesomeIcon icon="upload"/>
             </Button>
           </Tooltip>
+          <Tooltip :content="$t('common.preview')"
+                   transfer>
+            <Button size="small"
+                    @click="handlerVisibleContent(true)">
+              <FontAwesomeIcon icon="eye"/>
+            </Button>
+          </Tooltip>
         </Space>
         <div style="float: right;">
           <Space>
-            <Tooltip :content="$t('common.preview')"
+            <Tooltip :content="$t('source.manager.filter')"
+                     placement="bottom-end"
                      transfer>
               <Button size="small"
-                      @click="handlerVisibleContent(true)">
-                <FontAwesomeIcon icon="eye"/>
+                      @click="handlerFilterConfigure(true)">
+                <FontAwesomeIcon icon="filter"/>
               </Button>
             </Tooltip>
             <Tooltip :content="$t('source.manager.visibleColumn')"
+                     placement="bottom-end"
                      transfer>
               <Button size="small"
                       @click="handlerVisibleColumn(null, true)">
@@ -159,6 +168,14 @@
                    @close="handlerVisibleColumn($event, false)"
                    @onClose="handlerVisibleColumn($event, false)">
       </TableColumn>
+      <TableColumnFilter v-if="filterConfigure.show"
+                         :isVisible="filterConfigure.show"
+                         :columns="filterConfigure.columns"
+                         :types="filterConfigure.types"
+                         :configure="filterConfigure.configure"
+                         @apply="handlerApplyFilter"
+                         @close="handlerFilterConfigure(false)">
+      </TableColumnFilter>
     </div>
   </div>
 </template>
@@ -181,10 +198,11 @@ import TableCellEditPreview from "@/views/admin/source/components/TableCellEditP
 import TableRowDeletePreview from "@/views/admin/source/components/TableRowDeletePreview.vue";
 import {cloneDeep} from "lodash";
 import TableColumn from "@/views/admin/source/components/TableColumn.vue";
+import TableColumnFilter from "@/views/admin/source/components/TableColumnFilter.vue";
 
 export default defineComponent({
   name: "TableData",
-  components: {TableColumn, TableRowDeletePreview, TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
+  components: {TableColumnFilter, TableColumn, TableRowDeletePreview, TableCellEditPreview, MarkdownPreview, InputNumber, CircularLoading, AgGridVue},
   props: {
     id: {
       type: Number,
@@ -231,6 +249,15 @@ export default defineComponent({
       visibleColumn: {
         show: false,
         columns: []
+      },
+      filterConfigure: {
+        show: false,
+        columns: [],
+        types: [],
+        configure: {
+          condition: 'AND',
+          filters: []
+        }
       }
     }
   },
@@ -253,6 +280,8 @@ export default defineComponent({
             this.configure.datasets = response.data.columns;
             this.configure.pagination = response.data.pagination;
             this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
+            this.filterConfigure.columns = cloneDeep(response.data.headers)
+            this.filterConfigure.types = cloneDeep(response.data.types)
           }
           else {
             this.$Message.error(response.message);
@@ -280,6 +309,8 @@ export default defineComponent({
             }
             this.configure.pagination = response.data.pagination;
             this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
+            this.filterConfigure.columns = cloneDeep(response.data.headers)
+            this.filterConfigure.types = cloneDeep(response.data.types)
           }
           else {
             this.$Message.error(response.message);
@@ -289,9 +320,7 @@ export default defineComponent({
     },
     handlerSortChanged()
     {
-      const configure: TableFilter = new TableFilter();
-      this.getSortConfigure(configure)
-      this.handlerRefererData(configure)
+      this.handlerRefererData(this.getConfigure());
     },
     handlerCellValueChanged(event: { data: any; colDef: { field: string; }; oldValue: any; newValue: any; })
     {
@@ -362,9 +391,7 @@ export default defineComponent({
     {
       this.visibleColumn.show = show;
       if (event) {
-        const configure: TableFilter = new TableFilter()
-        this.getSortConfigure(configure)
-        this.getVisibleColumn(configure)
+        const configure: TableFilter = this.getConfigure();
         const columns = event.map((item: string) => ({column: item}))
         configure.columns = columns
         // Remove the reduced column is not selected
@@ -384,11 +411,19 @@ export default defineComponent({
     handlerColumnMoved(event: { finished: any; })
     {
       if (event.finished) {
-        const configure: TableFilter = new TableFilter()
-        this.getSortConfigure(configure)
-        this.getVisibleColumn(configure)
-        this.handlerRefererData(configure)
+        this.handlerRefererData(this.getConfigure());
       }
+    },
+    handlerFilterConfigure(show: boolean)
+    {
+      this.filterConfigure.show = show;
+      if (!show) {
+        this.handlerRefererData(this.getConfigure());
+      }
+    },
+    handlerApplyFilter(value: any)
+    {
+      this.filterConfigure.configure = value;
     },
     getSortConfigure(configure: TableFilter)
     {
@@ -406,6 +441,14 @@ export default defineComponent({
         .filter(item => !item.hide)
         .map((item: { colId: any; }) => ({column: item.colId}))
       configure.columns = columns
+    },
+    getConfigure(): TableFilter
+    {
+      const configure: TableFilter = new TableFilter();
+      configure.filter = this.filterConfigure.configure;
+      this.getSortConfigure(configure);
+      this.getVisibleColumn(configure);
+      return configure;
     },
     watchId()
     {

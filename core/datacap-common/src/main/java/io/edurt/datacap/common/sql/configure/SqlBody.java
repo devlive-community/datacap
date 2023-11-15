@@ -25,4 +25,5 @@ public class SqlBody
     private SqlType type;
     // Currently, only autoincrement columns can be reset
     private String value;
+    private String condition;
 }

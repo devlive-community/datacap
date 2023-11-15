@@ -1,5 +1,6 @@
 import {OrderFilter} from "@/model/OrderFilter";
 import {Pagination} from "@/entity/Pagination";
+import {Operator} from "@/enum/Operator";
 
 export class TableFilter
 {
@@ -10,6 +11,7 @@ export class TableFilter
   original?: Map<string, string>;
   preview?: boolean;
   value?: string;
+  filter: Filter;
 }
 
 export enum SqlType
@@ -26,4 +28,19 @@ export class SqlColumn
   column?: string;
   value?: string;
   original?: Map<string, object>;
+}
+
+export class ColumnFilter
+{
+  index: number;
+  column: string;
+  operator: string;
+  operations: Array<Operator>;
+  value: any
+}
+
+export class Filter
+{
+  condition: string;
+  filters: Array<ColumnFilter>;
 }
