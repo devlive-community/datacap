@@ -172,6 +172,8 @@
                          :isVisible="filterConfigure.show"
                          :columns="filterConfigure.columns"
                          :types="filterConfigure.types"
+                         :configure="filterConfigure.configure"
+                         @apply="handlerApplyFilter"
                          @close="handlerFilterConfigure(false)">
       </TableColumnFilter>
     </div>
@@ -251,7 +253,11 @@ export default defineComponent({
       filterConfigure: {
         show: false,
         columns: [],
-        types: []
+        types: [],
+        configure: {
+          condition: 'AND',
+          filters: []
+        }
       }
     }
   },
@@ -314,9 +320,7 @@ export default defineComponent({
     },
     handlerSortChanged()
     {
-      const configure: TableFilter = new TableFilter();
-      this.getSortConfigure(configure)
-      this.handlerRefererData(configure)
+      this.handlerRefererData(this.getConfigure());
     },
     handlerCellValueChanged(event: { data: any; colDef: { field: string; }; oldValue: any; newValue: any; })
     {
@@ -387,9 +391,7 @@ export default defineComponent({
     {
       this.visibleColumn.show = show;
       if (event) {
-        const configure: TableFilter = new TableFilter()
-        this.getSortConfigure(configure)
-        this.getVisibleColumn(configure)
+        const configure: TableFilter = this.getConfigure();
         const columns = event.map((item: string) => ({column: item}))
         configure.columns = columns
         // Remove the reduced column is not selected
@@ -409,15 +411,19 @@ export default defineComponent({
     handlerColumnMoved(event: { finished: any; })
     {
       if (event.finished) {
-        const configure: TableFilter = new TableFilter()
-        this.getSortConfigure(configure)
-        this.getVisibleColumn(configure)
-        this.handlerRefererData(configure)
+        this.handlerRefererData(this.getConfigure());
       }
     },
     handlerFilterConfigure(show: boolean)
     {
       this.filterConfigure.show = show;
+      if (!show) {
+        this.handlerRefererData(this.getConfigure());
+      }
+    },
+    handlerApplyFilter(value: any)
+    {
+      this.filterConfigure.configure = value;
     },
     getSortConfigure(configure: TableFilter)
     {
@@ -435,6 +441,14 @@ export default defineComponent({
         .filter(item => !item.hide)
         .map((item: { colId: any; }) => ({column: item.colId}))
       configure.columns = columns
+    },
+    getConfigure(): TableFilter
+    {
+      const configure: TableFilter = new TableFilter();
+      configure.filter = this.filterConfigure.configure;
+      this.getSortConfigure(configure);
+      this.getVisibleColumn(configure);
+      return configure;
     },
     watchId()
     {

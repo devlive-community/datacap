@@ -30,51 +30,50 @@
                    :style="{margin: '0'}">
             {{ $t('source.manager.filter') }}
           </Divider>
-          <template v-for="(item, index) in formState.filters">
-            <FormItem :key="index"
-                      :style="{marginBottom: '0px'}">
-              <Row>
-                <Col span="6"
-                     offset="1">
-                  <Select v-model="item.index"
-                          size="small"
-                          @on-change="handlerFetchOperations($event, item)">
-                    <Option v-for="(column, index) in columns"
-                            :label="column"
-                            :key="index"
-                            :value="index">
-                    </Option>
-                  </Select>
-                </Col>
-                <Col span="6"
-                     offset="1">
-                  <Select v-model="item.operation"
-                          size="small">
-                    <Option v-for="operation in item.operations"
-                            :label="operation"
-                            :key="operation"
-                            :value="operation">
-                    </Option>
-                  </Select>
-                </Col>
-                <Col span="6"
-                     offset="1">
-                  <Input v-model="item.filter"
-                         size="small">
-                  </Input>
-                </Col>
-                <Col span="1"
-                     offset="1">
-                  <Button size="small"
-                          type="error"
-                          shape="circle"
-                          icon="md-remove"
-                          @click="handlerRemoveFilter(index)">
-                  </Button>
-                </Col>
-              </Row>
-            </FormItem>
-          </template>
+          <FormItem v-for="(item, index) in formState.filters"
+                    :key="index"
+                    :style="{marginBottom: '0px'}">
+            <Row>
+              <Col span="6"
+                   offset="1">
+                <Select v-model="item.index"
+                        size="small"
+                        @on-change="handlerFetchOperations($event, item)">
+                  <Option v-for="(column, index) in columns"
+                          :label="column"
+                          :key="index"
+                          :value="index">
+                  </Option>
+                </Select>
+              </Col>
+              <Col span="6"
+                   offset="1">
+                <Select v-model="item.operation"
+                        size="small">
+                  <Option v-for="operation in item.operations"
+                          :label="operation"
+                          :key="operation"
+                          :value="operation">
+                  </Option>
+                </Select>
+              </Col>
+              <Col span="6"
+                   offset="1">
+                <Input v-model="item.value"
+                       size="small">
+                </Input>
+              </Col>
+              <Col span="1"
+                   offset="1">
+                <Button size="small"
+                        type="error"
+                        shape="circle"
+                        icon="md-remove"
+                        @click="handlerRemoveFilter(index)">
+                </Button>
+              </Col>
+            </Row>
+          </FormItem>
           <FormItem :style="{marginBottom: '0px'}">
             <Row>
               <Col span="6"
@@ -95,6 +94,10 @@
                 @click="handlerCancel">
           {{ $t('common.cancel') }}
         </Button>
+        <Button type="primary"
+                @click="handlerApplyFilter">
+          {{ $t('common.apply') }}
+        </Button>
       </template>
     </Modal>
   </div>
@@ -103,6 +106,7 @@
 import {defineComponent, watch} from "vue";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import {ColumnFilter} from "@/model/TableFilter";
+import {cloneDeep} from "lodash";
 
 export default defineComponent({
   name: "TableFilter",
@@ -116,10 +120,16 @@ export default defineComponent({
     },
     types: {
       type: Array
+    },
+    configure: {
+      type: Object
     }
   },
   created()
   {
+    if (this.configure) {
+      this.formState = cloneDeep(this.configure);
+    }
     this.watchId();
   },
   data()
@@ -142,7 +152,7 @@ export default defineComponent({
     {
       this.formState.filters.splice(index, 1);
     },
-    handlerFetchOperations(value, filter: ColumnFilter)
+    handlerFetchOperations(value: number, filter: ColumnFilter)
     {
       const type = this.types[value];
       filter.column = this.columns[value];
@@ -152,6 +162,11 @@ export default defineComponent({
       else {
         filter.operations = ['=', '!=', 'LIKE', 'NOT LIKE', 'IS NULL', 'IS NOT NULL'];
       }
+    },
+    handlerApplyFilter()
+    {
+      this.$emit('apply', this.formState);
+      this.handlerCancel();
     },
     handlerCancel()
     {

@@ -10,6 +10,7 @@ export class TableFilter
   original?: Map<string, string>;
   preview?: boolean;
   value?: string;
+  filter: Filter;
 }
 
 export enum SqlType
@@ -35,4 +36,10 @@ export class ColumnFilter
   operation: string;
   operations: Array<string>;
   value: any
+}
+
+export class Filter
+{
+  condition: string;
+  filters: Array<ColumnFilter>;
 }
