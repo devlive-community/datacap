@@ -20,12 +20,13 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Publish to the Maven Central Repository
-        run: |
-          chmod 755 ./mvnw
-          ./mvnw clean install package deploy -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
-        env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        uses: samuelmeuli/action-maven-publish@v1
+        with:
+          maven_args: '-DskipTests'
+          gpg_private_key: ${{ secrets.GPG_SECRET }}
+          gpg_passphrase: ${{ secrets.GPG_PASSWORD }}
+          nexus_username: ${{ secrets.OSSRH_USERNAME }}
+          nexus_password: ${{ secrets.OSSRH_TOKEN }}
 
   publish-github-package:
     runs-on: ubuntu-latest
