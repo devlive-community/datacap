@@ -5,20 +5,17 @@ on:
 
 jobs:
   publish-maven-central:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Java for publishing to Maven Central Repository
-        uses: actions/setup-java@v3
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install Java and Maven
+        uses: actions/setup-java@v1
         with:
           java-version: '11'
           distribution: 'temurin'
-          server-id: ossrh
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
+
       - name: Publish to the Maven Central Repository
         uses: samuelmeuli/action-maven-publish@v1
         with:
