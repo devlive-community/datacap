@@ -281,6 +281,12 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>deploy</id>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
