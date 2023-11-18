@@ -23,6 +23,7 @@ import {
   faKey,
   faMagnifyingGlass,
   faMinus,
+  faPlus,
   faRepeat,
   faSun,
   faTable,
@@ -39,6 +40,7 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faPlus,
     faTablet,
     faMinus,
     faUpload,

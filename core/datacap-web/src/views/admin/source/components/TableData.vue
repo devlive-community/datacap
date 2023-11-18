@@ -76,10 +76,20 @@
           {{ $t('common.row') }}
         </Space>
         <Space style="margin-left: 30px;">
+          <Tooltip :content="$t('source.manager.addRows')"
+                   transfer>
+            <Button size="small"
+                    shape="circle"
+                    type="text"
+                    @click="handlerAddRow">
+              <FontAwesomeIcon icon="plus"/>
+            </Button>
+          </Tooltip>
           <Tooltip :content="$t('source.manager.deleteRows')"
                    transfer>
             <Button size="small"
                     shape="circle"
+                    type="text"
                     :disabled="!dataSelectedChanged.changed"
                     @click="handlerSelectedChangedPreview(true)">
               <FontAwesomeIcon icon="minus"/>
@@ -89,6 +99,7 @@
                    transfer>
             <Button size="small"
                     shape="circle"
+                    type="text"
                     :disabled="!dataCellChanged.changed && dataCellChanged.columns.length === 0"
                     @click="handlerCellChangedPreview(true)">
               <FontAwesomeIcon icon="upload"/>
@@ -97,6 +108,7 @@
           <Tooltip :content="$t('common.preview')"
                    transfer>
             <Button size="small"
+                    type="text"
                     @click="handlerVisibleContent(true)">
               <FontAwesomeIcon icon="eye"/>
             </Button>
@@ -108,6 +120,7 @@
                      placement="bottom-end"
                      transfer>
               <Button size="small"
+                      type="text"
                       @click="handlerFilterConfigure(true)">
                 <FontAwesomeIcon icon="filter"/>
               </Button>
@@ -116,6 +129,7 @@
                      placement="bottom-end"
                      transfer>
               <Button size="small"
+                      type="text"
                       @click="handlerVisibleColumn(null, true)">
                 <FontAwesomeIcon icon="columns"/>
               </Button>
@@ -225,6 +239,7 @@ export default defineComponent({
       gridApi: null as GridApi,
       gridColumnApi: null as ColumnApi,
       originalColumns: [],
+      newRows: [],
       configure: {
         headers: [],
         columns: [],
@@ -424,6 +439,16 @@ export default defineComponent({
     handlerApplyFilter(value: any)
     {
       this.filterConfigure.configure = value;
+    },
+    handlerAddRow()
+    {
+      const newData = {};
+      this.originalColumns.forEach((column: { field: string; }) => {
+        newData[column.field] = null;
+      });
+      this.configure.datasets.push(newData);
+      this.newRows.push(newData);
+      this.gridApi.setRowData(this.configure.datasets);
     },
     getSortConfigure(configure: TableFilter)
     {

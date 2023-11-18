@@ -8,5 +8,6 @@ export default {
   resetAutoIncrement: '重置自增列',
   resetTo: '重置为',
   filter: '筛选器',
-  addFilter: '添加筛选器'
+  addFilter: '添加筛选器',
+  addRows: '添加行',
 }

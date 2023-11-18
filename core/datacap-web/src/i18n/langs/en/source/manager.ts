@@ -9,4 +9,5 @@ export default {
   resetTo: 'Reset To',
   filter: 'Filter',
   addFilter: 'Add Filter',
+  addRows: 'Add Rows',
 }
