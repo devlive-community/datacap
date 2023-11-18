@@ -44,4 +44,4 @@ jobs:
           chmod 755 ./mvnw
           ./mvnw clean install package deploy -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
