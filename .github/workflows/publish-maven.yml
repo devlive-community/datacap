@@ -25,21 +25,21 @@ jobs:
           nexus_username: ${{ secrets.OSSRH_USERNAME }}
           nexus_password: ${{ secrets.OSSRH_TOKEN }}
 
-  publish-github-package:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Java for publishing to GitHub Packages
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-      - name: Publish to GitHub Packages
-        run: |
-          chmod 755 ./mvnw
-          ./mvnw clean install package deploy -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  # publish-github-package:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up Java for publishing to GitHub Packages
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         java-version: '11'
+  #         distribution: 'temurin'
+  #     - name: Publish to GitHub Packages
+  #       run: |
+  #         chmod 755 ./mvnw
+  #         ./mvnw clean install package deploy -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
