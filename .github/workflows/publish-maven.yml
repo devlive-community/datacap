@@ -4,7 +4,7 @@ on:
   push
 
 jobs:
-  publish-github-package:
+  publish-maven-central:
     runs-on: ubuntu-latest
     permissions:
       contents: read
