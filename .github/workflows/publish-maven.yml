@@ -1,0 +1,41 @@
+name: Publish package to the Maven Central Repository and GitHub Packages
+
+on:
+  push
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java for publishing to Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+      - name: Publish to the Maven Central Repository
+        run: |
+          chmod 755 ./mvnw
+          ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+      - name: Set up Java for publishing to GitHub Packages
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Publish to GitHub Packages
+        run: |
+          chmod 755 ./mvnw
+          ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
