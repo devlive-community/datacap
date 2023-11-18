@@ -4,13 +4,11 @@ on:
   push
 
 jobs:
-  publish:
+  publish-github-package:
     runs-on: ubuntu-latest
-    
     permissions:
       contents: read
       packages: write
-    
     steps:
       - uses: actions/checkout@v4
       - name: Set up Java for publishing to Maven Central Repository
@@ -24,10 +22,18 @@ jobs:
       - name: Publish to the Maven Central Repository
         run: |
           chmod 755 ./mvnw
-          ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
+          ./mvnw clean install package deploy -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+
+  publish-github-package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
       - name: Set up Java for publishing to GitHub Packages
         uses: actions/setup-java@v3
         with:
@@ -36,6 +42,6 @@ jobs:
       - name: Publish to GitHub Packages
         run: |
           chmod 755 ./mvnw
-          ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
+          ./mvnw clean install package deploy -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
