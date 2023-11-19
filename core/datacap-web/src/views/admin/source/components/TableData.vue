@@ -166,6 +166,7 @@
                             :isVisible="dataCellChanged.pending"
                             :columns="dataCellChanged.columns"
                             :tableId="id"
+                            :type="dataCellChanged.type"
                             @close="handlerCellChangedPreview(false)">
       </TableCellEditPreview>
       <!-- Preview components after data deleting -->
@@ -207,7 +208,7 @@ import {Pagination as PaginationEnum} from "@/enum/Pagination";
 import {InputNumber} from "view-ui-plus";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import {ColumnApi, GridApi} from "ag-grid-community";
-import {SqlColumn, TableFilter} from "@/model/TableFilter";
+import {SqlColumn, SqlType, TableFilter} from "@/model/TableFilter";
 import TableCellEditPreview from "@/views/admin/source/components/TableCellEditPreview.vue";
 import TableRowDeletePreview from "@/views/admin/source/components/TableRowDeletePreview.vue";
 import {cloneDeep} from "lodash";
@@ -254,6 +255,7 @@ export default defineComponent({
       dataCellChanged: {
         changed: false,
         pending: false,
+        type: null,
         columns: []
       },
       dataSelectedChanged: {
@@ -348,6 +350,7 @@ export default defineComponent({
         value: event.newValue,
         original: originalColumn
       }
+      this.dataCellChanged.type = SqlType.UPDATE;
       this.dataCellChanged.columns.push(column);
     },
     handlerCellChangedPreview(isOpen: boolean)
@@ -448,6 +451,9 @@ export default defineComponent({
       });
       this.configure.datasets.push(newData);
       this.newRows.push(newData);
+      this.dataCellChanged.type = SqlType.INSERT;
+      this.dataCellChanged.changed = true;
+      this.dataCellChanged.columns = this.newRows;
       this.gridApi.setRowData(this.configure.datasets);
     },
     getSortConfigure(configure: TableFilter)

@@ -74,6 +74,9 @@ public class TableServiceImpl
         if (configure.getType().equals(SqlType.SELECT)) {
             return this.fetchSelect(plugin, table, source, configure);
         }
+        else if (configure.getType().equals(SqlType.INSERT)) {
+            return this.fetchInsert(plugin, table, source, configure);
+        }
         else if (configure.getType().equals(SqlType.UPDATE)) {
             return this.fetchUpdate(plugin, table, source, configure);
         }
@@ -183,6 +186,44 @@ public class TableServiceImpl
             Pagination pagination = Pagination.newInstance(configure.getPagination().getPageSize(), configure.getPagination().getCurrentPage(), totalRows);
             response.setPagination(pagination);
             return CommonResponse.success(response);
+        }
+        catch (Exception ex) {
+            return CommonResponse.failure(ExceptionUtils.getMessage(ex));
+        }
+    }
+
+    /**
+     * Fetches and inserts data into the database table.
+     *
+     * @param plugin the plugin object
+     * @param table the table entity object
+     * @param source the source entity object
+     * @param configure the table filter object
+     * @return the common response object containing the result of the operation
+     */
+    private CommonResponse<Object> fetchInsert(Plugin plugin, TableEntity table, SourceEntity source, TableFilter configure)
+    {
+        try {
+            Configure updateConfigure = source.toConfigure();
+            updateConfigure.setFormat(FormatType.NONE);
+            plugin.connect(updateConfigure);
+            List<String> allSql = Lists.newArrayList();
+            configure.getNewColumns().forEach(v -> {
+                List<SqlColumn> columns = Lists.newArrayList();
+                v.entrySet().forEach(entry -> columns.add(SqlColumn.builder()
+                        .column(String.format("`%s`", entry.getKey()))
+                        .value(entry.getValue())
+                        .build()));
+                SqlBody body = SqlBody.builder()
+                        .type(SqlType.INSERT)
+                        .database(table.getDatabase().getName())
+                        .table(table.getName())
+                        .columns(columns)
+                        .build();
+                allSql.add(new SqlBuilder(body).getSql());
+            });
+            String sql = String.join("\n\n", allSql);
+            return CommonResponse.success(getResponse(configure, plugin, sql));
         }
         catch (Exception ex) {
             return CommonResponse.failure(ExceptionUtils.getMessage(ex));

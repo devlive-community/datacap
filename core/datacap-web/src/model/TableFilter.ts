@@ -12,6 +12,7 @@ export class TableFilter
   preview?: boolean;
   value?: string;
   filter: Filter;
+  newColumns?: Array<any>;
 }
 
 export enum SqlType
@@ -20,7 +21,8 @@ export enum SqlType
   UPDATE = 'UPDATE',
   DELETE = 'DELETE',
   ALTER = 'ALTER',
-  SHOW = 'SHOW'
+  SHOW = 'SHOW',
+  INSERT = 'INSERT'
 }
 
 export class SqlColumn

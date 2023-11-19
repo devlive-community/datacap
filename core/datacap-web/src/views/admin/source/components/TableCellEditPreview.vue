@@ -54,6 +54,9 @@ export default defineComponent({
     },
     columns: {
       type: Array
+    },
+    type: {
+      type: String
     }
   },
   setup()
@@ -82,8 +85,13 @@ export default defineComponent({
     handlerInitialize()
     {
       this.loading = true;
-      this.contentConfigure.columns = this.columns;
-      this.contentConfigure.type = SqlType.UPDATE;
+      if (this.type === SqlType.UPDATE) {
+        this.contentConfigure.columns = this.columns;
+      }
+      else {
+        this.contentConfigure.newColumns = this.columns;
+      }
+      this.contentConfigure.type = this.type;
       this.contentConfigure.preview = true;
       TableService.putData(this.tableId, this.contentConfigure)
         .then(response => {
