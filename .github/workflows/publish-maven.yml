@@ -3,9 +3,11 @@ name: Publish via Maven Central
 on:
   release:
     types: [ published ]
+  pull_request:
+    types: [ closed ]
 
 jobs:
-  publish-maven-central:
+  setup-java-and-maven:
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -17,6 +19,31 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+  publish-snapshot-maven-central:
+    if: github.event_name == 'release' && github.event.action == 'published' && endsWith(steps.get-version.outputs.version, '-SNAPSHOT')
+    runs-on: ubuntu-latest
+    needs: setup-java-and-maven
+    steps:
+      - name: Get version
+        id: get-version
+        run: echo ::set-output name=version::$(./mvnw -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN -Dorg.slf4j.simpleLogger.log.org.apache.maven.plugins.help=INFO | tail -1)
+
+      - name: Publish to the Maven Central Repository
+        uses: samuelmeuli/action-maven-publish@v1
+        with:
+          maven_profiles: 'deploy'
+          maven_goals_phases: 'clean deploy'
+          maven_args: '-DskipTests'
+          gpg_private_key: ${{ secrets.GPG_SECRET }}
+          gpg_passphrase: ${{ secrets.GPG_PASSWORD }}
+          nexus_username: ${{ secrets.OSSRH_USERNAME }}
+          nexus_password: ${{ secrets.OSSRH_TOKEN }}
+
+  publish-maven-central:
+    if: github.event_name == 'release' && github.event.action == 'published' && !endsWith(steps.get-version.outputs.version, '-SNAPSHOT')
+    runs-on: ubuntu-latest
+    needs: setup-java-and-maven
+    steps:
       - name: Publish to the Maven Central Repository
         uses: samuelmeuli/action-maven-publish@v1
         with:
