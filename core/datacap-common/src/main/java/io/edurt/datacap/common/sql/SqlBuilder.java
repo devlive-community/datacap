@@ -1,9 +1,11 @@
 package io.edurt.datacap.common.sql;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.sql.builder.AlterBuilder;
 import io.edurt.datacap.common.sql.builder.DeleteBuilder;
+import io.edurt.datacap.common.sql.builder.InsertBuilder;
 import io.edurt.datacap.common.sql.builder.SelectBuilder;
 import io.edurt.datacap.common.sql.builder.ShowBuilder;
 import io.edurt.datacap.common.sql.builder.UpdateBuilder;
@@ -47,6 +49,9 @@ public class SqlBuilder
                 break;
             case SHOW:
                 sql = showCreateTable();
+                break;
+            case INSERT:
+                sql = getInsert();
                 break;
             default:
                 Preconditions.checkArgument(false, "Not support type");
@@ -203,5 +208,28 @@ public class SqlBuilder
         ShowBuilder.BEGIN();
         ShowBuilder.SHOW_CREATE_TABLE(applyDatabaseAndTable());
         return ShowBuilder.SQL();
+    }
+
+    /**
+     * Generates the SQL INSERT statement for the given database and table,
+     * using the configured columns and values.
+     *
+     * @return The SQL INSERT statement.
+     */
+    public String getInsert()
+    {
+        InsertBuilder.BEGIN();
+        InsertBuilder.INSERT_INTO(applyDatabaseAndTable());
+        List<String> columns = Lists.newArrayList();
+        List<String> values = Lists.newArrayList();
+        configure.getColumns()
+                .forEach(column -> {
+                    columns.add(column.getColumn());
+                    values.add(column.getValue());
+                });
+        InsertBuilder.INTO_COLUMNS(columns.toArray(new String[0]));
+        InsertBuilder.INTO_VALUES(values.toArray(new String[0]));
+        InsertBuilder.END();
+        return InsertBuilder.SQL();
     }
 }

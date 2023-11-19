@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 @Data
@@ -27,4 +28,5 @@ public class TableFilter
     private Properties original;
     private String value;
     private ColumnFilter filter;
+    private List<Map<String, String>> newColumns;
 }

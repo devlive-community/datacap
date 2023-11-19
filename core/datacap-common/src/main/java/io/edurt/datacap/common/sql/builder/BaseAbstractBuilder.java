@@ -564,11 +564,19 @@ abstract class BaseAbstractBuilder<T>
                 String last = "________";
                 for (int i = 0, n = parts.size(); i < n; i++) {
                     String part = parts.get(i);
-                    if (i > 0 && !part.equals(AND) && !part.equals(OR) && !last.equals(AND) && !last.equals(OR)) {
-                        builder.append(conjunction);
+                    if (part != null) {
+                        if (i > 0 && !part.equals(AND) && !part.equals(OR) && !last.equals(AND) && !last.equals(OR)) {
+                            builder.append(conjunction);
+                        }
+                        builder.append(part);
+                        last = part;
                     }
-                    builder.append(part);
-                    last = part;
+                    else {
+                        if (i > 0) {
+                            builder.append(conjunction);
+                        }
+                        builder.append(null);
+                    }
                 }
                 builder.append(close);
             }

@@ -76,10 +76,20 @@
           {{ $t('common.row') }}
         </Space>
         <Space style="margin-left: 30px;">
+          <Tooltip :content="$t('source.manager.addRows')"
+                   transfer>
+            <Button size="small"
+                    shape="circle"
+                    type="text"
+                    @click="handlerAddRow">
+              <FontAwesomeIcon icon="plus"/>
+            </Button>
+          </Tooltip>
           <Tooltip :content="$t('source.manager.deleteRows')"
                    transfer>
             <Button size="small"
                     shape="circle"
+                    type="text"
                     :disabled="!dataSelectedChanged.changed"
                     @click="handlerSelectedChangedPreview(true)">
               <FontAwesomeIcon icon="minus"/>
@@ -89,6 +99,7 @@
                    transfer>
             <Button size="small"
                     shape="circle"
+                    type="text"
                     :disabled="!dataCellChanged.changed && dataCellChanged.columns.length === 0"
                     @click="handlerCellChangedPreview(true)">
               <FontAwesomeIcon icon="upload"/>
@@ -97,6 +108,7 @@
           <Tooltip :content="$t('common.preview')"
                    transfer>
             <Button size="small"
+                    type="text"
                     @click="handlerVisibleContent(true)">
               <FontAwesomeIcon icon="eye"/>
             </Button>
@@ -108,6 +120,7 @@
                      placement="bottom-end"
                      transfer>
               <Button size="small"
+                      type="text"
                       @click="handlerFilterConfigure(true)">
                 <FontAwesomeIcon icon="filter"/>
               </Button>
@@ -116,6 +129,7 @@
                      placement="bottom-end"
                      transfer>
               <Button size="small"
+                      type="text"
                       @click="handlerVisibleColumn(null, true)">
                 <FontAwesomeIcon icon="columns"/>
               </Button>
@@ -152,6 +166,7 @@
                             :isVisible="dataCellChanged.pending"
                             :columns="dataCellChanged.columns"
                             :tableId="id"
+                            :type="dataCellChanged.type"
                             @close="handlerCellChangedPreview(false)">
       </TableCellEditPreview>
       <!-- Preview components after data deleting -->
@@ -193,7 +208,7 @@ import {Pagination as PaginationEnum} from "@/enum/Pagination";
 import {InputNumber} from "view-ui-plus";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import {ColumnApi, GridApi} from "ag-grid-community";
-import {SqlColumn, TableFilter} from "@/model/TableFilter";
+import {SqlColumn, SqlType, TableFilter} from "@/model/TableFilter";
 import TableCellEditPreview from "@/views/admin/source/components/TableCellEditPreview.vue";
 import TableRowDeletePreview from "@/views/admin/source/components/TableRowDeletePreview.vue";
 import {cloneDeep} from "lodash";
@@ -225,6 +240,8 @@ export default defineComponent({
       gridApi: null as GridApi,
       gridColumnApi: null as ColumnApi,
       originalColumns: [],
+      originalDatasets: [],
+      newRows: [],
       configure: {
         headers: [],
         columns: [],
@@ -239,6 +256,7 @@ export default defineComponent({
       dataCellChanged: {
         changed: false,
         pending: false,
+        type: null,
         columns: []
       },
       dataSelectedChanged: {
@@ -264,6 +282,7 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
+      this.clearData();
       this.gridOptions = createDataEditorOptions(this.i18n);
       if (!this.configure.pagination) {
         const pagination = new Pagination();
@@ -278,6 +297,7 @@ export default defineComponent({
             this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
             this.originalColumns = this.configure.headers
             this.configure.datasets = response.data.columns;
+            this.originalDatasets = cloneDeep(response.data.columns);
             this.configure.pagination = response.data.pagination;
             this.visibleContent.content = '```sql\n' + response.data.content + '\n```';
             this.filterConfigure.columns = cloneDeep(response.data.headers)
@@ -304,6 +324,7 @@ export default defineComponent({
           if (response.status && response.data) {
             this.configure.headers = createColumnDefs(response.data.headers, response.data.types);
             this.configure.datasets = response.data.columns;
+            this.originalDatasets = cloneDeep(response.data.columns);
             if (this.configure.datasets.length <= 0) {
               this.gridOptions.overlayNoRowsTemplate = '<span>No Rows To Show</span>';
             }
@@ -322,18 +343,22 @@ export default defineComponent({
     {
       this.handlerRefererData(this.getConfigure());
     },
-    handlerCellValueChanged(event: { data: any; colDef: { field: string; }; oldValue: any; newValue: any; })
+    handlerCellValueChanged(event: { data: any; colDef: { field: string; }; oldValue: any; newValue: any; rowIndex: number })
     {
-      const oldColumn = event.data;
-      const originalColumn = cloneDeep(oldColumn);
-      originalColumn[event.colDef.field] = event.oldValue;
-      this.dataCellChanged.changed = true;
-      const column: SqlColumn = {
-        column: event.colDef.field,
-        value: event.newValue,
-        original: originalColumn
+      // If the index is less than or equal to the length of the current data collection -1, no request type is specified for the new data
+      if (event.rowIndex <= this.originalDatasets.length - 1) {
+        const oldColumn = event.data;
+        const originalColumn = cloneDeep(oldColumn);
+        originalColumn[event.colDef.field] = event.oldValue;
+        this.dataCellChanged.changed = true;
+        const column: SqlColumn = {
+          column: event.colDef.field,
+          value: event.newValue,
+          original: originalColumn
+        }
+        this.dataCellChanged.type = SqlType.UPDATE;
+        this.dataCellChanged.columns.push(column);
       }
-      this.dataCellChanged.columns.push(column);
     },
     handlerCellChangedPreview(isOpen: boolean)
     {
@@ -425,6 +450,19 @@ export default defineComponent({
     {
       this.filterConfigure.configure = value;
     },
+    handlerAddRow()
+    {
+      const newData = {};
+      this.originalColumns.forEach((column: { field: string; }) => {
+        newData[column.field] = null;
+      });
+      this.configure.datasets.push(newData);
+      this.newRows.push(newData);
+      this.dataCellChanged.type = SqlType.INSERT;
+      this.dataCellChanged.changed = true;
+      this.dataCellChanged.columns = this.newRows;
+      this.gridApi.setRowData(this.configure.datasets);
+    },
     getSortConfigure(configure: TableFilter)
     {
       const columnState = this.gridColumnApi.getColumnState();
@@ -444,11 +482,16 @@ export default defineComponent({
     },
     getConfigure(): TableFilter
     {
+      this.clearData();
       const configure: TableFilter = new TableFilter();
       configure.filter = this.filterConfigure.configure;
       this.getSortConfigure(configure);
       this.getVisibleColumn(configure);
       return configure;
+    },
+    clearData()
+    {
+      this.newRows = [];
     },
     watchId()
     {
