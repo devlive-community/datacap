@@ -37,6 +37,11 @@ public class InsertBuilder
         sql().INTO_VALUES(values);
     }
 
+    public static void END()
+    {
+        sql().END();
+    }
+
     public static String SQL()
     {
         try {

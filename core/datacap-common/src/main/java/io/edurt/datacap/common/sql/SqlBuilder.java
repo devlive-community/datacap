@@ -229,6 +229,7 @@ public class SqlBuilder
                 });
         InsertBuilder.INTO_COLUMNS(columns.toArray(new String[0]));
         InsertBuilder.INTO_VALUES(values.toArray(new String[0]));
+        InsertBuilder.END();
         return InsertBuilder.SQL();
     }
 }
