@@ -6,42 +6,45 @@
 
 |   发布版本   |     发布时间     |
 |:--------:|:------------:|
-| `1.16.0` | `2023-11-01` |
+| `1.17.0` | `2023-11-20` |
 
 #### General
 
 ---
 
-- 支持列顺序
-![Column Order](./latest/column_order.gif)
-- 支持删除行
-- 支持删除多行
-![Delete Rows](./latest/delete_rows.gif)
-- 支持无主键数据更新
-![Update Columns](./latest/update_columns.gif)
-- 支持根据主键更新
-![Update Without Primary Key](./latest/update_without_primary_key.gif)
-- 支持预览待处理的更改
+- 删除无效的元数据管理器
+- 优化问题模板
+- 将版本添加到应用程序
+  ![img.png](latest/version.png)
+- 支持在启动时检查java版本是否兼容
+- 修复了在不选择表的情况下直接选择列的错误
+- 支持自定义列显示
+  ![Column Display](latest/column_display.gif)
+- 支持重置列位置
+  ![Reset Column Position](latest/reset_column_position.gif)
+- 查询表视图会导致无法转换的值
+- 添加 jvm 配置
+- 当数据为空时，不返回任何列信息
+- 修复切换表查询数据导致查询列为空的问题
+- 支持复位自动递增
+  ![Reset Auto Increment](latest/reset_auto_increment.gif)
+- 统一每个插件返回的数据类型
+- 支持查看构建语句语句语句
+  ![Build Statement](latest/build_statement.gif)
+- 为表添加筛选器
+  ![Filter](latest/filter.gif)
+- 支持添加新的行数据
+  ![Add Row](latest/add_row.gif)
 
-#### Editor
+#### Web
 
 ---
 
-- 支持选择查询
-![Selection Query](./latest/selection_query.gif)
-- 支持自定义配置
-![Custom Configure](./latest/custom_editor_configure.gif)
-
-#### Docs
-
----
-
-- 添加用户配置文件文档
+- 删除未使用的组件
 
 #### Dependencies
 
 ---
 
-- 更新 org.apache.maven.plugins:maven-javadoc-plugin `3.5.0` 到 `3.6.0`
-- 更新 com.oceanbase:oceanbase-client `2.4.2` 到 `2.4.5`
-- 更新 org.apache.maven.plugins:maven-javadoc-plugin `3.5.0` 到 `3.6.0`
+- 更新 com.h2database:h2 `2.1.214` 到 `2.2.224`
+- 更新 org.jetbrains.dokka:dokka-maven-plugin `1.8.10` 到 `1.9.10`

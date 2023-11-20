@@ -4,44 +4,47 @@
 
 **DataCap is released!**
 
-| Release Version  | Release Time |
-|:----------------:|:------------:|
-|     `1.16.0`     | `2023-11-01` |
+| Release Version | Release Time |
+|:---------------:|:------------:|
+|    `1.17.0`     | `2023-11-20` |
 
 #### General
 
 ---
 
-- Support column order
-![Column Order](./latest/column_order.gif)
-- Support delete rows
-- Support delete multiple rows
-![Delete Rows](./latest/delete_rows.gif)
-- Supports data update without primary key
-![Update Multiple Columns](./latest/update_columns.gif)
-- Supports data update with primary key
-![Update Without Primary Key](./latest/update_without_primary_key.gif)
-- Support preview pending changes
+- Remove invalid metadata manager
+- Optimization issues template
+- Add version to app
+![img.png](latest/version.png)
+- Support to check whether the java version is compatible at startup
+- Fixed an error in selecting columns directly without selecting tables
+- Supports custom column display
+![Column Display](latest/column_display.gif)
+- Supports resetting column positions
+![Reset Column Position](latest/reset_column_position.gif)
+- Querying the table view results in a value that cannot be converted
+- Add jvm config
+- No column information is returned when the data is empty
+- Fixed switching table query data results in null query columns
+- Support reset auto increment
+![Reset Auto Increment](latest/reset_auto_increment.gif)
+- Unify the data types returned by each plug-in
+- Support for viewing build statement sentences
+![Build Statement](latest/build_statement.gif)
+- Add filter for table
+![Filter](latest/filter.gif)
+- Support add new row data
+![Add Row](latest/add_row.gif)
 
-#### Editor
+#### Web
 
 ---
 
-- Support selection query
-![Selection Query](./latest/selection_query.gif)
-- Support custom configure
-![Custom Configure](./latest/custom_editor_configure.gif)
-
-#### Docs
-
----
-
-- Add user profile doc
+- Remove unused components
 
 #### Dependencies
 
 ---
 
-- Bump org.apache.maven.plugins:maven-javadoc-plugin from `3.5.0` to `3.6.0`
-- Bump com.oceanbase:oceanbase-client from `2.4.2` to `2.4.5`
-- Bump org.apache.maven.plugins:maven-javadoc-plugin from `3.5.0` to `3.6.0`
+- Bump com.h2database:h2 from `2.1.214` to `2.2.224`
+- Bump org.jetbrains.dokka:dokka-maven-plugin from `1.8.10` to `1.9.10`
