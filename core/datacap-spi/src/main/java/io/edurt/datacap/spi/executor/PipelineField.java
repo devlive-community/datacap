@@ -14,5 +14,6 @@ public class PipelineField
 {
     private String type;
     private Properties configure;
+    private Protocol protocol;
     private Set<String> supportOptions;
 }

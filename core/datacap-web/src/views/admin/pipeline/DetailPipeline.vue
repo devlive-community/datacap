@@ -153,12 +153,14 @@ export default defineComponent({
         const pipelines = this.formState.from.source['pipelines']
         if (pipelines) {
           this.pipelineFromItem = this.filterPipelineFromItem(pipelines, source)
+          this.formState.from.protocol = this.pipelineFromItem[0]['protocol']
         }
       }
       if (type === sink) {
         const pipelines = this.formState.to.source['pipelines']
         if (pipelines) {
           this.pipelineToItem = this.filterPipelineFromItem(pipelines, sink)
+          this.formState.to.protocol = this.pipelineToItem[0]['protocol']
         }
       }
     },

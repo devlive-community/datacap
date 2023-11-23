@@ -27,6 +27,7 @@ import io.edurt.datacap.spi.executor.Pipeline;
 import io.edurt.datacap.spi.executor.PipelineField;
 import io.edurt.datacap.spi.executor.PipelineResponse;
 import io.edurt.datacap.spi.executor.PipelineState;
+import io.edurt.datacap.spi.executor.Protocol;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -127,6 +128,9 @@ public class PipelineServiceImpl
         if (!fromOriginProperties.containsKey("context")) {
             fromOriginProperties.setProperty("context", configure.getContent());
         }
+        if (configure.getFrom().getProtocol().equals(Protocol.JDBC)) {
+            fromOriginProperties.setProperty("url", String.format("jdbc:%s://%s:%s/%s", fromSource.getType().toLowerCase(), fromSource.getHost(), fromSource.getPort(), fromSource.getDatabase()));
+        }
         Properties fromProperties = this.merge(fromSource, fromConfigureExecutor.get().getFields(), fromOriginProperties);
         Set<String> fromOptions = Sets.newHashSet();
         fromConfigureExecutor.get()
@@ -138,10 +142,14 @@ public class PipelineServiceImpl
                 .type(fromSource.getType())
                 .configure(fromProperties)
                 .supportOptions(fromOptions)
+                .protocol(configure.getFrom().getProtocol())
                 .build();
 
         // TO source
         Properties toOriginProperties = configure.getTo().getConfigures();
+        if (configure.getTo().getProtocol().equals(Protocol.JDBC)) {
+            toOriginProperties.setProperty("url", String.format("jdbc:%s://%s:%s/%s", fromSource.getType().toLowerCase(), fromSource.getHost(), fromSource.getPort(), fromSource.getDatabase()));
+        }
         Properties toProperties = this.merge(toSource, toConfigureExecutor.get().getFields(), toOriginProperties);
         Set<String> toOptions = Sets.newHashSet();
         toConfigureExecutor.get()
@@ -153,6 +161,7 @@ public class PipelineServiceImpl
                 .type(toSource.getType())
                 .configure(toProperties)
                 .supportOptions(toOptions)
+                .protocol(configure.getTo().getProtocol())
                 .build();
         if (ObjectUtils.isNotEmpty(configure.getId())) {
             pipelineEntity = this.repository.findById(configure.getId()).get();
