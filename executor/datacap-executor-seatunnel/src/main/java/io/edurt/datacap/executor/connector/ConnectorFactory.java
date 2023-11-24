@@ -13,12 +13,15 @@ public class ConnectorFactory
 
     public static Connector createFormatter(ConnectorType type, PipelineField configure)
     {
-        Connector instance = null;
+        Connector instance;
         if (type.equals(ConnectorType.ClickHouse)) {
             instance = new ConnectorClickHouse(type, configure);
         }
         else if (type.equals(ConnectorType.Console)) {
             instance = new ConnectorConsole(type, configure);
+        }
+        else if (type.equals(ConnectorType.Jdbc)) {
+            instance = new ConnectorJdbc(type, configure);
         }
         else {
             instance = new Connector(type, configure, configure.getSupportOptions())

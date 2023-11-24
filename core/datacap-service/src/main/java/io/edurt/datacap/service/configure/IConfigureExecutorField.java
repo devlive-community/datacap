@@ -38,4 +38,6 @@ public class IConfigureExecutorField
     private String description;
     // If the type is SELECT , the default data passed in is required
     private List<String> defaultValues;
+    // If it is auto-generated, the format is：protocol://host:port
+    private boolean generated = false;
 }

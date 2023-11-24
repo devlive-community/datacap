@@ -5,5 +5,6 @@ public enum ConnectorType
     ClickHouse,
     Kafka,
     Console,
-    Redis
+    Redis,
+    Jdbc
 }

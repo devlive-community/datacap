@@ -19,6 +19,7 @@ import io.edurt.datacap.spi.executor.Pipeline;
 import io.edurt.datacap.spi.executor.PipelineField;
 import io.edurt.datacap.spi.executor.PipelineResponse;
 import io.edurt.datacap.spi.executor.PipelineState;
+import io.edurt.datacap.spi.executor.Protocol;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -105,7 +106,11 @@ public class SeatunnelExecutor
     {
         jsonGenerator.writeFieldName(type);
         if (ObjectUtils.isNotEmpty(configure)) {
-            Connector factory = ConnectorFactory.createFormatter(ConnectorType.valueOf(configure.getType()), configure);
+            String protocol = configure.getType();
+            if (configure.getProtocol().equals(Protocol.JDBC)) {
+                protocol = "Jdbc";
+            }
+            Connector factory = ConnectorFactory.createFormatter(ConnectorType.valueOf(protocol), configure);
             for (Map.Entry<String, Object> entry : factory.formatToMap().entrySet()) {
                 jsonGenerator.writeStartObject();
                 jsonGenerator.writeObjectFieldStart(entry.getKey());
