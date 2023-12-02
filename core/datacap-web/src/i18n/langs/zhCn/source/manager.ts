@@ -10,4 +10,5 @@ export default {
   filter: '筛选器',
   addFilter: '添加筛选器',
   addRows: '添加行',
+  copyRows: '复制行',
 }

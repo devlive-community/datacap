@@ -47,6 +47,10 @@ public class InitializerConfigure
     private Integer maxQueue;
 
     @Getter
+    @Value(value = "${datacap.experimental.autoLimit}")
+    private Boolean autoLimit;
+
+    @Getter
     private LoadingCache<Long, ResultEntity> cache;
 
     @Getter
@@ -94,6 +98,11 @@ public class InitializerConfigure
             maxQueue = 200;
         }
         log.info("Datacap pipeline max queue: {}", this.maxQueue);
+
+        if (ObjectUtils.isEmpty(autoLimit)) {
+            autoLimit = Boolean.TRUE;
+        }
+        log.info("Datacap experimental auto limit: [ {} ]", this.autoLimit);
 
         this.taskQueue = new LinkedBlockingQueue<>(this.maxQueue);
         this.taskExecutors = Maps.newConcurrentMap();
