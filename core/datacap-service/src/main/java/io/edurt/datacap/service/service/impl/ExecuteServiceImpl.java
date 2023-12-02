@@ -81,7 +81,7 @@ public class ExecuteServiceImpl
 
         if (initializerConfigure.getAutoLimit()) {
             if (!SqlCheckerUtils.isPagedSql(configure.getContent())) {
-                configure.setContent(String.format("%s\nLIMIT %s", configure.getContent(), configure.getLimit()));
+                configure.setContent(String.format("%s%nLIMIT %s", configure.getContent(), configure.getLimit()));
             }
         }
 
