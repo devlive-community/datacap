@@ -6,11 +6,13 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.sql.SqlBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlType;
+import io.edurt.datacap.common.utils.SqlCheckerUtils;
 import io.edurt.datacap.service.audit.AuditPlugin;
 import io.edurt.datacap.service.body.ExecuteDslBody;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.ExecuteEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.service.ExecuteService;
 import io.edurt.datacap.spi.Plugin;
@@ -29,12 +31,14 @@ public class ExecuteServiceImpl
     private final Injector injector;
     private final SourceRepository sourceRepository;
     private final Environment environment;
+    private final InitializerConfigure initializerConfigure;
 
-    public ExecuteServiceImpl(Injector injector, SourceRepository sourceRepository, Environment environment)
+    public ExecuteServiceImpl(Injector injector, SourceRepository sourceRepository, Environment environment, InitializerConfigure initializerConfigure)
     {
         this.injector = injector;
         this.sourceRepository = sourceRepository;
         this.environment = environment;
+        this.initializerConfigure = initializerConfigure;
     }
 
     @AuditPlugin
@@ -74,6 +78,13 @@ public class ExecuteServiceImpl
             _configure.setId(String.valueOf(entity.getId()));
         }
         plugin.connect(_configure);
+
+        if (initializerConfigure.getAutoLimit()) {
+            if (!SqlCheckerUtils.isPagedSql(configure.getContent())) {
+                configure.setContent(String.format("%s\nLIMIT %s", configure.getContent(), configure.getLimit()));
+            }
+        }
+
         io.edurt.datacap.spi.model.Response response = plugin.execute(configure.getContent());
         response.setContent(configure.getContent());
         plugin.destroy();

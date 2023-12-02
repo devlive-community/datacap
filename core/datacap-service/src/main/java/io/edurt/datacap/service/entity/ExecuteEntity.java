@@ -14,4 +14,5 @@ public class ExecuteEntity
     private String content;
     private Map<String, Object> env;
     private FormatType format = FormatType.NONE;
+    private int limit;
 }

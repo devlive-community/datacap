@@ -85,7 +85,7 @@
               <FontAwesomeIcon icon="plus"/>
             </Button>
           </Tooltip>
-          <Tooltip :content="$t('source.manager.addRows')"
+          <Tooltip :content="$t('source.manager.copyRows')"
                    transfer>
             <Button size="small"
                     shape="circle"

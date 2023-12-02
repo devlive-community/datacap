@@ -90,6 +90,11 @@
                           @click="handlerVisibleHelp(true)">
                   </Button>
                 </Badge>
+                <InputNumber v-model="queryLimit"
+                             size="small"
+                             :step="10"
+                             :min="1">
+                </InputNumber>
               </Space>
             </template>
             <div ref="editorContainer">
@@ -221,7 +226,8 @@ export default defineComponent({
       aiSupportType: ['ANALYSIS', 'OPTIMIZE'],
       error: null,
       buttonRunText: null,
-      isSelection: false
+      isSelection: false,
+      queryLimit: 100
     }
   },
   created()
@@ -359,7 +365,8 @@ export default defineComponent({
       const configure: ExecuteModel = {
         name: this.applySource,
         content: this.isSelection ? editorInstance.instance.getSelectedText() : editorInstance.instance.getValue(),
-        format: "JSON"
+        format: "JSON",
+        limit: this.queryLimit
       };
       new ExecuteService()
         .execute(configure, this.cancelToken.token)
@@ -374,6 +381,7 @@ export default defineComponent({
               showSeriesNumber: false
             };
             this.tableConfigure = tConfigure;
+            editorInstance.instance.setValue(response.data.content);
           }
           else {
             this.$Message.error({

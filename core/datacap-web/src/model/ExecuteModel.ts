@@ -4,4 +4,5 @@ export interface ExecuteModel
   content: string;
   env?: object;
   format?: string;
+  limit?: number;
 }

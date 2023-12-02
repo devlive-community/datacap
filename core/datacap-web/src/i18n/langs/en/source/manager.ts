@@ -10,4 +10,5 @@ export default {
   filter: 'Filter',
   addFilter: 'Add Filter',
   addRows: 'Add Rows',
+  copyRows: 'Copy Rows',
 }
