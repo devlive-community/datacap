@@ -23,6 +23,7 @@ import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Pagination;
 import io.edurt.datacap.spi.model.Response;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.stereotype.Service;
@@ -208,12 +209,31 @@ public class TableServiceImpl
             updateConfigure.setFormat(FormatType.NONE);
             plugin.connect(updateConfigure);
             List<String> allSql = Lists.newArrayList();
+            // Gets the auto-increment column for the current row
+            List<String> autoIncrementColumns = table.getColumns()
+                    .stream()
+                    .filter(v -> v.getExtra().toLowerCase().contains("auto_increment"))
+                    .map(v -> v.getName())
+                    .collect(Collectors.toList());
             configure.getNewColumns().forEach(v -> {
                 List<SqlColumn> columns = Lists.newArrayList();
-                v.entrySet().forEach(entry -> columns.add(SqlColumn.builder()
-                        .column(String.format("`%s`", entry.getKey()))
-                        .value(entry.getValue())
-                        .build()));
+                v.entrySet().forEach(entry -> {
+                    SqlColumn column = SqlColumn.builder()
+                            .column(String.format("`%s`", entry.getKey()))
+                            .build();
+                    if (entry.getValue() == null) {
+                        column.setValue(null);
+                    }
+                    else {
+                        if (autoIncrementColumns.contains(entry.getKey())) {
+                            column.setValue(null);
+                        }
+                        else {
+                            column.setValue(String.format("'%s'", StringEscapeUtils.escapeSql(entry.getValue())));
+                        }
+                    }
+                    columns.add(column);
+                });
                 SqlBody body = SqlBody.builder()
                         .type(SqlType.INSERT)
                         .database(table.getDatabase().getName())
