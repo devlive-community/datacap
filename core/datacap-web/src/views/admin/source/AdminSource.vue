@@ -67,7 +67,7 @@
                 <Button :disabled="currentUserId !== row.user.id" shape="circle" type="error" size="small" icon="md-trash"/>
               </Poptip>
             </Tooltip>
-            <Tooltip :content="$t('common.admin') + $t('common.beta')"
+            <Tooltip :content="$t('common.admin')"
                      transfer>
               <Button :disabled="currentUserId !== row.user.id || !row.available"
                       shape="circle"

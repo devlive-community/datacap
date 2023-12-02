@@ -81,8 +81,18 @@
             <Button size="small"
                     shape="circle"
                     type="text"
-                    @click="handlerAddRow">
+                    @click="handlerAddOrCloneRow(false)">
               <FontAwesomeIcon icon="plus"/>
+            </Button>
+          </Tooltip>
+          <Tooltip :content="$t('source.manager.addRows')"
+                   transfer>
+            <Button size="small"
+                    shape="circle"
+                    type="text"
+                    :disabled="dataSelectedChanged.columns.length === 0"
+                    @click="handlerAddOrCloneRow(true)">
+              <FontAwesomeIcon icon="clone"/>
             </Button>
           </Tooltip>
           <Tooltip :content="$t('source.manager.deleteRows')"
@@ -450,14 +460,22 @@ export default defineComponent({
     {
       this.filterConfigure.configure = value;
     },
-    handlerAddRow()
+    handlerAddOrCloneRow(clone: boolean)
     {
       const newData = {};
-      this.originalColumns.forEach((column: { field: string; }) => {
-        newData[column.field] = null;
-      });
-      this.configure.datasets.push(newData);
-      this.newRows.push(newData);
+      if (!clone) {
+        this.originalColumns.forEach((column: { field: string; }) => {
+          newData[column.field] = null;
+        });
+        this.configure.datasets.push(newData);
+        this.newRows.push(newData);
+      }
+      else {
+        this.dataSelectedChanged.columns.forEach(column => {
+          this.configure.datasets.push(column);
+          this.newRows.push(column);
+        });
+      }
       this.dataCellChanged.type = SqlType.INSERT;
       this.dataCellChanged.changed = true;
       this.dataCellChanged.columns = this.newRows;
