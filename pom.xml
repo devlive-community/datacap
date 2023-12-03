@@ -72,6 +72,8 @@
         <module>executor/datacap-executor-seatunnel</module>
         <module>shaded/datacap-shaded-ydb</module>
         <module>shaded/datacap-shaded-pinot</module>
+        <module>fs/datacap-fs-spi</module>
+        <module>fs/datacap-fs-local</module>
     </modules>
 
     <name>datacap</name>
