@@ -6,7 +6,7 @@ public interface Fs
     {
         return this.getClass()
                 .getSimpleName()
-                .replace("FileSystem", "");
+                .replace("Fs", "");
     }
 
     default String description()

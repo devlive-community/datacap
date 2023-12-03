@@ -18,4 +18,5 @@ public class FsRequest
     private String endpoint;
     private String bucket;
     private String localPath;
+    private String fileName;
 }
