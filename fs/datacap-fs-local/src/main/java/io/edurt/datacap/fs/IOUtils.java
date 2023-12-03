@@ -3,6 +3,7 @@ package io.edurt.datacap.fs;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class IOUtils
@@ -22,12 +23,12 @@ public class IOUtils
     public static boolean copy(String source, String target, boolean createdDir)
     {
         try {
-            Path targetPath = Path.of(target);
+            Path targetPath = Paths.get(target);
             if (createdDir) {
                 Files.createDirectories(targetPath.getParent());
             }
 
-            Files.copy(Path.of(source), targetPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(Paths.get(source), targetPath, StandardCopyOption.REPLACE_EXISTING);
             return true;
         }
         catch (Exception e) {
@@ -44,7 +45,7 @@ public class IOUtils
     public static Reader reader(String source)
     {
         try {
-            return Files.newBufferedReader(Path.of(source));
+            return Files.newBufferedReader(Paths.get(source));
         }
         catch (Exception e) {
             throw new RuntimeException(e);
