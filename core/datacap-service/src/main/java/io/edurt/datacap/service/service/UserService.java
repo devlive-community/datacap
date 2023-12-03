@@ -9,6 +9,7 @@ import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.entity.itransient.user.UserEditorEntity;
 import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -33,4 +34,6 @@ public interface UserService
     CommonResponse<PageEntity<UserEntity>> getAll(FilterBody filter);
 
     CommonResponse<Long> changeEditorConfigure(UserEditorEntity configure);
+
+    CommonResponse<Object> uploadAvatar(MultipartFile file);
 }

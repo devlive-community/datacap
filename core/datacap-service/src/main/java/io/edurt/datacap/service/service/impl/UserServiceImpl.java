@@ -1,11 +1,14 @@
 package io.edurt.datacap.service.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.inject.Injector;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.response.JwtResponse;
 import io.edurt.datacap.common.utils.JsonUtils;
+import io.edurt.datacap.common.utils.SpiUtils;
+import io.edurt.datacap.fs.Fs;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.audit.AuditUserLog;
 import io.edurt.datacap.service.body.FilterBody;
@@ -17,6 +20,7 @@ import io.edurt.datacap.service.entity.RoleEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.entity.itransient.user.UserEditorEntity;
+import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 import io.edurt.datacap.service.repository.RoleRepository;
@@ -36,6 +40,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -62,8 +67,10 @@ public class UserServiceImpl
     private final JwtService jwtService;
     private final RedisTemplate redisTemplate;
     private final Environment environment;
+    private final InitializerConfigure initializerConfigure;
+    private final Injector injector;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate, Environment environment)
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate, Environment environment, InitializerConfigure initializerConfigure, Injector injector)
     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -73,6 +80,8 @@ public class UserServiceImpl
         this.jwtService = jwtService;
         this.redisTemplate = redisTemplate;
         this.environment = environment;
+        this.initializerConfigure = initializerConfigure;
+        this.injector = injector;
     }
 
     @Override
@@ -256,5 +265,19 @@ public class UserServiceImpl
         user.setEditorConfigure(configure);
         this.userRepository.save(user);
         return CommonResponse.success(user.getId());
+    }
+
+    @Override
+    public CommonResponse<Object> uploadAvatar(MultipartFile file)
+    {
+        UserEntity user = UserDetailsService.getUser();
+        String avatarPath = initializerConfigure.getAvatarPath().replace("{username}", user.getUsername());
+        log.info("Upload avatar user [ {} ] home [ {} ]", user.getUsername(), avatarPath);
+
+        Optional<Fs> optionalFs = SpiUtils.findFs(injector, initializerConfigure.getFsConfigure().getType());
+        if (!optionalFs.isPresent()) {
+            return CommonResponse.failure(String.format("Not found Fs [ %s ]", initializerConfigure.getFsConfigure().getType()));
+        }
+        return null;
     }
 }
