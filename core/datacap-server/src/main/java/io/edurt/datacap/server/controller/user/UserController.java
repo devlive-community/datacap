@@ -2,6 +2,7 @@ package io.edurt.datacap.server.controller.user;
 
 import com.google.common.collect.Sets;
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.UserNameBody;
 import io.edurt.datacap.service.body.UserPasswordBody;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -123,8 +126,14 @@ public class UserController
 
     @SneakyThrows
     @PostMapping("uploadAvatar")
-    public CommonResponse<Object> uploadAvatar(@RequestParam("file") MultipartFile file)
+    public CommonResponse<FsResponse> uploadAvatar(@RequestParam("file") MultipartFile file)
     {
         return this.userService.uploadAvatar(file);
+    }
+
+    @GetMapping(value = "getAvatar")
+    public void getAvatar(HttpServletResponse response)
+    {
+        this.userService.getAvatar(response);
     }
 }

@@ -1,11 +1,11 @@
 package io.edurt.datacap.fs;
 
 import java.io.InputStream;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 
 public class IOUtils
 {
@@ -62,15 +62,15 @@ public class IOUtils
     }
 
     /**
-     * Returns a Reader object for the specified source.
+     * This function takes a source file path and returns an InputStream object that can be used to read the contents of the file.
      *
-     * @param source the path of the file to be read
-     * @return a Reader object for reading the file contents
+     * @param source the path of the source file to read
+     * @return an InputStream object representing the source file
      */
-    public static Reader reader(String source)
+    public static InputStream reader(String source)
     {
         try {
-            return Files.newBufferedReader(Paths.get(source));
+            return Files.newInputStream(Paths.get(source), StandardOpenOption.READ);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
