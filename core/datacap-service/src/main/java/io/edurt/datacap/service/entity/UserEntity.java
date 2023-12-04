@@ -3,6 +3,7 @@ package io.edurt.datacap.service.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.service.converter.MapConverter;
 import io.edurt.datacap.service.converter.UserEditorConverter;
 import io.edurt.datacap.service.entity.itransient.user.UserEditorEntity;
 import io.edurt.datacap.service.validation.ValidationGroup;
@@ -35,6 +36,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -87,6 +89,10 @@ public class UserEntity
 
     @Column(name = "create_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
     private Timestamp createTime;
+
+    @Column(name = "avatar_configure")
+    @Convert(converter = MapConverter.class)
+    private Map<String, String> avatarConfigure;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",

@@ -9,6 +9,8 @@ import io.edurt.datacap.common.response.JwtResponse;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.fs.Fs;
+import io.edurt.datacap.fs.FsRequest;
+import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.audit.AuditUserLog;
 import io.edurt.datacap.service.body.FilterBody;
@@ -42,8 +44,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -270,14 +274,36 @@ public class UserServiceImpl
     @Override
     public CommonResponse<Object> uploadAvatar(MultipartFile file)
     {
-        UserEntity user = UserDetailsService.getUser();
-        String avatarPath = initializerConfigure.getAvatarPath().replace("{username}", user.getUsername());
-        log.info("Upload avatar user [ {} ] home [ {} ]", user.getUsername(), avatarPath);
-
         Optional<Fs> optionalFs = SpiUtils.findFs(injector, initializerConfigure.getFsConfigure().getType());
         if (!optionalFs.isPresent()) {
             return CommonResponse.failure(String.format("Not found Fs [ %s ]", initializerConfigure.getFsConfigure().getType()));
         }
-        return null;
+
+        UserEntity user = UserDetailsService.getUser();
+        try {
+            String avatarPath = initializerConfigure.getAvatarPath().replace("{username}", user.getUsername());
+            log.info("Upload avatar user [ {} ] home [ {} ]", user.getUsername(), avatarPath);
+
+            FsRequest fsRequest = FsRequest.builder()
+                    .access(initializerConfigure.getFsConfigure().getAccess())
+                    .secret(initializerConfigure.getFsConfigure().getSecret())
+                    .endpoint(avatarPath)
+                    .bucket(initializerConfigure.getFsConfigure().getBucket())
+                    .stream(file.getInputStream())
+                    .fileName(file.getOriginalFilename())
+                    .build();
+            FsResponse response = optionalFs.get().writer(fsRequest);
+            UserEntity entity = userRepository.findById(user.getId()).get();
+            Map<String, String> avatar = new HashMap<>();
+            avatar.put("fsType", initializerConfigure.getFsConfigure().getType());
+            avatar.put("path", response.getRemote());
+            entity.setAvatarConfigure(avatar);
+            userRepository.save(entity);
+            return CommonResponse.success(response);
+        }
+        catch (IOException e) {
+            log.warn("File upload exception on user [ {} ]", user.getUsername(), e);
+            return CommonResponse.failure(e.getMessage());
+        }
     }
 }
