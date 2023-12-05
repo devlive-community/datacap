@@ -32,7 +32,15 @@
                 <Tree :data="dataTreeArray"
                       style="margin-left: 6px;"
                       :load-data="handlerLoadChildData"
-                      @on-select-change="handlerSelectNode">
+                      @on-select-change="handlerSelectNode"
+                      @on-contextmenu="handlerContextMenu">
+                  <template #contextMenu>
+                    <DropdownItem v-if="contextData?.level === DataStructureEnum.TABLE"
+                                  @click="handlerTruncateTable(true)">
+                      <FontAwesomeIcon icon="trash"/>
+                      {{ $t('source.manager.truncateTable') }}
+                    </DropdownItem>
+                  </template>
                 </Tree>
                 <CircularLoading v-if="dataTreeLoading"
                                  :show="dataTreeLoading">
@@ -85,6 +93,11 @@
         </template>
       </Split>
     </div>
+    <TableTruncate v-if="tableTruncate.visible"
+                   :isVisible="tableTruncate.visible"
+                   :data="contextData"
+                   @close="handlerTruncateTable(false)">
+    </TableTruncate>
   </div>
 </template>
 <script lang="ts">
@@ -102,10 +115,18 @@ import TableInfo from "@/views/admin/source/components/TableInfo.vue";
 import TableData from "@/views/admin/source/components/TableData.vue";
 import {TabPane} from "view-ui-plus";
 import TableStatement from "@/views/admin/source/components/TableStatement.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import TableTruncate from "@/views/admin/source/components/TableTruncate.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
-  components: {TableStatement, TabPane, TableData, TableInfo, CircularLoading},
+  computed: {
+    DataStructureEnum()
+    {
+      return DataStructureEnum
+    }
+  },
+  components: {TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
@@ -145,6 +166,10 @@ export default defineComponent({
         info: (h) => this.resolveTabPaneComponent(h, 'circle-info', 'common.info'),
         data: (h) => this.resolveTabPaneComponent(h, 'table', 'common.data'),
         statement: (h) => this.resolveTabPaneComponent(h, 'tablet', 'common.statement')
+      },
+      contextData: null,
+      tableTruncate: {
+        visible: false
       }
     }
   },
@@ -298,6 +323,14 @@ export default defineComponent({
         return;
       }
       this.applyValue.node = currentNode;
+    },
+    handlerContextMenu(data: any)
+    {
+      this.contextData = data;
+    },
+    handlerTruncateTable(isOpen: boolean)
+    {
+      this.tableTruncate.visible = isOpen;
     },
     getColumnIcon(type: string)
     {

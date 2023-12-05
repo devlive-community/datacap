@@ -8,6 +8,7 @@ import io.edurt.datacap.common.sql.builder.DeleteBuilder;
 import io.edurt.datacap.common.sql.builder.InsertBuilder;
 import io.edurt.datacap.common.sql.builder.SelectBuilder;
 import io.edurt.datacap.common.sql.builder.ShowBuilder;
+import io.edurt.datacap.common.sql.builder.TruncateBuilder;
 import io.edurt.datacap.common.sql.builder.UpdateBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
@@ -52,6 +53,9 @@ public class SqlBuilder
                 break;
             case INSERT:
                 sql = getInsert();
+                break;
+            case TRUNCATE:
+                sql = getTruncateTable();
                 break;
             default:
                 Preconditions.checkArgument(false, "Not support type");
@@ -231,5 +235,17 @@ public class SqlBuilder
         InsertBuilder.INTO_VALUES(values.toArray(new String[0]));
         InsertBuilder.END();
         return InsertBuilder.SQL();
+    }
+
+    /**
+     * Generate the function comment for the given function body.
+     *
+     * @return a string representation of the SQL query for truncating the table
+     */
+    public String getTruncateTable()
+    {
+        TruncateBuilder.BEGIN();
+        TruncateBuilder.TRUNCATE(applyDatabaseAndTable());
+        return TruncateBuilder.SQL();
     }
 }

@@ -31,6 +31,7 @@ import {
   faTablet,
   faTextHeight,
   faTimes,
+  faTrash,
   faUpload
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -41,6 +42,7 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faTrash,
     faClone,
     faPlus,
     faTablet,

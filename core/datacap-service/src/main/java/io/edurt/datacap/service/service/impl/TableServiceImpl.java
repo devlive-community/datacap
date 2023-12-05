@@ -90,6 +90,9 @@ public class TableServiceImpl
         else if (configure.getType().equals(SqlType.SHOW)) {
             return this.fetchShowCreateTable(plugin, table, source, configure);
         }
+        else if (configure.getType().equals(SqlType.TRUNCATE)) {
+            return this.fetchTruncateTable(plugin, table, source, configure);
+        }
         return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
     }
 
@@ -356,6 +359,33 @@ public class TableServiceImpl
             plugin.connect(alterConfigure);
             SqlBody body = SqlBody.builder()
                     .type(SqlType.SHOW)
+                    .database(table.getDatabase().getName())
+                    .table(table.getName())
+                    .build();
+            return CommonResponse.success(getResponse(configure, plugin, new SqlBuilder(body).getSql()));
+        }
+        catch (Exception ex) {
+            return CommonResponse.failure(ExceptionUtils.getMessage(ex));
+        }
+    }
+
+    /**
+     * Fetches and truncates a table.
+     *
+     * @param plugin the plugin associated with the table
+     * @param table the table entity to fetch and truncate
+     * @param source the source entity associated with the table
+     * @param configure the table filter configuration
+     * @return the common response object containing the fetch and truncate result
+     */
+    private CommonResponse<Object> fetchTruncateTable(Plugin plugin, TableEntity table, SourceEntity source, TableFilter configure)
+    {
+        try {
+            Configure alterConfigure = source.toConfigure();
+            alterConfigure.setFormat(FormatType.NONE);
+            plugin.connect(alterConfigure);
+            SqlBody body = SqlBody.builder()
+                    .type(SqlType.TRUNCATE)
                     .database(table.getDatabase().getName())
                     .table(table.getName())
                     .build();
