@@ -1,10 +1,11 @@
 package io.edurt.datacap.fs;
 
-import java.io.Reader;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 
 public class IOUtils
 {
@@ -37,15 +38,39 @@ public class IOUtils
     }
 
     /**
-     * Returns a Reader object for the specified source.
+     * Copies the contents of the input stream to the specified target file path.
      *
-     * @param source the path of the file to be read
-     * @return a Reader object for reading the file contents
+     * @param stream the input stream containing the contents to be copied
+     * @param target the path of the target file where the contents will be copied to
+     * @param createdDir indicates whether the parent directory of the target file has been created
+     * @return true if the contents were successfully copied, false otherwise
      */
-    public static Reader reader(String source)
+    public static boolean copy(InputStream stream, String target, boolean createdDir)
     {
         try {
-            return Files.newBufferedReader(Paths.get(source));
+            Path targetPath = Paths.get(target);
+            if (createdDir) {
+                Files.createDirectories(targetPath.getParent());
+            }
+
+            Files.copy(stream, targetPath, StandardCopyOption.REPLACE_EXISTING);
+            return true;
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * This function takes a source file path and returns an InputStream object that can be used to read the contents of the file.
+     *
+     * @param source the path of the source file to read
+     * @return an InputStream object representing the source file
+     */
+    public static InputStream reader(String source)
+    {
+        try {
+            return Files.newInputStream(Paths.get(source), StandardOpenOption.READ);
         }
         catch (Exception e) {
             throw new RuntimeException(e);

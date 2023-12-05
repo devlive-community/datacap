@@ -5,4 +5,5 @@ export interface AuthResponse
   id: number;
   username: string;
   roles: [];
+  avatar: string;
 }

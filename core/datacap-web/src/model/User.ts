@@ -4,6 +4,7 @@ export interface User
   thirdConfigure: ThirdConfigure;
   createTime?: string;
   id?: number;
+  avatarConfigure?: Map<string, string>
 }
 
 export class UserQuestion

@@ -1,11 +1,17 @@
 package io.edurt.datacap.service.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.inject.Injector;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.response.JwtResponse;
 import io.edurt.datacap.common.utils.JsonUtils;
+import io.edurt.datacap.common.utils.SpiUtils;
+import io.edurt.datacap.fs.Fs;
+import io.edurt.datacap.fs.FsRequest;
+import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.audit.AuditUserLog;
 import io.edurt.datacap.service.body.FilterBody;
@@ -17,6 +23,7 @@ import io.edurt.datacap.service.entity.RoleEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.entity.itransient.user.UserEditorEntity;
+import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 import io.edurt.datacap.service.repository.RoleRepository;
@@ -27,6 +34,7 @@ import io.edurt.datacap.service.service.JwtService;
 import io.edurt.datacap.service.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -36,8 +44,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -62,8 +75,11 @@ public class UserServiceImpl
     private final JwtService jwtService;
     private final RedisTemplate redisTemplate;
     private final Environment environment;
+    private final InitializerConfigure initializerConfigure;
+    private final Injector injector;
+    private final ServerProperties serverProperties;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate, Environment environment)
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate, Environment environment, InitializerConfigure initializerConfigure, Injector injector, ServerProperties serverProperties)
     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -73,6 +89,9 @@ public class UserServiceImpl
         this.jwtService = jwtService;
         this.redisTemplate = redisTemplate;
         this.environment = environment;
+        this.initializerConfigure = initializerConfigure;
+        this.injector = injector;
+        this.serverProperties = serverProperties;
     }
 
     @Override
@@ -118,7 +137,7 @@ public class UserServiceImpl
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-        return CommonResponse.success(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
+        return CommonResponse.success(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, userDetails.getAvatar()));
     }
 
     @Override
@@ -256,5 +275,63 @@ public class UserServiceImpl
         user.setEditorConfigure(configure);
         this.userRepository.save(user);
         return CommonResponse.success(user.getId());
+    }
+
+    @Override
+    public CommonResponse<FsResponse> uploadAvatar(MultipartFile file)
+    {
+        Optional<Fs> optionalFs = SpiUtils.findFs(injector, initializerConfigure.getFsConfigure().getType());
+        if (!optionalFs.isPresent()) {
+            return CommonResponse.failure(String.format("Not found Fs [ %s ]", initializerConfigure.getFsConfigure().getType()));
+        }
+
+        UserEntity user = UserDetailsService.getUser();
+        try {
+            String avatarPath = initializerConfigure.getAvatarPath().replace("{username}", user.getUsername());
+            log.info("Upload avatar user [ {} ] home [ {} ]", user.getUsername(), avatarPath);
+
+            FsRequest fsRequest = FsRequest.builder()
+                    .access(initializerConfigure.getFsConfigure().getAccess())
+                    .secret(initializerConfigure.getFsConfigure().getSecret())
+                    .endpoint(avatarPath)
+                    .bucket(initializerConfigure.getFsConfigure().getBucket())
+                    .stream(file.getInputStream())
+                    .fileName(file.getOriginalFilename())
+                    .build();
+            FsResponse response = optionalFs.get().writer(fsRequest);
+            UserEntity entity = userRepository.findById(user.getId()).get();
+            Map<String, String> avatar = Maps.newConcurrentMap();
+            avatar.put("fsType", initializerConfigure.getFsConfigure().getType());
+            avatar.put("local", response.getRemote());
+            if (initializerConfigure.getFsConfigure().getType().equals("Local")) {
+                avatar.put("path", encodeImageToBase64(file.getInputStream()));
+            }
+            else {
+                avatar.put("path", response.getRemote());
+            }
+            entity.setAvatarConfigure(avatar);
+            userRepository.save(entity);
+            return CommonResponse.success(response);
+        }
+        catch (IOException e) {
+            log.warn("File upload exception on user [ {} ]", user.getUsername(), e);
+            return CommonResponse.failure(e.getMessage());
+        }
+    }
+
+    private String encodeImageToBase64(InputStream inputStream)
+    {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            return String.format("data:image/jpeg;base64,%s", Base64.getEncoder().encodeToString(outputStream.toByteArray()));
+        }
+        catch (IOException e) {
+            log.warn("Encode image to base64 exception", e);
+            return null;
+        }
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+import java.io.File;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -51,6 +52,14 @@ public class InitializerConfigure
     private Boolean autoLimit;
 
     @Getter
+    @Value(value = "${datacap.experimental.data}")
+    private String dataHome;
+
+    @Getter
+    @Value(value = "${datacap.experimental.avatarPath}")
+    private String avatarPath;
+
+    @Getter
     private LoadingCache<Long, ResultEntity> cache;
 
     @Getter
@@ -58,6 +67,14 @@ public class InitializerConfigure
 
     @Getter
     private Map<String, ExecutorService> taskExecutors;
+
+    @Getter
+    private final FsConfigure fsConfigure;
+
+    public InitializerConfigure(FsConfigure fsConfigure)
+    {
+        this.fsConfigure = fsConfigure;
+    }
 
     /**
      * Initializes the function.
@@ -103,6 +120,20 @@ public class InitializerConfigure
             autoLimit = Boolean.TRUE;
         }
         log.info("Datacap experimental auto limit: [ {} ]", this.autoLimit);
+
+        if (this.dataHome.toLowerCase().contains("{user.dir}")) {
+            this.dataHome = this.dataHome.replace("{user.dir}", System.getProperty("user.dir"));
+        }
+
+        this.avatarPath = String.join(File.separator, this.dataHome, this.avatarPath);
+        log.info("Datacap experimental avatar path: [ {} ]", this.avatarPath);
+
+        log.info("=========== Datacap experimental fs configure ===========");
+        log.info("fs type [ {} ]", fsConfigure.getType());
+        log.info("fs access [ {} ]", fsConfigure.getAccess());
+        log.info("fs secret [ {} ]", fsConfigure.getSecret());
+        log.info("fs endpoint [ {} ]", fsConfigure.getEndpoint());
+        log.info("fs bucket [ {} ]", fsConfigure.getBucket());
 
         this.taskQueue = new LinkedBlockingQueue<>(this.maxQueue);
         this.taskExecutors = Maps.newConcurrentMap();

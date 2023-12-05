@@ -4,7 +4,13 @@
       <template #title>
         <div class="datacap-profile-header">
           <router-link to="/profile/index">
-            <Avatar style="background-color: #87d068">
+            <Avatar v-if="authUser.avatar"
+                    size="large"
+                    :src="authUser.avatar">
+            </Avatar>&nbsp;
+            <Avatar v-else
+                    size="large"
+                    style="background-color: #87d068">
               {{ username }}
             </Avatar>&nbsp;
           </router-link>
@@ -44,7 +50,8 @@ export default defineComponent({
       username = authUser.username;
     }
     return {
-      username
+      username,
+      authUser
     }
   }
 });

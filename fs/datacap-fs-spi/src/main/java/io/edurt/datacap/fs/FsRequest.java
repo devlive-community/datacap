@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.InputStream;
+
 @Data
 @Builder
 @ToString
@@ -17,6 +19,8 @@ public class FsRequest
     private String secret;
     private String endpoint;
     private String bucket;
+    @Deprecated
     private String localPath;
+    private InputStream stream;
     private String fileName;
 }

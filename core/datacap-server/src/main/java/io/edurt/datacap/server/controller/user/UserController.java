@@ -2,6 +2,7 @@ package io.edurt.datacap.server.controller.user;
 
 import com.google.common.collect.Sets;
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.UserNameBody;
 import io.edurt.datacap.service.body.UserPasswordBody;
@@ -16,6 +17,8 @@ import io.edurt.datacap.service.record.TreeRecord;
 import io.edurt.datacap.service.repository.RoleRepository;
 import io.edurt.datacap.service.service.UserLogService;
 import io.edurt.datacap.service.service.UserService;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,12 +26,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/api/v1/user")
 public class UserController
@@ -114,5 +120,12 @@ public class UserController
     public CommonResponse<Long> changeEditorConfigure(@Validated @RequestBody UserEditorEntity configure)
     {
         return this.userService.changeEditorConfigure(configure);
+    }
+
+    @SneakyThrows
+    @PostMapping("uploadAvatar")
+    public CommonResponse<FsResponse> uploadAvatar(@RequestParam("file") MultipartFile file)
+    {
+        return this.userService.uploadAvatar(file);
     }
 }

@@ -20,7 +20,12 @@ public class LocalFs
                 .build();
         log.info("LocalFs writer target path [ {} ]", targetPath);
         try {
-            IOUtils.copy(request.getLocalPath(), targetPath, true);
+            if (request.getLocalPath() == null || request.getLocalPath().isEmpty()) {
+                IOUtils.copy(request.getStream(), targetPath, true);
+            }
+            else {
+                IOUtils.copy(request.getLocalPath(), targetPath, true);
+            }
             log.info("LocalFs writer [ {} ] successfully", targetPath);
         }
         catch (Exception e) {
