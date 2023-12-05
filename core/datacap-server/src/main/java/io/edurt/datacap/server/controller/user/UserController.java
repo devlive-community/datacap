@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -129,11 +127,5 @@ public class UserController
     public CommonResponse<FsResponse> uploadAvatar(@RequestParam("file") MultipartFile file)
     {
         return this.userService.uploadAvatar(file);
-    }
-
-    @GetMapping(value = "getAvatar")
-    public void getAvatar(HttpServletResponse response)
-    {
-        this.userService.getAvatar(response);
     }
 }

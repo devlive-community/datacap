@@ -55,7 +55,13 @@
           </Submenu>
           <Submenu name="profile">
             <template #title>
-              <Avatar size="large" style="background-color: #87d068">
+              <Avatar v-if="authUser.avatar"
+                      size="large"
+                      :src="authUser.avatar">
+              </Avatar>&nbsp;
+              <Avatar v-else
+                      size="large"
+                      style="background-color: #87d068">
                 {{ username }}
               </Avatar>&nbsp;
             </template>
@@ -110,7 +116,8 @@ export default defineComponent({
       username,
       language,
       version,
-      handlerLogout
+      handlerLogout,
+      authUser
     }
   },
   created()

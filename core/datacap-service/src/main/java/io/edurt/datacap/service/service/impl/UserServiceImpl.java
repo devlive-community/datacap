@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.Injector;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.ServiceState;
@@ -37,7 +38,6 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,15 +46,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
-
-import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +137,7 @@ public class UserServiceImpl
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-        return CommonResponse.success(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
+        return CommonResponse.success(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, userDetails.getAvatar()));
     }
 
     @Override
@@ -303,17 +300,15 @@ public class UserServiceImpl
                     .build();
             FsResponse response = optionalFs.get().writer(fsRequest);
             UserEntity entity = userRepository.findById(user.getId()).get();
-            Map<String, String> avatar = new HashMap<>();
+            Map<String, String> avatar = Maps.newConcurrentMap();
             avatar.put("fsType", initializerConfigure.getFsConfigure().getType());
-            String remote = response.getRemote();
+            avatar.put("local", response.getRemote());
             if (initializerConfigure.getFsConfigure().getType().equals("Local")) {
-                String serverProtocol = serverProperties.getSsl() != null && serverProperties.getSsl().isEnabled() ? "https" : "http";
-                String serverHost = serverProperties.getAddress().getHostAddress();
-                int serverPort = serverProperties.getPort();
-                remote = String.format("%s://%s:%s/api/v1/user/getAvatar", serverProtocol, serverHost, serverPort);
-                avatar.put("local", response.getRemote());
+                avatar.put("path", encodeImageToBase64(file.getInputStream()));
             }
-            avatar.put("path", remote);
+            else {
+                avatar.put("path", response.getRemote());
+            }
             entity.setAvatarConfigure(avatar);
             userRepository.save(entity);
             return CommonResponse.success(response);
@@ -324,40 +319,19 @@ public class UserServiceImpl
         }
     }
 
-    @Override
-    public void getAvatar(HttpServletResponse response)
+    private String encodeImageToBase64(InputStream inputStream)
     {
-        Optional<Fs> optionalFs = SpiUtils.findFs(injector, initializerConfigure.getFsConfigure().getType());
-        UserEntity user = UserDetailsService.getUser();
-        UserEntity entity = userRepository.findById(user.getId()).get();
-        String local = entity.getAvatarConfigure().get("local");
-        FsRequest fsRequest = FsRequest.builder()
-                .access(initializerConfigure.getFsConfigure().getAccess())
-                .secret(initializerConfigure.getFsConfigure().getSecret())
-                .endpoint(local.substring(0, local.lastIndexOf("/")))
-                .fileName(local.substring(local.lastIndexOf("/") + 1))
-                .bucket(initializerConfigure.getFsConfigure().getBucket())
-                .build();
-        FsResponse fsResponse = optionalFs.get().reader(fsRequest);
-
-        try (InputStream in = fsResponse.getContext()) {
-            BufferedImage image = ImageIO.read(in);
-            if (image != null) {
-                response.setContentType("image/jpeg");
-                ImageIO.write(image, "jpg", response.getOutputStream());
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
             }
-            else {
-                response.sendError(HttpStatus.NOT_FOUND.value());
-            }
+            return String.format("data:image/jpeg;base64,%s", Base64.getEncoder().encodeToString(outputStream.toByteArray()));
         }
         catch (IOException e) {
-            log.warn("Get avatar exception on user [ {} ]", user.getUsername(), e);
-            try {
-                response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error processing image");
-            }
-            catch (IOException ex) {
-                log.warn("Get avatar exception on user [ {} ]", user.getUsername(), ex);
-            }
+            log.warn("Encode image to base64 exception", e);
+            return null;
         }
     }
 }

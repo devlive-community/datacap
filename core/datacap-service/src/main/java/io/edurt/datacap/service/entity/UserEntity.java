@@ -92,6 +92,7 @@ public class UserEntity
 
     @Column(name = "avatar_configure")
     @Convert(converter = MapConverter.class)
+    @JsonIgnoreProperties(value = {"fsType", "local"})
     private Map<String, String> avatarConfigure;
 
     @ManyToMany(fetch = FetchType.LAZY)

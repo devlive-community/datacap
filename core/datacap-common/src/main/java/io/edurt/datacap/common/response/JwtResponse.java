@@ -18,12 +18,14 @@ public class JwtResponse
     private Long id;
     private String username;
     private List<String> roles;
+    private String avatar;
 
-    public JwtResponse(String accessToken, Long id, String username, List<String> roles)
+    public JwtResponse(String accessToken, Long id, String username, List<String> roles, String avatar)
     {
         this.token = accessToken;
         this.id = id;
         this.username = username;
         this.roles = roles;
+        this.avatar = avatar;
     }
 }

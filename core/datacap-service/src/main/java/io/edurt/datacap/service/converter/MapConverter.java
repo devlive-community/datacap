@@ -10,7 +10,6 @@ import java.util.Map;
 public class MapConverter
         implements AttributeConverter<Map, String>
 {
-
     @Override
     public String convertToDatabaseColumn(Map map)
     {

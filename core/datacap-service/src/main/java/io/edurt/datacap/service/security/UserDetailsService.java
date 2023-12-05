@@ -21,14 +21,17 @@ public class UserDetailsService
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
+    private String avatar;
 
     public UserDetailsService(Long id, String username, String password,
-            Collection<? extends GrantedAuthority> authorities)
+            Collection<? extends GrantedAuthority> authorities,
+            String avatar)
     {
         this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+        this.avatar = avatar;
     }
 
     public static UserDetailsService build(UserEntity user)
@@ -36,11 +39,16 @@ public class UserDetailsService
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(String.valueOf(role.getId())))
                 .collect(Collectors.toList());
+        String avatar = null;
+        if (user.getAvatarConfigure() != null) {
+            avatar = user.getAvatarConfigure().get("path");
+        }
         return new UserDetailsService(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
-                authorities);
+                authorities,
+                avatar);
     }
 
     @Override
@@ -88,6 +96,11 @@ public class UserDetailsService
     public Long getId()
     {
         return id;
+    }
+
+    public String getAvatar()
+    {
+        return avatar;
     }
 
     public static UserEntity getUser()

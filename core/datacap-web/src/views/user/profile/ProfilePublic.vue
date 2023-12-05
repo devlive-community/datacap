@@ -25,10 +25,15 @@
             <Sider class="content"
                    style="text-align: center;"
                    hide-trigger>
-              <Avatar style="background-color: #87d068"
+              <Avatar v-if="authUser.avatar"
                       size="64"
-                      icon="ios-person">
-              </Avatar>
+                      :src="formState.avatarConfigure['path']">
+              </Avatar>&nbsp;
+              <Avatar v-else
+                      size="64"
+                      style="background-color: #87d068">
+                {{ authUser.username }}
+              </Avatar>&nbsp;
               <Upload style="margin-top: 10px;"
                       :headers="{'Authorization': auth.type + ' ' + auth.token}"
                       :format="['jpg', 'png', 'jpeg']"
@@ -49,8 +54,16 @@ import {User} from "@/model/User";
 import UserService from "@/services/UserService";
 import Common from "@/common/Common";
 import {ResponseModel} from "@/model/ResponseModel";
+import {AuthResponse} from "@/model/AuthResponse";
 
 export default defineComponent({
+  setup()
+  {
+    const authUser = JSON.parse(localStorage.getItem(Common.token) || '{}') as AuthResponse;
+    return {
+      authUser
+    }
+  },
   data()
   {
     return {

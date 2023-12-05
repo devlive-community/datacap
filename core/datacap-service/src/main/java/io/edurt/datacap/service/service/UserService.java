@@ -12,8 +12,6 @@ import io.edurt.datacap.service.model.AiModel;
 import io.edurt.datacap.service.record.TreeRecord;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-
 import java.util.List;
 
 public interface UserService
@@ -39,6 +37,4 @@ public interface UserService
     CommonResponse<Long> changeEditorConfigure(UserEditorEntity configure);
 
     CommonResponse<FsResponse> uploadAvatar(MultipartFile file);
-
-    void getAvatar(HttpServletResponse response);
 }

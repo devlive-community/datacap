@@ -52,3 +52,4 @@ shaded/*/dependency-reduced-pom.xml
 cache/
 config/
 docs/site/
+data/
