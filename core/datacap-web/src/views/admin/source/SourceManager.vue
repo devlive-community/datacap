@@ -82,7 +82,6 @@
                 </TableData>
               </TabPane>
               <TabPane :label="tabPane.statement"
-                       :style="{textAlign: 'center'}"
                        name="statement">
                 <TableStatement v-if="applyValue.tabType === 'statement'"
                                 :id="applyValue.node.applyId">
@@ -388,5 +387,9 @@ export default defineComponent({
 
 .split-container-pane {
   padding: 0;
+}
+
+/deep/ .ivu-tabs-nav .ivu-tabs-tab {
+  text-align: center;
 }
 </style>
