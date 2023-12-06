@@ -11,4 +11,12 @@ export default {
   addFilter: 'Add Filter',
   addRows: 'Add Rows',
   copyRows: 'Copy Rows',
+  truncateTable: 'Truncate Table',
+  dropTable: 'Drop Table',
+  structure: 'Structure',
+  isNullable: 'Is Nullable',
+  defaultValue: 'Default Value',
+  comment: 'Comment',
+  extra: 'Extra',
+  erDiagram: 'ER Diagram',
 }

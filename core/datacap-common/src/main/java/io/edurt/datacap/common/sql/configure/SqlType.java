@@ -7,5 +7,7 @@ public enum SqlType
     DELETE,
     ALTER,
     SHOW,
-    INSERT
+    INSERT,
+    TRUNCATE,
+    DROP
 }

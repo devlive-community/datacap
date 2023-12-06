@@ -15,6 +15,8 @@ import {
   faClone,
   faColumns,
   faDatabase,
+  faDeleteLeft,
+  faDiagramPredecessor,
   faDroplet,
   faEye,
   faFilter,
@@ -26,11 +28,13 @@ import {
   faMinus,
   faPlus,
   faRepeat,
+  faRotate,
   faSun,
   faTable,
   faTablet,
   faTextHeight,
   faTimes,
+  faTrash,
   faUpload
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -41,6 +45,10 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faRotate,
+    faDiagramPredecessor,
+    faDeleteLeft,
+    faTrash,
     faClone,
     faPlus,
     faTablet,

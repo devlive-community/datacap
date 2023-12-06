@@ -123,6 +123,14 @@
               <FontAwesomeIcon icon="eye"/>
             </Button>
           </Tooltip>
+          <Tooltip :content="$t('common.refresh')"
+                   transfer>
+            <Button size="small"
+                    type="text"
+                    @click="handlerRefresh">
+              <FontAwesomeIcon icon="rotate"/>
+            </Button>
+          </Tooltip>
         </Space>
         <div style="float: right;">
           <Space>
@@ -480,6 +488,10 @@ export default defineComponent({
       this.dataCellChanged.changed = true;
       this.dataCellChanged.columns = this.newRows;
       this.gridApi.setRowData(this.configure.datasets);
+    },
+    handlerRefresh()
+    {
+      this.handlerRefererData(this.getConfigure());
     },
     getSortConfigure(configure: TableFilter)
     {

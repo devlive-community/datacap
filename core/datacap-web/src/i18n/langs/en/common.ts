@@ -167,5 +167,7 @@ export default {
   releaseNote: 'Release Note',
   statement: 'Statement',
   condition: 'Condition',
-  uploadAvatar: 'Upload Avatar'
+  uploadAvatar: 'Upload Avatar',
+  refresh: 'Refresh',
+  length: 'Length',
 }

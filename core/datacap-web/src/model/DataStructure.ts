@@ -19,5 +19,6 @@ export class DataStructureModel
   comment: null;
   origin: any;
   selected: boolean;
+  contextmenu = true;
   children: DataStructureModel[] = [];
 }

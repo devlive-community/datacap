@@ -22,7 +22,9 @@ export enum SqlType
   DELETE = 'DELETE',
   ALTER = 'ALTER',
   SHOW = 'SHOW',
-  INSERT = 'INSERT'
+  INSERT = 'INSERT',
+  TRUNCATE = 'TRUNCATE',
+  DROP = 'DROP'
 }
 
 export class SqlColumn

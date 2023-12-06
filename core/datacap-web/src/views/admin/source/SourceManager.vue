@@ -32,7 +32,20 @@
                 <Tree :data="dataTreeArray"
                       style="margin-left: 6px;"
                       :load-data="handlerLoadChildData"
-                      @on-select-change="handlerSelectNode">
+                      @on-select-change="handlerSelectNode"
+                      @on-contextmenu="handlerContextMenu">
+                  <template #contextMenu>
+                    <DropdownItem v-if="contextData?.level === DataStructureEnum.TABLE"
+                                  @click="handlerTruncateTable(true)">
+                      <FontAwesomeIcon icon="trash"/>
+                      {{ $t('source.manager.truncateTable') }}
+                    </DropdownItem>
+                    <DropdownItem v-if="contextData?.level === DataStructureEnum.TABLE"
+                                  @click="handlerDropTable(true)">
+                      <FontAwesomeIcon icon="delete-left"/>
+                      {{ $t('source.manager.dropTable') }}
+                    </DropdownItem>
+                  </template>
                 </Tree>
                 <CircularLoading v-if="dataTreeLoading"
                                  :show="dataTreeLoading">
@@ -67,6 +80,12 @@
                            :id="applyValue.node.applyId">
                 </TableInfo>
               </TabPane>
+              <TabPane :label="tabPane.structure"
+                       name="structure">
+                <TableStructure v-if="applyValue.tabType === 'structure'"
+                                :id="applyValue.node.applyId">
+                </TableStructure>
+              </TabPane>
               <TabPane :label="tabPane.data"
                        name="data">
                 <TableData v-if="applyValue.tabType === 'data'"
@@ -74,17 +93,33 @@
                 </TableData>
               </TabPane>
               <TabPane :label="tabPane.statement"
-                       :style="{textAlign: 'center'}"
                        name="statement">
                 <TableStatement v-if="applyValue.tabType === 'statement'"
                                 :id="applyValue.node.applyId">
                 </TableStatement>
+              </TabPane>
+              <TabPane :label="tabPane.erDiagram"
+                       name="erDiagram">
+                <TableErDiagram v-if="applyValue.tabType === 'erDiagram'"
+                                :id="applyValue.node.applyId"
+                                :title="applyValue.node.title">
+                </TableErDiagram>
               </TabPane>
             </Tabs>
           </Card>
         </template>
       </Split>
     </div>
+    <TableTruncate v-if="tableTruncate.visible"
+                   :isVisible="tableTruncate.visible"
+                   :data="contextData"
+                   @close="handlerTruncateTable(false)">
+    </TableTruncate>
+    <TableDrop v-if="tableDrop.visible"
+               :isVisible="tableDrop.visible"
+               :data="contextData"
+               @close="handlerDropTable(false)">
+    </TableDrop>
   </div>
 </template>
 <script lang="ts">
@@ -102,10 +137,21 @@ import TableInfo from "@/views/admin/source/components/TableInfo.vue";
 import TableData from "@/views/admin/source/components/TableData.vue";
 import {TabPane} from "view-ui-plus";
 import TableStatement from "@/views/admin/source/components/TableStatement.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import TableTruncate from "@/views/admin/source/components/TableTruncate.vue";
+import TableDrop from "@/views/admin/source/components/TableDrop.vue";
+import TableStructure from "@/views/admin/source/components/TableStructure.vue";
+import TableErDiagram from "@/views/admin/source/components/TableErDiagram.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
-  components: {TableStatement, TabPane, TableData, TableInfo, CircularLoading},
+  computed: {
+    DataStructureEnum()
+    {
+      return DataStructureEnum
+    }
+  },
+  components: {TableErDiagram, TableStructure, TableDrop, TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
@@ -143,8 +189,17 @@ export default defineComponent({
       },
       tabPane: {
         info: (h) => this.resolveTabPaneComponent(h, 'circle-info', 'common.info'),
+        structure: (h) => this.resolveTabPaneComponent(h, 'columns', 'source.manager.structure'),
         data: (h) => this.resolveTabPaneComponent(h, 'table', 'common.data'),
-        statement: (h) => this.resolveTabPaneComponent(h, 'tablet', 'common.statement')
+        statement: (h) => this.resolveTabPaneComponent(h, 'tablet', 'common.statement'),
+        erDiagram: (h) => this.resolveTabPaneComponent(h, 'diagram-predecessor', 'source.manager.erDiagram'),
+      },
+      contextData: null,
+      tableTruncate: {
+        visible: false
+      },
+      tableDrop: {
+        visible: false
       }
     }
   },
@@ -299,6 +354,21 @@ export default defineComponent({
       }
       this.applyValue.node = currentNode;
     },
+    handlerContextMenu(data: any)
+    {
+      this.contextData = data;
+    },
+    handlerTruncateTable(isOpen: boolean)
+    {
+      this.tableTruncate.visible = isOpen;
+    },
+    handlerDropTable(isOpen: boolean)
+    {
+      this.tableDrop.visible = isOpen;
+      if (!isOpen) {
+        this.handlerChangeDatabase();
+      }
+    },
     getColumnIcon(type: string)
     {
       if (type === 'PRI') {
@@ -355,5 +425,9 @@ export default defineComponent({
 
 .split-container-pane {
   padding: 0;
+}
+
+/deep/ .ivu-tabs-nav .ivu-tabs-tab {
+  text-align: center;
 }
 </style>

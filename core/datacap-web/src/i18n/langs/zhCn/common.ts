@@ -167,5 +167,7 @@ export default {
   releaseNote: '发行说明',
   statement: '语句',
   condition: '条件',
-  uploadAvatar: '上传头像'
+  uploadAvatar: '上传头像',
+  refresh: '刷新',
+  length: '长度',
 }
