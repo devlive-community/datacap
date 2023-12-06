@@ -8,5 +8,6 @@ public enum SqlType
     ALTER,
     SHOW,
     INSERT,
-    TRUNCATE
+    TRUNCATE,
+    DROP
 }

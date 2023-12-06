@@ -93,6 +93,9 @@ public class TableServiceImpl
         else if (configure.getType().equals(SqlType.TRUNCATE)) {
             return this.fetchTruncateTable(plugin, table, source, configure);
         }
+        else if (configure.getType().equals(SqlType.DROP)) {
+            return this.fetchDropTable(plugin, table, source, configure);
+        }
         return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
     }
 
@@ -351,6 +354,15 @@ public class TableServiceImpl
         }
     }
 
+    /**
+     * Fetches the "SHOW CREATE TABLE" query for a given table.
+     *
+     * @param plugin the plugin to use for connecting to the database
+     * @param table the table entity for which to fetch the query
+     * @param source the source entity containing the database configuration
+     * @param configure the table filter configuration
+     * @return the common response object containing the result of the query
+     */
     private CommonResponse<Object> fetchShowCreateTable(Plugin plugin, TableEntity table, SourceEntity source, TableFilter configure)
     {
         try {
@@ -390,6 +402,38 @@ public class TableServiceImpl
                     .table(table.getName())
                     .build();
             return CommonResponse.success(getResponse(configure, plugin, new SqlBuilder(body).getSql()));
+        }
+        catch (Exception ex) {
+            return CommonResponse.failure(ExceptionUtils.getMessage(ex));
+        }
+    }
+
+    /**
+     * Fetches the drop table operation for the given table and source.
+     *
+     * @param plugin the plugin instance
+     * @param table the table entity
+     * @param source the source entity
+     * @param configure the table filter configuration
+     * @return the common response object containing the fetched result
+     */
+    private CommonResponse<Object> fetchDropTable(Plugin plugin, TableEntity table, SourceEntity source, TableFilter configure)
+    {
+        try {
+            Configure alterConfigure = source.toConfigure();
+            alterConfigure.setFormat(FormatType.NONE);
+            plugin.connect(alterConfigure);
+            SqlBody body = SqlBody.builder()
+                    .type(SqlType.DROP)
+                    .database(table.getDatabase().getName())
+                    .table(table.getName())
+                    .value(configure.getValue())
+                    .build();
+            Response response = getResponse(configure, plugin, new SqlBuilder(body).getSql());
+            if (!configure.isPreview() && response.getIsSuccessful()) {
+                repository.delete(table);
+            }
+            return CommonResponse.success(response);
         }
         catch (Exception ex) {
             return CommonResponse.failure(ExceptionUtils.getMessage(ex));

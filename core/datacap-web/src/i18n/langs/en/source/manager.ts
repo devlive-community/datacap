@@ -11,5 +11,6 @@ export default {
   addFilter: 'Add Filter',
   addRows: 'Add Rows',
   copyRows: 'Copy Rows',
-  truncateTable: 'Truncate Table'
+  truncateTable: 'Truncate Table',
+  dropTable: 'Drop Table'
 }

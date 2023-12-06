@@ -40,6 +40,11 @@
                       <FontAwesomeIcon icon="trash"/>
                       {{ $t('source.manager.truncateTable') }}
                     </DropdownItem>
+                    <DropdownItem v-if="contextData?.level === DataStructureEnum.TABLE"
+                                  @click="handlerDropTable(true)">
+                      <FontAwesomeIcon icon="delete-left"/>
+                      {{ $t('source.manager.dropTable') }}
+                    </DropdownItem>
                   </template>
                 </Tree>
                 <CircularLoading v-if="dataTreeLoading"
@@ -97,6 +102,11 @@
                    :data="contextData"
                    @close="handlerTruncateTable(false)">
     </TableTruncate>
+    <TableDrop v-if="tableDrop.visible"
+               :isVisible="tableDrop.visible"
+               :data="contextData"
+               @close="handlerDropTable(false)">
+    </TableDrop>
   </div>
 </template>
 <script lang="ts">
@@ -116,6 +126,7 @@ import {TabPane} from "view-ui-plus";
 import TableStatement from "@/views/admin/source/components/TableStatement.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import TableTruncate from "@/views/admin/source/components/TableTruncate.vue";
+import TableDrop from "@/views/admin/source/components/TableDrop.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
@@ -125,7 +136,7 @@ export default defineComponent({
       return DataStructureEnum
     }
   },
-  components: {TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
+  components: {TableDrop, TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
@@ -168,6 +179,9 @@ export default defineComponent({
       },
       contextData: null,
       tableTruncate: {
+        visible: false
+      },
+      tableDrop: {
         visible: false
       }
     }
@@ -330,6 +344,13 @@ export default defineComponent({
     handlerTruncateTable(isOpen: boolean)
     {
       this.tableTruncate.visible = isOpen;
+    },
+    handlerDropTable(isOpen: boolean)
+    {
+      this.tableDrop.visible = isOpen;
+      if (!isOpen) {
+        this.handlerChangeDatabase();
+      }
     },
     getColumnIcon(type: string)
     {

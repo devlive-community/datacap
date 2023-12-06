@@ -11,5 +11,6 @@ export default {
   addFilter: '添加筛选器',
   addRows: '添加行',
   copyRows: '复制行',
-  truncateTable: '截断表'
+  truncateTable: '截断表',
+  dropTable: '删除表'
 }

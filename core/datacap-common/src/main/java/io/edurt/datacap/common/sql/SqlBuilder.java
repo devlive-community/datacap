@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.sql.builder.AlterBuilder;
 import io.edurt.datacap.common.sql.builder.DeleteBuilder;
+import io.edurt.datacap.common.sql.builder.DropBuilder;
 import io.edurt.datacap.common.sql.builder.InsertBuilder;
 import io.edurt.datacap.common.sql.builder.SelectBuilder;
 import io.edurt.datacap.common.sql.builder.ShowBuilder;
@@ -49,13 +50,16 @@ public class SqlBuilder
                 sql = getAlter();
                 break;
             case SHOW:
-                sql = showCreateTable();
+                sql = getShowCreateTable();
                 break;
             case INSERT:
                 sql = getInsert();
                 break;
             case TRUNCATE:
                 sql = getTruncateTable();
+                break;
+            case DROP:
+                sql = getDropTable();
                 break;
             default:
                 Preconditions.checkArgument(false, "Not support type");
@@ -203,11 +207,11 @@ public class SqlBuilder
     }
 
     /**
-     * Generate the function comment for the given function body in a markdown code block with the correct language syntax.
+     * Generates the SHOW CREATE TABLE SQL statement for the specified database and table.
      *
-     * @return The generated function comment in markdown format.
+     * @return the SHOW CREATE TABLE SQL statement
      */
-    private String showCreateTable()
+    private String getShowCreateTable()
     {
         ShowBuilder.BEGIN();
         ShowBuilder.SHOW_CREATE_TABLE(applyDatabaseAndTable());
@@ -247,5 +251,17 @@ public class SqlBuilder
         TruncateBuilder.BEGIN();
         TruncateBuilder.TRUNCATE(applyDatabaseAndTable());
         return TruncateBuilder.SQL();
+    }
+
+    /**
+     * Retrieves the SQL statement for dropping a table.
+     *
+     * @return the SQL statement for dropping a table
+     */
+    public String getDropTable()
+    {
+        DropBuilder.BEGIN();
+        DropBuilder.DROP(applyDatabaseAndTable());
+        return DropBuilder.SQL();
     }
 }

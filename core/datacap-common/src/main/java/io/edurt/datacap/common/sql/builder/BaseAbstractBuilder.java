@@ -123,6 +123,13 @@ abstract class BaseAbstractBuilder<T>
         return getSelf();
     }
 
+    public T DROP(String table)
+    {
+        sql().statementType = SQLStatement.StatementType.DROP;
+        sql().tables.add(table);
+        return getSelf();
+    }
+
     public T FROM(String table)
     {
         sql().tables.add(table);
@@ -492,7 +499,7 @@ abstract class BaseAbstractBuilder<T>
 
         public enum StatementType
         {
-            DELETE, INSERT, SELECT, UPDATE, ALTER, SHOW, TRUNCATE
+            DELETE, INSERT, SELECT, UPDATE, ALTER, SHOW, TRUNCATE, DROP
         }
 
         private enum LimitingRowsStrategy
@@ -685,6 +692,16 @@ abstract class BaseAbstractBuilder<T>
             return builder.toString();
         }
 
+        private String dropSQL(SafeAppendable builder)
+        {
+            sqlClause(builder, "DROP TABLE", tables, "", "", "");
+            limitingRowsStrategy.appendClause(builder, null, limit);
+            if (end) {
+                builder.append(";");
+            }
+            return builder.toString();
+        }
+
         public String sql(Appendable a)
         {
             SafeAppendable builder = new SafeAppendable(a);
@@ -721,6 +738,10 @@ abstract class BaseAbstractBuilder<T>
 
                 case TRUNCATE:
                     answer = truncateSQL(builder);
+                    break;
+
+                case DROP:
+                    answer = dropSQL(builder);
                     break;
 
                 default:
