@@ -12,5 +12,10 @@ export default {
   addRows: '添加行',
   copyRows: '复制行',
   truncateTable: '截断表',
-  dropTable: '删除表'
+  dropTable: '删除表',
+  structure: '结构',
+  isNullable: '是否允许为空',
+  defaultValue: '默认值',
+  comment: '注释',
+  extra: '额外信息',
 }

@@ -169,4 +169,5 @@ export default {
   condition: '条件',
   uploadAvatar: '上传头像',
   refresh: '刷新',
+  length: '长度',
 }

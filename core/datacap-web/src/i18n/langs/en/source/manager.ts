@@ -12,5 +12,10 @@ export default {
   addRows: 'Add Rows',
   copyRows: 'Copy Rows',
   truncateTable: 'Truncate Table',
-  dropTable: 'Drop Table'
+  dropTable: 'Drop Table',
+  structure: 'Structure',
+  isNullable: 'Is Nullable',
+  defaultValue: 'Default Value',
+  comment: 'Comment',
+  extra: 'Extra',
 }

@@ -80,6 +80,12 @@
                            :id="applyValue.node.applyId">
                 </TableInfo>
               </TabPane>
+              <TabPane :label="tabPane.structure"
+                       name="structure">
+                <TableStructure v-if="applyValue.tabType === 'structure'"
+                                :id="applyValue.node.applyId">
+                </TableStructure>
+              </TabPane>
               <TabPane :label="tabPane.data"
                        name="data">
                 <TableData v-if="applyValue.tabType === 'data'"
@@ -127,6 +133,7 @@ import TableStatement from "@/views/admin/source/components/TableStatement.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import TableTruncate from "@/views/admin/source/components/TableTruncate.vue";
 import TableDrop from "@/views/admin/source/components/TableDrop.vue";
+import TableStructure from "@/views/admin/source/components/TableStructure.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
@@ -136,7 +143,7 @@ export default defineComponent({
       return DataStructureEnum
     }
   },
-  components: {TableDrop, TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
+  components: {TableStructure, TableDrop, TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
@@ -174,6 +181,7 @@ export default defineComponent({
       },
       tabPane: {
         info: (h) => this.resolveTabPaneComponent(h, 'circle-info', 'common.info'),
+        structure: (h) => this.resolveTabPaneComponent(h, 'columns', 'source.manager.structure'),
         data: (h) => this.resolveTabPaneComponent(h, 'table', 'common.data'),
         statement: (h) => this.resolveTabPaneComponent(h, 'tablet', 'common.statement')
       },

@@ -169,4 +169,5 @@ export default {
   condition: 'Condition',
   uploadAvatar: 'Upload Avatar',
   refresh: 'Refresh',
+  length: 'Length',
 }
