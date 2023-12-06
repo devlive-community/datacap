@@ -20,6 +20,7 @@ public class Configure
     private Optional<String> username = Optional.empty();
     private Optional<String> password = Optional.empty();
     private Optional<String> database = Optional.empty();
+    private Optional<String> version = Optional.empty();
     private Optional<Map<String, Object>> env = Optional.empty();
     private Optional<Boolean> ssl = Optional.empty();
     private FormatType format = FormatType.NONE;

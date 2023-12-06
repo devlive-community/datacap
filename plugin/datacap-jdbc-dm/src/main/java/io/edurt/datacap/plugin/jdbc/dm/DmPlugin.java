@@ -4,7 +4,6 @@ import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
 import io.edurt.datacap.spi.adapter.JdbcAdapter;
 import io.edurt.datacap.spi.connection.JdbcConfigure;
-import io.edurt.datacap.spi.connection.JdbcConnection;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,7 @@ public class DmPlugin
         implements Plugin
 {
     private JdbcConfigure jdbcConfigure;
-    private JdbcConnection connection;
+    private DmConnection connection;
     private Response response;
 
     @Override
@@ -46,7 +45,7 @@ public class DmPlugin
             BeanUtils.copyProperties(this.jdbcConfigure, configure);
             this.jdbcConfigure.setJdbcDriver("dm.jdbc.driver.DmDriver");
             this.jdbcConfigure.setJdbcType("dm");
-            this.connection = new JdbcConnection(this.jdbcConfigure, this.response);
+            this.connection = new DmConnection(this.jdbcConfigure, this.response);
         }
         catch (Exception ex) {
             this.response.setIsConnected(Boolean.FALSE);
