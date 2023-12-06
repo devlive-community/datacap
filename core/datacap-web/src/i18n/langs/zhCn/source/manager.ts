@@ -18,4 +18,5 @@ export default {
   defaultValue: '默认值',
   comment: '注释',
   extra: '额外信息',
+  erDiagram: 'ER 图',
 }

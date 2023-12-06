@@ -18,4 +18,5 @@ export default {
   defaultValue: 'Default Value',
   comment: 'Comment',
   extra: 'Extra',
+  erDiagram: 'ER Diagram',
 }

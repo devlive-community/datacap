@@ -98,6 +98,13 @@
                                 :id="applyValue.node.applyId">
                 </TableStatement>
               </TabPane>
+              <TabPane :label="tabPane.erDiagram"
+                       name="erDiagram">
+                <TableErDiagram v-if="applyValue.tabType === 'erDiagram'"
+                                :id="applyValue.node.applyId"
+                                :title="applyValue.node.title">
+                </TableErDiagram>
+              </TabPane>
             </Tabs>
           </Card>
         </template>
@@ -134,6 +141,7 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import TableTruncate from "@/views/admin/source/components/TableTruncate.vue";
 import TableDrop from "@/views/admin/source/components/TableDrop.vue";
 import TableStructure from "@/views/admin/source/components/TableStructure.vue";
+import TableErDiagram from "@/views/admin/source/components/TableErDiagram.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
@@ -143,7 +151,7 @@ export default defineComponent({
       return DataStructureEnum
     }
   },
-  components: {TableStructure, TableDrop, TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
+  components: {TableErDiagram, TableStructure, TableDrop, TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
@@ -183,7 +191,8 @@ export default defineComponent({
         info: (h) => this.resolveTabPaneComponent(h, 'circle-info', 'common.info'),
         structure: (h) => this.resolveTabPaneComponent(h, 'columns', 'source.manager.structure'),
         data: (h) => this.resolveTabPaneComponent(h, 'table', 'common.data'),
-        statement: (h) => this.resolveTabPaneComponent(h, 'tablet', 'common.statement')
+        statement: (h) => this.resolveTabPaneComponent(h, 'tablet', 'common.statement'),
+        erDiagram: (h) => this.resolveTabPaneComponent(h, 'diagram-predecessor', 'source.manager.erDiagram'),
       },
       contextData: null,
       tableTruncate: {
