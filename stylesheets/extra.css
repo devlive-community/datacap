@@ -9,8 +9,14 @@
     top: -5.5rem;
 }
 
+.connector-logo-index {
+    display: block;
+    text-align: center;
+}
+
 .connector-logo-index img {
     max-width: 150px;
     max-height: 60px;
     margin: 5px 10px;
+    display: inline-block;
 }
