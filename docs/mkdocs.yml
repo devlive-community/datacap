@@ -21,7 +21,6 @@ theme:
   favicon: assets/logo.png
   include_search_page: true
   search_index_only: true
-  language: en
   features:
     - content.code.annotate
     - content.tabs.link
@@ -62,13 +61,6 @@ extra:
     1.10.0: 1.10.0
     1.11.0: 1.11.0
     1.14.0: 1.14.0
-  alternate:
-    - name: English
-      link: /en/
-      lang: en
-    - name: Chinese (Simplified)
-      link: /zh/
-      lang: zh
 extra_css:
   - stylesheets/extra.css
   - css/datacap.css
@@ -121,11 +113,31 @@ plugins:
         - locale: zh
           name: Chinese (Simplified)
           build: true
-          default: false
+          default: true
+          nav_translations:
+            NavHome: 首页
+            NavDocumentation: 文档
+            NavClient: 客户端
+            NavManager: 管理
+            NavSystem: 系统
+            NavConnectors: 连接器
+            NavDeveloper: 开发
+            NavDeveloperPlugin: 插件
+            NavReleaseNote: 更新日志
         - locale: en
           name: English
           build: true
-          default: true
+          default: false
+          nav_translations:
+            NavHome: Home
+            NavDocumentation: Documentation
+            NavClient: Clients
+            NavManager: Manager
+            NavSystem: System
+            NavConnectors: Connectors
+            NavDeveloper: Developer
+            NavDeveloperPlugin: Plugin
+            NavReleaseNote: Release Note
   - search
   - git-revision-date-localized:
       enable_creation_date: true
@@ -137,68 +149,50 @@ plugins:
         release-latest.md: release/latest.md
 
 nav:
-  - Home:
+  - NavHome:
     - index.md
-  - Documentation:
-      - Installation:
-        - reference/get_started/install.md
-        - reference/get_started/install_containers.md
-        - reference/get_started/install_rainbond.md
-      - Query: reference/get_started/query.md
-      - Clients:
+  - NavDocumentation:
+      - reference/getStarted/install.md
+      - reference/getStarted/installContainers.md
+      - reference/getStarted/installRainbond.md
+      - reference/getStarted/query/home.md
+      - NavClient:
         - reference/clients/cli.md
-      - User Manager:
-          - reference/admin/profile/home.md
-          - reference/admin/datasource/home.md
-          - reference/admin/snippet/home.md
-          - reference/admin/history/query/home.md
-          - reference/admin/pipeline/home.md
-          - Monitor:
-            - Processor: reference/admin/processor/home.md
-      - System Setting:
-          - Basic:
-            - Functions: reference/admin/functions/home.md
-          - Template:
-            - Sql: reference/admin/template/sql/home.md
-      - Connecting to connectors:
-        - reference/connectors/index.md
-        - Apache Cassandra: reference/connectors/cassandra.md
-        - JDBC:
-          - Hologres: reference/connectors/jdbc/hologres.md
-          - StarRocks: reference/connectors/jdbc/starrocks.md
-          - Apache Doris: reference/connectors/jdbc/doris.md
-          - DuckDB: reference/connectors/jdbc/duckdb.md
-          - Yandex Database:  reference/connectors/jdbc/ydb.md
-          - Snowflake: reference/connectors/jdbc/snowflake.md
-          - MySQL: reference/connectors/jdbc/mysql.md
-          - ClickHouse: reference/connectors/jdbc/clickhouse.md
-        - Native:
-          - Apache Pinot: reference/connectors/jdbc/pinot.md
-          - Apache Hadoop:
-            - HDFS: reference/connectors/native/hadoop/hdfs.md
-          - H2 Database: reference/connectors/native/h2.md
-          - Apache Kafka:
-            - reference/connectors/native/kafka/index.md
-            - SHOW TOPICS: reference/sql_syntax/connectors/native/kafka/show_topics.md
-            - SHOW CONSUMERS: reference/sql_syntax/connectors/native/kafka/show_consumers.md
-            - SHOW DATABASES: reference/sql_syntax/connectors/native/kafka/show_databases.md
-            - SHOW TABLES: reference/sql_syntax/connectors/native/kafka/show_tables.md
-          - Aliyun OSS: reference/connectors/native/alioss.md
-          - Zookeeper: reference/connectors/native/zookeeper.md
-          - Redis: reference/connectors/native/redis.md
-        - Http:
-          - QuestDB: reference/connectors/http/questdb.md
-          - GreptimeDB: reference/connectors/http/greptimedb.md
-          - CeresDB: reference/connectors/http/ceresdb.md
-          - ClickHouse: reference/connectors/http/clickhouse.md
-  - Developer guide:
-      - Development environment: developer_guide/env.md
-      - Add a Plugin:
-        - developer_guide/plugin-java.md
-        - developer_guide/plugin-kotlin.md
-      - Other:
-        - developer_guide/pipeline/home.md
-  - Release Note:
+      - NavManager:
+          - reference/manager/profile/home.md
+          - reference/manager/datasource/home.md
+          - reference/manager/snippet/home.md
+          - reference/manager/history/query/home.md
+          - reference/manager/pipeline/home.md
+      - NavSystem:
+          - reference/system/functions/home.md
+          - reference/system/sql/home.md
+      - NavConnectors:
+        - reference/connectors/clickhouse/home.md
+        - reference/connectors/mysql/home.md
+        - reference/connectors/redis/home.md
+        - reference/connectors/h2/home.md
+        - reference/connectors/snowflake/home.md
+        - reference/connectors/ydb/home.md
+        - reference/connectors/zookeeper/home.md
+        - reference/connectors/duckdb/home.md
+        - reference/connectors/alioss/home.md
+        - Apache Kafka:
+            - reference/connectors/kafka/home.md
+            - SHOW TOPICS: reference/sqlSyntax/connectors/kafka/show_topics.md
+            - SHOW CONSUMERS: reference/sqlSyntax/connectors/kafka/show_consumers.md
+            - SHOW DATABASES: reference/sqlSyntax/connectors/kafka/show_databases.md
+            - SHOW TABLES: reference/sqlSyntax/connectors/kafka/show_tables.md
+        - reference/connectors/ceresdb/home.md
+        - reference/connectors/greptimedb/home.md
+        - reference/connectors/questdb/home.md
+        - reference/connectors/doris/home.md
+        - reference/connectors/starrocks/home.md
+        - reference/connectors/hologres/home.md
+        - reference/connectors/hdfs/home.md
+        - reference/connectors/pinot/home.md
+        - reference/connectors/cassandra/home.md
+  - NavReleaseNote:
       - 1.17.0 (latest): release/latest.md
       - 1.16.0: release/1.16.0.md
       - 1.15.0: release/1.15.0.md
@@ -217,6 +211,13 @@ nav:
       - 1.2.0: release/1.2.0.md
       - 1.1.0.20221115: release/1.1.0.20221115.md
       - 1.0.0.20221015: release/1.0.0.20221015.md
-  - Resources:
-    - Functions: resources/functions/home.md
-  - powered_by.md
+  - NavDeveloper:
+      - developer/server/home.md
+      - developer/web/home.md
+      - developer/doc/home.md
+      - NavDeveloperPlugin:
+          - developer/plugin/java/home.md
+          - developer/plugin/kotlin/home.md
+      - Other:
+          - developer/pipeline/home.md
+  - useCases.md

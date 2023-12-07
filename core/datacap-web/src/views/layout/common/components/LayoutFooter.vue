@@ -2,7 +2,7 @@
   <div class="layout-footer-center">
     <GlobalFooter :links="links">
       <template #copyright>
-        <p>Copyright © 2022 Devlive Community All Rights Reserved</p>
+        <p>Copyright © 2022 - {{ new Date().getFullYear() }} Devlive Community All Rights Reserved</p>
         <br/>
         <p>{{ $t('common.version') }}:
           <Text type="danger"
