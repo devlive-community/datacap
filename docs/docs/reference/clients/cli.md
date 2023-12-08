@@ -1,26 +1,26 @@
 ---
-title: Command line interface
+title: 命令行界面
 ---
 
-The DataCap CLI provides a terminal-based, interactive shell for running queries. The CLI is a self-executing JAR file, which means it acts like a normal UNIX executable.
+DataCap CLI 提供基于终端的交互式 shell 来运行查询。 CLI 是一个自动执行的 JAR 文件，这意味着它的行为就像普通的 UNIX 可执行文件一样。
 
-### Requirements
-
----
-
-The CLI requires a Java virtual machine available on the path. It can be used with Java version 8 and higher.
-
-The CLI uses the DataCap client REST API over HTTP/HTTPS to communicate with the system.
-
-The CLI version should be identical to the version of system, or newer.
-
-### Installation
+### 要求
 
 ---
 
-Download [datacap-client-cli-1.6.0.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/1.6.0/datacap-client-cli-1.6.0.jar), rename it to datacap, make it executable with `chmod +x`.
+CLI 需要路径上有可用的 Java 虚拟机。它可以与 Java 版本 8 及更高版本一起使用。
 
-### Running the CLI
+CLI 使用基于 HTTP/HTTPS 的 DataCap 客户端 REST API 与系统进行通信。
+
+CLI 版本应与系统版本相同或更高。
+
+### 安装
+
+---
+
+下载 [datacap-client-cli-1.6.0.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/1.6.0/datacap-client-cli-1.6.0.jar), 将其重命名为 datacap，使用 `chmod +x` 命令将其设置为可执行。
+
+### 运行 CLI
 
 ---
 
@@ -30,11 +30,11 @@ Download [datacap-client-cli-1.6.0.jar](https://repo1.maven.org/maven2/io/edurt/
 connect -h 127.0.0.1 -p 9096 -u username -P password
 ```
 
-If successful, you will get a prompt to execute commands. Use the `help` command to see a list of supported commands.
+如果成功，您将收到执行命令的提示。使用 `help` 命令查看支持的命令列表。
 
-| Command                       | Description                                                           |
-|-------------------------------|-----------------------------------------------------------------------|
-| `source info`                 | Get data source details                                               |
-| `source list`                 | Get a list of remote server data sources                              |
-| `source use <SourceID>`       | Set the data source flag for subsequent operations on the data source |
-| `source execute "<QuerySQL>"` | Execute remote SQL                                                    |
+| 命令                            | 描述                  |
+|-------------------------------|---------------------|
+| `source info`                 | 获取数据源详细信息           |
+| `source list`                 | 获取远程服务器数据源列表        |
+| `source use <SourceID>`       | 设置数据源标志，以便后续对数据源的操作 |
+| `source execute "<QuerySQL>"` | 执行远程SQL             |
