@@ -35,9 +35,26 @@
                       @on-select-change="handlerSelectNode"
                       @on-contextmenu="handlerContextMenu">
                   <template #contextMenu>
+                    <Dropdown v-if="contextData?.level === DataStructureEnum.TABLE"
+                              placement="right-start"
+                              transfer>
+                      <DropdownItem>
+                        <FontAwesomeIcon icon="file-export"/>
+                        {{ $t('source.manager.exportTable') }}
+                        <Icon type="ios-arrow-forward"/>
+                      </DropdownItem>
+                      <template #list>
+                        <DropdownMenu>
+                          <DropdownItem>
+                            <FontAwesomeIcon icon="table"/>
+                            {{ $t('source.manager.exportTableData') }}
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </template>
+                    </Dropdown>
                     <DropdownItem v-if="contextData?.level === DataStructureEnum.TABLE"
                                   @click="handlerTruncateTable(true)">
-                      <FontAwesomeIcon icon="trash"/>
+                      <FontAwesomeIcon icon="trash-can"/>&nbsp;
                       {{ $t('source.manager.truncateTable') }}
                     </DropdownItem>
                     <DropdownItem v-if="contextData?.level === DataStructureEnum.TABLE"

@@ -19,4 +19,6 @@ export default {
   comment: 'Comment',
   extra: 'Extra',
   erDiagram: 'ER Diagram',
+  exportTable: 'Export Table',
+  exportTableData: 'Table Data',
 }

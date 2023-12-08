@@ -19,4 +19,6 @@ export default {
   comment: '注释',
   extra: '额外信息',
   erDiagram: 'ER 图',
+  exportTable: '导出表',
+  exportTableData: '表数据',
 }
