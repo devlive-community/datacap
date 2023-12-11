@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.service;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.ExportBody;
 import io.edurt.datacap.service.body.TableFilter;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
 
@@ -25,4 +26,13 @@ public interface TableService
      * @return a common response object containing the retrieved data
      */
     CommonResponse<Object> fetchDataById(Long id, TableFilter configure);
+
+    /**
+     * Generates a function comment for the given function body in a markdown code block with the correct language syntax.
+     *
+     * @param id the ID of the data to be exported
+     * @param configure the export configuration
+     * @return the response containing the exported data
+     */
+    CommonResponse exportDataById(Long id, ExportBody configure);
 }

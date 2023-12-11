@@ -2,6 +2,7 @@ import {BaseService} from "@/services/BaseService";
 import {ResponseModel} from "@/model/ResponseModel";
 import {HttpCommon} from "@/common/HttpCommon";
 import {TableFilter} from "@/model/TableFilter";
+import {ExportBody} from "@/model/ExportBody";
 
 const baseUrl = '/api/v1/table';
 
@@ -54,6 +55,18 @@ class TableService
   putData(id: number, configure: TableFilter): Promise<ResponseModel>
   {
     return new HttpCommon().put(`${baseUrl}/${id}`, configure);
+  }
+
+  /**
+   * Export data with the given id and configuration.
+   *
+   * @param {number} id - The id of the data to export.
+   * @param {ExportBody} configure - The configuration for the export.
+   * @return {Promise<ResponseModel>} - A promise that resolves to a ResponseModel.
+   */
+  exportData(id: number, configure: ExportBody): Promise<ResponseModel>
+  {
+    return new HttpCommon().post(`${baseUrl}/export/${id}`, configure);
   }
 }
 

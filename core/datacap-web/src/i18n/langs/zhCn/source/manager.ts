@@ -21,4 +21,6 @@ export default {
   erDiagram: 'ER 图',
   exportTable: '导出表',
   exportTableData: '表数据',
+  exportTableDataCount: '表数据条数',
+  exportTableDataFormat: '表数据格式',
 }

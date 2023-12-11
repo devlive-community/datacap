@@ -45,7 +45,7 @@
                       </DropdownItem>
                       <template #list>
                         <DropdownMenu>
-                          <DropdownItem>
+                          <DropdownItem @click="handlerExportData(true)">
                             <FontAwesomeIcon icon="table"/>
                             {{ $t('source.manager.exportTableData') }}
                           </DropdownItem>
@@ -137,6 +137,11 @@
                :data="contextData"
                @close="handlerDropTable(false)">
     </TableDrop>
+    <TableExportData v-if="tableExportData.visible"
+                     :isVisible="tableExportData.visible"
+                     :data="contextData"
+                     @close="handlerExportData(false)">
+    </TableExportData>
   </div>
 </template>
 <script lang="ts">
@@ -159,6 +164,7 @@ import TableTruncate from "@/views/admin/source/components/TableTruncate.vue";
 import TableDrop from "@/views/admin/source/components/TableDrop.vue";
 import TableStructure from "@/views/admin/source/components/TableStructure.vue";
 import TableErDiagram from "@/views/admin/source/components/TableErDiagram.vue";
+import TableExportData from "@/views/admin/source/components/TableExportData.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
@@ -168,7 +174,7 @@ export default defineComponent({
       return DataStructureEnum
     }
   },
-  components: {TableErDiagram, TableStructure, TableDrop, TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
+  components: {TableExportData, TableErDiagram, TableStructure, TableDrop, TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
   setup()
   {
     const i18n = useI18n();
@@ -216,6 +222,9 @@ export default defineComponent({
         visible: false
       },
       tableDrop: {
+        visible: false
+      },
+      tableExportData: {
         visible: false
       }
     }
@@ -385,6 +394,10 @@ export default defineComponent({
       if (!isOpen) {
         this.handlerChangeDatabase();
       }
+    },
+    handlerExportData(isOpen: boolean)
+    {
+      this.tableExportData.visible = isOpen;
     },
     getColumnIcon(type: string)
     {
