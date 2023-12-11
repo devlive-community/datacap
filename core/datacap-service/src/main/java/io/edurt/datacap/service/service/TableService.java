@@ -35,4 +35,6 @@ public interface TableService
      * @return the response containing the exported data
      */
     CommonResponse exportDataById(Long id, ExportBody configure);
+
+    Object dataDownload(String username, String filename);
 }

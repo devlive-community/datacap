@@ -23,4 +23,6 @@ export default {
   exportTableData: 'Table Data',
   exportTableDataCount: 'Table Data Count',
   exportTableDataFormat: 'Table Data Format',
+  downloadPath: 'Download Path',
+  download: 'Download',
 }

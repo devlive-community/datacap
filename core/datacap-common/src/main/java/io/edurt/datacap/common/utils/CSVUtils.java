@@ -43,7 +43,7 @@ public class CSVUtils
         CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
         File directory = new File(path);
         if (!directory.exists()) {
-            directory.mkdirs();
+            log.warn("The directory [ {} ] doesn't exist, create it [ {} ]", path, directory.mkdirs());
         }
         File file = File.createTempFile(fileName, null, directory);
         file.deleteOnExit();

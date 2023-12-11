@@ -36,11 +36,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -167,7 +173,7 @@ public class TableServiceImpl
                         .stream(Files.newInputStream(tempFile.toPath()))
                         .fileName(fileName)
                         .build();
-                FsResponse fsResponse = optionalFs.get().writer(fsRequest);
+                optionalFs.get().writer(fsRequest);
                 if (initializerConfigure.getFsConfigure().getType().equals("Local")) {
                     String address = request.getRequestURL()
                             .toString()
@@ -181,6 +187,41 @@ public class TableServiceImpl
             }
         }
         return CommonResponse.failure(ServiceState.REQUEST_EXCEPTION);
+    }
+
+    @Override
+    public Object dataDownload(String username, String filename)
+    {
+        Optional<Fs> optionalFs = SpiUtils.findFs(injector, initializerConfigure.getFsConfigure().getType());
+        if (!optionalFs.isPresent()) {
+            return CommonResponse.failure(String.format("Not found Fs [ %s ]", initializerConfigure.getFsConfigure().getType()));
+        }
+
+        String endpoint = String.join(File.separator, initializerConfigure.getDataHome(), username, "export");
+        log.info("Download data user [ {} ] home [ {} ]", username, endpoint);
+        String filePath = String.join(File.separator, endpoint, filename);
+        log.info("Download file path [ {} ]", filePath);
+        FsRequest fsRequest = FsRequest.builder()
+                .access(initializerConfigure.getFsConfigure().getAccess())
+                .secret(initializerConfigure.getFsConfigure().getSecret())
+                .endpoint(endpoint)
+                .bucket(initializerConfigure.getFsConfigure().getBucket())
+                .fileName(filename)
+                .build();
+        FsResponse response = optionalFs.get().reader(fsRequest);
+        try {
+            Resource resource = new FileSystemResource(response.getRemote());
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(resource.contentLength())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

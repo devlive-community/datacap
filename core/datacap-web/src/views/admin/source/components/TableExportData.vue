@@ -16,6 +16,17 @@
                        min="0">
           </InputNumber>
         </FormItem>
+        <FormItem v-if="remotePath"
+                  :label="$t('source.manager.downloadPath')">
+          <Input v-model="remotePath">
+            <template #append>
+              <Button type="primary"
+                      @click="handlerDownload">
+                {{ $t('source.manager.download') }}
+              </Button>
+            </template>
+          </Input>
+        </FormItem>
       </Form>
       <template #footer>
         <Button type="primary"
@@ -34,9 +45,11 @@
 import {defineComponent} from "vue";
 import {DataStructureModel} from "@/model/DataStructure";
 import TableService from "@/services/Table";
+import {FormItem} from "view-ui-plus";
 
 export default defineComponent({
   name: "TableExportData",
+  components: {FormItem},
   props: {
     isVisible: {
       type: Boolean,
@@ -53,20 +66,26 @@ export default defineComponent({
       formState: {
         count: 0,
         format: 'CSV'
-      }
+      },
+      remotePath: null
     }
   },
   methods: {
     handlerExport()
     {
       this.loading = true;
+      this.remotePath = null;
       TableService.exportData(this.data.applyId, this.formState)
         .then(response => {
           if (response.status) {
-            console.log(response.data);
+            this.remotePath = response.data;
           }
         })
         .finally(() => this.loading = false)
+    },
+    handlerDownload()
+    {
+      window.open(this.remotePath, '_target');
     },
     handlerCancel()
     {

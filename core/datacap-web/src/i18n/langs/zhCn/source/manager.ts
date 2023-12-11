@@ -23,4 +23,6 @@ export default {
   exportTableData: '表数据',
   exportTableDataCount: '表数据条数',
   exportTableDataFormat: '表数据格式',
+  downloadPath: '下载路径',
+  download: '下载',
 }
