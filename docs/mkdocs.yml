@@ -215,6 +215,7 @@ nav:
       - developer/server/home.md
       - developer/web/home.md
       - developer/doc/home.md
+      - developer/sdk/home.md
       - NavDeveloperPlugin:
           - developer/plugin/java/home.md
           - developer/plugin/kotlin/home.md

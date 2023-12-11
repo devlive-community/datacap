@@ -19,4 +19,10 @@ export default {
   comment: 'Comment',
   extra: 'Extra',
   erDiagram: 'ER Diagram',
+  exportTable: 'Export Table',
+  exportTableData: 'Table Data',
+  exportTableDataCount: 'Table Data Count',
+  exportTableDataFormat: 'Table Data Format',
+  downloadPath: 'Download Path',
+  download: 'Download',
 }

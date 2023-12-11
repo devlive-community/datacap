@@ -1,10 +1,12 @@
 package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.ExportBody;
 import io.edurt.datacap.service.body.TableFilter;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.service.service.TableService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,5 +41,17 @@ public class TableController
     public CommonResponse<Object> fetchDataById(@PathVariable Long id, @RequestBody TableFilter configure)
     {
         return this.service.fetchDataById(id, configure);
+    }
+
+    @PostMapping(value = "export/{id}")
+    public CommonResponse exportDataById(@PathVariable Long id, @RequestBody ExportBody configure)
+    {
+        return this.service.exportDataById(id, configure);
+    }
+
+    @GetMapping(value = "dataDownload/{username}/{filename}")
+    public Object dataDownload(@PathVariable String username, @PathVariable String filename)
+    {
+        return this.service.dataDownload(username, filename);
     }
 }

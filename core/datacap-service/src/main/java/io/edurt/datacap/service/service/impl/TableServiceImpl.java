@@ -10,42 +10,68 @@ import io.edurt.datacap.common.sql.configure.SqlColumn;
 import io.edurt.datacap.common.sql.configure.SqlOperator;
 import io.edurt.datacap.common.sql.configure.SqlOrder;
 import io.edurt.datacap.common.sql.configure.SqlType;
+import io.edurt.datacap.common.utils.CSVUtils;
+import io.edurt.datacap.common.utils.SpiUtils;
+import io.edurt.datacap.fs.Fs;
+import io.edurt.datacap.fs.FsRequest;
+import io.edurt.datacap.fs.FsResponse;
+import io.edurt.datacap.service.body.ExportBody;
 import io.edurt.datacap.service.body.TableFilter;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.entity.metadata.ColumnEntity;
 import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
+import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
+import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.TableService;
 import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Pagination;
 import io.edurt.datacap.spi.model.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class TableServiceImpl
         implements TableService
 {
     private final Injector injector;
     private final TableRepository repository;
+    private final InitializerConfigure initializerConfigure;
+    private final HttpServletRequest request;
 
-    public TableServiceImpl(Injector injector, TableRepository repository)
+    public TableServiceImpl(Injector injector, TableRepository repository, InitializerConfigure initializerConfigure, HttpServletRequest request)
     {
         this.injector = injector;
         this.repository = repository;
+        this.initializerConfigure = initializerConfigure;
+        this.request = request;
     }
 
     @Override
@@ -97,6 +123,105 @@ public class TableServiceImpl
             return this.fetchDropTable(plugin, table, source, configure);
         }
         return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
+    }
+
+    @Override
+    public CommonResponse exportDataById(Long id, ExportBody configure)
+    {
+        TableEntity table = this.repository.findById(id)
+                .orElse(null);
+        if (table == null) {
+            return CommonResponse.failure(String.format("Table [ %s ] not found", id));
+        }
+
+        SourceEntity source = table.getDatabase().getSource();
+        Optional<Plugin> optionalPlugin = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol());
+        if (!optionalPlugin.isPresent()) {
+            return CommonResponse.failure(String.format("Plugin [ %s ] not found", source.getType()));
+        }
+
+        Optional<Fs> optionalFs = SpiUtils.findFs(injector, initializerConfigure.getFsConfigure().getType());
+        if (!optionalFs.isPresent()) {
+            return CommonResponse.failure(String.format("Not found Fs [ %s ]", initializerConfigure.getFsConfigure().getType()));
+        }
+
+        UserEntity user = UserDetailsService.getUser();
+        String endpoint = String.join(File.separator, initializerConfigure.getDataHome(), user.getUsername(), "export");
+        log.info("Export data user [ {} ] home [ {} ]", user.getUsername(), endpoint);
+        String fileName = String.join(".", UUID.randomUUID().toString(), "csv");
+        log.info("Export file name [ {} ]", fileName);
+        Integer count = Integer.MAX_VALUE;
+        if (configure.getCount() > 0) {
+            count = configure.getCount().intValue();
+        }
+        Pagination pagination = Pagination.newInstance(count.intValue(), 1, count.intValue());
+        TableFilter tableFilter = TableFilter.builder()
+                .type(SqlType.SELECT)
+                .pagination(pagination)
+                .build();
+        CommonResponse<Object> tempResponse = this.fetchSelect(optionalPlugin.get(), table, source, tableFilter);
+        if (tempResponse.getStatus()) {
+            Response pluginResponse = (Response) tempResponse.getData();
+            try {
+                File tempFile = CSVUtils.makeTempCSV(endpoint, fileName, pluginResponse.getHeaders(), pluginResponse.getColumns());
+                log.info("Export temp file [ {} ]", tempFile.getAbsolutePath());
+                FsRequest fsRequest = FsRequest.builder()
+                        .access(initializerConfigure.getFsConfigure().getAccess())
+                        .secret(initializerConfigure.getFsConfigure().getSecret())
+                        .endpoint(endpoint)
+                        .bucket(initializerConfigure.getFsConfigure().getBucket())
+                        .stream(Files.newInputStream(tempFile.toPath()))
+                        .fileName(fileName)
+                        .build();
+                optionalFs.get().writer(fsRequest);
+                if (initializerConfigure.getFsConfigure().getType().equals("Local")) {
+                    String address = request.getRequestURL()
+                            .toString()
+                            .replace(request.getServletPath().trim(), "");
+                    String remote = String.join("/", address, "api/v1/table/dataDownload", user.getUsername(), fileName);
+                    return CommonResponse.success(remote);
+                }
+            }
+            catch (Exception ex) {
+                return CommonResponse.failure(ex.getMessage());
+            }
+        }
+        return CommonResponse.failure(ServiceState.REQUEST_EXCEPTION);
+    }
+
+    @Override
+    public Object dataDownload(String username, String filename)
+    {
+        Optional<Fs> optionalFs = SpiUtils.findFs(injector, initializerConfigure.getFsConfigure().getType());
+        if (!optionalFs.isPresent()) {
+            return CommonResponse.failure(String.format("Not found Fs [ %s ]", initializerConfigure.getFsConfigure().getType()));
+        }
+
+        String endpoint = String.join(File.separator, initializerConfigure.getDataHome(), username, "export");
+        log.info("Download data user [ {} ] home [ {} ]", username, endpoint);
+        String filePath = String.join(File.separator, endpoint, filename);
+        log.info("Download file path [ {} ]", filePath);
+        FsRequest fsRequest = FsRequest.builder()
+                .access(initializerConfigure.getFsConfigure().getAccess())
+                .secret(initializerConfigure.getFsConfigure().getSecret())
+                .endpoint(endpoint)
+                .bucket(initializerConfigure.getFsConfigure().getBucket())
+                .fileName(filename)
+                .build();
+        FsResponse response = optionalFs.get().reader(fsRequest);
+        try {
+            Resource resource = new FileSystemResource(response.getRemote());
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(resource.contentLength())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

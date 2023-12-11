@@ -78,4 +78,12 @@ hide:
 
     [:octicons-arrow-right-24: 访问 映客直播](https://inke.cn/)
 
+- <img src="http://www.newu.com.cn/Upload/Logo/Logo2021.png" width="80" style="margin: -3px 10px;" /> __北京万向新元科技有限公司__
+
+    ---
+
+    BI系统需要接入数据源，常见数据源有文件数据源（csv，json，excel），数据库数据源（mysql，oracle，sqlserver，mongodb。。。），api数据源（rest接口读取数据），流式数据源（websockt连接进行数据读取），物联网（modbus）在接入数据库数据源时阅读datacap项目源码得到了启发，并且对于JDK SPI机制产生了浓厚的兴趣，受益匪浅，后续想多多参与该项目的建设，贡献自己的绵薄之力。
+
+    [:octicons-arrow-right-24: 访问 万向新元科技](http://www.newu.com.cn/)
+
 </div>

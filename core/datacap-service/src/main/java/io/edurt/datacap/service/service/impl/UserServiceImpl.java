@@ -34,7 +34,6 @@ import io.edurt.datacap.service.service.JwtService;
 import io.edurt.datacap.service.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -77,9 +76,8 @@ public class UserServiceImpl
     private final Environment environment;
     private final InitializerConfigure initializerConfigure;
     private final Injector injector;
-    private final ServerProperties serverProperties;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate, Environment environment, InitializerConfigure initializerConfigure, Injector injector, ServerProperties serverProperties)
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, SourceRepository sourceRepository, PasswordEncoder encoder, AuthenticationManager authenticationManager, JwtService jwtService, RedisTemplate redisTemplate, Environment environment, InitializerConfigure initializerConfigure, Injector injector)
     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -91,7 +89,6 @@ public class UserServiceImpl
         this.environment = environment;
         this.initializerConfigure = initializerConfigure;
         this.injector = injector;
-        this.serverProperties = serverProperties;
     }
 
     @Override

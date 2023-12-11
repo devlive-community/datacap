@@ -19,4 +19,10 @@ export default {
   comment: '注释',
   extra: '额外信息',
   erDiagram: 'ER 图',
+  exportTable: '导出表',
+  exportTableData: '表数据',
+  exportTableDataCount: '表数据条数',
+  exportTableDataFormat: '表数据格式',
+  downloadPath: '下载路径',
+  download: '下载',
 }

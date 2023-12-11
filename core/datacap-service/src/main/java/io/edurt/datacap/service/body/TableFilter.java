@@ -4,6 +4,7 @@ import io.edurt.datacap.common.sql.configure.SqlColumn;
 import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.spi.model.Pagination;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Properties;
 
 @Data
+@Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
