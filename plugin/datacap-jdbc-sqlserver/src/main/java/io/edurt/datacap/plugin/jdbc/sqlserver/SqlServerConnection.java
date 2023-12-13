@@ -23,19 +23,18 @@ public class SqlServerConnection
      * SQL Server 2005 and above:
      * jdbc:sqlserver://<host>:<port>;databaseName=<database>
      */
-    private static final String SQL_SERVER_2000 = "SQL Server 2000";
-
     @Override
     protected String formatJdbcUrl()
     {
         JdbcConfigure jdbcConfigure = (JdbcConfigure) this.getConfigure();
         StringBuffer buffer = new StringBuffer();
         buffer.append("jdbc:");
-        jdbcConfigure.getVersion().ifPresent(version -> {
-            if (SQL_SERVER_2000.equalsIgnoreCase(version)) {
-                buffer.append("microsoft:");
-            }
-        });
+        jdbcConfigure.getVersion()
+                .ifPresent(version -> {
+                    if (SqlServerVersion.V2000.getVersion().equalsIgnoreCase(version)) {
+                        buffer.append("microsoft:");
+                    }
+                });
         buffer.append(jdbcConfigure.getJdbcType());
         buffer.append("://");
         buffer.append(jdbcConfigure.getHost());
@@ -50,6 +49,7 @@ public class SqlServerConnection
         if (jdbcConfigure.getSsl().isPresent()) {
             buffer.append(String.format("ssl=%s", jdbcConfigure.getSsl().get()));
             buffer.append(";");
+            buffer.append("trustServerCertificate=true;");
         }
         if (jdbcConfigure.getEnv().isPresent()) {
             Map<String, Object> env = jdbcConfigure.getEnv().get();
