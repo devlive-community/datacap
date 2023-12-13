@@ -20,6 +20,7 @@ class SqlServerContainer : GenericContainer<SqlServerContainer> {
     }
 
     companion object {
+        const val IMAGE_2019_LATEST = "mcr.microsoft.com/mssql/server:2019-latest"
         const val IMAGE_2022_LATEST = "mcr.microsoft.com/mssql/server:2022-latest"
         const val PORT = 1433
         const val DOCKER_PORT = 1433

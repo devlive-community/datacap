@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 @Slf4j
 public class SqlServerPlugin
         implements Plugin
@@ -41,14 +39,7 @@ public class SqlServerPlugin
     @Override
     public String validator()
     {
-        AtomicReference<String> validatorSql = new AtomicReference<>(Plugin.super.validator());
-        jdbcConfigure.getVersion()
-                .ifPresent(version -> {
-                    if (version.equals(SqlServerVersion.V2022.getVersion())) {
-                        validatorSql.set("SELECT @@VERSION");
-                    }
-                });
-        return validatorSql.get();
+        return "SELECT @@VERSION";
     }
 
     @Override
