@@ -37,6 +37,12 @@ public class SqlServerPlugin
     }
 
     @Override
+    public String validator()
+    {
+        return "SELECT @@VERSION";
+    }
+
+    @Override
     public void connect(Configure configure)
     {
         try {

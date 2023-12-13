@@ -33,6 +33,15 @@
             <artifactId>mssql-jdbc</artifactId>
             <version>${sqlserver.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
