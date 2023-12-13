@@ -2,8 +2,8 @@ package io.edurt.datacap.plugin.jdbc.sqlserver;
 
 public enum SqlServerVersion
 {
+    V2017("2017"),
     V2019("2019"),
-    V2000("2000"),
     V2022("2022");
 
     private String version;

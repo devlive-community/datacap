@@ -31,7 +31,7 @@ public class SqlServerConnection
         buffer.append("jdbc:");
         jdbcConfigure.getVersion()
                 .ifPresent(version -> {
-                    if (SqlServerVersion.V2000.getVersion().equalsIgnoreCase(version)) {
+                    if (SqlServerVersion.V2022.getVersion().equalsIgnoreCase(version)) {
                         buffer.append("microsoft:");
                     }
                 });
