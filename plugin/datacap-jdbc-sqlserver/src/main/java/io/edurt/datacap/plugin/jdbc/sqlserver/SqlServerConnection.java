@@ -29,12 +29,6 @@ public class SqlServerConnection
         JdbcConfigure jdbcConfigure = (JdbcConfigure) this.getConfigure();
         StringBuffer buffer = new StringBuffer();
         buffer.append("jdbc:");
-        jdbcConfigure.getVersion()
-                .ifPresent(version -> {
-                    if (SqlServerVersion.V2022.getVersion().equalsIgnoreCase(version)) {
-                        buffer.append("microsoft:");
-                    }
-                });
         buffer.append(jdbcConfigure.getJdbcType());
         buffer.append("://");
         buffer.append(jdbcConfigure.getHost());

@@ -34,7 +34,7 @@ class SqlServer2017Test {
     @Before
     fun before() {
         val network = Network.newNetwork()
-        container = SqlServerContainer(DockerImageName.parse(SqlServerContainer.IMAGE_2019_LATEST))
+        container = SqlServerContainer(DockerImageName.parse(SqlServerContainer.IMAGE_2017_LATEST))
                 ?.withNetwork(network)
                 ?.withNetworkAliases(host)
         container?.portBindings = Lists.newArrayList(String.format("%s:%s", SqlServerContainer.PORT, SqlServerContainer.DOCKER_PORT));
