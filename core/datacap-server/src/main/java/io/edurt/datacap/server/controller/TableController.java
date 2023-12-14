@@ -2,6 +2,7 @@ package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.ExportBody;
+import io.edurt.datacap.service.body.TableBody;
 import io.edurt.datacap.service.body.TableFilter;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
@@ -53,5 +54,11 @@ public class TableController
     public Object dataDownload(@PathVariable String username, @PathVariable String filename)
     {
         return this.service.dataDownload(username, filename);
+    }
+
+    @PostMapping(value = "createTable/{id}")
+    public CommonResponse<Object> createTable(@PathVariable Long id, @RequestBody TableBody configure)
+    {
+        return this.service.createTable(id, configure);
     }
 }

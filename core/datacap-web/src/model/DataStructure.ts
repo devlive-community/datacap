@@ -5,6 +5,7 @@ export class DataStructureModel
   title: null;
   catalog: null;
   database: null;
+  databaseId: null;
   table: null;
   applyId: null;
   type: null;

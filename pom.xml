@@ -15,6 +15,7 @@
         <module>core/datacap-service</module>
         <module>core/datacap-security</module>
         <module>core/datacap-captcha</module>
+        <module>core/datacap-sql</module>
         <module>lib/datacap-http</module>
         <module>lib/datacap-logger</module>
         <module>lib/datacap-shell</module>

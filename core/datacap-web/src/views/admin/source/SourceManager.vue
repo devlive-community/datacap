@@ -39,6 +39,24 @@
                               placement="right-start"
                               transfer>
                       <DropdownItem>
+                        <FontAwesomeIcon icon="circle-plus"/>
+                        {{ $t('source.manager.new') }}
+                        <Icon type="ios-arrow-forward"/>
+                      </DropdownItem>
+                      <template #list>
+                        <DropdownMenu>
+                          <DropdownItem @click="handlerCreateTable(true)">
+                            <FontAwesomeIcon icon="table"/>
+                            {{ $t('source.manager.newTable') }}
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </template>
+                    </Dropdown>
+                    <br/>
+                    <Dropdown v-if="contextData?.level === DataStructureEnum.TABLE"
+                              placement="right-start"
+                              transfer>
+                      <DropdownItem>
                         <FontAwesomeIcon icon="file-export"/>
                         {{ $t('source.manager.exportTable') }}
                         <Icon type="ios-arrow-forward"/>
@@ -142,6 +160,11 @@
                      :data="contextData"
                      @close="handlerExportData(false)">
     </TableExportData>
+    <TableCreate v-if="tableCreateVisible"
+                 :isVisible="tableCreateVisible"
+                 :data="contextData"
+                 @close="handlerCreateTable(false)">
+    </TableCreate>
   </div>
 </template>
 <script lang="ts">
@@ -165,6 +188,7 @@ import TableDrop from "@/views/admin/source/components/TableDrop.vue";
 import TableStructure from "@/views/admin/source/components/TableStructure.vue";
 import TableErDiagram from "@/views/admin/source/components/TableErDiagram.vue";
 import TableExportData from "@/views/admin/source/components/TableExportData.vue";
+import TableCreate from "@/views/admin/source/components/TableCreate.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
@@ -174,7 +198,20 @@ export default defineComponent({
       return DataStructureEnum
     }
   },
-  components: {TableExportData, TableErDiagram, TableStructure, TableDrop, TableTruncate, FontAwesomeIcon, TableStatement, TabPane, TableData, TableInfo, CircularLoading},
+  components: {
+    TableExportData,
+    TableErDiagram,
+    TableStructure,
+    TableDrop,
+    TableTruncate,
+    TableCreate,
+    FontAwesomeIcon,
+    TableStatement,
+    TabPane,
+    TableData,
+    TableInfo,
+    CircularLoading
+  },
   setup()
   {
     const i18n = useI18n();
@@ -226,7 +263,8 @@ export default defineComponent({
       },
       tableExportData: {
         visible: false
-      }
+      },
+      tableCreateVisible: false
     }
   },
   created()
@@ -270,11 +308,12 @@ export default defineComponent({
               type: null;
               engine: null;
               comment: null;
-              database: { name: null };
+              database: { name: null, id: null };
             }) => {
               const structure = new DataStructureModel();
               structure.title = item.name;
               structure.database = item.database.name;
+              structure.databaseId = item.database.id;
               structure.catalog = item.catalog;
               structure.applyId = item.id;
               structure.type = item.type;
@@ -322,7 +361,7 @@ export default defineComponent({
               engine: null;
               isKey: null;
               defaultValue: null;
-              table: { name: null, database: { name: null } };
+              table: { name: null, database: { name: null, id: null } };
             }) => {
               const structure = new DataStructureModel();
               structure.title = item.name;
@@ -398,6 +437,10 @@ export default defineComponent({
     handlerExportData(isOpen: boolean)
     {
       this.tableExportData.visible = isOpen;
+    },
+    handlerCreateTable(isOpen: boolean)
+    {
+      this.tableCreateVisible = isOpen;
     },
     getColumnIcon(type: string)
     {
