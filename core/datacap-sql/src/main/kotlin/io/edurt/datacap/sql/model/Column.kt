@@ -10,7 +10,7 @@ class Column {
     var defaultValue: String? = null
     var primaryKey: Boolean = false
     var autoIncrement: Boolean = false
-    var notNull: Boolean = false
+    var isNullable: Boolean = false
 
     /**
      * Convert to column variable
@@ -26,7 +26,7 @@ class Column {
         if (this.length > 0) {
             str = "$str($length)"
         }
-        if (this.notNull) {
+        if (this.isNullable) {
             str = "$str NOT NULL"
         }
         if (this.primaryKey) {

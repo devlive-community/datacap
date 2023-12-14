@@ -11,6 +11,8 @@ import {
   faArrowUpAZ,
   faCircle,
   faCircleInfo,
+  faCircleMinus,
+  faCirclePlus,
   faClock,
   faClone,
   faColumns,
@@ -31,6 +33,7 @@ import {
   faPlus,
   faRepeat,
   faRotate,
+  faSave,
   faSun,
   faTable,
   faTablet,
@@ -48,6 +51,9 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faCirclePlus,
+    faSave,
+    faCircleMinus,
     faRotate,
     faTrashCan,
     faFileExport,

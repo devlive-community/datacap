@@ -23,7 +23,7 @@ class ColumnTest {
         Assert.assertEquals(column.toColumnVar(), "testColumnName VARCHAR(10)")
 
         log.info("======== Test not null ========")
-        column.notNull = true
+        column.isNullable = true
         log.info(column.toColumnVar())
         Assert.assertEquals(column.toColumnVar(), "testColumnName VARCHAR(10) NOT NULL")
 
