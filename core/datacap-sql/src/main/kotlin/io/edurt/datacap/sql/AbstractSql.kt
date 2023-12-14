@@ -638,9 +638,6 @@ abstract class AbstractSql<T> {
 
         fun sql(a: Appendable): String? {
             val builder = SafeAppendable(a)
-            if (statementType == null) {
-                return null
-            }
 
             val answer = when (statementType) {
                 StatementType.DELETE -> deleteSQL(builder)
