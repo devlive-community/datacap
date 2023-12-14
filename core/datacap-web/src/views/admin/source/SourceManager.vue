@@ -308,11 +308,12 @@ export default defineComponent({
               type: null;
               engine: null;
               comment: null;
-              database: { name: null };
+              database: { name: null, id: null };
             }) => {
               const structure = new DataStructureModel();
               structure.title = item.name;
               structure.database = item.database.name;
+              structure.databaseId = item.database.id;
               structure.catalog = item.catalog;
               structure.applyId = item.id;
               structure.type = item.type;
@@ -360,7 +361,7 @@ export default defineComponent({
               engine: null;
               isKey: null;
               defaultValue: null;
-              table: { name: null, database: { name: null } };
+              table: { name: null, database: { name: null, id: null } };
             }) => {
               const structure = new DataStructureModel();
               structure.title = item.name;

@@ -33,32 +33,57 @@
               <FontAwesomeIcon icon="circle-plus"/>
             </Button>
             <template #content>
-              <FormItem :label="$t('source.manager.columnName')">
-                <Input v-model="item.name"/>
-              </FormItem>
-              <FormItem :label="$t('source.manager.columnType')">
-                <Input v-model="item.type"/>
-              </FormItem>
-              <FormItem :label="$t('source.manager.columnLength')">
-                <InputNumber v-model="item.length"/>
-              </FormItem>
-              <FormItem :label="$t('source.manager.columnComment')">
-                <Input v-model="item.comment"
-                       type="textarea">
-                </Input>
-              </FormItem>
-              <FormItem :label="$t('source.manager.columnDefaultValue')">
-                <Input v-model="item.defaultValue"/>
-              </FormItem>
-              <FormItem :label="$t('source.manager.columnPrimaryKey')">
-                <Switch v-model="item.primaryKey"/>
-              </FormItem>
-              <FormItem :label="$t('source.manager.columnAutoIncrement')">
-                <Input v-model="item.autoIncrement"/>
-              </FormItem>
-              <FormItem :label="$t('source.manager.columnIsNullable')">
-                <Input v-model="item.isNullable"/>
-              </FormItem>
+              <Row>
+                <Col span="12">
+                  <FormItem :label="$t('source.manager.columnName')"
+                            :label-width="80">
+                    <Input v-model="item.name"/>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem :label="$t('source.manager.columnType')"
+                            :label-width="80">
+                    <Input v-model="item.type"/>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem :label="$t('source.manager.columnLength')"
+                            :label-width="80">
+                    <InputNumber v-model="item.length"/>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem :label="$t('source.manager.columnDefaultValue')"
+                            :label-width="80">
+                    <Input v-model="item.defaultValue"/>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem :label="$t('source.manager.columnPrimaryKey')"
+                            :label-width="80">
+                    <Switch v-model="item.primaryKey"/>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem :label="$t('source.manager.columnAutoIncrement')"
+                            :label-width="80">
+                    <Switch v-model="item.autoIncrement"/>
+                  </FormItem>
+                </Col>
+                <Col span="12">
+                  <FormItem :label="$t('source.manager.columnIsNullable')">
+                    <Switch v-model="item.isNullable"/>
+                  </FormItem>
+                </Col>
+                <Col span="24">
+                  <FormItem :label="$t('source.manager.columnComment')"
+                            :label-width="80">
+                    <Input v-model="item.comment"
+                           type="textarea">
+                    </Input>
+                  </FormItem>
+                </Col>
+              </Row>
             </template>
           </Panel>
         </Collapse>
@@ -79,6 +104,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {DataStructureModel} from "@/model/DataStructure";
+import TableService from "@/services/Table";
 
 export default defineComponent({
   name: "TableCreate",
@@ -99,7 +125,7 @@ export default defineComponent({
         name: null,
         comment: null,
         engine: null,
-        columns: [{name: 'column_name', type: null, length: 0, comment: null, defaultValue: null, primaryKey: null, autoIncrement: null, isNullable: null}]
+        columns: [{name: 'column_name', type: null, length: 0, comment: null, defaultValue: null, primaryKey: false, autoIncrement: null, isNullable: false}]
       }
     }
   },
@@ -107,10 +133,23 @@ export default defineComponent({
     handlerSave()
     {
       this.loading = true;
+      TableService.createTable(this.data.databaseId, this.formState)
+        .then(response => {
+          if (response.data) {
+            if (response.data.isSuccessful) {
+              this.$Message.success(this.$t('common.success'));
+              this.handlerCancel();
+            }
+            else {
+              this.$Message.error(response.data?.message);
+            }
+          }
+        })
+        .finally(() => this.loading = false)
     },
     handlerAdd()
     {
-      const newColumn = {name: 'column_name', type: null, length: 0, comment: null, defaultValue: null, primaryKey: null, autoIncrement: null, isNullable: null}
+      const newColumn = {name: 'column_name', type: null, length: 0, comment: null, defaultValue: null, primaryKey: false, autoIncrement: null, isNullable: false}
       this.formState.columns.push(newColumn);
     },
     handlerRemove(index: number)

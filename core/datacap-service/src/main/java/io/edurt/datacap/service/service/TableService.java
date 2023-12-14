@@ -2,6 +2,7 @@ package io.edurt.datacap.service.service;
 
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.ExportBody;
+import io.edurt.datacap.service.body.TableBody;
 import io.edurt.datacap.service.body.TableFilter;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
 
@@ -37,4 +38,6 @@ public interface TableService
     CommonResponse exportDataById(Long id, ExportBody configure);
 
     Object dataDownload(String username, String filename);
+
+    CommonResponse<Object> createTable(Long databaseId, TableBody configure);
 }

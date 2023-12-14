@@ -652,7 +652,7 @@ abstract class AbstractSql<T> {
                 StatementType.TRUNCATE -> truncateSQL(builder)
                 StatementType.DROP -> dropSQL(builder)
                 StatementType.CREATE_TABLE -> createTableSQL(builder)
-                else -> null
+                else -> throw SqlException("Unsupported statement type: [ $statementType ]")
             }
             return answer
         }

@@ -16,6 +16,7 @@ import io.edurt.datacap.fs.Fs;
 import io.edurt.datacap.fs.FsRequest;
 import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.body.ExportBody;
+import io.edurt.datacap.service.body.TableBody;
 import io.edurt.datacap.service.body.TableFilter;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.SourceEntity;
@@ -24,6 +25,7 @@ import io.edurt.datacap.service.entity.metadata.ColumnEntity;
 import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
+import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.TableService;
@@ -32,6 +34,7 @@ import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Pagination;
 import io.edurt.datacap.spi.model.Response;
+import io.edurt.datacap.sql.builder.TableBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -63,13 +66,15 @@ public class TableServiceImpl
 {
     private final Injector injector;
     private final TableRepository repository;
+    private final DatabaseRepository databaseRepository;
     private final InitializerConfigure initializerConfigure;
     private final HttpServletRequest request;
 
-    public TableServiceImpl(Injector injector, TableRepository repository, InitializerConfigure initializerConfigure, HttpServletRequest request)
+    public TableServiceImpl(Injector injector, TableRepository repository, DatabaseRepository databaseRepository, InitializerConfigure initializerConfigure, HttpServletRequest request)
     {
         this.injector = injector;
         this.repository = repository;
+        this.databaseRepository = databaseRepository;
         this.initializerConfigure = initializerConfigure;
         this.request = request;
     }
@@ -222,6 +227,29 @@ public class TableServiceImpl
         catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public CommonResponse<Object> createTable(Long databaseId, TableBody configure)
+    {
+        Optional<DatabaseEntity> optionalDatabase = this.databaseRepository.findById(databaseId);
+        if (!optionalDatabase.isPresent()) {
+            return CommonResponse.failure(String.format("Database [ %s ] not found", databaseId));
+        }
+
+        DatabaseEntity database = optionalDatabase.get();
+        SourceEntity source = database.getSource();
+        Plugin plugin = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol()).get();
+        TableBuilder.Companion.BEGIN();
+        TableBuilder.Companion.CREATE_TABLE(String.format("`%s`.`%s`", database.getName(), configure.getName()));
+        TableBuilder.Companion.COLUMNS(configure.getColumns().stream().map(item -> item.toColumnVar()).collect(Collectors.toList()));
+        String sql = TableBuilder.Companion.SQL();
+        log.info("Create table sql \n {} \n on database [ {} ]", sql, database.getName());
+        plugin.connect(source.toConfigure());
+        Response response = plugin.execute(sql);
+        response.setContent(sql);
+        plugin.destroy();
+        return CommonResponse.success(response);
     }
 
     /**

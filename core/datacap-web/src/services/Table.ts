@@ -68,6 +68,11 @@ class TableService
   {
     return new HttpCommon().post(`${baseUrl}/export/${id}`, configure);
   }
+
+  createTable(databaseId: number, configure: any): Promise<ResponseModel>
+  {
+    return new HttpCommon().post(`${baseUrl}/createTable/${databaseId}`, configure);
+  }
 }
 
 export default new TableService();
