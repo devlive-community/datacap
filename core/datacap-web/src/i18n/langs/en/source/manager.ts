@@ -39,4 +39,5 @@ export default {
   columnPrimaryKey: 'Column Primary Key',
   columnAutoIncrement: 'Column Auto Increment',
   columnIsNullable: 'Column Is Nullable',
+  newColumn: 'Column',
 }

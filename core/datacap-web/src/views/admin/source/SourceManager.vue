@@ -50,6 +50,12 @@
                             {{ $t('source.manager.newTable') }}
                           </DropdownItem>
                         </DropdownMenu>
+                        <DropdownMenu>
+                          <DropdownItem @click="handlerCreateColumn(true)">
+                            <FontAwesomeIcon icon="columns"/>
+                            {{ $t('source.manager.newColumn') }}
+                          </DropdownItem>
+                        </DropdownMenu>
                       </template>
                     </Dropdown>
                     <br/>
@@ -165,6 +171,11 @@
                  :data="contextData"
                  @close="handlerCreateTable(false)">
     </TableCreate>
+    <ColumnCreate v-if="columnCreateVisible"
+                  :isVisible="columnCreateVisible"
+                  :data="contextData"
+                  @close="handlerCreateColumn(false)">
+    </ColumnCreate>
   </div>
 </template>
 <script lang="ts">
@@ -189,6 +200,7 @@ import TableStructure from "@/views/admin/source/components/TableStructure.vue";
 import TableErDiagram from "@/views/admin/source/components/TableErDiagram.vue";
 import TableExportData from "@/views/admin/source/components/TableExportData.vue";
 import TableCreate from "@/views/admin/source/components/TableCreate.vue";
+import ColumnCreate from "@/views/admin/source/components/ColumnCreate.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
@@ -199,6 +211,7 @@ export default defineComponent({
     }
   },
   components: {
+    ColumnCreate,
     TableExportData,
     TableErDiagram,
     TableStructure,
@@ -264,7 +277,8 @@ export default defineComponent({
       tableExportData: {
         visible: false
       },
-      tableCreateVisible: false
+      tableCreateVisible: false,
+      columnCreateVisible: false
     }
   },
   created()
@@ -441,6 +455,10 @@ export default defineComponent({
     handlerCreateTable(isOpen: boolean)
     {
       this.tableCreateVisible = isOpen;
+    },
+    handlerCreateColumn(isOpen: boolean)
+    {
+      this.columnCreateVisible = isOpen;
     },
     getColumnIcon(type: string)
     {

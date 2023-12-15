@@ -34,7 +34,9 @@ import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Pagination;
 import io.edurt.datacap.spi.model.Response;
+import io.edurt.datacap.sql.builder.ColumnBuilder;
 import io.edurt.datacap.sql.builder.TableBuilder;
+import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -245,6 +247,29 @@ public class TableServiceImpl
         TableBuilder.Companion.COLUMNS(configure.getColumns().stream().map(item -> item.toColumnVar()).collect(Collectors.toList()));
         String sql = TableBuilder.Companion.SQL();
         log.info("Create table sql \n {} \n on database [ {} ]", sql, database.getName());
+        plugin.connect(source.toConfigure());
+        Response response = plugin.execute(sql);
+        response.setContent(sql);
+        plugin.destroy();
+        return CommonResponse.success(response);
+    }
+
+    @Override
+    public CommonResponse<Object> manageColumn(Long tableId, TableBody configure)
+    {
+        Optional<TableEntity> optionalTable = this.repository.findById(tableId);
+        if (!optionalTable.isPresent()) {
+            return CommonResponse.failure(String.format("Table [ %s ] not found", tableId));
+        }
+
+        TableEntity table = optionalTable.get();
+        SourceEntity source = table.getDatabase().getSource();
+        Plugin plugin = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol()).get();
+        ColumnBuilder.Companion.BEGIN();
+        ColumnBuilder.Companion.CREATE_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
+        ColumnBuilder.Companion.COLUMNS(configure.getColumns().stream().map(Column::toColumnVar).collect(Collectors.toList()));
+        String sql = ColumnBuilder.Companion.SQL();
+        log.info("Create column sql \n {} \n on table [ {} ]", sql, table.getName());
         plugin.connect(source.toConfigure());
         Response response = plugin.execute(sql);
         response.setContent(sql);

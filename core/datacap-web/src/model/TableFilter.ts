@@ -24,7 +24,8 @@ export enum SqlType
   SHOW = 'SHOW',
   INSERT = 'INSERT',
   TRUNCATE = 'TRUNCATE',
-  DROP = 'DROP'
+  DROP = 'DROP',
+  CREATE = 'CREATE',
 }
 
 export class SqlColumn

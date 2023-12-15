@@ -39,4 +39,5 @@ export default {
   columnPrimaryKey: '列主键',
   columnAutoIncrement: '列自增',
   columnIsNullable: '列允许为空',
+  newColumn: '列',
 }
