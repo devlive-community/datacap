@@ -287,6 +287,13 @@ public class TableServiceImpl
                     });
             log.info("Drop column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
         }
+        else if (configure.getType().equals(SqlType.MODIFY)) {
+            ColumnBuilder.Companion.BEGIN();
+            ColumnBuilder.Companion.MODIFY_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
+            ColumnBuilder.Companion.COLUMNS(configure.getColumns().stream().map(Column::toColumnVar).collect(Collectors.toList()));
+            atomicReference.set(ColumnBuilder.Companion.SQL());
+            log.info("Modify column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
+        }
         Response response;
         if (configure.isPreview()) {
             response = Response.builder()

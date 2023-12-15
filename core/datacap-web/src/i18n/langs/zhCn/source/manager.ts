@@ -41,4 +41,5 @@ export default {
   columnIsNullable: '列允许为空',
   newColumn: '列',
   dropColumn: '删除列',
+  modifyColumn: '修改列',
 }

@@ -10,5 +10,6 @@ public enum SqlType
     INSERT,
     TRUNCATE,
     DROP,
-    CREATE
+    CREATE,
+    MODIFY
 }

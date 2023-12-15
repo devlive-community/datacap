@@ -88,6 +88,11 @@
                     </DropdownItem>
                     <!-- Column context menu -->
                     <DropdownItem v-if="contextData?.level === DataStructureEnum.COLUMN"
+                                  @click="handlerModifyColumn(true)">
+                      <FontAwesomeIcon icon="pen-to-square"/>
+                      {{ $t('source.manager.modifyColumn') }}
+                    </DropdownItem>
+                    <DropdownItem v-if="contextData?.level === DataStructureEnum.COLUMN"
                                   @click="handlerDropColumn(true)">
                       <FontAwesomeIcon icon="delete-left"/>
                       {{ $t('source.manager.dropColumn') }}
@@ -187,6 +192,11 @@
                 :data="contextData"
                 @close="handlerDropColumn(false)">
     </ColumnDrop>
+    <ColumnModify v-if="columnModifyVisible"
+                  :isVisible="columnModifyVisible"
+                  :data="contextData"
+                  @close="handlerModifyColumn(false)">
+    </ColumnModify>
   </div>
 </template>
 <script lang="ts">
@@ -213,9 +223,10 @@ import TableExportData from "@/views/admin/source/components/TableExportData.vue
 import TableCreate from "@/views/admin/source/components/TableCreate.vue";
 import ColumnCreate from "@/views/admin/source/components/ColumnCreate.vue";
 import ColumnDrop from "@/views/admin/source/components/ColumnDrop.vue";
+import ColumnModify from "@/views/admin/source/components/ColumnModify.vue";
 
 export default defineComponent({
-  name: "SourceManagerBeta",
+  name: "SourceManager",
   computed: {
     DataStructureEnum()
     {
@@ -223,6 +234,7 @@ export default defineComponent({
     }
   },
   components: {
+    ColumnModify,
     ColumnDrop,
     ColumnCreate,
     TableExportData,
@@ -280,7 +292,7 @@ export default defineComponent({
         statement: (h) => this.resolveTabPaneComponent(h, 'tablet', 'common.statement'),
         erDiagram: (h) => this.resolveTabPaneComponent(h, 'diagram-predecessor', 'source.manager.erDiagram'),
       },
-      contextData: null,
+      contextData: null as DataStructureModel,
       tableTruncate: {
         visible: false
       },
@@ -293,6 +305,7 @@ export default defineComponent({
       tableCreateVisible: false,
       columnCreateVisible: false,
       columnDropVisible: false,
+      columnModifyVisible: false,
     }
   },
   created()
@@ -479,6 +492,10 @@ export default defineComponent({
     handlerDropColumn(isOpen: boolean)
     {
       this.columnDropVisible = isOpen;
+    },
+    handlerModifyColumn(isOpen: boolean)
+    {
+      this.columnModifyVisible = isOpen;
     },
     getColumnIcon(type: string)
     {

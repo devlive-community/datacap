@@ -30,6 +30,18 @@ class ColumnBuilderTest : BaseBuilderTest() {
         val sql = ColumnBuilder.SQL()
         log.info(sql)
         Assert.assertEquals(sql, "ALTER TABLE TestTable\n" +
-                "DROP COLUMN(\tid)")
+                "DROP COLUMN \tid")
+    }
+
+    @Test
+    fun testModifyColumn() {
+        ColumnBuilder.BEGIN()
+        ColumnBuilder.MODIFY_COLUMN(tableName)
+        ColumnBuilder.COLUMNS(listOf(columns.get(0)))
+        log.info("======== Test basic ========")
+        val sql = ColumnBuilder.SQL()
+        log.info(sql)
+        Assert.assertEquals(sql, "ALTER TABLE TestTable\n" +
+                "MODIFY \tid int(32) primary key auto_increment")
     }
 }

@@ -30,6 +30,10 @@ class ColumnBuilder {
             sql().DROP_COLUMN(table)
         }
 
+        fun MODIFY_COLUMN(column: String?) {
+            sql().MODIFY_COLUMN(column)
+        }
+
         fun COLUMNS(columns: List<String>) {
             sql().COLUMNS(columns)
         }
