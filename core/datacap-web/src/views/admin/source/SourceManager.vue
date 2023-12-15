@@ -389,7 +389,7 @@ export default defineComponent({
               engine: null;
               isKey: null;
               defaultValue: null;
-              table: { name: null, database: { name: null, id: null } };
+              table: { name: null, id: null, database: { name: null, id: null } };
             }) => {
               const structure = new DataStructureModel();
               structure.title = item.name;
