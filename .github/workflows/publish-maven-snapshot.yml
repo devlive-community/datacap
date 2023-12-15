@@ -1,0 +1,32 @@
+name: Publish via Maven Central for SNAPSHOT version
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - dev
+
+jobs:
+  publish-maven-central:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Java and Maven
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Publish to the Maven Central Repository
+        uses: samuelmeuli/action-maven-publish@v1
+        with:
+          maven_profiles: 'deploy'
+          maven_goals_phases: 'clean deploy'
+          maven_args: '-DskipTests'
+          gpg_private_key: ${{ secrets.GPG_SECRET }}
+          gpg_passphrase: ${{ secrets.GPG_PASSWORD }}
+          nexus_username: ${{ secrets.OSSRH_USERNAME }}
+          nexus_password: ${{ secrets.OSSRH_TOKEN }}

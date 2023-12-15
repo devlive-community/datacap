@@ -25,6 +25,7 @@ import io.edurt.datacap.service.entity.metadata.ColumnEntity;
 import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
 import io.edurt.datacap.service.entity.metadata.TableEntity;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
+import io.edurt.datacap.service.repository.metadata.ColumnRepository;
 import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
@@ -34,7 +35,9 @@ import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Pagination;
 import io.edurt.datacap.spi.model.Response;
+import io.edurt.datacap.sql.builder.ColumnBuilder;
 import io.edurt.datacap.sql.builder.TableBuilder;
+import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -57,6 +60,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -67,14 +71,16 @@ public class TableServiceImpl
     private final Injector injector;
     private final TableRepository repository;
     private final DatabaseRepository databaseRepository;
+    private final ColumnRepository columnRepository;
     private final InitializerConfigure initializerConfigure;
     private final HttpServletRequest request;
 
-    public TableServiceImpl(Injector injector, TableRepository repository, DatabaseRepository databaseRepository, InitializerConfigure initializerConfigure, HttpServletRequest request)
+    public TableServiceImpl(Injector injector, TableRepository repository, DatabaseRepository databaseRepository, ColumnRepository columnRepository, InitializerConfigure initializerConfigure, HttpServletRequest request)
     {
         this.injector = injector;
         this.repository = repository;
         this.databaseRepository = databaseRepository;
+        this.columnRepository = columnRepository;
         this.initializerConfigure = initializerConfigure;
         this.request = request;
     }
@@ -249,6 +255,62 @@ public class TableServiceImpl
         Response response = plugin.execute(sql);
         response.setContent(sql);
         plugin.destroy();
+        return CommonResponse.success(response);
+    }
+
+    @Override
+    public CommonResponse<Object> manageColumn(Long tableId, TableBody configure)
+    {
+        Optional<TableEntity> optionalTable = this.repository.findById(tableId);
+        if (!optionalTable.isPresent()) {
+            return CommonResponse.failure(String.format("Table [ %s ] not found", tableId));
+        }
+
+        TableEntity table = optionalTable.get();
+        SourceEntity source = table.getDatabase().getSource();
+        Plugin plugin = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol()).get();
+        AtomicReference<String> atomicReference = new AtomicReference<>(null);
+        if (configure.getType().equals(SqlType.CREATE)) {
+            ColumnBuilder.Companion.BEGIN();
+            ColumnBuilder.Companion.CREATE_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
+            ColumnBuilder.Companion.COLUMNS(configure.getColumns().stream().map(Column::toColumnVar).collect(Collectors.toList()));
+            atomicReference.set(ColumnBuilder.Companion.SQL());
+            log.info("Create column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
+        }
+        else if (configure.getType().equals(SqlType.DROP)) {
+            columnRepository.findById(configure.getColumnId())
+                    .ifPresent(column -> {
+                        ColumnBuilder.Companion.BEGIN();
+                        ColumnBuilder.Companion.DROP_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
+                        ColumnBuilder.Companion.COLUMNS(Lists.newArrayList(column.getName()));
+                        atomicReference.set(ColumnBuilder.Companion.SQL());
+                    });
+            log.info("Drop column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
+        }
+        else if (configure.getType().equals(SqlType.MODIFY)) {
+            ColumnBuilder.Companion.BEGIN();
+            ColumnBuilder.Companion.MODIFY_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
+            ColumnBuilder.Companion.COLUMNS(configure.getColumns().stream().map(Column::toColumnVar).collect(Collectors.toList()));
+            atomicReference.set(ColumnBuilder.Companion.SQL());
+            log.info("Modify column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
+        }
+        Response response;
+        if (configure.isPreview()) {
+            response = Response.builder()
+                    .isSuccessful(true)
+                    .isConnected(true)
+                    .headers(Lists.newArrayList())
+                    .columns(Lists.newArrayList())
+                    .types(Lists.newArrayList())
+                    .content(atomicReference.get())
+                    .build();
+        }
+        else {
+            plugin.connect(source.toConfigure());
+            response = plugin.execute(atomicReference.get());
+            response.setContent(atomicReference.get());
+            plugin.destroy();
+        }
         return CommonResponse.success(response);
     }
 

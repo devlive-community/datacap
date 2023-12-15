@@ -120,6 +120,24 @@ abstract class AbstractSql<T> {
         return getSelf()
     }
 
+    fun CREATE_COLUMN(table: String?): T {
+        sql().statementType = StatementType.CREATE_COLUMN
+        sql().tables.add(table)
+        return getSelf()
+    }
+
+    fun DROP_COLUMN(table: String?): T {
+        sql().statementType = StatementType.DROP_COLUMN
+        sql().tables.add(table)
+        return getSelf()
+    }
+
+    fun MODIFY_COLUMN(table: String?): T {
+        sql().statementType = StatementType.MODIFY_COLUMN
+        sql().tables.add(table)
+        return getSelf()
+    }
+
     fun COLUMNS(columns: List<String>): T {
         sql().columns.addAll(columns.map { item -> "\t$item" })
         return getSelf()
@@ -636,6 +654,33 @@ abstract class AbstractSql<T> {
             return builder.toString()
         }
 
+        private fun createColumnSQL(builder: SafeAppendable): String {
+            sqlClause(builder, "ALTER TABLE", tables, "", "", "")
+            sqlClause(builder, "ADD COLUMN", columns, "(", ")", ",\n")
+            if (end) {
+                builder.append(";")
+            }
+            return builder.toString()
+        }
+
+        private fun dropColumnSQL(builder: SafeAppendable): String {
+            sqlClause(builder, "ALTER TABLE", tables, "", "", "")
+            sqlClause(builder, "DROP COLUMN", columns, "", "", ",\n")
+            if (end) {
+                builder.append(";")
+            }
+            return builder.toString()
+        }
+
+        private fun modifyColumnSQL(builder: SafeAppendable): String {
+            sqlClause(builder, "ALTER TABLE", tables, "", "", "")
+            sqlClause(builder, "MODIFY", columns, "", "", ",\n")
+            if (end) {
+                builder.append(";")
+            }
+            return builder.toString()
+        }
+
         fun sql(a: Appendable): String? {
             val builder = SafeAppendable(a)
 
@@ -649,6 +694,9 @@ abstract class AbstractSql<T> {
                 StatementType.TRUNCATE -> truncateSQL(builder)
                 StatementType.DROP -> dropSQL(builder)
                 StatementType.CREATE_TABLE -> createTableSQL(builder)
+                StatementType.CREATE_COLUMN -> createColumnSQL(builder)
+                StatementType.DROP_COLUMN -> dropColumnSQL(builder)
+                StatementType.MODIFY_COLUMN -> modifyColumnSQL(builder)
                 else -> throw SqlException("Unsupported statement type: [ $statementType ]")
             }
             return answer

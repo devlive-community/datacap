@@ -50,9 +50,15 @@
                             {{ $t('source.manager.newTable') }}
                           </DropdownItem>
                         </DropdownMenu>
+                        <DropdownMenu>
+                          <DropdownItem @click="handlerCreateColumn(true)">
+                            <FontAwesomeIcon icon="columns"/>
+                            {{ $t('source.manager.newColumn') }}
+                          </DropdownItem>
+                        </DropdownMenu>
                       </template>
                     </Dropdown>
-                    <br/>
+                    <br v-if="contextData?.level === DataStructureEnum.TABLE"/>
                     <Dropdown v-if="contextData?.level === DataStructureEnum.TABLE"
                               placement="right-start"
                               transfer>
@@ -79,6 +85,17 @@
                                   @click="handlerDropTable(true)">
                       <FontAwesomeIcon icon="delete-left"/>
                       {{ $t('source.manager.dropTable') }}
+                    </DropdownItem>
+                    <!-- Column context menu -->
+                    <DropdownItem v-if="contextData?.level === DataStructureEnum.COLUMN"
+                                  @click="handlerModifyColumn(true)">
+                      <FontAwesomeIcon icon="pen-to-square"/>
+                      {{ $t('source.manager.modifyColumn') }}
+                    </DropdownItem>
+                    <DropdownItem v-if="contextData?.level === DataStructureEnum.COLUMN"
+                                  @click="handlerDropColumn(true)">
+                      <FontAwesomeIcon icon="delete-left"/>
+                      {{ $t('source.manager.dropColumn') }}
                     </DropdownItem>
                   </template>
                 </Tree>
@@ -165,6 +182,21 @@
                  :data="contextData"
                  @close="handlerCreateTable(false)">
     </TableCreate>
+    <ColumnCreate v-if="columnCreateVisible"
+                  :isVisible="columnCreateVisible"
+                  :data="contextData"
+                  @close="handlerCreateColumn(false)">
+    </ColumnCreate>
+    <ColumnDrop v-if="columnDropVisible"
+                :isVisible="columnDropVisible"
+                :data="contextData"
+                @close="handlerDropColumn(false)">
+    </ColumnDrop>
+    <ColumnModify v-if="columnModifyVisible"
+                  :isVisible="columnModifyVisible"
+                  :data="contextData"
+                  @close="handlerModifyColumn(false)">
+    </ColumnModify>
   </div>
 </template>
 <script lang="ts">
@@ -189,9 +221,12 @@ import TableStructure from "@/views/admin/source/components/TableStructure.vue";
 import TableErDiagram from "@/views/admin/source/components/TableErDiagram.vue";
 import TableExportData from "@/views/admin/source/components/TableExportData.vue";
 import TableCreate from "@/views/admin/source/components/TableCreate.vue";
+import ColumnCreate from "@/views/admin/source/components/ColumnCreate.vue";
+import ColumnDrop from "@/views/admin/source/components/ColumnDrop.vue";
+import ColumnModify from "@/views/admin/source/components/ColumnModify.vue";
 
 export default defineComponent({
-  name: "SourceManagerBeta",
+  name: "SourceManager",
   computed: {
     DataStructureEnum()
     {
@@ -199,6 +234,9 @@ export default defineComponent({
     }
   },
   components: {
+    ColumnModify,
+    ColumnDrop,
+    ColumnCreate,
     TableExportData,
     TableErDiagram,
     TableStructure,
@@ -254,7 +292,7 @@ export default defineComponent({
         statement: (h) => this.resolveTabPaneComponent(h, 'tablet', 'common.statement'),
         erDiagram: (h) => this.resolveTabPaneComponent(h, 'diagram-predecessor', 'source.manager.erDiagram'),
       },
-      contextData: null,
+      contextData: null as DataStructureModel,
       tableTruncate: {
         visible: false
       },
@@ -264,7 +302,10 @@ export default defineComponent({
       tableExportData: {
         visible: false
       },
-      tableCreateVisible: false
+      tableCreateVisible: false,
+      columnCreateVisible: false,
+      columnDropVisible: false,
+      columnModifyVisible: false,
     }
   },
   created()
@@ -361,12 +402,14 @@ export default defineComponent({
               engine: null;
               isKey: null;
               defaultValue: null;
-              table: { name: null, database: { name: null, id: null } };
+              table: { name: null, id: null, database: { name: null, id: null } };
             }) => {
               const structure = new DataStructureModel();
               structure.title = item.name;
               structure.database = item.table.database.name;
+              structure.databaseId = item.table.database.id;
               structure.table = item.table.name;
+              structure.tableId = item.table.id;
               structure.catalog = item.catalog;
               structure.applyId = item.id;
               structure.level = DataStructureEnum.COLUMN;
@@ -441,6 +484,18 @@ export default defineComponent({
     handlerCreateTable(isOpen: boolean)
     {
       this.tableCreateVisible = isOpen;
+    },
+    handlerCreateColumn(isOpen: boolean)
+    {
+      this.columnCreateVisible = isOpen;
+    },
+    handlerDropColumn(isOpen: boolean)
+    {
+      this.columnDropVisible = isOpen;
+    },
+    handlerModifyColumn(isOpen: boolean)
+    {
+      this.columnModifyVisible = isOpen;
     },
     getColumnIcon(type: string)
     {

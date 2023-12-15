@@ -13,6 +13,7 @@ export class TableFilter
   value?: string;
   filter: Filter;
   newColumns?: Array<any>;
+  columnId?: number;
 }
 
 export enum SqlType
@@ -24,7 +25,9 @@ export enum SqlType
   SHOW = 'SHOW',
   INSERT = 'INSERT',
   TRUNCATE = 'TRUNCATE',
-  DROP = 'DROP'
+  DROP = 'DROP',
+  CREATE = 'CREATE',
+  MODIFY = 'MODIFY',
 }
 
 export class SqlColumn

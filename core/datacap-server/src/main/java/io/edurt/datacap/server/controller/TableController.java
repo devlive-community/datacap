@@ -61,4 +61,10 @@ public class TableController
     {
         return this.service.createTable(id, configure);
     }
+
+    @PostMapping(value = "manageColumn/{id}")
+    public CommonResponse<Object> manageColumn(@PathVariable Long id, @RequestBody TableBody configure)
+    {
+        return this.service.manageColumn(id, configure);
+    }
 }

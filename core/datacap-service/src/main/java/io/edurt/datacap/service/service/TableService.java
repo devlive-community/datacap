@@ -40,4 +40,6 @@ public interface TableService
     Object dataDownload(String username, String filename);
 
     CommonResponse<Object> createTable(Long databaseId, TableBody configure);
+
+    CommonResponse<Object> manageColumn(Long tableId, TableBody configure);
 }

@@ -15,13 +15,8 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class TableBody
+public class ColumnBody
 {
-    private String name;
-    private String comment;
-    private String engine;
-    private boolean preview;
     private SqlType type;
-    private Long columnId;
     private List<Column> columns;
 }
