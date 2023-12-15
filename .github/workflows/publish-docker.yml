@@ -34,7 +34,7 @@ jobs:
       - name: Compile from source
         run: |
           chmod 755 ./mvnw
-          ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true
+          ./mvnw clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -q
 
       - name: Cache binary
         id: cache-binary
