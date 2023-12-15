@@ -13,6 +13,7 @@ export class TableFilter
   value?: string;
   filter: Filter;
   newColumns?: Array<any>;
+  columnId?: number;
 }
 
 export enum SqlType

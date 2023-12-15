@@ -40,4 +40,5 @@ export default {
   columnAutoIncrement: '列自增',
   columnIsNullable: '列允许为空',
   newColumn: '列',
+  dropColumn: '删除列',
 }

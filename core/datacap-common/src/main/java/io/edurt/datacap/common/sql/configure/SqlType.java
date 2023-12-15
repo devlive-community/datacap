@@ -9,5 +9,6 @@ public enum SqlType
     SHOW,
     INSERT,
     TRUNCATE,
-    DROP
+    DROP,
+    CREATE
 }

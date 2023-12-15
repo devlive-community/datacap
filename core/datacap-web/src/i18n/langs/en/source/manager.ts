@@ -40,4 +40,5 @@ export default {
   columnAutoIncrement: 'Column Auto Increment',
   columnIsNullable: 'Column Is Nullable',
   newColumn: 'Column',
+  dropColumn: 'Drop Column',
 }

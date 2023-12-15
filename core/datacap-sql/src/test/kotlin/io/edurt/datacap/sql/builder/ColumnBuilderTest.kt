@@ -20,4 +20,16 @@ class ColumnBuilderTest : BaseBuilderTest() {
                 "\tname varchar(32) comment 'name',\n" +
                 "\tage varchar(200) not null default 'xxx')")
     }
+
+    @Test
+    fun testDropColumn() {
+        ColumnBuilder.BEGIN()
+        ColumnBuilder.DROP_COLUMN(tableName)
+        ColumnBuilder.COLUMNS(listOf("id"))
+        log.info("======== Test basic ========")
+        val sql = ColumnBuilder.SQL()
+        log.info(sql)
+        Assert.assertEquals(sql, "ALTER TABLE TestTable\n" +
+                "DROP COLUMN(\tid)")
+    }
 }

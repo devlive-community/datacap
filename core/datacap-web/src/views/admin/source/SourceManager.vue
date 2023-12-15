@@ -58,7 +58,7 @@
                         </DropdownMenu>
                       </template>
                     </Dropdown>
-                    <br/>
+                    <br v-if="contextData?.level === DataStructureEnum.TABLE"/>
                     <Dropdown v-if="contextData?.level === DataStructureEnum.TABLE"
                               placement="right-start"
                               transfer>
@@ -85,6 +85,12 @@
                                   @click="handlerDropTable(true)">
                       <FontAwesomeIcon icon="delete-left"/>
                       {{ $t('source.manager.dropTable') }}
+                    </DropdownItem>
+                    <!-- Column context menu -->
+                    <DropdownItem v-if="contextData?.level === DataStructureEnum.COLUMN"
+                                  @click="handlerDropColumn(true)">
+                      <FontAwesomeIcon icon="delete-left"/>
+                      {{ $t('source.manager.dropColumn') }}
                     </DropdownItem>
                   </template>
                 </Tree>
@@ -176,6 +182,11 @@
                   :data="contextData"
                   @close="handlerCreateColumn(false)">
     </ColumnCreate>
+    <ColumnDrop v-if="columnDropVisible"
+                :isVisible="columnDropVisible"
+                :data="contextData"
+                @close="handlerDropColumn(false)">
+    </ColumnDrop>
   </div>
 </template>
 <script lang="ts">
@@ -201,6 +212,7 @@ import TableErDiagram from "@/views/admin/source/components/TableErDiagram.vue";
 import TableExportData from "@/views/admin/source/components/TableExportData.vue";
 import TableCreate from "@/views/admin/source/components/TableCreate.vue";
 import ColumnCreate from "@/views/admin/source/components/ColumnCreate.vue";
+import ColumnDrop from "@/views/admin/source/components/ColumnDrop.vue";
 
 export default defineComponent({
   name: "SourceManagerBeta",
@@ -211,6 +223,7 @@ export default defineComponent({
     }
   },
   components: {
+    ColumnDrop,
     ColumnCreate,
     TableExportData,
     TableErDiagram,
@@ -278,7 +291,8 @@ export default defineComponent({
         visible: false
       },
       tableCreateVisible: false,
-      columnCreateVisible: false
+      columnCreateVisible: false,
+      columnDropVisible: false,
     }
   },
   created()
@@ -380,7 +394,9 @@ export default defineComponent({
               const structure = new DataStructureModel();
               structure.title = item.name;
               structure.database = item.table.database.name;
+              structure.databaseId = item.table.database.id;
               structure.table = item.table.name;
+              structure.tableId = item.table.id;
               structure.catalog = item.catalog;
               structure.applyId = item.id;
               structure.level = DataStructureEnum.COLUMN;
@@ -459,6 +475,10 @@ export default defineComponent({
     handlerCreateColumn(isOpen: boolean)
     {
       this.columnCreateVisible = isOpen;
+    },
+    handlerDropColumn(isOpen: boolean)
+    {
+      this.columnDropVisible = isOpen;
     },
     getColumnIcon(type: string)
     {
