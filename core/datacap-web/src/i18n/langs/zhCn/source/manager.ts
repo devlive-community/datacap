@@ -42,4 +42,8 @@ export default {
   newColumn: '列',
   dropColumn: '删除列',
   modifyColumn: '修改列',
+  sourceDelete: '删除源',
+  sourceDeleteTip1: '您正在执行删除数据源操作。此操作将永久性地删除与该数据源相关联的所有数据和配置。请在继续之前务必确认您的操作。',
+  sourceDeleteTip2: '警告：执行此操作将无法撤销。所有与该数据源相关的数据和配置将被永久删除。',
+  sourceDeleteTip3: '要确认，请在下面的框中键入 [ REPLACE_NAME ]',
 }
