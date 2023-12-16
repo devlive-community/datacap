@@ -28,6 +28,7 @@ import io.edurt.datacap.spi.executor.PipelineField;
 import io.edurt.datacap.spi.executor.PipelineResponse;
 import io.edurt.datacap.spi.executor.PipelineState;
 import io.edurt.datacap.spi.executor.Protocol;
+import io.edurt.datacap.spi.json.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -128,6 +129,9 @@ public class PipelineServiceImpl
         if (!fromOriginProperties.containsKey("context")) {
             fromOriginProperties.setProperty("context", configure.getContent());
         }
+        else {
+            configure.setContent(fromOriginProperties.getProperty("context"));
+        }
         if (configure.getFrom().getProtocol().equals(Protocol.JDBC)) {
             fromOriginProperties.setProperty("url", String.format("jdbc:%s://%s:%s/%s", fromSource.getType().toLowerCase(), fromSource.getHost(), fromSource.getPort(), fromSource.getDatabase()));
         }
@@ -173,7 +177,7 @@ public class PipelineServiceImpl
             }
             String username = UserDetailsService.getUser().getUsername();
             String pipelineHome = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMddHHmmssSSS");
-            String work = String.join(File.separator, executorHome, username, pipelineHome);
+            String work = String.join(File.separator, executorHome, username, "pipeline", configure.getExecutor().toLowerCase(), pipelineHome);
             String pipelineName = String.join("_",
                     username,
                     configure.getExecutor().toLowerCase(),
@@ -192,6 +196,7 @@ public class PipelineServiceImpl
             pipelineEntity.setFromConfigures(fromProperties);
             pipelineEntity.setTo(toSource);
             pipelineEntity.setToConfigures(toProperties);
+            pipelineEntity.setFlowConfigure(JSON.toJSON(configure.getFlow()));
         }
 
         String pipelineName = pipelineEntity.getName();
