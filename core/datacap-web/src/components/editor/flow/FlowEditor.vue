@@ -13,24 +13,50 @@
           <Background pattern-color="#aaa"
                       gap="8">
           </Background>
+          <Controls/>
+          <Panel position="top-right">
+            <Space>
+              <Tooltip :content="$t('pipeline.resetTransform')">
+                <Button type="primary"
+                        shape="circle"
+                        size="small"
+                        @click="resetTransform">
+                  <FontAwesomeIcon icon="rotate"/>
+                </Button>
+              </Tooltip>
+              <Tooltip :content="$t('common.save')">
+                <Button type="primary"
+                        shape="circle"
+                        size="small"
+                        @click="saveConfigure(configure)">
+                  <FontAwesomeIcon icon="save"/>
+                </Button>
+              </Tooltip>
+            </Space>
+          </Panel>
         </VueFlow>
       </Content>
     </Layout>
     <FlowConfigure v-if="configureVisible"
                    :isVisible="configureVisible"
                    :data="contextData"
+                   @onChange="handlerChangeConfigure"
                    @close="handlerNodeDoubleClick(null, false)">
     </FlowConfigure>
   </div>
 </template>
 <script lang="ts">
 import {defineComponent, nextTick, watch} from 'vue';
-import {Position, useVueFlow, VueFlow} from '@vue-flow/core';
+import {Panel, Position, useVueFlow, VueFlow} from '@vue-flow/core';
 import {Background} from "@vue-flow/background";
+import {Controls} from '@vue-flow/controls'
 import FlowSider from "@/components/editor/flow/components/FlowSider.vue";
 import FlowConfigure from "@/components/editor/flow/components/FlowConfigure.vue";
 import {v4 as uuidv4} from 'uuid';
 import {Configuration} from "@/components/editor/flow/Configuration";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {Message} from "view-ui-plus";
+import {useI18n} from "vue-i18n";
 
 export default defineComponent({
   name: 'FlowEditor',
@@ -39,10 +65,11 @@ export default defineComponent({
       type: Array as () => Configuration[]
     }
   },
-  components: {FlowConfigure, FlowSider, VueFlow, Background},
-  setup()
+  components: {FontAwesomeIcon, FlowConfigure, FlowSider, VueFlow, Background, Controls, Panel},
+  setup(props, {emit})
   {
-    const {findNode, onConnect, addEdges, addNodes, project, vueFlowRef} = useVueFlow({nodes: []})
+    const i18n = useI18n();
+    const {findNode, onConnect, addEdges, addNodes, project, vueFlowRef, setTransform, toObject} = useVueFlow({nodes: []})
 
     onConnect((params) => addEdges(params))
 
@@ -98,16 +125,43 @@ export default defineComponent({
         event.dataTransfer.dropEffect = 'move'
       }
     }
+
+    const resetTransform = () => {
+      return setTransform({x: 0, y: 0, zoom: 1});
+    }
+
+    const saveConfigure = (configure: any) => {
+      const data = toObject();
+      if (!configure.from) {
+        Message.error(i18n.t('pipeline.pipelineFromValidator'))
+        return
+      }
+
+      if (!configure.to) {
+        Message.error(i18n.t('pipeline.pipelineToValidator'))
+        return
+      }
+
+      if (data.edges.length === 0) {
+        Message.error(i18n.t('pipeline.pipelineEdgeValidator'))
+        return
+      }
+      configure.flow = data;
+      emit('onCommit', configure);
+    }
     return {
       onDrop,
-      onDragOver
+      onDragOver,
+      resetTransform,
+      saveConfigure
     }
   },
   data()
   {
     return {
       configureVisible: false,
-      contextData: null
+      contextData: null,
+      configure: {executor: 'Seatunnel', from: null, to: null, flow: null}
     }
   },
   methods: {
@@ -115,6 +169,16 @@ export default defineComponent({
     {
       this.configureVisible = isOpen
       this.contextData = event?.node?.data;
+    },
+    handlerChangeConfigure(value: any)
+    {
+      if (value.type === 'input') {
+        this.configure.from = value
+      }
+      else if (value.type === 'output') {
+        this.configure.to = value
+      }
+      this.handlerNodeDoubleClick(null, false)
     }
   },
 });

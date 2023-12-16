@@ -8,3 +8,6 @@ WHERE `avatar_configure` IS NULL;
 UPDATE `datacap_user`
 SET `editor_configure` = '{}'
 WHERE `editor_configure` IS NULL;
+
+ALTER TABLE `datacap_pipeline`
+    ADD COLUMN `flow_configure` LONGTEXT COMMENT 'Flow configure';

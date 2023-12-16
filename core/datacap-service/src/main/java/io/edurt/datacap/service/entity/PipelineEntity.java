@@ -89,6 +89,9 @@ public class PipelineEntity
     @Convert(converter = PropertiesConverter.class)
     private Properties toConfigures;
 
+    @Column(name = "flow_configure")
+    private String flowConfigure;
+
     @ManyToOne
     @JoinTable(name = "pipeline_user_relation",
             joinColumns = @JoinColumn(name = "pipeline_id"),

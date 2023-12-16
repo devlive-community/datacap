@@ -18,4 +18,5 @@ public class PipelineBody
     private PipelineFieldBody to;
     private String content;
     private String executor;
+    private Object flow;
 }

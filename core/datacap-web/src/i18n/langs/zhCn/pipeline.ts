@@ -15,4 +15,9 @@ export default {
   },
   input: '输入',
   output: '输出',
+  visualConstruction: '可视化构建',
+  resetTransform: '重置转换',
+  pipelineFromValidator: '请配置输入源相关信息',
+  pipelineToValidator: '请配置输出源相关信息',
+  pipelineEdgeValidator: '请连接输入和输出源',
 }

@@ -6,7 +6,6 @@
       <template #header>
         {{ `[ ${data.name} ] ${$t('common.configure')}` }}
       </template>
-
       <div v-for="item in data.configure"
            :key="item"
            style="margin-top: 10px;">
@@ -111,12 +110,9 @@
       </div>
       <template #footer>
         <Button type="primary"
-                :loading="loading"
                 @click="handlerSave()">
-          <FontAwesomeIcon v-if="!loading"
-                           icon="save">
-          </FontAwesomeIcon>
-          {{ $t('source.manager.modifyColumn') }}
+          <FontAwesomeIcon icon="save"/>
+          {{ $t('common.save') }}
         </Button>
       </template>
     </Modal>
@@ -140,7 +136,26 @@ export default defineComponent({
   methods: {
     handlerSave()
     {
-      console.log(1)
+      const configure = {
+        id: this.data.id,
+        protocol: this.data.protocol,
+        configures: this.filterConfigure(this.data.configure, this.data.nodeType),
+        type: this.data.nodeType
+      }
+      this.$emit('onChange', configure);
+    },
+    filterConfigure(meta: any)
+    {
+      const result = {};
+      meta.filter((item: { input: any; }) => item.input)
+        .forEach((item: { origin: any; value: any; }) => {
+          const key = item.origin;
+          const value = item.value;
+          if (value !== null) {
+            result[key] = value;
+          }
+        })
+      return result
     },
     handlerCancel()
     {

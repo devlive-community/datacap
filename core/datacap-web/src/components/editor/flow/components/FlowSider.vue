@@ -23,7 +23,6 @@
 </template>
 <script lang="ts">
 import '../style.css'
-
 import {defineComponent} from 'vue';
 import {Configuration} from "@/components/editor/flow/Configuration";
 

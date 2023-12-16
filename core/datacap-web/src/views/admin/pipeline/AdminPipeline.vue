@@ -4,12 +4,21 @@
           :title="$t('common.pipeline')"
           dis-hover>
       <template #extra>
-        <Button type="primary"
-                size="small"
-                icon="md-add"
-                @click="handlerDetail(true)">
-          {{ $t('common.create') }}
-        </Button>
+        <Dropdown>
+          <Button type="primary"
+                  size="small"
+                  icon="md-add"
+                  @click="handlerDetail(true)">
+            {{ $t('common.create') }}
+          </Button>
+          <template #list>
+            <DropdownMenu>
+              <DropdownItem @click="handlerCreate(true)">
+                {{ $t('pipeline.visualConstruction') }}
+              </DropdownItem>
+            </DropdownMenu>
+          </template>
+        </Dropdown>
       </template>
       <Table :loading="loading"
              :columns="headers"
@@ -100,35 +109,34 @@
         </Page>
       </p>
     </Card>
-
     <MarkdownPreview v-if="visibleWarning"
                      :isVisible="visibleWarning"
                      :content="finalContent"
                      @close="handlerVisibleMarkdownPreview(null, $event)">
     </MarkdownPreview>
-
     <DeletePipeline v-if="deleted"
                     :is-visible="deleted"
                     :info="info"
                     @close="handlerDelete(null, false)">
     </DeletePipeline>
-
     <DetailsPipeline v-if="detail"
                      :is-visible="detail"
                      @close="handlerDetail(false)">
     </DetailsPipeline>
-
     <StopPipeline v-if="stopped"
                   :is-visible="stopped"
                   :info="info"
                   @close="handlerStop(null, false)">
     </StopPipeline>
-
     <LoggerPipeline v-if="logger"
                     :is-visible="logger"
                     :info="info"
                     @close="handlerLogger(null, false)">
     </LoggerPipeline>
+    <PipelineCreate v-if="createVisible"
+                    :isVisible="createVisible"
+                    @close="handlerCreate(false)">
+    </PipelineCreate>
   </div>
 </template>
 
@@ -145,13 +153,14 @@ import DeletePipeline from "@/views/admin/pipeline/DeletePipeline.vue";
 import DetailsPipeline from "@/views/admin/pipeline/DetailPipeline.vue";
 import StopPipeline from "@/views/admin/pipeline/StopPipeline.vue";
 import LoggerPipeline from "@/views/admin/pipeline/components/LoggerPipeline.vue";
+import PipelineCreate from "@/views/admin/pipeline/components/PipelineCreate.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 
 export default defineComponent({
   name: 'UserPipelineHome',
-  components: {LoggerPipeline, StopPipeline, DetailsPipeline, DeletePipeline, MarkdownPreview},
+  components: {PipelineCreate, LoggerPipeline, StopPipeline, DetailsPipeline, DeletePipeline, MarkdownPreview},
   setup()
   {
     const i18n = useI18n();
@@ -175,7 +184,8 @@ export default defineComponent({
       // Pipeline detail
       detail: false,
       stopped: false,
-      logger: false
+      logger: false,
+      createVisible: false,
     }
   },
   created()
@@ -251,6 +261,10 @@ export default defineComponent({
     {
       this.logger = isOpen
       this.info = row
+    },
+    handlerCreate(isOpen: boolean)
+    {
+      this.createVisible = isOpen;
     },
     getStateText(origin: string): string
     {
