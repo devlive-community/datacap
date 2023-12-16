@@ -1,29 +1,20 @@
 <template>
   <div>
-    <Card dis-hover>
+    <Card v-for="node in data"
+          :key="node.id"
+          dis-hover>
       <template #title>
-        {{ $t('pipeline.input') }}
+        {{ $t('pipeline.' + node.nodeType) }}
       </template>
       <div class="dndflow">
         <div class="nodes">
-          <div class="vue-flow__node-input"
+          <div :class="'vue-flow__node-' + node.nodeType"
                :draggable="true"
-               @dragstart="onDragStart($event, 'input')">
-            {{ $t('pipeline.input') }} Node
-          </div>
-        </div>
-      </div>
-    </Card>
-    <Card dis-hover>
-      <template #title>
-        {{ $t('pipeline.output') }}
-      </template>
-      <div class="dndflow">
-        <div class="nodes">
-          <div class="vue-flow__node-output"
-               :draggable="true"
-               @dragstart="onDragStart($event, 'output')">
-            {{ $t('pipeline.output') }} Node
+               @dragstart="onDragStart($event, node.nodeType, node)">
+            <Avatar size="small"
+                    :src="'/static/images/plugin/' + node.type.split(' ')[0] + '.png'">
+            </Avatar>
+            {{ node.name }}
           </div>
         </div>
       </div>
@@ -34,9 +25,15 @@
 import '../style.css'
 
 import {defineComponent} from 'vue';
+import {Configuration} from "@/components/editor/flow/Configuration";
 
 export default defineComponent({
   name: 'FlowSider',
+  props: {
+    data: {
+      type: Array as () => Configuration[]
+    }
+  },
   setup()
   {
     /**
@@ -45,9 +42,10 @@ export default defineComponent({
      * @param {object} event - The drag start event object.
      * @param {any} nodeType - The type of node being dragged.
      */
-    const onDragStart = (event: { dataTransfer: { setData: (arg0: string, arg1: any) => void; effectAllowed: string; }; }, nodeType: any) => {
+    const onDragStart = (event: { dataTransfer: { setData: (arg0: string, arg1: any) => void; effectAllowed: string; }; }, nodeType: any, configure: any) => {
       if (event.dataTransfer) {
-        event.dataTransfer.setData('application/vueflow', nodeType)
+        const data = {type: nodeType, configure: configure}
+        event.dataTransfer.setData('application/vueflow', JSON.stringify(data))
         event.dataTransfer.effectAllowed = 'move'
       }
     }

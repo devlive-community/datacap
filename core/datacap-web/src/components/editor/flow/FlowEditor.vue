@@ -2,20 +2,25 @@
   <div @drop="onDrop">
     <Layout style="min-height: 500px; background-color: #ffffff;">
       <Sider style="background-color: #ffffff; margin: 0px 1px;">
-        <FlowSider></FlowSider>
+        <FlowSider :data="data"/>
       </Sider>
       <Content>
         <VueFlow :default-viewport="{ zoom: 1.5 }"
                  :min-zoom="0.2"
                  :max-zoom="4"
                  @dragover="onDragOver"
-                 @nodeDoubleClick="handlerNodeDoubleClick">
+                 @nodeDoubleClick="handlerNodeDoubleClick($event, true)">
           <Background pattern-color="#aaa"
                       gap="8">
           </Background>
         </VueFlow>
       </Content>
     </Layout>
+    <FlowConfigure v-if="configureVisible"
+                   :isVisible="configureVisible"
+                   :data="contextData"
+                   @close="handlerNodeDoubleClick(null, false)">
+    </FlowConfigure>
   </div>
 </template>
 <script lang="ts">
@@ -23,20 +28,21 @@ import {defineComponent, nextTick, watch} from 'vue';
 import {Position, useVueFlow, VueFlow} from '@vue-flow/core';
 import {Background} from "@vue-flow/background";
 import FlowSider from "@/components/editor/flow/components/FlowSider.vue";
+import FlowConfigure from "@/components/editor/flow/components/FlowConfigure.vue";
 import {v4 as uuidv4} from 'uuid';
+import {Configuration} from "@/components/editor/flow/Configuration";
 
 export default defineComponent({
   name: 'FlowEditor',
   props: {
-    nodes: {
-      type: [],
-      default: () => [],
+    data: {
+      type: Array as () => Configuration[]
     }
   },
-  components: {FlowSider, VueFlow, Background},
-  setup(props)
+  components: {FlowConfigure, FlowSider, VueFlow, Background},
+  setup()
   {
-    const {findNode, onConnect, addEdges, addNodes, project, vueFlowRef} = useVueFlow({nodes: props.nodes})
+    const {findNode, onConnect, addEdges, addNodes, project, vueFlowRef} = useVueFlow({nodes: []})
 
     onConnect((params) => addEdges(params))
 
@@ -50,10 +56,11 @@ export default defineComponent({
      * @param {number} event.clientY - The y-coordinate of the cursor position.
      */
     const onDrop = (event: { dataTransfer: { getData: (arg0: string) => any; }; clientX: number; clientY: number; }) => {
-      const type = event.dataTransfer?.getData('application/vueflow');
+      const data = JSON.parse(event.dataTransfer?.getData('application/vueflow'));
+      const type = data?.type
       const {left, top} = vueFlowRef.value.getBoundingClientRect();
       const position = project({x: event.clientX - left, y: event.clientY - top});
-      const newNode = {id: `${uuidv4()}`, type, position, label: `${type} node`}
+      const newNode = {id: `${uuidv4()}`, type, position, label: `${data.configure.name}`, data: data.configure}
       if (type === 'input') {
         newNode['sourcePosition'] = Position.Right;
       }
@@ -96,10 +103,18 @@ export default defineComponent({
       onDragOver
     }
   },
+  data()
+  {
+    return {
+      configureVisible: false,
+      contextData: null
+    }
+  },
   methods: {
-    handlerNodeDoubleClick()
+    handlerNodeDoubleClick(event: any, isOpen: boolean)
     {
-      console.log('Double click');
+      this.configureVisible = isOpen
+      this.contextData = event?.node?.data;
     }
   },
 });
