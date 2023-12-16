@@ -20,4 +20,5 @@ export default {
   pipelineFromValidator: '请配置输入源相关信息',
   pipelineToValidator: '请配置输出源相关信息',
   pipelineEdgeValidator: '请连接输入和输出源',
+  flow: '流程图',
 }

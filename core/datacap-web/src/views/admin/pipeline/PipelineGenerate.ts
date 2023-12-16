@@ -11,8 +11,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.name'),
       key: 'name',
       ellipsis: true,
-      tooltip: true,
-      width: 200
+      tooltip: true
     },
     {
       title: i18n.t('common.work'),
@@ -22,7 +21,7 @@ const createHeaders = (i18n: any) => {
       width: 200
     },
     {
-      title: i18n.t('common.endTime'),
+      title: i18n.t('common.createTime'),
       key: 'startTime',
       ellipsis: true,
       tooltip: true,
@@ -51,22 +50,19 @@ const createHeaders = (i18n: any) => {
       ellipsis: true,
       tooltip: true,
       slot: 'executor',
-      align: 'center',
-      width: 100
+      align: 'center'
     },
     {
       title: i18n.t('common.from'),
       key: 'from',
       slot: 'from',
-      align: 'center',
-      width: 100
+      align: 'center'
     },
     {
       title: i18n.t('common.to'),
       key: 'to',
       slot: 'to',
-      align: 'center',
-      width: 100
+      align: 'center'
     },
     {
       title: i18n.t('common.state'),
@@ -81,7 +77,6 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.action'),
       slot: 'action',
       key: 'action',
-      width: 150,
       fixed: 'right',
       align: 'center'
     }

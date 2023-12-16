@@ -20,4 +20,5 @@ export default {
   pipelineFromValidator: 'Please configure the input source information',
   pipelineToValidator: 'Configure information about the output source',
   pipelineEdgeValidator: 'Please connect the input and output source',
+  flow: 'Flow',
 }

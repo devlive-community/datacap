@@ -12,6 +12,11 @@
                   :data="contextData"
                   @onCommit="handlerSave">
       </FlowEditor>
+      <template #footer>
+        <Button @click="handlerCancel">
+          {{ $t('common.cancel') }}
+        </Button>
+      </template>
     </Modal>
   </div>
 </template>

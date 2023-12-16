@@ -64,16 +64,6 @@
                       @click="handlerVisibleMarkdownPreview(row.message, true)">
               </Button>
             </Tooltip>
-            <Tooltip :content="$t('common.log')"
-                     transfer>
-              <Button shape="circle"
-                      :disabled="row.state === 'QUEUE' || row.state === 'CREATED'"
-                      type="primary"
-                      size="small"
-                      icon="md-bulb"
-                      @click="handlerLogger(row, true)">
-              </Button>
-            </Tooltip>
             <Tooltip :content="$t('common.stop')"
                      transfer>
               <Button shape="circle"
@@ -93,6 +83,25 @@
                       type="error"
                       @click="handlerDelete(row, true)"/>
             </Tooltip>
+            <Dropdown transfer>
+              <Button icon="md-more"
+                      shape="circle"
+                      size="small">
+              </Button>
+              <template #list>
+                <DropdownMenu>
+                  <DropdownItem @click="handlerLogger(row, true)">
+                    <FontAwesomeIcon icon="leaf"/>
+                    {{ $t('common.log') }}
+                  </DropdownItem>
+                  <DropdownItem v-if="row.flowConfigure"
+                                @click="handlerFlow(row, true)">
+                    <FontAwesomeIcon icon="pager"/>
+                    {{ $t('pipeline.flow') }}
+                  </DropdownItem>
+                </DropdownMenu>
+              </template>
+            </Dropdown>
           </Space>
         </template>
       </Table>
@@ -137,6 +146,11 @@
                     :isVisible="createVisible"
                     @close="handlerCreate(false)">
     </PipelineCreate>
+    <PipelineFlow v-if="flowVisible"
+                  :is-visible="flowVisible"
+                  :flow-data="flowConfigure"
+                  @close="handlerFlow(null, false)">
+    </PipelineFlow>
   </div>
 </template>
 
@@ -154,13 +168,16 @@ import DetailsPipeline from "@/views/admin/pipeline/DetailPipeline.vue";
 import StopPipeline from "@/views/admin/pipeline/StopPipeline.vue";
 import LoggerPipeline from "@/views/admin/pipeline/components/LoggerPipeline.vue";
 import PipelineCreate from "@/views/admin/pipeline/components/PipelineCreate.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import PipelineFlow from "@/views/admin/pipeline/components/PipelineFlow.vue";
+import {Configuration} from "@/components/editor/flow/Configuration";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 
 export default defineComponent({
   name: 'UserPipelineHome',
-  components: {PipelineCreate, LoggerPipeline, StopPipeline, DetailsPipeline, DeletePipeline, MarkdownPreview},
+  components: {PipelineFlow, FontAwesomeIcon, PipelineCreate, LoggerPipeline, StopPipeline, DetailsPipeline, DeletePipeline, MarkdownPreview},
   setup()
   {
     const i18n = useI18n();
@@ -186,6 +203,8 @@ export default defineComponent({
       stopped: false,
       logger: false,
       createVisible: false,
+      flowVisible: false,
+      flowConfigure: null
     }
   },
   created()
@@ -265,6 +284,22 @@ export default defineComponent({
     handlerCreate(isOpen: boolean)
     {
       this.createVisible = isOpen;
+    },
+    handlerFlow(row: any, isOpen: boolean)
+    {
+      this.flowVisible = isOpen;
+      if (row) {
+        const data = JSON.parse(row.flowConfigure);
+        const configure = new Configuration();
+        data.nodes.forEach((node: any) => {
+          configure.elements.push({id: node.id, type: node.type, label: node.label, position: node.position})
+        });
+        data.edges.forEach((edge: any) => {
+          configure.elements.push({id: edge.id, source: edge.source, target: edge.target})
+        });
+        configure.transform = row.viewport;
+        this.flowConfigure = configure;
+      }
     },
     getStateText(origin: string): string
     {

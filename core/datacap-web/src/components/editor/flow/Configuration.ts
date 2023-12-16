@@ -6,4 +6,6 @@ export class Configuration
   protocol: string;
   nodeType: string;
   configure: any;
+  elements = [];
+  transform: any;
 }
