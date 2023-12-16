@@ -41,4 +41,8 @@ export default {
   columnIsNullable: 'Column Is Nullable',
   newColumn: 'Column',
   dropColumn: 'Drop Column',
+  sourceDelete: 'Delete Source',
+  sourceDeleteTip1: 'You are deleting a data source. This action permanently deletes all data and configurations associated with that data source. Please be sure to confirm your actions before proceeding.',
+  sourceDeleteTip2: 'Warning: Doing this will not be undone. All data and configurations associated with that data source will be permanently deleted.',
+  sourceDeleteTip3: 'To confirm, type [ REPLACE_NAME ] in the box below',
 }

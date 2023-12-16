@@ -63,9 +63,13 @@
                       @click="handlerCreateOrUpdate(row.id)"/>
             </Tooltip>
             <Tooltip :content="$t('common.delete')" transfer>
-              <Poptip confirm title="Are you sure delete?" popper-class="poptip-box" transfer @on-ok="handlerDeleteRecord(row.id)">
-                <Button :disabled="currentUserId !== row.user.id" shape="circle" type="error" size="small" icon="md-trash"/>
-              </Poptip>
+              <Button shape="circle"
+                      type="error"
+                      size="small"
+                      icon="md-trash"
+                      :disabled="currentUserId !== row.user.id"
+                      @click="handlerDeleteRecord(true, row)">
+              </Button>
             </Tooltip>
             <Tooltip :content="$t('common.admin')"
                      transfer>
@@ -86,6 +90,11 @@
       </p>
     </Card>
     <SourceDetail v-if="visibleSourceInfo" :isVisible="visibleSourceInfo" :id="applyId" @close="handlerCloseCreateNew($event)"/>
+    <SourceDelete v-if="deletionVisible"
+                  :isVisible="deletionVisible"
+                  :data="contentData"
+                  @close="handlerDeleteRecord(false, null)">
+    </SourceDelete>
   </div>
 </template>
 
@@ -99,10 +108,11 @@ import {SharedSource} from "@/model/SharedSource";
 import {ResponsePage} from "@/model/ResponsePage";
 import {Space, Tooltip} from "view-ui-plus";
 import SourceDetail from "@/views/admin/source/SourceDetail.vue";
+import SourceDelete from "@/views/admin/source/components/SourceDelete.vue";
 
 export default defineComponent({
   name: "SourceAdmin",
-  components: {SourceDetail, Space, Tooltip},
+  components: {SourceDelete, SourceDetail, Space, Tooltip},
   setup()
   {
     const i18n = useI18n();
@@ -124,7 +134,9 @@ export default defineComponent({
         total: 0,
         current: 1,
         pageSize: 10
-      }
+      },
+      contentData: null,
+      deletionVisible: false
     }
   },
   created()
@@ -158,16 +170,10 @@ export default defineComponent({
       this.applyId = 0;
       this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
     },
-    handlerDeleteRecord(id: number)
+    handlerDeleteRecord(isOpen: boolean, value: any)
     {
-      new SourceService()
-        .delete(id)
-        .then((response) => {
-          if (response.status) {
-            this.$Message.success("Delete successful");
-            this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
-          }
-        });
+      this.deletionVisible = isOpen;
+      this.contentData = value;
     },
     handlerSizeChange(size: number)
     {
