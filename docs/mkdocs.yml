@@ -164,6 +164,7 @@ nav:
           - reference/manager/snippet/home.md
           - reference/manager/history/query/home.md
           - reference/manager/pipeline/home.md
+          - reference/manager/menu/home.md
       - NavSystem:
           - reference/system/functions/home.md
           - reference/system/sql/home.md
@@ -216,6 +217,7 @@ nav:
       - developer/web/home.md
       - developer/doc/home.md
       - developer/sdk/home.md
+      - developer/feature/home.md
       - NavDeveloperPlugin:
           - developer/plugin/java/home.md
           - developer/plugin/kotlin/home.md
