@@ -14,7 +14,7 @@
     <description>DataCap - Oracle</description>
 
     <properties>
-        <oracle.version>21.9.0.0</oracle.version>
+        <oracle.version>23.3.0.23.09</oracle.version>
         <oracle-xe.version>1.18.1</oracle-xe.version>
         <plugin.name>jdbc-oracle</plugin.name>
     </properties>
