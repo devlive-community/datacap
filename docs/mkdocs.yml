@@ -167,6 +167,7 @@ nav:
       - NavSystem:
           - reference/system/functions/home.md
           - reference/system/sql/home.md
+          - reference/system/menu/home.md
       - NavConnectors:
         - reference/connectors/clickhouse/home.md
         - reference/connectors/mysql/home.md
@@ -216,6 +217,7 @@ nav:
       - developer/web/home.md
       - developer/doc/home.md
       - developer/sdk/home.md
+      - developer/feature/home.md
       - NavDeveloperPlugin:
           - developer/plugin/java/home.md
           - developer/plugin/kotlin/home.md

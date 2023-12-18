@@ -37,7 +37,7 @@ export default {
         {
           key: 'Documentation',
           title: this.i18n.t('common.documentation'),
-          href: 'https://datacap.edurt.io/reference/get_started/install.html',
+          href: 'https://datacap.edurt.io/reference/getStarted/install.html',
           blankTarget: true
         },
         {

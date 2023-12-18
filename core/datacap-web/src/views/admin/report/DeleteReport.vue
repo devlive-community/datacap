@@ -1,18 +1,18 @@
 <template>
   <div>
     <Modal v-model="visible"
-           :title="$t('source.manager.sourceDelete') + ' [ ' + data.name + ' ]'"
+           :title="$t('common.delete') + ' [ ' + data.name + ' ]'"
            :mask-closable="false"
            @cancel="handlerCancel()">
       <Alert type="warning"
              show-icon>
-        {{ $t('source.manager.sourceDeleteTip1') }}
+        {{ $t('report.deleteTip1') }}
       </Alert>
       <Alert type="error"
              show-icon>
-        {{ $t('source.manager.sourceDeleteTip2') }}
+        {{ $t('report.deleteTip2') }}
       </Alert>
-      <p>{{ $t('source.manager.sourceDeleteTip3').replace('REPLACE_NAME', data.name) }}</p>
+      <p>{{ $t('report.deleteTip3').replace('REPLACE_NAME', data.name) }}</p>
       <Input v-model="inputValue"/>
       <template #footer>
         <Button type="error"
@@ -20,7 +20,7 @@
                 :loading="loading"
                 @click="handlerDelete()">
           <FontAwesomeIcon icon="delete-left"/>
-          {{ $t('source.manager.sourceDelete') }}
+          {{ $t('common.delete') }}
         </Button>
       </template>
     </Modal>
@@ -28,10 +28,10 @@
 </template>
 <script lang="ts">
 import {defineComponent} from "vue";
-import {SourceService} from "@/services/SourceService";
+import ReportService from "@/services/admin/ReportService";
 
 export default defineComponent({
-  name: "SourceDelete",
+  name: "DeleteReport",
   props: {
     isVisible: {
       type: Boolean,
@@ -52,8 +52,7 @@ export default defineComponent({
     handlerDelete()
     {
       this.loading = true;
-      new SourceService()
-        .delete(this.data.id)
+      ReportService.deleteById(this.data.id)
         .then((response) => {
           if (response.status) {
             this.$Message.success(`${this.$t('source.manager.sourceDelete')} [ ${this.data.name} ] ${this.$t('common.success')}`);

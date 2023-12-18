@@ -1,24 +1,51 @@
 <template>
   <div>
-    <Drawer v-model="visible" :title="$t('common.visualization')" placement="right" :mask-closable="false"
-            :width="'90%'" :transfer="false">
+    <Modal v-model="visible"
+           placement="right"
+           :title="$t('common.visualization')"
+           :mask-closable="false"
+           :width="'90%'"
+           :transfer="false">
+      <Form>
+        <FormItem :label="$t('common.type')"
+                  :label-width="80">
+          <Input v-model="formState.name"/>
+        </FormItem>
+      </Form>
       <Layout v-if="configure">
         <Layout>
           <Content>
-            <EchartsPreview :key="referKey" :height="'500px'" :configure="chartOptions"/>
+            <EchartsPreview :key="referKey"
+                            :height="'500px'"
+                            :configure="chartOptions">
+            </EchartsPreview>
           </Content>
-          <Sider style="background-color: #FFFFFF;" hide-trigger>
-            <Form label-position="left" :label-width="50">
-              <Card padding="0" shadow>
+          <Sider style="background-color: #FFFFFF;"
+                 hide-trigger>
+            <Form label-position="left"
+                  :label-width="50">
+              <Card padding="0"
+                    dis-hover
+                    :bordered="false">
                 <template #title>
-                  <RadioGroup v-model="chartType" type="button" @on-change="handlerChangeValue('Type')">
+                  <RadioGroup v-model="chartType"
+                              type="button"
+                              @on-change="handlerChangeValue('Type')">
                     <Space>
-                      <Radio label="line">Line</Radio>
-                      <Radio label="bar">Bar</Radio>
+                      <Radio label="line">
+                        <FontAwesomeIcon icon="chart-line">
+                        </FontAwesomeIcon>
+                      </Radio>
+                      <Radio label="bar">
+                        <FontAwesomeIcon icon="chart-bar">
+                        </FontAwesomeIcon>
+                      </Radio>
                     </Space>
                   </RadioGroup>
                 </template>
-                <Collapse v-if="chartType" v-model="collapseValue" accordion>
+                <Collapse v-if="chartType"
+                          v-model="collapseValue"
+                          accordion>
                   <Panel name="xAxis">
                     {{ $t('common.xAxis') }}
                     <template #content>
@@ -67,13 +94,21 @@
           </Sider>
         </Layout>
       </Layout>
-      <Result v-else type="warning">
+      <Result v-else
+              type="warning">
         <template #desc>
         </template>
         <template #actions>
         </template>
       </Result>
-    </Drawer>
+      <template #footer>
+        <Button type="primary"
+                :loading="loading"
+                @click="handlerPublish">
+          {{ $t('common.publish') }}
+        </Button>
+      </template>
+    </Modal>
   </div>
 </template>
 <script lang="ts">
@@ -86,10 +121,12 @@ import {isEmpty} from "lodash";
 import {EchartsConfigure} from "@/components/editor/echarts/EchartsConfigure";
 import EchartsPreview from "@/components/editor/echarts/EchartsPreview.vue";
 import {AxisConfigure} from "@/components/editor/echarts/configure/AxisConfigure";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import ReportService from "@/services/admin/ReportService";
 
 export default defineComponent({
   name: 'EchartsEditor',
-  components: {EchartsPreview},
+  components: {FontAwesomeIcon, EchartsPreview},
   props: {
     isVisible: {
       type: Boolean,
@@ -111,7 +148,9 @@ export default defineComponent({
         series: ''
       },
       chartOptions: null as ChartConfigure,
-      chartType: null
+      chartType: null,
+      formState: {name: null, type: 'QUERY', configure: null},
+      loading: false
     }
   },
   created()
@@ -159,6 +198,19 @@ export default defineComponent({
       if (isEmpty(this.defaultConfigure.yAxis)) {
         this.chartOptions.yAxis.data = null;
       }
+    },
+    handlerPublish()
+    {
+      this.loading = true;
+      this.formState.configure = JSON.stringify(this.chartOptions);
+      ReportService.saveOrUpdate(this.formState)
+        .then(response => {
+          if (response.status) {
+            this.$Message.success(this.$t('report.publishSuccess').replace('REPLACE_NAME', this.formState.name));
+            this.visible = false;
+          }
+        })
+        .finally(() => this.loading = false);
     }
   },
   computed: {

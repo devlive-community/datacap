@@ -170,4 +170,5 @@ export default {
   uploadAvatar: 'Upload Avatar',
   refresh: 'Refresh',
   length: 'Length',
+  report: 'Report',
 }
