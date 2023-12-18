@@ -164,10 +164,10 @@ nav:
           - reference/manager/snippet/home.md
           - reference/manager/history/query/home.md
           - reference/manager/pipeline/home.md
-          - reference/manager/menu/home.md
       - NavSystem:
           - reference/system/functions/home.md
           - reference/system/sql/home.md
+          - reference/system/menu/home.md
       - NavConnectors:
         - reference/connectors/clickhouse/home.md
         - reference/connectors/mysql/home.md
