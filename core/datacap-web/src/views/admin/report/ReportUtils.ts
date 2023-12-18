@@ -28,6 +28,7 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.action'),
       slot: 'action',
+      align: 'center',
       key: 'action'
     }
   ];

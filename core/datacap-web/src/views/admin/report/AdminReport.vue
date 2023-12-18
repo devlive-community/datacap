@@ -8,6 +8,15 @@
              :data="data.content">
         <template #action="{ row }">
           <Space>
+            <Tooltip :content="$t('common.delete')"
+                     transfer>
+              <Button shape="circle"
+                      type="error"
+                      size="small"
+                      icon="md-trash"
+                      @click="handlerDelete(row, true)">
+              </Button>
+            </Tooltip>
           </Space>
         </template>
       </Table>
@@ -24,32 +33,36 @@
         </Page>
       </p>
     </Card>
+    <DeleteReport v-if="deleteVisible"
+                  :is-visible="deleteVisible"
+                  :data="contextData"
+                  @click="handlerDelete(null, false)">
+    </DeleteReport>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
 import {useI18n} from 'vue-i18n';
-import Common from "@/common/Common";
 import {ResponsePage} from "@/model/ResponsePage";
 import {createHeaders} from "@/views/admin/report/ReportUtils";
 import ReportService from "@/services/admin/ReportService";
 import {Filter} from "@/model/Filter";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
+import DeleteReport from "@/views/admin/report/DeleteReport.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
   name: "ReportAdmin",
+  components: {DeleteReport},
   setup()
   {
     const i18n = useI18n();
     const headers = createHeaders(i18n);
-    const currentUserId = Common.getCurrentUserId();
     return {
       headers,
-      filter,
-      currentUserId
+      filter
     }
   },
   data()
@@ -61,7 +74,9 @@ export default defineComponent({
         total: 0,
         current: 1,
         pageSize: 10
-      }
+      },
+      deleteVisible: false,
+      contextData: null
     }
   },
   created()
@@ -96,6 +111,14 @@ export default defineComponent({
       this.pagination.current = pagination.current;
       this.pagination.pageSize = pagination.pageSize;
       this.handlerInitialize(this.filter)
+    },
+    handlerDelete(data: any, opened: boolean)
+    {
+      this.deleteVisible = opened;
+      this.contextData = data;
+      if (!opened) {
+        this.handlerInitialize(this.filter);
+      }
     }
   }
 });
