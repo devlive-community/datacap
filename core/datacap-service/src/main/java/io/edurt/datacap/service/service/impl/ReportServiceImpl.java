@@ -9,6 +9,7 @@ import io.edurt.datacap.service.repository.ReportRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.ReportService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,5 +28,12 @@ public class ReportServiceImpl
     {
         Pageable pageable = PageRequestAdapter.of(filter);
         return CommonResponse.success(PageEntity.build(repository.findAllByUser(UserDetailsService.getUser(), pageable)));
+    }
+
+    @Override
+    public CommonResponse<ReportEntity> saveOrUpdate(PagingAndSortingRepository repository, ReportEntity configure)
+    {
+        configure.setUser(UserDetailsService.getUser());
+        return CommonResponse.success(repository.save(configure));
     }
 }

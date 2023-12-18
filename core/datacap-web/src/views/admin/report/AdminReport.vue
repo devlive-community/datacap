@@ -8,6 +8,12 @@
              :data="data.content">
         <template #action="{ row }">
           <Space>
+            <Button shape="circle"
+                    type="primary"
+                    size="small"
+                    icon="md-eye"
+                    @click="handlerViewChart(row, true)">
+            </Button>
             <Tooltip :content="$t('common.delete')"
                      transfer>
               <Button shape="circle"
@@ -38,6 +44,11 @@
                   :data="contextData"
                   @click="handlerDelete(null, false)">
     </DeleteReport>
+    <ViewReport v-if="viewChartVisible"
+                :is-visible="viewChartVisible"
+                :data="contextData"
+                @close="handlerViewChart(null, false)">
+    </ViewReport>
   </div>
 </template>
 
@@ -50,12 +61,13 @@ import ReportService from "@/services/admin/ReportService";
 import {Filter} from "@/model/Filter";
 import {Pagination, PaginationBuilder} from "@/model/Pagination";
 import DeleteReport from "@/views/admin/report/DeleteReport.vue";
+import ViewReport from "@/views/admin/report/ViewReport.vue";
 
 const filter: Filter = new Filter();
 const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
   name: "ReportAdmin",
-  components: {DeleteReport},
+  components: {ViewReport, DeleteReport},
   setup()
   {
     const i18n = useI18n();
@@ -76,7 +88,8 @@ export default defineComponent({
         pageSize: 10
       },
       deleteVisible: false,
-      contextData: null
+      contextData: null,
+      viewChartVisible: false
     }
   },
   created()
@@ -119,6 +132,11 @@ export default defineComponent({
       if (!opened) {
         this.handlerInitialize(this.filter);
       }
+    },
+    handlerViewChart(data: any, opened: boolean)
+    {
+      this.viewChartVisible = opened;
+      this.contextData = data;
     }
   }
 });

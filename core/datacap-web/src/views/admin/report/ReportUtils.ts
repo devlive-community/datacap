@@ -20,8 +20,8 @@ const createHeaders = (i18n: any) => {
       tooltip: true
     },
     {
-      title: i18n.t('common.endTime'),
-      key: 'endTime',
+      title: i18n.t('common.updateTime'),
+      key: 'updateTime',
       ellipsis: true,
       tooltip: true
     },

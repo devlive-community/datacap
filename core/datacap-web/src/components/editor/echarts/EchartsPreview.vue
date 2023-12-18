@@ -1,5 +1,6 @@
 <template>
-  <div :style="{width: width, height: height, padding: '15px'}" id="echartsLineContainer">
+  <div :style="{width: width, height: height, padding: '0'}"
+       id="echartsLineContainer">
   </div>
 </template>
 <script lang="ts">
