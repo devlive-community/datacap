@@ -22,10 +22,13 @@
              :key="item.id"
              span="4">
           <Card class="content-center"
+                padding="0"
+                style="margin-top: 5px;"
                 dis-hover>
             <template #title>
               {{ item.name }}
             </template>
+            <DashboardView :configure="JSON.parse(item.configure)"/>
           </Card>
         </Col>
       </Row>
@@ -43,10 +46,11 @@ import CircularLoading from "@/components/loading/CircularLoading.vue";
 import DashboardService from "@/services/DashboardService";
 import {Filter} from "@/model/Filter";
 import DashboardInfo from "@/views/user/console/DashboardInfo.vue";
+import DashboardView from "@/components/editor/dashboard/DashboardView.vue";
 
 export default defineComponent({
   name: "ConsoleDashboard",
-  components: {DashboardInfo, CircularLoading},
+  components: {DashboardView, DashboardInfo, CircularLoading},
   data()
   {
     return {
