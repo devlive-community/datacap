@@ -14,7 +14,7 @@
     <description>DataCap - Apache Impala</description>
 
     <properties>
-        <impala.version>2.6.29.1035</impala.version>
+        <impala.version>2.6.17.1020</impala.version>
         <plugin.name>jdbc-impala</plugin.name>
     </properties>
 
@@ -56,22 +56,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${plugin.maven.checkstyle.version}</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>${plugin.maven.findbugs.version}</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
             </plugin>
         </plugins>
     </build>
