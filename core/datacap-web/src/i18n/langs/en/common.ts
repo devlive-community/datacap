@@ -171,4 +171,7 @@ export default {
   refresh: 'Refresh',
   length: 'Length',
   report: 'Report',
+  dashboard: 'Dashboard',
+  myDashboard: 'My Dashboard',
+  realtime: 'Realtime',
 }

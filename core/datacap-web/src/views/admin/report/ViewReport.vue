@@ -6,6 +6,7 @@
            @cancel="handlerCancel()">
       <EchartsPreview :width="'100%'"
                       :height="'300px'"
+                      :id="data.id"
                       :configure="JSON.parse(data.configure)">
       </EchartsPreview>
     </Modal>

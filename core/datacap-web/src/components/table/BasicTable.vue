@@ -72,6 +72,8 @@
       <EchartsEditor v-if="visualizationDrawerVisible"
                      :isVisible="visualizationDrawerVisible"
                      :configure="visualizationConfigure"
+                     :source-id="configure.sourceId"
+                     :query="configure.query"
                      @close="handlerVisualization(false)">
       </EchartsEditor>
     </Card>

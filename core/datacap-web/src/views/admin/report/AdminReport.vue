@@ -42,7 +42,7 @@
     <DeleteReport v-if="deleteVisible"
                   :is-visible="deleteVisible"
                   :data="contextData"
-                  @click="handlerDelete(null, false)">
+                  @close="handlerDelete(null, false)">
     </DeleteReport>
     <ViewReport v-if="viewChartVisible"
                 :is-visible="viewChartVisible"
@@ -129,6 +129,7 @@ export default defineComponent({
     {
       this.deleteVisible = opened;
       this.contextData = data;
+      console.log(this.contextData, opened);
       if (!opened) {
         this.handlerInitialize(this.filter);
       }

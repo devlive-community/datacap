@@ -6,13 +6,13 @@
            @cancel="handlerCancel()">
       <Alert type="warning"
              show-icon>
-        {{ $t('report.deleteTip1') }}
+        {{ $t('dashboard.deleteTip1') }}
       </Alert>
       <Alert type="error"
              show-icon>
-        {{ $t('report.deleteTip2') }}
+        {{ $t('dashboard.deleteTip2') }}
       </Alert>
-      <p>{{ $t('report.deleteTip3').replace('REPLACE_NAME', data.name) }}</p>
+      <p>{{ $t('dashboard.deleteTip3').replace('REPLACE_NAME', data.name) }}</p>
       <Input v-model="inputValue"/>
       <template #footer>
         <Button type="error"
@@ -28,10 +28,10 @@
 </template>
 <script lang="ts">
 import {defineComponent} from "vue";
-import ReportService from "@/services/admin/ReportService";
+import DashboardService from "@/services/DashboardService";
 
 export default defineComponent({
-  name: "DeleteReport",
+  name: "DashboardDelete",
   props: {
     isVisible: {
       type: Boolean,
@@ -52,7 +52,7 @@ export default defineComponent({
     handlerDelete()
     {
       this.loading = true;
-      ReportService.deleteById(this.data.id)
+      DashboardService.deleteById(this.data.id)
         .then((response) => {
           if (response.status) {
             this.$Message.success(`${this.$t('common.delete')} [ ${this.data.name} ] ${this.$t('common.success')}`);

@@ -14,6 +14,7 @@ import calendarHeatmap from "@/i18n/langs/zhCn/calendarHeatmap";
 import pipeline from "@/i18n/langs/zhCn/pipeline";
 import manager from "@/i18n/langs/zhCn/source/manager";
 import report from "@/i18n/langs/zhCn/report";
+import dashboard from "@/i18n/langs/zhCn/dashboard";
 
 export default {
   ...zh,
@@ -31,6 +32,7 @@ export default {
   calendarHeatmap: calendarHeatmap,
   pipeline: pipeline,
   report: report,
+  dashboard: dashboard,
   source: {
     manager: manager
   }
