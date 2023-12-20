@@ -27,7 +27,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -q
+      - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -q -U
 
   before_checker_bugs:
     runs-on: self-hosted
