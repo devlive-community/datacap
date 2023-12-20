@@ -8,14 +8,14 @@ on:
 
 jobs:
   before_checker_loading:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - run: echo 'Before checker loading'
 
   before_checker_style:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs:
       - before_checker_loading
     steps:
@@ -27,10 +27,10 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -pl '!plugin/datacap-jdbc-impala' -q
+      - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -q
 
   before_checker_bugs:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs:
       - before_checker_loading
     steps:
@@ -42,10 +42,10 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install findbugs:findbugs -Dcheckstyle.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -pl '!plugin/datacap-jdbc-impala' -q
+      - run: ./mvnw clean install findbugs:findbugs -Dcheckstyle.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -q
 
   before_checker_package:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs:
       - before_checker_loading
       - before_checker_style
@@ -59,4 +59,4 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw -T 1C clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -q -U
+      - run: ./mvnw -T 1C clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -q

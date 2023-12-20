@@ -6,7 +6,7 @@ on:
 
 jobs:
   publish-maven-central:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
