@@ -171,4 +171,6 @@ export default {
   refresh: '刷新',
   length: '长度',
   report: '报表',
+  dashboard: '仪表盘',
+  myDashboard: '我的仪表盘',
 }

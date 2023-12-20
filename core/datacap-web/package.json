@@ -20,6 +20,7 @@
     "@vue-flow/background": "^1.2.0",
     "@vue-flow/controls": "^1.1.0",
     "@vue-flow/core": "^1.27.1",
+    "@vue-flow/node-resizer": "^1.3.6",
     "ace-builds": "^1.30.0",
     "ag-grid-community": "^29.3.5",
     "ag-grid-vue3": "^29.3.5",
