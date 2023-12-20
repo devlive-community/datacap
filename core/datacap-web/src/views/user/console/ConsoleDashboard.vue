@@ -28,7 +28,9 @@
             <template #title>
               {{ item.name }}
             </template>
-            <DashboardView :configure="JSON.parse(item.configure)"/>
+            <DashboardView :configure="JSON.parse(item.configure)"
+                           :fit-view="true">
+            </DashboardView>
             <div style="text-align: right;">
               <Dropdown style="margin-left: 20px; padding: 5px;">
                 <Button size="small">
@@ -36,6 +38,12 @@
                 </Button>
                 <template #list>
                   <DropdownMenu>
+                    <RouterLink target="_blank" :to="'/preview/dashboard/'+ item.id">
+                      <DropdownItem>
+                        <FontAwesomeIcon icon="eye"/>
+                        {{ $t('common.preview') }}
+                      </DropdownItem>
+                    </RouterLink>
                     <DropdownItem @click="handlerDelete(true, item)">
                       <FontAwesomeIcon icon="trash"/>
                       {{ $t('common.delete') }}

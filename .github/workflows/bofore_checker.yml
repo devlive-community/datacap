@@ -27,7 +27,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -q
+      - run: ./mvnw clean install checkstyle:checkstyle -Dfindbugs.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -q -U
 
   before_checker_bugs:
     runs-on: ubuntu-latest
@@ -42,7 +42,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install findbugs:findbugs -Dcheckstyle.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -q
+      - run: ./mvnw clean install findbugs:findbugs -Dcheckstyle.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -q -U
 
   before_checker_package:
     runs-on: ubuntu-latest
@@ -59,4 +59,4 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw -T 1C clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -q
+      - run: ./mvnw -T 1C clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -q -U

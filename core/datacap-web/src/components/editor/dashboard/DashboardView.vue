@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div style="height: 150px;">
+    <div :style="{height: height + 'px'}">
       <VueFlow v-model="configure.nodes"
-               fit-view-on-init
+               :fit-view-on-init="fitView"
                :default-viewport="configure.viewport"
                :min-zoom="0.2"
                :nodes-draggable="false"
@@ -31,6 +31,14 @@ export default defineComponent({
   props: {
     configure: {
       type: Object
+    },
+    height: {
+      type: Number,
+      default: 150
+    },
+    fitView: {
+      type: Boolean,
+      default: false
     }
   },
   components: {DashboardNode, VueFlow, Background}
