@@ -10,7 +10,9 @@
                  :max-zoom="4"
                  @dragover="onDragOver">
           <template #node-resizable="{ data }">
-            <DashboardNode :configure="JSON.parse(data.configure)"/>
+            <DashboardNode :configure="JSON.parse(data.configure)"
+                           :id="data.id">
+            </DashboardNode>
           </template>
           <Controls/>
           <Background>
@@ -80,8 +82,8 @@ export default defineComponent({
   {
     const configureVisible = ref(false);
     const configure = ref({
-      id: props.sourceConfigure.id,
-      name: props.sourceConfigure.name,
+      id: props.sourceConfigure ? props.sourceConfigure.id : null,
+      name: props.sourceConfigure ? props.sourceConfigure.name : null,
       configure: null,
       reports: []
     });

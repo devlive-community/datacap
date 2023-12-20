@@ -55,7 +55,7 @@ export default defineComponent({
       ReportService.deleteById(this.data.id)
         .then((response) => {
           if (response.status) {
-            this.$Message.success(`${this.$t('source.manager.sourceDelete')} [ ${this.data.name} ] ${this.$t('common.success')}`);
+            this.$Message.success(`${this.$t('common.delete')} [ ${this.data.name} ] ${this.$t('common.success')}`);
             this.handlerCancel();
           }
         })

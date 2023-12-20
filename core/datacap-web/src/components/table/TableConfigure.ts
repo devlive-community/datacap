@@ -8,4 +8,6 @@ export class TableConfigure
   showSeriesNumber = false;
   elapsed?: number;
   context?: string;
+  sourceId?: number;
+  query?: string;
 }

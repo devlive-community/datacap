@@ -6,10 +6,14 @@
            :mask-closable="false"
            :width="'90%'"
            :transfer="false">
-      <Form>
-        <FormItem :label="$t('common.type')"
+      <Form :inline="true">
+        <FormItem :label="$t('common.name')"
                   :label-width="80">
           <Input v-model="formState.name"/>
+        </FormItem>
+        <FormItem :label="$t('common.realtime')"
+                  :label-width="80">
+          <Switch v-model="formState.realtime"/>
         </FormItem>
       </Form>
       <Layout v-if="configure">
@@ -135,6 +139,12 @@ export default defineComponent({
     configure: {
       type: EchartsConfigure,
       default: () => null
+    },
+    sourceId: {
+      type: Number
+    },
+    query: {
+      type: String
     }
   },
   data()
@@ -149,7 +159,7 @@ export default defineComponent({
       },
       chartOptions: null as ChartConfigure,
       chartType: null,
-      formState: {name: null, type: 'QUERY', configure: null},
+      formState: {name: null, realtime: null, type: 'QUERY', configure: null, source: {id: null}, query: null},
       loading: false
     }
   },
@@ -170,14 +180,18 @@ export default defineComponent({
         case 'xAxis':
           this.chartOptions.xAxis = new AxisConfigure();
           this.chartOptions.xAxis.data = getValueByKey(this.defaultConfigure.xAxis, this.configure.columns);
+          this.chartOptions.xAxis.meta.column = this.defaultConfigure.xAxis;
           this.chartOptions.yAxis = new AxisConfigure();
           this.chartOptions.yAxis.type = 'value';
+          this.chartOptions.yAxis.data = getValueByKey(this.defaultConfigure.yAxis, this.configure.columns);
           this.chartOptions.yAxis.disabled = true;
+          this.chartOptions.yAxis.meta.column = this.defaultConfigure.yAxis;
           break;
         case 'Series': {
           const series: SeriesConfigure = new SeriesConfigure();
           series.data = getValueByKey(this.defaultConfigure.series, this.configure.columns);
           series.type = this.chartType;
+          series.meta.column = this.defaultConfigure.series;
           this.chartOptions.series = [];
           this.chartOptions.series.push(series);
           break;
@@ -203,6 +217,8 @@ export default defineComponent({
     {
       this.loading = true;
       this.formState.configure = JSON.stringify(this.chartOptions);
+      this.formState.source.id = this.sourceId;
+      this.formState.query = this.query;
       ReportService.saveOrUpdate(this.formState)
         .then(response => {
           if (response.status) {

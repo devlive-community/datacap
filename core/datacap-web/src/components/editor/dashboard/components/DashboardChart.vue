@@ -18,6 +18,7 @@
            @dragstart="onDragStart($event, node)">
         <EchartsPreview :key="node.id"
                         :height="'200px'"
+                        :id="node.id"
                         :configure="JSON.parse(node.configure)">
         </EchartsPreview>
       </div>

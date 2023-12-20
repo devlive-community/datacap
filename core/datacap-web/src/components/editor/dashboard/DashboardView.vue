@@ -11,7 +11,9 @@
                :pan-on-drag="false"
                :max-zoom="4">
         <template #node-resizable="{ data }">
-          <DashboardNode :configure="JSON.parse(data.configure)"/>
+          <DashboardNode :configure="JSON.parse(data.configure)"
+                         :id="data.id">
+          </DashboardNode>
         </template>
         <Background pattern-color="#aaa"
                     gap="8">

@@ -378,7 +378,9 @@ export default defineComponent({
               columns: response.data.columns,
               height: 340,
               width: editorContainer.offsetWidth + 20,
-              showSeriesNumber: false
+              showSeriesNumber: false,
+              sourceId: this.applySource,
+              query: this.isSelection ? editorInstance.instance.getSelectedText() : editorInstance.instance.getValue()
             };
             this.tableConfigure = tConfigure;
             editorInstance.instance.setValue(response.data.content);

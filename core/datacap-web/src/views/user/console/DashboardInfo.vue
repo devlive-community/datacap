@@ -63,8 +63,8 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.loading = true;
       if (this.id) {
+        this.loading = true;
         DashboardService.getById(this.id)
           .then(response => {
             if (response.status) {

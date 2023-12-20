@@ -37,9 +37,15 @@ public class ReportEntity
     @Column(name = "configure")
     private String configure;
 
+    @Column(name = "realtime")
+    private boolean realtime;
+
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private ReportType type;
+
+    @Column(name = "query")
+    private String query;
 
     @ManyToOne
     @JoinTable(name = "datacap_report_user_relation",
@@ -47,4 +53,11 @@ public class ReportEntity
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     @JsonIgnoreProperties(value = {"roles", "thirdConfigure", "avatarConfigure"})
     private UserEntity user;
+
+    @ManyToOne
+    @JoinTable(name = "datacap_report_source_relation",
+            joinColumns = @JoinColumn(name = "report_id"),
+            inverseJoinColumns = @JoinColumn(name = "source_id"))
+    @JsonIgnoreProperties(value = {"user"})
+    private SourceEntity source;
 }

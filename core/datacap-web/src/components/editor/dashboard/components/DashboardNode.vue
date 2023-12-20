@@ -4,6 +4,7 @@
     </NodeResizer>
     <EchartsPreview :width="'250px'"
                     :height="'200px'"
+                    :id="id"
                     :configure="configure">
     </EchartsPreview>
   </div>
@@ -19,6 +20,9 @@ export default defineComponent({
   props: {
     configure: {
       type: Object
+    },
+    id: {
+      type: Number
     }
   }
 });

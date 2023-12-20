@@ -173,4 +173,5 @@ export default {
   report: 'Report',
   dashboard: 'Dashboard',
   myDashboard: 'My Dashboard',
+  realtime: 'Realtime',
 }

@@ -24,7 +24,9 @@ CREATE TABLE `datacap_report`
     `create_time` DATETIME,
     `update_time` DATETIME,
     `configure`   LONGTEXT,
-    `type`        VARCHAR(255)
+    `type`        VARCHAR(255),
+    `realtime`    BOOLEAN DEFAULT FALSE,
+    `query`       LONGTEXT
 );
 
 CREATE TABLE `datacap_report_user_relation`
@@ -70,4 +72,10 @@ CREATE TABLE `datacap_dashboard_report_relation`
 (
     `dashboard_id` BIGINT,
     `report_id`    BIGINT
+);
+
+CREATE TABLE `datacap_report_source_relation`
+(
+    `report_id` BIGINT,
+    `source_id` BIGINT
 );

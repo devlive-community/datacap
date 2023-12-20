@@ -1,6 +1,7 @@
 export class AxisConfigure
 {
   type = 'category';
-  data: [] = [];
+  data: any[] = [];
   disabled = false;
+  meta = {column: null}
 }
