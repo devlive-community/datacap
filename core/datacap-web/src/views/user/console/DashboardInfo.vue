@@ -10,7 +10,10 @@
                        style="margin-top: 150px;">
       </CircularLoading>
       <div v-else>
-        <DashboardEditor @onCommit="handlerCommit"/>
+        <DashboardEditor :elements="nodes"
+                         :source-configure="sourceConfigure"
+                         @onCommit="handlerCommit">
+        </DashboardEditor>
       </div>
       <template #footer>
         <Button type="primary"
@@ -52,36 +55,31 @@ export default defineComponent({
     return {
       loading: false,
       saving: false,
-      configure: null
+      configure: null,
+      nodes: [],
+      sourceConfigure: null
     }
   },
   methods: {
     handlerInitialize()
     {
-      // this.loading = true;
-      // const configure: TableFilter = new TableFilter();
-      // configure.type = SqlType.DROP;
-      // configure.preview = preview;
-      // configure.columnId = this.data.applyId;
-      // TableService.manageColumn(this.data.tableId, configure)
-      //   .then(response => {
-      //     if (response.data) {
-      //       if (response.data?.isSuccessful) {
-      //         if (preview) {
-      //           this.statement = response.data.content;
-      //         }
-      //         else {
-      //           this.$Message.success(this.$t('source.manager.dropColumn') + ' [ ' + this.data.title + ' ] ' + this.$t('common.success'));
-      //           this.handlerCancel();
-      //         }
-      //       }
-      //       else {
-      //         this.$Message.error(response.data?.message);
-      //       }
-      //     }
-      //   })
-      //   .finally(() => this.loading = false)
-      console
+      this.loading = true;
+      if (this.id) {
+        DashboardService.getById(this.id)
+          .then(response => {
+            if (response.status) {
+              const configure = JSON.parse(response.data.configure)
+              configure.nodes.forEach((node: any) => {
+                this.nodes.push({id: node.id, type: node.type, label: node.label, position: node.position, data: node.data})
+              })
+              this.sourceConfigure = response.data
+            }
+            else {
+              this.$Message.error(response.message)
+            }
+          })
+          .finally(() => this.loading = false)
+      }
     },
     handlerSave()
     {

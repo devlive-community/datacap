@@ -67,16 +67,31 @@ import {Background} from "@vue-flow/background";
 export default defineComponent({
   name: 'DashboardEditor',
   components: {Background, DashboardNode, DashboardChart, VueFlow, Controls, Panel},
+  props: {
+    elements: {
+      type: Array,
+      default: () => ref([])
+    },
+    sourceConfigure: {
+      type: Object
+    }
+  },
   setup(props, {emit})
   {
     const configureVisible = ref(false);
     const configure = ref({
-      name: null,
+      id: props.sourceConfigure.id,
+      name: props.sourceConfigure.name,
       configure: null,
       reports: []
     });
 
     const {findNode, onConnect, addEdges, addNodes, project, vueFlowRef, setTransform, toObject} = useVueFlow({nodes: []})
+
+    props.elements.forEach((item: { id: any, position: any, label: any, type: any, data: any }) => {
+      const newNode = {id: item.id, position: item.position, label: item.label, type: 'resizable', data: item.data}
+      addNodes([newNode])
+    })
 
     onConnect((params) => addEdges(params))
 

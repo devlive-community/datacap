@@ -44,6 +44,10 @@
                         {{ $t('common.preview') }}
                       </DropdownItem>
                     </RouterLink>
+                    <DropdownItem @click="handlerInfo(true, item.id)">
+                      <FontAwesomeIcon icon="pen-square"/>
+                      {{ $t('common.modify') }}
+                    </DropdownItem>
                     <DropdownItem @click="handlerDelete(true, item)">
                       <FontAwesomeIcon icon="trash"/>
                       {{ $t('common.delete') }}
