@@ -29,6 +29,21 @@
               {{ item.name }}
             </template>
             <DashboardView :configure="JSON.parse(item.configure)"/>
+            <div style="text-align: right;">
+              <Dropdown style="margin-left: 20px; padding: 5px;">
+                <Button size="small">
+                  <Icon type="ios-more"></Icon>
+                </Button>
+                <template #list>
+                  <DropdownMenu>
+                    <DropdownItem @click="handlerDelete(true, item)">
+                      <FontAwesomeIcon icon="trash"/>
+                      {{ $t('common.delete') }}
+                    </DropdownItem>
+                  </DropdownMenu>
+                </template>
+              </Dropdown>
+            </div>
           </Card>
         </Col>
       </Row>
@@ -38,6 +53,11 @@
                    :id="dashboardId"
                    @close="handlerInfo(false, null)">
     </DashboardInfo>
+    <DashboardDelete v-if="dashboardDeleteVisible"
+                     :is-visible="dashboardDeleteVisible"
+                     :data="contextData"
+                     @close="handlerDelete(false, null)">
+    </DashboardDelete>
   </div>
 </template>
 <script lang="ts">
@@ -47,17 +67,21 @@ import DashboardService from "@/services/DashboardService";
 import {Filter} from "@/model/Filter";
 import DashboardInfo from "@/views/user/console/DashboardInfo.vue";
 import DashboardView from "@/components/editor/dashboard/DashboardView.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import DashboardDelete from "@/views/user/console/components/DashboardDelete.vue";
 
 export default defineComponent({
   name: "ConsoleDashboard",
-  components: {DashboardView, DashboardInfo, CircularLoading},
+  components: {DashboardDelete, FontAwesomeIcon, DashboardView, DashboardInfo, CircularLoading},
   data()
   {
     return {
       loading: false,
       dashboardInfoVisible: false,
       dashboardId: null,
-      data: []
+      data: [],
+      dashboardDeleteVisible: false,
+      contextData: null
     }
   },
   created()
@@ -82,6 +106,14 @@ export default defineComponent({
     {
       this.dashboardInfoVisible = opened
       this.dashboardId = id
+      if (!opened) {
+        this.handlerInitialize()
+      }
+    },
+    handlerDelete(opened: boolean, data: any)
+    {
+      this.dashboardDeleteVisible = opened
+      this.contextData = data
       if (!opened) {
         this.handlerInitialize()
       }
