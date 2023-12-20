@@ -1,15 +1,11 @@
 name: Publish via Maven Central for SNAPSHOT version
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - dev
+  push
 
 jobs:
   publish-maven-central:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4

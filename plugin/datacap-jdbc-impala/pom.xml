@@ -63,7 +63,7 @@
     <repositories>
         <repository>
             <id>cloudera</id>
-            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+            <url>https://repository.cloudera.com/repository/cloudera-repos/</url>
         </repository>
     </repositories>
 </project>
