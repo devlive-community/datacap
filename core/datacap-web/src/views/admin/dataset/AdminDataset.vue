@@ -2,20 +2,9 @@
   <div>
     <Card :title="$t('common.dataset')"
           dis-hover>
-      <template #extra>
-        <Button type="primary"
-                size="small"
-                @click="$router.push('/admin/dataset/create')">
-          <template #icon>
-            <PlusOutlined/>
-          </template>
-          {{ $t('common.create') }}
-        </Button>
-      </template>
       <Table :loading="loading"
              :columns="headers"
              :data="data?.content">
-
       </Table>
       <p v-if="!loading"
          style="margin-top: 10px;">

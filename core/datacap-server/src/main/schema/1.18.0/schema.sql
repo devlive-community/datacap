@@ -13,6 +13,10 @@ UPDATE `datacap_user`
 SET `editor_configure` = '{}'
 WHERE `editor_configure` IS NULL;
 
+DELETE
+FROM `audit_plugin`
+WHERE `plugin_id` = 9;
+
 ALTER TABLE `datacap_pipeline`
     ADD COLUMN `flow_configure` LONGTEXT COMMENT 'Flow configure';
 

@@ -28,6 +28,12 @@
           <Button size="small" icon="md-pie" @click="handlerVisualization(true)">
           </Button>
         </Tooltip>
+        <Button type="primary"
+                size="small"
+                icon="md-add"
+                @click="$router.push('/admin/dataset/create')">
+          {{ $t('common.dataset') }}
+        </Button>
         <Poptip trigger="hover" placement="bottom" word-wrap width="150">
           <Button size="small" shape="circle" type="warning" icon="md-help"/>
           <template #content>
@@ -93,6 +99,7 @@ import EchartsEditor from "@/components/editor/echarts/EchartsEditor.vue";
 import {EchartsConfigure} from "@/components/editor/echarts/EchartsConfigure";
 import TableGridOptions from "@/components/table/TableGridOptions";
 import TextTable from "@/components/text/TextTable.vue";
+import {mapActions} from 'vuex';
 
 export default defineComponent({
   name: "BasicTableComponent",
@@ -130,8 +137,10 @@ export default defineComponent({
     }
   },
   methods: {
+    ...mapActions(['updateData']),
     handlerInitialize()
     {
+      this.updateData(this.configure);
       this.configure.headers.forEach(header => {
         const columnDef: TableColumnDef = {
           headerName: header,

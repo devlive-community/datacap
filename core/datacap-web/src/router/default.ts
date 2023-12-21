@@ -121,18 +121,18 @@ const createDefaultRouter = (router: any) => {
   }
   router.addRoute(userRouters)
   router.addRoute({
-      path: "/admin",
-      component: LayoutContainer,
-      meta: {title: 'common.admin'},
-      children: [
-        {
-          path: "source/:id/manager",
-          meta: {title: 'common.source'},
-          layout: LayoutContainer,
-          component: () => import("../views/admin/source/SourceManager.vue")
-        }
-      ]
-    })
+    path: "/admin",
+    component: LayoutContainer,
+    meta: {title: 'common.admin'},
+    children: [
+      {
+        path: "source/:id/manager",
+        meta: {title: 'common.source'},
+        layout: LayoutContainer,
+        component: () => import("../views/admin/source/SourceManager.vue")
+      }
+    ]
+  })
   router.addRoute({
     path: "/preview",
     meta: {title: 'common.preview'},
@@ -141,6 +141,19 @@ const createDefaultRouter = (router: any) => {
         path: "dashboard/:id",
         meta: {title: 'common.dashboard'},
         component: () => import("@/views/user/console/components/DashboardPreview.vue")
+      }
+    ]
+  })
+  router.addRoute({
+    path: "/admin",
+    meta: {title: 'common.dataset'},
+    component: LayoutContainer,
+    children: [
+      {
+        path: "dataset/create",
+        layout: LayoutContainer,
+        meta: {title: 'common.dataset'},
+        component: () => import("@/views/admin/dataset/DatasetInfo.vue")
       }
     ]
   })
