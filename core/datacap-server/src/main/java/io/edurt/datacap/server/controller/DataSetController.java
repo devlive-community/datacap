@@ -47,4 +47,10 @@ public class DataSetController
     {
         return service.getColumns(id);
     }
+
+    @PutMapping(value = "syncData/{id}")
+    public CommonResponse<Boolean> syncData(@PathVariable Long id)
+    {
+        return service.syncData(id);
+    }
 }

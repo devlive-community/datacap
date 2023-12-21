@@ -46,6 +46,21 @@
                     @click="handlerError(row, true)">
               <FontAwesomeIcon icon="triangle-exclamation"/>
             </Button>
+            <Dropdown transfer>
+              <Button icon="md-more"
+                      shape="circle"
+                      size="small">
+              </Button>
+              <template #list>
+                <DropdownMenu>
+                  <DropdownItem :disabled="!isSuccess(row.state)"
+                                @click="handlerSyncData(row, true)">
+                    <FontAwesomeIcon icon="rotate"/>
+                    {{ $t('dataset.syncData') }}
+                  </DropdownItem>
+                </DropdownMenu>
+              </template>
+            </Dropdown>
           </Space>
         </template>
       </Table>
@@ -67,6 +82,11 @@
                     :data="contextData"
                     @close="handlerRebuild(null, false)">
     </DatasetRebuild>
+    <DatasetSyncData v-if="syncDataVisible"
+                     :is-visible="syncDataVisible"
+                     :data="contextData"
+                     @close="handlerSyncData(null, false)">
+    </DatasetSyncData>
     <MarkdownPreview v-if="errorVisible"
                      :isVisible="errorVisible"
                      :content="'```java\n' + contextData.message + '\n```'"
@@ -86,11 +106,12 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import DatasetRebuild from "@/views/admin/dataset/DatasetRebuild.vue";
 import DatasetState from "@/views/admin/dataset/components/DatasetState.vue";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
+import DatasetSyncData from "@/views/admin/dataset/components/DatasetSyncData.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({
   name: 'AdminDataset',
-  components: {MarkdownPreview, DatasetState, DatasetRebuild, FontAwesomeIcon},
+  components: {DatasetSyncData, MarkdownPreview, DatasetState, DatasetRebuild, FontAwesomeIcon},
   setup()
   {
     const i18n = useI18n()
@@ -109,7 +130,8 @@ export default defineComponent({
       pagination: {total: 0, current: 1, pageSize: 10},
       rebuildVisible: false,
       contextData: null,
-      errorVisible: false
+      errorVisible: false,
+      syncDataVisible: false
     }
   },
   created()
@@ -154,6 +176,11 @@ export default defineComponent({
     {
       this.errorVisible = opened
       this.contextData = record
+    },
+    handlerSyncData(record: any, opened: boolean)
+    {
+      this.contextData = record
+      this.syncDataVisible = opened
     },
     getState(state: Array<any> | null)
     {

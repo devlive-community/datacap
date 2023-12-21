@@ -27,4 +27,6 @@ export default {
   stateOfMetadataStarted: '元数据已启动',
   stateOfCreateTable: '创建表状态',
   modifyNotSupportDataPreview: '修改暂不支持数据预览',
+  syncData: '同步数据',
+  syncDataTip: '数据同步计划将在后台运行，具体同步结果请参考日志'
 }

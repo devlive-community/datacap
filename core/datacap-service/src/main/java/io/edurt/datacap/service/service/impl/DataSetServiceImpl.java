@@ -1,16 +1,22 @@
 package io.edurt.datacap.service.service.impl;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
 import com.google.inject.Injector;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.DataSetState;
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.common.sql.SqlBuilder;
+import io.edurt.datacap.common.sql.configure.SqlBody;
+import io.edurt.datacap.common.sql.configure.SqlColumn;
+import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.DataSetColumnEntity;
 import io.edurt.datacap.service.entity.DataSetEntity;
 import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.enums.ColumnType;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
@@ -25,6 +31,7 @@ import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.sql.builder.TableBuilder;
 import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
@@ -94,6 +101,19 @@ public class DataSetServiceImpl
     }
 
     @Override
+    public CommonResponse<Boolean> syncData(Long id)
+    {
+        Optional<DataSetEntity> entityOptional = repository.findById(id);
+        if (!entityOptional.isPresent()) {
+            return CommonResponse.failure(String.format("DataSet [ %s ] not found", id));
+        }
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        DataSetEntity entity = entityOptional.get();
+        service.submit(() -> syncData(entity));
+        return CommonResponse.success(true);
+    }
+
+    @Override
     public CommonResponse<PageEntity<DataSetEntity>> getAll(PagingAndSortingRepository pagingAndSortingRepository, FilterBody filter)
     {
         Pageable pageable = PageRequestAdapter.of(filter);
@@ -123,6 +143,17 @@ public class DataSetServiceImpl
             default:
                 return "varchar";
         }
+    }
+
+    private Configure getConfigure(String database)
+    {
+        Configure targetConfigure = new Configure();
+        targetConfigure.setHost(initializerConfigure.getDataSetConfigure().getHost());
+        targetConfigure.setPort(Integer.valueOf(initializerConfigure.getDataSetConfigure().getPort()));
+        targetConfigure.setUsername(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getUsername()));
+        targetConfigure.setPassword(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getPassword()));
+        targetConfigure.setDatabase(Optional.ofNullable(database));
+        return targetConfigure;
     }
 
     private void startBuild(DataSetEntity entity, boolean rebuildColumn)
@@ -207,6 +238,7 @@ public class DataSetServiceImpl
             targetConfigure.setDatabase(Optional.ofNullable(database));
             plugin.connect(targetConfigure);
             Response response = plugin.execute(sql);
+            plugin.destroy();
             if (response.getIsSuccessful()) {
                 entity.setTableName(originTableName);
                 entity.setMessage(null);
@@ -223,6 +255,54 @@ public class DataSetServiceImpl
         }
         finally {
             repository.save(entity);
+        }
+    }
+
+    private void syncData(DataSetEntity entity)
+    {
+        try {
+            SourceEntity source = entity.getSource();
+            Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(injector, source.getType(), source.getProtocol());
+            if (!pluginOptional.isPresent()) {
+                throw new IllegalArgumentException(String.format("Plugin [ %s ] not found", initializerConfigure.getDataSetConfigure().getType()));
+            }
+            Plugin plugin = pluginOptional.get();
+            String database = initializerConfigure.getDataSetConfigure().getDatabase();
+            plugin.connect(source.toConfigure());
+            Response response = plugin.execute(entity.getQuery());
+            plugin.destroy();
+            if (response.getIsSuccessful()) {
+                List<String> allSql = Lists.newArrayList();
+                List<DataSetColumnEntity> originColumns = columnRepository.findAllByDataset(entity);
+                response.getColumns().forEach(object -> {
+                    List<SqlColumn> columns = Lists.newArrayList();
+                    ObjectNode objectNode = (ObjectNode) object;
+                    originColumns.forEach(item -> columns.add(SqlColumn.builder()
+                            .column(String.format("`%s`", item.getName()))
+                            .value(String.format("'%s'", StringEscapeUtils.escapeSql(objectNode.get(item.getOriginal()).asText())))
+                            .build()));
+                    SqlBody body = SqlBody.builder()
+                            .type(SqlType.INSERT)
+                            .database(database)
+                            .table(entity.getTableName())
+                            .columns(columns)
+                            .build();
+                    allSql.add(new SqlBuilder(body).getSql());
+                });
+
+                if (!allSql.isEmpty()) {
+                    Plugin syncPlugin = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
+                    syncPlugin.connect(getConfigure(database));
+                    syncPlugin.execute(String.join("\n\n", allSql));
+                    syncPlugin.destroy();
+                }
+            }
+            else {
+                throw new RuntimeException(response.getMessage());
+            }
+        }
+        catch (Exception e) {
+            log.warn("Sync data for dataset [ {} ] ", entity.getName(), e);
         }
     }
 }

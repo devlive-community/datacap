@@ -27,4 +27,6 @@ export default {
   stateOfMetadataStarted: 'Metadata Started',
   stateOfCreateTable: 'Create Table State',
   modifyNotSupportDataPreview: 'Data preview is not supported to modify',
+  syncData: 'Sync Data',
+  syncDataTip: 'The data synchronization schedule will run in the background, see the logs for the specific synchronization results'
 }
