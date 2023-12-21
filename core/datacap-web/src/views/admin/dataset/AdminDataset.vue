@@ -27,11 +27,16 @@
         </template>
         <template #action="{ row }">
           <Space>
-            <Button type="primary"
-                    shape="circle"
+            <Button shape="circle"
                     size="small"
                     @click="handlerRebuild(row, true)">
               <FontAwesomeIcon :icon="row.state === 'SUCCESS' ? 'circle-stop' : 'circle-play'"/>
+            </Button>
+            <Button type="primary"
+                    shape="circle"
+                    size="small"
+                    @click="$router.push('/admin/dataset/create?id=' + row.id)">
+              <FontAwesomeIcon icon="pen-square"/>
             </Button>
           </Space>
         </template>

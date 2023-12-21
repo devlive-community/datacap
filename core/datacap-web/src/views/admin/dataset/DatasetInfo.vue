@@ -1,16 +1,23 @@
 <template>
   <div>
-    <div v-if="data">
+    <div v-if="data || id">
       <Divider orientation="left">
         {{ $t('dataset.dataPreview') }}
       </Divider>
-      <AgGridVue :style="{height: '300px'}"
+      <AgGridVue v-if="data?.columns"
+                 :style="{height: '300px'}"
                  class="ag-theme-datacap"
                  :pagination="true"
                  :columnDefs="columnDefs"
                  :rowData="data.columns"
                  :gridOptions="gridOptions">
       </AgGridVue>
+      <Result v-else
+              type="warning">
+        <template #desc>
+          {{ i18n.t('dataset.modifyNotSupportDataPreview') }}
+        </template>
+      </Result>
       <Divider orientation="left">
         {{ $t('dataset.dataColumn') }}
       </Divider>
@@ -47,10 +54,10 @@
                 </Input>
               </Col>
               <Col span="3">
-                <Switch v-model="item.isNullable"/>
+                <Switch v-model="item.nullable"/>
               </Col>
               <Col span="3">
-                <Switch v-model="item.isOrderByKey"/>
+                <Switch v-model="item.orderByKey"/>
               </Col>
               <Col span="3">
                 <InputNumber v-model="item.length"/>
@@ -121,6 +128,7 @@ import {useI18n} from "vue-i18n";
 import TableGridOptions from "@/components/table/TableGridOptions";
 import {TableColumnDef} from "@/components/table/TableColumnDef";
 import DatasetService from "@/services/admin/DatasetService";
+import {HttpCommon} from "@/common/HttpCommon";
 
 export default defineComponent({
   name: 'DatasetInfo',
@@ -140,10 +148,12 @@ export default defineComponent({
   data()
   {
     return {
+      id: null,
       loading: false,
       columnDefs: [],
       infoVisible: false,
       formState: {
+        id: null,
         name: null,
         description: null,
         query: null,
@@ -160,29 +170,49 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.data?.headers.forEach((header: any, index: number) => {
-        const columnDef: TableColumnDef = {headerName: header, field: header}
-        this.columnDefs.push(columnDef)
-        const column = {
-          id: null,
-          name: header.replace('(', '_').replace(')', ''),
-          type: 'STRING',
-          comment: header,
-          defaultValue: null,
-          position: index,
-          isNullable: false,
-          length: 0,
-          original: header,
-          isOrderByKey: false
+      setTimeout(() => {
+        const id = this.$route.query.id
+        if (id) {
+          this.id = id
+
+          const axios = new HttpCommon().getAxios();
+          axios.all([DatasetService.getById(this.id), DatasetService.getColumns(this.id)])
+            .then(axios.spread((info, column) => {
+              if (info.status) {
+                this.formState = info.data
+                this.formState.source.id = info.data.source.id
+              }
+              if (column.status) {
+                this.formState.columns = column.data
+              }
+            }))
         }
-        this.formState.columns.push(column)
+        else {
+          this.formState.source.id = this.data?.sourceId
+          this.formState.query = this.data?.query
+          this.data?.headers.forEach((header: any, index: number) => {
+            const columnDef: TableColumnDef = {headerName: header, field: header}
+            this.columnDefs.push(columnDef)
+            const column = {
+              id: null,
+              name: header.replace('(', '_').replace(')', ''),
+              type: 'STRING',
+              comment: header,
+              defaultValue: null,
+              position: index,
+              nullable: false,
+              length: 0,
+              original: header,
+              orderByKey: false
+            }
+            this.formState.columns.push(column)
+          })
+        }
       })
     },
     handlerCreate()
     {
       this.loading = true
-      this.formState.query = this.data?.query;
-      this.formState.source.id = this.data?.sourceId;
       DatasetService.saveOrUpdate(this.formState)
         .then(response => {
           if (response.status) {

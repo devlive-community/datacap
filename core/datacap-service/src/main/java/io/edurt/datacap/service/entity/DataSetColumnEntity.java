@@ -50,13 +50,13 @@ public class DataSetColumnEntity
     private int position;
 
     @Column(name = "is_nullable")
-    private boolean isNullable;
+    private boolean nullable;
 
     @Column(name = "length")
     private int length;
 
     @Column(name = "is_order_by_key")
-    private boolean isOrderByKey;
+    private boolean orderByKey;
 
     @ManyToOne
     @JoinTable(name = "datacap_dataset_column_relation",

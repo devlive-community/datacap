@@ -28,6 +28,11 @@ class DatasetService
     return new HttpCommon().put(`${baseUrl}/rebuild/${id}`);
   }
 
+  getColumns(id: number): Promise<ResponseModel>
+  {
+    return new HttpCommon().get(`${baseUrl}/getColumns/${id}`);
+  }
+
   getByName<T>(name: string): Promise<ResponseModel>
   {
     return Promise.resolve(undefined);

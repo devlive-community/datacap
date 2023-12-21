@@ -26,4 +26,5 @@ export default {
   stateOfMetadata: '元数据状态',
   stateOfMetadataStarted: '元数据已启动',
   stateOfCreateTable: '创建表状态',
+  modifyNotSupportDataPreview: '修改暂不支持数据预览',
 }

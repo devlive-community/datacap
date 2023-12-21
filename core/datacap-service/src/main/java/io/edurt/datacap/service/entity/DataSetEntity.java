@@ -22,8 +22,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @SuperBuilder
@@ -73,4 +75,7 @@ public class DataSetEntity
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     @JsonIgnoreProperties(value = {"roles", "thirdConfigure", "avatarConfigure"})
     private UserEntity user;
+
+    @Transient
+    private Set<DataSetColumnEntity> columns;
 }

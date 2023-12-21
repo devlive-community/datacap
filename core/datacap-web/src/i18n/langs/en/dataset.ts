@@ -26,4 +26,5 @@ export default {
   stateOfMetadata: 'Metadata State',
   stateOfMetadataStarted: 'Metadata Started',
   stateOfCreateTable: 'Create Table State',
+  modifyNotSupportDataPreview: 'Data preview is not supported to modify',
 }

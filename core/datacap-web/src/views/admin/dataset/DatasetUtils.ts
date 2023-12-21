@@ -9,13 +9,15 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.name'),
       key: 'name',
-      ellipsis: true
+      ellipsis: true,
+      tooltip: true
     },
     {
       title: i18n.t('common.description'),
       key: 'description',
       ellipsis: true,
-      align: 'center'
+      align: 'center',
+      tooltip: true
     },
     {
       title: i18n.t('common.source'),
@@ -40,13 +42,15 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.createTime'),
       key: 'createTime',
       ellipsis: true,
-      align: 'center'
+      align: 'center',
+      tooltip: true
     },
     {
       title: i18n.t('common.updateTime'),
       key: 'updateTime',
       ellipsis: true,
-      align: 'center'
+      align: 'center',
+      tooltip: true
     },
     {
       title: i18n.t('common.action'),

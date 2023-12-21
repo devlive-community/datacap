@@ -5,7 +5,6 @@ import com.google.inject.Injector;
 import io.edurt.datacap.common.enums.DataSetState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
-import io.edurt.datacap.service.body.DataSetBody;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.DataSetColumnEntity;
@@ -33,6 +32,7 @@ import javax.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -57,23 +57,14 @@ public class DataSetServiceImpl
     }
 
     @Transactional
-    public CommonResponse<DataSetEntity> saveOrUpdate(DataSetBody configure)
+    public CommonResponse<DataSetEntity> saveOrUpdate(DataSetEntity configure)
     {
         UserEntity user = UserDetailsService.getUser();
         ExecutorService service = Executors.newSingleThreadExecutor();
         service.submit(() -> {
-            DataSetEntity entity = DataSetEntity.builder()
-                    .id(configure.getId())
-                    .name(configure.getName())
-                    .query(configure.getQuery())
-                    .user(user)
-                    .source(configure.getSource())
-                    .description(configure.getDescription())
-                    .syncMode(configure.getSyncMode())
-                    .syncValue(configure.getSyncValue())
-                    .build();
-            completeState(entity, DataSetState.METADATA_START);
-            startBuild(entity, configure, true);
+            configure.setUser(user);
+            completeState(configure, DataSetState.METADATA_START);
+            startBuild(configure, true);
         });
         return CommonResponse.success(configure);
     }
@@ -86,19 +77,18 @@ public class DataSetServiceImpl
             return CommonResponse.failure(String.format("DataSet [ %s ] not found", id));
         }
         ExecutorService service = Executors.newSingleThreadExecutor();
-        service.submit(() -> {
-            DataSetEntity configure = entity.get();
-            DataSetBody body = DataSetBody.builder()
-                    .name(configure.getName())
-                    .query(configure.getQuery())
-                    .source(configure.getSource())
-                    .description(configure.getDescription())
-                    .syncMode(configure.getSyncMode())
-                    .syncValue(configure.getSyncValue())
-                    .build();
-            startBuild(configure, body, false);
-        });
+        service.submit(() -> startBuild(entity.get(), false));
         return CommonResponse.success(entity);
+    }
+
+    @Override
+    public CommonResponse<Set<DataSetColumnEntity>> getColumns(Long id)
+    {
+        Optional<DataSetEntity> entity = repository.findById(id);
+        if (!entity.isPresent()) {
+            return CommonResponse.failure(String.format("DataSet [ %s ] not found", id));
+        }
+        return CommonResponse.success(columnRepository.findAllByDataset(entity.get()));
     }
 
     @Override
@@ -133,30 +123,30 @@ public class DataSetServiceImpl
         }
     }
 
-    private void startBuild(DataSetEntity entity, DataSetBody configure, boolean rebuildColumn)
+    private void startBuild(DataSetEntity entity, boolean rebuildColumn)
     {
         switch (entity.getState().get(entity.getState().size() - 1)) {
             case METADATA_START:
             case METADATA_FAILED:
-                createMetadata(entity, configure, rebuildColumn);
+                createMetadata(entity, rebuildColumn);
                 break;
             case METADATA_SUCCESS:
             case TABLE_START:
             case TABLE_FAILED:
-                createTable(entity, configure);
+                createTable(entity);
                 break;
         }
     }
 
-    private void createMetadata(DataSetEntity entity, DataSetBody configure, boolean rebuildColumn)
+    private void createMetadata(DataSetEntity entity, boolean rebuildColumn)
     {
         try {
             repository.save(entity);
             if (rebuildColumn) {
-                configure.getColumns()
+                entity.getColumns()
                         .stream()
                         .forEach(item -> item.setDataset(DataSetEntity.builder().id(entity.getId()).build()));
-                columnRepository.saveAll(configure.getColumns());
+                columnRepository.saveAll(entity.getColumns());
             }
             completeState(entity, DataSetState.METADATA_SUCCESS);
         }
@@ -167,11 +157,11 @@ public class DataSetServiceImpl
         }
         finally {
             repository.save(entity);
-            startBuild(entity, configure, rebuildColumn);
+            startBuild(entity, rebuildColumn);
         }
     }
 
-    private void createTable(DataSetEntity entity, DataSetBody configure)
+    private void createTable(DataSetEntity entity)
     {
         try {
             Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name());
@@ -182,7 +172,6 @@ public class DataSetServiceImpl
             String database = initializerConfigure.getDataSetConfigure().getDatabase();
             String tablePrefix = initializerConfigure.getDataSetConfigure().getTablePrefix();
             String originTableName = String.format("%s%s", tablePrefix, UUID.randomUUID().toString().replace("-", ""));
-            entity.setTableName(originTableName);
             String tableDefaultEngine = initializerConfigure.getDataSetConfigure().getTableDefaultEngine();
 
             List<Column> columns = Lists.newArrayList();
@@ -215,6 +204,7 @@ public class DataSetServiceImpl
             plugin.connect(targetConfigure);
             Response response = plugin.execute(sql);
             if (response.getIsSuccessful()) {
+                entity.setTableName(originTableName);
                 completeState(entity, DataSetState.TABLE_SUCCESS);
             }
             else {
