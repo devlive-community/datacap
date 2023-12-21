@@ -1,11 +1,11 @@
 package io.edurt.datacap.service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.service.enums.SyncMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
@@ -30,7 +31,6 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "datacap_dataset")
 @EntityListeners(AuditingEntityListener.class)
@@ -65,6 +65,7 @@ public class DataSetEntity
     @JsonIgnoreProperties(value = {"roles", "thirdConfigure", "avatarConfigure"})
     private UserEntity user;
 
-    @OneToMany(mappedBy = "dataset", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "dataset", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<DataSetColumnEntity> columns;
 }

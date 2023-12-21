@@ -1,14 +1,14 @@
 package io.edurt.datacap.service.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.service.enums.ColumnType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
@@ -26,7 +26,6 @@ import javax.persistence.Table;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "datacap_dataset_column")
 @EntityListeners(AuditingEntityListener.class)
@@ -34,15 +33,15 @@ import javax.persistence.Table;
 public class DataSetColumnEntity
         extends BaseEntity
 {
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private ColumnType type;
 
     @Column(name = "comment")
     private String comment;
+
+    @Column(name = "original")
+    private String original;
 
     @Column(name = "default_value")
     private String defaultValue;
@@ -60,6 +59,6 @@ public class DataSetColumnEntity
     @JoinTable(name = "datacap_dataset_column_relation",
             joinColumns = @JoinColumn(name = "column_id"),
             inverseJoinColumns = @JoinColumn(name = "dataset_id"))
-    @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private DataSetEntity dataset;
 }

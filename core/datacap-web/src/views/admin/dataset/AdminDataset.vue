@@ -5,6 +5,18 @@
       <Table :loading="loading"
              :columns="headers"
              :data="data?.content">
+        <template #source="{ row }">
+          <Tooltip transfer
+                   :content="row.source.type">
+            <Avatar :src="'/static/images/plugin/' + row.source.type + '.png'"
+                    size="small">
+            </Avatar>
+          </Tooltip>
+        </template>
+        <template #action="{ row }">
+          <Space>
+          </Space>
+        </template>
       </Table>
       <p v-if="!loading"
          style="margin-top: 10px;">

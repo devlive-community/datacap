@@ -15,6 +15,7 @@ import pipeline from "@/i18n/langs/zhCn/pipeline";
 import manager from "@/i18n/langs/zhCn/source/manager";
 import report from "@/i18n/langs/zhCn/report";
 import dashboard from "@/i18n/langs/zhCn/dashboard";
+import dataset from "@/i18n/langs/zhCn/dataset";
 
 export default {
   ...zh,
@@ -33,6 +34,7 @@ export default {
   pipeline: pipeline,
   report: report,
   dashboard: dashboard,
+  dataset: dataset,
   source: {
     manager: manager
   }

@@ -129,3 +129,26 @@ CREATE TABLE `datacap_dataset_source_relation`
     `dataset_id` BIGINT,
     `source_id`  BIGINT
 );
+
+CREATE TABLE `datacap_dataset_column`
+(
+    `id`            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `name`          VARCHAR(255),
+    `active`        BOOLEAN DEFAULT TRUE,
+    `create_time`   DATETIME,
+    `update_time`   DATETIME,
+    `description`   TEXT,
+    `type`          VARCHAR(100),
+    `comment`       VARCHAR(255),
+    `original`      VARCHAR(255),
+    `default_value` VARCHAR(255),
+    `position`      INT,
+    `is_nullable`   BOOLEAN DEFAULT FALSE,
+    `length`        INT
+);
+
+CREATE TABLE `datacap_dataset_column_relation`
+(
+    `dataset_id` BIGINT,
+    `column_id`  BIGINT
+);
