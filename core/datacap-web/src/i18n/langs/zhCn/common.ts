@@ -174,4 +174,6 @@ export default {
   dashboard: '仪表盘',
   myDashboard: '我的仪表盘',
   realtime: '实时',
+  dataset: '数据集',
+  syncMode: '同步模式',
 }

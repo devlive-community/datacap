@@ -78,6 +78,6 @@ public class ColumnEntity
 
     public ColumnEntity(Long id, String name, Date createTime)
     {
-        super(id, name, null, createTime, null);
+        super(id, name, true, createTime, null);
     }
 }

@@ -3,23 +3,21 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.no'),
       key: 'id',
-      sortable: 'custom'
+      sortable: 'custom',
+      align: 'center'
     },
     {
       title: i18n.t('common.name'),
       key: 'name',
-      align: 'center'
+      ellipsis: true,
+      tooltip: true
     },
     {
-      title: i18n.t('common.type'),
-      key: 'type',
-      align: 'center'
-    },
-    {
-      title: i18n.t('common.realtime'),
-      key: 'realtime',
-      slot: 'realtime',
-      align: 'center'
+      title: i18n.t('common.description'),
+      key: 'description',
+      ellipsis: true,
+      align: 'center',
+      tooltip: true
     },
     {
       title: i18n.t('common.source'),
@@ -28,18 +26,31 @@ const createHeaders = (i18n: any) => {
       align: 'center'
     },
     {
+      title: i18n.t('common.syncMode'),
+      key: 'syncMode',
+      ellipsis: true,
+      align: 'center'
+    },
+    {
+      title: i18n.t('common.state'),
+      key: 'state',
+      slot: 'state',
+      ellipsis: true,
+      align: 'center'
+    },
+    {
       title: i18n.t('common.createTime'),
       key: 'createTime',
       ellipsis: true,
-      tooltip: true,
-      align: 'center'
+      align: 'center',
+      tooltip: true
     },
     {
       title: i18n.t('common.updateTime'),
       key: 'updateTime',
       ellipsis: true,
-      tooltip: true,
-      align: 'center'
+      align: 'center',
+      tooltip: true
     },
     {
       title: i18n.t('common.action'),
@@ -47,9 +58,9 @@ const createHeaders = (i18n: any) => {
       align: 'center',
       key: 'action'
     }
-  ];
+  ]
 }
 
 export {
   createHeaders
-};
+}

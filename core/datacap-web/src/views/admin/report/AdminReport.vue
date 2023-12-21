@@ -6,6 +6,19 @@
       <Table :loading="loading"
              :columns="headers"
              :data="data.content">
+        <template #realtime="{ row }">
+          <Switch v-model="row.realtime"
+                  disabled>
+          </Switch>
+        </template>
+        <template #source="{ row }">
+          <Tooltip transfer
+                   :content="row.source.type">
+            <Avatar :src="'/static/images/plugin/' + row.source.type + '.png'"
+                    size="small">
+            </Avatar>
+          </Tooltip>
+        </template>
         <template #action="{ row }">
           <Space>
             <Button shape="circle"
@@ -129,7 +142,6 @@ export default defineComponent({
     {
       this.deleteVisible = opened;
       this.contextData = data;
-      console.log(this.contextData, opened);
       if (!opened) {
         this.handlerInitialize(this.filter);
       }

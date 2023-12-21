@@ -71,9 +71,13 @@ public class InitializerConfigure
     @Getter
     private final FsConfigure fsConfigure;
 
-    public InitializerConfigure(FsConfigure fsConfigure)
+    @Getter
+    private final DataSetConfigure dataSetConfigure;
+
+    public InitializerConfigure(FsConfigure fsConfigure, DataSetConfigure dataSetConfigure)
     {
         this.fsConfigure = fsConfigure;
+        this.dataSetConfigure = dataSetConfigure;
     }
 
     /**

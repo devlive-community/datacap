@@ -91,7 +91,7 @@ public class TableEntity
 
     public TableEntity(Long id, String name, Date createTime)
     {
-        super(id, name, null, createTime, null);
+        super(id, name, true, createTime, null);
     }
 
     public String getRows()

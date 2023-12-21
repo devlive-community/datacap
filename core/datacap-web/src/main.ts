@@ -7,6 +7,7 @@ import 'view-ui-plus/dist/styles/viewuiplus.css';
 
 import i18n from "@/i18n/I18n";
 import {createIcons} from "@/fontawesome";
+import store from "@/common/Store";
 
 const app = createApp(App);
 // Import fa icons
@@ -16,4 +17,5 @@ app.config.warnHandler = () => null;
 app.use(router);
 app.use(ViewUIPlus);
 app.use(i18n);
+app.use(store);
 app.mount("#app");

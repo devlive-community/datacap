@@ -13,6 +13,10 @@ UPDATE `datacap_user`
 SET `editor_configure` = '{}'
 WHERE `editor_configure` IS NULL;
 
+DELETE
+FROM `audit_plugin`
+WHERE `plugin_id` = 9;
+
 ALTER TABLE `datacap_pipeline`
     ADD COLUMN `flow_configure` LONGTEXT COMMENT 'Flow configure';
 
@@ -52,6 +56,15 @@ VALUES ('1', '16');
 INSERT INTO `role_menu_relation` (`role_id`, `menu_id`)
 VALUES ('2', '16');
 
+INSERT INTO `menus` (`name`, `code`, `description`, `url`, `group_name`, `sorted`, `type`, `parent`, `active`, `i18n_key`, `icon`, `create_time`, `update_time`, `redirect`,
+                     `is_new`)
+VALUES ('全局 - 数据集', 'DATASET', '全局路由：所有用户都可以访问', '/admin/dataset', null, 3, 'VIEW', 0, 1,
+        'common.dataset', 'md-contrast', '2023-12-21 11:32:33', null, 0, 1);
+INSERT INTO `role_menu_relation` (`role_id`, `menu_id`)
+VALUES ('1', '17');
+INSERT INTO `role_menu_relation` (`role_id`, `menu_id`)
+VALUES ('2', '17');
+
 CREATE TABLE `datacap_dashboard`
 (
     `id`          BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -78,4 +91,68 @@ CREATE TABLE `datacap_report_source_relation`
 (
     `report_id` BIGINT,
     `source_id` BIGINT
+);
+
+UPDATE `datacap_metadata_database`
+SET `active` = 1
+WHERE `active` IS NULL;
+
+UPDATE `datacap_metadata_table`
+SET `active` = 1
+WHERE `active` IS NULL;
+
+UPDATE `datacap_metadata_column`
+SET `active` = 1
+WHERE `active` IS NULL;
+
+CREATE TABLE `datacap_dataset`
+(
+    `id`          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `name`        VARCHAR(255),
+    `active`      BOOLEAN DEFAULT TRUE,
+    `create_time` DATETIME,
+    `update_time` DATETIME,
+    `description` TEXT,
+    `query`       LONGTEXT,
+    `sync_mode`   VARCHAR(100),
+    `sync_value`  VARCHAR(100),
+    `table_name`  VARCHAR(255)
+);
+
+CREATE TABLE `datacap_dataset_user_relation`
+(
+    `dataset_id` BIGINT,
+    `user_id`    BIGINT
+);
+
+CREATE TABLE `datacap_dataset_source_relation`
+(
+    `dataset_id` BIGINT,
+    `source_id`  BIGINT
+);
+
+CREATE TABLE `datacap_dataset_column`
+(
+    `id`              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `name`            VARCHAR(255),
+    `active`          BOOLEAN DEFAULT TRUE,
+    `create_time`     DATETIME,
+    `update_time`     DATETIME,
+    `description`     TEXT,
+    `type`            VARCHAR(100),
+    `comment`         VARCHAR(255),
+    `original`        VARCHAR(255),
+    `default_value`   VARCHAR(255),
+    `position`        INT,
+    `is_nullable`     BOOLEAN DEFAULT FALSE,
+    `length`          INT,
+    `state`           VARCHAR(100),
+    `message`         LONGTEXT,
+    `is_order_by_key` BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE `datacap_dataset_column_relation`
+(
+    `dataset_id` BIGINT,
+    `column_id`  BIGINT
 );

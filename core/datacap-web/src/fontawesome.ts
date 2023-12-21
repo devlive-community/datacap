@@ -14,7 +14,9 @@ import {
   faCircle,
   faCircleInfo,
   faCircleMinus,
+  faCirclePlay,
   faCirclePlus,
+  faCircleStop,
   faClock,
   faClone,
   faColumns,
@@ -47,6 +49,7 @@ import {
   faTimes,
   faTrash,
   faTrashCan,
+  faTriangleExclamation,
   faUpload
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -58,6 +61,9 @@ import {
 const createIcons = (app: any) => {
   library.add(faArrowRight,
     faCirclePlus,
+    faCirclePlay,
+    faTriangleExclamation,
+    faCircleStop,
     faPager,
     faChartLine,
     faChartBar,

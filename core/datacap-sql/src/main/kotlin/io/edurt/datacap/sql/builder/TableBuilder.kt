@@ -30,6 +30,14 @@ class TableBuilder {
             sql().COLUMNS(values)
         }
 
+        fun ENGINE(engine: String?) {
+            sql().ENGINE(engine)
+        }
+
+        fun ORDER_BY(values: List<String>) {
+            sql().ORDER_BY_KEY(values)
+        }
+
         fun END() {
             sql().END()
         }

@@ -15,6 +15,7 @@ import pipeline from "@/i18n/langs/en/pipeline";
 import manager from "@/i18n/langs/en/source/manager";
 import report from "@/i18n/langs/en/report";
 import dashboard from "@/i18n/langs/en/dashboard";
+import dataset from "@/i18n/langs/en/dataset";
 
 export default {
   ...en,
@@ -33,6 +34,7 @@ export default {
   pipeline: pipeline,
   report: report,
   dashboard: dashboard,
+  dataset: dataset,
   source: {
     manager: manager
   }

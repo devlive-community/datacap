@@ -174,4 +174,6 @@ export default {
   dashboard: 'Dashboard',
   myDashboard: 'My Dashboard',
   realtime: 'Realtime',
+  dataset: 'Dataset',
+  syncMode: 'Sync Mode',
 }
