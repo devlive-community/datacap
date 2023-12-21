@@ -79,3 +79,15 @@ CREATE TABLE `datacap_report_source_relation`
     `report_id` BIGINT,
     `source_id` BIGINT
 );
+
+UPDATE `datacap_metadata_database`
+SET `active` = 1
+WHERE `active` IS NULL;
+
+UPDATE `datacap_metadata_table`
+SET `active` = 1
+WHERE `active` IS NULL;
+
+UPDATE `datacap_metadata_column`
+SET `active` = 1
+WHERE `active` IS NULL;

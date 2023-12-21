@@ -37,7 +37,7 @@ public class BaseEntity
     private String name;
 
     @Column(name = "active")
-    private Boolean active = true;
+    private boolean active = true;
 
     @Column(name = "create_time")
     @CreatedDate

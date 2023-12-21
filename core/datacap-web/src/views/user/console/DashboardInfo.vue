@@ -3,7 +3,7 @@
     <Modal v-model="visible"
            :title="$t('common.dashboard')"
            :mask-closable="false"
-           :width="'90%'"
+           :width="'98%'"
            @cancel="handlerCancel()">
       <CircularLoading v-if="loading"
                        :show="loading"
