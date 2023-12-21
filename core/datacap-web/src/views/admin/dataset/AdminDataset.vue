@@ -29,6 +29,7 @@
           <Space>
             <Button shape="circle"
                     size="small"
+                    :disabled="isSuccess(row.state)"
                     @click="handlerRebuild(row, true)">
               <FontAwesomeIcon :icon="row.state === 'SUCCESS' ? 'circle-stop' : 'circle-play'"/>
             </Button>
@@ -37,6 +38,13 @@
                     size="small"
                     @click="$router.push('/admin/dataset/create?id=' + row.id)">
               <FontAwesomeIcon icon="pen-square"/>
+            </Button>
+            <Button type="error"
+                    shape="circle"
+                    size="small"
+                    :disabled="isSuccess(row.state)"
+                    @click="handlerError(row, true)">
+              <FontAwesomeIcon icon="triangle-exclamation"/>
             </Button>
           </Space>
         </template>
@@ -59,6 +67,11 @@
                     :data="contextData"
                     @close="handlerRebuild(null, false)">
     </DatasetRebuild>
+    <MarkdownPreview v-if="errorVisible"
+                     :isVisible="errorVisible"
+                     :content="'```java\n' + contextData.message + '\n```'"
+                     @close="handlerError(null, false)">
+    </MarkdownPreview>
   </div>
 </template>
 
@@ -72,11 +85,12 @@ import {Filter} from "@/model/Filter";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import DatasetRebuild from "@/views/admin/dataset/DatasetRebuild.vue";
 import DatasetState from "@/views/admin/dataset/components/DatasetState.vue";
+import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({
   name: 'AdminDataset',
-  components: {DatasetState, DatasetRebuild, FontAwesomeIcon},
+  components: {MarkdownPreview, DatasetState, DatasetRebuild, FontAwesomeIcon},
   setup()
   {
     const i18n = useI18n()
@@ -94,7 +108,8 @@ export default defineComponent({
       data: null as ResponsePage,
       pagination: {total: 0, current: 1, pageSize: 10},
       rebuildVisible: false,
-      contextData: null
+      contextData: null,
+      errorVisible: false
     }
   },
   created()
@@ -135,13 +150,26 @@ export default defineComponent({
       this.rebuildVisible = opened
       this.contextData = record
     },
+    handlerError(record: any, opened: boolean)
+    {
+      this.errorVisible = opened
+      this.contextData = record
+    },
     getState(state: Array<any> | null)
     {
       if (state && state.length > 0) {
-        const s = state[state.length - 1];
-        return s;
+        const s = state[state.length - 1]
+        return s
       }
-      return null;
+      return null
+    },
+    isSuccess(state: Array<any> | null)
+    {
+      if (state && state.length > 0) {
+        const s = state[state.length - 1]
+        return s.endsWith('SUCCESS')
+      }
+      return false
     }
   }
 });

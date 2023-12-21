@@ -2,6 +2,7 @@ package io.edurt.datacap.service.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Injector;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.DataSetState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
@@ -40,6 +41,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION"})
 public class DataSetServiceImpl
         implements DataSetService
 {
@@ -135,6 +137,8 @@ public class DataSetServiceImpl
             case TABLE_FAILED:
                 createTable(entity);
                 break;
+            default:
+                throw new IllegalArgumentException(String.format("Invalid state [ %s ]", entity.getState().get(entity.getState().size() - 1)));
         }
     }
 
@@ -205,6 +209,7 @@ public class DataSetServiceImpl
             Response response = plugin.execute(sql);
             if (response.getIsSuccessful()) {
                 entity.setTableName(originTableName);
+                entity.setMessage(null);
                 completeState(entity, DataSetState.TABLE_SUCCESS);
             }
             else {

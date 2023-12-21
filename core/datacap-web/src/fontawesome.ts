@@ -49,6 +49,7 @@ import {
   faTimes,
   faTrash,
   faTrashCan,
+  faTriangleExclamation,
   faUpload
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -61,6 +62,7 @@ const createIcons = (app: any) => {
   library.add(faArrowRight,
     faCirclePlus,
     faCirclePlay,
+    faTriangleExclamation,
     faCircleStop,
     faPager,
     faChartLine,
