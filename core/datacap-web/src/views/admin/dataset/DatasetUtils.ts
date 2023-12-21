@@ -30,6 +30,13 @@ const createHeaders = (i18n: any) => {
       align: 'center'
     },
     {
+      title: i18n.t('common.state'),
+      key: 'state',
+      slot: 'state',
+      ellipsis: true,
+      align: 'center'
+    },
+    {
       title: i18n.t('common.createTime'),
       key: 'createTime',
       ellipsis: true,

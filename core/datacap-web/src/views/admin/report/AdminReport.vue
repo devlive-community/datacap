@@ -142,7 +142,6 @@ export default defineComponent({
     {
       this.deleteVisible = opened;
       this.contextData = data;
-      console.log(this.contextData, opened);
       if (!opened) {
         this.handlerInitialize(this.filter);
       }

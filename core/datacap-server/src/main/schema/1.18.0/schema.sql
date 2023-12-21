@@ -115,7 +115,8 @@ CREATE TABLE `datacap_dataset`
     `description` TEXT,
     `query`       LONGTEXT,
     `sync_mode`   VARCHAR(100),
-    `sync_value`  VARCHAR(100)
+    `sync_value`  VARCHAR(100),
+    `table_name`  VARCHAR(255)
 );
 
 CREATE TABLE `datacap_dataset_user_relation`
@@ -132,19 +133,22 @@ CREATE TABLE `datacap_dataset_source_relation`
 
 CREATE TABLE `datacap_dataset_column`
 (
-    `id`            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    `name`          VARCHAR(255),
-    `active`        BOOLEAN DEFAULT TRUE,
-    `create_time`   DATETIME,
-    `update_time`   DATETIME,
-    `description`   TEXT,
-    `type`          VARCHAR(100),
-    `comment`       VARCHAR(255),
-    `original`      VARCHAR(255),
-    `default_value` VARCHAR(255),
-    `position`      INT,
-    `is_nullable`   BOOLEAN DEFAULT FALSE,
-    `length`        INT
+    `id`              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `name`            VARCHAR(255),
+    `active`          BOOLEAN DEFAULT TRUE,
+    `create_time`     DATETIME,
+    `update_time`     DATETIME,
+    `description`     TEXT,
+    `type`            VARCHAR(100),
+    `comment`         VARCHAR(255),
+    `original`        VARCHAR(255),
+    `default_value`   VARCHAR(255),
+    `position`        INT,
+    `is_nullable`     BOOLEAN DEFAULT FALSE,
+    `length`          INT,
+    `state`           VARCHAR(100),
+    `message`         LONGTEXT,
+    `is_order_by_key` BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE `datacap_dataset_column_relation`

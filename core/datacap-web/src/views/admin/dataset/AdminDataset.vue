@@ -13,8 +13,26 @@
             </Avatar>
           </Tooltip>
         </template>
+        <template #state="{ row }">
+          <Poptip trigger="hover"
+                  placement="bottom"
+                  transfer>
+            <Text>{{ getState(row.state) }}</Text>
+            <template #content>
+              <DatasetState style="margin-top: 25px;"
+                            :states="row.state">
+              </DatasetState>
+            </template>
+          </Poptip>
+        </template>
         <template #action="{ row }">
           <Space>
+            <Button type="primary"
+                    shape="circle"
+                    size="small"
+                    @click="handlerRebuild(row, true)">
+              <FontAwesomeIcon :icon="row.state === 'SUCCESS' ? 'circle-stop' : 'circle-play'"/>
+            </Button>
           </Space>
         </template>
       </Table>
@@ -31,6 +49,11 @@
         </Page>
       </p>
     </Card>
+    <DatasetRebuild v-if="rebuildVisible"
+                    :is-visible="rebuildVisible"
+                    :data="contextData"
+                    @close="handlerRebuild(null, false)">
+    </DatasetRebuild>
   </div>
 </template>
 
@@ -41,10 +64,14 @@ import {ResponsePage} from "@/model/ResponsePage";
 import {createHeaders} from "@/views/admin/dataset/DatasetUtils";
 import DatasetService from "@/services/admin/DatasetService";
 import {Filter} from "@/model/Filter";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import DatasetRebuild from "@/views/admin/dataset/DatasetRebuild.vue";
+import DatasetState from "@/views/admin/dataset/components/DatasetState.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({
   name: 'AdminDataset',
+  components: {DatasetState, DatasetRebuild, FontAwesomeIcon},
   setup()
   {
     const i18n = useI18n()
@@ -60,7 +87,9 @@ export default defineComponent({
     return {
       loading: false,
       data: null as ResponsePage,
-      pagination: {total: 0, current: 1, pageSize: 10}
+      pagination: {total: 0, current: 1, pageSize: 10},
+      rebuildVisible: false,
+      contextData: null
     }
   },
   created()
@@ -95,6 +124,19 @@ export default defineComponent({
       this.pagination.current = pagination.current;
       this.pagination.pageSize = pagination.pageSize;
       this.handlerInitialize(this.filter)
+    },
+    handlerRebuild(record: any, opened: boolean)
+    {
+      this.rebuildVisible = opened
+      this.contextData = record
+    },
+    getState(state: Array<any> | null)
+    {
+      if (state && state.length > 0) {
+        const s = state[state.length - 1];
+        return s;
+      }
+      return null;
     }
   }
 });

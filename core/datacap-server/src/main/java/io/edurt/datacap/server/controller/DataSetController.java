@@ -5,6 +5,8 @@ import io.edurt.datacap.service.body.DataSetBody;
 import io.edurt.datacap.service.entity.DataSetEntity;
 import io.edurt.datacap.service.repository.DataSetRepository;
 import io.edurt.datacap.service.service.DataSetService;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,5 +31,11 @@ public class DataSetController
     public CommonResponse save(@RequestBody DataSetBody configure)
     {
         return service.saveOrUpdate(configure);
+    }
+
+    @PutMapping(value = "rebuild/{id}")
+    public CommonResponse rebuild(@PathVariable Long id)
+    {
+        return service.rebuild(id);
     }
 }

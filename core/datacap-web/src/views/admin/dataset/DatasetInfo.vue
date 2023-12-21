@@ -20,9 +20,10 @@
             <Col span="4">{{ $t('dataset.columnName') }}</Col>
             <Col span="4">{{ $t('dataset.columnType') }}</Col>
             <Col span="4">{{ $t('dataset.columnDefaultValue') }}</Col>
-            <Col span="4">{{ $t('dataset.columnIsNullable') }}</Col>
-            <Col span="4">{{ $t('dataset.columnLength') }}</Col>
-            <Col span="4">{{ $t('dataset.columnComment') }}</Col>
+            <Col span="3">{{ $t('dataset.columnIsNullable') }}</Col>
+            <Col span="3">{{ $t('dataset.columnIsOrderByKey') }}</Col>
+            <Col span="3">{{ $t('dataset.columnLength') }}</Col>
+            <Col span="3">{{ $t('dataset.columnComment') }}</Col>
           </Row>
         </FormItem>
         <template v-for="(item, index) in formState.columns" :key="index">
@@ -45,13 +46,16 @@
                        type="text">
                 </Input>
               </Col>
-              <Col span="4">
+              <Col span="3">
                 <Switch v-model="item.isNullable"/>
               </Col>
-              <Col span="4">
+              <Col span="3">
+                <Switch v-model="item.isOrderByKey"/>
+              </Col>
+              <Col span="3">
                 <InputNumber v-model="item.length"/>
               </Col>
-              <Col span="4">
+              <Col span="3">
                 <Input v-model="item.comment"
                        type="textarea">
                 </Input>
@@ -168,7 +172,8 @@ export default defineComponent({
           position: index,
           isNullable: false,
           length: 0,
-          original: header
+          original: header,
+          isOrderByKey: false
         }
         this.formState.columns.push(column)
       })

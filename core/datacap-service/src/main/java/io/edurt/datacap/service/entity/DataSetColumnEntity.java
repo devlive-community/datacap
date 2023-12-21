@@ -55,6 +55,9 @@ public class DataSetColumnEntity
     @Column(name = "length")
     private int length;
 
+    @Column(name = "is_order_by_key")
+    private boolean isOrderByKey;
+
     @ManyToOne
     @JoinTable(name = "datacap_dataset_column_relation",
             joinColumns = @JoinColumn(name = "column_id"),

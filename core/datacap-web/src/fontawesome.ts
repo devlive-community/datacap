@@ -14,7 +14,9 @@ import {
   faCircle,
   faCircleInfo,
   faCircleMinus,
+  faCirclePlay,
   faCirclePlus,
+  faCircleStop,
   faClock,
   faClone,
   faColumns,
@@ -58,6 +60,8 @@ import {
 const createIcons = (app: any) => {
   library.add(faArrowRight,
     faCirclePlus,
+    faCirclePlay,
+    faCircleStop,
     faPager,
     faChartLine,
     faChartBar,

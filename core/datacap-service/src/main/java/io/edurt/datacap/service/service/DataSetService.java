@@ -8,4 +8,6 @@ public interface DataSetService
         extends BaseService<DataSetEntity>
 {
     CommonResponse<DataSetEntity> saveOrUpdate(DataSetBody configure);
+
+    CommonResponse<DataSetEntity> rebuild(Long id);
 }

@@ -143,6 +143,16 @@ abstract class AbstractSql<T> {
         return getSelf()
     }
 
+    fun ENGINE(engine: String?): T {
+        sql().engine = engine
+        return getSelf()
+    }
+
+    fun ORDER_BY_KEY(columns: List<String>): T {
+        sql().orderByKey.addAll(columns.map { item -> "\t$item" })
+        return getSelf()
+    }
+
     fun FROM(table: String?): T {
         sql().tables.add(table)
         return getSelf()
@@ -508,6 +518,8 @@ abstract class AbstractSql<T> {
         var offset: String? = null
         var limit: String? = null
         var limitingRowsStrategy: LimitingRowsStrategy = LimitingRowsStrategy.NOP
+        var engine: String? = null
+        var orderByKey: MutableList<String?> = ArrayList()
 
         init {
             // Prevent Synthetic Access
@@ -648,6 +660,12 @@ abstract class AbstractSql<T> {
         private fun createTableSQL(builder: SafeAppendable): String {
             sqlClause(builder, "CREATE TABLE", tables, "", "", "")
             sqlClause(builder, "", columns, "(\n", "\n)", ",\n")
+            if (engine != null) {
+                sqlClause(builder, "ENGINE", listOf(engine), " = ", "", ",\n")
+            }
+            if (orderByKey.isNotEmpty()) {
+                sqlClause(builder, "ORDER BY", orderByKey, "(", ")", ", ")
+            }
             if (end) {
                 builder.append(";")
             }

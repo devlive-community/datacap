@@ -23,6 +23,11 @@ class DatasetService
     }
   }
 
+  rebuild(id: number): Promise<ResponseModel>
+  {
+    return new HttpCommon().put(`${baseUrl}/rebuild/${id}`);
+  }
+
   getByName<T>(name: string): Promise<ResponseModel>
   {
     return Promise.resolve(undefined);
