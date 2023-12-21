@@ -52,6 +52,15 @@ VALUES ('1', '16');
 INSERT INTO `role_menu_relation` (`role_id`, `menu_id`)
 VALUES ('2', '16');
 
+INSERT INTO `menus` (`name`, `code`, `description`, `url`, `group_name`, `sorted`, `type`, `parent`, `active`, `i18n_key`, `icon`, `create_time`, `update_time`, `redirect`,
+                     `is_new`)
+VALUES ('全局 - 数据集', 'DATASET', '全局路由：所有用户都可以访问', '/admin/dataset', null, 3, 'VIEW', 0, 1,
+        'common.dataset', 'md-contrast', '2023-12-21 11:32:33', null, 0, 1);
+INSERT INTO `role_menu_relation` (`role_id`, `menu_id`)
+VALUES ('1', '17');
+INSERT INTO `role_menu_relation` (`role_id`, `menu_id`)
+VALUES ('2', '17');
+
 CREATE TABLE `datacap_dashboard`
 (
     `id`          BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -91,3 +100,28 @@ WHERE `active` IS NULL;
 UPDATE `datacap_metadata_column`
 SET `active` = 1
 WHERE `active` IS NULL;
+
+CREATE TABLE `datacap_dataset`
+(
+    `id`          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `name`        VARCHAR(255),
+    `active`      BOOLEAN DEFAULT TRUE,
+    `create_time` DATETIME,
+    `update_time` DATETIME,
+    `description` TEXT,
+    `query`       LONGTEXT,
+    `sync_mode`   VARCHAR(100),
+    `sync_value`  VARCHAR(100)
+);
+
+CREATE TABLE `datacap_dataset_user_relation`
+(
+    `dataset_id` BIGINT,
+    `user_id`    BIGINT
+);
+
+CREATE TABLE `datacap_dataset_source_relation`
+(
+    `dataset_id` BIGINT,
+    `source_id`  BIGINT
+);

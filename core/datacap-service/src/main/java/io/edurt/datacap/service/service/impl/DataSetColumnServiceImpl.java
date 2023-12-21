@@ -10,5 +10,8 @@ public class DataSetColumnServiceImpl
 {
     private final DataSetRepository repository;
 
-    public DataSetColumnServiceImpl(DataSetRepository repository) {this.repository = repository;}
+    public DataSetColumnServiceImpl(DataSetRepository repository)
+    {
+        this.repository = repository;
+    }
 }
