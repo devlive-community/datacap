@@ -8,7 +8,7 @@ repo_url: https://github.com/devlive-community/datacap
 edit_uri: "https://github.com/devlive-community/datacap/blob/dev/docs/docs"
 
 banners:
-  - title: DataCap 1.17.0 is released
+  - title: DataCap 1.18.0 is released
     link: /release-latest.html
     description: <a href="https://github.com/devlive-community/datacap"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
 
@@ -156,6 +156,8 @@ nav:
       - reference/getStarted/installContainers.md
       - reference/getStarted/installRainbond.md
       - reference/getStarted/query/home.md
+      - reference/getStarted/dashboard/home.md
+      - reference/getStarted/dataset/home.md
       - NavClient:
         - reference/clients/cli.md
       - NavManager:
@@ -164,6 +166,7 @@ nav:
           - reference/manager/snippet/home.md
           - reference/manager/history/query/home.md
           - reference/manager/pipeline/home.md
+          - reference/manager/report/home.md
       - NavSystem:
           - reference/system/functions/home.md
           - reference/system/sql/home.md
@@ -194,7 +197,8 @@ nav:
         - reference/connectors/pinot/home.md
         - reference/connectors/cassandra/home.md
   - NavReleaseNote:
-      - 1.17.0 (latest): release/latest.md
+      - 1.18.0 (latest): release/latest.md
+      - 1.17.0: release/1.17.0.md
       - 1.16.0: release/1.16.0.md
       - 1.15.0: release/1.15.0.md
       - 1.14.0: release/1.14.0.md
