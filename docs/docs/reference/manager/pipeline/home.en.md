@@ -1,6 +1,5 @@
 ---
 title: Pipeline
-status: 1.14.0
 ---
 
 In the DataCap software, the pipeline is a tool for users to perform some data operations such as data migration.

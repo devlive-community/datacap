@@ -6,45 +6,64 @@
 
 |   发布版本   |     发布时间     |
 |:--------:|:------------:|
-| `1.17.0` | `2023-11-20` |
+| `1.18.0` | `2023-12-22` |
 
 #### General
 
 ---
 
-- 删除无效的元数据管理器
-- 优化问题模板
-- 将版本添加到应用程序
-  ![img.png](latest/version.png)
-- 支持在启动时检查java版本是否兼容
-- 修复了在不选择表的情况下直接选择列的错误
-- 支持自定义列显示
-  ![Column Display](latest/column_display.gif)
-- 支持重置列位置
-  ![Reset Column Position](latest/reset_column_position.gif)
-- 查询表视图会导致无法转换的值
-- 添加 jvm 配置
-- 当数据为空时，不返回任何列信息
-- 修复切换表查询数据导致查询列为空的问题
-- 支持复位自动递增
-  ![Reset Auto Increment](latest/reset_auto_increment.gif)
-- 统一每个插件返回的数据类型
-- 支持查看构建语句语句语句
-  ![Build Statement](latest/build_statement.gif)
-- 为表添加筛选器
-  ![Filter](latest/filter.gif)
-- 支持添加新的行数据
-  ![Add Row](latest/add_row.gif)
+- [元数据] 支持克隆行
+- [元数据] 支持截断表
+- [元数据] 支持刷新数据
+- [元数据] 支持删除表
+- [元数据] 支持展示表结构
+- [元数据] 支持展示表 ER 图
+- [元数据] 支持导出表数据
+- [元数据] 支持新建表
+- [元数据] 支持新建列
+- [元数据] 支持删除列
+- [查询] 添加自动添加 `LIMIT`
+- [用户] 支持用户头像
+- [数据源] 优化数据源删除提示信息
+- [报表] 支持数据报表功能
+- [仪表盘] 支持仪表盘功能
+- [数据集] 支持数据集数据
 
-#### Web
+#### SPI
 
 ---
 
-- 删除未使用的组件
+- 支持 FileSystem
+- 支持 Local FileSystem
+
+#### Docs
+
+---
+
+- 添加 SDK 使用文档
+
+#### SqlServer
+
+---
+
+- 支持多版本
+- 修复连接具柄导致连接失败
+
+#### Pipeline
+
+---
+
+- 支持 MySQL JDBC 方式
+- 支持拖拽构建
 
 #### Dependencies
 
 ---
 
-- 更新 com.h2database:h2 `2.1.214` 到 `2.2.224`
-- 更新 org.jetbrains.dokka:dokka-maven-plugin `1.8.10` 到 `1.9.10`
+- 更新 org.mongodb:mongodb-jdbc `2.0.2` 到 `2.0.3`
+- 更新 ch.qos.logback:logback-classic `1.2.11` 到 `1.2.13`
+- 更新 org.apache.kafka:kafka-clients `2.8.1` 到 `3.6.1`
+- 更新 ch.qos.logback:logback-core `1.2.11` 到 `1.2.13`
+- 更新 com.oracle.database.jdbc:ojdbc8 `21.9.0.0` 到 `23.3.0.23.09`
+- 更新 org.elasticsearch.plugin:x-pack-sql-jdbc `7.10.0` 到 `8.11.3`
+- 更新 jackson.version `2.14.2` 到 `2.16.0`

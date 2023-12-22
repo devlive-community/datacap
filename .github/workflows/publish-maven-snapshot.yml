@@ -1,7 +1,11 @@
 name: Publish via Maven Central for SNAPSHOT version
 
 on:
-  push
+  pull_request:
+    types:
+      - closed
+    branches:
+      - dev
 
 jobs:
   publish-maven-central:
