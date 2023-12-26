@@ -40,6 +40,10 @@ export default defineComponent({
       type: Number
     }
   },
+  watch: {
+    width: 'handlerInitialize',
+    height: 'handlerInitialize',
+  },
   created()
   {
     this.handlerInitialize();
@@ -56,40 +60,46 @@ export default defineComponent({
     {
       this.key = uuidv4();
       setTimeout(() => {
-        const echartsContainer = document.getElementById(this.key);
-        const echartsChart = echarts.init(echartsContainer);
-        if (this.id) {
-          this.loading = true
-          ReportService.getById(this.id)
-            .then(response => {
-              if (response.status && response.data.realtime) {
-                const queryConfigure: ExecuteModel = {
-                  name: response.data.source.id,
-                  content: response.data.query,
-                  format: "JSON"
-                }
-                new ExecuteService()
-                  .execute(queryConfigure, null)
-                  .then(response => {
-                    const configure: any = this.configure as ChartConfigure;
-                    configure.xAxis.data = getValueByKey(configure.xAxis.meta.column, response.data.columns);
-                    configure.yAxis.data = getValueByKey(configure.yAxis.meta.column, response.data.columns);
-                    configure.series.forEach(item => {
-                      const series: SeriesConfigure = item as SeriesConfigure;
-                      series.data = getValueByKey(series.meta.column, response.data.columns);
+        try {
+          const echartsContainer = document.getElementById(this.key);
+          const echartsChart = echarts.init(echartsContainer);
+          echartsChart.resize()
+          if (this.id) {
+            this.loading = true
+            ReportService.getById(this.id)
+              .then(response => {
+                if (response.status && response.data.realtime) {
+                  const queryConfigure: ExecuteModel = {
+                    name: response.data.source.id,
+                    content: response.data.query,
+                    format: "JSON"
+                  }
+                  new ExecuteService()
+                    .execute(queryConfigure, null)
+                    .then(response => {
+                      const configure: any = this.configure as ChartConfigure;
+                      configure.xAxis.data = getValueByKey(configure.xAxis.meta.column, response.data.columns);
+                      configure.yAxis.data = getValueByKey(configure.yAxis.meta.column, response.data.columns);
+                      configure.series.forEach(item => {
+                        const series: SeriesConfigure = item as SeriesConfigure;
+                        series.data = getValueByKey(series.meta.column, response.data.columns);
+                      })
+                      echartsChart.setOption(configure);
                     })
-                    echartsChart.setOption(configure);
-                  })
-                  .finally(() => this.loading = false)
-              }
-              else {
-                echartsChart.setOption(this.configure);
-              }
-            })
-            .finally(() => this.loading = false)
+                    .finally(() => this.loading = false)
+                }
+                else {
+                  echartsChart.setOption(this.configure);
+                }
+              })
+              .finally(() => this.loading = false)
+          }
+          else {
+            echartsChart.setOption(this.configure);
+          }
         }
-        else {
-          echartsChart.setOption(this.configure);
+        catch (e) {
+          console.error(e)
         }
       }, 0)
     }

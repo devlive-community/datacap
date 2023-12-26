@@ -1,0 +1,25 @@
+.layout-sider {
+    height: 600px;
+    overflow: auto;
+    background-color: white;
+}
+
+.layout-content {
+    min-height: 600px;
+    background-color: white;
+}
+
+.layout {
+    background-color: #eee;
+}
+.test {
+    background-color: #ddd;
+}
+.droppable-element {
+    width: 150px;
+    text-align: center;
+    background: #fdd;
+    border: 1px solid black;
+    margin: 10px 0;
+    padding: 10px;
+}

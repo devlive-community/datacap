@@ -10,12 +10,19 @@
         {{ $t('common.myDashboard') }}
       </template>
       <template #extra>
-        <Button type="primary"
-                shape="circle"
-                icon="md-add"
-                size="small"
-                @click="handlerInfo(true, null)">
-        </Button>
+        <Dropdown transfer>
+          <Button type="primary"
+                  shape="circle"
+                  icon="md-add"
+                  size="small"
+                  @click="handlerInfo(true, null)">
+          </Button>
+          <template #list>
+            <DropdownMenu>
+              <DropdownItem @click="$router.push('/admin/dashboard/create')">V2 Beta</DropdownItem>
+            </DropdownMenu>
+          </template>
+        </Dropdown>
       </template>
       <Row :gutter="16">
         <Col v-for="item in data"

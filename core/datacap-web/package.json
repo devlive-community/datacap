@@ -45,6 +45,7 @@
     "vue-router": "^4.0.3",
     "vue3-ace-editor": "^2.2.3",
     "vue3-calendar-heatmap": "^2.0.5",
+    "vue3-grid-layout-next": "^1.0.6",
     "vue3-markdown": "^1.1.7",
     "vuex": "^4.1.0",
     "watermark-dom": "^2.3.0",
