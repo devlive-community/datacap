@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
-    <Layout style="height: 600px;">
-      <Sider class="layout-sider"
-             hide-trigger>
+    <Row class="layout">
+      <Col flex="200px"
+           style="border-right: #f3f5f7 1px solid;">
         <Collapse v-model="activeCsKey"
                   style="background-color: white; padding: 1px;">
           <Panel name="report">
@@ -11,7 +11,7 @@
               <div v-for="item in reportItems"
                    draggable="true"
                    unselectable="on"
-                   style="border: 1px solid #f3f5f7;"
+                   style="border: 1px solid #f3f5f7; margin-top: 5px;"
                    :key="item.id"
                    @drag="handlerDrag(item, $event)"
                    @dragend="handlerDragend(item)">
@@ -23,54 +23,82 @@
             </template>
           </Panel>
         </Collapse>
-      </Sider>
-      <Layout>
-        <Content class="layout-content"
-                 id="content">
-          <GridLayout ref="refLayout"
-                      :layout="layouts"
-                      :responsive="true"
-                      :col-num="12"
-                      :row-height="30"
-                      :is-draggable="true"
-                      :is-resizable="true"
-                      :vertical-compact="true"
-                      :use-css-transforms="true">
-            <GridItem v-for="item in layouts"
-                      :ref="el => set$Children(el)"
-                      :key="item.i"
-                      :x="item.x"
-                      :y="item.y"
-                      :w="item.w"
-                      :h="item.h"
-                      :i="item.i"
-                      :min-h="3"
-                      :min-w="3"
-                      @resized="handlerResize">
-              <Card dis-hover
-                    padding="0"
-                    :style="{width: item.width, height: item.height}">
-                <template #extra>
-                  <Button size="small"
-                          type="error"
-                          shape="circle"
-                          icon="md-trash"
-                          style="z-index: 1000; position: absolute; right: 0; top: 0;"
-                          @click="handlerRemove(item.i)">
-                  </Button>
-                </template>
-                <EchartsPreview :width="item.width"
-                                :key="item.id"
-                                :id="item.node.id"
-                                :height="item.height"
-                                :configure="JSON.parse(item.node.configure)">
-                </EchartsPreview>
-              </Card>
-            </GridItem>
-          </GridLayout>
-        </Content>
-      </Layout>
-    </Layout>
+      </Col>
+      <Col flex="auto">
+        <Card dis-hover
+              padding="0">
+          <template #title>
+            <div style="text-align: right;">
+              <Button type="primary"
+                      icon="md-document"
+                      size="small"
+                      @click="handlerSaveVisible(true)">
+                {{ $t('common.save') }}
+              </Button>
+            </div>
+          </template>
+          <div id="content">
+            <GridLayout ref="refLayout"
+                        :layout="layouts"
+                        :responsive="true"
+                        :col-num="12"
+                        :row-height="30"
+                        :is-draggable="true"
+                        :is-resizable="true"
+                        :vertical-compact="true"
+                        :use-css-transforms="true">
+              <GridItem v-for="item in layouts"
+                        :ref="el => set$Children(el)"
+                        :key="item.i"
+                        :x="item.x"
+                        :y="item.y"
+                        :w="item.w"
+                        :h="item.h"
+                        :i="item.i"
+                        :min-h="3"
+                        :min-w="3"
+                        @resized="handlerResize">
+                <Card dis-hover
+                      padding="0"
+                      :style="{width: item.width, height: item.height}">
+                  <template #extra>
+                    <Button size="small"
+                            type="error"
+                            shape="circle"
+                            icon="md-trash"
+                            style="z-index: 1000; position: absolute; right: 0; top: 0;"
+                            @click="handlerRemove(item.i)">
+                    </Button>
+                  </template>
+                  <EchartsPreview :width="item.width"
+                                  :key="item.id"
+                                  :id="item.node.id"
+                                  :height="item.height"
+                                  :configure="JSON.parse(item.node.configure)">
+                  </EchartsPreview>
+                </Card>
+              </GridItem>
+            </GridLayout>
+          </div>
+        </Card>
+      </Col>
+    </Row>
+    <Modal v-model="configureVisible"
+           :title="$t('common.configure')">
+      <Form>
+        <FormItem :label="$t('common.name')"
+                  :label-width="80">
+          <Input v-model="formState.name"/>
+        </FormItem>
+      </Form>
+      <template #footer>
+        <Button type="primary"
+                :loading="saving"
+                @click="handlerSave">
+          {{ $t('common.save') }}
+        </Button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -81,6 +109,7 @@ import {GridItem, GridLayout} from "vue3-grid-layout-next";
 import EchartsPreview from "@/components/editor/echarts/EchartsPreview.vue";
 import {Filter} from "@/model/Filter";
 import ReportService from "@/services/admin/ReportService";
+import DashboardService from "@/services/DashboardService";
 
 let mouseXY = {x: 0, y: 0}
 let DragPos = {x: 0, y: 0, w: 1, h: 1, i: ""}
@@ -105,7 +134,15 @@ export default defineComponent({
       reportItems: [],
       mapCache: new Map(),
       columnNumber: 12,
-      layouts: []
+      layouts: [],
+      saving: false,
+      configureVisible: false,
+      formState: {
+        name: null,
+        version: 'V2',
+        reports: [],
+        configure: null
+      }
     }
   },
   created()
@@ -143,7 +180,10 @@ export default defineComponent({
           i: "drop",
           width: "350px",
           height: "150px",
-          node: node
+          node: {
+            id: node.id,
+            configure: node.configure
+          }
         })
       }
       let index = this.layouts.findIndex((item: { i: string; }) => item.i === "drop")
@@ -192,7 +232,10 @@ export default defineComponent({
             width: "350px",
             height: "150px",
             i: DragPos.i,
-            node: node
+            node: {
+              id: node.id,
+              configure: node.configure
+            }
           })
           this.$refs.refLayout.dragEvent("dragend", DragPos.i, DragPos.x, DragPos.y, 3, 4)
           this.mapCache.delete("drop")
@@ -209,6 +252,27 @@ export default defineComponent({
     {
       this.layouts = this.layouts.filter((obj: { i: string; }) => obj.i !== i)
     },
+    handlerSaveVisible(opened: boolean)
+    {
+      this.configureVisible = opened
+    },
+    handlerSave()
+    {
+      this.formState.configure = JSON.stringify(this.layouts)
+      this.layouts.forEach((item: { node: { id: any; }; }) => this.formState.reports.push({id: item.node.id}))
+      this.saving = true
+      DashboardService.saveOrUpdate(this.formState)
+        .then(response => {
+          if (response.status) {
+            this.$Message.success(this.$t('common.save') + ' [ ' + this.configure.name + ' ] ' + this.$t('common.success'))
+            this.handlerCancel()
+          }
+          else {
+            this.$Message.error(response.message)
+          }
+        })
+        .finally(() => this.saving = false)
+    },
     set$Children(vm: any)
     {
       if (vm && vm.i) {
@@ -220,7 +284,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.layout {
-  background-color: #eee;
+:deep(.ivu-collapse) {
+  border: 0px solid #dcdee2;
 }
 </style>

@@ -85,6 +85,7 @@ export default defineComponent({
       id: props.sourceConfigure ? props.sourceConfigure.id : null,
       name: props.sourceConfigure ? props.sourceConfigure.name : null,
       configure: null,
+      version: 'V1',
       reports: []
     });
 
