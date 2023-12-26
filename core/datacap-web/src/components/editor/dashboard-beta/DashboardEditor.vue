@@ -47,12 +47,25 @@
                       :min-h="3"
                       :min-w="3"
                       @resized="handlerResize">
-              <EchartsPreview :width="item.width"
-                              :key="item.id"
-                              :id="item.node.id"
-                              :height="item.height"
-                              :configure="JSON.parse(item.node.configure)">
-              </EchartsPreview>
+              <Card dis-hover
+                    padding="0"
+                    :style="{width: item.width, height: item.height}">
+                <template #extra>
+                  <Button size="small"
+                          type="error"
+                          shape="circle"
+                          icon="md-trash"
+                          style="z-index: 1000; position: absolute; right: 0; top: 0;"
+                          @click="handlerRemove(item.i)">
+                  </Button>
+                </template>
+                <EchartsPreview :width="item.width"
+                                :key="item.id"
+                                :id="item.node.id"
+                                :height="item.height"
+                                :configure="JSON.parse(item.node.configure)">
+                </EchartsPreview>
+              </Card>
             </GridItem>
           </GridLayout>
         </Content>
@@ -191,6 +204,10 @@ export default defineComponent({
       const node = this.layouts[i]
       node.width = `${y}px`
       node.height = `${x}px`
+    },
+    handlerRemove(i: string | number)
+    {
+      this.layouts = this.layouts.filter((obj: { i: string; }) => obj.i !== i)
     },
     set$Children(vm: any)
     {
