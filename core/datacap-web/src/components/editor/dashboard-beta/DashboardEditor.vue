@@ -123,6 +123,11 @@ function addDragOverEvent(e: DragEvent)
 export default defineComponent({
   name: 'DashboardEditorBeta',
   components: {GridItem, GridLayout, EchartsPreview},
+  props: {
+    objInfo: {
+      type: Object
+    }
+  },
   mounted()
   {
     document.addEventListener("dragover", addDragOverEvent)
@@ -160,6 +165,12 @@ export default defineComponent({
             this.reportItems = response.data.content
           }
         })
+      setTimeout(() => {
+        if (this.objInfo) {
+          this.formState = this.objInfo
+          this.layouts = JSON.parse(this.formState.configure)
+        }
+      }, 300)
     },
     handlerDrag(node: any, e: DragEvent)
     {
@@ -264,8 +275,8 @@ export default defineComponent({
       DashboardService.saveOrUpdate(this.formState)
         .then(response => {
           if (response.status) {
-            this.$Message.success(this.$t('common.save') + ' [ ' + this.configure.name + ' ] ' + this.$t('common.success'))
-            this.handlerCancel()
+            this.$Message.success(this.$t('common.save') + ' [ ' + this.formState.name + ' ] ' + this.$t('common.success'))
+            this.$router.push('/console/dashboard')
           }
           else {
             this.$Message.error(response.message)

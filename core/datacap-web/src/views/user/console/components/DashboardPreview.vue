@@ -24,7 +24,7 @@ import CircularLoading from "@/components/loading/CircularLoading.vue";
 import {useRouter} from "vue-router";
 import DashboardService from "@/services/DashboardService";
 import DashboardView from "@/components/editor/dashboard/DashboardView.vue";
-import DashboardViewBeta from "@/components/editor/dashboard-beta/DashboardViewBeta.vue";
+import DashboardViewBeta from "@/components/editor/dashboard-beta/DashboardView.vue";
 
 export default defineComponent({
   name: "DashboardPreview",

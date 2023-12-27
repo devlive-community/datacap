@@ -167,6 +167,12 @@ const createDefaultRouter = (router: any) => {
         layout: LayoutContainer,
         meta: {title: 'common.dashboard'},
         component: () => import("@/views/admin/dashboard/DashboardInfo.vue")
+      },
+      {
+        path: "dashboard/edit/:id",
+        layout: LayoutContainer,
+        meta: {title: 'common.dashboard'},
+        component: () => import("@/views/admin/dashboard/DashboardInfo.vue")
       }
     ]
   })
