@@ -14,7 +14,7 @@
                 shape="circle"
                 icon="md-add"
                 size="small"
-                @click="handlerInfo(true, null)">
+                @click="$router.push('/admin/dashboard/create')">
         </Button>
       </template>
       <Row :gutter="16">
@@ -44,7 +44,7 @@
                         {{ $t('common.preview') }}
                       </DropdownItem>
                     </RouterLink>
-                    <DropdownItem @click="handlerInfo(true, item.id)">
+                    <DropdownItem @click="handlerInfo(true, item.id, item.version)">
                       <FontAwesomeIcon icon="pen-square"/>
                       {{ $t('common.modify') }}
                     </DropdownItem>
@@ -114,12 +114,15 @@ export default defineComponent({
         })
         .finally(() => this.loading = false)
     },
-    handlerInfo(opened: boolean, id: number)
+    handlerInfo(opened: boolean, id: number, version?: string)
     {
       this.dashboardInfoVisible = opened
       this.dashboardId = id
       if (!opened) {
         this.handlerInitialize()
+      }
+      if (version && version === 'V2') {
+        this.$router.push('/admin/dashboard/edit/' + id)
       }
     },
     handlerDelete(opened: boolean, data: any)

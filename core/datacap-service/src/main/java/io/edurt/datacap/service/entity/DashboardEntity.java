@@ -37,6 +37,9 @@ public class DashboardEntity
     @Column(name = "configure")
     private String configure;
 
+    @Column(name = "version")
+    private String version;
+
     @ManyToOne
     @JoinTable(name = "datacap_dashboard_user_relation",
             joinColumns = @JoinColumn(name = "dashboard_id"),

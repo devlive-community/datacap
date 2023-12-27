@@ -3,11 +3,14 @@
     <CircularLoading v-if="loading"
                      :show="loading">
     </CircularLoading>
-    <DashboardView v-else-if="data"
+    <DashboardView v-if="data && data.version === 'V1'"
                    style="margin-top: 10px;"
                    :height="height - 20"
                    :configure="JSON.parse(data.configure)">
     </DashboardView>
+    <DashboardViewBeta v-else-if="data && data.version === 'V2'"
+                       :layouts="JSON.parse(data.configure)">
+    </DashboardViewBeta>
     <Result v-else
             style="margin-top: 80px;"
             type="error"
@@ -21,10 +24,11 @@ import CircularLoading from "@/components/loading/CircularLoading.vue";
 import {useRouter} from "vue-router";
 import DashboardService from "@/services/DashboardService";
 import DashboardView from "@/components/editor/dashboard/DashboardView.vue";
+import DashboardViewBeta from "@/components/editor/dashboard-beta/DashboardView.vue";
 
 export default defineComponent({
   name: "DashboardPreview",
-  components: {DashboardView, CircularLoading},
+  components: {DashboardViewBeta, DashboardView, CircularLoading},
   data()
   {
     return {

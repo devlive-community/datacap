@@ -157,6 +157,25 @@ const createDefaultRouter = (router: any) => {
       }
     ]
   })
+  router.addRoute({
+    path: "/admin",
+    meta: {title: 'common.dashboard'},
+    component: LayoutContainer,
+    children: [
+      {
+        path: "dashboard/create",
+        layout: LayoutContainer,
+        meta: {title: 'common.dashboard'},
+        component: () => import("@/views/admin/dashboard/DashboardInfo.vue")
+      },
+      {
+        path: "dashboard/edit/:id",
+        layout: LayoutContainer,
+        meta: {title: 'common.dashboard'},
+        component: () => import("@/views/admin/dashboard/DashboardInfo.vue")
+      }
+    ]
+  })
   const chatRouters = {
     path: "/chat",
     component: LayoutContainer,

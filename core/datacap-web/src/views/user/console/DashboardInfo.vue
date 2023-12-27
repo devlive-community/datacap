@@ -69,7 +69,7 @@ export default defineComponent({
           .then(response => {
             if (response.status) {
               const configure = JSON.parse(response.data.configure)
-              configure.nodes.forEach((node: any) => {
+              configure.nodes?.forEach((node: any) => {
                 this.nodes.push({id: node.id, type: node.type, label: node.label, position: node.position, data: node.data})
               })
               this.sourceConfigure = response.data
