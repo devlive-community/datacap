@@ -34,9 +34,9 @@ public class RedisAdapter
     {
         Time processorTime = new Time();
         processorTime.setStart(new Date().getTime());
-        Response response = this.jdbcConnection.getResponse();
-        Connection connection = (Connection) this.jdbcConnection.getConnection();
-        JdbcConfigure configure = (JdbcConfigure) this.jdbcConnection.getConfigure();
+        Response response = this.connection.getResponse();
+        Connection connection = (Connection) this.connection.getConnection();
+        JdbcConfigure configure = (JdbcConfigure) this.connection.getConfigure();
         if (response.getIsConnected()) {
             try (Statement statement = connection.createStatement();
                     ResultSet resultSet = statement.executeQuery(content)) {
@@ -73,7 +73,7 @@ public class RedisAdapter
         processorTime.setEnd(new Date().getTime());
         response.setProcessor(processorTime);
         // It will be destroyed after the mission is closed
-        this.jdbcConnection.destroy();
+        this.connection.destroy();
         return response;
     }
 }

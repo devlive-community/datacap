@@ -37,9 +37,9 @@ public class KyuubiAdapter
     {
         Time processorTime = new Time();
         processorTime.setStart(new Date().getTime());
-        Response response = this.jdbcConnection.getResponse();
-        Connection connection = (Connection) this.jdbcConnection.getConnection();
-        JdbcConfigure configure = (JdbcConfigure) this.jdbcConnection.getConfigure();
+        Response response = this.connection.getResponse();
+        Connection connection = (Connection) this.connection.getConnection();
+        JdbcConfigure configure = (JdbcConfigure) this.connection.getConfigure();
         if (response.getIsConnected()) {
             try (PreparedStatement statement = connection.prepareStatement(content)) {
                 List<String> headers = new ArrayList<>();
@@ -114,7 +114,7 @@ public class KyuubiAdapter
         processorTime.setEnd(new Date().getTime());
         response.setProcessor(processorTime);
         // It will be destroyed after the mission is closed
-        this.jdbcConnection.destroy();
+        this.connection.destroy();
         return response;
     }
 }

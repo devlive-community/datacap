@@ -27,11 +27,11 @@ import java.util.Objects;
 public class JdbcAdapter
         implements Adapter
 {
-    protected JdbcConnection jdbcConnection;
+    protected io.edurt.datacap.spi.connection.Connection connection;
 
-    public JdbcAdapter(JdbcConnection jdbcConnection)
+    public JdbcAdapter(io.edurt.datacap.spi.connection.Connection connection)
     {
-        this.jdbcConnection = jdbcConnection;
+        this.connection = connection;
     }
 
     public Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
@@ -42,11 +42,12 @@ public class JdbcAdapter
     @Override
     public Response handlerExecute(String content)
     {
+        JdbcConnection jdbcConnection = (JdbcConnection) this.connection;
         Time processorTime = new Time();
         processorTime.setStart(new Date().getTime());
-        Response response = this.jdbcConnection.getResponse();
-        Connection connection = (Connection) this.jdbcConnection.getConnection();
-        JdbcConfigure configure = (JdbcConfigure) this.jdbcConnection.getConfigure();
+        Response response = jdbcConnection.getResponse();
+        Connection connection = (Connection) jdbcConnection.getConnection();
+        JdbcConfigure configure = (JdbcConfigure) jdbcConnection.getConfigure();
         if (response.getIsConnected()) {
             try (Statement statement = connection.createStatement()) {
                 List<String> headers = new ArrayList<>();
@@ -118,7 +119,7 @@ public class JdbcAdapter
         processorTime.setEnd(new Date().getTime());
         response.setProcessor(processorTime);
         // It will be destroyed after the mission is closed
-        this.jdbcConnection.destroy();
+        jdbcConnection.destroy();
         return response;
     }
 }
