@@ -83,8 +83,8 @@
 
     <scm>
         <url>https://datacap.edurt.io</url>
-        <connection>scm:git:git://github.com/EdurtIO/datacap.git</connection>
-        <developerConnection>scm:git:git@github.com:EdurtIO/datacap.git</developerConnection>
+        <connection>scm:git:git://github.com/devlive-community/datacap.git</connection>
+        <developerConnection>scm:git:git@github.com:devlive-community/datacap.git</developerConnection>
         <tag>datacap,database,clickhouse,mysql,postgresql,kylin,db2,dremio,druid,elasticsearch,hive,ignite,kyuubi,monetdb,mongo,presto,trino</tag>
     </scm>
 
@@ -100,11 +100,11 @@
         <developer>
             <id>001</id>
             <name>qianmoQ</name>
-            <email>shicheng@ttxit.com</email>
+            <email>shicheng@devlive.org</email>
             <roles>
                 <role>Owner</role>
             </roles>
-            <organization>EdurtIO</organization>
+            <organization>Devlive Community</organization>
         </developer>
         <developer>
             <id>002</id>
@@ -125,11 +125,14 @@
     </developers>
 
     <organization>
-        <name>EdurtIO Software Foundation</name>
+        <name>The Devlive Software Foundation</name>
         <url>https://www.edurt.io</url>
     </organization>
 
     <properties>
+        <!-- dependency -->
+        <dep.mysql.version>8.0.28</dep.mysql.version>
+        <dep.snowflake.version>3.14.4</dep.snowflake.version>
         <springboot.version>2.7.4</springboot.version>
         <lombok.version>1.18.28</lombok.version>
         <junit.version>4.13.2</junit.version>
@@ -285,6 +288,16 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-reflect</artifactId>
                 <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${dep.mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.snowflake</groupId>
+                <artifactId>snowflake-jdbc</artifactId>
+                <version>${dep.snowflake.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

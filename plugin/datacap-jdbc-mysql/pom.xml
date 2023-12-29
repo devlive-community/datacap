@@ -14,7 +14,6 @@
     <description>DataCap - MySQL</description>
 
     <properties>
-        <mysql.version>8.0.28</mysql.version>
         <plugin.name>jdbc-mysql</plugin.name>
     </properties>
 
@@ -27,7 +26,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
