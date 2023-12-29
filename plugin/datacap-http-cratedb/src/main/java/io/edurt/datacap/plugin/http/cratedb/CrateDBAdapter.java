@@ -32,14 +32,14 @@ public class CrateDBAdapter
     {
         Time processorTime = new Time();
         processorTime.setStart(new Date().getTime());
-        Response response = this.httpConnection.getResponse();
+        Response response = this.connection.getResponse();
         HttpConfigure httpConfigure = new HttpConfigure();
         if (response.getIsConnected()) {
             List<String> headers = new ArrayList<>();
             List<String> types = new ArrayList<>();
             List<Object> columns = new ArrayList<>();
             try {
-                BeanUtils.copyProperties(httpConfigure, this.httpConnection.getConfigure());
+                BeanUtils.copyProperties(httpConfigure, this.connection.getConfigure());
                 httpConfigure.setAutoConnected(Boolean.FALSE);
                 httpConfigure.setRetry(0);
                 httpConfigure.setPath("_sql?types");

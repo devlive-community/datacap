@@ -34,14 +34,14 @@ public class GreptimeDBAdapter
     {
         Time processorTime = new Time();
         processorTime.setStart(new Date().getTime());
-        Response response = this.httpConnection.getResponse();
+        Response response = this.connection.getResponse();
         HttpConfigure configure = new HttpConfigure();
         if (response.getIsConnected()) {
             List<String> headers = new ArrayList<>();
             List<String> types = new ArrayList<>();
             List<Object> columns = new ArrayList<>();
             try {
-                BeanUtils.copyProperties(configure, this.httpConnection.getConfigure());
+                BeanUtils.copyProperties(configure, this.connection.getConfigure());
                 configure.setAutoConnected(Boolean.FALSE);
                 configure.setRetry(0);
                 configure.setMethod(HttpMethod.POST);

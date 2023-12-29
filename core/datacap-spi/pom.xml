@@ -61,5 +61,9 @@
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
     </dependencies>
 </project>

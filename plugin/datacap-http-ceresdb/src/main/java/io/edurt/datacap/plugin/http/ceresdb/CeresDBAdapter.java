@@ -34,14 +34,14 @@ public class CeresDBAdapter
     {
         Time processorTime = new Time();
         processorTime.setStart(new Date().getTime());
-        Response response = this.httpConnection.getResponse();
+        Response response = this.connection.getResponse();
         HttpConfigure configure = new HttpConfigure();
         if (response.getIsConnected()) {
             List<String> headers = new ArrayList<>();
             List<String> types = new ArrayList<>();
             List<Object> columns = new ArrayList<>();
             try {
-                BeanUtils.copyProperties(configure, this.httpConnection.getConfigure());
+                BeanUtils.copyProperties(configure, this.connection.getConfigure());
                 configure.setAutoConnected(Boolean.FALSE);
                 configure.setRetry(0);
                 configure.setMethod(HttpMethod.POST);
@@ -64,7 +64,7 @@ public class CeresDBAdapter
                         }
                         List<Object> _columns = row.entrySet()
                                 .stream()
-                                .map(entry -> entry.getValue())
+                                .map(Map.Entry::getValue)
                                 .collect(Collectors.toList());
                         columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
                     }

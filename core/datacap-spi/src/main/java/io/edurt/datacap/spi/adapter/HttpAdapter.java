@@ -2,7 +2,7 @@ package io.edurt.datacap.spi.adapter;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.FormatType;
-import io.edurt.datacap.spi.connection.HttpConnection;
+import io.edurt.datacap.spi.connection.Connection;
 import io.edurt.datacap.spi.formatter.FormatterFactory;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +15,11 @@ import java.util.List;
 public class HttpAdapter
         implements Adapter
 {
-    protected HttpConnection httpConnection;
+    protected Connection connection;
 
-    public HttpAdapter(HttpConnection httpConnection)
+    public HttpAdapter(Connection connection)
     {
-        this.httpConnection = httpConnection;
+        this.connection = connection;
     }
 
     public Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
