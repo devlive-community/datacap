@@ -1,0 +1,21 @@
+package io.edurt.datacap.parser
+
+interface Parser {
+    fun name(): String {
+        return this.javaClass
+                .simpleName
+                .removeSuffix("Parser")
+    }
+
+    fun description(): String {
+        return "Integrate ${name()} sql parser"
+    }
+
+    /**
+     * Parses the given SQL string and returns a ParserInfo object.
+     *
+     * @param sql the SQL string to parse
+     * @return    the ParserInfo object containing the parsed information
+     */
+    fun parse(sql: String): ParserResponse
+}
