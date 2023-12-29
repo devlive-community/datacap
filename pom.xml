@@ -132,6 +132,7 @@
     <properties>
         <!-- dependency -->
         <dep.mysql.version>8.0.28</dep.mysql.version>
+        <dep.snowflake.version>3.14.4</dep.snowflake.version>
         <springboot.version>2.7.4</springboot.version>
         <lombok.version>1.18.28</lombok.version>
         <junit.version>4.13.2</junit.version>
@@ -292,6 +293,11 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${dep.mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.snowflake</groupId>
+                <artifactId>snowflake-jdbc</artifactId>
+                <version>${dep.snowflake.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
