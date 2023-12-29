@@ -1,17 +1,19 @@
-package io.edurt.datacap.parser
+package io.edurt.datacap.parser.trino
 
 import com.google.inject.Guice
 import com.google.inject.Injector
 import com.google.inject.Key
 import com.google.inject.TypeLiteral
-import org.junit.Assert
+import io.edurt.datacap.parser.Parser
+import io.edurt.datacap.parser.ParserManager
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class ParserModuleTest {
-    private val log: Logger = LoggerFactory.getLogger(TestParser::class.java)
+class TrinoParserModuleTest {
+    private val log: Logger = LoggerFactory.getLogger(TrinoParserModuleTest::class.java)
     private val injector: Injector = Guice.createInjector(ParserManager())
 
     @Test
@@ -21,8 +23,8 @@ class ParserModuleTest {
                 .findFirst()
 
         optional.ifPresent {
-            log.info("Parser response: {}", optional.get().parse("SELECT 1"))
-            Assert.assertEquals("Test", optional.get().name())
+            log.info("Module name: [ {} ]", it.name())
+            assertEquals(it.name(), "Trino")
         }
     }
 }

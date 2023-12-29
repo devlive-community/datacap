@@ -76,6 +76,7 @@
         <module>fs/datacap-fs-spi</module>
         <module>fs/datacap-fs-local</module>
         <module>parser/datacap-parser-spi</module>
+        <module>parser/datacap-parser-trino</module>
     </modules>
 
     <name>datacap</name>
@@ -135,6 +136,7 @@
         <dep.mysql.version>8.0.28</dep.mysql.version>
         <dep.snowflake.version>3.14.4</dep.snowflake.version>
         <dep.guice.version>5.1.0</dep.guice.version>
+        <dep.trino.version>414</dep.trino.version>
         <springboot.version>2.7.4</springboot.version>
         <lombok.version>1.18.28</lombok.version>
         <junit.version>4.13.2</junit.version>
@@ -292,6 +294,11 @@
                 <version>${kotlin.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.edurt.datacap</groupId>
+                <artifactId>datacap-parser-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${dep.mysql.version}</version>
@@ -305,6 +312,11 @@
                 <groupId>com.google.inject</groupId>
                 <artifactId>guice</artifactId>
                 <version>${dep.guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.trino</groupId>
+                <artifactId>trino-jdbc</artifactId>
+                <version>${dep.trino.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
