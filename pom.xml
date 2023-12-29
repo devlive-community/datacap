@@ -75,6 +75,7 @@
         <module>shaded/datacap-shaded-pinot</module>
         <module>fs/datacap-fs-spi</module>
         <module>fs/datacap-fs-local</module>
+        <module>parser/datacap-parser-spi</module>
     </modules>
 
     <name>datacap</name>
@@ -133,6 +134,7 @@
         <!-- dependency -->
         <dep.mysql.version>8.0.28</dep.mysql.version>
         <dep.snowflake.version>3.14.4</dep.snowflake.version>
+        <dep.guice.version>5.1.0</dep.guice.version>
         <springboot.version>2.7.4</springboot.version>
         <lombok.version>1.18.28</lombok.version>
         <junit.version>4.13.2</junit.version>
@@ -298,6 +300,11 @@
                 <groupId>net.snowflake</groupId>
                 <artifactId>snowflake-jdbc</artifactId>
                 <version>${dep.snowflake.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${dep.guice.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

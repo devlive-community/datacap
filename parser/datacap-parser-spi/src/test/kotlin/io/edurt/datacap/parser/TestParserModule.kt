@@ -1,0 +1,10 @@
+package io.edurt.datacap.parser
+
+import com.google.inject.multibindings.Multibinder
+
+class TestParserModule : ParserModule() {
+    override fun configure() {
+        Multibinder.newSetBinder(this.binder(), Parser::class.java)
+                .addBinding().to(TestParser::class.java)
+    }
+}
