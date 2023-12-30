@@ -80,7 +80,7 @@
     </modules>
 
     <name>datacap</name>
-    <description>DataCap is integrated software for data transformation, integration and visualization.</description>
+    <description>DataCap is integrated software for data transformation, integration, and visualization. Support a variety of data sources, file types, big data related database, relational database, NoSQL database, etc. Through the software can realize the management of multiple data sources, the data under the source of various operations conversion.</description>
     <url>https://datacap.edurt.io/</url>
 
     <scm>
@@ -128,7 +128,7 @@
 
     <organization>
         <name>The Devlive Software Foundation</name>
-        <url>https://www.edurt.io</url>
+        <url>https://devlive.org</url>
     </organization>
 
     <properties>
@@ -137,6 +137,7 @@
         <dep.snowflake.version>3.14.4</dep.snowflake.version>
         <dep.guice.version>5.1.0</dep.guice.version>
         <dep.trino.version>414</dep.trino.version>
+        <dep.antlr4.version>4.12.0</dep.antlr4.version>
         <springboot.version>2.7.4</springboot.version>
         <lombok.version>1.18.28</lombok.version>
         <junit.version>4.13.2</junit.version>
@@ -317,6 +318,11 @@
                 <groupId>io.trino</groupId>
                 <artifactId>trino-jdbc</artifactId>
                 <version>${dep.trino.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-runtime</artifactId>
+                <version>${dep.antlr4.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

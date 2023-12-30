@@ -5,6 +5,6 @@ import io.edurt.datacap.parser.ParserResponse
 
 class TrinoParser : Parser {
     override fun parse(sql: String): ParserResponse {
-        TODO("Not yet implemented")
+        return TrinoHelper.parse(sql)
     }
 }
