@@ -4,7 +4,7 @@ class Table {
     var database: String? = null
     var name: String? = null
     var alias: String? = null
-    var columns: Set<Column> = setOf()
+    var columns: MutableSet<Column> = mutableSetOf()
 
     override fun toString(): String = "Table(database=$database, name=$name, alias=$alias, columns=$columns)"
 }

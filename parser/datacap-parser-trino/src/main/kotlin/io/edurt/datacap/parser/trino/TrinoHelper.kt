@@ -9,7 +9,9 @@ import io.edurt.datacap.parser.parser.SqlParser
 import io.edurt.datacap.parser.tree.*
 import io.edurt.datacap.parser.tree.query.Query
 import io.edurt.datacap.parser.tree.query.QuerySpecification
+import io.edurt.datacap.parser.tree.table.Table
 import io.edurt.datacap.parser.type.EngineType
+import io.edurt.datacap.parser.type.StatementType
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 
@@ -21,6 +23,7 @@ object TrinoHelper {
         val response = ParserResponse()
         response.engine = EngineType.TRINO
         try {
+            response.isParser = true
             check(SqlParser().createStatement(sql, ParserOptions(ParserOptions.DecimalLiteralTreatment.AS_DECIMAL)), response)
         }
         catch (e: ParsingException) {
@@ -34,6 +37,7 @@ object TrinoHelper {
     @Throws(ParsingException::class)
     private fun check(statement: Statement, response: ParserResponse) {
         if (statement is Query) {
+            response.type = StatementType.SELECT
             val query: Query = statement
             val children: List<Node> = query.getChildren()
             for (child in children) {
@@ -45,6 +49,7 @@ object TrinoHelper {
     @Throws(ParsingException::class)
     private fun eachNode(node: Node, response: ParserResponse) {
         when (node) {
+            // Parse the query
             is Query -> {
                 loopNode(node.children, response)
             }
@@ -68,6 +73,19 @@ object TrinoHelper {
                     }
                 }
             }
+            // Parse the table
+            is Table -> {
+                val (database, name) = node.name.toString().split(".").let {
+                    if (it.size > 1) Pair(it[0], it[1]) else Pair(null, it[0])
+                }
+
+                response.table.apply {
+                    this.database = database
+                    this.name = name
+                }
+
+                loopNode(node.children, response)
+            }
         }
     }
 
@@ -83,7 +101,7 @@ object TrinoHelper {
         when (node) {
             is SingleColumn -> {
                 val column = Column()
-                column.name = node.toString()
+                column.name = node.expression.toString()
                 node.alias.ifPresent { column.alias = it.value }
                 response.table.columns += column
             }
