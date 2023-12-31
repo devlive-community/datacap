@@ -10,13 +10,13 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class ParserModuleTest {
-    private val log: Logger = LoggerFactory.getLogger(TestParser::class.java)
-    private var injector: Injector = Guice.createInjector(ParserManager())
+class SqlParserModuleTest {
+    private val log: Logger = LoggerFactory.getLogger(TestSqlParser::class.java)
+    private val injector: Injector = Guice.createInjector(ParserManager())
 
     @Test
     fun test() {
-        val optional: Optional<Parser> = injector.getInstance(Key.get(object : TypeLiteral<Set<Parser>>() {}))
+        val optional: Optional<SqlParser> = injector.getInstance(Key.get(object : TypeLiteral<Set<SqlParser>>() {}))
                 .stream()
                 .findFirst()
 

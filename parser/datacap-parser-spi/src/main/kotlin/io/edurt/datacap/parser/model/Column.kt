@@ -6,4 +6,6 @@ class Column {
     var alias: String? = null
     var expression: String? = null
     var functions: Set<String>? = null
+
+    override fun toString(): String = "Column(name=$name, type=$type, alias=$alias, expression=$expression, functions=$functions)"
 }

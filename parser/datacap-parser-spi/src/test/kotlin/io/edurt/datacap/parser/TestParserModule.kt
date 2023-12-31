@@ -4,7 +4,7 @@ import com.google.inject.multibindings.Multibinder
 
 class TestParserModule : ParserModule() {
     override fun configure() {
-        Multibinder.newSetBinder(this.binder(), Parser::class.java)
-                .addBinding().to(TestParser::class.java)
+        Multibinder.newSetBinder(this.binder(), SqlParser::class.java)
+                .addBinding().to(TestSqlParser::class.java)
     }
 }

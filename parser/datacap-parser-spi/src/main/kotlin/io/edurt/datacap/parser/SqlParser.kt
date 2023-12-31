@@ -1,10 +1,10 @@
 package io.edurt.datacap.parser
 
-interface Parser {
+interface SqlParser {
     fun name(): String {
         return this.javaClass
                 .simpleName
-                .removeSuffix("Parser")
+                .removeSuffix("SqlParser")
     }
 
     fun description(): String {
