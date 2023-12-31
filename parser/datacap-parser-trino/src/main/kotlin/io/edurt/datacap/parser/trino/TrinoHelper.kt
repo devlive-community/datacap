@@ -53,11 +53,16 @@ object TrinoHelper {
             is Query -> {
                 loopNode(node.children, response)
             }
-
+            // Parse the query specification
             is QuerySpecification -> {
                 loopNode(node.children, response)
+                node.limit.ifPresent {
+                    val limit = it as Limit
+                    val rowCount = limit.rowCount as LongLiteral
+                    response.table.limit = rowCount.value
+                }
             }
-
+            // Parse the select
             is Select -> {
                 node.selectItems.forEach {
                     when (it) {

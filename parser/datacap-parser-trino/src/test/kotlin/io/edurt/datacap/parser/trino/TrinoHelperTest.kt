@@ -15,6 +15,8 @@ class TrinoHelperTest {
         log.info("isParser: [ {} ]", response.isParser)
         log.info("database name: [ {} ]", response.table.database)
         log.info("table name: [ {} ]", response.table.name)
+        log.info("table limit: [ {} ]", response.table.limit)
+        log.info("message: [ {} ]", response.message)
         response.table.columns.forEach {
             log.info("column name: [ {} ], alias: [ {} ], type: [ {} ], expression: [ {} ], functions: [ {} ]", it.name, it.alias, it.type, it.expression, it.functions)
         }
@@ -53,5 +55,12 @@ class TrinoHelperTest {
         val response = TrinoHelper.parse("SELECT \"name\" AS \"name\", \"age\" AS \"age\", \"summer\" + 1 AS \"summer\", SUM(\"summer\") FROM \"a_table_name\"")
         printLog(response)
         assertTrue(response.table.columns.find { it.expression != null }?.expression == "(\"summer\" + 1)")
+    }
+
+    @Test
+    fun testLimit() {
+        val response = TrinoHelper.parse("SELECT * FROM \"a_table_name\" LIMIT 10")
+        printLog(response)
+        assertTrue(response.table.limit == 10L)
     }
 }
