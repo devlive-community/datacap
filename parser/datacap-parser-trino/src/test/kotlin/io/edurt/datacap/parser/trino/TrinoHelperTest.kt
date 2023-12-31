@@ -38,5 +38,20 @@ class TrinoHelperTest {
     fun testFromTableWithAlias() {
         val response = TrinoHelper.parse("SELECT \"name\" AS \"name\", \"age\" AS \"age\", \"summer\" FROM \"a_table_name\"")
         printLog(response)
+        assertTrue(response.table.columns.find { it.alias != null } != null)
+    }
+
+    @Test
+    fun testFromTableWithAliasAndExpression() {
+        val response = TrinoHelper.parse("SELECT \"name\" AS \"name\", \"age\" AS \"age\", \"summer\" + 1 AS \"summer\" FROM \"a_table_name\"")
+        printLog(response)
+        assertTrue(response.table.columns.find { it.expression != null }?.expression == "(\"summer\" + 1)")
+    }
+
+    @Test
+    fun testFromTableWithAliasAndExpressionAndFunction() {
+        val response = TrinoHelper.parse("SELECT \"name\" AS \"name\", \"age\" AS \"age\", \"summer\" + 1 AS \"summer\", SUM(\"summer\") FROM \"a_table_name\"")
+        printLog(response)
+        assertTrue(response.table.columns.find { it.expression != null }?.expression == "(\"summer\" + 1)")
     }
 }

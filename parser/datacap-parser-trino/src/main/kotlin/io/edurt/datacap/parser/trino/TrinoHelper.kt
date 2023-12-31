@@ -101,7 +101,7 @@ object TrinoHelper {
         when (node) {
             is SingleColumn -> {
                 val column = Column()
-                column.name = node.expression.toString()
+                getNameByExpression(node.expression, column)
                 node.alias.ifPresent { column.alias = it.value }
                 response.table.columns += column
             }
@@ -110,5 +110,32 @@ object TrinoHelper {
                 throw ParsingException("Invalid query")
             }
         }
+    }
+
+    @Throws(ParsingException::class)
+    private fun getNameByExpression(expression: Expression, column: Column) {
+        when (expression) {
+            // Get the column name
+            is Identifier -> {
+                column.name = expression.value
+            }
+            // Get the arithmetic binary expression
+            is ArithmeticBinaryExpression -> {
+                column.expression = expression.toString()
+                val left = expression.left as Identifier
+                column.name = left.value
+            }
+            // Get the function call
+            is FunctionCall -> {
+                formatFunctionCall(expression, column)
+            }
+        }
+    }
+
+    @Throws(ParsingException::class)
+    private fun formatFunctionCall(call: FunctionCall, column: Column) {
+        val functions = call.name.parts.toSet()
+        column.functions = functions
+        column.name = call.arguments[0].toString()
     }
 }
