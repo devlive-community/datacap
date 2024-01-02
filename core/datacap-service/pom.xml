@@ -103,5 +103,11 @@
             <artifactId>datacap-sql</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Sql Parser -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-parser-trino</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

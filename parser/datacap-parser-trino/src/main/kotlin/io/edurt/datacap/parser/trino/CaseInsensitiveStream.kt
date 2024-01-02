@@ -18,7 +18,7 @@ class CaseInsensitiveStream : CharStream {
     override fun LA(p0: Int): Int {
         return when (val result = stream.LA(p0)) {
             0, IntStream.EOF -> result
-            else -> result
+            else -> Character.toUpperCase(result)
         }
     }
 
