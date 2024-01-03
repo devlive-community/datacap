@@ -77,6 +77,7 @@
         <module>fs/datacap-fs-local</module>
         <module>parser/datacap-parser-spi</module>
         <module>parser/datacap-parser-trino</module>
+        <module>parser/datacap-parser-mysql</module>
     </modules>
 
     <name>datacap</name>

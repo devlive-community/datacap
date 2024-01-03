@@ -1,12 +1,16 @@
 package io.edurt.datacap.service.service.impl;
 
 import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.sql.SqlBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlType;
-import io.edurt.datacap.common.utils.SqlCheckerUtils;
+import io.edurt.datacap.parser.ParserResponse;
+import io.edurt.datacap.parser.SqlParser;
+import io.edurt.datacap.parser.type.StatementType;
 import io.edurt.datacap.service.audit.AuditPlugin;
 import io.edurt.datacap.service.body.ExecuteDslBody;
 import io.edurt.datacap.service.common.PluginUtils;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ExecuteServiceImpl
@@ -80,7 +85,16 @@ public class ExecuteServiceImpl
         plugin.connect(_configure);
 
         if (initializerConfigure.getAutoLimit()) {
-            if (!SqlCheckerUtils.isPagedSql(configure.getContent())) {
+            Optional<SqlParser> parserOptional = this.injector.getInstance(Key.get(new TypeLiteral<Set<SqlParser>>() {}))
+                    .stream()
+                    .filter(parser -> parser.name().equalsIgnoreCase(plugin.name()))
+                    .findFirst();
+            ParserResponse response = parserOptional.orElse(injector.getInstance(Key.get(new TypeLiteral<Set<SqlParser>>() {}))
+                            .stream()
+                            .filter(parser -> parser.name().equalsIgnoreCase(initializerConfigure.getSqlParserDefaultEngine())).findFirst().get())
+                    .parse(configure.getContent());
+
+            if (response.isParser() && response.getType().equals(StatementType.SELECT) && response.getTable().getLimit() == null) {
                 configure.setContent(String.format("%s%nLIMIT %s", configure.getContent(), configure.getLimit()));
             }
         }

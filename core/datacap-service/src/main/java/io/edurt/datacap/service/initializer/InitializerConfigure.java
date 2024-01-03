@@ -60,6 +60,10 @@ public class InitializerConfigure
     private String avatarPath;
 
     @Getter
+    @Value(value = "${datacap.parser.sql.defaultEngine}")
+    private String sqlParserDefaultEngine;
+
+    @Getter
     private LoadingCache<Long, ResultEntity> cache;
 
     @Getter
@@ -138,6 +142,9 @@ public class InitializerConfigure
         log.info("fs secret [ {} ]", fsConfigure.getSecret());
         log.info("fs endpoint [ {} ]", fsConfigure.getEndpoint());
         log.info("fs bucket [ {} ]", fsConfigure.getBucket());
+
+        log.info("=========== Datacap sql parser configure ===========");
+        log.info("sql parser default engine [ {} ]", this.sqlParserDefaultEngine);
 
         this.taskQueue = new LinkedBlockingQueue<>(this.maxQueue);
         this.taskExecutors = Maps.newConcurrentMap();

@@ -8,8 +8,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>datacap-parser-trino</artifactId>
-    <description>DataCap - Parser for trino</description>
+    <artifactId>datacap-parser-mysql</artifactId>
+    <description>DataCap - Parser for mysql</description>
 
     <dependencies>
         <dependency>
@@ -32,11 +32,6 @@
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>slice</artifactId>
-            <version>0.39</version>
         </dependency>
     </dependencies>
 

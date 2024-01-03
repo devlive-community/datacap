@@ -1,4 +1,4 @@
-package io.edurt.datacap.parser.trino
+package io.edurt.datacap.parser
 
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.IntStream
@@ -18,7 +18,7 @@ class CaseInsensitiveStream : CharStream {
     override fun LA(p0: Int): Int {
         return when (val result = stream.LA(p0)) {
             0, IntStream.EOF -> result
-            else -> result
+            else -> Character.toUpperCase(result)
         }
     }
 

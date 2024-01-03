@@ -1,5 +1,6 @@
 package io.edurt.datacap.parser.parser;
 
+import io.edurt.datacap.parser.CaseInsensitiveStream;
 import io.edurt.datacap.parser.ParsingException;
 import io.edurt.datacap.parser.antlr.SqlBaseBaseListener;
 import io.edurt.datacap.parser.antlr.SqlBaseLexer;
@@ -10,7 +11,6 @@ import io.edurt.datacap.parser.tree.DataType;
 import io.edurt.datacap.parser.tree.Expression;
 import io.edurt.datacap.parser.tree.PathSpecification;
 import io.edurt.datacap.parser.tree.Statement;
-import io.edurt.datacap.parser.trino.CaseInsensitiveStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonToken;
