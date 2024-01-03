@@ -17,10 +17,6 @@ abstract class Node(location: Optional<NodeLocation>) {
         return visitor.visitNode(this, context)
     }
 
-    protected open fun getChildren(): List<out Node> {
-        throw UnsupportedOperationException("not yet implemented: " + javaClass.name)
-    }
-
     protected open fun shallowEquals(other: Node): Boolean {
         throw UnsupportedOperationException("not yet implemented: " + javaClass.name)
     }

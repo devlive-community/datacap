@@ -6,8 +6,7 @@ import io.edurt.datacap.parser.mysql.MySqlParserVisitor
 import io.edurt.datacap.parser.mysql.companion.ast.Node
 import io.edurt.datacap.parser.mysql.companion.ast.NodeLocation
 import io.edurt.datacap.parser.mysql.companion.ast.ParserOptions
-import io.edurt.datacap.parser.mysql.companion.tree.Relation
-import io.edurt.datacap.parser.mysql.companion.tree.SelectItem
+import io.edurt.datacap.parser.mysql.companion.tree.*
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.tree.ErrorNode
@@ -48,6 +47,7 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     override fun visitChildren(p0: RuleNode?): Node {
         return when (p0) {
             is SelectExpressionElementContext -> visitSelectExpressionElement(p0)
+            is SelectColumnElementContext -> visitSelectColumnElement(p0)
             else -> throw UnsupportedOperationException("Unsupported RuleNode type: ${p0?.javaClass?.simpleName}")
         }
     }
@@ -1070,12 +1070,14 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
         TODO("Not yet implemented")
     }
 
-    override fun visitTableSources(ctx: MySqlParser.TableSourcesContext?): Node {
-        TODO("Not yet implemented")
+    override fun visitTableSources(ctx: TableSourcesContext): Table {
+        val children: MutableSet<TableItem> = HashSet<TableItem>().toMutableSet()
+        ctx.tableSource().forEach { children += visitTableSourceBase(it as TableSourceBaseContext) }
+        return Table(getLocation(ctx), children)
     }
 
-    override fun visitTableSourceBase(ctx: MySqlParser.TableSourceBaseContext?): Node {
-        TODO("Not yet implemented")
+    override fun visitTableSourceBase(ctx: TableSourceBaseContext): TableItem {
+        return visitAtomTableItem(ctx.tableSourceItem() as AtomTableItemContext)
     }
 
     override fun visitTableSourceNested(ctx: MySqlParser.TableSourceNestedContext?): Node {
@@ -1086,15 +1088,19 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
         TODO("Not yet implemented")
     }
 
-    override fun visitAtomTableItem(ctx: MySqlParser.AtomTableItemContext?): Node {
-        TODO("Not yet implemented")
+    override fun visitAtomTableItem(ctx: AtomTableItemContext): TableItem {
+        var alias = ""
+        if (ctx.alias != null) {
+            alias = ctx.alias.text
+        }
+        return TableItem(getLocation(ctx), ctx.tableName().text, alias)
     }
 
     override fun visitSubqueryTableItem(ctx: MySqlParser.SubqueryTableItemContext?): Node {
         TODO("Not yet implemented")
     }
 
-    override fun visitTableSourcesItem(ctx: MySqlParser.TableSourcesItemContext?): Node {
+    override fun visitTableSourcesItem(ctx: MySqlParser.TableSourcesItemContext): Node {
         TODO("Not yet implemented")
     }
 
@@ -1134,12 +1140,19 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
         TODO("Not yet implemented")
     }
 
-    override fun visitQuerySpecification(ctx: MySqlParser.QuerySpecificationContext): Node {
-        val from: Optional<Relation> = Optional.empty()
+    override fun visitQuerySpecification(ctx: QuerySpecificationContext): Node {
         val selectItems: List<SelectItem> = visitSelectElements(ctx.selectElements(), SelectItem::class.java)
-        println(selectItems)
+        val fromClause: Relation = visitFromClause(ctx.fromClause())
 
-        TODO("Not yet implemented")
+        var limitClause: Limit = Limit(Optional.empty(), emptySet())
+        if (ctx.limitClause() != null) {
+            limitClause = visitLimitClause(ctx.limitClause())
+        }
+
+        return QuerySpecification(getLocation(ctx),
+                Select(getLocation(ctx.selectElements()), false, selectItems),
+                fromClause,
+                limitClause)
     }
 
     override fun visitQuerySpecificationNointo(ctx: MySqlParser.QuerySpecificationNointoContext?): Node {
@@ -1190,15 +1203,15 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
         TODO("Not yet implemented")
     }
 
-    override fun visitSelectColumnElement(ctx: MySqlParser.SelectColumnElementContext?): Node {
-        TODO("Not yet implemented")
+    override fun visitSelectColumnElement(ctx: SelectColumnElementContext): Node {
+        return SelectItem(getLocation(ctx), ctx.fullColumnName().text)
     }
 
     override fun visitSelectFunctionElement(ctx: MySqlParser.SelectFunctionElementContext?): Node {
         TODO("Not yet implemented")
     }
 
-    override fun visitSelectExpressionElement(ctx: MySqlParser.SelectExpressionElementContext): Node {
+    override fun visitSelectExpressionElement(ctx: SelectExpressionElementContext): Node {
         return SelectItem(getLocation(ctx.expression()), ctx.expression().text)
     }
 
@@ -1222,8 +1235,11 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
         TODO("Not yet implemented")
     }
 
-    override fun visitFromClause(ctx: MySqlParser.FromClauseContext?): Node {
-        TODO("Not yet implemented")
+    override fun visitFromClause(ctx: FromClauseContext): Relation {
+        if (ctx.tableSources() != null) {
+            return Relation(getLocation(ctx), visitTableSources(ctx.tableSources()))
+        }
+        return Relation(getLocation(ctx), Table(getLocation(ctx), emptySet()))
     }
 
     override fun visitGroupByClause(ctx: MySqlParser.GroupByClauseContext?): Node {
@@ -1242,12 +1258,14 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
         TODO("Not yet implemented")
     }
 
-    override fun visitLimitClause(ctx: MySqlParser.LimitClauseContext?): Node {
-        TODO("Not yet implemented")
+    override fun visitLimitClause(ctx: LimitClauseContext): Limit {
+        val children: MutableSet<LimitItem> = HashSet<LimitItem>().toMutableSet()
+        ctx?.limitClauseAtom()?.forEach { children += visitLimitClauseAtom(it) }
+        return Limit(getLocation(ctx), children)
     }
 
-    override fun visitLimitClauseAtom(ctx: MySqlParser.LimitClauseAtomContext?): Node {
-        TODO("Not yet implemented")
+    override fun visitLimitClauseAtom(ctx: LimitClauseAtomContext): LimitItem {
+        return LimitItem(getLocation(ctx), ctx.text.toLong())
     }
 
     override fun visitStartTransaction(ctx: MySqlParser.StartTransactionContext?): Node {
