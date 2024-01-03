@@ -72,7 +72,8 @@ export default defineComponent({
                   const queryConfigure: ExecuteModel = {
                     name: response.data.source.id,
                     content: response.data.query,
-                    format: "JSON"
+                    format: "JSON",
+                    mode: "REPORT",
                   }
                   new ExecuteService()
                     .execute(queryConfigure, null)

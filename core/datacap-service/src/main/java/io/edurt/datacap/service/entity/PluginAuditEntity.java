@@ -3,6 +3,7 @@ package io.edurt.datacap.service.entity;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.State;
+import io.edurt.datacap.service.enums.QueryMode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -55,6 +56,10 @@ public class PluginAuditEntity
 
     @Column(name = "count")
     private int count;
+
+    @Column(name = "query_mode")
+    @Enumerated(EnumType.STRING)
+    private QueryMode mode;
 
     @ManyToOne
     @JoinColumn(name = "plugin_id")

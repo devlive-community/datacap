@@ -8,3 +8,10 @@ ALTER TABLE `datacap_dashboard`
 UPDATE `datacap_dashboard`
 SET `version` = 'V1'
 WHERE `version` IS NULL;
+
+ALTER TABLE `audit_plugin`
+    ADD COLUMN `query_mode` VARCHAR(100) DEFAULT 'ADHOC';
+
+UPDATE `audit_plugin`
+SET `query_mode` = 'ADHOC'
+WHERE `query_mode` IS NULL;
