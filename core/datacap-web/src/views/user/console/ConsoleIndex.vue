@@ -227,7 +227,8 @@ export default defineComponent({
       error: null,
       buttonRunText: null,
       isSelection: false,
-      queryLimit: 100
+      queryLimit: 100,
+      queryMode: 'ADHOC'
     }
   },
   created()
@@ -253,6 +254,7 @@ export default defineComponent({
         const from = router.currentRoute.value.query.from;
         if (id && from) {
           if (from === 'snippet') {
+            this.queryMode = 'SNIPPET';
             SnippetService.getById(id)
               .then((response) => {
                 if (response.status && response.data?.code) {
@@ -262,6 +264,7 @@ export default defineComponent({
               });
           }
           else if (from === 'history') {
+            this.queryMode = 'HISTORY';
             new AuditService().getById(id)
               .then((response) => {
                 if (response.status && response.data?.content) {
@@ -366,7 +369,8 @@ export default defineComponent({
         name: this.applySource,
         content: this.isSelection ? editorInstance.instance.getSelectedText() : editorInstance.instance.getValue(),
         format: "JSON",
-        limit: this.queryLimit
+        limit: this.queryLimit,
+        mode: this.queryMode
       };
       new ExecuteService()
         .execute(configure, this.cancelToken.token)

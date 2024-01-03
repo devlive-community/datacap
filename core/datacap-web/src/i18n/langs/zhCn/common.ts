@@ -176,4 +176,5 @@ export default {
   realtime: '实时',
   dataset: '数据集',
   syncMode: '同步模式',
+  adhoc: '即席查询',
 }

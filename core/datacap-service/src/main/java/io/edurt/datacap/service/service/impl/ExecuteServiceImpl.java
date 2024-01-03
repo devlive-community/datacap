@@ -16,11 +16,13 @@ import io.edurt.datacap.service.body.ExecuteDslBody;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.ExecuteEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.enums.QueryMode;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.service.ExecuteService;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ import java.io.File;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class ExecuteServiceImpl
         implements ExecuteService
@@ -84,18 +87,25 @@ public class ExecuteServiceImpl
         }
         plugin.connect(_configure);
 
-        if (initializerConfigure.getAutoLimit()) {
-            Optional<SqlParser> parserOptional = this.injector.getInstance(Key.get(new TypeLiteral<Set<SqlParser>>() {}))
-                    .stream()
-                    .filter(parser -> parser.name().equalsIgnoreCase(plugin.name()))
-                    .findFirst();
-            ParserResponse response = parserOptional.orElse(injector.getInstance(Key.get(new TypeLiteral<Set<SqlParser>>() {}))
+        if (configure.getMode().equals(QueryMode.ADHOC)) {
+            try {
+                if (initializerConfigure.getAutoLimit()) {
+                    Optional<SqlParser> parserOptional = this.injector.getInstance(Key.get(new TypeLiteral<Set<SqlParser>>() {}))
                             .stream()
-                            .filter(parser -> parser.name().equalsIgnoreCase(initializerConfigure.getSqlParserDefaultEngine())).findFirst().get())
-                    .parse(configure.getContent());
+                            .filter(parser -> parser.name().equalsIgnoreCase(plugin.name()))
+                            .findFirst();
+                    ParserResponse response = parserOptional.orElse(injector.getInstance(Key.get(new TypeLiteral<Set<SqlParser>>() {}))
+                                    .stream()
+                                    .filter(parser -> parser.name().equalsIgnoreCase(initializerConfigure.getSqlParserDefaultEngine())).findFirst().get())
+                            .parse(configure.getContent());
 
-            if (response.isParser() && response.getType().equals(StatementType.SELECT) && response.getTable().getLimit() == null) {
-                configure.setContent(String.format("%s%nLIMIT %s", configure.getContent(), configure.getLimit()));
+                    if (response.isParser() && response.getType().equals(StatementType.SELECT) && response.getTable().getLimit() == null) {
+                        configure.setContent(String.format("%s%nLIMIT %s", configure.getContent(), configure.getLimit()));
+                    }
+                }
+            }
+            catch (Exception exception) {
+                log.warn("Ignore auto limit", exception);
             }
         }
 

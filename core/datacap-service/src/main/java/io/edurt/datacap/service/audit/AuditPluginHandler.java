@@ -68,6 +68,7 @@ public class AuditPluginHandler
             if (joinPoint.getArgs().length > 0) {
                 ExecuteEntity executeEntity = (ExecuteEntity) joinPoint.getArgs()[0];
                 pluginAudit.setContent(executeEntity.getContent());
+                pluginAudit.setMode(executeEntity.getMode());
                 Optional<SourceEntity> sourceEntity = this.sourceRepository.findById(Long.valueOf(executeEntity.getName()));
                 pluginAudit.setPlugin(sourceEntity.get());
             }

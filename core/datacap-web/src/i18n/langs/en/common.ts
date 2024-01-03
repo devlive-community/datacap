@@ -176,4 +176,5 @@ export default {
   realtime: 'Realtime',
   dataset: 'Dataset',
   syncMode: 'Sync Mode',
+  adhoc: 'Adhoc',
 }

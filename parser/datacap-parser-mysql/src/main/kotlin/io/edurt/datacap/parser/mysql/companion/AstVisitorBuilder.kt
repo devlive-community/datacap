@@ -52,16 +52,16 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
         }
     }
 
-    override fun visitTerminal(p0: TerminalNode?): Node {
-        TODO("Not yet implemented")
+    override fun visitTerminal(ctx: TerminalNode?): Node {
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
-    override fun visitErrorNode(p0: ErrorNode?): Node {
-        TODO("Not yet implemented")
+    override fun visitErrorNode(ctx: ErrorNode?): Node {
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoot(ctx: MySqlParser.RootContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSqlStatements(ctx: MySqlParser.SqlStatementsContext): Node {
@@ -97,977 +97,977 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     }
 
     override fun visitEmptyStatement_(ctx: MySqlParser.EmptyStatement_Context?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDdlStatement(ctx: MySqlParser.DdlStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported DdlStatement type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDmlStatement(ctx: MySqlParser.DmlStatementContext): Node {
         ctx.selectStatement()?.let {
             return visitSimpleSelect(ctx.selectStatement() as SimpleSelectContext)
         }
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported DmlStatement type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTransactionStatement(ctx: MySqlParser.TransactionStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported TransactionStatement type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitReplicationStatement(ctx: MySqlParser.ReplicationStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported ReplicationStatement type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPreparedStatement(ctx: MySqlParser.PreparedStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported PreparedStatement type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCompoundStatement(ctx: MySqlParser.CompoundStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported CompoundStatement type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAdministrationStatement(ctx: MySqlParser.AdministrationStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported AdministrationStatement type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUtilityStatement(ctx: MySqlParser.UtilityStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported UtilityStatement type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateDatabase(ctx: MySqlParser.CreateDatabaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported CreateDatabase type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateEvent(ctx: MySqlParser.CreateEventContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported CreateEvent type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateIndex(ctx: MySqlParser.CreateIndexContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported CreateIndex type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateLogfileGroup(ctx: MySqlParser.CreateLogfileGroupContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateProcedure(ctx: MySqlParser.CreateProcedureContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateFunction(ctx: MySqlParser.CreateFunctionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateRole(ctx: MySqlParser.CreateRoleContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateServer(ctx: MySqlParser.CreateServerContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCopyCreateTable(ctx: MySqlParser.CopyCreateTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitQueryCreateTable(ctx: MySqlParser.QueryCreateTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitColumnCreateTable(ctx: MySqlParser.ColumnCreateTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateTablespaceInnodb(ctx: MySqlParser.CreateTablespaceInnodbContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateTablespaceNdb(ctx: MySqlParser.CreateTablespaceNdbContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateTrigger(ctx: MySqlParser.CreateTriggerContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWithClause(ctx: MySqlParser.WithClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCommonTableExpressions(ctx: MySqlParser.CommonTableExpressionsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCteName(ctx: MySqlParser.CteNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCteColumnName(ctx: MySqlParser.CteColumnNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateView(ctx: MySqlParser.CreateViewContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateDatabaseOption(ctx: MySqlParser.CreateDatabaseOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCharSet(ctx: MySqlParser.CharSetContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCurrentUserExpression(ctx: MySqlParser.CurrentUserExpressionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitOwnerStatement(ctx: MySqlParser.OwnerStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPreciseSchedule(ctx: MySqlParser.PreciseScheduleContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIntervalSchedule(ctx: MySqlParser.IntervalScheduleContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTimestampValue(ctx: MySqlParser.TimestampValueContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIntervalExpr(ctx: MySqlParser.IntervalExprContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIntervalType(ctx: MySqlParser.IntervalTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitEnableType(ctx: MySqlParser.EnableTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIndexType(ctx: MySqlParser.IndexTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIndexOption(ctx: MySqlParser.IndexOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitProcedureParameter(ctx: MySqlParser.ProcedureParameterContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFunctionParameter(ctx: MySqlParser.FunctionParameterContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoutineComment(ctx: MySqlParser.RoutineCommentContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoutineLanguage(ctx: MySqlParser.RoutineLanguageContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoutineBehavior(ctx: MySqlParser.RoutineBehaviorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoutineData(ctx: MySqlParser.RoutineDataContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoutineSecurity(ctx: MySqlParser.RoutineSecurityContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitServerOption(ctx: MySqlParser.ServerOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateDefinitions(ctx: MySqlParser.CreateDefinitionsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitColumnDeclaration(ctx: MySqlParser.ColumnDeclarationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitConstraintDeclaration(ctx: MySqlParser.ConstraintDeclarationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIndexDeclaration(ctx: MySqlParser.IndexDeclarationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitColumnDefinition(ctx: MySqlParser.ColumnDefinitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNullColumnConstraint(ctx: MySqlParser.NullColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDefaultColumnConstraint(ctx: MySqlParser.DefaultColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitVisibilityColumnConstraint(ctx: MySqlParser.VisibilityColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitInvisibilityColumnConstraint(ctx: MySqlParser.InvisibilityColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAutoIncrementColumnConstraint(ctx: MySqlParser.AutoIncrementColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPrimaryKeyColumnConstraint(ctx: MySqlParser.PrimaryKeyColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUniqueKeyColumnConstraint(ctx: MySqlParser.UniqueKeyColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCommentColumnConstraint(ctx: MySqlParser.CommentColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFormatColumnConstraint(ctx: MySqlParser.FormatColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStorageColumnConstraint(ctx: MySqlParser.StorageColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitReferenceColumnConstraint(ctx: MySqlParser.ReferenceColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCollateColumnConstraint(ctx: MySqlParser.CollateColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitGeneratedColumnConstraint(ctx: MySqlParser.GeneratedColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSerialDefaultColumnConstraint(ctx: MySqlParser.SerialDefaultColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCheckColumnConstraint(ctx: MySqlParser.CheckColumnConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPrimaryKeyTableConstraint(ctx: MySqlParser.PrimaryKeyTableConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUniqueKeyTableConstraint(ctx: MySqlParser.UniqueKeyTableConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitForeignKeyTableConstraint(ctx: MySqlParser.ForeignKeyTableConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCheckTableConstraint(ctx: MySqlParser.CheckTableConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitReferenceDefinition(ctx: MySqlParser.ReferenceDefinitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitReferenceAction(ctx: MySqlParser.ReferenceActionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitReferenceControlType(ctx: MySqlParser.ReferenceControlTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleIndexDeclaration(ctx: MySqlParser.SimpleIndexDeclarationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSpecialIndexDeclaration(ctx: MySqlParser.SpecialIndexDeclarationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionEngine(ctx: MySqlParser.TableOptionEngineContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionEngineAttribute(ctx: MySqlParser.TableOptionEngineAttributeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionAutoextendSize(ctx: MySqlParser.TableOptionAutoextendSizeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionAutoIncrement(ctx: MySqlParser.TableOptionAutoIncrementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionAverage(ctx: MySqlParser.TableOptionAverageContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionCharset(ctx: MySqlParser.TableOptionCharsetContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionChecksum(ctx: MySqlParser.TableOptionChecksumContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionCollate(ctx: MySqlParser.TableOptionCollateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionComment(ctx: MySqlParser.TableOptionCommentContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionCompression(ctx: MySqlParser.TableOptionCompressionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionConnection(ctx: MySqlParser.TableOptionConnectionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionDataDirectory(ctx: MySqlParser.TableOptionDataDirectoryContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionDelay(ctx: MySqlParser.TableOptionDelayContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionEncryption(ctx: MySqlParser.TableOptionEncryptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionPageCompressed(ctx: MySqlParser.TableOptionPageCompressedContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionPageCompressionLevel(ctx: MySqlParser.TableOptionPageCompressionLevelContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionEncryptionKeyId(ctx: MySqlParser.TableOptionEncryptionKeyIdContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionIndexDirectory(ctx: MySqlParser.TableOptionIndexDirectoryContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionInsertMethod(ctx: MySqlParser.TableOptionInsertMethodContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionKeyBlockSize(ctx: MySqlParser.TableOptionKeyBlockSizeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionMaxRows(ctx: MySqlParser.TableOptionMaxRowsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionMinRows(ctx: MySqlParser.TableOptionMinRowsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionPackKeys(ctx: MySqlParser.TableOptionPackKeysContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionPassword(ctx: MySqlParser.TableOptionPasswordContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionRowFormat(ctx: MySqlParser.TableOptionRowFormatContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionStartTransaction(ctx: MySqlParser.TableOptionStartTransactionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionSecondaryEngineAttribute(ctx: MySqlParser.TableOptionSecondaryEngineAttributeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionRecalculation(ctx: MySqlParser.TableOptionRecalculationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionPersistent(ctx: MySqlParser.TableOptionPersistentContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionSamplePage(ctx: MySqlParser.TableOptionSamplePageContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionTablespace(ctx: MySqlParser.TableOptionTablespaceContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionTableType(ctx: MySqlParser.TableOptionTableTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionTransactional(ctx: MySqlParser.TableOptionTransactionalContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableOptionUnion(ctx: MySqlParser.TableOptionUnionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableType(ctx: MySqlParser.TableTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTablespaceStorage(ctx: MySqlParser.TablespaceStorageContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionDefinitions(ctx: MySqlParser.PartitionDefinitionsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionFunctionHash(ctx: MySqlParser.PartitionFunctionHashContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionFunctionKey(ctx: MySqlParser.PartitionFunctionKeyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionFunctionRange(ctx: MySqlParser.PartitionFunctionRangeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionFunctionList(ctx: MySqlParser.PartitionFunctionListContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSubPartitionFunctionHash(ctx: MySqlParser.SubPartitionFunctionHashContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSubPartitionFunctionKey(ctx: MySqlParser.SubPartitionFunctionKeyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionComparison(ctx: MySqlParser.PartitionComparisonContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionListAtom(ctx: MySqlParser.PartitionListAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionListVector(ctx: MySqlParser.PartitionListVectorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionSimple(ctx: MySqlParser.PartitionSimpleContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionDefinerAtom(ctx: MySqlParser.PartitionDefinerAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionDefinerVector(ctx: MySqlParser.PartitionDefinerVectorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSubpartitionDefinition(ctx: MySqlParser.SubpartitionDefinitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionOptionEngine(ctx: MySqlParser.PartitionOptionEngineContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionOptionComment(ctx: MySqlParser.PartitionOptionCommentContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionOptionDataDirectory(ctx: MySqlParser.PartitionOptionDataDirectoryContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionOptionIndexDirectory(ctx: MySqlParser.PartitionOptionIndexDirectoryContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionOptionMaxRows(ctx: MySqlParser.PartitionOptionMaxRowsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionOptionMinRows(ctx: MySqlParser.PartitionOptionMinRowsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionOptionTablespace(ctx: MySqlParser.PartitionOptionTablespaceContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionOptionNodeGroup(ctx: MySqlParser.PartitionOptionNodeGroupContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterSimpleDatabase(ctx: MySqlParser.AlterSimpleDatabaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterUpgradeName(ctx: MySqlParser.AlterUpgradeNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterEvent(ctx: MySqlParser.AlterEventContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterFunction(ctx: MySqlParser.AlterFunctionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterInstance(ctx: MySqlParser.AlterInstanceContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterLogfileGroup(ctx: MySqlParser.AlterLogfileGroupContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterProcedure(ctx: MySqlParser.AlterProcedureContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterServer(ctx: MySqlParser.AlterServerContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterTable(ctx: MySqlParser.AlterTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterTablespace(ctx: MySqlParser.AlterTablespaceContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterView(ctx: MySqlParser.AlterViewContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByTableOption(ctx: MySqlParser.AlterByTableOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddColumn(ctx: MySqlParser.AlterByAddColumnContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddColumns(ctx: MySqlParser.AlterByAddColumnsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddIndex(ctx: MySqlParser.AlterByAddIndexContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddPrimaryKey(ctx: MySqlParser.AlterByAddPrimaryKeyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddUniqueKey(ctx: MySqlParser.AlterByAddUniqueKeyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddSpecialIndex(ctx: MySqlParser.AlterByAddSpecialIndexContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddForeignKey(ctx: MySqlParser.AlterByAddForeignKeyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddCheckTableConstraint(ctx: MySqlParser.AlterByAddCheckTableConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAlterCheckTableConstraint(ctx: MySqlParser.AlterByAlterCheckTableConstraintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterBySetAlgorithm(ctx: MySqlParser.AlterBySetAlgorithmContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByChangeDefault(ctx: MySqlParser.AlterByChangeDefaultContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByChangeColumn(ctx: MySqlParser.AlterByChangeColumnContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByRenameColumn(ctx: MySqlParser.AlterByRenameColumnContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByLock(ctx: MySqlParser.AlterByLockContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByModifyColumn(ctx: MySqlParser.AlterByModifyColumnContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDropColumn(ctx: MySqlParser.AlterByDropColumnContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDropConstraintCheck(ctx: MySqlParser.AlterByDropConstraintCheckContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDropPrimaryKey(ctx: MySqlParser.AlterByDropPrimaryKeyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDropIndex(ctx: MySqlParser.AlterByDropIndexContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByRenameIndex(ctx: MySqlParser.AlterByRenameIndexContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAlterColumnDefault(ctx: MySqlParser.AlterByAlterColumnDefaultContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAlterIndexVisibility(ctx: MySqlParser.AlterByAlterIndexVisibilityContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDropForeignKey(ctx: MySqlParser.AlterByDropForeignKeyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDisableKeys(ctx: MySqlParser.AlterByDisableKeysContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByEnableKeys(ctx: MySqlParser.AlterByEnableKeysContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByRename(ctx: MySqlParser.AlterByRenameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByOrder(ctx: MySqlParser.AlterByOrderContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByConvertCharset(ctx: MySqlParser.AlterByConvertCharsetContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDefaultCharset(ctx: MySqlParser.AlterByDefaultCharsetContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDiscardTablespace(ctx: MySqlParser.AlterByDiscardTablespaceContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByImportTablespace(ctx: MySqlParser.AlterByImportTablespaceContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByForce(ctx: MySqlParser.AlterByForceContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByValidate(ctx: MySqlParser.AlterByValidateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddDefinitions(ctx: MySqlParser.AlterByAddDefinitionsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterPartition(ctx: MySqlParser.AlterPartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAddPartition(ctx: MySqlParser.AlterByAddPartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDropPartition(ctx: MySqlParser.AlterByDropPartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByDiscardPartition(ctx: MySqlParser.AlterByDiscardPartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByImportPartition(ctx: MySqlParser.AlterByImportPartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByTruncatePartition(ctx: MySqlParser.AlterByTruncatePartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByCoalescePartition(ctx: MySqlParser.AlterByCoalescePartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByReorganizePartition(ctx: MySqlParser.AlterByReorganizePartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByExchangePartition(ctx: MySqlParser.AlterByExchangePartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByAnalyzePartition(ctx: MySqlParser.AlterByAnalyzePartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByCheckPartition(ctx: MySqlParser.AlterByCheckPartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByOptimizePartition(ctx: MySqlParser.AlterByOptimizePartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByRebuildPartition(ctx: MySqlParser.AlterByRebuildPartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByRepairPartition(ctx: MySqlParser.AlterByRepairPartitionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByRemovePartitioning(ctx: MySqlParser.AlterByRemovePartitioningContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterByUpgradePartitioning(ctx: MySqlParser.AlterByUpgradePartitioningContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropDatabase(ctx: MySqlParser.DropDatabaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropEvent(ctx: MySqlParser.DropEventContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropIndex(ctx: MySqlParser.DropIndexContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropLogfileGroup(ctx: MySqlParser.DropLogfileGroupContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropProcedure(ctx: MySqlParser.DropProcedureContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropFunction(ctx: MySqlParser.DropFunctionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropServer(ctx: MySqlParser.DropServerContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropTable(ctx: MySqlParser.DropTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropTablespace(ctx: MySqlParser.DropTablespaceContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropTrigger(ctx: MySqlParser.DropTriggerContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropView(ctx: MySqlParser.DropViewContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropRole(ctx: MySqlParser.DropRoleContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetRole(ctx: MySqlParser.SetRoleContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRenameTable(ctx: MySqlParser.RenameTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRenameTableClause(ctx: MySqlParser.RenameTableClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTruncateTable(ctx: MySqlParser.TruncateTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCallStatement(ctx: MySqlParser.CallStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDeleteStatement(ctx: MySqlParser.DeleteStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDoStatement(ctx: MySqlParser.DoStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerStatement(ctx: MySqlParser.HandlerStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitInsertStatement(ctx: MySqlParser.InsertStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLoadDataStatement(ctx: MySqlParser.LoadDataStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLoadXmlStatement(ctx: MySqlParser.LoadXmlStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitReplaceStatement(ctx: MySqlParser.ReplaceStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleSelect(ctx: SimpleSelectContext): Node {
         ctx.querySpecification()?.let {
             return visitQuerySpecification(it)
         }
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitParenthesisSelect(ctx: MySqlParser.ParenthesisSelectContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUnionSelect(ctx: MySqlParser.UnionSelectContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUnionParenthesisSelect(ctx: MySqlParser.UnionParenthesisSelectContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWithLateralStatement(ctx: MySqlParser.WithLateralStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUpdateStatement(ctx: MySqlParser.UpdateStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitValuesStatement(ctx: MySqlParser.ValuesStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitInsertStatementValue(ctx: MySqlParser.InsertStatementValueContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUpdatedElement(ctx: MySqlParser.UpdatedElementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAssignmentField(ctx: MySqlParser.AssignmentFieldContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLockClause(ctx: MySqlParser.LockClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSingleDeleteStatement(ctx: MySqlParser.SingleDeleteStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMultipleDeleteStatement(ctx: MySqlParser.MultipleDeleteStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerOpenStatement(ctx: MySqlParser.HandlerOpenStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerReadIndexStatement(ctx: MySqlParser.HandlerReadIndexStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerReadStatement(ctx: MySqlParser.HandlerReadStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerCloseStatement(ctx: MySqlParser.HandlerCloseStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSingleUpdateStatement(ctx: MySqlParser.SingleUpdateStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMultipleUpdateStatement(ctx: MySqlParser.MultipleUpdateStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitOrderByClause(ctx: MySqlParser.OrderByClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitOrderByExpression(ctx: MySqlParser.OrderByExpressionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableSources(ctx: TableSourcesContext): Table {
@@ -1081,11 +1081,11 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     }
 
     override fun visitTableSourceNested(ctx: MySqlParser.TableSourceNestedContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableJson(ctx: MySqlParser.TableJsonContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAtomTableItem(ctx: AtomTableItemContext): TableItem {
@@ -1097,47 +1097,47 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     }
 
     override fun visitSubqueryTableItem(ctx: MySqlParser.SubqueryTableItemContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableSourcesItem(ctx: MySqlParser.TableSourcesItemContext): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIndexHint(ctx: MySqlParser.IndexHintContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIndexHintType(ctx: MySqlParser.IndexHintTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitInnerJoin(ctx: MySqlParser.InnerJoinContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStraightJoin(ctx: MySqlParser.StraightJoinContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitOuterJoin(ctx: MySqlParser.OuterJoinContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNaturalJoin(ctx: MySqlParser.NaturalJoinContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJoinSpec(ctx: MySqlParser.JoinSpecContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitQueryExpression(ctx: MySqlParser.QueryExpressionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitQueryExpressionNointo(ctx: MySqlParser.QueryExpressionNointoContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitQuerySpecification(ctx: QuerySpecificationContext): Node {
@@ -1156,51 +1156,51 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     }
 
     override fun visitQuerySpecificationNointo(ctx: MySqlParser.QuerySpecificationNointoContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUnionParenthesis(ctx: MySqlParser.UnionParenthesisContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUnionStatement(ctx: MySqlParser.UnionStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLateralStatement(ctx: MySqlParser.LateralStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJsonTable(ctx: MySqlParser.JsonTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJsonColumnList(ctx: MySqlParser.JsonColumnListContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJsonColumn(ctx: MySqlParser.JsonColumnContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJsonOnEmpty(ctx: MySqlParser.JsonOnEmptyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJsonOnError(ctx: MySqlParser.JsonOnErrorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSelectSpec(ctx: MySqlParser.SelectSpecContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSelectElements(ctx: MySqlParser.SelectElementsContext): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSelectStarElement(ctx: MySqlParser.SelectStarElementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSelectColumnElement(ctx: SelectColumnElementContext): Node {
@@ -1208,7 +1208,7 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     }
 
     override fun visitSelectFunctionElement(ctx: MySqlParser.SelectFunctionElementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSelectExpressionElement(ctx: SelectExpressionElementContext): Node {
@@ -1216,23 +1216,23 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     }
 
     override fun visitSelectIntoVariables(ctx: MySqlParser.SelectIntoVariablesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSelectIntoDumpFile(ctx: MySqlParser.SelectIntoDumpFileContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSelectIntoTextFile(ctx: MySqlParser.SelectIntoTextFileContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSelectFieldsInto(ctx: MySqlParser.SelectFieldsIntoContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSelectLinesInto(ctx: MySqlParser.SelectLinesIntoContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFromClause(ctx: FromClauseContext): Relation {
@@ -1243,19 +1243,19 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     }
 
     override fun visitGroupByClause(ctx: MySqlParser.GroupByClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHavingClause(ctx: MySqlParser.HavingClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWindowClause(ctx: MySqlParser.WindowClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitGroupByItem(ctx: MySqlParser.GroupByItemContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLimitClause(ctx: LimitClauseContext): Limit {
@@ -1269,1318 +1269,1318 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     }
 
     override fun visitStartTransaction(ctx: MySqlParser.StartTransactionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBeginWork(ctx: MySqlParser.BeginWorkContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCommitWork(ctx: MySqlParser.CommitWorkContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRollbackWork(ctx: MySqlParser.RollbackWorkContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSavepointStatement(ctx: MySqlParser.SavepointStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRollbackStatement(ctx: MySqlParser.RollbackStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitReleaseStatement(ctx: MySqlParser.ReleaseStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLockTables(ctx: MySqlParser.LockTablesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUnlockTables(ctx: MySqlParser.UnlockTablesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetAutocommitStatement(ctx: MySqlParser.SetAutocommitStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetTransactionStatement(ctx: MySqlParser.SetTransactionStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTransactionMode(ctx: MySqlParser.TransactionModeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLockTableElement(ctx: MySqlParser.LockTableElementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLockAction(ctx: MySqlParser.LockActionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTransactionOption(ctx: MySqlParser.TransactionOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTransactionLevel(ctx: MySqlParser.TransactionLevelContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitChangeMaster(ctx: MySqlParser.ChangeMasterContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitChangeReplicationFilter(ctx: MySqlParser.ChangeReplicationFilterContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPurgeBinaryLogs(ctx: MySqlParser.PurgeBinaryLogsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitResetMaster(ctx: MySqlParser.ResetMasterContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitResetSlave(ctx: MySqlParser.ResetSlaveContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStartSlave(ctx: MySqlParser.StartSlaveContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStopSlave(ctx: MySqlParser.StopSlaveContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStartGroupReplication(ctx: MySqlParser.StartGroupReplicationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStopGroupReplication(ctx: MySqlParser.StopGroupReplicationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMasterStringOption(ctx: MySqlParser.MasterStringOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMasterDecimalOption(ctx: MySqlParser.MasterDecimalOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMasterBoolOption(ctx: MySqlParser.MasterBoolOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMasterRealOption(ctx: MySqlParser.MasterRealOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMasterUidListOption(ctx: MySqlParser.MasterUidListOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStringMasterOption(ctx: MySqlParser.StringMasterOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDecimalMasterOption(ctx: MySqlParser.DecimalMasterOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBoolMasterOption(ctx: MySqlParser.BoolMasterOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitChannelOption(ctx: MySqlParser.ChannelOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDoDbReplication(ctx: MySqlParser.DoDbReplicationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIgnoreDbReplication(ctx: MySqlParser.IgnoreDbReplicationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDoTableReplication(ctx: MySqlParser.DoTableReplicationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIgnoreTableReplication(ctx: MySqlParser.IgnoreTableReplicationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWildDoTableReplication(ctx: MySqlParser.WildDoTableReplicationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWildIgnoreTableReplication(ctx: MySqlParser.WildIgnoreTableReplicationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRewriteDbReplication(ctx: MySqlParser.RewriteDbReplicationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTablePair(ctx: MySqlParser.TablePairContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitThreadType(ctx: MySqlParser.ThreadTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitGtidsUntilOption(ctx: MySqlParser.GtidsUntilOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMasterLogUntilOption(ctx: MySqlParser.MasterLogUntilOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRelayLogUntilOption(ctx: MySqlParser.RelayLogUntilOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSqlGapsUntilOption(ctx: MySqlParser.SqlGapsUntilOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUserConnectionOption(ctx: MySqlParser.UserConnectionOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPasswordConnectionOption(ctx: MySqlParser.PasswordConnectionOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDefaultAuthConnectionOption(ctx: MySqlParser.DefaultAuthConnectionOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPluginDirConnectionOption(ctx: MySqlParser.PluginDirConnectionOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitGtuidSet(ctx: MySqlParser.GtuidSetContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitXaStartTransaction(ctx: MySqlParser.XaStartTransactionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitXaEndTransaction(ctx: MySqlParser.XaEndTransactionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitXaPrepareStatement(ctx: MySqlParser.XaPrepareStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitXaCommitWork(ctx: MySqlParser.XaCommitWorkContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitXaRollbackWork(ctx: MySqlParser.XaRollbackWorkContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitXaRecoverWork(ctx: MySqlParser.XaRecoverWorkContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPrepareStatement(ctx: MySqlParser.PrepareStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitExecuteStatement(ctx: MySqlParser.ExecuteStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDeallocatePrepare(ctx: MySqlParser.DeallocatePrepareContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoutineBody(ctx: MySqlParser.RoutineBodyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBlockStatement(ctx: MySqlParser.BlockStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCaseStatement(ctx: MySqlParser.CaseStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIfStatement(ctx: MySqlParser.IfStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIterateStatement(ctx: MySqlParser.IterateStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLeaveStatement(ctx: MySqlParser.LeaveStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLoopStatement(ctx: MySqlParser.LoopStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRepeatStatement(ctx: MySqlParser.RepeatStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitReturnStatement(ctx: MySqlParser.ReturnStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWhileStatement(ctx: MySqlParser.WhileStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCloseCursor(ctx: MySqlParser.CloseCursorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFetchCursor(ctx: MySqlParser.FetchCursorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitOpenCursor(ctx: MySqlParser.OpenCursorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDeclareVariable(ctx: MySqlParser.DeclareVariableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDeclareCondition(ctx: MySqlParser.DeclareConditionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDeclareCursor(ctx: MySqlParser.DeclareCursorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDeclareHandler(ctx: MySqlParser.DeclareHandlerContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerConditionCode(ctx: MySqlParser.HandlerConditionCodeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerConditionState(ctx: MySqlParser.HandlerConditionStateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerConditionName(ctx: MySqlParser.HandlerConditionNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerConditionWarning(ctx: MySqlParser.HandlerConditionWarningContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerConditionNotfound(ctx: MySqlParser.HandlerConditionNotfoundContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHandlerConditionException(ctx: MySqlParser.HandlerConditionExceptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitProcedureSqlStatement(ctx: MySqlParser.ProcedureSqlStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCaseAlternative(ctx: MySqlParser.CaseAlternativeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitElifAlternative(ctx: MySqlParser.ElifAlternativeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterUserMysqlV56(ctx: MySqlParser.AlterUserMysqlV56Context?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAlterUserMysqlV80(ctx: MySqlParser.AlterUserMysqlV80Context?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateUserMysqlV56(ctx: MySqlParser.CreateUserMysqlV56Context?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateUserMysqlV80(ctx: MySqlParser.CreateUserMysqlV80Context?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDropUser(ctx: MySqlParser.DropUserContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitGrantStatement(ctx: MySqlParser.GrantStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoleOption(ctx: MySqlParser.RoleOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitGrantProxy(ctx: MySqlParser.GrantProxyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRenameUser(ctx: MySqlParser.RenameUserContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDetailRevoke(ctx: MySqlParser.DetailRevokeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShortRevoke(ctx: MySqlParser.ShortRevokeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoleRevoke(ctx: MySqlParser.RoleRevokeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRevokeProxy(ctx: MySqlParser.RevokeProxyContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetPasswordStatement(ctx: MySqlParser.SetPasswordStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUserSpecification(ctx: MySqlParser.UserSpecificationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHashAuthOption(ctx: MySqlParser.HashAuthOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRandomAuthOption(ctx: MySqlParser.RandomAuthOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStringAuthOption(ctx: MySqlParser.StringAuthOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitModuleAuthOption(ctx: MySqlParser.ModuleAuthOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleAuthOption(ctx: MySqlParser.SimpleAuthOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAuthOptionClause(ctx: MySqlParser.AuthOptionClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitModule(ctx: MySqlParser.ModuleContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPasswordModuleOption(ctx: MySqlParser.PasswordModuleOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTlsOption(ctx: MySqlParser.TlsOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUserResourceOption(ctx: MySqlParser.UserResourceOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUserPasswordOption(ctx: MySqlParser.UserPasswordOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUserLockOption(ctx: MySqlParser.UserLockOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPrivelegeClause(ctx: MySqlParser.PrivelegeClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPrivilege(ctx: MySqlParser.PrivilegeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCurrentSchemaPriviLevel(ctx: MySqlParser.CurrentSchemaPriviLevelContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitGlobalPrivLevel(ctx: MySqlParser.GlobalPrivLevelContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDefiniteSchemaPrivLevel(ctx: MySqlParser.DefiniteSchemaPrivLevelContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDefiniteFullTablePrivLevel(ctx: MySqlParser.DefiniteFullTablePrivLevelContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDefiniteFullTablePrivLevel2(ctx: MySqlParser.DefiniteFullTablePrivLevel2Context?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDefiniteTablePrivLevel(ctx: MySqlParser.DefiniteTablePrivLevelContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRenameUserClause(ctx: MySqlParser.RenameUserClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAnalyzeTable(ctx: MySqlParser.AnalyzeTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCheckTable(ctx: MySqlParser.CheckTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitChecksumTable(ctx: MySqlParser.ChecksumTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitOptimizeTable(ctx: MySqlParser.OptimizeTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRepairTable(ctx: MySqlParser.RepairTableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCheckTableOption(ctx: MySqlParser.CheckTableOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCreateUdfunction(ctx: MySqlParser.CreateUdfunctionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitInstallPlugin(ctx: MySqlParser.InstallPluginContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUninstallPlugin(ctx: MySqlParser.UninstallPluginContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetVariable(ctx: MySqlParser.SetVariableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetCharset(ctx: MySqlParser.SetCharsetContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetNames(ctx: MySqlParser.SetNamesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetPassword(ctx: MySqlParser.SetPasswordContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetTransaction(ctx: MySqlParser.SetTransactionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetAutocommit(ctx: MySqlParser.SetAutocommitContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSetNewValueInsideTrigger(ctx: MySqlParser.SetNewValueInsideTriggerContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowMasterLogs(ctx: MySqlParser.ShowMasterLogsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowLogEvents(ctx: MySqlParser.ShowLogEventsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowObjectFilter(ctx: MySqlParser.ShowObjectFilterContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowColumns(ctx: MySqlParser.ShowColumnsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowCreateDb(ctx: MySqlParser.ShowCreateDbContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowCreateFullIdObject(ctx: MySqlParser.ShowCreateFullIdObjectContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowCreateUser(ctx: MySqlParser.ShowCreateUserContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowEngine(ctx: MySqlParser.ShowEngineContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowGlobalInfo(ctx: MySqlParser.ShowGlobalInfoContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowErrors(ctx: MySqlParser.ShowErrorsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowCountErrors(ctx: MySqlParser.ShowCountErrorsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowSchemaFilter(ctx: MySqlParser.ShowSchemaFilterContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowRoutine(ctx: MySqlParser.ShowRoutineContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowGrants(ctx: MySqlParser.ShowGrantsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowIndexes(ctx: MySqlParser.ShowIndexesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowOpenTables(ctx: MySqlParser.ShowOpenTablesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowProfile(ctx: MySqlParser.ShowProfileContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowSlaveStatus(ctx: MySqlParser.ShowSlaveStatusContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitVariableClause(ctx: MySqlParser.VariableClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowCommonEntity(ctx: MySqlParser.ShowCommonEntityContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowFilter(ctx: MySqlParser.ShowFilterContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowGlobalInfoClause(ctx: MySqlParser.ShowGlobalInfoClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowSchemaEntity(ctx: MySqlParser.ShowSchemaEntityContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShowProfileType(ctx: MySqlParser.ShowProfileTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBinlogStatement(ctx: MySqlParser.BinlogStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCacheIndexStatement(ctx: MySqlParser.CacheIndexStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFlushStatement(ctx: MySqlParser.FlushStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitKillStatement(ctx: MySqlParser.KillStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLoadIndexIntoCache(ctx: MySqlParser.LoadIndexIntoCacheContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitResetStatement(ctx: MySqlParser.ResetStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitShutdownStatement(ctx: MySqlParser.ShutdownStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableIndexes(ctx: MySqlParser.TableIndexesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleFlushOption(ctx: MySqlParser.SimpleFlushOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitChannelFlushOption(ctx: MySqlParser.ChannelFlushOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableFlushOption(ctx: MySqlParser.TableFlushOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFlushTableOption(ctx: MySqlParser.FlushTableOptionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLoadedTableIndexes(ctx: MySqlParser.LoadedTableIndexesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleDescribeStatement(ctx: MySqlParser.SimpleDescribeStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFullDescribeStatement(ctx: MySqlParser.FullDescribeStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHelpStatement(ctx: MySqlParser.HelpStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUseStatement(ctx: MySqlParser.UseStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSignalStatement(ctx: MySqlParser.SignalStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitResignalStatement(ctx: MySqlParser.ResignalStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSignalConditionInformation(ctx: MySqlParser.SignalConditionInformationContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWithStatement(ctx: MySqlParser.WithStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableStatement(ctx: MySqlParser.TableStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDiagnosticsStatement(ctx: MySqlParser.DiagnosticsStatementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDiagnosticsConditionInformationName(ctx: MySqlParser.DiagnosticsConditionInformationNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDescribeStatements(ctx: MySqlParser.DescribeStatementsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDescribeConnection(ctx: MySqlParser.DescribeConnectionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFullId(ctx: MySqlParser.FullIdContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTableName(ctx: MySqlParser.TableNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRoleName(ctx: MySqlParser.RoleNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFullColumnName(ctx: MySqlParser.FullColumnNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIndexColumnName(ctx: MySqlParser.IndexColumnNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleUserName(ctx: MySqlParser.SimpleUserNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHostName(ctx: MySqlParser.HostNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUserName(ctx: MySqlParser.UserNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMysqlVariable(ctx: MySqlParser.MysqlVariableContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCharsetName(ctx: MySqlParser.CharsetNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCollationName(ctx: MySqlParser.CollationNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitEngineName(ctx: MySqlParser.EngineNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitEngineNameBase(ctx: MySqlParser.EngineNameBaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUuidSet(ctx: MySqlParser.UuidSetContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitXid(ctx: MySqlParser.XidContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitXuidStringId(ctx: MySqlParser.XuidStringIdContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAuthPlugin(ctx: MySqlParser.AuthPluginContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUid(ctx: MySqlParser.UidContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleId(ctx: MySqlParser.SimpleIdContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDottedId(ctx: MySqlParser.DottedIdContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDecimalLiteral(ctx: MySqlParser.DecimalLiteralContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFileSizeLiteral(ctx: MySqlParser.FileSizeLiteralContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStringLiteral(ctx: MySqlParser.StringLiteralContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBooleanLiteral(ctx: MySqlParser.BooleanLiteralContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitHexadecimalLiteral(ctx: MySqlParser.HexadecimalLiteralContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNullNotnull(ctx: MySqlParser.NullNotnullContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitConstant(ctx: MySqlParser.ConstantContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitStringDataType(ctx: MySqlParser.StringDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNationalVaryingStringDataType(ctx: MySqlParser.NationalVaryingStringDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNationalStringDataType(ctx: MySqlParser.NationalStringDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDimensionDataType(ctx: MySqlParser.DimensionDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleDataType(ctx: MySqlParser.SimpleDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCollectionDataType(ctx: MySqlParser.CollectionDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSpatialDataType(ctx: MySqlParser.SpatialDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLongVarcharDataType(ctx: MySqlParser.LongVarcharDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLongVarbinaryDataType(ctx: MySqlParser.LongVarbinaryDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCollectionOptions(ctx: MySqlParser.CollectionOptionsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitConvertedDataType(ctx: MySqlParser.ConvertedDataTypeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLengthOneDimension(ctx: MySqlParser.LengthOneDimensionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLengthTwoDimension(ctx: MySqlParser.LengthTwoDimensionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLengthTwoOptionalDimension(ctx: MySqlParser.LengthTwoOptionalDimensionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUidList(ctx: MySqlParser.UidListContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFullColumnNameList(ctx: MySqlParser.FullColumnNameListContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTables(ctx: MySqlParser.TablesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIndexColumnNames(ctx: MySqlParser.IndexColumnNamesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitExpressions(ctx: MySqlParser.ExpressionsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitExpressionsWithDefaults(ctx: MySqlParser.ExpressionsWithDefaultsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitConstants(ctx: MySqlParser.ConstantsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleStrings(ctx: MySqlParser.SimpleStringsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUserVariables(ctx: MySqlParser.UserVariablesContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDefaultValue(ctx: MySqlParser.DefaultValueContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCurrentTimestamp(ctx: MySqlParser.CurrentTimestampContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitExpressionOrDefault(ctx: MySqlParser.ExpressionOrDefaultContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIfExists(ctx: MySqlParser.IfExistsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIfNotExists(ctx: MySqlParser.IfNotExistsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitOrReplace(ctx: MySqlParser.OrReplaceContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWaitNowaitClause(ctx: MySqlParser.WaitNowaitClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSpecificFunctionCall(ctx: MySqlParser.SpecificFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAggregateFunctionCall(ctx: MySqlParser.AggregateFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNonAggregateFunctionCall(ctx: MySqlParser.NonAggregateFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitScalarFunctionCall(ctx: MySqlParser.ScalarFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUdfFunctionCall(ctx: MySqlParser.UdfFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPasswordFunctionCall(ctx: MySqlParser.PasswordFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSimpleFunctionCall(ctx: MySqlParser.SimpleFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCurrentUser(ctx: MySqlParser.CurrentUserContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDataTypeFunctionCall(ctx: MySqlParser.DataTypeFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitValuesFunctionCall(ctx: MySqlParser.ValuesFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCaseExpressionFunctionCall(ctx: MySqlParser.CaseExpressionFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCaseFunctionCall(ctx: MySqlParser.CaseFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCharFunctionCall(ctx: MySqlParser.CharFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPositionFunctionCall(ctx: MySqlParser.PositionFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSubstrFunctionCall(ctx: MySqlParser.SubstrFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTrimFunctionCall(ctx: MySqlParser.TrimFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWeightFunctionCall(ctx: MySqlParser.WeightFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitExtractFunctionCall(ctx: MySqlParser.ExtractFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitGetFormatFunctionCall(ctx: MySqlParser.GetFormatFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJsonValueFunctionCall(ctx: MySqlParser.JsonValueFunctionCallContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCaseFuncAlternative(ctx: MySqlParser.CaseFuncAlternativeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLevelWeightList(ctx: MySqlParser.LevelWeightListContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLevelWeightRange(ctx: MySqlParser.LevelWeightRangeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLevelInWeightListElement(ctx: MySqlParser.LevelInWeightListElementContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAggregateWindowedFunction(ctx: MySqlParser.AggregateWindowedFunctionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNonAggregateWindowedFunction(ctx: MySqlParser.NonAggregateWindowedFunctionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitOverClause(ctx: MySqlParser.OverClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWindowSpec(ctx: MySqlParser.WindowSpecContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitWindowName(ctx: MySqlParser.WindowNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFrameClause(ctx: MySqlParser.FrameClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFrameUnits(ctx: MySqlParser.FrameUnitsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFrameExtent(ctx: MySqlParser.FrameExtentContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFrameBetween(ctx: MySqlParser.FrameBetweenContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFrameRange(ctx: MySqlParser.FrameRangeContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPartitionClause(ctx: MySqlParser.PartitionClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitScalarFunctionName(ctx: MySqlParser.ScalarFunctionNameContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPasswordFunctionClause(ctx: MySqlParser.PasswordFunctionClauseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFunctionArgs(ctx: MySqlParser.FunctionArgsContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFunctionArg(ctx: MySqlParser.FunctionArgContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIsExpression(ctx: MySqlParser.IsExpressionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNotExpression(ctx: MySqlParser.NotExpressionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLogicalExpression(ctx: MySqlParser.LogicalExpressionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPredicateExpression(ctx: MySqlParser.PredicateExpressionContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSoundsLikePredicate(ctx: MySqlParser.SoundsLikePredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitExpressionAtomPredicate(ctx: MySqlParser.ExpressionAtomPredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSubqueryComparisonPredicate(ctx: MySqlParser.SubqueryComparisonPredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJsonMemberOfPredicate(ctx: MySqlParser.JsonMemberOfPredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBinaryComparisonPredicate(ctx: MySqlParser.BinaryComparisonPredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitInPredicate(ctx: MySqlParser.InPredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBetweenPredicate(ctx: MySqlParser.BetweenPredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIsNullPredicate(ctx: MySqlParser.IsNullPredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLikePredicate(ctx: MySqlParser.LikePredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitRegexpPredicate(ctx: MySqlParser.RegexpPredicateContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUnaryExpressionAtom(ctx: MySqlParser.UnaryExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCollateExpressionAtom(ctx: MySqlParser.CollateExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitVariableAssignExpressionAtom(ctx: MySqlParser.VariableAssignExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMysqlVariableExpressionAtom(ctx: MySqlParser.MysqlVariableExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNestedExpressionAtom(ctx: MySqlParser.NestedExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitNestedRowExpressionAtom(ctx: MySqlParser.NestedRowExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMathExpressionAtom(ctx: MySqlParser.MathExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitExistsExpressionAtom(ctx: MySqlParser.ExistsExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIntervalExpressionAtom(ctx: MySqlParser.IntervalExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJsonExpressionAtom(ctx: MySqlParser.JsonExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitSubqueryExpressionAtom(ctx: MySqlParser.SubqueryExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitConstantExpressionAtom(ctx: MySqlParser.ConstantExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFunctionCallExpressionAtom(ctx: MySqlParser.FunctionCallExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBinaryExpressionAtom(ctx: MySqlParser.BinaryExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFullColumnNameExpressionAtom(ctx: MySqlParser.FullColumnNameExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBitExpressionAtom(ctx: MySqlParser.BitExpressionAtomContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitUnaryOperator(ctx: MySqlParser.UnaryOperatorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitComparisonOperator(ctx: MySqlParser.ComparisonOperatorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitLogicalOperator(ctx: MySqlParser.LogicalOperatorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitBitOperator(ctx: MySqlParser.BitOperatorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitMultOperator(ctx: MySqlParser.MultOperatorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitAddOperator(ctx: MySqlParser.AddOperatorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitJsonOperator(ctx: MySqlParser.JsonOperatorContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitCharsetNameBase(ctx: MySqlParser.CharsetNameBaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitTransactionLevelBase(ctx: MySqlParser.TransactionLevelBaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitPrivilegesBase(ctx: MySqlParser.PrivilegesBaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitIntervalTypeBase(ctx: MySqlParser.IntervalTypeBaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitDataTypeBase(ctx: MySqlParser.DataTypeBaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitKeywordsCanBeId(ctx: MySqlParser.KeywordsCanBeIdContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
     override fun visitFunctionNameBase(ctx: MySqlParser.FunctionNameBaseContext?): Node {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 }

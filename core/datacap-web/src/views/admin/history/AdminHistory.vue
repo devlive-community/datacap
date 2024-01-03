@@ -16,6 +16,12 @@
             {{ row.elapsed }}
           </Tooltip>
         </template>
+        <template #mode="{ row }">
+          <Tag v-if="row.mode === 'ADHOC'">{{ $t('common.adhoc') }}</Tag>
+          <Tag v-else-if="row.mode === 'HISTORY'">{{ $t('common.history') }}</Tag>
+          <Tag v-else-if="row.mode === 'REPORT'">{{ $t('common.report') }}</Tag>
+          <Tag v-else-if="row.mode === 'SNIPPET'">{{ $t('common.snippet') }}</Tag>
+        </template>
         <template #state="{ row }">
           <Tag :color="row.state === 'SUCCESS' ? 'success' : 'error'">{{ row.state }}</Tag>
         </template>
