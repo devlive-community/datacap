@@ -1,14 +1,19 @@
 package io.edurt.datacap.service.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.FunctionType;
 import io.edurt.datacap.service.validation.ValidationGroup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -19,8 +24,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -29,6 +34,7 @@ import java.util.List;
 @Entity
 @Table(name = "functions")
 @org.hibernate.annotations.Table(appliesTo = "functions", comment = "Plug-in correlation function")
+@EntityListeners(AuditingEntityListener.class)
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class FunctionsEntity
@@ -78,11 +84,15 @@ public class FunctionsEntity
     @Enumerated(EnumType.STRING)
     private FunctionType type = FunctionType.KEYWORD;
 
-    @Column(name = "create_time", columnDefinition = "timestamp not null default current_timestamp")
-    private Timestamp createTime;
+    @Column(name = "create_time")
+    @CreatedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
-    @Column(name = "update_time", columnDefinition = "timestamp not null default current_timestamp")
-    private Timestamp updateTime;
+    @Column(name = "update_time")
+    @LastModifiedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updateTime;
 
     public List<String> getPlugin()
     {
