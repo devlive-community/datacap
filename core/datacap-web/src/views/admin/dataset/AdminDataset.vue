@@ -1,6 +1,7 @@
 <template>
   <div>
     <Card :title="$t('common.dataset')"
+          :bordered="false"
           dis-hover>
       <Table :loading="loading"
              :columns="headers"
