@@ -24,31 +24,45 @@
       <Form style="padding: 0 20px">
         <FormItem style="margin-bottom: 5px;">
           <Row :gutter="10">
-            <Col span="4">{{ $t('dataset.columnName') }}</Col>
-            <Col span="4">{{ $t('dataset.columnType') }}</Col>
-            <Col span="4">{{ $t('dataset.columnDefaultValue') }}</Col>
+            <Col span="3">{{ $t('dataset.columnName') }}</Col>
+            <Col span="2">{{ $t('dataset.columnType') }}</Col>
+            <Col span="2">{{ $t('dataset.columnMode') }}</Col>
+            <Col span="3">{{ $t('dataset.columnDefaultValue') }}</Col>
             <Col span="3">{{ $t('dataset.columnIsNullable') }}</Col>
             <Col span="3">{{ $t('dataset.columnIsOrderByKey') }}</Col>
             <Col span="3">{{ $t('dataset.columnLength') }}</Col>
-            <Col span="3">{{ $t('dataset.columnComment') }}</Col>
+            <Col span="5">{{ $t('dataset.columnComment') }}</Col>
           </Row>
         </FormItem>
         <template v-for="(item, index) in formState.columns" :key="index">
           <FormItem>
             <Row :gutter="10">
-              <Col span="4">
+              <Col span="3">
                 <Input v-model="item.name"
                        type="text">
                 </Input>
               </Col>
-              <Col span="4">
+              <Col span="2">
                 <Select v-model="item.type">
                   <Option value="STRING">{{ $t('dataset.columnTypeString') }}</Option>
                   <Option value="NUMBER">{{ $t('dataset.columnTypeNumber') }}</Option>
                   <Option value="BOOLEAN">{{ $t('dataset.columnTypeBoolean') }}</Option>
                 </Select>
               </Col>
-              <Col span="4">
+              <Col span="2">
+                <Switch v-model="item.mode"
+                        size="large"
+                        true-value="METRIC"
+                        false-value="DIMENSION">
+                  <template #open>
+                    {{ $t('dataset.columnModeMetric') }}
+                  </template>
+                  <template #close>
+                    {{ $t('dataset.columnModeDimension') }}
+                  </template>
+                </Switch>
+              </Col>
+              <Col span="3">
                 <Input v-model="item.defaultValue"
                        type="text">
                 </Input>
@@ -62,7 +76,7 @@
               <Col span="3">
                 <InputNumber v-model="item.length"/>
               </Col>
-              <Col span="3">
+              <Col span="5">
                 <Input v-model="item.comment"
                        type="textarea">
                 </Input>

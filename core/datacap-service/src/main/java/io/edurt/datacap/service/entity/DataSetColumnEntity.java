@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.entity;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.service.enums.ColumnMode;
 import io.edurt.datacap.service.enums.ColumnType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -57,6 +58,10 @@ public class DataSetColumnEntity
 
     @Column(name = "is_order_by_key")
     private boolean orderByKey;
+
+    @Column(name = "column_mode")
+    @Enumerated(EnumType.STRING)
+    private ColumnMode mode;
 
     @ManyToOne
     @JoinTable(name = "datacap_dataset_column_relation",
