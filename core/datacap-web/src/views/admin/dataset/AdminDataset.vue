@@ -28,24 +28,23 @@
         </template>
         <template #action="{ row }">
           <Space>
-            <Button shape="circle"
-                    size="small"
-                    :disabled="isSuccess(row.state)"
-                    @click="handlerRebuild(row, true)">
-              <FontAwesomeIcon :icon="row.state === 'SUCCESS' ? 'circle-stop' : 'circle-play'"/>
-            </Button>
             <Button type="primary"
                     shape="circle"
                     size="small"
+                    icon="md-analytics"
+                    :to="`/admin/dataset/adhoc/${row.code}`">
+            </Button>
+            <Button shape="circle"
+                    size="small"
+                    icon="md-create"
                     @click="$router.push('/admin/dataset/create?id=' + row.id)">
-              <FontAwesomeIcon icon="pen-square"/>
             </Button>
             <Button type="error"
                     shape="circle"
                     size="small"
+                    icon="md-alert"
                     :disabled="isSuccess(row.state)"
                     @click="handlerError(row, true)">
-              <FontAwesomeIcon icon="triangle-exclamation"/>
             </Button>
             <Dropdown transfer>
               <Button icon="md-more"
@@ -54,6 +53,11 @@
               </Button>
               <template #list>
                 <DropdownMenu>
+                  <DropdownItem :disabled="isSuccess(row.state)"
+                                @click="handlerRebuild(row, true)">
+                    <FontAwesomeIcon :icon="row.state === 'SUCCESS' ? 'circle-stop' : 'circle-play'"/>
+                    {{ $t('dataset.rebuild') }}
+                  </DropdownItem>
                   <DropdownItem :disabled="!isSuccess(row.state)"
                                 @click="handlerSyncData(row, true)">
                     <FontAwesomeIcon icon="rotate"/>
@@ -108,11 +112,12 @@ import DatasetRebuild from "@/views/admin/dataset/DatasetRebuild.vue";
 import DatasetState from "@/views/admin/dataset/components/DatasetState.vue";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import DatasetSyncData from "@/views/admin/dataset/components/DatasetSyncData.vue";
+import {DropdownItem} from "view-ui-plus";
 
 const filter: Filter = new Filter();
 export default defineComponent({
   name: 'AdminDataset',
-  components: {DatasetSyncData, MarkdownPreview, DatasetState, DatasetRebuild, FontAwesomeIcon},
+  components: {DropdownItem, DatasetSyncData, MarkdownPreview, DatasetState, DatasetRebuild, FontAwesomeIcon},
   setup()
   {
     const i18n = useI18n()
@@ -170,6 +175,9 @@ export default defineComponent({
     },
     handlerRebuild(record: any, opened: boolean)
     {
+      if (!this.isSuccess(record)) {
+        return
+      }
       this.rebuildVisible = opened
       this.contextData = record
     },

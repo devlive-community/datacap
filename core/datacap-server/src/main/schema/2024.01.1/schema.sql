@@ -15,3 +15,6 @@ ALTER TABLE `audit_plugin`
 UPDATE `audit_plugin`
 SET `query_mode` = 'ADHOC'
 WHERE `query_mode` IS NULL;
+
+ALTER TABLE `datacap_dataset`
+    ADD COLUMN `code` VARCHAR(100) default (uuid());
