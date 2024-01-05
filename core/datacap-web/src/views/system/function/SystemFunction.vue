@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.function')">
+    <Card style="width:100%"
+          dis-hover
+          :bordered="false"
+          :title="$t('common.function')">
       <template #extra>
         <Space>
           <Tooltip>

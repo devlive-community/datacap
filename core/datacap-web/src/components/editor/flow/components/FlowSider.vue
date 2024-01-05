@@ -1,12 +1,32 @@
 <template>
   <div>
-    <Card v-for="node in data"
-          :key="node.id"
-          dis-hover>
+    <Card dis-hover>
       <template #title>
-        {{ $t('pipeline.' + node.nodeType) }}
+        {{ $t('pipeline.input') }}
       </template>
-      <div class="dndflow">
+      <div v-for="node in data.filter(v => v.nodeType === 'input')"
+           :key="node.id"
+           class="dndflow">
+        <div class="nodes">
+          <div :class="'vue-flow__node-' + node.nodeType"
+               :draggable="true"
+               @dragstart="onDragStart($event, node.nodeType, node)">
+            <Avatar size="small"
+                    :src="'/static/images/plugin/' + node.type.split(' ')[0] + '.png'">
+            </Avatar>
+            {{ node.name }}
+          </div>
+        </div>
+      </div>
+    </Card>
+    <Card dis-hover
+          style="margin-top: 5px;">
+      <template #title>
+        {{ $t('pipeline.output') }}
+      </template>
+      <div v-for="node in data.filter(v => v.nodeType === 'output')"
+           :key="node.id"
+           class="dndflow">
         <div class="nodes">
           <div :class="'vue-flow__node-' + node.nodeType"
                :draggable="true"
