@@ -47,6 +47,7 @@
     "vue3-calendar-heatmap": "^2.0.5",
     "vue3-grid-layout-next": "^1.0.6",
     "vue3-markdown": "^1.1.7",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.1.0",
     "watermark-dom": "^2.3.0",
     "webpack-bundle-analyzer": "^4.6.1"
