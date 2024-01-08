@@ -101,6 +101,14 @@ public class DataSetServiceImpl
     }
 
     @Override
+    public CommonResponse<Set<DataSetColumnEntity>> getColumnsByCode(String code)
+    {
+        Optional<DataSetEntity> entity = repository.findByCode(code);
+        return entity.map(item -> CommonResponse.success(columnRepository.findAllByDataset(item)))
+                .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
+    }
+
+    @Override
     public CommonResponse<Boolean> syncData(Long id)
     {
         Optional<DataSetEntity> entityOptional = repository.findById(id);

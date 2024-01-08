@@ -62,6 +62,9 @@ public class DataSetEntity
     @Column(name = "table_name")
     private String tableName;
 
+    @Column(name = "code")
+    private String code;
+
     @ManyToOne
     @JoinTable(name = "datacap_dataset_source_relation",
             joinColumns = @JoinColumn(name = "dataset_id"),

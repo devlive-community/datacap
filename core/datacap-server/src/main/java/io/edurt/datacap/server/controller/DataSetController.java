@@ -48,6 +48,12 @@ public class DataSetController
         return service.getColumns(id);
     }
 
+    @GetMapping(value = "columns/{code}")
+    public CommonResponse<Set<DataSetColumnEntity>> getColumnsByCode(@PathVariable String code)
+    {
+        return service.getColumnsByCode(code);
+    }
+
     @PutMapping(value = "syncData/{id}")
     public CommonResponse<Boolean> syncData(@PathVariable Long id)
     {
