@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Layout style="min-height: 600px;">
-      <Sider style="max-height: 500px; background-color: white;">
+    <Layout style="min-height: 600px; height: auto;">
+      <Sider style="max-height: 500px; height: auto; background-color: white;">
         <Content style="height: 50%; background-color: white;">
           <Divider orientation="left">
             {{ $t('dataset.columnModeMetric') }}
@@ -24,7 +24,7 @@
         </Content>
         <Content style="height: 50%; background-color: white; margin-top: 50px;">
           <Divider orientation="left">
-            {{ $t('dataset.columnModeMetric') }}
+            {{ $t('dataset.columnModeDimension') }}
           </Divider>
           <Card :bordered="false"
                 dis-hover
@@ -79,8 +79,34 @@
           </List>
         </Content>
         <Layout>
-          <Content style="background-color: white;"></Content>
-          <Sider style="background-color: white;"></Sider>
+          <Content style="background-color: white;">
+            <div style="width: 100%; height:400px;">
+              <VisualEditor :configuration="configuration"/>
+            </div>
+          </Content>
+          <Sider style="background-color: white; padding: 0 10px;">
+            <RadioGroup v-model="configuration.type"
+                        type="button"
+                        size="large">
+              <Row :gutter="10">
+                <Radio label="TABLE">
+                  <FontAwesomeIcon icon="table"
+                                   size="2x">
+                  </FontAwesomeIcon>
+                </Radio>
+                <Radio label="LINE">
+                  <FontAwesomeIcon icon="chart-line"
+                                   size="2x">
+                  </FontAwesomeIcon>
+                </Radio>
+                <Radio label="BAR">
+                  <FontAwesomeIcon icon="chart-bar"
+                                   size="2x">
+                  </FontAwesomeIcon>
+                </Radio>
+              </Row>
+            </RadioGroup>
+          </Sider>
         </Layout>
       </Layout>
     </Layout>
@@ -89,22 +115,28 @@
 
 <script lang="ts">
 import Draggable from 'vuedraggable'
-import DatasetService from "@/services/admin/DatasetService";
+import DatasetService from '@/services/admin/DatasetService'
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {Configuration} from "@/components/visual/Configuration";
+import VisualEditor from "@/components/visual/VisualEditor.vue";
 
 export default {
   name: 'DatasetAdhoc',
-  components: {Draggable},
+  components: {VisualEditor, FontAwesomeIcon, Draggable},
   data()
   {
     return {
       originalMetrics: [],
       originalDimensions: [],
       metrics: [],
-      dimensions: []
+      dimensions: [],
+      configuration: null as Configuration
     }
   },
   created()
   {
+    this.configuration = new Configuration()
+    console.log(this.configuration)
     this.handlerInitialize()
   },
   methods: {
@@ -131,3 +163,29 @@ export default {
   }
 };
 </script>
+<style scoped>
+:deep(.ivu-radio-group-button .ivu-radio-wrapper) {
+  border: 0px solid #dcdee2;
+  padding: 0 13px;
+}
+
+:deep(.ivu-radio-group-button .ivu-radio-wrapper:first-child) {
+  border-left: 0px solid #dcdee2;
+}
+
+:deep(.ivu-radio-group-button .ivu-radio-wrapper-checked.ivu-radio-focus:first-child) {
+  box-shadow: 0 0 0 0;
+}
+
+:deep(.ivu-radio-group-button .ivu-radio-wrapper-checked) {
+  box-shadow: 0 0 0 0;
+}
+
+:deep(.ivu-radio-group-button .ivu-radio-wrapper:after) {
+  background: transparent;
+}
+
+:deep(.ivu-radio-group-button .ivu-radio-wrapper:before) {
+  background: transparent;
+}
+</style>

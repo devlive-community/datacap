@@ -31,5 +31,6 @@ export default {
   stateOfCreateTable: 'Create Table State',
   modifyNotSupportDataPreview: 'Data preview is not supported to modify',
   syncData: 'Sync Data',
-  syncDataTip: 'The data synchronization schedule will run in the background, see the logs for the specific synchronization results'
+  syncDataTip: 'The data synchronization schedule will run in the background, see the logs for the specific synchronization results',
+  adhocDndTip: 'Drag the indicator dimension on the left to the corresponding position to query and render the data'
 }
