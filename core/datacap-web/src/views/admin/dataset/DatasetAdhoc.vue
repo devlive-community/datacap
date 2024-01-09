@@ -81,7 +81,12 @@
         <Layout>
           <Content style="background-color: white;">
             <div style="width: 100%; height:400px;">
-              <VisualEditor :configuration="configuration"/>
+              <CircularLoading v-if="loading"
+                               :show="loading">
+              </CircularLoading>
+              <VisualEditor v-else
+                            :configuration="configuration">
+              </VisualEditor>
             </div>
           </Content>
           <Sider style="background-color: white; padding: 0 10px;">
@@ -109,19 +114,32 @@ import DatasetService from '@/services/admin/DatasetService'
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {Configuration} from "@/components/visual/Configuration";
 import VisualEditor from "@/components/visual/VisualEditor.vue";
+import CircularLoading from "@/components/loading/CircularLoading.vue";
 
 export default {
   name: 'DatasetAdhoc',
-  components: {VisualEditor, FontAwesomeIcon, Draggable},
+  components: {CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
   data()
   {
     return {
+      loading: false,
+      code: null,
       originalMetrics: [],
       originalDimensions: [],
       metrics: [],
       dimensions: [],
       configuration: null as Configuration
     }
+  },
+  watch: {
+    metrics: {
+      handler: 'handlerAdhoc',
+      deep: true
+    },
+    dimensions: {
+      handler: 'handlerAdhoc',
+      deep: true
+    },
   },
   created()
   {
@@ -133,6 +151,7 @@ export default {
     {
       setTimeout(() => {
         const code = this.$route.params.code
+        this.code = code
         DatasetService.getColumnsByCode(code)
           .then(response => {
             if (response.status) {
@@ -144,6 +163,27 @@ export default {
             }
           })
       }, 0)
+    },
+    handlerAdhoc()
+    {
+      this.loading = true
+      const columns = []
+      this.metrics.map((item: { id: any; }) => columns.push({id: item.id}))
+      this.dimensions.map((item: { id: any; }) => columns.push({id: item.id}))
+      const configure = {
+        columns: columns
+      }
+      DatasetService.adhoc(this.code, configure)
+        .then(response => {
+          if (response.status) {
+            this.configuration.headers = response.data.headers
+            this.configuration.columns = response.data.columns
+          }
+          else {
+            this.$Message.error(response.message)
+          }
+        })
+        .finally(() => this.loading = false)
     },
     handlerClone(value: any)
     {

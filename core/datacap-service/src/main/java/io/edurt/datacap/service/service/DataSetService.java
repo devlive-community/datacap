@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.service;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.adhoc.Adhoc;
 import io.edurt.datacap.service.entity.DataSetColumnEntity;
 import io.edurt.datacap.service.entity.DataSetEntity;
 
@@ -18,4 +19,6 @@ public interface DataSetService
     CommonResponse<Set<DataSetColumnEntity>> getColumnsByCode(String code);
 
     CommonResponse<Boolean> syncData(Long id);
+
+    CommonResponse<Object> adhoc(String code, Adhoc configure);
 }

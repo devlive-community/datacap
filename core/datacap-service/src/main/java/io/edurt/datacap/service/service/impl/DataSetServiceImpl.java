@@ -12,6 +12,7 @@ import io.edurt.datacap.common.sql.configure.SqlColumn;
 import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.body.adhoc.Adhoc;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.DataSetColumnEntity;
 import io.edurt.datacap.service.entity.DataSetEntity;
@@ -24,6 +25,7 @@ import io.edurt.datacap.service.repository.DataSetColumnRepository;
 import io.edurt.datacap.service.repository.DataSetRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.DataSetService;
+import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
 import io.edurt.datacap.spi.model.Configure;
@@ -52,8 +54,8 @@ import java.util.stream.Collectors;
 public class DataSetServiceImpl
         implements DataSetService
 {
-    private final DataSetRepository repository;
     public final DataSetColumnRepository columnRepository;
+    private final DataSetRepository repository;
     private final Injector injector;
     private final InitializerConfigure initializerConfigure;
 
@@ -119,6 +121,50 @@ public class DataSetServiceImpl
         DataSetEntity entity = entityOptional.get();
         service.submit(() -> syncData(entity));
         return CommonResponse.success(true);
+    }
+
+    @Override
+    public CommonResponse<Object> adhoc(String code, Adhoc configure)
+    {
+        return repository.findByCode(code)
+                .map(item -> {
+                    String database = initializerConfigure.getDataSetConfigure().getDatabase();
+                    List<SqlColumn> columns = Lists.newArrayList();
+                    configure.getColumns()
+                            .forEach(column -> columnRepository.findById(column.getId())
+                                    .ifPresent(entity -> {
+                                        String columnName = entity.getName();
+                                        columns.add(SqlColumn.builder()
+                                                .column(columnName)
+                                                .build());
+                                    }));
+                    SqlBody body = SqlBody.builder()
+                            .type(SqlType.SELECT)
+                            .database(database)
+                            .table(item.getTableName())
+                            .columns(columns)
+                            .build();
+                    String sql = new SqlBuilder(body).getSql();
+                    log.info("Execute SQL: {} for DataSet [ {} ]", sql, code);
+
+                    Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name());
+                    if (!pluginOptional.isPresent()) {
+                        throw new IllegalArgumentException(String.format("Plugin [ %s ] not found", initializerConfigure.getDataSetConfigure().getType()));
+                    }
+                    Plugin plugin = pluginOptional.get();
+                    Configure targetConfigure = new Configure();
+                    targetConfigure.setHost(initializerConfigure.getDataSetConfigure().getHost());
+                    targetConfigure.setPort(Integer.valueOf(initializerConfigure.getDataSetConfigure().getPort()));
+                    targetConfigure.setUsername(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getUsername()));
+                    targetConfigure.setPassword(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getPassword()));
+                    targetConfigure.setDatabase(Optional.ofNullable(database));
+                    targetConfigure.setFormat(FormatType.JSON);
+                    plugin.connect(targetConfigure);
+                    Response response = plugin.execute(sql);
+                    response.setContent(sql);
+                    return CommonResponse.success(response);
+                })
+                .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
     }
 
     @Override

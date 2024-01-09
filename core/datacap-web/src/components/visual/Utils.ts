@@ -1,9 +1,9 @@
 const createdTableHeader = (data: []) => {
-  return data.map((item: { name: string }) => {
+  return data.map(item => {
     return {
-      field: item.name,
-      title: item.name,
-      width: 'auto'
+      "field": item,
+      "title": item,
+      "width": 'auto'
     }
   })
 }

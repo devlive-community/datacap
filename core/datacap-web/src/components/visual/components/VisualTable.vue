@@ -20,12 +20,12 @@ export default {
   created()
   {
     setTimeout(() => {
-      const headers = createdTableHeader(this.configuration.headers)
+      const columns = createdTableHeader(this.configuration.headers)
       const options = {
         records: this.configuration.columns,
-        headers
+        columns
       }
-      new VTable.ListTable(document.getElementById('content'), options)
+      window['tableInstance'] = new VTable.ListTable(document.getElementById('content'), options)
     })
   }
 }
