@@ -94,16 +94,6 @@
                                    size="2x">
                   </FontAwesomeIcon>
                 </Radio>
-                <Radio label="LINE">
-                  <FontAwesomeIcon icon="chart-line"
-                                   size="2x">
-                  </FontAwesomeIcon>
-                </Radio>
-                <Radio label="BAR">
-                  <FontAwesomeIcon icon="chart-bar"
-                                   size="2x">
-                  </FontAwesomeIcon>
-                </Radio>
               </Row>
             </RadioGroup>
           </Sider>
@@ -136,7 +126,6 @@ export default {
   created()
   {
     this.configuration = new Configuration()
-    console.log(this.configuration)
     this.handlerInitialize()
   },
   methods: {
