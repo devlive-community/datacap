@@ -56,7 +56,31 @@
                          :list="metrics">
                 <template #item="{ element, index }">
                   <Tag size="medium">
-                    {{ element.name }} &nbsp;
+                    <span>{{ element.name }}</span>
+                    <span v-if="element.expression">
+                      (
+                      <Text strong
+                            v-if="element.expression === Expression.SUM">
+                        {{ $t('dataset.columnExpressionSum') }}
+                      </Text>
+                      <Text strong
+                            v-else-if="element.expression === Expression.COUNT">
+                        {{ $t('dataset.columnExpressionCount') }}
+                      </Text>
+                      <Text strong
+                            v-else-if="element.expression === Expression.MAX">
+                        {{ $t('dataset.columnExpressionMax') }}
+                      </Text>
+                      <Text strong
+                            v-else-if="element.expression === Expression.MIN">
+                        {{ $t('dataset.columnExpressionMin') }}
+                      </Text>
+                      <Text strong
+                            v-else-if="element.expression === Expression.AVG">
+                        {{ $t('dataset.columnExpressionAvg') }}
+                      </Text>
+                      )
+                    </span>&nbsp;
                     <Tooltip transfer
                              class="point"
                              :content="$t('common.configure')">
@@ -204,6 +228,7 @@ import {Type as ColumnType} from './Type';
 import DatasetVisualConfigureBar from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureBar.vue";
 import SqlDetail from "@/components/sql/SqlDetail.vue";
 import DatasetColumnConfigure from "@/views/admin/dataset/components/adhoc/DatasetColumnConfigure.vue";
+import {Expression} from "@/views/admin/dataset/Expression";
 
 export default {
   name: 'DatasetAdhoc',
@@ -215,6 +240,10 @@ export default {
     ColumnType()
     {
       return ColumnType
+    },
+    Expression()
+    {
+      return Expression
     }
   },
   components: {DatasetColumnConfigure, SqlDetail, DatasetVisualConfigureBar, DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
@@ -355,6 +384,7 @@ export default {
       const foundIndex = this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id)
       if (foundIndex !== -1) {
         this.configure.columns.splice(foundIndex, 1, value)
+        this.metrics.find((item: { id: any; }) => item.id === value.id).expression = value.expression
         this.handlerAdhoc()
       }
     }

@@ -10,11 +10,11 @@
             :label-width="80">
         <FormItem :label="$t('common.expression')">
           <Select v-model="formState.expression">
-            <Option value="SUM">{{ $t('dataset.columnExpressionSum') }}</Option>
-            <Option value="COUNT">{{ $t('dataset.columnExpressionCount') }}</Option>
-            <Option value="MAX">{{ $t('dataset.columnExpressionMax') }}</Option>
-            <Option value="MIN">{{ $t('dataset.columnExpressionMin') }}</Option>
-            <Option value="AVG">{{ $t('dataset.columnExpressionAvg') }}</Option>
+            <Option :value="Expression.SUM">{{ $t('dataset.columnExpressionSum') }}</Option>
+            <Option :value="Expression.COUNT">{{ $t('dataset.columnExpressionCount') }}</Option>
+            <Option :value="Expression.MAX">{{ $t('dataset.columnExpressionMax') }}</Option>
+            <Option :value="Expression.MIN">{{ $t('dataset.columnExpressionMin') }}</Option>
+            <Option :value="Expression.AVG">{{ $t('dataset.columnExpressionAvg') }}</Option>
           </Select>
         </FormItem>
       </Form>
@@ -24,6 +24,7 @@
 <script lang="ts">
 import {defineComponent, PropType} from 'vue'
 import {Type} from "@/views/admin/dataset/Type";
+import {Expression} from "@/views/admin/dataset/Expression";
 
 export default defineComponent({
   name: 'DatasetColumnConfigure',
@@ -54,6 +55,10 @@ export default defineComponent({
       {
         this.$emit('close', value);
       }
+    },
+    Expression()
+    {
+      return Expression
     }
   },
   data()
