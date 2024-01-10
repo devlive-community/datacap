@@ -85,9 +85,17 @@
                 </template>
               </Draggable>
             </ListItem>
-            <ListItem>
-              &nbsp;
+            <ListItem style="padding: 10px;">
+              <ListItemMeta>&nbsp;</ListItemMeta>
+              <template #action>
+                <Button icon="md-eye"
+                        shape="circle"
+                        :disabled="!showSql.content"
+                        @click="handlerShowSql(true)">
+                </Button>
+              </template>
             </ListItem>
+            <ListItem style="padding: 0">&nbsp;</ListItem>
           </List>
         </Content>
         <Layout>
@@ -157,6 +165,11 @@
         </Layout>
       </Layout>
     </Layout>
+    <SqlDetail v-if="showSql.visible"
+               :is-visible="showSql.visible"
+               :content="showSql.content"
+               @close="handlerShowSql(false)">
+    </SqlDetail>
   </div>
 </template>
 
@@ -170,6 +183,7 @@ import CircularLoading from "@/components/loading/CircularLoading.vue";
 import DatasetVisualConfigureLine from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureLine.vue";
 import {Type} from "@/components/visual/Type";
 import DatasetVisualConfigureBar from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureBar.vue";
+import SqlDetail from "@/components/sql/SqlDetail.vue";
 
 export default {
   name: 'DatasetAdhoc',
@@ -179,7 +193,7 @@ export default {
       return Type
     }
   },
-  components: {DatasetVisualConfigureBar, DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
+  components: {SqlDetail, DatasetVisualConfigureBar, DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
   data()
   {
     return {
@@ -189,7 +203,11 @@ export default {
       originalDimensions: [],
       metrics: [],
       dimensions: [],
-      configuration: null as Configuration
+      configuration: null as Configuration,
+      showSql: {
+        visible: false,
+        content: null
+      }
     }
   },
   watch: {
@@ -239,6 +257,7 @@ export default {
           if (response.status) {
             this.configuration.headers = response.data.headers
             this.configuration.columns = response.data.columns
+            this.showSql.content = response.data.content
           }
           else {
             this.$Message.error(response.message)
@@ -257,6 +276,10 @@ export default {
     handlerCommit(value: any)
     {
       this.configuration.chartConfigure = value
+    },
+    handlerShowSql(opened: boolean)
+    {
+      this.showSql.visible = opened
     }
   }
 };
