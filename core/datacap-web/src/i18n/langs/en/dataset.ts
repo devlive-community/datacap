@@ -40,5 +40,10 @@ export default {
   visualConfigure: 'Visual Configure',
   visualConfigureNotSpecified: 'No configuration items are available',
   visualConfigureXAxis: 'X Axis',
-  visualConfigureYAxis: 'Y Axis'
+  visualConfigureYAxis: 'Y Axis',
+  columnExpressionMax: 'Maximum',
+  columnExpressionMin: 'Minimum',
+  columnExpressionSum: 'Sum',
+  columnExpressionAvg: 'Average',
+  columnExpressionCount: 'Count'
 }

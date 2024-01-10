@@ -80,7 +80,13 @@ public class SqlBuilder
     {
         Preconditions.checkArgument(ArrayUtils.isNotEmpty(configure.getColumns().toArray(new SqlColumn[0])), "The columns must be specified");
         return configure.getColumns().stream()
-                .map(SqlColumn::getColumn)
+                .map(item -> {
+                    String value = item.getColumn();
+                    if (item.getExpression() != null) {
+                        value = String.format("%s(%s)", item.getExpression(), value);
+                    }
+                    return value;
+                })
                 .collect(Collectors.toList());
     }
 

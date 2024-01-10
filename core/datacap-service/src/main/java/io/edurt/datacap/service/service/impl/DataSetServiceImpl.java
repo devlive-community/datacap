@@ -46,6 +46,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -133,9 +134,15 @@ public class DataSetServiceImpl
                     configure.getColumns()
                             .forEach(column -> columnRepository.findById(column.getId())
                                     .ifPresent(entity -> {
+                                        AtomicReference<String> expression = new AtomicReference<>(null);
+                                        configure.getColumns().stream()
+                                                .filter(it -> it.getId().equals(entity.getId()))
+                                                .findFirst()
+                                                .ifPresent(it -> expression.set(it.getExpression()));
                                         String columnName = entity.getName();
                                         columns.add(SqlColumn.builder()
                                                 .column(columnName)
+                                                .expression(expression.get())
                                                 .build());
                                     }));
                     SqlBody body = SqlBody.builder()

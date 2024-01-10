@@ -15,7 +15,8 @@
                        :group="{ name: 'metrics', pull: 'clone', put: false }"
                        :list="originalMetrics">
               <template #item="{ element }">
-                <Tag size="medium">
+                <Tag size="medium"
+                     class="point">
                   {{ element.name }}
                 </Tag>
               </template>
@@ -35,7 +36,8 @@
                        :group="{ name: 'dimensions', pull: 'clone', put: false }"
                        :list="originalDimensions">
               <template #item="{ element }">
-                <Tag size="medium">
+                <Tag size="medium"
+                     class="point">
                   {{ element.name }}
                 </Tag>
               </template>
@@ -56,10 +58,18 @@
                   <Tag size="medium">
                     {{ element.name }} &nbsp;
                     <Tooltip transfer
+                             class="point"
+                             :content="$t('common.configure')">
+                      <FontAwesomeIcon icon="pen"
+                                       class="point"
+                                       @click="handlerColumnConfigure(true, element, ColumnType.METRIC)">
+                      </FontAwesomeIcon>
+                    </Tooltip>&nbsp;
+                    <Tooltip transfer
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
                                        class="point"
-                                       @click="handlerRemove(index, metrics)">
+                                       @click="handlerRemove(element.id, index, metrics)">
                       </FontAwesomeIcon>
                     </Tooltip>
                   </Tag>
@@ -71,14 +81,14 @@
               <Draggable group="dimensions"
                          item-key="id"
                          :list="dimensions">
-                <template #item="{ element, index }">
+                <template #item="{ element, index}">
                   <Tag size="medium">
                     {{ element.name }} &nbsp;
                     <Tooltip transfer
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
                                        class="point"
-                                       @click="handlerRemove(index, dimensions)">
+                                       @click="handlerRemove(element.id, index, dimensions)">
                       </FontAwesomeIcon>
                     </Tooltip>
                   </Tag>
@@ -170,6 +180,14 @@
                :content="showSql.content"
                @close="handlerShowSql(false)">
     </SqlDetail>
+    <DatasetColumnConfigure v-if="columnContent.visible"
+                            :is-visible="columnContent.visible"
+                            :column-type="columnContent.type"
+                            :content="columnContent.content"
+                            :configure="columnContent.configure"
+                            @close="handlerColumnConfigure(false, null, null)"
+                            @commit="handlerCommitColumnConfigure">
+    </DatasetColumnConfigure>
   </div>
 </template>
 
@@ -182,8 +200,10 @@ import VisualEditor from "@/components/visual/VisualEditor.vue";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import DatasetVisualConfigureLine from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureLine.vue";
 import {Type} from "@/components/visual/Type";
+import {Type as ColumnType} from './Type';
 import DatasetVisualConfigureBar from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureBar.vue";
 import SqlDetail from "@/components/sql/SqlDetail.vue";
+import DatasetColumnConfigure from "@/views/admin/dataset/components/adhoc/DatasetColumnConfigure.vue";
 
 export default {
   name: 'DatasetAdhoc',
@@ -191,9 +211,13 @@ export default {
     Type()
     {
       return Type
+    },
+    ColumnType()
+    {
+      return ColumnType
     }
   },
-  components: {SqlDetail, DatasetVisualConfigureBar, DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
+  components: {DatasetColumnConfigure, SqlDetail, DatasetVisualConfigureBar, DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
   data()
   {
     return {
@@ -203,20 +227,29 @@ export default {
       originalDimensions: [],
       metrics: [],
       dimensions: [],
+      configure: {
+        columns: []
+      },
       configuration: null as Configuration,
       showSql: {
         visible: false,
         content: null
+      },
+      columnContent: {
+        visible: false,
+        type: null as ColumnType,
+        content: null,
+        configure: null
       }
     }
   },
   watch: {
     metrics: {
-      handler: 'handlerAdhoc',
+      handler: 'handlerApplyAdhoc',
       deep: true
     },
     dimensions: {
-      handler: 'handlerAdhoc',
+      handler: 'handlerApplyAdhoc',
       deep: true
     },
   },
@@ -243,16 +276,27 @@ export default {
           })
       }, 0)
     },
+    handlerApplyAdhoc()
+    {
+      const columns = []
+      this.metrics
+        .filter((value: { id: unknown; }) => this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
+        .map((item: { id: unknown; }) => columns.push({id: item.id}))
+      this.dimensions
+        .filter((value: { id: unknown; }) => this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
+        .map((item: { id: unknown; }) => columns.push({id: item.id}))
+      if (this.configure.columns.length > 0) {
+        this.configure.columns = [...this.configure.columns, ...columns]
+      }
+      else {
+        this.configure.columns = columns
+      }
+      this.handlerAdhoc()
+    },
     handlerAdhoc()
     {
       this.loading = true
-      const columns = []
-      this.metrics.map((item: { id: any; }) => columns.push({id: item.id}))
-      this.dimensions.map((item: { id: any; }) => columns.push({id: item.id}))
-      const configure = {
-        columns: columns
-      }
-      DatasetService.adhoc(this.code, configure)
+      DatasetService.adhoc(this.code, this.configure)
         .then(response => {
           if (response.status) {
             this.configuration.headers = response.data.headers
@@ -269,9 +313,11 @@ export default {
     {
       return value
     },
-    handlerRemove(index: number, array: [])
+    handlerRemove(id: number, index: number, array: [])
     {
       array.splice(index, 1)
+      this.configure.columns = this.configure.columns.filter((item: { id: number; }) => item.id !== id)
+      this.handlerAdhoc()
     },
     handlerCommit(value: any)
     {
@@ -280,9 +326,32 @@ export default {
     handlerShowSql(opened: boolean)
     {
       this.showSql.visible = opened
+    },
+    handlerColumnConfigure(opened: boolean, record: any, type: ColumnType)
+    {
+      this.columnContent.visible = opened
+      this.columnContent.type = type
+      this.columnContent.content = record
+      if (record) {
+        const foundIndex = this.configure.columns.findIndex((item: { id: unknown }) => item.id === record.id)
+        if (foundIndex !== -1) {
+          this.columnContent.configure = this.configure.columns[foundIndex]
+        }
+      }
+      else {
+        this.columnContent.configure = null
+      }
+    },
+    handlerCommitColumnConfigure(value: any)
+    {
+      const foundIndex = this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id)
+      if (foundIndex !== -1) {
+        this.configure.columns.splice(foundIndex, 1, value)
+        this.handlerAdhoc()
+      }
     }
   }
-};
+}
 </script>
 <style scoped>
 :deep(.ivu-radio-group-button .ivu-radio-wrapper) {

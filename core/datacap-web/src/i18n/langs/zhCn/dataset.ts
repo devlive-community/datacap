@@ -40,5 +40,10 @@ export default {
   visualConfigure: '可视化配置',
   visualConfigureNotSpecified: '暂无可用配置项',
   visualConfigureXAxis: 'X轴',
-  visualConfigureYAxis: 'Y轴'
+  visualConfigureYAxis: 'Y轴',
+  columnExpressionMax: '最大值',
+  columnExpressionMin: '最小值',
+  columnExpressionSum: '总和',
+  columnExpressionAvg: '平均值',
+  columnExpressionCount: '计数'
 }

@@ -12,4 +12,5 @@ import lombok.ToString;
 public class AdhocColumn
 {
     private Long id;
+    private String expression;
 }
