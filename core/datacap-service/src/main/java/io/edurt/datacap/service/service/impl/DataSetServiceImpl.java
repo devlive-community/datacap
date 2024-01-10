@@ -19,6 +19,7 @@ import io.edurt.datacap.service.entity.DataSetEntity;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.enums.ColumnMode;
 import io.edurt.datacap.service.enums.ColumnType;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.repository.DataSetColumnRepository;
@@ -131,25 +132,33 @@ public class DataSetServiceImpl
                 .map(item -> {
                     String database = initializerConfigure.getDataSetConfigure().getDatabase();
                     List<SqlColumn> columns = Lists.newArrayList();
+                    List<SqlColumn> groupBy = Lists.newArrayList();
                     configure.getColumns()
                             .forEach(column -> columnRepository.findById(column.getId())
                                     .ifPresent(entity -> {
+                                        String columnName = entity.getName();
                                         AtomicReference<String> expression = new AtomicReference<>(null);
                                         configure.getColumns().stream()
                                                 .filter(it -> it.getId().equals(entity.getId()))
                                                 .findFirst()
                                                 .ifPresent(it -> expression.set(it.getExpression()));
-                                        String columnName = entity.getName();
                                         columns.add(SqlColumn.builder()
                                                 .column(columnName)
                                                 .expression(expression.get())
                                                 .build());
+                                        // Only dimensions are added to GROUP BY
+                                        if (entity.getMode().equals(ColumnMode.DIMENSION)) {
+                                            groupBy.add(SqlColumn.builder()
+                                                    .column(columnName)
+                                                    .build());
+                                        }
                                     }));
                     SqlBody body = SqlBody.builder()
                             .type(SqlType.SELECT)
                             .database(database)
                             .table(item.getTableName())
                             .columns(columns)
+                            .groups(groupBy)
                             .build();
                     String sql = new SqlBuilder(body).getSql();
                     log.info("Execute SQL: {} for DataSet [ {} ]", sql, code);

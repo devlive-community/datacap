@@ -97,6 +97,13 @@ public class SqlBuilder
                 .collect(Collectors.toList());
     }
 
+    private List<String> applyGroupByColumns()
+    {
+        return configure.getGroups().stream()
+                .map(v -> String.join(" ", v.getColumn()))
+                .collect(Collectors.toList());
+    }
+
     private String applyWhere()
     {
         return configure.getWhere()
@@ -122,6 +129,10 @@ public class SqlBuilder
 
         if (ObjectUtils.isNotEmpty(configure.getOrders())) {
             SelectBuilder.ORDER_BY(applyOrderByColumns());
+        }
+
+        if (configure.getGroups() != null && !configure.getGroups().isEmpty()) {
+            SelectBuilder.GROUP_BY(applyGroupByColumns());
         }
 
         if (configure.getWhere() != null && !configure.getWhere().isEmpty()) {
