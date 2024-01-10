@@ -114,6 +114,14 @@
                     </FontAwesomeIcon>
                   </Tooltip>
                 </Radio>
+                <Radio :label="Type.BAR">
+                  <Tooltip transfer
+                           :content="$t('dataset.visualTypeBar')">
+                    <FontAwesomeIcon icon="bar-chart"
+                                     size="2x">
+                    </FontAwesomeIcon>
+                  </Tooltip>
+                </Radio>
               </Row>
             </RadioGroup>
             <Divider orientation="left"
@@ -124,6 +132,10 @@
                                         :columns="configuration.headers"
                                         @commit="handlerCommit">
             </DatasetVisualConfigureLine>
+            <DatasetVisualConfigureBar v-else-if="configuration.type === Type.BAR"
+                                       :columns="configuration.headers"
+                                       @commit="handlerCommit">
+            </DatasetVisualConfigureBar>
             <Result v-else>
               <template #desc>
                 {{ $t('dataset.visualConfigureNotSpecified') }}
@@ -145,6 +157,7 @@ import VisualEditor from "@/components/visual/VisualEditor.vue";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import DatasetVisualConfigureLine from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureLine.vue";
 import {Type} from "@/components/visual/Type";
+import DatasetVisualConfigureBar from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureBar.vue";
 
 export default {
   name: 'DatasetAdhoc',
@@ -154,7 +167,7 @@ export default {
       return Type
     }
   },
-  components: {DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
+  components: {DatasetVisualConfigureBar, DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
   data()
   {
     return {

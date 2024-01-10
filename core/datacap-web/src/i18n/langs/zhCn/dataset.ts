@@ -36,6 +36,7 @@ export default {
   visualType: '可视化类型',
   visualTypeTable: '表格',
   visualTypeLine: '折线图',
+  visualTypeBar: '柱状图',
   visualConfigure: '可视化配置',
   visualConfigureNotSpecified: '暂无可用配置项',
   visualConfigureXAxis: 'X轴',
