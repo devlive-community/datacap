@@ -32,7 +32,6 @@ export default {
         }
       }
       const tableInstance = new VTable.ListTable(document.getElementById('content'), options)
-      window['tableInstance'] = tableInstance
       // Add cell tooltip
       tableInstance.on('mouseenter_cell', (args) => {
         const {col, row} = args;
@@ -47,5 +46,4 @@ export default {
     })
   }
 }
-;
 </script>

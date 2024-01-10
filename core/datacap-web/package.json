@@ -17,6 +17,7 @@
     "@kangc/v-md-editor": "^2.3.15",
     "@types/nprogress": "^0.2.0",
     "@types/watermark-dom": "^2.3.1",
+    "@visactor/vchart": "^1.8.6",
     "@visactor/vtable": "^0.17.8",
     "@vue-flow/background": "^1.2.0",
     "@vue-flow/controls": "^1.1.0",

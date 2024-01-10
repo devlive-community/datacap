@@ -32,5 +32,11 @@ export default {
   modifyNotSupportDataPreview: 'Data preview is not supported to modify',
   syncData: 'Sync Data',
   syncDataTip: 'The data synchronization schedule will run in the background, see the logs for the specific synchronization results',
-  adhocDndTip: 'Drag the indicator dimension on the left to the corresponding position to query and render the data'
+  adhocDndTip: 'Drag the indicator dimension on the left to the corresponding position to query and render the data',
+  visualType: 'Visual Type',
+  visualTypeTable: 'Table',
+  visualTypeLine: 'Line',
+  visualConfigure: 'Visual Configure',
+  visualConfigureXAxis: 'X Axis',
+  visualConfigureYAxis: 'Y Axis'
 }

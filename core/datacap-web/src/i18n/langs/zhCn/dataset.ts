@@ -32,5 +32,11 @@ export default {
   modifyNotSupportDataPreview: '修改暂不支持数据预览',
   syncData: '同步数据',
   syncDataTip: '数据同步计划将在后台运行，具体同步结果请参考日志',
-  adhocDndTip: '拖拽左侧指标｜维度到相应位置即可查询并渲染数据'
+  adhocDndTip: '拖拽左侧指标｜维度到相应位置即可查询并渲染数据',
+  visualType: '可视化类型',
+  visualTypeTable: '表格',
+  visualTypeLine: '折线图',
+  visualConfigure: '可视化配置',
+  visualConfigureXAxis: 'X轴',
+  visualConfigureYAxis: 'Y轴'
 }

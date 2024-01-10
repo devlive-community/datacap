@@ -90,17 +90,40 @@
             </div>
           </Content>
           <Sider style="background-color: white; padding: 0 10px;">
+            <Divider orientation="left"
+                     style="margin: 10px 0;">
+              {{ $t('dataset.visualType') }}
+            </Divider>
             <RadioGroup v-model="configuration.type"
                         type="button"
                         size="large">
               <Row :gutter="10">
                 <Radio label="TABLE">
-                  <FontAwesomeIcon icon="table"
-                                   size="2x">
-                  </FontAwesomeIcon>
+                  <Tooltip transfer
+                           :content="$t('dataset.visualTypeTable')">
+                    <FontAwesomeIcon icon="table"
+                                     size="2x">
+                    </FontAwesomeIcon>
+                  </Tooltip>
+                </Radio>
+                <Radio label="LINE">
+                  <Tooltip transfer
+                           :content="$t('dataset.visualTypeLine')">
+                    <FontAwesomeIcon icon="line-chart"
+                                     size="2x">
+                    </FontAwesomeIcon>
+                  </Tooltip>
                 </Radio>
               </Row>
             </RadioGroup>
+            <Divider orientation="left"
+                     style="margin: 10px 0;">
+              {{ $t('dataset.visualConfigure') }}
+            </Divider>
+            <DatasetVisualConfigureLine v-if="configuration.type === Type.LINE"
+                                        :columns="configuration.headers"
+                                        @commit="handlerCommit">
+            </DatasetVisualConfigureLine>
           </Sider>
         </Layout>
       </Layout>
@@ -115,10 +138,18 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {Configuration} from "@/components/visual/Configuration";
 import VisualEditor from "@/components/visual/VisualEditor.vue";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
+import DatasetVisualConfigureLine from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureLine.vue";
+import {Type} from "@/components/visual/Type";
 
 export default {
   name: 'DatasetAdhoc',
-  components: {CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
+  computed: {
+    Type()
+    {
+      return Type
+    }
+  },
+  components: {DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable},
   data()
   {
     return {
@@ -188,6 +219,10 @@ export default {
     handlerClone(value: any)
     {
       return value
+    },
+    handlerCommit(value: any)
+    {
+      this.configuration.chartConfigure = value
     }
   }
 };
