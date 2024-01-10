@@ -299,9 +299,17 @@ export default {
       DatasetService.adhoc(this.code, this.configure)
         .then(response => {
           if (response.status) {
-            this.configuration.headers = response.data.headers
-            this.configuration.columns = response.data.columns
-            this.showSql.content = response.data.content
+            if (response.data.isSuccessful) {
+              this.configuration.headers = response.data.headers
+              this.configuration.columns = response.data.columns
+              this.showSql.content = response.data.content
+              this.configuration.message = null
+            }
+            else {
+              this.configuration.headers = []
+              this.configuration.columns = []
+              this.configuration.message = response.data.message
+            }
           }
           else {
             this.$Message.error(response.message)

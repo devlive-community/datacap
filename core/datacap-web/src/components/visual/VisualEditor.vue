@@ -1,9 +1,15 @@
 <template>
   <div>
-    <Result v-if="configuration.headers.length === 0"
+    <Result v-if="configuration.headers.length === 0 && !configuration.message"
             type="warning">
       <template #desc>
         {{ $t('dataset.adhocDndTip') }}
+      </template>
+    </Result>
+    <Result v-else-if="configuration.message"
+            type="error">
+      <template #desc>
+        {{ configuration.message }}
       </template>
     </Result>
     <div v-else>
