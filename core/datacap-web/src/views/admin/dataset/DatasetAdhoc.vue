@@ -53,10 +53,15 @@
                          item-key="id"
                          :list="metrics">
                 <template #item="{ element, index }">
-                  <Tag size="medium"
-                       closable
-                       @on-close="handlerRemove(index, metrics)">
-                    {{ element.name }}
+                  <Tag size="medium">
+                    {{ element.name }} &nbsp;
+                    <Tooltip transfer
+                             :content="$t('common.remove')">
+                      <FontAwesomeIcon icon="trash"
+                                       class="point"
+                                       @click="handlerRemove(index, metrics)">
+                      </FontAwesomeIcon>
+                    </Tooltip>
                   </Tag>
                 </template>
               </Draggable>
@@ -67,10 +72,15 @@
                          item-key="id"
                          :list="dimensions">
                 <template #item="{ element, index }">
-                  <Tag size="medium"
-                       closable
-                       @on-close="handlerRemove(index, dimensions)">
-                    {{ element.name }}
+                  <Tag size="medium">
+                    {{ element.name }} &nbsp;
+                    <Tooltip transfer
+                             :content="$t('common.remove')">
+                      <FontAwesomeIcon icon="trash"
+                                       class="point"
+                                       @click="handlerRemove(index, dimensions)">
+                      </FontAwesomeIcon>
+                    </Tooltip>
                   </Tag>
                 </template>
               </Draggable>
@@ -275,5 +285,9 @@ export default {
 
 :deep(.ivu-radio-group-button .ivu-radio-wrapper:before) {
   background: transparent;
+}
+
+.point {
+  cursor: pointer;
 }
 </style>
