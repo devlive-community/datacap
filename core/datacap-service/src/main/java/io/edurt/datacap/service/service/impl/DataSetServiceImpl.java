@@ -212,6 +212,9 @@ public class DataSetServiceImpl
 
     private void startBuild(DataSetEntity entity, boolean rebuildColumn)
     {
+        if (entity.getId() == null) {
+            entity.setCode(UUID.randomUUID().toString());
+        }
         switch (entity.getState().get(entity.getState().size() - 1)) {
             case METADATA_START:
             case METADATA_FAILED:

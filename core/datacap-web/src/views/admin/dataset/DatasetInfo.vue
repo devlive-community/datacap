@@ -217,7 +217,8 @@ export default defineComponent({
               nullable: false,
               length: 0,
               original: header,
-              orderByKey: false
+              orderByKey: false,
+              mode: 'DIMENSION'
             }
             this.formState.columns.push(column)
           })

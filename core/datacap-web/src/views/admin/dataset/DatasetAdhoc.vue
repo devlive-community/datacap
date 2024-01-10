@@ -52,9 +52,10 @@
               <Draggable group="metrics"
                          item-key="id"
                          :list="metrics">
-                <template #item="{ element }">
+                <template #item="{ element, index }">
                   <Tag size="medium"
-                       closable>
+                       closable
+                       @on-close="handlerRemove(index, metrics)">
                     {{ element.name }}
                   </Tag>
                 </template>
@@ -65,9 +66,10 @@
               <Draggable group="dimensions"
                          item-key="id"
                          :list="dimensions">
-                <template #item="{ element }">
+                <template #item="{ element, index }">
                   <Tag size="medium"
-                       closable>
+                       closable
+                       @on-close="handlerRemove(index, dimensions)">
                     {{ element.name }}
                   </Tag>
                 </template>
@@ -237,6 +239,10 @@ export default {
     handlerClone(value: any)
     {
       return value
+    },
+    handlerRemove(index: number, array: [])
+    {
+      array.splice(index, 1)
     },
     handlerCommit(value: any)
     {

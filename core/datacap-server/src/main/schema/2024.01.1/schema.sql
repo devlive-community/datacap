@@ -21,3 +21,7 @@ ALTER TABLE `datacap_dataset`
 
 ALTER TABLE `datacap_dataset_column`
     ADD COLUMN `column_mode` VARCHAR(100) default 'DIMENSION';
+
+UPDATE `menus`
+SET `is_new` = false
+WHERE `is_new` = true
