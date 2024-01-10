@@ -98,7 +98,7 @@
                         type="button"
                         size="large">
               <Row :gutter="10">
-                <Radio label="TABLE">
+                <Radio :label="Type.TABLE">
                   <Tooltip transfer
                            :content="$t('dataset.visualTypeTable')">
                     <FontAwesomeIcon icon="table"
@@ -106,7 +106,7 @@
                     </FontAwesomeIcon>
                   </Tooltip>
                 </Radio>
-                <Radio label="LINE">
+                <Radio :label="Type.LINE">
                   <Tooltip transfer
                            :content="$t('dataset.visualTypeLine')">
                     <FontAwesomeIcon icon="line-chart"
@@ -124,6 +124,11 @@
                                         :columns="configuration.headers"
                                         @commit="handlerCommit">
             </DatasetVisualConfigureLine>
+            <Result v-else>
+              <template #desc>
+                {{ $t('dataset.visualConfigureNotSpecified') }}
+              </template>
+            </Result>
           </Sider>
         </Layout>
       </Layout>
