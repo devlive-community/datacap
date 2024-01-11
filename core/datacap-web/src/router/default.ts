@@ -160,6 +160,12 @@ const createDefaultRouter = (router: any) => {
         layout: LayoutContainer,
         meta: {title: 'common.dataset'},
         component: () => import("@/views/admin/dataset/DatasetAdhoc.vue")
+      },
+      {
+        path: "dataset/adhoc/:code/:id",
+        layout: LayoutContainer,
+        meta: {title: 'common.dataset'},
+        component: () => import("@/views/admin/dataset/DatasetAdhoc.vue")
       }
     ]
   })

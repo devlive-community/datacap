@@ -262,8 +262,10 @@ export default {
     return {
       loading: false,
       code: null,
+      id: null,
       originalMetrics: [],
       originalDimensions: [],
+      originalData: [],
       metrics: [],
       dimensions: [],
       configure: {
@@ -310,11 +312,35 @@ export default {
       setTimeout(() => {
         const code = this.$route.params.code
         this.code = code
+        const id = this.$route.params.id
+        this.id = id
         DatasetService.getColumnsByCode(code)
           .then(response => {
             if (response.status) {
+              this.originalData = response.data
               this.originalMetrics = response.data.filter((item: { mode: string; }) => item.mode === 'METRIC')
               this.originalDimensions = response.data.filter((item: { mode: string; }) => item.mode === 'DIMENSION')
+              if (id) {
+                ReportService.getById(id)
+                  .then(response => {
+                    if (response.status) {
+                      this.formState.name = response.data.name
+                      const query = JSON.parse(response.data.query)
+                      query.columns.filter((item: { mode: unknown; id: unknown; }) => {
+                        const column = this.originalData.filter((value: { id: unknown; }) => value.id === item.id)[0]
+                        if (item.mode === ColumnType.METRIC) {
+                          Object.assign(column, item)
+                          this.metrics.push(column)
+                        }
+                        else if (item.mode === ColumnType.DIMENSION) {
+                          this.dimensions.push(column)
+                        }
+                      })
+                      this.configure.columns = query.columns
+                      this.configuration = JSON.parse(response.data.configure)
+                    }
+                  })
+              }
             }
             else {
               this.$Message.error(response.message)
@@ -414,6 +440,7 @@ export default {
     {
       this.published = true
       const configure = {
+        id: null,
         name: this.formState.name,
         realtime: true,
         type: 'DATASET',
@@ -422,6 +449,9 @@ export default {
           id: this.originalDimensions[0].dataset.id
         },
         query: JSON.stringify(this.configure)
+      }
+      if (this.id) {
+        configure.id = this.id
       }
       ReportService.saveOrUpdate(configure)
         .then(response => {

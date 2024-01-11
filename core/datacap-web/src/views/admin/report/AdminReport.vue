@@ -35,6 +35,12 @@
                     icon="md-eye"
                     @click="handlerViewChart(row, true)">
             </Button>
+            <Button shape="circle"
+                    size="small"
+                    icon="md-create"
+                    :disabled="!row.dataset"
+                    @click="$router.push(`/admin/dataset/adhoc/${row.dataset.code}/${row.id}`)">
+            </Button>
             <Tooltip :content="$t('common.delete')"
                      transfer>
               <Button shape="circle"
