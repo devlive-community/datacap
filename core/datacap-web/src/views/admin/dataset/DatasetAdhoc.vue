@@ -98,11 +98,19 @@
             <ListItem style="padding: 10px;">
               <ListItemMeta>&nbsp;</ListItemMeta>
               <template #action>
-                <Button icon="md-eye"
-                        shape="circle"
-                        :disabled="!showSql.content"
-                        @click="handlerShowSql(true)">
-                </Button>
+                <Space>
+                  <Button type="primary"
+                          icon="md-arrow-dropright-circle"
+                          shape="circle"
+                          :loading="loading"
+                          @click="handlerAdhoc">
+                  </Button>
+                  <Button icon="md-eye"
+                          shape="circle"
+                          :disabled="!showSql.content"
+                          @click="handlerShowSql(true)">
+                  </Button>
+                </Space>
               </template>
             </ListItem>
             <ListItem style="padding: 0">&nbsp;</ListItem>
