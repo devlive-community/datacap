@@ -17,6 +17,7 @@ export default {
   columnMode: '列模式',
   columnModeMetric: '指标',
   columnModeDimension: '维度',
+  columnModeGroup: '分组',
   create: '创建数据集',
   syncMode: '同步模式',
   syncModeManual: '手动',

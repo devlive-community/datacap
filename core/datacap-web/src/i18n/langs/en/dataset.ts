@@ -17,6 +17,7 @@ export default {
   columnMode: 'Column Mode',
   columnModeMetric: 'Metric',
   columnModeDimension: 'Dimension',
+  columnModeGroup: 'Group',
   create: 'Create Dataset',
   syncMode: 'Sync Mode',
   syncModeManual: 'Manual',

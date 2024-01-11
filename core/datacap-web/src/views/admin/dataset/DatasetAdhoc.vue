@@ -55,7 +55,8 @@
                          item-key="id"
                          :list="metrics">
                 <template #item="{ element, index }">
-                  <Tag size="medium">
+                  <Tag size="medium"
+                       class="point">
                     <DatasetColumnMetric :element="element"/> &nbsp;
                     <Tooltip transfer
                              class="point"
@@ -82,13 +83,34 @@
                          item-key="id"
                          :list="dimensions">
                 <template #item="{ element, index}">
-                  <Tag size="medium">
+                  <Tag size="medium"
+                       class="point">
                     {{ element.name }} &nbsp;
                     <Tooltip transfer
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
                                        class="point"
                                        @click="handlerRemove(element.id, index, dimensions)">
+                      </FontAwesomeIcon>
+                    </Tooltip>
+                  </Tag>
+                </template>
+              </Draggable>
+            </ListItem>
+            <ListItem>
+              {{ $t('dataset.columnModeGroup') }}: &nbsp;
+              <Draggable group="dimensions"
+                         item-key="id"
+                         :list="groups">
+                <template #item="{ element, index}">
+                  <Tag size="medium"
+                       class="point">
+                    {{ element.name }} &nbsp;
+                    <Tooltip transfer
+                             :content="$t('common.remove')">
+                      <FontAwesomeIcon icon="trash"
+                                       class="point"
+                                       @click="handlerRemove(element.id, index, groups, true)">
                       </FontAwesomeIcon>
                     </Tooltip>
                   </Tag>
@@ -268,8 +290,10 @@ export default {
       originalData: [],
       metrics: [],
       dimensions: [],
+      groups: [],
       configure: {
-        columns: []
+        columns: [],
+        groups: []
       },
       configuration: null as Configuration,
       showSql: {
@@ -300,6 +324,10 @@ export default {
       handler: 'handlerApplyAdhoc',
       deep: true
     },
+    groups: {
+      handler: 'handlerApplyAdhoc',
+      deep: true
+    }
   },
   created()
   {
@@ -326,17 +354,14 @@ export default {
                     if (response.status) {
                       this.formState.name = response.data.name
                       const query = JSON.parse(response.data.query)
-                      query.columns.filter((item: { mode: unknown; id: unknown; }) => {
-                        const column = this.originalData.filter((value: { id: unknown; }) => value.id === item.id)[0]
-                        if (item.mode === ColumnType.METRIC) {
-                          Object.assign(column, item)
-                          this.metrics.push(column)
-                        }
-                        else if (item.mode === ColumnType.DIMENSION) {
-                          this.dimensions.push(column)
-                        }
-                      })
+                      this.mergeColumns(query.columns, this.metrics, ColumnType.METRIC)
+                      this.mergeColumns(query.columns, this.dimensions, ColumnType.DIMENSION)
                       this.configure.columns = query.columns
+
+                      if (query.groups) {
+                        this.mergeColumns(query.groups, this.groups)
+                        this.configure.groups = query.groups
+                      }
                       this.configuration = JSON.parse(response.data.configure)
                     }
                   })
@@ -362,6 +387,17 @@ export default {
       }
       else {
         this.configure.columns = columns
+      }
+
+      const groups = []
+      this.groups
+        .filter((value: { id: unknown; }) => this.configure.groups.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
+        .map((item: { id: unknown; type: unknown; mode: unknown; }) => groups.push({id: item.id, type: item.type, mode: item.mode}))
+      if (this.configure.groups.length > 0) {
+        this.configure.groups = [...this.configure.groups, ...groups]
+      }
+      else {
+        this.configure.groups = groups
       }
       this.handlerAdhoc()
     },
@@ -394,10 +430,13 @@ export default {
     {
       return value
     },
-    handlerRemove(id: number, index: number, array: [])
+    handlerRemove(id: number, index: number, array: [], isGroup?: boolean)
     {
       array.splice(index, 1)
       this.configure.columns = this.configure.columns.filter((item: { id: number; }) => item.id !== id)
+      if (isGroup) {
+        this.configure.groups = this.configure.groups.filter((item: { id: number; }) => item.id !== id)
+      }
       this.handlerAdhoc()
     },
     handlerCommit(value: any)
@@ -461,6 +500,22 @@ export default {
           }
         })
         .finally(() => this.published = false)
+    },
+    mergeColumns(originalColumns: unknown[], array: unknown[], type?: ColumnType)
+    {
+      originalColumns.filter((item: { mode: unknown; id: unknown; }) => {
+        const column = this.originalData.filter((value: { id: unknown; }) => value.id === item.id)[0]
+        if (type) {
+          if (item.mode === type) {
+            Object.assign(column, item)
+            array.push(column)
+          }
+        }
+        else {
+          Object.assign(column, item)
+          array.push(column)
+        }
+      })
     }
   }
 }

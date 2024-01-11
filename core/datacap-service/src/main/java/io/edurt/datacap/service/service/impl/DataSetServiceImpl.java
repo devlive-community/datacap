@@ -159,6 +159,20 @@ public class DataSetServiceImpl
                                                     .build());
                                         }
                                     }));
+
+                    if (configure.getGroups() != null) {
+                        configure.getGroups()
+                                .forEach(column -> columnRepository.findById(column.getId())
+                                        .ifPresent(entity -> {
+                                            SqlColumn sqlColumn = SqlColumn.builder()
+                                                    .column(entity.getName())
+                                                    .build();
+                                            groupBy.add(sqlColumn);
+                                            // Add columns from GROUP BY to the query column
+                                            columns.add(sqlColumn);
+                                        }));
+                    }
+
                     SqlBody body = SqlBody.builder()
                             .type(SqlType.SELECT)
                             .database(database)

@@ -14,4 +14,5 @@ import java.util.Set;
 public class Adhoc
 {
     private Set<AdhocColumn> columns;
+    private Set<AdhocColumn> groups;
 }
