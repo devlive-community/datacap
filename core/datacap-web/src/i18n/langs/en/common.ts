@@ -177,4 +177,6 @@ export default {
   dataset: 'Dataset',
   syncMode: 'Sync Mode',
   adhoc: 'Adhoc',
+  remove: 'Remove',
+  alias: 'Alias Name',
 }

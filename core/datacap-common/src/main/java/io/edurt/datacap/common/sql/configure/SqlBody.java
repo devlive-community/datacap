@@ -18,6 +18,7 @@ public class SqlBody
     private String database;
     private String table;
     private List<SqlColumn> columns;
+    private List<SqlColumn> groups;
     private List<SqlColumn> orders;
     private Integer limit;
     private Integer offset;

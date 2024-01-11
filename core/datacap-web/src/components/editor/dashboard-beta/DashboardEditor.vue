@@ -15,10 +15,18 @@
                    :key="item.id"
                    @drag="handlerDrag(item, $event)"
                    @dragend="handlerDragend(item)">
-                <EchartsPreview :width="'180px'"
+                <EchartsPreview v-if="item.type === 'QUERY'"
+                                :width="'180px'"
                                 :height="'100px'"
                                 :configure="JSON.parse(item.configure)">
                 </EchartsPreview>
+                <VisualView v-else-if="item.type === 'DATASET'"
+                            :width="'180px'"
+                            :height="'120px'"
+                            :code="item.dataset.code"
+                            :configuration="JSON.parse(item.configure)"
+                            :query="JSON.parse(item.query)">
+                </VisualView>
               </div>
             </template>
           </Panel>
@@ -70,12 +78,20 @@
                             @click="handlerRemove(item.i)">
                     </Button>
                   </template>
-                  <EchartsPreview :width="item.width"
+                  <EchartsPreview v-if="item.type === 'QUERY'"
+                                  :width="item.width"
                                   :key="item.id"
                                   :id="item.node.id"
                                   :height="item.height"
                                   :configure="JSON.parse(item.node.configure)">
                   </EchartsPreview>
+                  <VisualView v-else-if="item.type === 'DATASET'"
+                              :width="item.width"
+                              :height="item.height"
+                              :code="item.node.code"
+                              :configuration="JSON.parse(item.node.configure)"
+                              :query="JSON.parse(item.node.query)">
+                  </VisualView>
                 </Card>
               </GridItem>
             </GridLayout>
@@ -110,6 +126,7 @@ import EchartsPreview from "@/components/editor/echarts/EchartsPreview.vue";
 import {Filter} from "@/model/Filter";
 import ReportService from "@/services/admin/ReportService";
 import DashboardService from "@/services/DashboardService";
+import VisualView from "@/components/visual/VisualView.vue";
 
 let mouseXY = {x: 0, y: 0}
 let DragPos = {x: 0, y: 0, w: 1, h: 1, i: ""}
@@ -122,7 +139,7 @@ function addDragOverEvent(e: DragEvent)
 
 export default defineComponent({
   name: 'DashboardEditorBeta',
-  components: {GridItem, GridLayout, EchartsPreview},
+  components: {VisualView, GridItem, GridLayout, EchartsPreview},
   props: {
     objInfo: {
       type: Object
@@ -243,9 +260,12 @@ export default defineComponent({
             width: "350px",
             height: "150px",
             i: DragPos.i,
+            type: node.type,
             node: {
               id: node.id,
-              configure: node.configure
+              configure: node.configure,
+              code: node.dataset?.code,
+              query: node?.query
             }
           })
           this.$refs.refLayout.dragEvent("dragend", DragPos.i, DragPos.x, DragPos.y, 3, 4)

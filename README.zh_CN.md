@@ -185,6 +185,12 @@ DataCap 可以从任何使用 SQL 的数据存储或数据引擎（ClickHouse、
     </a>
 </p>
 
+## 系统架构
+
+---
+
+<img src="docs/docs/assets/architecture.jpg" width="100%" />
+
 ## 贡献图谱
 
 ---

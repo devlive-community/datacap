@@ -36,6 +36,7 @@ import {
   faMagnifyingGlass,
   faMinus,
   faPager,
+  faPen,
   faPenToSquare,
   faPlus,
   faRepeat,
@@ -60,6 +61,7 @@ import {
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faPen,
     faCirclePlus,
     faCirclePlay,
     faTriangleExclamation,

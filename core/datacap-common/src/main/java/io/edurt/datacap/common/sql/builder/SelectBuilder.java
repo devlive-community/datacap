@@ -66,6 +66,11 @@ public class SelectBuilder
         sql().GROUP_BY(columns);
     }
 
+    public static void GROUP_BY(List<String> columns)
+    {
+        sql().GROUP_BY(String.join(symbol, columns));
+    }
+
     public static void HAVING(String conditions)
     {
         sql().HAVING(conditions);

@@ -80,7 +80,16 @@ public class SqlBuilder
     {
         Preconditions.checkArgument(ArrayUtils.isNotEmpty(configure.getColumns().toArray(new SqlColumn[0])), "The columns must be specified");
         return configure.getColumns().stream()
-                .map(SqlColumn::getColumn)
+                .map(item -> {
+                    String value = String.format("%s", item.getColumn());
+                    if (item.getExpression() != null) {
+                        value = String.format("%s(%s)", item.getExpression(), value);
+                    }
+                    if (item.getAlias() != null) {
+                        value = String.format("%s AS `%s`", value, item.getAlias());
+                    }
+                    return value;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -88,6 +97,13 @@ public class SqlBuilder
     {
         return configure.getOrders().stream()
                 .map(v -> String.join(" ", v.getColumn(), v.getOrder().name()))
+                .collect(Collectors.toList());
+    }
+
+    private List<String> applyGroupByColumns()
+    {
+        return configure.getGroups().stream()
+                .map(v -> String.join(" ", String.format("`%s`", v.getColumn())))
                 .collect(Collectors.toList());
     }
 
@@ -116,6 +132,10 @@ public class SqlBuilder
 
         if (ObjectUtils.isNotEmpty(configure.getOrders())) {
             SelectBuilder.ORDER_BY(applyOrderByColumns());
+        }
+
+        if (configure.getGroups() != null && !configure.getGroups().isEmpty()) {
+            SelectBuilder.GROUP_BY(applyGroupByColumns());
         }
 
         if (configure.getWhere() != null && !configure.getWhere().isEmpty()) {

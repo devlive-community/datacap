@@ -12,11 +12,19 @@
           </Switch>
         </template>
         <template #source="{ row }">
-          <Tooltip transfer
+          <Tooltip v-if="row.source"
+                   transfer
                    :content="row.source.type">
             <Avatar :src="'/static/images/plugin/' + row.source.type + '.png'"
                     size="small">
             </Avatar>
+          </Tooltip>
+          <Tooltip v-else
+                   transfer
+                   :content="`${$t('common.dataset')} [ ${row.dataset.name} ]`">
+            <Icon type="ios-analytics"
+                  size="30">
+            </Icon>
           </Tooltip>
         </template>
         <template #action="{ row }">
@@ -26,6 +34,12 @@
                     size="small"
                     icon="md-eye"
                     @click="handlerViewChart(row, true)">
+            </Button>
+            <Button shape="circle"
+                    size="small"
+                    icon="md-create"
+                    :disabled="!row.dataset"
+                    @click="$router.push(`/admin/dataset/adhoc/${row.dataset.code}/${row.id}`)">
             </Button>
             <Tooltip :content="$t('common.delete')"
                      transfer>

@@ -38,6 +38,11 @@ class DatasetService
     return new HttpCommon().get(`${baseUrl}/columns/${code}`);
   }
 
+  adhoc(code: string, configure: any): Promise<ResponseModel>
+  {
+    return new HttpCommon().post(`${baseUrl}/adhoc/${code}`, configure);
+  }
+
   syncData(id: number): Promise<ResponseModel>
   {
     return new HttpCommon().put(`${baseUrl}/syncData/${id}`);

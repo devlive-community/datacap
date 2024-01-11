@@ -185,6 +185,12 @@ Here are some of the major database solutions that are supported:
     </a>
 </p>
 
+## System architecture
+
+---
+
+<img src="docs/docs/assets/architecture.jpg" width="100%" />
+
 ## Stargazers over time
 
 ---

@@ -17,6 +17,7 @@ export default {
   columnMode: 'Column Mode',
   columnModeMetric: 'Metric',
   columnModeDimension: 'Dimension',
+  columnModeGroup: 'Group',
   create: 'Create Dataset',
   syncMode: 'Sync Mode',
   syncModeManual: 'Manual',
@@ -31,5 +32,19 @@ export default {
   stateOfCreateTable: 'Create Table State',
   modifyNotSupportDataPreview: 'Data preview is not supported to modify',
   syncData: 'Sync Data',
-  syncDataTip: 'The data synchronization schedule will run in the background, see the logs for the specific synchronization results'
+  syncDataTip: 'The data synchronization schedule will run in the background, see the logs for the specific synchronization results',
+  adhocDndTip: 'Drag the indicator dimension on the left to the corresponding position to query and render the data',
+  visualType: 'Visual Type',
+  visualTypeTable: 'Table',
+  visualTypeLine: 'Line',
+  visualTypeBar: 'Bar',
+  visualConfigure: 'Visual Configure',
+  visualConfigureNotSpecified: 'No configuration items are available',
+  visualConfigureXAxis: 'X Axis',
+  visualConfigureYAxis: 'Y Axis',
+  columnExpressionMax: 'Maximum',
+  columnExpressionMin: 'Minimum',
+  columnExpressionSum: 'Sum',
+  columnExpressionAvg: 'Average',
+  columnExpressionCount: 'Count'
 }

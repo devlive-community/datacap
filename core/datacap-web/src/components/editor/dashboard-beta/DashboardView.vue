@@ -27,12 +27,20 @@
                 <Card dis-hover
                       padding="0"
                       :style="{width: item.width, height: item.height}">
-                  <EchartsPreview :width="item.width"
+                  <EchartsPreview v-if="item.type === 'QUERY'"
+                                  :width="item.width"
                                   :key="item.id"
                                   :id="item.node.id"
                                   :height="item.height"
                                   :configure="JSON.parse(item.node.configure)">
                   </EchartsPreview>
+                  <VisualView v-else-if="item.type === 'DATASET'"
+                              :width="item.width"
+                              :height="item.height"
+                              :code="item.node.code"
+                              :configuration="JSON.parse(item.node.configure)"
+                              :query="JSON.parse(item.node.query)">
+                  </VisualView>
                 </Card>
               </GridItem>
             </GridLayout>
@@ -47,10 +55,11 @@
 import {defineComponent} from "vue"
 import {GridItem, GridLayout} from "vue3-grid-layout-next";
 import EchartsPreview from "@/components/editor/echarts/EchartsPreview.vue";
+import VisualView from "@/components/visual/VisualView.vue";
 
 export default defineComponent({
   name: 'DashboardViewBeta',
-  components: {GridItem, GridLayout, EchartsPreview},
+  components: {VisualView, GridItem, GridLayout, EchartsPreview},
   props: {
     layouts: {
       type: Array,
