@@ -10,11 +10,17 @@
             :label-width="80">
         <FormItem :label="$t('common.expression')">
           <Select v-model="formState.expression">
-            <Option :value="Expression.SUM">{{ $t('dataset.columnExpressionSum') }}</Option>
+            <Option v-if="formState.type === ColumnType.NUMBER"
+                    :value="Expression.SUM">
+              {{ $t('dataset.columnExpressionSum') }}
+            </Option>
             <Option :value="Expression.COUNT">{{ $t('dataset.columnExpressionCount') }}</Option>
             <Option :value="Expression.MAX">{{ $t('dataset.columnExpressionMax') }}</Option>
             <Option :value="Expression.MIN">{{ $t('dataset.columnExpressionMin') }}</Option>
-            <Option :value="Expression.AVG">{{ $t('dataset.columnExpressionAvg') }}</Option>
+            <Option v-if="formState.type === ColumnType.NUMBER"
+                    :value="Expression.AVG">
+              {{ $t('dataset.columnExpressionAvg') }}
+            </Option>
           </Select>
         </FormItem>
       </Form>
@@ -23,7 +29,7 @@
 </template>
 <script lang="ts">
 import {defineComponent, PropType} from 'vue'
-import {Type} from "@/views/admin/dataset/Type";
+import {ColumnType, Type} from "@/views/admin/dataset/Type";
 import {Expression} from "@/views/admin/dataset/Expression";
 
 export default defineComponent({
@@ -59,6 +65,10 @@ export default defineComponent({
     Expression()
     {
       return Expression
+    },
+    ColumnType()
+    {
+      return ColumnType
     }
   },
   data()
@@ -67,6 +77,7 @@ export default defineComponent({
       title: null,
       formState: {
         id: null,
+        type: null,
         expression: null
       }
     }
