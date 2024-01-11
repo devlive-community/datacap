@@ -12,11 +12,19 @@
           </Switch>
         </template>
         <template #source="{ row }">
-          <Tooltip transfer
+          <Tooltip v-if="row.source"
+                   transfer
                    :content="row.source.type">
             <Avatar :src="'/static/images/plugin/' + row.source.type + '.png'"
                     size="small">
             </Avatar>
+          </Tooltip>
+          <Tooltip v-else
+                   transfer
+                   :content="`${$t('common.dataset')} [ ${row.dataset.name} ]`">
+            <Icon type="ios-analytics"
+                  size="30">
+            </Icon>
           </Tooltip>
         </template>
         <template #action="{ row }">

@@ -110,6 +110,11 @@
                           :disabled="!showSql.content"
                           @click="handlerShowSql(true)">
                   </Button>
+                  <Button type="primary"
+                          :disabled="!isPublish"
+                          @click="formState.visible = true">
+                    {{ $t('common.publish') }}
+                  </Button>
                 </Space>
               </template>
             </ListItem>
@@ -123,7 +128,8 @@
                                :show="loading">
               </CircularLoading>
               <VisualEditor v-else
-                            :configuration="configuration">
+                            :configuration="configuration"
+                            @commitOptions="handlerCommitOptions">
               </VisualEditor>
             </div>
           </Content>
@@ -196,6 +202,26 @@
                             @close="handlerColumnConfigure(false, null, null)"
                             @commit="handlerCommitColumnConfigure">
     </DatasetColumnConfigure>
+    <Modal v-model="formState.visible"
+           :title="$t('common.configure')">
+      <Form :model="formState"
+            :label-width="80">
+        <FormItem :label="$t('common.name')"
+                  prop="name">
+          <Input v-model="formState.name"/>
+        </FormItem>
+      </Form>
+      <template #footer>
+        <Button @click="formState.visible = false">
+          {{ $t('common.cancel') }}
+        </Button>
+        <Button type="primary"
+                :disabled="!formState.name"
+                @click="handlerPublish">
+          {{ $t('common.publish') }}
+        </Button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -213,6 +239,7 @@ import DatasetVisualConfigureBar from "@/views/admin/dataset/components/adhoc/Da
 import SqlDetail from "@/components/sql/SqlDetail.vue";
 import DatasetColumnConfigure from "@/views/admin/dataset/components/adhoc/DatasetColumnConfigure.vue";
 import DatasetColumnMetric from "@/views/admin/dataset/components/adhoc/DatasetColumnMetric.vue";
+import ReportService from "@/services/admin/ReportService";
 
 export default {
   name: 'DatasetAdhoc',
@@ -252,7 +279,14 @@ export default {
         type: null as ColumnType,
         content: null,
         configure: null
-      }
+      },
+      isPublish: false,
+      commitOptions: null,
+      formState: {
+        visible: false,
+        name: null
+      },
+      published: false
     }
   },
   watch: {
@@ -293,10 +327,10 @@ export default {
       const columns = []
       this.metrics
         .filter((value: { id: unknown; }) => this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
-        .map((item: { id: unknown; type: unknown; }) => columns.push({id: item.id, type: item.type}))
+        .map((item: { id: unknown; type: unknown; mode: unknown; }) => columns.push({id: item.id, type: item.type, mode: item.mode}))
       this.dimensions
         .filter((value: { id: unknown; }) => this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
-        .map((item: { id: unknown; type: unknown; }) => columns.push({id: item.id, type: item.type}))
+        .map((item: { id: unknown; type: unknown; mode: unknown; }) => columns.push({id: item.id, type: item.type, mode: item.mode}))
       if (this.configure.columns.length > 0) {
         this.configure.columns = [...this.configure.columns, ...columns]
       }
@@ -307,6 +341,7 @@ export default {
     },
     handlerAdhoc()
     {
+      this.isPublish = true
       this.loading = true
       DatasetService.adhoc(this.code, this.configure)
         .then(response => {
@@ -370,6 +405,32 @@ export default {
         this.metrics.find((item: { id: any; }) => item.id === value.id).expression = value.expression
         this.handlerAdhoc()
       }
+    },
+    handlerCommitOptions(value: any)
+    {
+      this.commitOptions = value
+    },
+    handlerPublish()
+    {
+      this.published = true
+      const configure = {
+        name: this.formState.name,
+        realtime: true,
+        type: 'DATASET',
+        configure: JSON.stringify(this.commitOptions),
+        dataset: {
+          id: this.originalDimensions[0].dataset.id
+        },
+        query: JSON.stringify(this.configure)
+      }
+      ReportService.saveOrUpdate(configure)
+        .then(response => {
+          if (response.status) {
+            this.$Message.success(this.$t('report.publishSuccess').replace('REPLACE_NAME', this.formState.name))
+            this.formState.visible = false
+          }
+        })
+        .finally(() => this.published = false)
     }
   }
 }

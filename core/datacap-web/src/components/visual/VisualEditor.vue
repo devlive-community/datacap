@@ -14,13 +14,16 @@
     </Result>
     <div v-else>
       <VisualTable v-if="configuration.type === Type.TABLE"
-                   :configuration="configuration">
+                   :configuration="configuration"
+                   @commitOptions="handlerCommit">
       </VisualTable>
       <VisualLine v-else-if="configuration.type === Type.LINE"
-                  :configuration="configuration">
+                  :configuration="configuration"
+                  @commitOptions="handlerCommit">
       </VisualLine>
       <VisualBar v-else-if="configuration.type === Type.BAR"
-                 :configuration="configuration">
+                 :configuration="configuration"
+                 @commitOptions="handlerCommit">
       </VisualBar>
     </div>
   </div>
@@ -44,6 +47,12 @@ export default {
   props: {
     configuration: {
       type: Configuration
+    }
+  },
+  methods: {
+    handlerCommit(value: any)
+    {
+      this.$emit('commitOptions', value)
     }
   }
 };

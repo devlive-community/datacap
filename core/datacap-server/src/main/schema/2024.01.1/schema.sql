@@ -24,4 +24,10 @@ ALTER TABLE `datacap_dataset_column`
 
 UPDATE `menus`
 SET `is_new` = false
-WHERE `is_new` = true
+WHERE `is_new` = true;
+
+CREATE TABLE `datacap_report_dataset_relation`
+(
+    `report_id`  BIGINT,
+    `dataset_id` BIGINT
+);

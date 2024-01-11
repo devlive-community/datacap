@@ -8,6 +8,7 @@
 <script lang="ts">
 import {Configuration} from "@/components/visual/Configuration"
 import VChart from '@visactor/vchart'
+import {cloneDeep} from "lodash";
 
 let instance: VChart
 
@@ -16,6 +17,10 @@ export default {
   props: {
     configuration: {
       type: Configuration
+    },
+    submitted: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
@@ -32,18 +37,29 @@ export default {
     handlerInitialize(reset: boolean)
     {
       setTimeout(() => {
-        const options = {
-          type: 'line',
-          data: {values: this.configuration.columns},
-          xField: this.configuration.chartConfigure.xAxis,
-          yField: this.configuration.chartConfigure.yAxis
+        try {
+          const options = {
+            type: 'line',
+            data: {values: this.configuration.columns},
+            xField: this.configuration.chartConfigure.xAxis,
+            yField: this.configuration.chartConfigure.yAxis
+          }
+          if (!reset) {
+            instance = new VChart(options, {dom: 'content'})
+            instance.renderAsync()
+          }
+          else {
+            instance.updateSpec(options, true)
+          }
+          if (this.submitted) {
+            const cloneOptions = cloneDeep(this.configuration)
+            cloneOptions.headers = []
+            cloneOptions.columns = []
+            this.$emit('commitOptions', cloneOptions)
+          }
         }
-        if (!reset) {
-          instance = new VChart(options, {dom: 'content'})
-          instance.renderAsync()
-        }
-        else {
-          instance.updateSpec(options, true)
+        catch (e) {
+          console.warn(e)
         }
       })
     },

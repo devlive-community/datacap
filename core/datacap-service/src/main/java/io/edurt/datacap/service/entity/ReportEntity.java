@@ -60,4 +60,11 @@ public class ReportEntity
             inverseJoinColumns = @JoinColumn(name = "source_id"))
     @JsonIgnoreProperties(value = {"user"})
     private SourceEntity source;
+
+    @ManyToOne
+    @JoinTable(name = "datacap_report_dataset_relation",
+            joinColumns = @JoinColumn(name = "report_id"),
+            inverseJoinColumns = @JoinColumn(name = "dataset_id"))
+    @JsonIgnoreProperties(value = {"user"})
+    private DataSetEntity dataset;
 }
