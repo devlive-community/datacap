@@ -147,7 +147,7 @@
         <findbugs.version>3.0.1</findbugs.version>
         <jackson.version>2.16.0</jackson.version>
         <logback.version>1.2.13</logback.version>
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.10</slf4j.version>
         <sql-formatter.version>2.0.3</sql-formatter.version>
         <guava.version>32.1.2-jre</guava.version>
         <kotlin.version>1.9.10</kotlin.version>
