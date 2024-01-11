@@ -178,4 +178,5 @@ export default {
   syncMode: 'Sync Mode',
   adhoc: 'Adhoc',
   remove: 'Remove',
+  alias: 'Alias Name',
 }

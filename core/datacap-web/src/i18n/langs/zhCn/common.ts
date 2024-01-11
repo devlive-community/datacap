@@ -178,4 +178,5 @@ export default {
   syncMode: '同步模式',
   adhoc: '即席查询',
   remove: '移除',
+  alias: '别名',
 }

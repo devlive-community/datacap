@@ -18,6 +18,7 @@ public class SqlColumn
     private String column;
     private String value;
     private String expression;
+    private String alias;
     private SqlOperator operator;
     private SqlOrder order;
     private Properties original;

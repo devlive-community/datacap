@@ -13,4 +13,5 @@ public class AdhocColumn
 {
     private Long id;
     private String expression;
+    private String alias;
 }

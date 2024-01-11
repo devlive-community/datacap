@@ -137,15 +137,21 @@ public class DataSetServiceImpl
                             .forEach(column -> columnRepository.findById(column.getId())
                                     .ifPresent(entity -> {
                                         String columnName = entity.getName();
+                                        AtomicReference<String> columnAlias = new AtomicReference<>(null);
                                         AtomicReference<String> expression = new AtomicReference<>(null);
                                         configure.getColumns().stream()
                                                 .filter(it -> it.getId().equals(entity.getId()))
                                                 .findFirst()
-                                                .ifPresent(it -> expression.set(it.getExpression()));
-                                        columns.add(SqlColumn.builder()
+                                                .ifPresent(it -> {
+                                                    expression.set(it.getExpression());
+                                                    columnAlias.set(it.getAlias());
+                                                });
+                                        SqlColumn sqlColumn = SqlColumn.builder()
                                                 .column(columnName)
                                                 .expression(expression.get())
-                                                .build());
+                                                .alias(columnAlias.get())
+                                                .build();
+                                        columns.add(sqlColumn);
                                         // Only dimensions are added to GROUP BY
                                         if (entity.getMode().equals(ColumnMode.DIMENSION)) {
                                             groupBy.add(SqlColumn.builder()

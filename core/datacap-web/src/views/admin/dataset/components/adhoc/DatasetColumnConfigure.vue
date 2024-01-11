@@ -23,6 +23,9 @@
             </Option>
           </Select>
         </FormItem>
+        <FormItem :label="$t('common.alias')">
+          <Input v-model="formState.alias"/>
+        </FormItem>
       </Form>
     </Modal>
   </div>
@@ -31,9 +34,11 @@
 import {defineComponent, PropType} from 'vue'
 import {ColumnType, Type} from "@/views/admin/dataset/Type";
 import {Expression} from "@/views/admin/dataset/Expression";
+import {FormItem} from "view-ui-plus";
 
 export default defineComponent({
   name: 'DatasetColumnConfigure',
+  components: {FormItem},
   props: {
     isVisible: {
       type: Boolean,
@@ -78,6 +83,7 @@ export default defineComponent({
       formState: {
         id: null,
         type: null,
+        alias: null,
         expression: null
       }
     }
