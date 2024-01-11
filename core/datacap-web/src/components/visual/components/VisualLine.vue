@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="content"
-         style="width: 100%; height:400px;">
+    <div ref="content"
+         :style="{width: width, height: height}">
     </div>
   </div>
 </template>
@@ -21,6 +21,14 @@ export default {
     submitted: {
       type: Boolean,
       default: true
+    },
+    width: {
+      type: String,
+      default: () => '100%'
+    },
+    height: {
+      type: String,
+      default: () => '400px'
     }
   },
   watch: {
@@ -45,7 +53,7 @@ export default {
             yField: this.configuration.chartConfigure.yAxis
           }
           if (!reset) {
-            instance = new VChart(options, {dom: 'content'})
+            instance = new VChart(options, {dom: this.$refs.content})
             instance.renderAsync()
           }
           else {

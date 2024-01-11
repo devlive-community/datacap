@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="content"
-         style="width: 100%; height:400px;">
+    <div ref="content"
+         :style="{width: width, height: height}">
     </div>
   </div>
 </template>
@@ -20,6 +20,14 @@ export default {
     submitted: {
       type: Boolean,
       default: true
+    },
+    width: {
+      type: String,
+      default: () => '100%'
+    },
+    height: {
+      type: String,
+      default: () => '400px'
     }
   },
   created()
@@ -37,7 +45,7 @@ export default {
             isShowOverflowTextTooltip: true,
           }
         }
-        const tableInstance = new VTable.ListTable(document.getElementById('content'), options)
+        const tableInstance = new VTable.ListTable(this.$refs.content, options)
         // Add cell tooltip
         tableInstance.on('mouseenter_cell', (args) => {
           const {col, row} = args;

@@ -6,15 +6,21 @@
     <div v-else>
       <VisualTable v-if="configuration.type === Type.TABLE"
                    :configuration="localConfiguration"
-                   :submitted="false">
+                   :submitted="false"
+                   :width="width"
+                   :height="height">
       </VisualTable>
       <VisualLine v-else-if="configuration.type === Type.LINE"
                   :configuration="localConfiguration"
-                  :submitted="false">
+                  :submitted="false"
+                  :width="width"
+                  :height="height">
       </VisualLine>
       <VisualBar v-else-if="configuration.type === Type.BAR"
                  :configuration="localConfiguration"
-                 :submitted="false">
+                 :submitted="false"
+                 :width="width"
+                 :height="height">
       </VisualBar>
     </div>
   </div>
@@ -47,6 +53,14 @@ export default {
     },
     code: {
       type: String
+    },
+    width: {
+      type: String,
+      default: () => '100%'
+    },
+    height: {
+      type: String,
+      default: () => '400px'
     }
   },
   data()
