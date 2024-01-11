@@ -43,7 +43,8 @@ export default {
           },
           tooltip: {
             isShowOverflowTextTooltip: true,
-          }
+          },
+          autoFillWidth: true
         }
         const tableInstance = new VTable.ListTable(this.$refs.content, options)
         // Add cell tooltip
