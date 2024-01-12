@@ -182,7 +182,10 @@ DataCap 可以从任何使用 SQL 的数据存储或数据引擎（ClickHouse、
     </a>&nbsp;
     <a href="https://cassandra.apache.org/" target="_blank" class="connector-logo-index">
         <img src="docs/docs/assets/plugin/cassandra.png" alt="Apache Cassandra" height=60" />
-    </a>
+    </a>&nbsp;
+    <a href="https://matrixorigin.cn/" target="_blank" class="connector-logo-index">
+        <img src="docs/docs/assets/plugin/matrixone.png" alt="MatrixOne" height=60" />
+    </a>&nbsp;
 </p>
 
 ## 系统架构

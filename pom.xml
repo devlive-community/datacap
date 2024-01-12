@@ -78,6 +78,7 @@
         <module>parser/datacap-parser-spi</module>
         <module>parser/datacap-parser-trino</module>
         <module>parser/datacap-parser-mysql</module>
+        <module>plugin/datacap-plugin-matrixone</module>
     </modules>
 
     <name>datacap</name>

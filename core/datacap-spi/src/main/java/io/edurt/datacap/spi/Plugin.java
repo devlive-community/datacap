@@ -38,18 +38,34 @@ public interface Plugin
         return String.format("Integrate %s data sources", this.name());
     }
 
+    default String driver()
+    {
+        return "io.edurt.datacap.JdbcDriver";
+    }
+
+    default String connectType()
+    {
+        return "datacap";
+    }
+
     default void connect(Configure configure)
     {
         Response response = new Response();
         try {
             JdbcConfigure jdbcConfigure = new JdbcConfigure();
+            if (jdbcConfigure.getJdbcDriver() == null) {
+                jdbcConfigure.setJdbcDriver(this.driver());
+            }
+            if (jdbcConfigure.getJdbcType() == null) {
+                jdbcConfigure.setJdbcType(this.connectType());
+            }
             BeanUtils.copyProperties(jdbcConfigure, configure);
             local.set(new JdbcConnection(jdbcConfigure, response));
         }
         catch (Exception ex) {
             response.setIsConnected(Boolean.FALSE);
             response.setMessage(ex.getMessage());
-            log.error("Error connecting : {}", ex.getMessage());
+            log.error("Error connecting : {}", ex);
         }
     }
 

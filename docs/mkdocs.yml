@@ -10,7 +10,7 @@ edit_uri: "https://github.com/devlive-community/datacap/blob/dev/docs/docs"
 banners:
   - title: DataCap 1.18.0 is released
     link: /release-latest.html
-    description: <a href="https://github.com/devlive-community/datacap"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
+    description: <a href="https://github.com/devlive-community/openai-java-sdk" class="text-white"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
 
 copyright: Copyright &copy; 2023 devlive-community
 
@@ -62,10 +62,13 @@ extra:
     1.11.0: 1.11.0
     1.14.0: 1.14.0
 extra_css:
-  - stylesheets/extra.css
-  - css/datacap.css
+  - assets/stylesheets/extra.css
+  - assets/stylesheets/main.2f34a6de.min.css
+  - assets/stylesheets/palette.ecc776e4.min.css
+  - assets/stylesheets/datacap.css
 extra_javascript:
-  - js/datacap.js
+  - assets/javascript/main.2dasf4fv.js
+  - assets/javascript/datacap.js
 markdown_extensions:
   - admonition
   - abbr
@@ -172,6 +175,7 @@ nav:
           - reference/system/sql/home.md
           - reference/system/menu/home.md
       - NavConnectors:
+        - reference/connectors/matrixone/home.md
         - reference/connectors/clickhouse/home.md
         - reference/connectors/mysql/home.md
         - reference/connectors/redis/home.md
