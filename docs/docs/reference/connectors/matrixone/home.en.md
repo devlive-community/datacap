@@ -53,7 +53,7 @@ Support Time: `2024-01-12`
 
     There is no default configuration, and you can add it by user
 
-#### 功能
+#### Function
 
 ---
 

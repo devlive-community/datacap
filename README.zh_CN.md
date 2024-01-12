@@ -186,6 +186,9 @@ DataCap 可以从任何使用 SQL 的数据存储或数据引擎（ClickHouse、
     <a href="https://matrixorigin.cn/" target="_blank" class="connector-logo-index">
         <img src="docs/docs/assets/plugin/matrixone.png" alt="MatrixOne" height=60" />
     </a>&nbsp;
+    <a href="https://www.scylladb.com/" target="_blank" class="connector-logo-index">
+        <img src="docs/docs/assets/plugin/scylladb.png" alt="ScyllaDB" height=60" />
+    </a>&nbsp;
 </p>
 
 ## 系统架构

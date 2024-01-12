@@ -175,6 +175,7 @@ nav:
           - reference/system/sql/home.md
           - reference/system/menu/home.md
       - NavConnectors:
+        - reference/connectors/scylladb/home.md
         - reference/connectors/matrixone/home.md
         - reference/connectors/clickhouse/home.md
         - reference/connectors/mysql/home.md
