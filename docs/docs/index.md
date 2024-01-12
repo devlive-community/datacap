@@ -223,5 +223,11 @@ Datacap 是快速、轻量级、直观的系统。它可以用来管理多数据
 - <a href="https://cassandra.apache.org/" target="_blank" class="connector-logo-index">
       <img src="/assets/plugin/cassandra.png" alt="Apache Cassandra" height=60" />
   </a>
+- <a href="https://matrixorigin.cn/" target="_blank" class="connector-logo-index">
+      <img src="/assets/plugin/matrixone.png" alt="MatrixOne" height=60" />
+  </a>
+- <a href="https://www.scylladb.com/" target="_blank" class="connector-logo-index">
+      <img src="/assets/plugin/scylladb.png" alt="ScyllaDB" height=60" />
+  </a>
 
 </div>

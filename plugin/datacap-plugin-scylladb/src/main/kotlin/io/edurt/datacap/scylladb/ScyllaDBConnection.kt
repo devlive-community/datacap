@@ -1,4 +1,4 @@
-package io.edurt.datacap.plugin.cassandra
+package io.edurt.datacap.scylladb
 
 import com.datastax.oss.driver.api.core.CqlSession
 import io.edurt.datacap.spi.connection.Connection
@@ -10,7 +10,7 @@ import kotlin.Exception
 import kotlin.String
 import kotlin.TODO
 
-class CassandraConnection : Connection {
+class ScyllaDBConnection : Connection {
     private var session: CqlSession? = null
 
     constructor(configure: Configure, response: Response) : super(configure, response)
@@ -22,11 +22,12 @@ class CassandraConnection : Connection {
     override fun openConnection(): java.sql.Connection? {
         try {
             this.session = CqlSession.builder()
-                .addContactPoint(InetSocketAddress(configure?.host, configure!!.port))
-                .withLocalDatacenter(configure.database.orElse("datacenter"))
-                .build()
+                    .addContactPoint(InetSocketAddress(configure?.host, configure !!.port))
+                    .withLocalDatacenter(configure.database.orElse("datacenter"))
+                    .build()
             response?.isConnected = Boolean.TRUE
-        } catch (ex: Exception) {
+        }
+        catch (ex: Exception) {
             response?.isConnected = Boolean.FALSE
             response?.message = ex.message
         }

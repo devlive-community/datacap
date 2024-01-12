@@ -4,7 +4,6 @@ This file was automatically generated - do not edit
 {% extends "base.html" %}
 {% block extrahead %}
 <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-<link rel="stylesheet" href="{{ 'assets/stylesheets/main.82a244a8.min.css' | url }}"/>
 
 <script>
     !function (p) {
@@ -24,10 +23,11 @@ This file was automatically generated - do not edit
     <div id="announce-left">
         {% for banner in config.banners %}
         <div class="item">
-            <a class="announce-link" href="{{ banner.link }}">
-                <span class="twemoji">
-                  {{ banner.title }}
-                </span> {{ banner.description }}
+            <a class="announce-link" href="{{ banner.link }}" style="color: #ffffff;">
+                <div class="twemoji">
+                    <div>{{ banner.title }}</div>
+                    <div style="margin-left: 100px; color: #ffffff;">{{ banner.description }}</div>
+                </div>
             </a>
         </div>
         {% endfor %}
@@ -92,5 +92,4 @@ This file was automatically generated - do not edit
 
 {% block scripts %}
 {{ super() }}
-<script src="{{ 'assets/javascripts/bundle.39654835.min.js' | url }}"></script>
 {% endblock %}
