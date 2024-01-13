@@ -31,3 +31,7 @@ CREATE TABLE `datacap_report_dataset_relation`
     `report_id`  BIGINT,
     `dataset_id` BIGINT
 );
+
+UPDATE `template_sql`
+SET `plugin` = 'MySQL,MatrixOne'
+WHERE `plugin` = 'MySQL';
