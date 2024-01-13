@@ -30,7 +30,7 @@ Support Time: `2024-01-12`
     | `Host` | :material-check-circle:  { .red } |  `127.0.0.1`  |
     | `Port` | :material-check-circle:  { .red } |     `9042`    |
 
-=== "Configure"
+=== "Advanced"
 
     |   Field    |             Required             | Default Value |
     |:----------:|:--------------------------------:|:-------------:|
@@ -47,7 +47,7 @@ Support Time: `2024-01-12`
 |      Pipeline       | :material-close: |
 | Metadata management | :material-close: |
 
-#### 版本
+#### Version
 
 ---
 
