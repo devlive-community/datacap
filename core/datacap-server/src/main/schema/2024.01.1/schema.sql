@@ -35,3 +35,12 @@ CREATE TABLE `datacap_report_dataset_relation`
 UPDATE `template_sql`
 SET `plugin` = 'MySQL,MatrixOne'
 WHERE `plugin` = 'MySQL';
+
+CREATE TABLE `datacap_scheduled_history_source_relation`
+(
+    `scheduled_history_id` BIGINT,
+    `source_id`            BIGINT
+);
+
+RENAME TABLE `source` TO `datacap_source`;
+

@@ -114,5 +114,10 @@
             <artifactId>datacap-parser-mysql</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-schedule</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

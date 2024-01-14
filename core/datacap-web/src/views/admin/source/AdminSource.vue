@@ -81,6 +81,26 @@
                       :to="'/admin/source/' + row.id + '/manager'">
               </Button>
             </Tooltip>
+            <Dropdown transfer>
+              <Button icon="md-more"
+                      shape="circle"
+                      size="small">
+              </Button>
+              <template #list>
+                <DropdownMenu>
+                  <DropdownItem @click="handlerSyncMetadata(true, row)">
+                    <Icon type="md-refresh-circle"/>
+                    {{ $t('common.syncMetadata') }}
+                  </DropdownItem>
+                </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownItem @click="handlerHistory(true, row)">
+                    <Icon type="ios-bookmarks"/>
+                    {{ $t('common.syncHistory') }}
+                  </DropdownItem>
+                </DropdownMenu>
+              </template>
+            </Dropdown>
           </Space>
         </template>
       </Table>
@@ -95,6 +115,17 @@
                   :data="contentData"
                   @close="handlerDeleteRecord(false, null)">
     </SourceDelete>
+    <SourceHistory v-if="historyVisible"
+                   :is-visible="historyVisible"
+                   :name="contentData.name"
+                   :id="contentData.id"
+                   @close="handlerHistory(false, null)">
+    </SourceHistory>
+    <SourceMetadata v-if="syncMetadataVisible"
+                    :is-visible="syncMetadataVisible"
+                    :data="contentData"
+                    @close="handlerSyncMetadata(false, null)">
+    </SourceMetadata>
   </div>
 </template>
 
@@ -109,10 +140,12 @@ import {ResponsePage} from "@/model/ResponsePage";
 import {Space, Tooltip} from "view-ui-plus";
 import SourceDetail from "@/views/admin/source/SourceDetail.vue";
 import SourceDelete from "@/views/admin/source/components/SourceDelete.vue";
+import SourceHistory from "@/views/admin/source/components/SourceHistory.vue";
+import SourceMetadata from "@/views/admin/source/components/SourceMetadata.vue";
 
 export default defineComponent({
   name: "SourceAdmin",
-  components: {SourceDelete, SourceDetail, Space, Tooltip},
+  components: {SourceMetadata, SourceHistory, SourceDelete, SourceDetail, Space, Tooltip},
   setup()
   {
     const i18n = useI18n();
@@ -136,7 +169,9 @@ export default defineComponent({
         pageSize: 10
       },
       contentData: null,
-      deletionVisible: false
+      deletionVisible: false,
+      historyVisible: false,
+      syncMetadataVisible: false
     }
   },
   created()
@@ -204,6 +239,16 @@ export default defineComponent({
             this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
           }
         });
+    },
+    handlerHistory(isOpen: boolean, value: any)
+    {
+      this.historyVisible = isOpen
+      this.contentData = value
+    },
+    handlerSyncMetadata(isOpen: boolean, value: any)
+    {
+      this.syncMetadataVisible = isOpen
+      this.contentData = value
     }
   }
 });

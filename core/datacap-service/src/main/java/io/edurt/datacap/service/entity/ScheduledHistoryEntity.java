@@ -50,4 +50,10 @@ public class ScheduledHistoryEntity
             joinColumns = @JoinColumn(name = "scheduled_id"),
             inverseJoinColumns = @JoinColumn(name = "history_id"))
     private ScheduledEntity scheduled;
+
+    @ManyToOne
+    @JoinTable(name = "datacap_scheduled_history_source_relation",
+            joinColumns = @JoinColumn(name = "scheduled_history_id"),
+            inverseJoinColumns = @JoinColumn(name = "source_id"))
+    private SourceEntity source;
 }

@@ -1,4 +1,4 @@
-package io.edurt.datacap.server.scheduled.source;
+package io.edurt.datacap.service.source;
 
 import com.google.inject.Injector;
 import io.edurt.datacap.schedule.ScheduledRunnable;

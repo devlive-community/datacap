@@ -1,4 +1,4 @@
-package io.edurt.datacap.server.scheduled.source;
+package io.edurt.datacap.service.source;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -91,6 +91,7 @@ public class SyncMetadataScheduledRunnable
                     ScheduledHistoryEntity scheduledHistory = ScheduledHistoryEntity.builder()
                             .name(String.format("Sync source [ %s ]", entity.getName()))
                             .scheduled(scheduledEntity)
+                            .source(entity)
                             .state(PipelineState.RUNNING)
                             .build();
                     scheduledHistoryHandler.save(scheduledHistory);
