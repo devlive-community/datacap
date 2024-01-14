@@ -69,6 +69,8 @@
         <module>plugin/datacap-plugin-pinot</module>
         <module>plugin/datacap-plugin-mongo-community</module>
         <module>plugin/datacap-plugin-cassandra</module>
+        <module>plugin/datacap-plugin-matrixone</module>
+        <module>plugin/datacap-plugin-scylladb</module>
         <module>executor/datacap-executor-example</module>
         <module>executor/datacap-executor-seatunnel</module>
         <module>shaded/datacap-shaded-ydb</module>
@@ -78,8 +80,7 @@
         <module>parser/datacap-parser-spi</module>
         <module>parser/datacap-parser-trino</module>
         <module>parser/datacap-parser-mysql</module>
-        <module>plugin/datacap-plugin-matrixone</module>
-        <module>plugin/datacap-plugin-scylladb</module>
+        <module>schedule/datacap-schedule-spi</module>
     </modules>
 
     <name>datacap</name>

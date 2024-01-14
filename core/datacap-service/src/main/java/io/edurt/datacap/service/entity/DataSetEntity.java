@@ -49,8 +49,8 @@ public class DataSetEntity
     @Enumerated(EnumType.STRING)
     private SyncMode syncMode = SyncMode.MANUAL;
 
-    @Column(name = "sync_value")
-    private String syncValue; // only for TIMING
+    @Column(name = "expression")
+    private String expression; // only for TIMING
 
     @Column(name = "state")
     @Convert(converter = ListConverter.class)

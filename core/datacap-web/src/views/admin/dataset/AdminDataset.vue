@@ -175,7 +175,7 @@ export default defineComponent({
     },
     handlerRebuild(record: any, opened: boolean)
     {
-      if (!this.isSuccess(record)) {
+      if (record && this.isSuccess(record.state)) {
         return
       }
       this.rebuildVisible = opened
@@ -188,6 +188,9 @@ export default defineComponent({
     },
     handlerSyncData(record: any, opened: boolean)
     {
+      if (record && !this.isSuccess(record.state)) {
+        return
+      }
       this.contextData = record
       this.syncDataVisible = opened
     },

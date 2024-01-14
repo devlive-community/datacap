@@ -209,6 +209,7 @@ export default defineComponent({
     {
       this.deletionVisible = isOpen;
       this.contentData = value;
+      this.handlerInitialize(this.pagination.current, this.pagination.pageSize);
     },
     handlerSizeChange(size: number)
     {
