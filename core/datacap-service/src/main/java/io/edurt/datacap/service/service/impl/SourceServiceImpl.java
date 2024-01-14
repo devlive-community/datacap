@@ -315,6 +315,8 @@ public class SourceServiceImpl
                 return CommonResponse.failure("Copy failed: " + e.getMessage());
             }
         }
+        // Start sync metadata
+        this.syncMetadata(source.getId());
         return CommonResponse.success(source);
     }
 
