@@ -44,3 +44,5 @@ CREATE TABLE `datacap_scheduled_history_source_relation`
 
 RENAME TABLE `source` TO `datacap_source`;
 
+ALTER TABLE `datacap_dataset`
+    CHANGE `sync_value` `expression` VARCHAR(100) NULL;

@@ -88,7 +88,7 @@
       <Button type="primary"
               style="margin-bottom: 15px; margin-right: 10px; float: right;"
               @click="infoVisible = true">
-        {{ $t('dataset.create') }}
+        {{ id ? $t('dataset.modify') : $t('dataset.create') }}
       </Button>
     </div>
     <Result v-else
@@ -105,7 +105,7 @@
       </template>
     </Result>
     <Modal v-model="infoVisible"
-           :title="$t('dataset.create')"
+           :title="id ? $t('dataset.modify') : $t('dataset.create')"
            :mask-closable="false">
       <Form :label-width="80">
         <FormItem :label="$t('common.name')">
@@ -119,15 +119,22 @@
         <FormItem :label="$t('dataset.syncMode')">
           <RadioGroup v-model="formState.syncMode">
             <Radio label="MANUAL">{{ $t('dataset.syncModeManual') }}</Radio>
+            <Radio label="TIMING">{{ $t('dataset.syncModeTiming') }}</Radio>
             <Radio label="OUT_SYNC">{{ $t('dataset.syncModeOutSync') }}</Radio>
           </RadioGroup>
+        </FormItem>
+        <FormItem v-if="formState.syncMode === 'TIMING'"
+                  :label="$t('dataset.columnExpression')">
+          <Input v-model="formState.expression"
+                 placeholder="0 0 * * * ?">
+          </Input>
         </FormItem>
       </Form>
       <template #footer>
         <Button type="primary"
                 :loading="loading"
                 @click="handlerCreate">
-          {{ $t('dataset.create') }}
+          {{ id ? $t('dataset.modify') : $t('dataset.create') }}
         </Button>
       </template>
     </Modal>
@@ -173,7 +180,8 @@ export default defineComponent({
         query: null,
         syncMode: 'MANUAL',
         columns: [],
-        source: {id: null}
+        source: {id: null},
+        expression: null
       }
     }
   },
