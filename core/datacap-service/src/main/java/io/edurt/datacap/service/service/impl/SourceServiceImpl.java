@@ -9,6 +9,7 @@ import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
+import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.SharedSourceBody;
 import io.edurt.datacap.service.body.SourceBody;
 import io.edurt.datacap.service.common.ConfigureUtils;
@@ -17,8 +18,10 @@ import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.configure.IConfigureField;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.PluginEntity;
+import io.edurt.datacap.service.entity.ScheduledHistoryEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.repository.ScheduledHistoryRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.repository.UserRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
@@ -51,13 +54,15 @@ public class SourceServiceImpl
 {
     private final SourceRepository sourceRepository;
     private final UserRepository userRepository;
+    private final ScheduledHistoryRepository scheduledHistoryRepository;
     private final Injector injector;
     private final Environment environment;
 
-    public SourceServiceImpl(SourceRepository sourceRepository, UserRepository userRepository, Injector injector, Environment environment)
+    public SourceServiceImpl(SourceRepository sourceRepository, UserRepository userRepository, ScheduledHistoryRepository scheduledHistoryRepository, Injector injector, Environment environment)
     {
         this.sourceRepository = sourceRepository;
         this.userRepository = userRepository;
+        this.scheduledHistoryRepository = scheduledHistoryRepository;
         this.injector = injector;
         this.environment = environment;
     }
@@ -314,5 +319,15 @@ public class SourceServiceImpl
         configure.setConfigure(ConfigureUtils.preparedConfigure(iConfigure, entity));
         entity.setSchema(iConfigure);
         return CommonResponse.success(entity);
+    }
+
+    @Override
+    public CommonResponse<PageEntity<ScheduledHistoryEntity>> getHistory(Long id, FilterBody filter)
+    {
+        Pageable pageable = PageRequestAdapter.of(filter);
+        SourceEntity entity = SourceEntity.builder()
+                .id(id)
+                .build();
+        return CommonResponse.success(this.scheduledHistoryRepository.findAllBySource(entity, pageable));
     }
 }

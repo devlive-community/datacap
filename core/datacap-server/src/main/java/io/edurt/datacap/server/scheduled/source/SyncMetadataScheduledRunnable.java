@@ -91,6 +91,7 @@ public class SyncMetadataScheduledRunnable
                     ScheduledHistoryEntity scheduledHistory = ScheduledHistoryEntity.builder()
                             .name(String.format("Sync source [ %s ]", entity.getName()))
                             .scheduled(scheduledEntity)
+                            .source(entity)
                             .state(PipelineState.RUNNING)
                             .build();
                     scheduledHistoryHandler.save(scheduledHistory);

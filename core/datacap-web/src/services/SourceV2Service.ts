@@ -21,6 +21,11 @@ class SourceV2Service
   {
     return new HttpCommon().get(baseUrl + "/" + id);
   }
+
+  getHistory(id: number, configure: any): Promise<ResponseModel>
+  {
+    return new HttpCommon().post(`${baseUrl}/getHistory/${id}`, configure);
+  }
 }
 
 export default new SourceV2Service();

@@ -179,4 +179,5 @@ export default {
   adhoc: 'Adhoc',
   remove: 'Remove',
   alias: 'Alias Name',
+  syncHistory: 'Sync History'
 }

@@ -1,7 +1,10 @@
 package io.edurt.datacap.server.controller.user.v2;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.SourceBody;
+import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.entity.ScheduledHistoryEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.service.SourceService;
 import io.edurt.datacap.service.validation.ValidationGroup;
@@ -48,5 +51,12 @@ public class SourceV2Controller
     public CommonResponse<SourceEntity> getInfo(@PathVariable(value = "id") Long id)
     {
         return this.sourceService.getByIdV2(id);
+    }
+
+    @PostMapping(value = "getHistory/{id}")
+    public CommonResponse<PageEntity<ScheduledHistoryEntity>> getHistory(@PathVariable(value = "id") Long id,
+            @RequestBody FilterBody filter)
+    {
+        return this.sourceService.getHistory(id, filter);
     }
 }

@@ -149,6 +149,10 @@ public class SourceEntity
     @JsonIgnore
     private List<DatabaseEntity> databases;
 
+    @OneToMany(mappedBy = "source", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<ScheduledHistoryEntity> historys;
+
     public void setConfigure(String configure)
     {
         this.configure = configure;
