@@ -1,0 +1,29 @@
+name: 🦉 Plugin
+title: 🦉 [Plugin] Support plugin for xxx
+description: Support for a new plugin
+labels:
+  - feature
+  - enhancement
+  - plugin
+body:
+  - type: checkboxes
+    attributes:
+      label: Contribution guidelines
+      description: Please read the contribution guidelines before proceeding.
+      options:
+        - label: I've read the [contribution guidelines](https://github.com/devlive-community/datacap/blob/dev/CONTRIBUTING.md) and wholeheartedly agree
+          required: true
+  - type: checkboxes
+    attributes:
+      label: I want to suggest an idea and checked that ...
+      description: Make sure that your request fulfills all of the following requirements. If one requirement cannot be satisfied, explain in detail why.
+      options:
+        - label: ... to my best knowledge, my idea wouldn't break something for other users
+        - label: ... the documentation does not mention anything about my idea
+        - label: ... there are no open or closed issues that are related to my idea
+  - type: input
+    attributes:
+      label: Plug-in website or document address
+      description: Please enter the plug-in website or document address
+    validations:
+      required: true
