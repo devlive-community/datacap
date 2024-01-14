@@ -45,4 +45,8 @@ export default {
   sourceDeleteTip1: 'You are deleting a data source. This action permanently deletes all data and configurations associated with that data source. Please be sure to confirm your actions before proceeding.',
   sourceDeleteTip2: 'Warning: Doing this will not be undone. All data and configurations associated with that data source will be permanently deleted.',
   sourceDeleteTip3: 'To confirm, type [ REPLACE_NAME ] in the box below',
+  sourceSyncMetadataTip1: 'Sync metadata will run in the background',
+  sourceSyncMetadataTip2: 'Synchronizing metadata will overwrite the current metadata, which may result in data loss.',
+  sourceSyncMetadataTip3: 'To confirm, type [ REPLACE_NAME ] in the box below',
+  sourceSyncMetadataTip4: 'Task [ REPLACE_NAME ] has started',
 }

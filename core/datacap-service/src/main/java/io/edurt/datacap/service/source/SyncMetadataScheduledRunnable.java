@@ -1,4 +1,4 @@
-package io.edurt.datacap.server.scheduled.source;
+package io.edurt.datacap.service.source;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;

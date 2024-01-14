@@ -39,4 +39,6 @@ public interface SourceService
     CommonResponse<SourceEntity> getByIdV2(Long id);
 
     CommonResponse<PageEntity<ScheduledHistoryEntity>> getHistory(Long id, FilterBody filter);
+
+    CommonResponse<SourceEntity> syncMetadata(Long id);
 }

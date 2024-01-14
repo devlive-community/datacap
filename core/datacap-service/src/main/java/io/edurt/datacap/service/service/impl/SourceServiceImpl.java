@@ -23,9 +23,14 @@ import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.repository.ScheduledHistoryRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
+import io.edurt.datacap.service.repository.TemplateSqlRepository;
 import io.edurt.datacap.service.repository.UserRepository;
+import io.edurt.datacap.service.repository.metadata.ColumnRepository;
+import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
+import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.SourceService;
+import io.edurt.datacap.service.source.SyncMetadataScheduledRunnable;
 import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
@@ -45,6 +50,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,14 +61,24 @@ public class SourceServiceImpl
     private final SourceRepository sourceRepository;
     private final UserRepository userRepository;
     private final ScheduledHistoryRepository scheduledHistoryRepository;
+    private final DatabaseRepository databaseHandler;
+    private final TableRepository tableHandler;
+    private final ColumnRepository columnHandler;
+    private final TemplateSqlRepository templateSqlHandler;
+    private final ScheduledHistoryRepository scheduledHistoryHandler;
     private final Injector injector;
     private final Environment environment;
 
-    public SourceServiceImpl(SourceRepository sourceRepository, UserRepository userRepository, ScheduledHistoryRepository scheduledHistoryRepository, Injector injector, Environment environment)
+    public SourceServiceImpl(SourceRepository sourceRepository, UserRepository userRepository, ScheduledHistoryRepository scheduledHistoryRepository, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, TemplateSqlRepository templateSqlHandler, ScheduledHistoryRepository scheduledHistoryHandler, Injector injector, Environment environment)
     {
         this.sourceRepository = sourceRepository;
         this.userRepository = userRepository;
         this.scheduledHistoryRepository = scheduledHistoryRepository;
+        this.databaseHandler = databaseHandler;
+        this.tableHandler = tableHandler;
+        this.columnHandler = columnHandler;
+        this.templateSqlHandler = templateSqlHandler;
+        this.scheduledHistoryHandler = scheduledHistoryHandler;
         this.injector = injector;
         this.environment = environment;
     }
@@ -328,6 +344,32 @@ public class SourceServiceImpl
         SourceEntity entity = SourceEntity.builder()
                 .id(id)
                 .build();
-        return CommonResponse.success(this.scheduledHistoryRepository.findAllBySource(entity, pageable));
+        return CommonResponse.success(PageEntity.build(this.scheduledHistoryRepository.findAllBySource(entity, pageable)));
+    }
+
+    @Override
+    public CommonResponse<SourceEntity> syncMetadata(Long id)
+    {
+        return this.sourceRepository.findById(id)
+                .map(entity -> {
+                    Executors.newSingleThreadExecutor()
+                            .submit(() -> startSyncMetadata(entity));
+                    return CommonResponse.success(entity);
+                })
+                .orElseGet(() -> CommonResponse.failure(String.format("Source [ %s ] not found", id)));
+    }
+
+    private void startSyncMetadata(SourceEntity entity)
+    {
+        SyncMetadataScheduledRunnable scheduledRunnable = new SyncMetadataScheduledRunnable(String.format("[ %s ] sync metadata", entity.getName()),
+                injector,
+                sourceRepository,
+                databaseHandler,
+                tableHandler,
+                columnHandler,
+                templateSqlHandler,
+                scheduledHistoryHandler,
+                null);
+        scheduledRunnable.run();
     }
 }

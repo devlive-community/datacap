@@ -2,8 +2,8 @@ package io.edurt.datacap.server.configure;
 
 import com.google.inject.Injector;
 import io.edurt.datacap.schedule.ScheduledCronRegistrar;
-import io.edurt.datacap.server.scheduled.source.CheckScheduledRunnable;
-import io.edurt.datacap.server.scheduled.source.SyncMetadataScheduledRunnable;
+import io.edurt.datacap.service.source.CheckScheduledRunnable;
+import io.edurt.datacap.service.source.SyncMetadataScheduledRunnable;
 import io.edurt.datacap.service.repository.ScheduledHistoryRepository;
 import io.edurt.datacap.service.repository.ScheduledRepository;
 import io.edurt.datacap.service.repository.SourceRepository;

@@ -179,5 +179,6 @@ export default {
   adhoc: '即席查询',
   remove: '移除',
   alias: '别名',
-  syncHistory: '同步历史'
+  syncHistory: '同步历史',
+  syncMetadata: '同步元数据',
 }

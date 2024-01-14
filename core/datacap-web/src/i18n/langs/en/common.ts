@@ -179,5 +179,6 @@ export default {
   adhoc: 'Adhoc',
   remove: 'Remove',
   alias: 'Alias Name',
-  syncHistory: 'Sync History'
+  syncHistory: 'Sync History',
+  syncMetadata: 'Sync Metadata',
 }

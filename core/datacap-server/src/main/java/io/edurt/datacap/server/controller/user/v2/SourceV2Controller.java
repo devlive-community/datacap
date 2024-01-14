@@ -59,4 +59,10 @@ public class SourceV2Controller
     {
         return this.sourceService.getHistory(id, filter);
     }
+
+    @PutMapping(value = "syncMetadata/{id}")
+    public CommonResponse<SourceEntity> syncMetadata(@PathVariable(value = "id") Long id)
+    {
+        return this.sourceService.syncMetadata(id);
+    }
 }

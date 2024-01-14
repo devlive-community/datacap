@@ -46,4 +46,8 @@ export default {
   sourceDeleteTip1: '您正在执行删除数据源操作。此操作将永久性地删除与该数据源相关联的所有数据和配置。请在继续之前务必确认您的操作。',
   sourceDeleteTip2: '警告：执行此操作将无法撤销。所有与该数据源相关的数据和配置将被永久删除。',
   sourceDeleteTip3: '要确认，请在下面的框中键入 [ REPLACE_NAME ]',
+  sourceSyncMetadataTip1: '同步元数据将在后台运行',
+  sourceSyncMetadataTip2: '同步元数据将会覆盖当前的元数据，可能会导致数据丢失，是否继续？',
+  sourceSyncMetadataTip3: '要确认，请在下面的框中键入 [ REPLACE_NAME ]',
+  sourceSyncMetadataTip4: '任务 [ REPLACE_NAME ] 已开始',
 }

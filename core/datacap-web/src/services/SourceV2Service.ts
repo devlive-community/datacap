@@ -26,6 +26,11 @@ class SourceV2Service
   {
     return new HttpCommon().post(`${baseUrl}/getHistory/${id}`, configure);
   }
+
+  syncMetadata(id: number): Promise<ResponseModel>
+  {
+    return new HttpCommon().put(`${baseUrl}/syncMetadata/${id}`);
+  }
 }
 
 export default new SourceV2Service();
