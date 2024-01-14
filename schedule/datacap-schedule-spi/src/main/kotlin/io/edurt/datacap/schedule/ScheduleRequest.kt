@@ -1,7 +1,7 @@
 package io.edurt.datacap.schedule
 
-class ScheduleRequest {
-    val name: String? = null
-    val expression: String? = null
-    val jobId: String? = null
-}
+data class ScheduleRequest(var name: String? = null,
+                           var group: String = "DataCap-Schedule-Group",
+                           var expression: String? = null,
+                           var jobId: String? = null,
+                           var job: ScheduleJob? = null)

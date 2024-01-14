@@ -9,7 +9,5 @@ interface Schedule {
 
     fun initialize(request: ScheduleRequest): ScheduleResponse
 
-    fun start(request: ScheduleRequest): ScheduleResponse
-
     fun stop(request: ScheduleRequest): ScheduleResponse
 }

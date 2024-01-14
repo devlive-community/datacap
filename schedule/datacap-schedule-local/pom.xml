@@ -8,32 +8,19 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>datacap-schedule-spi</artifactId>
-    <description>DataCap - Schedule spi</description>
-
-    <properties>
-        <quartz.version>2.3.2</quartz.version>
-    </properties>
+    <artifactId>datacap-schedule-local</artifactId>
+    <description>DataCap - Schedule for local</description>
 
     <dependencies>
         <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <scope>provided</scope>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-schedule-spi</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <version>${quartz.version}</version>
         </dependency>
     </dependencies>
 
