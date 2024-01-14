@@ -41,3 +41,6 @@ CREATE TABLE `datacap_scheduled_history_source_relation`
     `scheduled_history_id` BIGINT,
     `source_id`            BIGINT
 );
+
+RENAME TABLE `source` TO `datacap_source`;
+

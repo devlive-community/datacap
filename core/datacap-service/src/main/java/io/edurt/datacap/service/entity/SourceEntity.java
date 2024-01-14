@@ -47,10 +47,9 @@ import java.util.Optional;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
-@Table(name = "source")
+@Table(name = "datacap_source")
 @JsonIgnoreProperties(value = {"configure", "pluginAudits"})
 @EntityListeners(AuditingEntityListener.class)
-@org.hibernate.annotations.Table(appliesTo = "source", comment = "The storage is used to query the data connection source")
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class SourceEntity
