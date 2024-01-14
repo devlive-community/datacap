@@ -2,8 +2,6 @@ package io.edurt.datacap.server.configure;
 
 import com.google.inject.Injector;
 import io.edurt.datacap.schedule.ScheduledCronRegistrar;
-import io.edurt.datacap.service.source.CheckScheduledRunnable;
-import io.edurt.datacap.service.source.SyncMetadataScheduledRunnable;
 import io.edurt.datacap.service.repository.ScheduledHistoryRepository;
 import io.edurt.datacap.service.repository.ScheduledRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
@@ -11,6 +9,8 @@ import io.edurt.datacap.service.repository.TemplateSqlRepository;
 import io.edurt.datacap.service.repository.metadata.ColumnRepository;
 import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
+import io.edurt.datacap.service.source.CheckScheduledRunnable;
+import io.edurt.datacap.service.source.SyncMetadataScheduledRunnable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
