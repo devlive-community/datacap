@@ -6,7 +6,7 @@ abstract class ScheduleModule : AbstractModule() {
     fun name(): String {
         return this.javaClass
                 .simpleName
-                .removePrefix("Schedule")
                 .removeSuffix("Module")
+                .removeSuffix("Schedule")
     }
 }
