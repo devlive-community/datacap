@@ -4,6 +4,7 @@ export default {
   onlyPreviewCreate: '仅支持预览数据创建数据集',
   returnQuery: '返回查询',
   columnName: '列名',
+  columnAlias: '列别名',
   columnType: '列类型',
   columnTypeString: '字符串',
   columnTypeNumber: '数字',

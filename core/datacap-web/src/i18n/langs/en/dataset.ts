@@ -4,6 +4,7 @@ export default {
   onlyPreviewCreate: 'Only preview data can be used to create datasets',
   returnQuery: 'Return Query',
   columnName: 'Column Name',
+  columnAlias: 'Column Alias',
   columnType: 'Column Type',
   columnTypeString: 'String',
   columnTypeNumber: 'Number',

@@ -1,5 +1,5 @@
 <template>
-  <span>{{ element.name }}</span>
+  <span>{{ element.aliasName ? element.aliasName : element.name }}</span>
   <span v-if="element.expression">
       (
       <Text strong
@@ -33,6 +33,7 @@ interface ColumnMetric
 {
   name: string
   expression: Expression
+  aliasName: string
 }
 
 export default defineComponent({

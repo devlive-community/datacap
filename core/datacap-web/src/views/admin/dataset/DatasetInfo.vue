@@ -26,6 +26,7 @@
         <FormItem style="margin-bottom: 5px;">
           <Row :gutter="10">
             <Col class="w150">{{ $t('dataset.columnName') }}</Col>
+            <Col class="w150">{{ $t('dataset.columnAlias') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnType') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnMode') }}</Col>
             <Col class="w150">{{ $t('dataset.columnDefaultValue') }}</Col>
@@ -42,6 +43,11 @@
             <Row :gutter="10">
               <Col class="w150">
                 <Input v-model="item.name"
+                       type="text">
+                </Input>
+              </Col>
+              <Col class="w150">
+                <Input v-model="item.aliasName"
                        type="text">
                 </Input>
               </Col>
@@ -243,7 +249,8 @@ export default defineComponent({
             this.columnDefs.push(columnDef)
             const column = {
               id: null,
-              name: header.replace('(', '_').replace(')', ''),
+              name: `column_${index + 1}`,
+              aliasName: header.replace('(', '_').replace(')', ''),
               type: 'STRING',
               comment: header,
               defaultValue: null,

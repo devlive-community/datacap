@@ -17,7 +17,7 @@
               <template #item="{ element }">
                 <Tag size="medium"
                      class="point">
-                  {{ element.name }}
+                  {{ element.aliasName ? element.aliasName : element.name }}
                 </Tag>
               </template>
             </Draggable>
@@ -38,7 +38,7 @@
               <template #item="{ element }">
                 <Tag size="medium"
                      class="point">
-                  {{ element.name }}
+                  {{ element.aliasName ? element.aliasName : element.name }}
                 </Tag>
               </template>
             </Draggable>
@@ -85,7 +85,7 @@
                 <template #item="{ element, index}">
                   <Tag size="medium"
                        class="point">
-                    {{ element.name }} &nbsp;
+                    {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
                     <Tooltip transfer
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
@@ -105,7 +105,7 @@
                 <template #item="{ element, index}">
                   <Tag size="medium"
                        class="point">
-                    {{ element.name }} &nbsp;
+                    {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
                     <Tooltip transfer
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"

@@ -66,6 +66,9 @@ public class DataSetColumnEntity
     @Enumerated(EnumType.STRING)
     private ColumnMode mode;
 
+    @Column(name = "alias_name")
+    private String aliasName;
+
     @ManyToOne
     @JoinTable(name = "datacap_dataset_column_relation",
             joinColumns = @JoinColumn(name = "column_id"),
