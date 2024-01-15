@@ -14,6 +14,11 @@
             </Avatar>
           </Tooltip>
         </template>
+        <template #syncMode="{ row }">
+          <Tag v-if="row.syncMode === 'MANUAL'">{{ $t('dataset.syncModeManual') }}</Tag>
+          <Tag v-else-if="row.syncMode === 'TIMING'">{{ $t('dataset.syncModeTiming') }}</Tag>
+          <Tag v-else-if="row.syncMode === 'OUT_SYNC'">{{ $t('dataset.syncModeOutSync') }}</Tag>
+        </template>
         <template #state="{ row }">
           <Poptip trigger="hover"
                   placement="bottom"

@@ -28,6 +28,13 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.syncMode'),
       key: 'syncMode',
+      slot: 'syncMode',
+      ellipsis: true,
+      align: 'center'
+    },
+    {
+      title: i18n.t('dataset.actuator'),
+      key: 'actuator',
       ellipsis: true,
       align: 'center'
     },
