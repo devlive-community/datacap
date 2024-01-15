@@ -14,7 +14,7 @@
     <description>DataCap - DuckDB</description>
 
     <properties>
-        <duckdb.version>0.8.1</duckdb.version>
+        <duckdb.version>0.9.2</duckdb.version>
         <plugin.name>jdbc-duckdb</plugin.name>
     </properties>
 
