@@ -223,6 +223,14 @@ public class DataSetServiceImpl
     }
 
     @Override
+    public CommonResponse<DataSetEntity> getInfo(String code)
+    {
+        return repository.findByCode(code)
+                .map(CommonResponse::success)
+                .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
+    }
+
+    @Override
     public CommonResponse<PageEntity<DataSetEntity>> getAll(PagingAndSortingRepository pagingAndSortingRepository, FilterBody filter)
     {
         Pageable pageable = PageRequestAdapter.of(filter);

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="data || id">
+    <div v-if="data || code">
       <Divider orientation="left">
         {{ $t('dataset.dataPreview') }}
       </Divider>
@@ -158,7 +158,7 @@
         <Button type="primary"
                 :loading="loading"
                 @click="handlerCreate">
-          {{ id ? $t('dataset.modify') : $t('dataset.create') }}
+          {{ code ? $t('dataset.modify') : $t('dataset.create') }}
         </Button>
       </template>
     </Modal>
@@ -193,7 +193,7 @@ export default defineComponent({
   data()
   {
     return {
-      id: null,
+      code: null,
       loading: false,
       columnDefs: [],
       actuators: [],
@@ -226,11 +226,11 @@ export default defineComponent({
         })
 
       setTimeout(() => {
-        const id = this.$route.query.id
-        if (id) {
-          this.id = id
+        const code = this.$route.params.code
+        if (code) {
+          this.code = code
           const axios = new HttpCommon().getAxios();
-          axios.all([DatasetService.getById(this.id), DatasetService.getColumns(this.id)])
+          axios.all([DatasetService.getByCode(this.code), DatasetService.getColumnsByCode(this.code)])
             .then(axios.spread((info, column) => {
               if (info.status) {
                 this.formState = info.data

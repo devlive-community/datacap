@@ -33,6 +33,11 @@ class DatasetService
     return new HttpCommon().get(`${baseUrl}/getColumns/${id}`);
   }
 
+  getByCode(code: string): Promise<ResponseModel>
+  {
+    return new HttpCommon().get(`${baseUrl}/info/${code}`);
+  }
+
   getColumnsByCode(code: string): Promise<ResponseModel>
   {
     return new HttpCommon().get(`${baseUrl}/columns/${code}`);

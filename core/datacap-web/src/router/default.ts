@@ -150,7 +150,7 @@ const createDefaultRouter = (router: any) => {
     component: LayoutContainer,
     children: [
       {
-        path: "dataset/create",
+        path: "dataset/info/:code?",
         layout: LayoutContainer,
         meta: {title: 'common.dataset'},
         component: () => import("@/views/admin/dataset/DatasetInfo.vue")

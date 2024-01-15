@@ -31,7 +31,7 @@
         <Button type="primary"
                 size="small"
                 icon="md-add"
-                @click="$router.push('/admin/dataset/create')">
+                to="/admin/dataset/info">
           {{ $t('common.dataset') }}
         </Button>
         <Poptip trigger="hover" placement="bottom" word-wrap width="150">

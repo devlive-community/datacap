@@ -44,6 +44,7 @@ public class DataSetController
         return service.rebuild(id);
     }
 
+    @Deprecated
     @GetMapping(value = "getColumns/{id}")
     public CommonResponse<Set<DataSetColumnEntity>> getColumns(@PathVariable Long id)
     {
@@ -67,6 +68,12 @@ public class DataSetController
             @RequestBody Adhoc configure)
     {
         return service.adhoc(code, configure);
+    }
+
+    @GetMapping(value = "info/{code}")
+    public CommonResponse<DataSetEntity> info(@PathVariable String code)
+    {
+        return service.getInfo(code);
     }
 
     @GetMapping(value = "getActuators")

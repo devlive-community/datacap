@@ -32,12 +32,14 @@
                     shape="circle"
                     size="small"
                     icon="md-analytics"
+                    target="_blank"
                     :to="`/admin/dataset/adhoc/${row.code}`">
             </Button>
             <Button shape="circle"
                     size="small"
                     icon="md-create"
-                    @click="$router.push('/admin/dataset/create?id=' + row.id)">
+                    target="_blank"
+                    :to="'/admin/dataset/info/' + row.code">
             </Button>
             <Button type="error"
                     shape="circle"
