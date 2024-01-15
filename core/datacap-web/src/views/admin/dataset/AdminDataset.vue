@@ -14,6 +14,11 @@
             </Avatar>
           </Tooltip>
         </template>
+        <template #syncMode="{ row }">
+          <Tag v-if="row.syncMode === 'MANUAL'">{{ $t('dataset.syncModeManual') }}</Tag>
+          <Tag v-else-if="row.syncMode === 'TIMING'">{{ $t('dataset.syncModeTiming') }}</Tag>
+          <Tag v-else-if="row.syncMode === 'OUT_SYNC'">{{ $t('dataset.syncModeOutSync') }}</Tag>
+        </template>
         <template #state="{ row }">
           <Poptip trigger="hover"
                   placement="bottom"
@@ -32,12 +37,14 @@
                     shape="circle"
                     size="small"
                     icon="md-analytics"
+                    target="_blank"
                     :to="`/admin/dataset/adhoc/${row.code}`">
             </Button>
             <Button shape="circle"
                     size="small"
                     icon="md-create"
-                    @click="$router.push('/admin/dataset/create?id=' + row.id)">
+                    target="_blank"
+                    :to="'/admin/dataset/info/' + row.code">
             </Button>
             <Button type="error"
                     shape="circle"

@@ -23,4 +23,6 @@ public interface DataSetService
     CommonResponse<Object> adhoc(String code, Adhoc configure);
 
     CommonResponse<Set<String>> getActuators();
+
+    CommonResponse<DataSetEntity> getInfo(String code);
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="data || id">
+    <div v-if="data || code">
       <Divider orientation="left">
         {{ $t('dataset.dataPreview') }}
       </Divider>
@@ -21,35 +21,48 @@
       <Divider orientation="left">
         {{ $t('dataset.dataColumn') }}
       </Divider>
-      <Form style="padding: 0 20px">
+      <CircularLoading v-if="loading"
+                       :show="loading">
+      </CircularLoading>
+      <Form v-else
+            style="padding: 0 20px;"
+            class="center-form">
         <FormItem style="margin-bottom: 5px;">
           <Row :gutter="10">
-            <Col span="3">{{ $t('dataset.columnName') }}</Col>
-            <Col span="2">{{ $t('dataset.columnType') }}</Col>
-            <Col span="2">{{ $t('dataset.columnMode') }}</Col>
-            <Col span="3">{{ $t('dataset.columnDefaultValue') }}</Col>
-            <Col span="3">{{ $t('dataset.columnIsNullable') }}</Col>
-            <Col span="3">{{ $t('dataset.columnIsOrderByKey') }}</Col>
-            <Col span="3">{{ $t('dataset.columnLength') }}</Col>
-            <Col span="5">{{ $t('dataset.columnComment') }}</Col>
+            <Col class="w150">{{ $t('dataset.columnName') }}</Col>
+            <Col class="w150">{{ $t('dataset.columnAlias') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnType') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnMode') }}</Col>
+            <Col class="w150">{{ $t('dataset.columnDefaultValue') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnIsNullable') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnIsOrderByKey') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnIsPartitionKey') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnLength') }}</Col>
+            <Col class="w200">{{ $t('dataset.columnComment') }}</Col>
           </Row>
         </FormItem>
-        <template v-for="(item, index) in formState.columns" :key="index">
+        <template v-for="(item, index) in formState.columns"
+                  :key="index">
           <FormItem>
             <Row :gutter="10">
-              <Col span="3">
+              <Col class="w150">
                 <Input v-model="item.name"
                        type="text">
                 </Input>
               </Col>
-              <Col span="2">
+              <Col class="w150">
+                <Input v-model="item.aliasName"
+                       type="text">
+                </Input>
+              </Col>
+              <Col class="w100">
                 <Select v-model="item.type">
                   <Option value="STRING">{{ $t('dataset.columnTypeString') }}</Option>
                   <Option value="NUMBER">{{ $t('dataset.columnTypeNumber') }}</Option>
                   <Option value="BOOLEAN">{{ $t('dataset.columnTypeBoolean') }}</Option>
                 </Select>
               </Col>
-              <Col span="2">
+              <Col class="w100 center">
                 <Switch v-model="item.mode"
                         size="large"
                         true-value="METRIC"
@@ -62,21 +75,27 @@
                   </template>
                 </Switch>
               </Col>
-              <Col span="3">
+              <Col class="w150">
                 <Input v-model="item.defaultValue"
                        type="text">
                 </Input>
               </Col>
-              <Col span="3">
+              <Col class="w100 center">
                 <Switch v-model="item.nullable"/>
               </Col>
-              <Col span="3">
+              <Col class="w100 center">
                 <Switch v-model="item.orderByKey"/>
               </Col>
-              <Col span="3">
-                <InputNumber v-model="item.length"/>
+              <Col class="w100 center">
+                <Switch v-model="item.partitionKey"/>
               </Col>
-              <Col span="5">
+              <Col class="w100 center">
+                <InputNumber v-model="item.length"
+                             min="0"
+                             max="65536">
+                </InputNumber>
+              </Col>
+              <Col class="w200">
                 <Input v-model="item.comment"
                        type="textarea">
                 </Input>
@@ -84,12 +103,12 @@
             </Row>
           </FormItem>
         </template>
+        <Button type="primary"
+                style="margin-bottom: 15px; margin-right: 10px; float: right;"
+                @click="infoVisible = true">
+          {{ code ? $t('dataset.modify') : $t('dataset.create') }}
+        </Button>
       </Form>
-      <Button type="primary"
-              style="margin-bottom: 15px; margin-right: 10px; float: right;"
-              @click="infoVisible = true">
-        {{ id ? $t('dataset.modify') : $t('dataset.create') }}
-      </Button>
     </div>
     <Result v-else
             style="margin-top: 100px;"
@@ -105,7 +124,7 @@
       </template>
     </Result>
     <Modal v-model="infoVisible"
-           :title="id ? $t('dataset.modify') : $t('dataset.create')"
+           :title="code ? $t('dataset.modify') : $t('dataset.create')"
            :mask-closable="false">
       <Form :label-width="80">
         <FormItem :label="$t('common.name')">
@@ -141,9 +160,9 @@
       </Form>
       <template #footer>
         <Button type="primary"
-                :loading="loading"
+                :loading="saving"
                 @click="handlerCreate">
-          {{ id ? $t('dataset.modify') : $t('dataset.create') }}
+          {{ code ? $t('dataset.modify') : $t('dataset.create') }}
         </Button>
       </template>
     </Modal>
@@ -159,10 +178,11 @@ import TableGridOptions from "@/components/table/TableGridOptions";
 import {TableColumnDef} from "@/components/table/TableColumnDef";
 import DatasetService from "@/services/admin/DatasetService";
 import {HttpCommon} from "@/common/HttpCommon";
+import CircularLoading from "@/components/loading/CircularLoading.vue";
 
 export default defineComponent({
   name: 'DatasetInfo',
-  components: {AgGridVue},
+  components: {CircularLoading, AgGridVue},
   computed: {
     ...mapState(['data'])
   },
@@ -178,8 +198,9 @@ export default defineComponent({
   data()
   {
     return {
-      id: null,
+      code: null,
       loading: false,
+      saving: false,
       columnDefs: [],
       actuators: [],
       infoVisible: false,
@@ -192,7 +213,7 @@ export default defineComponent({
         columns: [],
         source: {id: null},
         expression: null,
-        actuator: null
+        actuator: 'Default'
       }
     }
   },
@@ -203,19 +224,19 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      DatasetService.getActuators()
-        .then(response => {
-          if (response.status) {
-            this.actuators = response.data
-          }
-        })
-
       setTimeout(() => {
-        const id = this.$route.query.id
-        if (id) {
-          this.id = id
+        DatasetService.getActuators()
+          .then(response => {
+            if (response.status) {
+              this.actuators = response.data
+            }
+          })
+        const code = this.$route.params.code
+        if (code) {
+          this.loading = true
+          this.code = code
           const axios = new HttpCommon().getAxios();
-          axios.all([DatasetService.getById(this.id), DatasetService.getColumns(this.id)])
+          axios.all([DatasetService.getByCode(this.code), DatasetService.getColumnsByCode(this.code)])
             .then(axios.spread((info, column) => {
               if (info.status) {
                 this.formState = info.data
@@ -225,6 +246,7 @@ export default defineComponent({
                 this.formState.columns = column.data
               }
             }))
+            .finally(() => this.loading = false)
         }
         else {
           this.formState.source.id = this.data?.sourceId
@@ -234,7 +256,8 @@ export default defineComponent({
             this.columnDefs.push(columnDef)
             const column = {
               id: null,
-              name: header.replace('(', '_').replace(')', ''),
+              name: `column_${index + 1}`,
+              aliasName: header.replace('(', '_').replace(')', ''),
               type: 'STRING',
               comment: header,
               defaultValue: null,
@@ -243,6 +266,7 @@ export default defineComponent({
               length: 0,
               original: header,
               orderByKey: false,
+              partitionKey: false,
               mode: 'DIMENSION'
             }
             this.formState.columns.push(column)
@@ -252,7 +276,7 @@ export default defineComponent({
     },
     handlerCreate()
     {
-      this.loading = true
+      this.saving = true
       DatasetService.saveOrUpdate(this.formState)
         .then(response => {
           if (response.status) {
@@ -260,11 +284,34 @@ export default defineComponent({
             this.$router.push('/admin/dataset')
           }
         })
-        .finally(() => this.loading = false)
+        .finally(() => this.saving = false)
     }
   }
 });
 </script>
 
 <style scoped>
+.center-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.w100 {
+  width: 100px;
+}
+
+.w150 {
+  width: 150px;
+}
+
+.w200 {
+  width: 200px;
+}
+
+.center {
+  text-align: center;
+}
 </style>

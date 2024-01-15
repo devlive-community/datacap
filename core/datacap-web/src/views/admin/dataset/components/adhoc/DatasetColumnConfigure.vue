@@ -95,7 +95,9 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.title = `${this.columnType === Type.METRIC ? this.$t('dataset.columnModeMetric') : this.$t('dataset.columnModeDimension')} [ ${this.content.name} ] ${this.$t(
+      this.title = `${this.columnType === Type.METRIC ? this.$t('dataset.columnModeMetric') : this.$t('dataset.columnModeDimension')} [ ${this.content.aliasName ?
+        this.content.aliasName :
+        this.content.name} ] ${this.$t(
         'common.configure')}`
       if (this.configure) {
         this.formState = this.configure

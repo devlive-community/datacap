@@ -153,6 +153,11 @@ abstract class AbstractSql<T> {
         return getSelf()
     }
 
+    fun PARTITION_BY_KEY(columns: List<String>): T {
+        sql().partitionByKey.addAll(columns.map { item -> "\t$item" })
+        return getSelf()
+    }
+
     fun FROM(table: String?): T {
         sql().tables.add(table)
         return getSelf()
@@ -454,11 +459,12 @@ abstract class AbstractSql<T> {
 
         fun append(s: CharSequence?): SafeAppendable {
             try {
-                if (isEmpty && s!!.length > 0) {
+                if (isEmpty && s !!.length > 0) {
                     isEmpty = false
                 }
                 a.append(s)
-            } catch (e: IOException) {
+            }
+            catch (e: IOException) {
                 throw RuntimeException(e)
             }
             return this
@@ -520,6 +526,7 @@ abstract class AbstractSql<T> {
         var limitingRowsStrategy: LimitingRowsStrategy = LimitingRowsStrategy.NOP
         var engine: String? = null
         var orderByKey: MutableList<String?> = ArrayList()
+        val partitionByKey: MutableList<String?> = ArrayList()
 
         init {
             // Prevent Synthetic Access
@@ -528,13 +535,14 @@ abstract class AbstractSql<T> {
 
         private fun sqlClause(builder: SafeAppendable, keyword: String, parts: List<String?>, open: String, close: String, conjunction: String) {
             if (parts.isNotEmpty()) {
-                if (!builder.isEmpty) {
+                if (! builder.isEmpty) {
                     builder.append("\n")
                 }
                 builder.append(keyword)
                 if (open.isNotEmpty()) {
                     builder.append("")
-                } else {
+                }
+                else {
                     builder.append(" ")
                 }
                 builder.append(open)
@@ -549,13 +557,14 @@ abstract class AbstractSql<T> {
                         }
                         builder.append(part)
                         last = part
-                    } else {
+                    }
+                    else {
                         if (i > 0) {
                             builder.append(conjunction)
                         }
                         builder.append(null)
                     }
-                    i++
+                    i ++
                 }
                 builder.append(close)
             }
@@ -564,7 +573,8 @@ abstract class AbstractSql<T> {
         private fun selectSQL(builder: SafeAppendable): String {
             if (distinct) {
                 sqlClause(builder, "SELECT DISTINCT", select, "", "", ", ")
-            } else {
+            }
+            else {
                 sqlClause(builder, "SELECT", select, "", "", ", ")
             }
 
@@ -665,6 +675,9 @@ abstract class AbstractSql<T> {
             }
             if (orderByKey.isNotEmpty()) {
                 sqlClause(builder, "ORDER BY", orderByKey, "(", ")", ", ")
+            }
+            if (partitionByKey.isNotEmpty()) {
+                sqlClause(builder, "PARTITION BY", partitionByKey, "(", ")", ", ")
             }
             if (end) {
                 builder.append(";")

@@ -189,6 +189,7 @@ public class DataSetServiceImpl
                             .table(item.getTableName())
                             .columns(columns)
                             .groups(groupBy)
+                            .limit(configure.getLimit())
                             .build();
                     String sql = new SqlBuilder(body).getSql();
                     log.info("Execute SQL: {} for DataSet [ {} ]", sql, code);
@@ -220,6 +221,14 @@ public class DataSetServiceImpl
         this.injector.getInstance(Key.get(new TypeLiteral<Set<Scheduler>>() {}))
                 .forEach(item -> actuators.add(item.name()));
         return CommonResponse.success(actuators);
+    }
+
+    @Override
+    public CommonResponse<DataSetEntity> getInfo(String code)
+    {
+        return repository.findByCode(code)
+                .map(CommonResponse::success)
+                .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
     }
 
     @Override
@@ -270,19 +279,12 @@ public class DataSetServiceImpl
         if (entity.getId() == null) {
             entity.setCode(UUID.randomUUID().toString());
         }
-        switch (entity.getState().get(entity.getState().size() - 1)) {
-            case METADATA_START:
-            case METADATA_FAILED:
-                createMetadata(entity, rebuildColumn);
-                break;
-            case METADATA_SUCCESS:
-            case TABLE_START:
-            case TABLE_FAILED:
-                createTable(entity);
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Invalid state [ %s ]", entity.getState().get(entity.getState().size() - 1)));
+        DataSetState state = entity.getState().get(entity.getState().size() - 1);
+        if (state.equals(DataSetState.METADATA_START) || state.equals(DataSetState.METADATA_FAILED)) {
+            log.info("Start build metadata for dataset [ {} ]", entity.getName());
+            createMetadata(entity, rebuildColumn);
         }
+        throw new IllegalArgumentException(String.format("Invalid state [ %s ]", state));
     }
 
     private void createMetadata(DataSetEntity entity, boolean rebuildColumn)
@@ -303,35 +305,13 @@ public class DataSetServiceImpl
         }
         finally {
             repository.save(entity);
-            if (entity.getSyncMode().equals(SyncMode.TIMING)) {
-                SpiUtils.findSchedule(this.injector, entity.getActuator())
-                        .ifPresent(scheduler -> {
-                            SchedulerRequest request = new SchedulerRequest();
-                            request.setName(entity.getId().toString());
-                            request.setGroup("datacap");
-                            request.setExpression(entity.getExpression());
-                            request.setJobId(String.valueOf(entity.getId()));
-                            request.setCreateBeforeDelete(true);
-                            if (scheduler.name().equals("Default")) {
-                                request.setJob(new DatasetJob());
-                                request.setScheduler(this.scheduler);
-                            }
-                            scheduler.initialize(request);
-                        });
+            DataSetState state = entity.getState().get(entity.getState().size() - 1);
+            if (state.equals(DataSetState.METADATA_SUCCESS)
+                    || state.equals(DataSetState.TABLE_START)
+                    || state.equals(DataSetState.TABLE_FAILED)) {
+                log.info("Start build table for dataset [ {} ]", entity.getName());
+                createTable(entity);
             }
-            else {
-                SpiUtils.findSchedule(this.injector, entity.getActuator())
-                        .ifPresent(scheduler -> {
-                            SchedulerRequest request = new SchedulerRequest();
-                            request.setName(entity.getId().toString());
-                            request.setGroup("datacap");
-                            if (scheduler.name().equals("Default")) {
-                                request.setScheduler(this.scheduler);
-                            }
-                            scheduler.stop(request);
-                        });
-            }
-            startBuild(entity, rebuildColumn);
         }
     }
 
@@ -363,9 +343,10 @@ public class DataSetServiceImpl
 
             TableBuilder.Companion.BEGIN();
             TableBuilder.Companion.CREATE_TABLE(String.format("`%s`.`%s`", database, originTableName));
-            TableBuilder.Companion.COLUMNS(columns.stream().map(item -> item.toColumnVar()).collect(Collectors.toList()));
+            TableBuilder.Companion.COLUMNS(columns.stream().map(Column::toColumnVar).collect(Collectors.toList()));
             TableBuilder.Companion.ENGINE(tableDefaultEngine);
             TableBuilder.Companion.ORDER_BY(columnEntities.stream().filter(DataSetColumnEntity::isOrderByKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
+            TableBuilder.Companion.PARTITION_BY(columnEntities.stream().filter(DataSetColumnEntity::isPartitionKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
             String sql = TableBuilder.Companion.SQL();
             log.info("Create table sql \n {} \n on dataset [ {} ]", sql, entity.getName());
 
@@ -394,6 +375,38 @@ public class DataSetServiceImpl
         }
         finally {
             repository.save(entity);
+            DataSetState state = entity.getState().get(entity.getState().size() - 1);
+            if (state.equals(DataSetState.TABLE_SUCCESS)) {
+                log.info("Start schedule for dataset [ {} ]", entity.getName());
+                if (entity.getSyncMode().equals(SyncMode.TIMING)) {
+                    SpiUtils.findSchedule(this.injector, entity.getActuator())
+                            .ifPresent(scheduler -> {
+                                SchedulerRequest request = new SchedulerRequest();
+                                request.setName(entity.getId().toString());
+                                request.setGroup("datacap");
+                                request.setExpression(entity.getExpression());
+                                request.setJobId(String.valueOf(entity.getId()));
+                                request.setCreateBeforeDelete(true);
+                                if (scheduler.name().equals("Default")) {
+                                    request.setJob(new DatasetJob());
+                                    request.setScheduler(this.scheduler);
+                                }
+                                scheduler.initialize(request);
+                            });
+                }
+                else {
+                    SpiUtils.findSchedule(this.injector, entity.getActuator())
+                            .ifPresent(scheduler -> {
+                                SchedulerRequest request = new SchedulerRequest();
+                                request.setName(entity.getId().toString());
+                                request.setGroup("datacap");
+                                if (scheduler.name().equals("Default")) {
+                                    request.setScheduler(this.scheduler);
+                                }
+                                scheduler.stop(request);
+                            });
+                }
+            }
         }
     }
 
