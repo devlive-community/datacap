@@ -12,8 +12,11 @@ import io.edurt.datacap.executor.configure.ExecutorRequest
 import io.edurt.datacap.executor.configure.ExecutorResponse
 import org.apache.commons.lang.StringEscapeUtils
 
-
 class LocalExecutor : Executor {
+    override fun name(): String {
+        return "Default"
+    }
+
     override fun start(request: ExecutorRequest): ExecutorResponse {
         val response = ExecutorResponse()
         try {
