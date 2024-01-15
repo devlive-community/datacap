@@ -21,4 +21,6 @@ public interface DataSetService
     CommonResponse<Boolean> syncData(Long id);
 
     CommonResponse<Object> adhoc(String code, Adhoc configure);
+
+    CommonResponse<Set<String>> getActuators();
 }

@@ -35,6 +35,6 @@ public class ResourceUtils
 
     public static boolean checkExists(String resource)
     {
-        return ObjectUtils.isEmpty(loadResourceToString(resource, false)) ? false : true;
+        return !ObjectUtils.isEmpty(loadResourceToString(resource, false));
     }
 }

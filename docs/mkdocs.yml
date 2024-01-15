@@ -236,6 +236,7 @@ nav:
       - NavDeveloperPlugin:
           - developer/plugin/java/home.md
           - developer/plugin/kotlin/home.md
+          - developer/filesystem/home.md
       - Other:
           - developer/pipeline/home.md
   - useCases.md

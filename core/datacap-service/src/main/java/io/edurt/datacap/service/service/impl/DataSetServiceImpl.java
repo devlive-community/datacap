@@ -2,7 +2,10 @@ package io.edurt.datacap.service.service.impl;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.DataSetState;
 import io.edurt.datacap.common.response.CommonResponse;
@@ -10,6 +13,9 @@ import io.edurt.datacap.common.sql.SqlBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
 import io.edurt.datacap.common.sql.configure.SqlType;
+import io.edurt.datacap.common.utils.SpiUtils;
+import io.edurt.datacap.scheduler.Scheduler;
+import io.edurt.datacap.scheduler.SchedulerRequest;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.adhoc.Adhoc;
@@ -21,7 +27,9 @@ import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.enums.ColumnMode;
 import io.edurt.datacap.service.enums.ColumnType;
+import io.edurt.datacap.service.enums.SyncMode;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
+import io.edurt.datacap.service.initializer.job.DatasetJob;
 import io.edurt.datacap.service.repository.DataSetColumnRepository;
 import io.edurt.datacap.service.repository.DataSetRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
@@ -60,13 +68,15 @@ public class DataSetServiceImpl
     private final DataSetRepository repository;
     private final Injector injector;
     private final InitializerConfigure initializerConfigure;
+    private final org.quartz.Scheduler scheduler;
 
-    public DataSetServiceImpl(DataSetRepository repository, DataSetColumnRepository columnRepository, Injector injector, InitializerConfigure initializerConfigure)
+    public DataSetServiceImpl(DataSetRepository repository, DataSetColumnRepository columnRepository, Injector injector, InitializerConfigure initializerConfigure, org.quartz.Scheduler scheduler)
     {
         this.repository = repository;
         this.columnRepository = columnRepository;
         this.injector = injector;
         this.initializerConfigure = initializerConfigure;
+        this.scheduler = scheduler;
     }
 
     @Transactional
@@ -204,6 +214,15 @@ public class DataSetServiceImpl
     }
 
     @Override
+    public CommonResponse<Set<String>> getActuators()
+    {
+        Set<String> actuators = Sets.newHashSet();
+        this.injector.getInstance(Key.get(new TypeLiteral<Set<Scheduler>>() {}))
+                .forEach(item -> actuators.add(item.name()));
+        return CommonResponse.success(actuators);
+    }
+
+    @Override
     public CommonResponse<PageEntity<DataSetEntity>> getAll(PagingAndSortingRepository pagingAndSortingRepository, FilterBody filter)
     {
         Pageable pageable = PageRequestAdapter.of(filter);
@@ -272,7 +291,6 @@ public class DataSetServiceImpl
             repository.save(entity);
             if (rebuildColumn) {
                 entity.getColumns()
-                        .stream()
                         .forEach(item -> item.setDataset(DataSetEntity.builder().id(entity.getId()).build()));
                 columnRepository.saveAll(entity.getColumns());
             }
@@ -285,6 +303,34 @@ public class DataSetServiceImpl
         }
         finally {
             repository.save(entity);
+            if (entity.getSyncMode().equals(SyncMode.TIMING)) {
+                SpiUtils.findSchedule(this.injector, entity.getActuator())
+                        .ifPresent(scheduler -> {
+                            SchedulerRequest request = new SchedulerRequest();
+                            request.setName(entity.getId().toString());
+                            request.setGroup("datacap");
+                            request.setExpression(entity.getExpression());
+                            request.setJobId(String.valueOf(entity.getId()));
+                            request.setCreateBeforeDelete(true);
+                            if (scheduler.name().equals("Default")) {
+                                request.setJob(new DatasetJob());
+                                request.setScheduler(this.scheduler);
+                            }
+                            scheduler.initialize(request);
+                        });
+            }
+            else {
+                SpiUtils.findSchedule(this.injector, entity.getActuator())
+                        .ifPresent(scheduler -> {
+                            SchedulerRequest request = new SchedulerRequest();
+                            request.setName(entity.getId().toString());
+                            request.setGroup("datacap");
+                            if (scheduler.name().equals("Default")) {
+                                request.setScheduler(this.scheduler);
+                            }
+                            scheduler.stop(request);
+                        });
+            }
             startBuild(entity, rebuildColumn);
         }
     }

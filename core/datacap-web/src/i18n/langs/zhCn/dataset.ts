@@ -21,6 +21,7 @@ export default {
   columnModeGroup: '分组',
   create: '创建数据集',
   modify: '修改数据集',
+  actuator: '执行器',
   syncMode: '同步模式',
   syncModeManual: '手动',
   syncModeTiming: '定时同步',

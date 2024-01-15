@@ -8,7 +8,6 @@ import io.edurt.datacap.service.enums.SyncMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -29,7 +28,6 @@ import java.util.Set;
 
 @Data
 @SuperBuilder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -64,6 +62,9 @@ public class DataSetEntity
 
     @Column(name = "code")
     private String code;
+
+    @Column(name = "actuator")
+    private String actuator;
 
     @ManyToOne
     @JoinTable(name = "datacap_dataset_source_relation",

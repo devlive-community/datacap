@@ -13,7 +13,8 @@ import java.io.File;
 @ComponentScans(value = {
         @ComponentScan(value = "io.edurt.datacap.security"),
         @ComponentScan(value = "io.edurt.datacap.service"),
-        @ComponentScan(value = "io.edurt.datacap.schedule")
+        @ComponentScan(value = "io.edurt.datacap.schedule"),
+        @ComponentScan(value = "io.edurt.datacap.scheduler")
 })
 public class DataCap
 {
