@@ -1,6 +1,6 @@
 package io.edurt.datacap.executor.common
 
-enum class State {
+enum class RunState {
     CREATED,
     TIMEOUT,
     QUEUE,
