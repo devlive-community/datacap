@@ -14,7 +14,7 @@
     <description>DataCap - Apache Kylin</description>
 
     <properties>
-        <kylin.version>2.6.3</kylin.version>
+        <kylin.version>4.0.3</kylin.version>
         <plugin.name>jdbc-kylin</plugin.name>
     </properties>
 
