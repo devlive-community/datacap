@@ -41,10 +41,11 @@ public class DatasetSchedulerInitializer
                     SpiUtils.findSchedule(this.injector, item.getActuator())
                             .ifPresent(scheduler -> {
                                 SchedulerRequest request = new SchedulerRequest();
-                                request.setName(item.getName());
+                                request.setName(item.getId().toString());
                                 request.setGroup("datacap");
                                 request.setExpression(item.getExpression());
                                 request.setJobId(String.valueOf(item.getId()));
+                                request.setCreateBeforeDelete(true);
                                 if (scheduler.name().equals("Default")) {
                                     request.setJob(new DatasetJob());
                                     request.setScheduler(this.scheduler);

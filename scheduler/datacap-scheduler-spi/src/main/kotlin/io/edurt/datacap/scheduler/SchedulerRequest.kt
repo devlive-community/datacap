@@ -7,4 +7,5 @@ data class SchedulerRequest(var name: String? = null,
                             var expression: String? = null,
                             var jobId: String? = null,
                             var job: Job? = null,
-                            var scheduler: org.quartz.Scheduler? = null)
+                            var scheduler: org.quartz.Scheduler? = null,
+                            var createBeforeDelete: Boolean = false)

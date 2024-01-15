@@ -15,6 +15,13 @@ object QuartzEndpoint {
         val name = getJobName(request)
         val group = getJobGroup(request)
         try {
+            if (request.createBeforeDelete) {
+                val response = removeJob(request)
+                if (! response.successful) {
+                    throw IllegalArgumentException("Remove job failure " + response.message)
+                }
+            }
+
             val scheduler: Scheduler = request.scheduler ?: throw IllegalArgumentException("Scheduler must not null")
 
             val jobDetail: JobDetail = request.job?.let {
