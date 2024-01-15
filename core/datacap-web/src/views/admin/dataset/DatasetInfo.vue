@@ -21,7 +21,11 @@
       <Divider orientation="left">
         {{ $t('dataset.dataColumn') }}
       </Divider>
-      <Form style="padding: 0 20px;"
+      <CircularLoading v-if="loading"
+                       :show="loading">
+      </CircularLoading>
+      <Form v-else
+            style="padding: 0 20px;"
             class="center-form">
         <FormItem style="margin-bottom: 5px;">
           <Row :gutter="10">
@@ -102,7 +106,7 @@
         <Button type="primary"
                 style="margin-bottom: 15px; margin-right: 10px; float: right;"
                 @click="infoVisible = true">
-          {{ id ? $t('dataset.modify') : $t('dataset.create') }}
+          {{ code ? $t('dataset.modify') : $t('dataset.create') }}
         </Button>
       </Form>
     </div>
@@ -120,7 +124,7 @@
       </template>
     </Result>
     <Modal v-model="infoVisible"
-           :title="id ? $t('dataset.modify') : $t('dataset.create')"
+           :title="code ? $t('dataset.modify') : $t('dataset.create')"
            :mask-closable="false">
       <Form :label-width="80">
         <FormItem :label="$t('common.name')">
@@ -156,7 +160,7 @@
       </Form>
       <template #footer>
         <Button type="primary"
-                :loading="loading"
+                :loading="saving"
                 @click="handlerCreate">
           {{ code ? $t('dataset.modify') : $t('dataset.create') }}
         </Button>
@@ -174,10 +178,11 @@ import TableGridOptions from "@/components/table/TableGridOptions";
 import {TableColumnDef} from "@/components/table/TableColumnDef";
 import DatasetService from "@/services/admin/DatasetService";
 import {HttpCommon} from "@/common/HttpCommon";
+import CircularLoading from "@/components/loading/CircularLoading.vue";
 
 export default defineComponent({
   name: 'DatasetInfo',
-  components: {AgGridVue},
+  components: {CircularLoading, AgGridVue},
   computed: {
     ...mapState(['data'])
   },
@@ -195,6 +200,7 @@ export default defineComponent({
     return {
       code: null,
       loading: false,
+      saving: false,
       columnDefs: [],
       actuators: [],
       infoVisible: false,
@@ -207,7 +213,7 @@ export default defineComponent({
         columns: [],
         source: {id: null},
         expression: null,
-        actuator: null
+        actuator: 'Default'
       }
     }
   },
@@ -218,16 +224,16 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      DatasetService.getActuators()
-        .then(response => {
-          if (response.status) {
-            this.actuators = response.data
-          }
-        })
-
       setTimeout(() => {
+        DatasetService.getActuators()
+          .then(response => {
+            if (response.status) {
+              this.actuators = response.data
+            }
+          })
         const code = this.$route.params.code
         if (code) {
+          this.loading = true
           this.code = code
           const axios = new HttpCommon().getAxios();
           axios.all([DatasetService.getByCode(this.code), DatasetService.getColumnsByCode(this.code)])
@@ -240,6 +246,7 @@ export default defineComponent({
                 this.formState.columns = column.data
               }
             }))
+            .finally(() => this.loading = false)
         }
         else {
           this.formState.source.id = this.data?.sourceId
@@ -269,7 +276,7 @@ export default defineComponent({
     },
     handlerCreate()
     {
-      this.loading = true
+      this.saving = true
       DatasetService.saveOrUpdate(this.formState)
         .then(response => {
           if (response.status) {
@@ -277,7 +284,7 @@ export default defineComponent({
             this.$router.push('/admin/dataset')
           }
         })
-        .finally(() => this.loading = false)
+        .finally(() => this.saving = false)
     }
   }
 });
