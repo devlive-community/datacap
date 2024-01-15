@@ -21,6 +21,7 @@ export default {
   columnModeGroup: 'Group',
   create: 'Create Dataset',
   modify: 'Modify Dateset',
+  actuator: 'Actuator',
   syncMode: 'Sync Mode',
   syncModeManual: 'Manual',
   syncModeTiming: 'Timing synchronization',

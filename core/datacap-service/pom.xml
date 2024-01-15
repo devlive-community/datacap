@@ -103,6 +103,11 @@
             <artifactId>datacap-sql</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-schedule</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Sql Parser -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
@@ -114,9 +119,10 @@
             <artifactId>datacap-parser-mysql</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Scheduler -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-schedule</artifactId>
+            <artifactId>datacap-scheduler-local</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

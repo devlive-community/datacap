@@ -60,6 +60,11 @@
             <artifactId>datacap-fs-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-scheduler-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -68,4 +68,10 @@ public class DataSetController
     {
         return service.adhoc(code, configure);
     }
+
+    @GetMapping(value = "getActuators")
+    public CommonResponse<Set<String>> getActuators()
+    {
+        return service.getActuators();
+    }
 }

@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.edurt.datacap.fs.FsManager;
 import io.edurt.datacap.parser.ParserManager;
+import io.edurt.datacap.scheduler.ScheduleManager;
 import io.edurt.datacap.spi.PluginLoader;
 import io.edurt.datacap.spi.executor.ExecutorManager;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ public class PluginConfigure
         return Guice.createInjector(new PluginLoader(),
                 new ExecutorManager(),
                 new FsManager(),
-                new ParserManager());
+                new ParserManager(),
+                new ScheduleManager());
     }
 }

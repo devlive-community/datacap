@@ -129,6 +129,15 @@
                  placeholder="0 0 * * * ?">
           </Input>
         </FormItem>
+        <FormItem v-if="formState.syncMode === 'TIMING'"
+                  :label="$t('dataset.actuator')">
+          <RadioGroup v-model="formState.actuator">
+            <Radio v-for="item in actuators"
+                   :key="item"
+                   :label="item">{{ item }}
+            </Radio>
+          </RadioGroup>
+        </FormItem>
       </Form>
       <template #footer>
         <Button type="primary"
@@ -172,6 +181,7 @@ export default defineComponent({
       id: null,
       loading: false,
       columnDefs: [],
+      actuators: [],
       infoVisible: false,
       formState: {
         id: null,
@@ -181,7 +191,8 @@ export default defineComponent({
         syncMode: 'MANUAL',
         columns: [],
         source: {id: null},
-        expression: null
+        expression: null,
+        actuator: null
       }
     }
   },
@@ -192,11 +203,17 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
+      DatasetService.getActuators()
+        .then(response => {
+          if (response.status) {
+            this.actuators = response.data
+          }
+        })
+
       setTimeout(() => {
         const id = this.$route.query.id
         if (id) {
           this.id = id
-
           const axios = new HttpCommon().getAxios();
           axios.all([DatasetService.getById(this.id), DatasetService.getColumns(this.id)])
             .then(axios.spread((info, column) => {

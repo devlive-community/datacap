@@ -2,7 +2,10 @@ package io.edurt.datacap.service.service.impl;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.DataSetState;
 import io.edurt.datacap.common.response.CommonResponse;
@@ -10,6 +13,7 @@ import io.edurt.datacap.common.sql.SqlBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
 import io.edurt.datacap.common.sql.configure.SqlType;
+import io.edurt.datacap.scheduler.Scheduler;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.adhoc.Adhoc;
@@ -201,6 +205,15 @@ public class DataSetServiceImpl
                     return CommonResponse.success(response);
                 })
                 .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
+    }
+
+    @Override
+    public CommonResponse<Set<String>> getActuators()
+    {
+        Set<String> actuators = Sets.newHashSet();
+        this.injector.getInstance(Key.get(new TypeLiteral<Set<Scheduler>>() {}))
+                .forEach(item -> actuators.add(item.name()));
+        return CommonResponse.success(actuators);
     }
 
     @Override

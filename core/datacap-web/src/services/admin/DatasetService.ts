@@ -48,6 +48,11 @@ class DatasetService
     return new HttpCommon().put(`${baseUrl}/syncData/${id}`);
   }
 
+  getActuators(): Promise<ResponseModel>
+  {
+    return new HttpCommon().get(`${baseUrl}/getActuators`);
+  }
+
   getByName<T>(name: string): Promise<ResponseModel>
   {
     return Promise.resolve(undefined);

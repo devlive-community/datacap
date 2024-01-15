@@ -80,8 +80,8 @@
         <module>parser/datacap-parser-spi</module>
         <module>parser/datacap-parser-trino</module>
         <module>parser/datacap-parser-mysql</module>
-        <module>schedule/datacap-schedule-spi</module>
-        <module>schedule/datacap-schedule-local</module>
+        <module>scheduler/datacap-scheduler-spi</module>
+        <module>scheduler/datacap-scheduler-local</module>
     </modules>
 
     <name>datacap</name>

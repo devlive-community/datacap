@@ -4,6 +4,7 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import io.edurt.datacap.fs.Fs;
+import io.edurt.datacap.scheduler.Scheduler;
 
 import java.util.Optional;
 import java.util.Set;
@@ -28,5 +29,20 @@ public class SpiUtils
                 .filter(item -> item.name().equalsIgnoreCase(name))
                 .findFirst();
         return optionalFs;
+    }
+
+    /**
+     * Finds a schedule in the injector by name.
+     *
+     * @param injector the injector to search in
+     * @param name the name of the schedule to find
+     * @return an Optional containing the found Scheduler, or an empty Optional if not found
+     */
+    public static Optional<Scheduler> findSchedule(Injector injector, String name)
+    {
+        return injector.getInstance(Key.get(new TypeLiteral<Set<Scheduler>>() {}))
+                .stream()
+                .filter(item -> item.name().equalsIgnoreCase(name))
+                .findFirst();
     }
 }

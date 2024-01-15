@@ -46,3 +46,6 @@ RENAME TABLE `source` TO `datacap_source`;
 
 ALTER TABLE `datacap_dataset`
     CHANGE `sync_value` `expression` VARCHAR(100) NULL;
+
+ALTER TABLE `datacap_dataset`
+    ADD COLUMN `actuator` VARCHAR(100) NULL;
