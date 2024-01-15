@@ -21,35 +21,38 @@
       <Divider orientation="left">
         {{ $t('dataset.dataColumn') }}
       </Divider>
-      <Form style="padding: 0 20px">
+      <Form style="padding: 0 20px;"
+            class="center-form">
         <FormItem style="margin-bottom: 5px;">
           <Row :gutter="10">
-            <Col span="3">{{ $t('dataset.columnName') }}</Col>
-            <Col span="2">{{ $t('dataset.columnType') }}</Col>
-            <Col span="2">{{ $t('dataset.columnMode') }}</Col>
-            <Col span="3">{{ $t('dataset.columnDefaultValue') }}</Col>
-            <Col span="3">{{ $t('dataset.columnIsNullable') }}</Col>
-            <Col span="3">{{ $t('dataset.columnIsOrderByKey') }}</Col>
-            <Col span="3">{{ $t('dataset.columnLength') }}</Col>
-            <Col span="5">{{ $t('dataset.columnComment') }}</Col>
+            <Col class="w150">{{ $t('dataset.columnName') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnType') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnMode') }}</Col>
+            <Col class="w150">{{ $t('dataset.columnDefaultValue') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnIsNullable') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnIsOrderByKey') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnIsPartitionKey') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnLength') }}</Col>
+            <Col class="w200">{{ $t('dataset.columnComment') }}</Col>
           </Row>
         </FormItem>
-        <template v-for="(item, index) in formState.columns" :key="index">
+        <template v-for="(item, index) in formState.columns"
+                  :key="index">
           <FormItem>
             <Row :gutter="10">
-              <Col span="3">
+              <Col class="w150">
                 <Input v-model="item.name"
                        type="text">
                 </Input>
               </Col>
-              <Col span="2">
+              <Col class="w100">
                 <Select v-model="item.type">
                   <Option value="STRING">{{ $t('dataset.columnTypeString') }}</Option>
                   <Option value="NUMBER">{{ $t('dataset.columnTypeNumber') }}</Option>
                   <Option value="BOOLEAN">{{ $t('dataset.columnTypeBoolean') }}</Option>
                 </Select>
               </Col>
-              <Col span="2">
+              <Col class="w100 center">
                 <Switch v-model="item.mode"
                         size="large"
                         true-value="METRIC"
@@ -62,21 +65,27 @@
                   </template>
                 </Switch>
               </Col>
-              <Col span="3">
+              <Col class="w150">
                 <Input v-model="item.defaultValue"
                        type="text">
                 </Input>
               </Col>
-              <Col span="3">
+              <Col class="w100 center">
                 <Switch v-model="item.nullable"/>
               </Col>
-              <Col span="3">
+              <Col class="w100 center">
                 <Switch v-model="item.orderByKey"/>
               </Col>
-              <Col span="3">
-                <InputNumber v-model="item.length"/>
+              <Col class="w100 center">
+                <Switch v-model="item.partitionKey"/>
               </Col>
-              <Col span="5">
+              <Col class="w100 center">
+                <InputNumber v-model="item.length"
+                             min="0"
+                             max="65536">
+                </InputNumber>
+              </Col>
+              <Col class="w200">
                 <Input v-model="item.comment"
                        type="textarea">
                 </Input>
@@ -84,12 +93,12 @@
             </Row>
           </FormItem>
         </template>
+        <Button type="primary"
+                style="margin-bottom: 15px; margin-right: 10px; float: right;"
+                @click="infoVisible = true">
+          {{ id ? $t('dataset.modify') : $t('dataset.create') }}
+        </Button>
       </Form>
-      <Button type="primary"
-              style="margin-bottom: 15px; margin-right: 10px; float: right;"
-              @click="infoVisible = true">
-        {{ id ? $t('dataset.modify') : $t('dataset.create') }}
-      </Button>
     </div>
     <Result v-else
             style="margin-top: 100px;"
@@ -243,6 +252,7 @@ export default defineComponent({
               length: 0,
               original: header,
               orderByKey: false,
+              partitionKey: false,
               mode: 'DIMENSION'
             }
             this.formState.columns.push(column)
@@ -267,4 +277,27 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.center-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.w100 {
+  width: 100px;
+}
+
+.w150 {
+  width: 150px;
+}
+
+.w200 {
+  width: 200px;
+}
+
+.center {
+  text-align: center;
+}
 </style>

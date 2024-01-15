@@ -59,6 +59,9 @@ public class DataSetColumnEntity
     @Column(name = "is_order_by_key")
     private boolean orderByKey;
 
+    @Column(name = "is_partition_key")
+    private boolean partitionKey;
+
     @Column(name = "column_mode")
     @Enumerated(EnumType.STRING)
     private ColumnMode mode;

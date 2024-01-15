@@ -38,6 +38,10 @@ class TableBuilder {
             sql().ORDER_BY_KEY(values)
         }
 
+        fun PARTITION_BY(values: List<String>) {
+            sql().PARTITION_BY_KEY(values)
+        }
+
         fun END() {
             sql().END()
         }
@@ -45,7 +49,8 @@ class TableBuilder {
         fun SQL(): String {
             try {
                 return sql().toString()
-            } finally {
+            }
+            finally {
                 RESET()
             }
         }
