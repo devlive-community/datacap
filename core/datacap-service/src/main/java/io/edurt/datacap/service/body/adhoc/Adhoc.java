@@ -15,4 +15,5 @@ public class Adhoc
 {
     private Set<AdhocColumn> columns;
     private Set<AdhocColumn> groups;
+    private Integer limit = 1000;
 }

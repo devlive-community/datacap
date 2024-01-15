@@ -189,6 +189,7 @@ public class DataSetServiceImpl
                             .table(item.getTableName())
                             .columns(columns)
                             .groups(groupBy)
+                            .limit(configure.getLimit())
                             .build();
                     String sql = new SqlBuilder(body).getSql();
                     log.info("Execute SQL: {} for DataSet [ {} ]", sql, code);
@@ -342,7 +343,7 @@ public class DataSetServiceImpl
 
             TableBuilder.Companion.BEGIN();
             TableBuilder.Companion.CREATE_TABLE(String.format("`%s`.`%s`", database, originTableName));
-            TableBuilder.Companion.COLUMNS(columns.stream().map(item -> item.toColumnVar()).collect(Collectors.toList()));
+            TableBuilder.Companion.COLUMNS(columns.stream().map(Column::toColumnVar).collect(Collectors.toList()));
             TableBuilder.Companion.ENGINE(tableDefaultEngine);
             TableBuilder.Companion.ORDER_BY(columnEntities.stream().filter(DataSetColumnEntity::isOrderByKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
             TableBuilder.Companion.PARTITION_BY(columnEntities.stream().filter(DataSetColumnEntity::isPartitionKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));

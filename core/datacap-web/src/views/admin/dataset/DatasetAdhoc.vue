@@ -118,7 +118,17 @@
               </Draggable>
             </ListItem>
             <ListItem style="padding: 10px;">
-              <ListItemMeta>&nbsp;</ListItemMeta>
+              <ListItemMeta>
+                <template #description>
+                  <DescriptionList>
+                    <Description :term="$t('common.showPageSize')">
+                      <InputNumber v-model="configure.limit"
+                                   min="1">
+                      </InputNumber>
+                    </Description>
+                  </DescriptionList>
+                </template>
+              </ListItemMeta>
               <template #action>
                 <Space>
                   <Button type="primary"
@@ -293,7 +303,8 @@ export default {
       groups: [],
       configure: {
         columns: [],
-        groups: []
+        groups: [],
+        limit: 1000
       },
       configuration: null as Configuration,
       showSql: {
@@ -357,7 +368,7 @@ export default {
                       this.mergeColumns(query.columns, this.metrics, ColumnType.METRIC)
                       this.mergeColumns(query.columns, this.dimensions, ColumnType.DIMENSION)
                       this.configure.columns = query.columns
-
+                      this.configure.limit = query.limit
                       if (query.groups) {
                         this.mergeColumns(query.groups, this.groups)
                         this.configure.groups = query.groups
@@ -544,6 +555,15 @@ export default {
 
 :deep(.ivu-radio-group-button .ivu-radio-wrapper:before) {
   background: transparent;
+}
+
+:deep(.ivu-description-term) {
+  padding-bottom: 0;
+}
+
+:deep(.ivu-description-detail) {
+  padding-bottom: 0;
+  padding-left: 6px;
 }
 
 .point {
