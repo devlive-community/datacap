@@ -1,10 +1,10 @@
 package io.edurt.datacap.server.runner;
 
 import com.clearspring.analytics.util.Lists;
+import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.repository.PipelineRepository;
 import io.edurt.datacap.service.service.PipelineService;
-import io.edurt.datacap.spi.executor.PipelineState;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,24 +40,24 @@ public class PipelineResetRunner
     @Transactional
     public void run(ApplicationArguments args)
     {
-        PipelineState resetState = EnumUtils.getEnum(PipelineState.class, state);
+        RunState resetState = EnumUtils.getEnum(RunState.class, state);
         if (resetState == null) {
             log.warn("Pipeline reset state is not supported: [ {} ] Reset to [ STOPPED ]", state);
-            resetState = PipelineState.STOPPED;
+            resetState = RunState.STOPPED;
         }
 
-        List<PipelineState> states = Lists.newArrayList();
-        states.add(PipelineState.RUNNING);
-        states.add(PipelineState.CREATED);
-        states.add(PipelineState.QUEUE);
+        List<RunState> states = Lists.newArrayList();
+        states.add(RunState.RUNNING);
+        states.add(RunState.CREATED);
+        states.add(RunState.QUEUE);
         List<PipelineEntity> pipelines = repository.findAllByStateIn(states);
         for (PipelineEntity pipeline : pipelines) {
             log.info("Reset pipeline [ {} ] user [ {} ]", pipeline.getName(), pipeline.getUser().getUsername());
             pipeline.setState(resetState);
             // If it is reset to the running state, execute it again
-            if (resetState.equals(PipelineState.RUNNING)
-                    || resetState.equals(PipelineState.CREATED)
-                    || resetState.equals(PipelineState.QUEUE)) {
+            if (resetState.equals(RunState.RUNNING)
+                    || resetState.equals(RunState.CREATED)
+                    || resetState.equals(RunState.QUEUE)) {
                 service.submit(pipeline.entityToBody());
             }
             else {

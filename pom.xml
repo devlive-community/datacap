@@ -71,7 +71,8 @@
         <module>plugin/datacap-plugin-cassandra</module>
         <module>plugin/datacap-plugin-matrixone</module>
         <module>plugin/datacap-plugin-scylladb</module>
-        <module>executor/datacap-executor-example</module>
+        <module>executor/datacap-executor-spi</module>
+        <module>executor/datacap-executor-local</module>
         <module>executor/datacap-executor-seatunnel</module>
         <module>shaded/datacap-shaded-ydb</module>
         <module>shaded/datacap-shaded-pinot</module>

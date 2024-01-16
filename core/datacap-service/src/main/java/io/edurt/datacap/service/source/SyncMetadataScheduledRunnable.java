@@ -8,6 +8,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.NodeType;
 import io.edurt.datacap.common.enums.Type;
 import io.edurt.datacap.common.utils.JsonUtils;
+import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.schedule.ScheduledRunnable;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.ScheduledEntity;
@@ -25,7 +26,6 @@ import io.edurt.datacap.service.repository.metadata.ColumnRepository;
 import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.spi.Plugin;
-import io.edurt.datacap.spi.executor.PipelineState;
 import io.edurt.datacap.spi.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -92,7 +92,7 @@ public class SyncMetadataScheduledRunnable
                             .name(String.format("Sync source [ %s ]", entity.getName()))
                             .scheduled(scheduledEntity)
                             .source(entity)
-                            .state(PipelineState.RUNNING)
+                            .state(RunState.RUNNING)
                             .build();
                     scheduledHistoryHandler.save(scheduledHistory);
                     log.info("==================== Sync metadata  [ {} ] started =================", entity.getName());
@@ -142,7 +142,7 @@ public class SyncMetadataScheduledRunnable
                     info.put("columnUpdatedCount", columnUpdatedCount.get());
                     info.put("columnRemovedCount", columnRemovedCount.get());
                     scheduledHistory.setInfo(info);
-                    scheduledHistory.setState(PipelineState.SUCCESS);
+                    scheduledHistory.setState(RunState.SUCCESS);
                     scheduledHistoryHandler.save(scheduledHistory);
                     databaseCache.clear();
                     databaseTableCache.clear();

@@ -8,6 +8,14 @@ import com.google.inject.TypeLiteral;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.BeanToPropertiesUtils;
+import io.edurt.datacap.executor.Executor;
+import io.edurt.datacap.executor.common.RunMode;
+import io.edurt.datacap.executor.common.RunProtocol;
+import io.edurt.datacap.executor.common.RunState;
+import io.edurt.datacap.executor.common.RunWay;
+import io.edurt.datacap.executor.configure.ExecutorConfigure;
+import io.edurt.datacap.executor.configure.ExecutorRequest;
+import io.edurt.datacap.executor.configure.ExecutorResponse;
 import io.edurt.datacap.service.body.PipelineBody;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.configure.FieldType;
@@ -22,12 +30,6 @@ import io.edurt.datacap.service.repository.PipelineRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.PipelineService;
-import io.edurt.datacap.spi.executor.Executor;
-import io.edurt.datacap.spi.executor.Pipeline;
-import io.edurt.datacap.spi.executor.PipelineField;
-import io.edurt.datacap.spi.executor.PipelineResponse;
-import io.edurt.datacap.spi.executor.PipelineState;
-import io.edurt.datacap.spi.executor.Protocol;
 import io.edurt.datacap.spi.json.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -124,7 +126,8 @@ public class PipelineServiceImpl
         }
 
         PipelineEntity pipelineEntity = new PipelineEntity();
-        // FROM source
+
+        // input source
         Properties fromOriginProperties = configure.getFrom().getConfigures();
         if (!fromOriginProperties.containsKey("context")) {
             fromOriginProperties.setProperty("context", configure.getContent());
@@ -132,7 +135,7 @@ public class PipelineServiceImpl
         else {
             configure.setContent(fromOriginProperties.getProperty("context"));
         }
-        if (configure.getFrom().getProtocol().equals(Protocol.JDBC)) {
+        if (configure.getFrom().getProtocol().equals(RunProtocol.JDBC)) {
             fromOriginProperties.setProperty("url", String.format("jdbc:%s://%s:%s/%s", fromSource.getType().toLowerCase(), fromSource.getHost(), fromSource.getPort(), fromSource.getDatabase()));
         }
         Properties fromProperties = this.merge(fromSource, fromConfigureExecutor.get().getFields(), fromOriginProperties);
@@ -142,16 +145,11 @@ public class PipelineServiceImpl
                 .stream()
                 .filter(v -> v.isRequired())
                 .forEach(v -> fromOptions.add(v.getField()));
-        PipelineField fromField = PipelineField.builder()
-                .type(fromSource.getType())
-                .configure(fromProperties)
-                .supportOptions(fromOptions)
-                .protocol(configure.getFrom().getProtocol())
-                .build();
+        ExecutorConfigure fromField = new ExecutorConfigure(fromSource.getType(), fromProperties, fromOptions, configure.getFrom().getProtocol());
 
-        // TO source
+        // output source
         Properties toOriginProperties = configure.getTo().getConfigures();
-        if (configure.getTo().getProtocol().equals(Protocol.JDBC)) {
+        if (configure.getTo().getProtocol().equals(RunProtocol.JDBC)) {
             toOriginProperties.setProperty("url", String.format("jdbc:%s://%s:%s/%s", fromSource.getType().toLowerCase(), fromSource.getHost(), fromSource.getPort(), fromSource.getDatabase()));
         }
         Properties toProperties = this.merge(toSource, toConfigureExecutor.get().getFields(), toOriginProperties);
@@ -161,12 +159,7 @@ public class PipelineServiceImpl
                 .stream()
                 .filter(v -> v.isRequired())
                 .forEach(v -> toOptions.add(v.getField()));
-        PipelineField toField = PipelineField.builder()
-                .type(toSource.getType())
-                .configure(toProperties)
-                .supportOptions(toOptions)
-                .protocol(configure.getTo().getProtocol())
-                .build();
+        ExecutorConfigure toField = new ExecutorConfigure(toSource.getType(), toProperties, toOptions, configure.getTo().getProtocol());
         if (ObjectUtils.isNotEmpty(configure.getId())) {
             pipelineEntity = this.repository.findById(configure.getId()).get();
         }
@@ -188,7 +181,7 @@ public class PipelineServiceImpl
                     pipelineHome);
             pipelineEntity.setName(pipelineName);
             pipelineEntity.setContent(configure.getContent());
-            pipelineEntity.setState(PipelineState.CREATED);
+            pipelineEntity.setState(RunState.CREATED);
             pipelineEntity.setWork(work);
             pipelineEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
             pipelineEntity.setUser(UserDetailsService.getUser());
@@ -203,7 +196,7 @@ public class PipelineServiceImpl
         String work = pipelineEntity.getWork();
         if (initializer.isSubmit()) {
             log.info("Pipeline containers is full, submit to queue [ {} ]", pipelineName);
-            pipelineEntity.setState(PipelineState.QUEUE);
+            pipelineEntity.setState(RunState.QUEUE);
             repository.save(pipelineEntity);
             if (initializer.getTaskQueue().offer(pipelineEntity)) {
                 log.info("Pipeline containers is full, submit to executor [ {} ]", pipelineName);
@@ -211,7 +204,7 @@ public class PipelineServiceImpl
         }
         else {
             log.info("Pipeline containers is not full, submit to executor [ {} ]", pipelineName);
-            pipelineEntity.setState(PipelineState.RUNNING);
+            pipelineEntity.setState(RunState.RUNNING);
             repository.save(pipelineEntity);
             Optional<Executor> executorOptional = injector.getInstance(Key.get(new TypeLiteral<Set<Executor>>() {}))
                     .stream()
@@ -224,24 +217,16 @@ public class PipelineServiceImpl
             catch (Exception e) {
                 log.warn("Failed to create temporary directory", e);
             }
-            Pipeline pipeline = Pipeline.builder()
-                    .work(work)
-                    .home(environment.getProperty(String.format("datacap.executor.%s.home", configure.getExecutor().toLowerCase(Locale.ROOT))))
-                    .pipelineName(pipelineName)
-                    .username(UserDetailsService.getUser().getUsername())
-                    .from(fromField)
-                    .to(toField)
-                    .timeout(600)
-                    .mode(environment.getProperty("datacap.executor.mode"))
-                    .way(environment.getProperty("datacap.executor.way"))
-                    .build();
+
+            ExecutorRequest pipeline = new ExecutorRequest(work, environment.getProperty(String.format("datacap.executor.%s.home", configure.getExecutor().toLowerCase(Locale.ROOT))),
+                    pipelineName, UserDetailsService.getUser().getUsername(), fromField, toField, RunMode.valueOf(environment.getProperty("datacap.executor.mode")), RunWay.valueOf(environment.getProperty("datacap.executor.way")));
 
             final ExecutorService executorService = Executors.newCachedThreadPool();
             PipelineEntity finalPipelineEntity = pipelineEntity;
             executorService.submit(() -> {
                 initializer.getTaskExecutors()
                         .put(pipelineName, executorService);
-                PipelineResponse response = executorOptional.get()
+                ExecutorResponse response = executorOptional.get()
                         .start(pipeline);
                 log.info("Pipeline [ {} ] executed successfully", pipelineName);
                 finalPipelineEntity.setEndTime(new Timestamp(System.currentTimeMillis()));
@@ -277,10 +262,10 @@ public class PipelineServiceImpl
         }
 
         PipelineEntity entity = pipelineOptional.get();
-        if (entity.getState().equals(PipelineState.STOPPED)
-                || entity.getState().equals(PipelineState.FAILURE)
-                || entity.getState().equals(PipelineState.SUCCESS)
-                || entity.getState().equals(PipelineState.TIMEOUT)) {
+        if (entity.getState().equals(RunState.STOPPED)
+                || entity.getState().equals(RunState.FAILURE)
+                || entity.getState().equals(RunState.SUCCESS)
+                || entity.getState().equals(RunState.TIMEOUT)) {
             return CommonResponse.failure(String.format("Pipeline [ %s ] is already stopped", entity.getName()));
         }
 
@@ -289,7 +274,7 @@ public class PipelineServiceImpl
         if (service != null) {
             service.shutdownNow();
         }
-        entity.setState(PipelineState.STOPPED);
+        entity.setState(RunState.STOPPED);
         entity.setMessage(null);
         this.repository.save(entity);
 
@@ -319,8 +304,8 @@ public class PipelineServiceImpl
         }
 
         PipelineEntity entity = pipelineOptional.get();
-        if (entity.getState().equals(PipelineState.QUEUE)
-                || entity.getState().equals(PipelineState.CREATED)) {
+        if (entity.getState().equals(RunState.QUEUE)
+                || entity.getState().equals(RunState.CREATED)) {
             return CommonResponse.failure(String.format("Pipeline [ %s ] is not running", entity.getName()));
         }
 

@@ -16,7 +16,8 @@
     <dependencies>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-spi</artifactId>
+            <artifactId>datacap-executor-spi</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>

@@ -125,5 +125,11 @@
             <artifactId>datacap-scheduler-local</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Executor -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-executor-local</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

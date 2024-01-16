@@ -36,7 +36,7 @@ public class ProcessBuilderCommander
     {
         LoggerExecutor loggerExecutor = this.configure.getLoggerExecutor();
         Logger logger = (Logger) loggerExecutor.getLogger();
-        logger.info("Execute pipeline on username [ {} ]", configure.getUsername());
+        logger.info("Execute task on username [ {} ]", configure.getUsername());
         ShellResponse shellResponse = new ShellResponse();
         shellResponse.setSuccessful(Boolean.TRUE);
         List<String> command = new ArrayList<>();
@@ -95,7 +95,7 @@ public class ProcessBuilderCommander
                 shellResponse.setSuccessful(Boolean.FALSE);
             }
 
-            logger.info("Execute pipeline exit code [ {} ]", process.exitValue());
+            logger.info("Execute task exit code [ {} ]", process.exitValue());
             if (process.exitValue() == 0) {
                 shellResponse.setErrors(null);
                 shellResponse.setSuccessful(Boolean.TRUE);
@@ -112,7 +112,7 @@ public class ProcessBuilderCommander
             logger.info("Destroy logger executor");
             loggerExecutor.destroy();
         }
-        log.info("Execute pipeline on username [ {} ] finished", configure.getUsername());
+        log.info("Execute task on username [ {} ] finished", configure.getUsername());
         return shellResponse;
     }
 }
