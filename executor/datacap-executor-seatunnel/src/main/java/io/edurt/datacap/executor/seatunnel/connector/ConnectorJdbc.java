@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import io.edurt.datacap.executor.configure.ExecutorConfigure;
 
 import java.util.Map;
-import java.util.Properties;
 
 public class ConnectorJdbc
         extends Connector
@@ -18,12 +17,7 @@ public class ConnectorJdbc
     public Map<String, Object> formatToMap()
     {
         Map<String, Object> node = Maps.newConcurrentMap();
-        Properties properties = new Properties();
-        this.configure.getConfigure().entrySet()
-                .stream()
-                .filter(entry -> !String.valueOf(entry.getValue()).equals("None"))
-                .forEach(entry -> properties.put(entry.getKey(), entry.getValue()));
-        node.put("Jdbc", properties);
+        node.put("Jdbc", formatToProperties(configure.getConfigure()));
         return node;
     }
 }
