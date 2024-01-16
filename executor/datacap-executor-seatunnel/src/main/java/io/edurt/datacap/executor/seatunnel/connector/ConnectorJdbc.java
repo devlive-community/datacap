@@ -1,7 +1,7 @@
-package io.edurt.datacap.executor.connector;
+package io.edurt.datacap.executor.seatunnel.connector;
 
 import com.google.common.collect.Maps;
-import io.edurt.datacap.spi.executor.PipelineField;
+import io.edurt.datacap.executor.configure.ExecutorConfigure;
 
 import java.util.Map;
 import java.util.Properties;
@@ -9,7 +9,7 @@ import java.util.Properties;
 public class ConnectorJdbc
         extends Connector
 {
-    public ConnectorJdbc(ConnectorType type, PipelineField configure)
+    public ConnectorJdbc(ConnectorType type, ExecutorConfigure configure)
     {
         super(type, configure, configure.getSupportOptions());
     }

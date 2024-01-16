@@ -3,10 +3,10 @@ package io.edurt.datacap.service.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.service.body.PipelineBody;
 import io.edurt.datacap.service.body.PipelineFieldBody;
 import io.edurt.datacap.service.converter.PropertiesConverter;
-import io.edurt.datacap.spi.executor.PipelineState;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -49,7 +49,7 @@ public class PipelineEntity
 
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
-    private PipelineState state;
+    private RunState state;
 
     @Column(name = "message")
     private String message;

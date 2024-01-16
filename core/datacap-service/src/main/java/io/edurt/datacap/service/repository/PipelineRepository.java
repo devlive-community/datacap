@@ -1,8 +1,8 @@
 package io.edurt.datacap.service.repository;
 
+import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.entity.UserEntity;
-import io.edurt.datacap.spi.executor.PipelineState;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -14,5 +14,5 @@ public interface PipelineRepository
 {
     Page<PipelineEntity> findAllByUser(UserEntity user, Pageable pageable);
 
-    List<PipelineEntity> findAllByStateIn(List<PipelineState> state);
+    List<PipelineEntity> findAllByStateIn(List<RunState> state);
 }

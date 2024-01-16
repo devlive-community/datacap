@@ -1,6 +1,6 @@
 package io.edurt.datacap.service.body;
 
-import io.edurt.datacap.spi.executor.Protocol;
+import io.edurt.datacap.executor.common.RunProtocol;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +18,5 @@ public class PipelineFieldBody
 {
     private Long id;
     private Properties configures;
-    private Protocol protocol;
+    private RunProtocol protocol;
 }

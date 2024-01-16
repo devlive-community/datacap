@@ -1,8 +1,8 @@
-package io.edurt.datacap.executor;
+package io.edurt.datacap.executor.seatunnel;
 
 import com.google.inject.multibindings.Multibinder;
-import io.edurt.datacap.spi.executor.Executor;
-import io.edurt.datacap.spi.executor.ExecutorModule;
+import io.edurt.datacap.executor.Executor;
+import io.edurt.datacap.executor.ExecutorModule;
 
 public class SeatunnelExecutorModule
         extends ExecutorModule

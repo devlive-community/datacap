@@ -1,6 +1,6 @@
 package io.edurt.datacap.executor.common
 
-enum class RubProtocol {
+enum class RunProtocol {
     NONE,
     JDBC
 }

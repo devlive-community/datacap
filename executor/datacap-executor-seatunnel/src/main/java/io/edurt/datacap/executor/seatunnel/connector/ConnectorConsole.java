@@ -1,6 +1,6 @@
-package io.edurt.datacap.executor.connector;
+package io.edurt.datacap.executor.seatunnel.connector;
 
-import io.edurt.datacap.spi.executor.PipelineField;
+import io.edurt.datacap.executor.configure.ExecutorConfigure;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.HashSet;
@@ -14,7 +14,7 @@ public class ConnectorConsole
 {
     private static final Set<String> supportOptions = new HashSet<>();
 
-    public ConnectorConsole(ConnectorType type, PipelineField configure)
+    public ConnectorConsole(ConnectorType type, ExecutorConfigure configure)
     {
         super(type, configure, supportOptions);
     }

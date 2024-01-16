@@ -1,4 +1,4 @@
-package io.edurt.datacap.executor.connector;
+package io.edurt.datacap.executor.seatunnel.connector;
 
 public enum ConnectorType
 {

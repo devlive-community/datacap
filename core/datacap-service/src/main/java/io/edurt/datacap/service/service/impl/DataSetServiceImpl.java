@@ -16,8 +16,8 @@ import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.executor.Executor;
 import io.edurt.datacap.executor.ExecutorUtils;
-import io.edurt.datacap.executor.common.RubProtocol;
 import io.edurt.datacap.executor.common.RunMode;
+import io.edurt.datacap.executor.common.RunProtocol;
 import io.edurt.datacap.executor.common.RunWay;
 import io.edurt.datacap.executor.configure.ExecutorConfigure;
 import io.edurt.datacap.executor.configure.ExecutorRequest;
@@ -435,11 +435,11 @@ public class DataSetServiceImpl
                     .map(item -> new OriginColumn(item.getName(), item.getOriginal()))
                     .collect(Collectors.toSet());
             String database = initializerConfigure.getDataSetConfigure().getDatabase();
-            ExecutorConfigure input = new ExecutorConfigure(null, null, Sets.newHashSet(), RubProtocol.NONE,
+            ExecutorConfigure input = new ExecutorConfigure(null, null, Sets.newHashSet(), RunProtocol.NONE,
                     inputPlugin, entity.getQuery(), database, entity.getTableName(), source.toConfigure(), originColumns);
 
             Plugin outputPlugin = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
-            ExecutorConfigure output = new ExecutorConfigure(null, null, Sets.newHashSet(), RubProtocol.NONE,
+            ExecutorConfigure output = new ExecutorConfigure(null, null, Sets.newHashSet(), RunProtocol.NONE,
                     outputPlugin, null, null, null, getConfigure(database), Sets.newHashSet());
 
             ExecutorRequest request = new ExecutorRequest(String.format("batch_sync_%s", entity.getCode()), entity.getUser().getUsername(), input, output, null, null,

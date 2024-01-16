@@ -1,6 +1,7 @@
-package io.edurt.datacap.executor.connector;
+package io.edurt.datacap.executor.seatunnel.connector;
 
-import io.edurt.datacap.spi.executor.PipelineField;
+import com.google.common.collect.Sets;
+import io.edurt.datacap.executor.configure.ExecutorConfigure;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 public class ConnectorFactoryTest
 {
     private ConnectorType type = ConnectorType.ClickHouse;
-    private PipelineField from;
+    private ExecutorConfigure input;
 
     @Before
     public void before()
@@ -22,15 +23,13 @@ public class ConnectorFactoryTest
         properties.put("password", "123456");
         properties.put("database", "default");
         properties.put("sql", "SHOW DATABASES");
-        from = PipelineField.builder()
-                .configure(properties)
-                .build();
+        input = new ExecutorConfigure("ClickHouse", properties, Sets.newHashSet());
     }
 
     @Test
     public void createFormatter()
     {
-        Connector factory = ConnectorFactory.createFormatter(type, this.from);
+        Connector factory = ConnectorFactory.createFormatter(type, this.input);
         assertNotNull(factory.formatToMap());
     }
 }

@@ -1,8 +1,8 @@
 package io.edurt.datacap.service.entity;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.service.converter.PropertiesConverter;
-import io.edurt.datacap.spi.executor.PipelineState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,7 +43,7 @@ public class ScheduledHistoryEntity
 
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
-    private PipelineState state;
+    private RunState state;
 
     @ManyToOne
     @JoinTable(name = "datacap_scheduled_history_relation",

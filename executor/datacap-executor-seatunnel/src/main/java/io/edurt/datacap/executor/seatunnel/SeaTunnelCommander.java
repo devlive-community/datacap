@@ -1,4 +1,4 @@
-package io.edurt.datacap.executor;
+package io.edurt.datacap.executor.seatunnel;
 
 import lombok.Data;
 import lombok.ToString;

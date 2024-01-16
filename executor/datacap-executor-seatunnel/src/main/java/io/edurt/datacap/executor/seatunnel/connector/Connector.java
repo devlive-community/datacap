@@ -1,7 +1,7 @@
-package io.edurt.datacap.executor.connector;
+package io.edurt.datacap.executor.seatunnel.connector;
 
 import com.google.common.base.Preconditions;
-import io.edurt.datacap.spi.executor.PipelineField;
+import io.edurt.datacap.executor.configure.ExecutorConfigure;
 
 import java.util.Map;
 import java.util.Properties;
@@ -11,10 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class Connector
 {
     protected final ConnectorType type;
-    protected final PipelineField configure;
+    protected final ExecutorConfigure configure;
     private final Set<String> supportOptions;
 
-    public Connector(ConnectorType type, PipelineField configure, Set<String> supportOptions)
+    public Connector(ConnectorType type, ExecutorConfigure configure, Set<String> supportOptions)
     {
         this.type = type;
         this.configure = configure;

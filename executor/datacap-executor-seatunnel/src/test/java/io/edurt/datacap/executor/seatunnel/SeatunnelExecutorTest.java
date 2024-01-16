@@ -1,7 +1,8 @@
-package io.edurt.datacap.executor;
+package io.edurt.datacap.executor.seatunnel;
 
-import io.edurt.datacap.spi.executor.Pipeline;
-import io.edurt.datacap.spi.executor.PipelineField;
+import io.edurt.datacap.executor.configure.ExecutorConfigure;
+import io.edurt.datacap.executor.configure.ExecutorRequest;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,13 +20,11 @@ public class SeatunnelExecutorTest
         add("username");
         add("password");
     }};
-    private Pipeline pipeline;
+    private ExecutorRequest request;
 
     @Before
     public void before()
     {
-        pipeline = new Pipeline();
-        pipeline.setWork(System.getProperty("user.dir"));
         Properties properties = new Properties();
         properties.put("host", "127.0.0.1");
         properties.put("username", "root");
@@ -33,18 +32,14 @@ public class SeatunnelExecutorTest
         properties.put("database", "default");
         properties.put("sql", "SHOW DATABASES");
 
-        PipelineField from = PipelineField.builder()
-                .type("ClickHouse")
-                .configure(properties)
-                .supportOptions(supportOptions)
-                .build();
-        pipeline.setFrom(from);
-        pipeline.setTo(PipelineField.builder().type("Console").build());
+        ExecutorConfigure input = new ExecutorConfigure("ClickHouse", properties, supportOptions);
+        ExecutorConfigure output = new ExecutorConfigure("Console");
+        request = new ExecutorRequest(System.getProperty("user.dir"), input, output);
     }
 
     @Test
     public void start()
     {
-        new SeatunnelExecutor().start(pipeline);
+        Assert.assertNotNull(new SeatunnelExecutor().start(request));
     }
 }

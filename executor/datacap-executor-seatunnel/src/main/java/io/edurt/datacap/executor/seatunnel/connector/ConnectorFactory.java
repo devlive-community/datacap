@@ -1,6 +1,6 @@
-package io.edurt.datacap.executor.connector;
+package io.edurt.datacap.executor.seatunnel.connector;
 
-import io.edurt.datacap.spi.executor.PipelineField;
+import io.edurt.datacap.executor.configure.ExecutorConfigure;
 
 import java.util.Map;
 import java.util.Properties;
@@ -11,7 +11,7 @@ public class ConnectorFactory
     private ConnectorFactory()
     {}
 
-    public static Connector createFormatter(ConnectorType type, PipelineField configure)
+    public static Connector createFormatter(ConnectorType type, ExecutorConfigure configure)
     {
         Connector instance;
         if (type.equals(ConnectorType.ClickHouse)) {
