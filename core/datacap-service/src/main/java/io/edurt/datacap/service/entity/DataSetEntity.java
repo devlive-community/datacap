@@ -66,6 +66,9 @@ public class DataSetEntity
     @Column(name = "actuator")
     private String actuator;
 
+    @Column(name = "executor")
+    private String executor;
+
     @ManyToOne
     @JoinTable(name = "datacap_dataset_source_relation",
             joinColumns = @JoinColumn(name = "dataset_id"),

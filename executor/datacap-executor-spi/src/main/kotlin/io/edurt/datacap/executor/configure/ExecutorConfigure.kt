@@ -5,8 +5,8 @@ import io.edurt.datacap.spi.Plugin
 import io.edurt.datacap.spi.model.Configure
 import java.util.*
 
-data class ExecutorConfigure(var type: String,
-                             var configure: Properties,
+data class ExecutorConfigure(var type: String?,
+                             var configure: Properties?,
                              var supportOptions: Set<String> = mutableSetOf(),
                              var protocol: RubProtocol = RubProtocol.NONE,
                              var plugin: Plugin? = null,

@@ -20,6 +20,7 @@ public class PluginConfigure
                 new ExecutorManager(),
                 new FsManager(),
                 new ParserManager(),
-                new ScheduleManager());
+                new ScheduleManager(),
+                new io.edurt.datacap.executor.ExecutorManager());
     }
 }

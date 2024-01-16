@@ -1,6 +1,6 @@
 package io.edurt.datacap.service.service.impl;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.inject.Injector;
@@ -14,6 +14,15 @@ import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
 import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.common.utils.SpiUtils;
+import io.edurt.datacap.executor.Executor;
+import io.edurt.datacap.executor.ExecutorUtils;
+import io.edurt.datacap.executor.common.RubProtocol;
+import io.edurt.datacap.executor.common.RunMode;
+import io.edurt.datacap.executor.common.RunWay;
+import io.edurt.datacap.executor.configure.ExecutorConfigure;
+import io.edurt.datacap.executor.configure.ExecutorRequest;
+import io.edurt.datacap.executor.configure.ExecutorResponse;
+import io.edurt.datacap.executor.configure.OriginColumn;
 import io.edurt.datacap.scheduler.Scheduler;
 import io.edurt.datacap.scheduler.SchedulerRequest;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
@@ -42,7 +51,6 @@ import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.sql.builder.TableBuilder;
 import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
@@ -418,40 +426,26 @@ public class DataSetServiceImpl
             if (!pluginOptional.isPresent()) {
                 throw new IllegalArgumentException(String.format("Plugin [ %s ] not found", initializerConfigure.getDataSetConfigure().getType()));
             }
-            Plugin plugin = pluginOptional.get();
-            String database = initializerConfigure.getDataSetConfigure().getDatabase();
-            plugin.connect(source.toConfigure());
-            Response response = plugin.execute(entity.getQuery());
-            plugin.destroy();
-            if (response.getIsSuccessful()) {
-                List<String> allSql = Lists.newArrayList();
-                List<DataSetColumnEntity> originColumns = columnRepository.findAllByDataset(entity);
-                response.getColumns().forEach(object -> {
-                    List<SqlColumn> columns = Lists.newArrayList();
-                    ObjectNode objectNode = (ObjectNode) object;
-                    originColumns.forEach(item -> columns.add(SqlColumn.builder()
-                            .column(String.format("`%s`", item.getName()))
-                            .value(String.format("'%s'", StringEscapeUtils.escapeSql(objectNode.get(item.getOriginal()).asText())))
-                            .build()));
-                    SqlBody body = SqlBody.builder()
-                            .type(SqlType.INSERT)
-                            .database(database)
-                            .table(entity.getTableName())
-                            .columns(columns)
-                            .build();
-                    allSql.add(new SqlBuilder(body).getSql());
-                });
 
-                if (!allSql.isEmpty()) {
-                    Plugin syncPlugin = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
-                    syncPlugin.connect(getConfigure(database));
-                    syncPlugin.execute(String.join("\n\n", allSql));
-                    syncPlugin.destroy();
-                }
-            }
-            else {
-                throw new RuntimeException(response.getMessage());
-            }
+            Executor executor = ExecutorUtils.findOne(this.injector, entity.getExecutor());
+
+            Plugin inputPlugin = pluginOptional.get();
+            Set<OriginColumn> originColumns = columnRepository.findAllByDataset(entity)
+                    .stream()
+                    .map(item -> new OriginColumn(item.getName(), item.getOriginal()))
+                    .collect(Collectors.toSet());
+            String database = initializerConfigure.getDataSetConfigure().getDatabase();
+            ExecutorConfigure input = new ExecutorConfigure(null, null, Sets.newHashSet(), RubProtocol.NONE,
+                    inputPlugin, entity.getQuery(), database, entity.getTableName(), source.toConfigure(), originColumns);
+
+            Plugin outputPlugin = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
+            ExecutorConfigure output = new ExecutorConfigure(null, null, Sets.newHashSet(), RubProtocol.NONE,
+                    outputPlugin, null, null, null, getConfigure(database), Sets.newHashSet());
+
+            ExecutorRequest request = new ExecutorRequest(String.format("batch_sync_%s", entity.getCode()), entity.getUser().getUsername(), input, output, null, null,
+                    this.injector, 600, RunWay.LOCAL, RunMode.CLIENT);
+            ExecutorResponse response = executor.start(request);
+            Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
         }
         catch (Exception e) {
             log.warn("Sync data for dataset [ {} ] ", entity.getName(), e);

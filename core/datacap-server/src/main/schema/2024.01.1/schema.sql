@@ -48,7 +48,8 @@ ALTER TABLE `datacap_dataset`
     CHANGE `sync_value` `expression` VARCHAR(100) NULL;
 
 ALTER TABLE `datacap_dataset`
-    ADD COLUMN `actuator` VARCHAR(100) NULL;
+    ADD COLUMN `actuator` VARCHAR(100) NULL,
+    ADD COLUMN `executor` VARCHAR(100) DEFAULT 'Default';
 
 ALTER TABLE `datacap_dataset_column`
     ADD COLUMN `is_partition_key` BOOLEAN      DEFAULT FALSE,
