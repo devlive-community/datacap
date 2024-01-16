@@ -23,48 +23,58 @@ class LocalExecutor : Executor {
             val input = request.input
             val output = request.output
             val inputPlugin = input.plugin
-            inputPlugin !!.connect(input.originConfigure)
-            val inputResult = inputPlugin.execute(input.query)
-            inputPlugin.destroy()
+            if (inputPlugin != null) {
+                inputPlugin.connect(input.originConfigure)
+                val inputResult = inputPlugin.execute(input.query)
+                inputPlugin.destroy()
 
-            if (inputResult.isSuccessful) {
-                val fullInsertStatement = Lists.newArrayList<String>()
-                inputResult.columns.forEach { it ->
-                    val columns = Lists.newArrayList<SqlColumn>()
-                    val objectNode: ObjectNode = it as ObjectNode
-                    input.originColumns.forEach { value ->
-                        columns.add(SqlColumn.builder()
-                                .column(String.format("`%s`", value.name))
-                                .value(String.format("'%s'", StringEscapeUtils.escapeSql(objectNode.get(value.original).asText())))
-                                .build())
+                if (inputResult.isSuccessful) {
+                    val fullInsertStatement = Lists.newArrayList<String>()
+                    inputResult.columns.forEach { it ->
+                        val columns = Lists.newArrayList<SqlColumn>()
+                        val objectNode: ObjectNode = it as ObjectNode
+                        input.originColumns.forEach { value ->
+                            columns.add(SqlColumn.builder()
+                                    .column(String.format("`%s`", value.name))
+                                    .value(String.format("'%s'", StringEscapeUtils.escapeSql(objectNode.get(value.original).asText())))
+                                    .build())
+                        }
+                        val body = SqlBody.builder()
+                                .type(SqlType.INSERT)
+                                .database(input.database)
+                                .table(input.table)
+                                .columns(columns)
+                                .build()
+                        fullInsertStatement.add(SqlBuilder(body).sql)
                     }
-                    val body = SqlBody.builder()
-                            .type(SqlType.INSERT)
-                            .database(input.database)
-                            .table(input.table)
-                            .columns(columns)
-                            .build()
-                    fullInsertStatement.add(SqlBuilder(body).sql)
-                }
 
-                if (fullInsertStatement.isNotEmpty()) {
-                    val outputPlugin = output.plugin
-                    outputPlugin !!.connect(output.originConfigure)
-                    val outputResult = outputPlugin.execute(fullInsertStatement.joinToString("\n\n"))
-                    outputPlugin.destroy()
-                    if (! outputResult.isSuccessful) {
-                        throw RuntimeException(outputResult.message)
+                    if (fullInsertStatement.isNotEmpty()) {
+                        val outputPlugin = output.plugin
+                        if (outputPlugin != null) {
+                            outputPlugin.connect(output.originConfigure)
+                            val outputResult = outputPlugin.execute(fullInsertStatement.joinToString("\n\n"))
+                            outputPlugin.destroy()
+                            if (! outputResult.isSuccessful) {
+                                throw RuntimeException(outputResult.message)
+                            }
+                            else {
+                                response.successful = true
+                            }
+                        }
+                        else {
+                            throw RuntimeException("Output plugin is null")
+                        }
                     }
                     else {
-                        response.successful = true
+                        throw RuntimeException("No data to insert")
                     }
                 }
                 else {
-                    throw RuntimeException("No data to insert")
+                    throw RuntimeException(inputResult.message)
                 }
             }
             else {
-                throw RuntimeException(inputResult.message)
+                throw RuntimeException("Input plugin is null")
             }
         }
         catch (ex: Exception) {
