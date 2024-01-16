@@ -23,7 +23,6 @@ import io.edurt.datacap.lib.shell.process.ProcessBuilderCommander;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -36,16 +35,14 @@ import java.util.Properties;
 public class SeatunnelExecutor
         implements Executor
 {
-    @NotNull
     @Override
     public String name()
     {
         return "Seatunnel";
     }
 
-    @NotNull
     @Override
-    public ExecutorResponse start(@NotNull ExecutorRequest request)
+    public ExecutorResponse start(ExecutorRequest request)
     {
         SeaTunnelCommander commander = new SeaTunnelCommander(
                 request.getExecutorHome() + "/bin",
@@ -80,9 +77,8 @@ public class SeatunnelExecutor
         return new ExecutorResponse(response.isTimeout(), response.getSuccessful(), state, message);
     }
 
-    @NotNull
     @Override
-    public ExecutorResponse stop(@NotNull ExecutorRequest request)
+    public ExecutorResponse stop(ExecutorRequest request)
     {
         return null;
     }
