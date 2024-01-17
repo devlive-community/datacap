@@ -24,7 +24,7 @@ configures:
 
 pipelines:
   - executor: Seatunnel
-    type: SINK
+    type: OUTPUT
     fields:
       - field: host
         origin: host

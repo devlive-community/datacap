@@ -33,8 +33,14 @@ const createHeaders = (i18n: any) => {
       align: 'center'
     },
     {
-      title: i18n.t('dataset.actuator'),
-      key: 'actuator',
+      title: i18n.t('common.scheduler'),
+      key: 'scheduler',
+      ellipsis: true,
+      align: 'center'
+    },
+    {
+      title: i18n.t('common.executor'),
+      key: 'executor',
       ellipsis: true,
       align: 'center'
     },

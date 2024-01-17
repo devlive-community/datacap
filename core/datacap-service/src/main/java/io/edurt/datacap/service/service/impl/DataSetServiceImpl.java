@@ -28,6 +28,7 @@ import io.edurt.datacap.scheduler.SchedulerRequest;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.adhoc.Adhoc;
+import io.edurt.datacap.service.common.FolderUtils;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.entity.DataSetColumnEntity;
 import io.edurt.datacap.service.entity.DataSetEntity;
@@ -51,6 +52,7 @@ import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.sql.builder.TableBuilder;
 import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
@@ -58,6 +60,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -77,14 +80,16 @@ public class DataSetServiceImpl
     private final Injector injector;
     private final InitializerConfigure initializerConfigure;
     private final org.quartz.Scheduler scheduler;
+    private final Environment environment;
 
-    public DataSetServiceImpl(DataSetRepository repository, DataSetColumnRepository columnRepository, Injector injector, InitializerConfigure initializerConfigure, org.quartz.Scheduler scheduler)
+    public DataSetServiceImpl(DataSetRepository repository, DataSetColumnRepository columnRepository, Injector injector, InitializerConfigure initializerConfigure, org.quartz.Scheduler scheduler, Environment environment)
     {
         this.repository = repository;
         this.columnRepository = columnRepository;
         this.injector = injector;
         this.initializerConfigure = initializerConfigure;
         this.scheduler = scheduler;
+        this.environment = environment;
     }
 
     @Transactional
@@ -387,7 +392,7 @@ public class DataSetServiceImpl
             if (state.equals(DataSetState.TABLE_SUCCESS)) {
                 log.info("Start schedule for dataset [ {} ]", entity.getName());
                 if (entity.getSyncMode().equals(SyncMode.TIMING)) {
-                    SpiUtils.findSchedule(this.injector, entity.getActuator())
+                    SpiUtils.findSchedule(this.injector, entity.getScheduler())
                             .ifPresent(scheduler -> {
                                 SchedulerRequest request = new SchedulerRequest();
                                 request.setName(entity.getId().toString());
@@ -403,7 +408,7 @@ public class DataSetServiceImpl
                             });
                 }
                 else {
-                    SpiUtils.findSchedule(this.injector, entity.getActuator())
+                    SpiUtils.findSchedule(this.injector, entity.getScheduler())
                             .ifPresent(scheduler -> {
                                 SchedulerRequest request = new SchedulerRequest();
                                 request.setName(entity.getId().toString());
@@ -435,20 +440,22 @@ public class DataSetServiceImpl
                     .map(item -> new OriginColumn(item.getName(), item.getOriginal()))
                     .collect(Collectors.toSet());
             String database = initializerConfigure.getDataSetConfigure().getDatabase();
-            ExecutorConfigure input = new ExecutorConfigure(null, null, Sets.newHashSet(), RunProtocol.NONE,
+            ExecutorConfigure input = new ExecutorConfigure(source.getType(), null, Sets.newHashSet(), RunProtocol.valueOf(source.getProtocol()),
                     inputPlugin, entity.getQuery(), database, entity.getTableName(), source.toConfigure(), originColumns);
 
             Plugin outputPlugin = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
-            ExecutorConfigure output = new ExecutorConfigure(null, null, Sets.newHashSet(), RunProtocol.NONE,
+            ExecutorConfigure output = new ExecutorConfigure("ClickHouse", null, Sets.newHashSet(), RunProtocol.NONE,
                     outputPlugin, null, null, null, getConfigure(database), Sets.newHashSet());
 
-            ExecutorRequest request = new ExecutorRequest(String.format("batch_sync_%s", entity.getCode()), entity.getUser().getUsername(), input, output, null, null,
-                    this.injector, 600, RunWay.LOCAL, RunMode.CLIENT);
+            String workHome = FolderUtils.getWorkHome(initializerConfigure.getDataHome(), entity.getUser().getUsername(), "dataset");
+            ExecutorRequest request = new ExecutorRequest(String.format("batch_sync_%s", entity.getCode()), entity.getUser().getUsername(), input, output,
+                    environment.getProperty(String.format("datacap.executor.%s.home", entity.getExecutor().toLowerCase(Locale.ROOT))),
+                    workHome, this.injector, 600, RunWay.LOCAL, RunMode.CLIENT);
             ExecutorResponse response = executor.start(request);
             Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
         }
         catch (Exception e) {
-            log.warn("Sync data for dataset [ {} ] ", entity.getName(), e);
+            log.warn("Sync data for dataset [ {} ] failed", entity.getName(), e);
         }
     }
 }

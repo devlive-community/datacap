@@ -66,7 +66,7 @@ export default defineComponent({
                   configuration.id = item.id;
                   configuration.name = item.name;
                   configuration.type = item.type;
-                  configuration.nodeType = pipeline.type === 'SOURCE' ? 'input' : 'output';
+                  configuration.nodeType = pipeline.type === 'INPUT' ? 'input' : 'output';
                   configuration.configure = pipeline.fields;
                   configuration.protocol = item.protocol;
                   this.contextData.push(configuration);
