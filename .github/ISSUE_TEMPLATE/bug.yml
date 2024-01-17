@@ -20,6 +20,23 @@ body:
           required: true
         - label: ... the documentation does not mention anything about my problem
         - label: ... there are no open or closed issues that are related to my problem
+  - type: dropdown
+    id: module
+    attributes:
+      label: Affected Module
+      description: Which modules have been changed.
+      options:
+        - Core (Default)
+        - Driver
+        - Client
+        - Executor
+        - File System
+        - Parser
+        - Plugin
+        - Scheduler
+      default: 0
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Description
@@ -30,14 +47,10 @@ body:
     attributes:
       label: Expected behaviour
       description: Please describe precisely what you'd expect to happen.
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Actual behaviour
       description: Please describe precisely what is actually happening.
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Steps to reproduce
@@ -46,8 +59,6 @@ body:
         1. ...
         2. ...
         3. ...
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Package versions
@@ -57,8 +68,6 @@ body:
         - Node: `node --version`
         - Npm: `npm -v`
         - Server: `./mvnw -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN -Dorg.slf4j.simpleLogger.log.org.apache.maven.plugins.help=INFO | tail -1`
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Configuration
@@ -67,8 +76,6 @@ body:
         site_name: DataCap Website
         site_url: https://databap.edurt.io
       render: yaml
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: System information
