@@ -47,8 +47,6 @@ import {getColor, getText} from "@/views/admin/pipeline/PipelineGenerate";
 import DatasetService from "@/services/admin/DatasetService";
 import {createHistoryHeaders} from "@/views/admin/dataset/DatasetUtils";
 
-const filter: Filter = new Filter();
-const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
   name: 'DatasetHistory',
   props: {
@@ -65,6 +63,8 @@ export default defineComponent({
   },
   setup()
   {
+    const filter: Filter = new Filter();
+    const pagination: Pagination = PaginationBuilder.newInstance();
     const i18n = useI18n();
     const headers = createHistoryHeaders(i18n);
     return {
