@@ -5,5 +5,6 @@ public enum QueryMode
     ADHOC,
     HISTORY,
     REPORT,
-    SNIPPET
+    SNIPPET,
+    SYNC
 }

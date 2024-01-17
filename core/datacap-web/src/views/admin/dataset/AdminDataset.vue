@@ -70,6 +70,12 @@
                     <FontAwesomeIcon icon="rotate"/>
                     {{ $t('dataset.syncData') }}
                   </DropdownItem>
+                  <DropdownMenu>
+                    <DropdownItem @click="handlerHistory(row, true )">
+                      <Icon type="ios-bookmarks"/>
+                      {{ $t('common.syncHistory') }}
+                    </DropdownItem>
+                  </DropdownMenu>
                 </DropdownMenu>
               </template>
             </Dropdown>
@@ -99,6 +105,12 @@
                      :data="contextData"
                      @close="handlerSyncData(null, false)">
     </DatasetSyncData>
+    <DatasetHistory v-if="historyVisible"
+                    :is-visible="historyVisible"
+                    :name="contextData.name"
+                    :code="contextData.code"
+                    @close="handlerHistory(null, false)">
+    </DatasetHistory>
     <MarkdownPreview v-if="errorVisible"
                      :isVisible="errorVisible"
                      :content="'```java\n' + contextData.message + '\n```'"
@@ -120,11 +132,12 @@ import DatasetState from "@/views/admin/dataset/components/DatasetState.vue";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import DatasetSyncData from "@/views/admin/dataset/components/DatasetSyncData.vue";
 import {DropdownItem} from "view-ui-plus";
+import DatasetHistory from "@/views/admin/dataset/components/DatasetHistory.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({
   name: 'AdminDataset',
-  components: {DropdownItem, DatasetSyncData, MarkdownPreview, DatasetState, DatasetRebuild, FontAwesomeIcon},
+  components: {DatasetHistory, DropdownItem, DatasetSyncData, MarkdownPreview, DatasetState, DatasetRebuild, FontAwesomeIcon},
   setup()
   {
     const i18n = useI18n()
@@ -144,7 +157,8 @@ export default defineComponent({
       rebuildVisible: false,
       contextData: null,
       errorVisible: false,
-      syncDataVisible: false
+      syncDataVisible: false,
+      historyVisible: false
     }
   },
   created()
@@ -200,6 +214,11 @@ export default defineComponent({
       }
       this.contextData = record
       this.syncDataVisible = opened
+    },
+    handlerHistory(value: any, isOpen: boolean)
+    {
+      this.contextData = value
+      this.historyVisible = isOpen
     },
     getState(state: Array<any> | null)
     {

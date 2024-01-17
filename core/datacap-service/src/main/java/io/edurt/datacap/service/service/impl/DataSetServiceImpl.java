@@ -18,6 +18,7 @@ import io.edurt.datacap.executor.Executor;
 import io.edurt.datacap.executor.ExecutorUtils;
 import io.edurt.datacap.executor.common.RunMode;
 import io.edurt.datacap.executor.common.RunProtocol;
+import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.executor.common.RunWay;
 import io.edurt.datacap.executor.configure.ExecutorConfigure;
 import io.edurt.datacap.executor.configure.ExecutorRequest;
@@ -35,16 +36,19 @@ import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.configure.IConfigurePipelineType;
 import io.edurt.datacap.service.entity.DataSetColumnEntity;
 import io.edurt.datacap.service.entity.DataSetEntity;
+import io.edurt.datacap.service.entity.DatasetHistoryEntity;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.enums.ColumnMode;
 import io.edurt.datacap.service.enums.ColumnType;
+import io.edurt.datacap.service.enums.QueryMode;
 import io.edurt.datacap.service.enums.SyncMode;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.initializer.job.DatasetJob;
 import io.edurt.datacap.service.repository.DataSetColumnRepository;
 import io.edurt.datacap.service.repository.DataSetRepository;
+import io.edurt.datacap.service.repository.DatasetHistoryRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.DataSetService;
 import io.edurt.datacap.spi.FormatType;
@@ -64,6 +68,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -82,15 +87,17 @@ public class DataSetServiceImpl
 {
     public final DataSetColumnRepository columnRepository;
     private final DataSetRepository repository;
+    private final DatasetHistoryRepository historyRepository;
     private final Injector injector;
     private final InitializerConfigure initializerConfigure;
     private final org.quartz.Scheduler scheduler;
     private final Environment environment;
 
-    public DataSetServiceImpl(DataSetRepository repository, DataSetColumnRepository columnRepository, Injector injector, InitializerConfigure initializerConfigure, org.quartz.Scheduler scheduler, Environment environment)
+    public DataSetServiceImpl(DataSetRepository repository, DataSetColumnRepository columnRepository, DatasetHistoryRepository historyRepository, Injector injector, InitializerConfigure initializerConfigure, org.quartz.Scheduler scheduler, Environment environment)
     {
         this.repository = repository;
         this.columnRepository = columnRepository;
+        this.historyRepository = historyRepository;
         this.injector = injector;
         this.initializerConfigure = initializerConfigure;
         this.scheduler = scheduler;
@@ -246,6 +253,17 @@ public class DataSetServiceImpl
     {
         return repository.findByCode(code)
                 .map(CommonResponse::success)
+                .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
+    }
+
+    @Override
+    public CommonResponse<Object> getHistory(String code, FilterBody filter)
+    {
+        return repository.findByCode(code)
+                .map(item -> {
+                    Pageable pageable = PageRequestAdapter.of(filter);
+                    return CommonResponse.success(PageEntity.build(historyRepository.findAllByDataset(item, pageable)));
+                })
                 .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
     }
 
@@ -430,6 +448,7 @@ public class DataSetServiceImpl
 
     private void syncData(DataSetEntity entity, ExecutorService service)
     {
+        DatasetHistoryEntity history = new DatasetHistoryEntity();
         try {
             SourceEntity source = entity.getSource();
             Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(injector, source.getType(), source.getProtocol());
@@ -437,8 +456,13 @@ public class DataSetServiceImpl
                 throw new IllegalArgumentException(String.format("Plugin [ %s ] not found", initializerConfigure.getDataSetConfigure().getType()));
             }
 
-            Executor executor = ExecutorUtils.findOne(this.injector, entity.getExecutor());
+            history.setState(RunState.CREATED);
+            history.setCreateTime(new Date());
+            history.setQuery(entity.getQuery());
+            history.setDataset(entity);
+            historyRepository.save(history);
 
+            Executor executor = ExecutorUtils.findOne(this.injector, entity.getExecutor());
             Plugin inputPlugin = pluginOptional.get();
             Set<OriginColumn> originColumns = columnRepository.findAllByDataset(entity)
                     .stream()
@@ -482,13 +506,24 @@ public class DataSetServiceImpl
             ExecutorRequest request = new ExecutorRequest(taskName, entity.getUser().getUsername(), input, output,
                     environment.getProperty(String.format("datacap.executor.%s.home", entity.getExecutor().toLowerCase())),
                     workHome, this.injector, 600, RunWay.LOCAL, RunMode.CLIENT);
+
+            history.setState(RunState.RUNNING);
+            historyRepository.save(history);
             ExecutorResponse response = executor.start(request);
             Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
+            history.setUpdateTime(new Date());
+            history.setElapsed((history.getUpdateTime().getTime() - history.getCreateTime().getTime()) / 1000);
+            history.setMode(QueryMode.SYNC);
+            history.setCount(response.getCount());
+            history.setState(response.getState());
         }
         catch (Exception e) {
             log.warn("Sync data for dataset [ {} ] failed", entity.getName(), e);
+            history.setState(RunState.FAILURE);
+            history.setMessage(e.getMessage());
         }
         finally {
+            historyRepository.save(history);
             service.shutdownNow();
         }
     }

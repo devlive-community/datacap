@@ -1,6 +1,7 @@
 package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.adhoc.Adhoc;
 import io.edurt.datacap.service.entity.DataSetColumnEntity;
 import io.edurt.datacap.service.entity.DataSetEntity;
@@ -74,6 +75,13 @@ public class DataSetController
     public CommonResponse<DataSetEntity> info(@PathVariable String code)
     {
         return service.getInfo(code);
+    }
+
+    @PostMapping(value = "history/{code}")
+    public CommonResponse<Object> history(@PathVariable String code,
+            @RequestBody FilterBody filter)
+    {
+        return this.service.getHistory(code, filter);
     }
 
     @GetMapping(value = "getActuators")
