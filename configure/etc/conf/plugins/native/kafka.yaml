@@ -14,7 +14,7 @@ configures:
 
 pipelines:
   - executor: Seatunnel
-    type: SOURCE
+    type: INPUT
     fields:
       - field: bootstrap.servers
         origin: host
@@ -95,7 +95,7 @@ pipelines:
         width: 300
         type: SELECT
   - executor: Seatunnel
-    type: SINK
+    type: OUTPUT
     fields:
       - field: bootstrap.servers
         origin: host

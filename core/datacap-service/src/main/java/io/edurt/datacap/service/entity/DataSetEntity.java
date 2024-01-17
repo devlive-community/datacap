@@ -63,8 +63,8 @@ public class DataSetEntity
     @Column(name = "code")
     private String code;
 
-    @Column(name = "actuator")
-    private String actuator;
+    @Column(name = "scheduler")
+    private String scheduler;
 
     @Column(name = "executor")
     private String executor;

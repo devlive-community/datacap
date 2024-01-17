@@ -20,6 +20,23 @@ body:
         - label: ... to my best knowledge, my idea wouldn't break something for other users
         - label: ... the documentation does not mention anything about my idea
         - label: ... there are no open or closed issues that are related to my idea
+  - type: dropdown
+    id: module
+    attributes:
+      label: Affected Module
+      description: Which modules have been changed.
+      options:
+        - Core (Default)
+        - Driver
+        - Client
+        - Executor
+        - File System
+        - Parser
+        - Plugin
+        - Scheduler
+      default: 0
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Description
@@ -30,8 +47,6 @@ body:
     attributes:
       label: Use Cases
       description: Please describe how your idea would benefit you and other users.
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Screenshots / Mockups

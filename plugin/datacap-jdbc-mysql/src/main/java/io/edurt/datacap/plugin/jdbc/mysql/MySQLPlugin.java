@@ -37,6 +37,12 @@ public class MySQLPlugin
     }
 
     @Override
+    public String driver()
+    {
+        return "com.mysql.jdbc.Driver";
+    }
+
+    @Override
     public void connect(Configure configure)
     {
         try {

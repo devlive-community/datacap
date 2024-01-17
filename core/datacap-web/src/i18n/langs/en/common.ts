@@ -131,6 +131,7 @@ export default {
   success: 'Success',
   publish: 'Publish',
   executor: 'Executor',
+  scheduler: 'Scheduler',
   result: 'Result',
   loading: 'Loading',
   beta: 'Beta',

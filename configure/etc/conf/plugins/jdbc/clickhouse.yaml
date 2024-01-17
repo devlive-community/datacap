@@ -36,7 +36,7 @@ configures:
 
 pipelines:
   - executor: Seatunnel
-    type: SOURCE
+    type: INPUT
     fields:
       - field: host
         origin: host|port
@@ -78,7 +78,7 @@ pipelines:
         input: true
         override: true
   - executor: Seatunnel
-    type: SINK
+    type: OUTPUT
     fields:
       - field: host
         origin: host|port

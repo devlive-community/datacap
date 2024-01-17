@@ -38,7 +38,7 @@ public class DatasetSchedulerInitializer
         this.repository.findAllBySyncMode(SyncMode.TIMING)
                 .forEach(item -> {
                     log.info("Dataset [ {} ] will be scheduled", item.getName());
-                    SpiUtils.findSchedule(this.injector, item.getActuator())
+                    SpiUtils.findSchedule(this.injector, item.getScheduler())
                             .ifPresent(scheduler -> {
                                 SchedulerRequest request = new SchedulerRequest();
                                 request.setName(item.getId().toString());

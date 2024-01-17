@@ -1,17 +1,27 @@
 package io.edurt.datacap.service.common;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import io.edurt.datacap.common.enums.ServiceState;
+import io.edurt.datacap.common.utils.BeanToPropertiesUtils;
 import io.edurt.datacap.common.utils.JsonUtils;
+import io.edurt.datacap.executor.common.RunProtocol;
+import io.edurt.datacap.service.body.PipelineFieldBody;
+import io.edurt.datacap.service.configure.FieldType;
 import io.edurt.datacap.service.configure.IConfigure;
+import io.edurt.datacap.service.configure.IConfigureExecutor;
+import io.edurt.datacap.service.configure.IConfigureExecutorField;
 import io.edurt.datacap.service.configure.IConfigureField;
 import io.edurt.datacap.service.configure.IConfigureFieldName;
 import io.edurt.datacap.service.configure.IConfigureFieldType;
+import io.edurt.datacap.service.configure.IConfigurePipelineType;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.model.Configure;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.env.Environment;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -20,6 +30,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -221,5 +233,179 @@ public class ConfigureUtils
             Preconditions.checkArgument(false, "Not Support type");
         }
         return values;
+    }
+
+    /**
+     * Converts the given properties based on the source entity, fields, configure, environment, pipeline type, executor, query, and field body.
+     *
+     * @param entity the source entity
+     * @param fields the list of fields
+     * @param configure the properties to configure
+     * @param environment the environment
+     * @param pipelineType the pipeline type
+     * @param executor the executor
+     * @param query the query
+     * @param fieldBody the field body
+     * @return the merged properties
+     */
+    public static Properties convertProperties(SourceEntity entity, Environment environment,
+            IConfigurePipelineType pipelineType, String executor, String query, PipelineFieldBody fieldBody)
+    {
+        IConfigure yamlConfigure = PluginUtils.loadYamlConfigure(entity.getProtocol(), entity.getType(), entity.getType(), environment);
+        if (ObjectUtils.isEmpty(yamlConfigure.getPipelines())) {
+            String message = String.format("From source [ %s ] is not supported pipeline, type [ %s ]", entity.getId(), entity.getType());
+            Preconditions.checkArgument(!message.isEmpty(), message);
+        }
+
+        List<IConfigureExecutorField> fields = Lists.newArrayList();
+        Optional<IConfigureExecutor> configureExecutor = yamlConfigure.getPipelines()
+                .stream()
+                .filter(v -> v.getExecutor().equals(executor) && v.getType().equals(pipelineType))
+                .findFirst();
+        if (!configureExecutor.isPresent()) {
+            String message = String.format("Source [ %s ] type [ %s ] is not supported pipeline type [ %s ]", entity.getId(), entity.getType(), pipelineType);
+            Preconditions.checkArgument(!message.isEmpty(), message);
+        }
+        else {
+            fields.addAll(configureExecutor.get().getFields());
+            List<String> errorList = checkField(configureExecutor.get().getFields(), fieldBody.getConfigures(), entity.getName(), pipelineType.name());
+            Preconditions.checkArgument(errorList.isEmpty(), String.join("\n", errorList));
+        }
+
+        Properties originProperties = fieldBody.getConfigures();
+        if (pipelineType.equals(IConfigurePipelineType.INPUT)) {
+            if (!originProperties.containsKey("context")) {
+                originProperties.setProperty("context", query);
+            }
+        }
+        if (fieldBody.getProtocol().equals(RunProtocol.JDBC)) {
+            originProperties.setProperty("url", String.format("jdbc:%s://%s:%s/%s", entity.getType().toLowerCase(), entity.getHost(), entity.getPort(), entity.getDatabase()));
+        }
+        return mergeProperties(entity, fields, originProperties);
+    }
+
+    public static PipelineFieldBody convertFieldBody(SourceEntity entity, String executor, IConfigurePipelineType pipelineType, Environment environment, Properties originProperties)
+    {
+        PipelineFieldBody body = new PipelineFieldBody();
+        body.setProtocol(RunProtocol.valueOf(entity.getProtocol()));
+        IConfigure yamlConfigure = PluginUtils.loadYamlConfigure(entity.getProtocol(), entity.getType(), entity.getType(), environment);
+        yamlConfigure.getPipelines()
+                .stream()
+                .filter(v -> v.getExecutor().equals(executor) && v.getType().equals(pipelineType))
+                .findFirst()
+                .ifPresent(iConfigureExecutor -> body.setConfigures(mergeProperties(entity, iConfigureExecutor.getFields(), originProperties)));
+        if (body.getConfigures() == null) {
+            body.setConfigures(new Properties());
+        }
+        return body;
+    }
+
+    /**
+     * Converts options from a source entity into a set of strings.
+     *
+     * @param entity the source entity to convert options from
+     * @param environment the environment in which the conversion is performed
+     * @param executor the executor to use for the conversion
+     * @param pipelineType the type of pipeline to convert options for
+     * @return a set of strings representing the converted options
+     */
+    public static Set<String> convertOptions(SourceEntity entity, Environment environment, String executor, IConfigurePipelineType pipelineType)
+    {
+        Set<String> fromOptions = Sets.newHashSet();
+        IConfigure yamlConfigure = PluginUtils.loadYamlConfigure(entity.getProtocol(), entity.getType(), entity.getType(), environment);
+        yamlConfigure.getPipelines()
+                .stream()
+                .filter(v -> v.getExecutor().equals(executor) && v.getType().equals(pipelineType))
+                .findFirst()
+                .ifPresent(iConfigureExecutor -> iConfigureExecutor
+                        .getFields()
+                        .stream()
+                        .filter(IConfigureExecutorField::isRequired)
+                        .forEach(v -> fromOptions.add(v.getField())));
+        return fromOptions;
+    }
+
+    /**
+     * Merges the properties from the given source entity, list of fields, and configure properties.
+     *
+     * @param entity the source entity containing the properties to be merged
+     * @param fields the list of fields to be considered for merging
+     * @param configure the configure properties to be merged with the source entity properties
+     * @return the merged properties
+     */
+    private static Properties mergeProperties(SourceEntity entity, List<IConfigureExecutorField> fields, Properties configure)
+    {
+        Properties properties = new Properties();
+        Properties convertBeanProperties = BeanToPropertiesUtils.convertBeanToProperties(entity);
+        for (IConfigureExecutorField field : fields) {
+            if (field.isOverride()) {
+                setProperty(field, properties, configure);
+            }
+            else {
+                setProperty(field, properties, convertBeanProperties);
+            }
+        }
+        return properties;
+    }
+
+    /**
+     * Sets the property value for the given field.
+     *
+     * @param field the field to set the property value for
+     * @param properties the properties object to store the property
+     * @param configure the configuration properties object
+     */
+    private static void setProperty(IConfigureExecutorField field, Properties properties, Properties configure)
+    {
+        Object value = "None";
+        if (ObjectUtils.isNotEmpty(field.getOrigin())) {
+            String[] split = String.valueOf(field.getOrigin()).split("\\|");
+            if (split.length > 1) {
+                value = String.join(":", String.valueOf(configure.get(split[0])), String.valueOf(configure.get(split[1])));
+            }
+            else {
+                if (ObjectUtils.isNotEmpty(configure.get(field.getOrigin()))) {
+                    value = configure.get(field.getOrigin());
+                }
+            }
+        }
+        else {
+            if (ObjectUtils.isNotEmpty(configure.get(field.getField()))) {
+                value = configure.get(field.getField());
+            }
+        }
+        properties.put(field.getField(), value);
+    }
+
+    /**
+     * Checks the fields of the given list against the provided configuration properties.
+     * If a field is required and not present in the configuration, an error message is added to the list.
+     * If a field is of type SELECT and the value in the configuration is not one of the default values,
+     * an error message is added to the list.
+     *
+     * @param fields a list of IConfigureExecutorField objects representing the fields to check
+     * @param configures the configuration properties to check against
+     * @param name the name of the field being checked
+     * @param type the type of the pipeline being checked
+     * @return a list of error messages for fields that do not meet the requirements
+     */
+    public static List<String> checkField(List<IConfigureExecutorField> fields, Properties configures, String name, String type)
+    {
+        List<String> list = Lists.newArrayList();
+        fields.stream()
+                .filter(IConfigureExecutorField::isInput)
+                .forEach(field -> {
+                    if (field.isRequired() && field.isInput() && field.isOverride()) {
+                        if (ObjectUtils.isEmpty(configures.get(field.getField()))) {
+                            list.add(String.format("The pipeline type [ %s ] of the [ %s ] field [ %s ] is a required field, please be sure to enter", type, name, field.getField()));
+                        }
+                    }
+                    if (field.getType().equals(FieldType.SELECT)) {
+                        if (!field.getDefaultValues().contains(configures.get(field.getField()))) {
+                            list.add(String.format("The pipeline type [ %s ] of the [ %s ] field [ %s ] support the default value %s", type, name, field.getField(), String.join(",", field.getDefaultValues())));
+                        }
+                    }
+                });
+        return list;
     }
 }

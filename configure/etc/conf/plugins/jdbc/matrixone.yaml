@@ -38,7 +38,7 @@ configures:
 
 pipelines:
   - executor: Seatunnel
-    type: SOURCE
+    type: INPUT
     protocol: JDBC
     fields:
       - field: url
@@ -80,7 +80,7 @@ pipelines:
         input: true
         override: true
   - executor: Seatunnel
-    type: SINK
+    type: OUTPUT
     protocol: JDBC
     fields:
       - field: url

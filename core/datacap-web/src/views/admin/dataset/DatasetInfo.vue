@@ -135,6 +135,15 @@
                  type="textarea">
           </Input>
         </FormItem>
+        <FormItem :label="$t('common.executor')">
+          <RadioGroup v-model="formState.executor">
+            <Radio v-for="item in executors"
+                   :key="item"
+                   :label="item">
+              {{ item }}
+            </Radio>
+          </RadioGroup>
+        </FormItem>
         <FormItem :label="$t('dataset.syncMode')">
           <RadioGroup v-model="formState.syncMode">
             <Radio label="MANUAL">{{ $t('dataset.syncModeManual') }}</Radio>
@@ -149,11 +158,12 @@
           </Input>
         </FormItem>
         <FormItem v-if="formState.syncMode === 'TIMING'"
-                  :label="$t('dataset.actuator')">
-          <RadioGroup v-model="formState.actuator">
-            <Radio v-for="item in actuators"
+                  :label="$t('common.scheduler')">
+          <RadioGroup v-model="formState.scheduler">
+            <Radio v-for="item in schedulers"
                    :key="item"
-                   :label="item">{{ item }}
+                   :label="item">
+              {{ item }}
             </Radio>
           </RadioGroup>
         </FormItem>
@@ -179,6 +189,7 @@ import {TableColumnDef} from "@/components/table/TableColumnDef";
 import DatasetService from "@/services/admin/DatasetService";
 import {HttpCommon} from "@/common/HttpCommon";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
+import PluginService from "@/services/admin/PluginService";
 
 export default defineComponent({
   name: 'DatasetInfo',
@@ -202,7 +213,8 @@ export default defineComponent({
       loading: false,
       saving: false,
       columnDefs: [],
-      actuators: [],
+      schedulers: [],
+      executors: [],
       infoVisible: false,
       formState: {
         id: null,
@@ -213,7 +225,8 @@ export default defineComponent({
         columns: [],
         source: {id: null},
         expression: null,
-        actuator: 'Default'
+        scheduler: 'Default',
+        executor: 'Default'
       }
     }
   },
@@ -225,10 +238,11 @@ export default defineComponent({
     handlerInitialize()
     {
       setTimeout(() => {
-        DatasetService.getActuators()
+        PluginService.getPlugins()
           .then(response => {
             if (response.status) {
-              this.actuators = response.data
+              this.schedulers = response.data['scheduler']
+              this.executors = response.data['executor']
             }
           })
         const code = this.$route.params.code
