@@ -29,7 +29,7 @@ public abstract class Connector
 
         for (String option : supportOptions) {
             if (!originalConfigure.containsKey(option)) {
-                Preconditions.checkArgument(false, String.format("Type %s option %s is not supported", type, option));
+                Preconditions.checkArgument(false, String.format("Type [ %s ] option [ %s ] is not supported", type, option));
             }
         }
     }

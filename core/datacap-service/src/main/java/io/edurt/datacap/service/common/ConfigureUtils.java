@@ -284,6 +284,22 @@ public class ConfigureUtils
         return mergeProperties(entity, fields, originProperties);
     }
 
+    public static PipelineFieldBody convertFieldBody(SourceEntity entity, String executor, IConfigurePipelineType pipelineType, Environment environment, Properties originProperties)
+    {
+        PipelineFieldBody body = new PipelineFieldBody();
+        body.setProtocol(RunProtocol.valueOf(entity.getProtocol()));
+        IConfigure yamlConfigure = PluginUtils.loadYamlConfigure(entity.getProtocol(), entity.getType(), entity.getType(), environment);
+        yamlConfigure.getPipelines()
+                .stream()
+                .filter(v -> v.getExecutor().equals(executor) && v.getType().equals(pipelineType))
+                .findFirst()
+                .ifPresent(iConfigureExecutor -> body.setConfigures(mergeProperties(entity, iConfigureExecutor.getFields(), originProperties)));
+        if (body.getConfigures() == null) {
+            body.setConfigures(new Properties());
+        }
+        return body;
+    }
+
     /**
      * Converts options from a source entity into a set of strings.
      *

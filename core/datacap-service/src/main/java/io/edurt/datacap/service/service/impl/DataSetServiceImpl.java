@@ -27,9 +27,12 @@ import io.edurt.datacap.scheduler.Scheduler;
 import io.edurt.datacap.scheduler.SchedulerRequest;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.body.PipelineFieldBody;
 import io.edurt.datacap.service.body.adhoc.Adhoc;
+import io.edurt.datacap.service.common.ConfigureUtils;
 import io.edurt.datacap.service.common.FolderUtils;
 import io.edurt.datacap.service.common.PluginUtils;
+import io.edurt.datacap.service.configure.IConfigurePipelineType;
 import io.edurt.datacap.service.entity.DataSetColumnEntity;
 import io.edurt.datacap.service.entity.DataSetEntity;
 import io.edurt.datacap.service.entity.PageEntity;
@@ -52,6 +55,7 @@ import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.sql.builder.TableBuilder;
 import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -59,9 +63,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.io.File;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -144,7 +149,7 @@ public class DataSetServiceImpl
         }
         ExecutorService service = Executors.newSingleThreadExecutor();
         DataSetEntity entity = entityOptional.get();
-        service.submit(() -> syncData(entity));
+        service.submit(() -> syncData(entity, service));
         return CommonResponse.success(true);
     }
 
@@ -423,7 +428,7 @@ public class DataSetServiceImpl
         }
     }
 
-    private void syncData(DataSetEntity entity)
+    private void syncData(DataSetEntity entity, ExecutorService service)
     {
         try {
             SourceEntity source = entity.getSource();
@@ -440,22 +445,51 @@ public class DataSetServiceImpl
                     .map(item -> new OriginColumn(item.getName(), item.getOriginal()))
                     .collect(Collectors.toSet());
             String database = initializerConfigure.getDataSetConfigure().getDatabase();
-            ExecutorConfigure input = new ExecutorConfigure(source.getType(), null, Sets.newHashSet(), RunProtocol.valueOf(source.getProtocol()),
+            Properties originInputProperties = new Properties();
+            originInputProperties.put("driver", inputPlugin.driver());
+            PipelineFieldBody inputFieldBody = ConfigureUtils.convertFieldBody(source, entity.getExecutor(), IConfigurePipelineType.INPUT, environment, originInputProperties);
+            Properties inputProperties = ConfigureUtils.convertProperties(source, environment,
+                    IConfigurePipelineType.INPUT, entity.getExecutor(), entity.getQuery(), inputFieldBody);
+            Set<String> inputOptions = ConfigureUtils.convertOptions(source, environment, entity.getExecutor(), IConfigurePipelineType.INPUT);
+            ExecutorConfigure input = new ExecutorConfigure(source.getType(), inputProperties, inputOptions, RunProtocol.valueOf(source.getProtocol()),
                     inputPlugin, entity.getQuery(), database, entity.getTableName(), source.toConfigure(), originColumns);
 
             Plugin outputPlugin = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
-            ExecutorConfigure output = new ExecutorConfigure("ClickHouse", null, Sets.newHashSet(), RunProtocol.NONE,
+            SourceEntity outputSource = new SourceEntity();
+            outputSource.setType(initializerConfigure.getDataSetConfigure().getType());
+            outputSource.setDatabase(initializerConfigure.getDataSetConfigure().getDatabase());
+            outputSource.setHost(initializerConfigure.getDataSetConfigure().getHost());
+            outputSource.setPort(Integer.valueOf(initializerConfigure.getDataSetConfigure().getPort()));
+            outputSource.setUsername(initializerConfigure.getDataSetConfigure().getUsername());
+            outputSource.setPassword(initializerConfigure.getDataSetConfigure().getPassword());
+            outputSource.setProtocol(PluginType.JDBC.name());
+            Properties originOutputProperties = new Properties();
+            List<String> fields = Lists.newArrayList();
+            columnRepository.findAllByDataset(entity)
+                    .forEach(item -> fields.add(item.getName()));
+            originOutputProperties.put("fields", String.join("\n", fields));
+            originOutputProperties.put("database", database);
+            originOutputProperties.put("table", entity.getTableName());
+            PipelineFieldBody outputFieldBody = ConfigureUtils.convertFieldBody(outputSource, entity.getExecutor(), IConfigurePipelineType.OUTPUT, environment, originOutputProperties);
+            Properties outputProperties = ConfigureUtils.convertProperties(outputSource, environment,
+                    IConfigurePipelineType.OUTPUT, entity.getExecutor(), entity.getQuery(), outputFieldBody);
+            Set<String> outputOptions = ConfigureUtils.convertOptions(outputSource, environment, entity.getExecutor(), IConfigurePipelineType.OUTPUT);
+            ExecutorConfigure output = new ExecutorConfigure(outputSource.getType(), outputProperties, outputOptions, RunProtocol.NONE,
                     outputPlugin, null, null, null, getConfigure(database), Sets.newHashSet());
 
-            String workHome = FolderUtils.getWorkHome(initializerConfigure.getDataHome(), entity.getUser().getUsername(), "dataset");
-            ExecutorRequest request = new ExecutorRequest(String.format("batch_sync_%s", entity.getCode()), entity.getUser().getUsername(), input, output,
-                    environment.getProperty(String.format("datacap.executor.%s.home", entity.getExecutor().toLowerCase(Locale.ROOT))),
+            String taskName = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMddHHmmssSSS");
+            String workHome = FolderUtils.getWorkHome(initializerConfigure.getDataHome(), entity.getUser().getUsername(), String.join(File.separator, "dataset", entity.getExecutor().toLowerCase(), taskName));
+            ExecutorRequest request = new ExecutorRequest(taskName, entity.getUser().getUsername(), input, output,
+                    environment.getProperty(String.format("datacap.executor.%s.home", entity.getExecutor().toLowerCase())),
                     workHome, this.injector, 600, RunWay.LOCAL, RunMode.CLIENT);
             ExecutorResponse response = executor.start(request);
             Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
         }
         catch (Exception e) {
             log.warn("Sync data for dataset [ {} ] failed", entity.getName(), e);
+        }
+        finally {
+            service.shutdownNow();
         }
     }
 }

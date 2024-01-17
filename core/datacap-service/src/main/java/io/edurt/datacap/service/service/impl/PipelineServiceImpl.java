@@ -99,7 +99,7 @@ public class PipelineServiceImpl
         Properties toProperties = ConfigureUtils.convertProperties(toSource, environment,
                 IConfigurePipelineType.OUTPUT, configure.getExecutor(), configure.getContent(), configure.getTo());
         Set<String> toOptions = ConfigureUtils.convertOptions(toSource, environment, configure.getExecutor(), IConfigurePipelineType.OUTPUT);
-        ExecutorConfigure toField = new ExecutorConfigure(fromSource.getType(), toProperties, toOptions, configure.getTo().getProtocol());
+        ExecutorConfigure toField = new ExecutorConfigure(toSource.getType(), toProperties, toOptions, configure.getTo().getProtocol());
 
         PipelineEntity pipelineEntity = new PipelineEntity();
         if (ObjectUtils.isNotEmpty(configure.getId())) {
