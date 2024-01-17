@@ -58,6 +58,11 @@ class DatasetService
     return new HttpCommon().get(`${baseUrl}/getActuators`);
   }
 
+  getHistory(code: string, configure: any): Promise<ResponseModel>
+  {
+    return new HttpCommon().post(`${baseUrl}/history/${code}`, configure);
+  }
+
   getByName<T>(name: string): Promise<ResponseModel>
   {
     return Promise.resolve(undefined);

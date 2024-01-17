@@ -74,6 +74,52 @@ const createHeaders = (i18n: any) => {
   ]
 }
 
+const createHistoryHeaders = (i18n: any): Array<any> => {
+  return [
+    {
+      title: i18n.t('common.id'),
+      key: 'id',
+      ellipsis: true,
+      tooltip: true,
+      width: 60
+    },
+    {
+      title: i18n.t('common.createTime'),
+      key: 'createTime',
+      ellipsis: true,
+      align: 'center',
+      tooltip: true
+    },
+    {
+      title: i18n.t('common.updateTime'),
+      key: 'updateTime',
+      ellipsis: true,
+      align: 'center',
+      tooltip: true
+    },
+    {
+      title: i18n.t('common.elapsed'),
+      slot: 'elapsed',
+      align: 'center',
+      key: 'elapsed'
+    },
+    {
+      title: i18n.t('common.count'),
+      key: 'count',
+      align: 'center'
+    },
+    {
+      title: i18n.t('common.state'),
+      key: 'state',
+      tooltip: true,
+      slot: 'state',
+      align: 'center',
+      width: 120
+    }
+  ];
+};
+
 export {
-  createHeaders
+  createHeaders,
+  createHistoryHeaders
 }

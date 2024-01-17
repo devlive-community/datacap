@@ -49,8 +49,29 @@ ALTER TABLE `datacap_dataset`
 
 ALTER TABLE `datacap_dataset`
     ADD COLUMN `scheduler` VARCHAR(100) NULL,
-    ADD COLUMN `executor` VARCHAR(100) DEFAULT 'Default';
+    ADD COLUMN `executor`  VARCHAR(100) DEFAULT 'Default';
 
 ALTER TABLE `datacap_dataset_column`
     ADD COLUMN `is_partition_key` BOOLEAN      DEFAULT FALSE,
     ADD COLUMN `alias_name`       VARCHAR(200) DEFAULT NULL;
+
+CREATE TABLE `datacap_dataset_history`
+(
+    `id`          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `name`        VARCHAR(255),
+    `active`      BOOLEAN DEFAULT true,
+    `create_time` DATETIME,
+    `update_time` DATETIME,
+    `query`       VARCHAR(255),
+    `message`     VARCHAR(255) UNIQUE,
+    `elapsed`     BIGINT,
+    `count`       INT,
+    `query_mode`  VARCHAR(255),
+    `state`       VARCHAR(255)
+);
+
+CREATE TABLE `datacap_dataset_history_relation`
+(
+    `dataset_history_id` BIGINT,
+    `dataset_id`         BIGINT
+);

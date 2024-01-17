@@ -30,6 +30,7 @@ class LocalExecutor : Executor {
 
                 if (inputResult.isSuccessful) {
                     val fullInsertStatement = Lists.newArrayList<String>()
+                    response.count = inputResult.columns.size
                     inputResult.columns.forEach { it ->
                         val columns = Lists.newArrayList<SqlColumn>()
                         val objectNode: ObjectNode = it as ObjectNode
@@ -59,6 +60,7 @@ class LocalExecutor : Executor {
                             }
                             else {
                                 response.successful = true
+                                response.state = RunState.SUCCESS
                             }
                         }
                         else {

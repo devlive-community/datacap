@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.service;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.adhoc.Adhoc;
 import io.edurt.datacap.service.entity.DataSetColumnEntity;
 import io.edurt.datacap.service.entity.DataSetEntity;
@@ -25,4 +26,6 @@ public interface DataSetService
     CommonResponse<Set<String>> getActuators();
 
     CommonResponse<DataSetEntity> getInfo(String code);
+
+    CommonResponse<Object> getHistory(String code, FilterBody filter);
 }
