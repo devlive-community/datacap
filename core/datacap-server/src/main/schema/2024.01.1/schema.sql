@@ -63,7 +63,7 @@ CREATE TABLE `datacap_dataset_history`
     `create_time` DATETIME,
     `update_time` DATETIME,
     `query`       VARCHAR(255),
-    `message`     VARCHAR(255) UNIQUE,
+    `message`     TEXT,
     `elapsed`     BIGINT,
     `count`       INT,
     `query_mode`  VARCHAR(255),

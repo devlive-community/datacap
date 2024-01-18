@@ -510,12 +510,12 @@ public class DataSetServiceImpl
             history.setState(RunState.RUNNING);
             historyRepository.save(history);
             ExecutorResponse response = executor.start(request);
-            Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
             history.setUpdateTime(new Date());
             history.setElapsed((history.getUpdateTime().getTime() - history.getCreateTime().getTime()) / 1000);
             history.setMode(QueryMode.SYNC);
             history.setCount(response.getCount());
             history.setState(response.getState());
+            Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
         }
         catch (Exception e) {
             log.warn("Sync data for dataset [ {} ] failed", entity.getName(), e);

@@ -2,13 +2,9 @@ package io.edurt.datacap.server.configure;
 
 import com.google.inject.Injector;
 import io.edurt.datacap.schedule.ScheduledCronRegistrar;
-import io.edurt.datacap.service.repository.ScheduledHistoryRepository;
 import io.edurt.datacap.service.repository.ScheduledRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
-import io.edurt.datacap.service.repository.TemplateSqlRepository;
-import io.edurt.datacap.service.repository.metadata.ColumnRepository;
-import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
-import io.edurt.datacap.service.repository.metadata.TableRepository;
+import io.edurt.datacap.service.service.SourceService;
 import io.edurt.datacap.service.source.CheckScheduledRunnable;
 import io.edurt.datacap.service.source.SyncMetadataScheduledRunnable;
 import lombok.extern.slf4j.Slf4j;
@@ -26,24 +22,16 @@ public class ScheduleRunnerConfigure
     private final Injector injector;
     private final ScheduledRepository scheduledRepository;
     private final SourceRepository sourceRepository;
-    private final DatabaseRepository databaseHandler;
-    private final TableRepository tableHandler;
-    private final ColumnRepository columnHandler;
-    private final ScheduledHistoryRepository scheduledHistoryHandler;
-    private final TemplateSqlRepository templateSqlRepository;
+    private final SourceService sourceService;
     private final ScheduledCronRegistrar scheduledCronRegistrar;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public ScheduleRunnerConfigure(Injector injector, ScheduledRepository scheduledRepository, SourceRepository sourceRepository, DatabaseRepository databaseHandler, TableRepository tableHandler, ColumnRepository columnHandler, ScheduledHistoryRepository scheduledHistoryHandler, TemplateSqlRepository templateSqlRepository, ScheduledCronRegistrar scheduledCronRegistrar)
+    public ScheduleRunnerConfigure(Injector injector, ScheduledRepository scheduledRepository, SourceRepository sourceRepository, SourceService sourceService, ScheduledCronRegistrar scheduledCronRegistrar)
     {
         this.injector = injector;
         this.scheduledRepository = scheduledRepository;
         this.sourceRepository = sourceRepository;
-        this.databaseHandler = databaseHandler;
-        this.tableHandler = tableHandler;
-        this.columnHandler = columnHandler;
-        this.scheduledHistoryHandler = scheduledHistoryHandler;
-        this.templateSqlRepository = templateSqlRepository;
+        this.sourceService = sourceService;
         this.scheduledCronRegistrar = scheduledCronRegistrar;
     }
 
@@ -55,14 +43,14 @@ public class ScheduleRunnerConfigure
                     log.info("Add new task [ {} ] to scheduler", task.getName());
                     switch (task.getType()) {
                         case SOURCE_SYNCHRONIZE:
-                            SyncMetadataScheduledRunnable syncMetadataScheduledRunnable = new SyncMetadataScheduledRunnable(task.getName(), injector, sourceRepository, databaseHandler, tableHandler, columnHandler, templateSqlRepository, scheduledHistoryHandler, task);
+                            SyncMetadataScheduledRunnable syncMetadataScheduledRunnable = new SyncMetadataScheduledRunnable(task.getName(), injector, sourceRepository, sourceService);
                             this.scheduledCronRegistrar.addCronTask(syncMetadataScheduledRunnable, task.getExpression());
-                            executorService.submit(() -> syncMetadataScheduledRunnable.run());
+                            executorService.submit(syncMetadataScheduledRunnable);
                             break;
                         case SOURCE_CHECK:
                             CheckScheduledRunnable checkScheduledRunnable = new CheckScheduledRunnable(task.getName(), this.injector, this.sourceRepository);
                             this.scheduledCronRegistrar.addCronTask(checkScheduledRunnable, task.getExpression());
-                            executorService.submit(() -> checkScheduledRunnable.run());
+                            executorService.submit(checkScheduledRunnable);
                             break;
                         default:
                             log.warn("Unsupported task type [ {} ]", task.getType());

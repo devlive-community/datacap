@@ -60,7 +60,7 @@ const createHistoryHeaders = (i18n: any): Array<any> => {
       key: 'id',
       ellipsis: true,
       tooltip: true,
-      width: 60
+      width: 100
     },
     {
       title: i18n.t('common.name'),
