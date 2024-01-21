@@ -72,7 +72,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@SuppressFBWarnings(value = {"RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"})
+@SuppressFBWarnings(value = {"RV_RETURN_VALUE_IGNORED_BAD_PRACTICE", "REC_CATCH_EXCEPTION"})
 public class SourceServiceImpl
         implements SourceService
 {
