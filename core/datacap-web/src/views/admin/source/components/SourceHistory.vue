@@ -61,8 +61,6 @@ import {ResponsePage} from "@/model/ResponsePage";
 import {getColor, getText} from "@/views/admin/pipeline/PipelineGenerate";
 import SourceV2Service from '@/services/SourceV2Service';
 
-const filter: Filter = new Filter();
-const pagination: Pagination = PaginationBuilder.newInstance();
 export default defineComponent({
   name: 'SourceHistory',
   components: {MarkdownView},
@@ -80,6 +78,8 @@ export default defineComponent({
   },
   setup()
   {
+    const filter: Filter = new Filter();
+    const pagination: Pagination = PaginationBuilder.newInstance();
     const i18n = useI18n();
     const headers = createHistoryHeaders(i18n);
     return {

@@ -45,6 +45,9 @@ public class ScheduledHistoryEntity
     @Enumerated(EnumType.STRING)
     private RunState state;
 
+    @Column(name = "message")
+    private String message;
+
     @ManyToOne
     @JoinTable(name = "datacap_scheduled_history_relation",
             joinColumns = @JoinColumn(name = "scheduled_id"),
