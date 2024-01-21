@@ -142,3 +142,6 @@ VALUES ('SYSTEM_FOR_GET_ALL_COLUMNS', 'SELECT
 FROM
     information_schema.columns;', 'According to the specified database, the data table gets all the data columns under the current condition
 根据指定数据库，数据表获取当前条件下所有数据列', 'PostgreSQL', '[]', '2024-01-18 13:15:06', '2024-01-18 13:15:06', 1);
+
+ALTER TABLE `datacap_scheduled_history`
+    ADD COLUMN `message` TEXT NULL;

@@ -51,6 +51,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -430,9 +431,12 @@ public class SourceServiceImpl
                             columnUpdatedCount,
                             columnRemovedCount);
                 }
+                scheduledHistory.setState(RunState.SUCCESS);
             }
             catch (Exception e) {
                 log.error("The scheduled task [ {} ] source [ {} ] not available ", scheduled.getName(), entity.getName(), e);
+                scheduledHistory.setState(RunState.FAILURE);
+                scheduledHistory.setMessage(ExceptionUtils.getStackTrace(e));
             }
         }
         log.info("==================== Sync metadata  [ {} ] finished =================", entity.getName());
@@ -447,7 +451,6 @@ public class SourceServiceImpl
         info.put("columnUpdatedCount", columnUpdatedCount.get());
         info.put("columnRemovedCount", columnRemovedCount.get());
         scheduledHistory.setInfo(info);
-        scheduledHistory.setState(RunState.SUCCESS);
         scheduledHistoryHandler.save(scheduledHistory);
         databaseCache.clear();
         databaseTableCache.clear();
