@@ -14,7 +14,7 @@
     <description>DataCap - CrateDB</description>
 
     <properties>
-        <cratedb.version>2.6.0</cratedb.version>
+        <cratedb.version>2.7.0</cratedb.version>
         <plugin.name>jdbc-cratedb</plugin.name>
     </properties>
 
