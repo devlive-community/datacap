@@ -145,7 +145,7 @@
         <dep.trino.version>414</dep.trino.version>
         <dep.antlr4.version>4.12.0</dep.antlr4.version>
         <springboot.version>2.7.4</springboot.version>
-        <lombok.version>1.18.28</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <junit.version>4.13.2</junit.version>
         <jjwt.version>0.9.1</jjwt.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
