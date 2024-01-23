@@ -1,6 +1,6 @@
-name: ✨ Feature
-title: ✨ [Feature] Support core for xxx
-description: Suggest an idea
+name: 🌟 Core
+title: 🌟 [Core] Support core for xxx
+description: Submit a piece of content about the kernel level
 labels:
   - feature
   - enhancement
@@ -26,7 +26,12 @@ body:
       label: Affected Module
       description: Which modules have been changed.
       options:
-        - Feature (Default)
+        - Core (Default)
+        - Web
+        - Driver
+        - Client
+        - Library
+        - Shaded
       default: 0
     validations:
       required: true
