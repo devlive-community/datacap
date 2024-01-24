@@ -15,9 +15,9 @@ import java.util.Base64;
 public class CalculateUtils
 {
     // Image width
-    private static int WIDTH = 200;
+    private static final int WIDTH = 200;
     // Image height
-    private static int HEIGHT = 40;
+    private static final int HEIGHT = 40;
 
     private CalculateUtils()
     {}
