@@ -262,7 +262,7 @@ public class DataSetServiceImpl
         return repository.findByCode(code)
                 .map(item -> {
                     Pageable pageable = PageRequestAdapter.of(filter);
-                    return CommonResponse.success(PageEntity.build(historyRepository.findAllByDataset(item, pageable)));
+                    return CommonResponse.success(PageEntity.build(historyRepository.findAllByDatasetOrderByCreateTimeDesc(item, pageable)));
                 })
                 .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
     }
