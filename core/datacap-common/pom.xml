@@ -42,10 +42,6 @@
             <version>${commons-io.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>${commons-csv.version}</version>

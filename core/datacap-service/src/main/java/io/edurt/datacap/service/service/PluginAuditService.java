@@ -23,4 +23,6 @@ public interface PluginAuditService
     CommonResponse<List<ContributionRadar>> getContributionRadar();
 
     CommonResponse<PluginAuditEntity> getById(Long id);
+
+    CommonResponse<Object> getData(Long id);
 }

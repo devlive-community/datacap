@@ -1,34 +1,52 @@
 package io.edurt.datacap.service.service.impl;
 
+import com.google.common.collect.Maps;
+import com.google.inject.Injector;
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.common.utils.SpiUtils;
+import io.edurt.datacap.fs.FsRequest;
+import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.activity.HeatmapActivity;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.common.FolderUtils;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.PluginAuditEntity;
 import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.itransient.ContributionRadar;
 import io.edurt.datacap.service.repository.PluginAuditRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.PluginAuditService;
+import io.edurt.datacap.spi.model.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class PluginAuditServiceImpl
         implements PluginAuditService
 {
     private final PluginAuditRepository pluginAuditRepository;
+    private final InitializerConfigure initializer;
+    private final Injector injector;
 
-    public PluginAuditServiceImpl(PluginAuditRepository pluginAuditRepository)
+    public PluginAuditServiceImpl(PluginAuditRepository pluginAuditRepository, InitializerConfigure initializer, Injector injector)
     {
         this.pluginAuditRepository = pluginAuditRepository;
+        this.initializer = initializer;
+        this.injector = injector;
     }
 
     @Override
@@ -82,5 +100,47 @@ public class PluginAuditServiceImpl
     public CommonResponse<PluginAuditEntity> getById(Long id)
     {
         return CommonResponse.success(this.pluginAuditRepository.findById(id));
+    }
+
+    @Override
+    public CommonResponse<Object> getData(Long id)
+    {
+        return this.pluginAuditRepository.findById(id)
+                .map(value -> {
+                    Response response = new Response();
+                    String workHome = FolderUtils.getWorkHome(initializer.getDataHome(), value.getUser().getUsername(), String.join(File.separator, "adhoc", id.toString()));
+                    FsRequest fsRequest = FsRequest.builder()
+                            .access(initializer.getFsConfigure().getAccess())
+                            .secret(initializer.getFsConfigure().getSecret())
+                            .endpoint(workHome)
+                            .bucket(initializer.getFsConfigure().getBucket())
+                            .fileName("result.csv")
+                            .build();
+                    FsResponse fsResponse = SpiUtils.findFs(injector, initializer.getFsConfigure().getType())
+                            .map(v -> v.reader(fsRequest))
+                            .get();
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(fsResponse.getContext()))) {
+                        String headersLine = reader.readLine();
+                        List<String> headers = Arrays.asList(headersLine.split(","));
+                        response.setHeaders(headers);
+
+                        List<Object> columns = new ArrayList<>();
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            String[] columnData = line.split(",");
+                            Map<String, String> row = Maps.newHashMap();
+                            for (int i = 0; i < headers.size(); i++) {
+                                row.put(headers.get(i), columnData[i]);
+                            }
+                            columns.add(row);
+                        }
+                        response.setColumns(columns);
+                    }
+                    catch (Exception e) {
+                        log.warn("Reader cache failed on [ {} ]", id, e);
+                    }
+                    return CommonResponse.success(response);
+                })
+                .orElseGet(() -> CommonResponse.failure(String.format("Not found [ %s ] history", id)));
     }
 }

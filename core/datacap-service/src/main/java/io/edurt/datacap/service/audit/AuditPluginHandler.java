@@ -1,10 +1,17 @@
 package io.edurt.datacap.service.audit;
 
+import com.google.inject.Injector;
 import io.edurt.datacap.common.enums.State;
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.common.utils.CSVUtils;
+import io.edurt.datacap.common.utils.SpiUtils;
+import io.edurt.datacap.fs.FsRequest;
+import io.edurt.datacap.service.common.FolderUtils;
 import io.edurt.datacap.service.entity.ExecuteEntity;
 import io.edurt.datacap.service.entity.PluginAuditEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
+import io.edurt.datacap.service.entity.UserEntity;
+import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.repository.PluginAuditRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
@@ -17,9 +24,13 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Aspect
 @Component
@@ -28,12 +39,16 @@ public class AuditPluginHandler
 {
     private final PluginAuditRepository pluginAuditRepository;
     private final SourceRepository sourceRepository;
+    private final InitializerConfigure initializer;
+    private final Injector injector;
     private PluginAuditEntity pluginAudit;
 
-    public AuditPluginHandler(PluginAuditRepository pluginAuditRepository, SourceRepository sourceRepository)
+    public AuditPluginHandler(PluginAuditRepository pluginAuditRepository, SourceRepository sourceRepository, InitializerConfigure initializer, Injector injector)
     {
         this.pluginAuditRepository = pluginAuditRepository;
         this.sourceRepository = sourceRepository;
+        this.initializer = initializer;
+        this.injector = injector;
     }
 
     @Pointcut("@annotation(auditPlugin)")
@@ -72,9 +87,36 @@ public class AuditPluginHandler
                 Optional<SourceEntity> sourceEntity = this.sourceRepository.findById(Long.valueOf(executeEntity.getName()));
                 pluginAudit.setPlugin(sourceEntity.get());
             }
-            pluginAudit.setUser(UserDetailsService.getUser());
+            UserEntity user = UserDetailsService.getUser();
+            pluginAudit.setUser(user);
             pluginAudit.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
             this.pluginAuditRepository.save(pluginAudit);
+            ExecutorService service = Executors.newSingleThreadExecutor();
+            service.submit(() -> {
+                String workHome = FolderUtils.getWorkHome(initializer.getDataHome(), user.getUsername(), String.join(File.separator, "adhoc", pluginAudit.getId().toString()));
+                log.info("Writer file to folder [ {} ] on [ {} ]", workHome, pluginAudit.getId());
+                try {
+                    File tempFile = CSVUtils.makeTempCSV(workHome, "result.csv", jsonResult.getData().getHeaders(), jsonResult.getData().getColumns());
+                    FsRequest fsRequest = FsRequest.builder()
+                            .access(initializer.getFsConfigure().getAccess())
+                            .secret(initializer.getFsConfigure().getSecret())
+                            .endpoint(workHome)
+                            .bucket(initializer.getFsConfigure().getBucket())
+                            .stream(Files.newInputStream(tempFile.toPath()))
+                            .fileName("result.csv")
+                            .build();
+                    SpiUtils.findFs(injector, initializer.getFsConfigure().getType())
+                            .map(v -> v.writer(fsRequest));
+                    log.info("Delete temp file [ {} ] on [ {} ] statue [ {} ]", tempFile, pluginAudit.getId(), tempFile.delete());
+                    log.info("Writer file to folder [ {} ] on [ {} ] completed", workHome, pluginAudit.getId());
+                }
+                catch (Exception ex) {
+                    log.error("Writer file to folder [ {} ] on [ {} ] failed", workHome, pluginAudit.getId(), ex);
+                }
+                finally {
+                    service.shutdownNow();
+                }
+            });
         }
         catch (Exception ex) {
             log.error("Audit failed ", ex);

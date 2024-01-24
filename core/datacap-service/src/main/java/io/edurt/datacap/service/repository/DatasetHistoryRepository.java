@@ -9,5 +9,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface DatasetHistoryRepository
         extends PagingAndSortingRepository<DatasetHistoryEntity, Long>
 {
-    Page<DatasetHistoryEntity> findAllByDataset(DataSetEntity dataSet, Pageable pageable);
+    Page<DatasetHistoryEntity> findAllByDatasetOrderByCreateTimeDesc(DataSetEntity dataSet, Pageable pageable);
 }
