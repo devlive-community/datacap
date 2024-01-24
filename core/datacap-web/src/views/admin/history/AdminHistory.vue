@@ -1,8 +1,12 @@
 <template>
   <div>
-    <Card style="width:100%" :title="$t('common.history')"
+    <Card style="width:100%"
+          :title="$t('common.history')"
           dis-hover>
-      <Table :loading="loading" :columns="headers" :data="data.content" @on-sort-change="handlerSort">
+      <Table :loading="loading"
+             :columns="headers"
+             :data="data.content"
+             @on-sort-change="handlerSort">
         <template #plugin="{ row }">
           <Ellipsis :text="row.plugin.name" :height="25" tooltip transfer/>
         </template>
@@ -36,6 +40,12 @@
             <Tooltip :content="$t('common.quote')" transfer>
               <Button shape="circle" type="dashed" size="small" icon="md-pin" @click="handlerGoConsoleIndex(row.id)"/>
             </Tooltip>
+            <Button type="primary"
+                    shape="circle"
+                    size="small"
+                    icon="md-apps"
+                    @click="handlerShowData(true, row)">
+            </Button>
           </Space>
         </template>
       </Table>
@@ -46,6 +56,11 @@
     </Card>
     <SqlDetail v-if="visibleContent" :isVisible="visibleContent" :content="content"
                @close="handlerCloseContent($event)"/>
+    <HistoryData v-if="visibleData"
+                 :is-visible="visibleData"
+                 :data="contextData"
+                 @close="handlerShowData(false, null)">
+    </HistoryData>
   </div>
 </template>
 
@@ -59,11 +74,12 @@ import SqlDetail from "@/components/sql/SqlDetail.vue";
 import {Filter} from "@/model/Filter";
 import {Order} from "@/model/Order";
 import router from "@/router";
+import HistoryData from "@/views/admin/history/components/HistoryData.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({
   name: "QueryHistory",
-  components: {SqlDetail},
+  components: {HistoryData, SqlDetail},
   setup()
   {
     const i18n = useI18n();
@@ -84,7 +100,9 @@ export default defineComponent({
         total: 0,
         current: 1,
         pageSize: 10
-      }
+      },
+      visibleData: false,
+      contextData: null
     }
   },
   created()
@@ -154,6 +172,11 @@ export default defineComponent({
     handlerGoConsoleIndex(id: number)
     {
       router.push('/console/index?id=' + id + '&from=history');
+    },
+    handlerShowData(value: boolean, content: string)
+    {
+      this.visibleData = value
+      this.contextData = content
     }
   }
 });

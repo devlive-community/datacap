@@ -43,4 +43,10 @@ public class PluginAuditController
     {
         return this.pluginAuditService.getById(id);
     }
+
+    @GetMapping(value = "data/{id}")
+    public CommonResponse<Object> getData(@PathVariable Long id)
+    {
+        return pluginAuditService.getData(id);
+    }
 }
