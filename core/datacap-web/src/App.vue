@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
-    <div class="pdfContent" id="watermark-parent">
+    <router-view/>
+    <div class="pdfContent"
+         id="watermark-parent">
     </div>
   </div>
 </template>
@@ -15,11 +16,11 @@ export default defineComponent({
   // Fixed ResizeObserver loop completed with undelivered notifications
   setup()
   {
-    const debounce = (callback: (...args: any[]) => void, delay: number) => {
-      let tid: any;
-      return function (...args: any[]) {
+    const debounce = (callback: (...args: unknown[]) => void, delay: number) => {
+      let tid: unknown;
+      return function (...args: unknown[]) {
         const ctx = self;
-        tid && clearTimeout(tid);
+        tid && clearTimeout(tid as number);
         tid = setTimeout(() => {
           callback.apply(ctx, args);
         }, delay);
@@ -30,7 +31,7 @@ export default defineComponent({
     (window as any).ResizeObserver = class ResizeObserver
       extends _
     {
-      constructor(callback: (...args: any[]) => void)
+      constructor(callback: (...args: unknown[]) => void)
       {
         callback = debounce(callback, 20);
         super(callback);

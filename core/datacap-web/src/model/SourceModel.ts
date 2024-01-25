@@ -13,7 +13,7 @@ export interface SourceModel
   type: string;
   createTime?: number;
   ssl?: boolean;
-  configures: {};
+  configures: NonNullable<unknown>;
   file?: [];
   version?: string;
 }
