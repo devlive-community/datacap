@@ -5,7 +5,7 @@ export interface TemplateSql
   description: string;
   content: string;
   plugin: string;
-  configure: {};
+  configure: NonNullable<unknown>;
   system: boolean;
   createTime?: string;
   updateTime?: string;
