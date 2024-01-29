@@ -28,7 +28,7 @@ public interface PluginAuditRepository
 
     @Query(value = "SELECT count(1) AS dataOfCount, s.name AS dataOfLabel\n" +
             "FROM audit_plugin AS ap\n" +
-            "LEFT JOIN source AS s ON ap.plugin_id = s.id\n" +
+            "LEFT JOIN datacap_source AS s ON ap.plugin_id = s.id\n" +
             "WHERE date_sub(curdate(), interval 7 day) <= date(ap.create_time) AND s.user_id = ?1\n" +
             "GROUP BY s.name", nativeQuery = true)
     List<Map<String, Object>> selectRadarByUserId(Long id);
