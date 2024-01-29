@@ -14,6 +14,8 @@ TRUNCATE TABLE `datacap_dataset_column`;
 TRUNCATE TABLE `datacap_dataset_column_relation`;
 TRUNCATE TABLE `datacap_dataset_source_relation`;
 TRUNCATE TABLE `datacap_dataset_user_relation`;
+TRUNCATE TABLE `datacap_dataset_history`;
+TRUNCATE TABLE `datacap_dataset_history_relation`;
 
 TRUNCATE TABLE `datacap_message`;
 TRUNCATE TABLE `datacap_message_chat_relation`;
@@ -34,12 +36,14 @@ TRUNCATE TABLE `pipeline_user_relation`;
 TRUNCATE TABLE `datacap_report`;
 TRUNCATE TABLE `datacap_report_source_relation`;
 TRUNCATE TABLE `datacap_report_user_relation`;
+TRUNCATE TABLE `datacap_report_dataset_relation`;
 
 TRUNCATE TABLE `datacap_scheduled_history`;
 TRUNCATE TABLE `datacap_scheduled_history_relation`;
+TRUNCATE TABLE `datacap_scheduled_history_source_relation`;
 
 TRUNCATE TABLE `user_log`;
 
-TRUNCATE TABLE `source`;
+TRUNCATE TABLE `datacap_source`;
 
 TRUNCATE TABLE `snippet`;

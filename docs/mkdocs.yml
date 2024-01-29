@@ -8,15 +8,9 @@ repo_url: https://github.com/devlive-community/datacap
 edit_uri: "https://github.com/devlive-community/datacap/blob/dev/docs/docs"
 
 banners:
-  - title: DataCap 1.18.0 is released
+  - title: DataCap 2024.01.1 is released
     link: /release-latest.html
     description: <a href="https://github.com/devlive-community/datacap" class="text-white"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
-  - title: Support MatrixOne
-    link: /reference/connectors/matrixone/home.html
-    description: <a href="https://matrixorigin.cn/" target="_blank" class="text-white"> MatrixOne </a>
-  - title: Support ScyllaDB
-    link: /reference/connectors/scylladb/home.html
-    description: <a href="https://www.scylladb.com/" target="_blank" class="text-white"> ScyllaDB </a>
 
 copyright: Copyright &copy; 2023 devlive-community
 
@@ -92,9 +86,6 @@ markdown_extensions:
       smart_enable: all
   - pymdownx.caret
   - pymdownx.details
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.keys
@@ -208,7 +199,8 @@ nav:
         - reference/connectors/pinot/home.md
         - reference/connectors/cassandra/home.md
   - NavReleaseNote:
-      - 1.18.0 (latest): release/latest.md
+      - 2024.01.1 (latest): release/latest.md
+      - 1.18.0: release/1.18.0.md
       - 1.17.0: release/1.17.0.md
       - 1.16.0: release/1.16.0.md
       - 1.15.0: release/1.15.0.md

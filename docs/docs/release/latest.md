@@ -1,69 +1,107 @@
-!!! note
-
-    当前版本涉及几项重大更新。
-
 **DataCap 发布!**
 
 |   发布版本   |     发布时间     |
 |:--------:|:------------:|
-| `1.18.0` | `2023-12-22` |
+| `2024.01.1` | `2024-01-30` |
 
 #### General
 
 ---
 
-- [元数据] 支持克隆行
-- [元数据] 支持截断表
-- [元数据] 支持刷新数据
-- [元数据] 支持删除表
-- [元数据] 支持展示表结构
-- [元数据] 支持展示表 ER 图
-- [元数据] 支持导出表数据
-- [元数据] 支持新建表
-- [元数据] 支持新建列
-- [元数据] 支持删除列
-- [查询] 添加自动添加 `LIMIT`
-- [用户] 支持用户头像
-- [数据源] 优化数据源删除提示信息
-- [报表] 支持数据报表功能
-- [仪表盘] 支持仪表盘功能
-- [数据集] 支持数据集数据
+- [仪表盘] 支持移除报表
+- [仪表盘] 支持预览
+- [仪表盘] 支持修改
+- [元数据] 支持 PostgreSQL 数据库
+- [元数据] 支持同步错误消息
+- [元数据] 支持构建后元数据同步 (https://github.com/devlive-community/datacap/issues/585)
+- [元数据] 支持数据源手动同步元数据 (https://github.com/devlive-community/datacap/issues/586)
+- [元数据] 支持数据源同步历史记录
+- 添加查询模式
+- 修复了函数创建/更新时间问题
+- 优化问题模板
+- 支持 GitHub CI 本地化
+- 添加系统架构图 (https://github.com/devlive-community/datacap/issues/491)
+- 支持缓冲查询结果 (https://github.com/devlive-community/datacap/issues/490)
 
 #### SPI
 
 ---
 
-- 支持 FileSystem
-- 支持 Local FileSystem
+- 修复数据源并发异常问题 (https://github.com/devlive-community/datacap/issues/513)
+
+#### Parser
+
+---
+
+- 添加 SQL 解析器 SPI
+- 添加 Trino SQL 解析器 (https://github.com/devlive-community/datacap/issues/569)
+- 添加 MySQL SQL 解析器 (https://github.com/devlive-community/datacap/issues/568)
+
+#### Scheduler
+
+---
+
+- 添加调度 SPI
+- 支持默认调度器
+
+#### Pipeleine
+
+---
+
+- 修复流水线分组问题
+- 支持 SqlServer
+- 重构 Seatunnel 执行器
+- 重构 SPI 使用 Kotlin 重写
+- 重构流水线配置方法
+
+#### Plugin
+
+---
+
+- 支持 MatrixOne (https://github.com/devlive-community/datacap/issues/574)
+- 支持 ScyllaDB (https://github.com/devlive-community/datacap/issues/543)
+
+#### DataSet
+
+---
+
+- 添加列模型（指标｜维度）
+- 添加即席查询可视化编辑器
+- 添加折线图
+- 添加数据表格
+- 添加柱状图
+- 支持展示查询 SQL
+- 支持指标自定义表达式
+- 支持维度分组
+- 添加指标表达式提示
+- 按类型指定表达式
+- 支持指标别名
+- 支持发布|编辑数据集报表
+- 支持分区键
+- 支持列别名
+- 支持同步历史记录
+- 支持即席查询 (https://github.com/devlive-community/datacap/issues/581)
+- 支持定时数据同步 (https://github.com/devlive-community/datacap/issues/590)
 
 #### Docs
 
 ---
 
-- 添加 SDK 使用文档
-
-#### SqlServer
-
----
-
-- 支持多版本
-- 修复连接具柄导致连接失败
-
-#### Pipeline
-
----
-
-- 支持 MySQL JDBC 方式
-- 支持拖拽构建
+- 新增文件系统集成开发文档
+- 添加合作伙伴演示文档 (https://github.com/devlive-community/datacap/issues/582)
 
 #### Dependencies
 
 ---
 
-- 更新 org.mongodb:mongodb-jdbc `2.0.2` 到 `2.0.3`
-- 更新 ch.qos.logback:logback-classic `1.2.11` 到 `1.2.13`
-- 更新 org.apache.kafka:kafka-clients `2.8.1` 到 `3.6.1`
-- 更新 ch.qos.logback:logback-core `1.2.11` 到 `1.2.13`
-- 更新 com.oracle.database.jdbc:ojdbc8 `21.9.0.0` 到 `23.3.0.23.09`
-- 更新 org.elasticsearch.plugin:x-pack-sql-jdbc `7.10.0` 到 `8.11.3`
-- 更新 jackson.version `2.14.2` 到 `2.16.0`
+- 更新 org.apache.maven.plugins:maven-compiler-plugin `3.3` 到 `3.12.1`
+- 更新 com.dameng:DmJdbcDriver18 `8.1.2.192` 到 `8.1.3.62`
+- 更新 mysql 到 `8.0.30`
+- 更新 snowflake 到 `3.14.4`
+- 更新 com.taosdata.jdbc:taos-jdbcdriver `3.0.0` 到 `3.2.7`
+- 更新 org.apache.kylin:kylin-jdbc `2.6.3` 到 `4.0.3`
+- 更新 slf4j.version `1.7.36` 到 `2.0.10`
+- 更新 org.apache.maven.plugins:maven-assembly-plugin `3.5.0` 到 `3.6.0`
+- 更新 org.duckdb:duckdb_jdbc `0.8.1` 到 `0.9.2`
+- 更新 org.apache.ignite:ignite-core `2.8.1` 到 `2.16.0`
+- 更新 org.projectlombok:lombok `1.18.28` 到 `1.18.30`
