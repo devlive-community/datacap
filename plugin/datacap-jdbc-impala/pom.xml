@@ -14,7 +14,7 @@
     <description>DataCap - Apache Impala</description>
 
     <properties>
-        <impala.version>2.6.29.1035</impala.version>
+        <impala.version>2.6.32.1041</impala.version>
         <plugin.name>jdbc-impala</plugin.name>
     </properties>
 
