@@ -206,6 +206,14 @@
                     </FontAwesomeIcon>
                   </Tooltip>
                 </Radio>
+                <Radio :label="Type.PIE">
+                  <Tooltip transfer
+                           :content="$t('dataset.visualTypePie')">
+                    <FontAwesomeIcon icon="pie-chart"
+                                     size="2x">
+                    </FontAwesomeIcon>
+                  </Tooltip>
+                </Radio>
               </Row>
             </RadioGroup>
             <Divider orientation="left"
@@ -224,6 +232,10 @@
                                         :columns="configuration.headers"
                                         @commit="handlerCommit">
             </DatasetVisualConfigureArea>
+            <DatasetVisualConfigurePie v-else-if="configuration.type === Type.PIE"
+                                       :columns="configuration.headers"
+                                       @commit="handlerCommit">
+            </DatasetVisualConfigurePie>
             <Result v-else>
               <template #desc>
                 {{ $t('dataset.visualConfigureNotSpecified') }}
@@ -285,6 +297,7 @@ import DatasetColumnConfigure from "@/views/admin/dataset/components/adhoc/Datas
 import DatasetColumnMetric from "@/views/admin/dataset/components/adhoc/DatasetColumnMetric.vue";
 import ReportService from "@/services/admin/ReportService";
 import DatasetVisualConfigureArea from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureArea.vue";
+import DatasetVisualConfigurePie from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigurePie.vue";
 
 export default {
   name: 'DatasetAdhoc',
@@ -299,6 +312,7 @@ export default {
     }
   },
   components: {
+    DatasetVisualConfigurePie,
     DatasetVisualConfigureArea,
     DatasetColumnMetric,
     DatasetColumnConfigure, SqlDetail, DatasetVisualConfigureBar, DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable

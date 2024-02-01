@@ -8,6 +8,7 @@ export class Configuration
   message: null;
   chartConfigure? = {
     xAxis: null,
-    yAxis: null
+    yAxis: null,
+    outerRadius: null
   }
 }

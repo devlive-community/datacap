@@ -4,4 +4,5 @@ export enum Type
   LINE = ('LINE'),
   BAR = ('BAR'),
   AREA = ('AREA'),
+  PIE = ('PIE'),
 }

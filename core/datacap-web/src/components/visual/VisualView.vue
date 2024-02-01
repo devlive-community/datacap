@@ -28,6 +28,12 @@
                   :width="width"
                   :height="height">
       </VisualArea>
+      <VisualPie v-else-if="configuration.type === Type.PIE"
+                 :configuration="localConfiguration"
+                 :submitted="false"
+                 :width="width"
+                 :height="height">
+      </VisualPie>
     </div>
   </div>
 </template>
@@ -41,6 +47,7 @@ import DatasetService from "@/services/admin/DatasetService";
 import {cloneDeep} from "lodash";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import VisualArea from "@/components/visual/components/VisualArea.vue";
+import VisualPie from "@/components/visual/components/VisualPie.vue";
 
 export default {
   name: 'VisualView',
@@ -50,7 +57,7 @@ export default {
       return Type
     }
   },
-  components: {VisualArea, CircularLoading, VisualBar, VisualLine, VisualTable},
+  components: {VisualPie, VisualArea, CircularLoading, VisualBar, VisualLine, VisualTable},
   props: {
     configuration: {
       type: Configuration
