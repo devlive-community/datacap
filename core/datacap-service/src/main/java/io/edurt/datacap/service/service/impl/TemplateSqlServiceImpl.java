@@ -54,7 +54,7 @@ public class TemplateSqlServiceImpl
         if (ObjectUtils.isEmpty(configure.getId())) {
             List<TemplateSqlEntity> templateSqlEntitys = this.templateSqlRepository.findByName(configure.getName());
             boolean skip = false;
-            if (templateSqlEntitys.size() > 0) {
+            if (!templateSqlEntitys.isEmpty()) {
                 for (TemplateSqlEntity templateSqlEntity : templateSqlEntitys) {
                     for (String plugin : templateSqlEntity.getPlugin().split(",")) {
                         if (configure.getPlugin().contains(plugin)) {
@@ -78,7 +78,7 @@ public class TemplateSqlServiceImpl
                 Matcher matcher = pattern.matcher(fieldAndTypes[i]);
                 if (matcher.find()) {
                     String matcherValue = matcher.group(0).replace("${", "").replace("}", "");
-                    if (matcherValue.indexOf(":") > -1) {
+                    if (matcherValue.contains(":")) {
                         String[] fieldAndType = matcherValue.split(":");
                         if (fieldAndType.length == 2) {
                             Optional<SqlConfigure> sqlConfigure = sqlConfigureList.stream().filter(v -> v.getColumn().equalsIgnoreCase(fieldAndType[0])).findFirst();
