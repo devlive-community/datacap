@@ -44,6 +44,7 @@ export default {
   visualTypeTable: '表格',
   visualTypeLine: '折线图',
   visualTypeBar: '柱状图',
+  visualTypeArea: '面积图',
   visualConfigure: '可视化配置',
   visualConfigureNotSpecified: '暂无可用配置项',
   visualConfigureXAxis: 'X轴',

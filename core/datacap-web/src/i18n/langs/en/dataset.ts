@@ -44,6 +44,7 @@ export default {
   visualTypeTable: 'Table',
   visualTypeLine: 'Line',
   visualTypeBar: 'Bar',
+  visualTypeArea: 'Area',
   visualConfigure: 'Visual Configure',
   visualConfigureNotSpecified: 'No configuration items are available',
   visualConfigureXAxis: 'X Axis',

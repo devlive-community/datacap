@@ -198,6 +198,14 @@
                     </FontAwesomeIcon>
                   </Tooltip>
                 </Radio>
+                <Radio :label="Type.AREA">
+                  <Tooltip transfer
+                           :content="$t('dataset.visualTypeArea')">
+                    <FontAwesomeIcon icon="area-chart"
+                                     size="2x">
+                    </FontAwesomeIcon>
+                  </Tooltip>
+                </Radio>
               </Row>
             </RadioGroup>
             <Divider orientation="left"
@@ -212,6 +220,10 @@
                                        :columns="configuration.headers"
                                        @commit="handlerCommit">
             </DatasetVisualConfigureBar>
+            <DatasetVisualConfigureArea v-else-if="configuration.type === Type.AREA"
+                                        :columns="configuration.headers"
+                                        @commit="handlerCommit">
+            </DatasetVisualConfigureArea>
             <Result v-else>
               <template #desc>
                 {{ $t('dataset.visualConfigureNotSpecified') }}
@@ -272,6 +284,7 @@ import SqlDetail from "@/components/sql/SqlDetail.vue";
 import DatasetColumnConfigure from "@/views/admin/dataset/components/adhoc/DatasetColumnConfigure.vue";
 import DatasetColumnMetric from "@/views/admin/dataset/components/adhoc/DatasetColumnMetric.vue";
 import ReportService from "@/services/admin/ReportService";
+import DatasetVisualConfigureArea from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureArea.vue";
 
 export default {
   name: 'DatasetAdhoc',
@@ -286,6 +299,7 @@ export default {
     }
   },
   components: {
+    DatasetVisualConfigureArea,
     DatasetColumnMetric,
     DatasetColumnConfigure, SqlDetail, DatasetVisualConfigureBar, DatasetVisualConfigureLine, CircularLoading, VisualEditor, FontAwesomeIcon, Draggable
   },

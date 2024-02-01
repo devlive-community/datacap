@@ -25,6 +25,10 @@
                  :configuration="configuration"
                  @commitOptions="handlerCommit">
       </VisualBar>
+      <VisualArea v-else-if="configuration.type === Type.AREA"
+                  :configuration="configuration"
+                  @commitOptions="handlerCommit">
+      </VisualArea>
     </div>
   </div>
 </template>
@@ -34,6 +38,7 @@ import VisualTable from "@/components/visual/components/VisualTable.vue";
 import VisualLine from "@/components/visual/components/VisualLine.vue";
 import {Type} from "@/components/visual/Type";
 import VisualBar from "@/components/visual/components/VisualBar.vue";
+import VisualArea from "@/components/visual/components/VisualArea.vue";
 
 export default {
   name: 'VisualEditor',
@@ -43,7 +48,7 @@ export default {
       return Type
     }
   },
-  components: {VisualBar, VisualLine, VisualTable},
+  components: {VisualArea, VisualBar, VisualLine, VisualTable},
   props: {
     configuration: {
       type: Configuration

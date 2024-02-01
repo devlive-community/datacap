@@ -22,6 +22,12 @@
                  :width="width"
                  :height="height">
       </VisualBar>
+      <VisualArea v-else-if="configuration.type === Type.AREA"
+                  :configuration="localConfiguration"
+                  :submitted="false"
+                  :width="width"
+                  :height="height">
+      </VisualArea>
     </div>
   </div>
 </template>
@@ -34,6 +40,7 @@ import VisualBar from "@/components/visual/components/VisualBar.vue";
 import DatasetService from "@/services/admin/DatasetService";
 import {cloneDeep} from "lodash";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
+import VisualArea from "@/components/visual/components/VisualArea.vue";
 
 export default {
   name: 'VisualView',
@@ -43,7 +50,7 @@ export default {
       return Type
     }
   },
-  components: {CircularLoading, VisualBar, VisualLine, VisualTable},
+  components: {VisualArea, CircularLoading, VisualBar, VisualLine, VisualTable},
   props: {
     configuration: {
       type: Configuration
