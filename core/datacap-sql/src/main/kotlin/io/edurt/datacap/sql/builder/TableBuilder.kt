@@ -42,6 +42,10 @@ class TableBuilder {
             sql().PARTITION_BY_KEY(values)
         }
 
+        fun PRIMARY_KEY(values: List<String>) {
+            sql().PRIMARY_KEY(values)
+        }
+
         fun END() {
             sql().END()
         }

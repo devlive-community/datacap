@@ -16,6 +16,7 @@ export default {
   columnLength: 'Length',
   columnIsOrderByKey: 'Sort key',
   columnIsPartitionKey: 'Partition key',
+  columnIsPrimaryKey: 'Primary key',
   columnExpression: 'Expression',
   columnMode: 'Column Mode',
   columnModeMetric: 'Metric',

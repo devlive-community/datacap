@@ -37,6 +37,7 @@
             <Col class="w100 center">{{ $t('dataset.columnIsNullable') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnIsOrderByKey') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnIsPartitionKey') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnIsPrimaryKey') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnLength') }}</Col>
             <Col class="w200">{{ $t('dataset.columnComment') }}</Col>
           </Row>
@@ -88,6 +89,9 @@
               </Col>
               <Col class="w100 center">
                 <Switch v-model="item.partitionKey"/>
+              </Col>
+              <Col class="w100 center">
+                <Switch v-model="item.primaryKey"/>
               </Col>
               <Col class="w100 center">
                 <InputNumber v-model="item.length"
@@ -281,6 +285,7 @@ export default defineComponent({
               original: header,
               orderByKey: false,
               partitionKey: false,
+              primaryKey: false,
               mode: 'DIMENSION'
             }
             this.formState.columns.push(column)

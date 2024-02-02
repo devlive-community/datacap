@@ -383,6 +383,7 @@ public class DataSetServiceImpl
             TableBuilder.Companion.ENGINE(tableDefaultEngine);
             TableBuilder.Companion.ORDER_BY(columnEntities.stream().filter(DataSetColumnEntity::isOrderByKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
             TableBuilder.Companion.PARTITION_BY(columnEntities.stream().filter(DataSetColumnEntity::isPartitionKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
+            TableBuilder.Companion.PRIMARY_KEY(columnEntities.stream().filter(DataSetColumnEntity::isPrimaryKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
             String sql = TableBuilder.Companion.SQL();
             log.info("Create table sql \n {} \n on dataset [ {} ]", sql, entity.getName());
 
