@@ -16,6 +16,7 @@ export default {
   columnLength: '列长度',
   columnIsOrderByKey: '排序键',
   columnIsPartitionKey: '分区键',
+  columnIsPrimaryKey: '主键',
   columnExpression: '表达式',
   columnMode: '列模式',
   columnModeMetric: '指标',

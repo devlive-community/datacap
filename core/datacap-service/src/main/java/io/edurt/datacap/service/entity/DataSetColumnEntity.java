@@ -62,6 +62,9 @@ public class DataSetColumnEntity
     @Column(name = "is_partition_key")
     private boolean partitionKey;
 
+    @Column(name = "is_primary_key")
+    private boolean primaryKey;
+
     @Column(name = "column_mode")
     @Enumerated(EnumType.STRING)
     private ColumnMode mode;
