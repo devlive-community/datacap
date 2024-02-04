@@ -13,7 +13,7 @@ import {cloneDeep} from "lodash";
 let instance: VChart
 
 export default {
-  name: 'VisualLine',
+  name: 'VisualWordCloud',
   props: {
     configuration: {
       type: Configuration
@@ -47,12 +47,11 @@ export default {
       setTimeout(() => {
         try {
           const options = {
-            type: 'line',
+            type: 'wordCloud',
             data: {values: this.configuration.columns},
-            xField: this.configuration.chartConfigure.xAxis,
-            yField: this.configuration.chartConfigure.yAxis,
-            seriesField: this.configuration.chartConfigure.series,
-            invalidType: this.configuration.chartConfigure?.invalidType
+            nameField: this.configuration.chartConfigure.xAxis,
+            valueField: this.configuration.chartConfigure.yAxis,
+            seriesField: this.configuration.chartConfigure.series
           }
           if (!reset) {
             instance = new VChart(options, {dom: this.$refs.content})

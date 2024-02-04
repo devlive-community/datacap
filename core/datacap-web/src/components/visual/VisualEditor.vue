@@ -33,6 +33,14 @@
                  :configuration="configuration"
                  @commitOptions="handlerCommit">
       </VisualPie>
+      <VisualHistogram v-else-if="configuration.type === Type.HISTOGRAM"
+                       :configuration="configuration"
+                       @commitOptions="handlerCommit">
+      </VisualHistogram>
+      <VisualWordCloud v-else-if="configuration.type === Type.WORDCLOUD"
+                       :configuration="configuration"
+                       @commitOptions="handlerCommit">
+      </VisualWordCloud>
     </div>
   </div>
 </template>
@@ -44,6 +52,8 @@ import {Type} from "@/components/visual/Type";
 import VisualBar from "@/components/visual/components/VisualBar.vue";
 import VisualArea from "@/components/visual/components/VisualArea.vue";
 import VisualPie from "@/components/visual/components/VisualPie.vue";
+import VisualHistogram from "@/components/visual/components/VisualHistogram.vue";
+import VisualWordCloud from "@/components/visual/components/VisualWordCloud.vue";
 
 export default {
   name: 'VisualEditor',
@@ -53,7 +63,7 @@ export default {
       return Type
     }
   },
-  components: {VisualPie, VisualArea, VisualBar, VisualLine, VisualTable},
+  components: {VisualWordCloud, VisualHistogram, VisualPie, VisualArea, VisualBar, VisualLine, VisualTable},
   props: {
     configuration: {
       type: Configuration

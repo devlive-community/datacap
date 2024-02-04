@@ -34,6 +34,18 @@
                  :width="width"
                  :height="height">
       </VisualPie>
+      <VisualHistogram v-else-if="configuration.type === Type.HISTOGRAM"
+                       :configuration="localConfiguration"
+                       :submitted="false"
+                       :width="width"
+                       :height="height">
+      </VisualHistogram>
+      <VisualWordCloud v-else-if="configuration.type === Type.WORDCLOUD"
+                       :configuration="localConfiguration"
+                       :submitted="false"
+                       :width="width"
+                       :height="height">
+      </VisualWordCloud>
     </div>
   </div>
 </template>
@@ -48,6 +60,8 @@ import {cloneDeep} from "lodash";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import VisualArea from "@/components/visual/components/VisualArea.vue";
 import VisualPie from "@/components/visual/components/VisualPie.vue";
+import VisualHistogram from "@/components/visual/components/VisualHistogram.vue";
+import VisualWordCloud from "@/components/visual/components/VisualWordCloud.vue";
 
 export default {
   name: 'VisualView',
@@ -57,7 +71,7 @@ export default {
       return Type
     }
   },
-  components: {VisualPie, VisualArea, CircularLoading, VisualBar, VisualLine, VisualTable},
+  components: {VisualWordCloud, VisualHistogram, VisualPie, VisualArea, CircularLoading, VisualBar, VisualLine, VisualTable},
   props: {
     configuration: {
       type: Configuration

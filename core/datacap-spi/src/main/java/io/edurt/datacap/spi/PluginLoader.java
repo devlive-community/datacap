@@ -27,7 +27,7 @@ public class PluginLoader
     {
         log.info("Loading plugin start ...");
         for (PluginModule plugin : this.externalModules) {
-            log.info("Install plugin <{}> type <{}>", plugin.getName(), plugin.getType());
+            log.info("Install plugin [ {} ] type [ {} ]", plugin.getName(), plugin.getType());
             this.install(plugin.get());
         }
         Multibinder<String> binder = Multibinder.newSetBinder(this.binder(), String.class);

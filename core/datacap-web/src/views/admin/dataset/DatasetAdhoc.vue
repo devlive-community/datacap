@@ -214,6 +214,22 @@
                     </FontAwesomeIcon>
                   </Tooltip>
                 </Radio>
+                <Radio :label="Type.HISTOGRAM">
+                  <Tooltip transfer
+                           :content="$t('dataset.visualTypeHistogram')">
+                    <FontAwesomeIcon icon="chart-simple"
+                                     size="2x">
+                    </FontAwesomeIcon>
+                  </Tooltip>
+                </Radio>
+                <Radio :label="Type.WORDCLOUD">
+                  <Tooltip transfer
+                           :content="$t('dataset.visualTypeWordCloud')">
+                    <FontAwesomeIcon icon="cloud"
+                                     size="2x">
+                    </FontAwesomeIcon>
+                  </Tooltip>
+                </Radio>
               </Row>
             </RadioGroup>
             <Divider orientation="left"
@@ -236,6 +252,14 @@
                                        :columns="configuration.headers"
                                        @commit="handlerCommit">
             </DatasetVisualConfigurePie>
+            <DatasetVisualConfigureHistogram v-else-if="configuration.type === Type.HISTOGRAM"
+                                             :columns="configuration.headers"
+                                             @commit="handlerCommit">
+            </DatasetVisualConfigureHistogram>
+            <DatasetVisualConfigureWordCloud v-else-if="configuration.type === Type.WORDCLOUD"
+                                             :columns="configuration.headers"
+                                             @commit="handlerCommit">
+            </DatasetVisualConfigureWordCloud>
             <Result v-else>
               <template #desc>
                 {{ $t('dataset.visualConfigureNotSpecified') }}
@@ -298,6 +322,8 @@ import DatasetColumnMetric from "@/views/admin/dataset/components/adhoc/DatasetC
 import ReportService from "@/services/admin/ReportService";
 import DatasetVisualConfigureArea from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureArea.vue";
 import DatasetVisualConfigurePie from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigurePie.vue";
+import DatasetVisualConfigureHistogram from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureHistogram.vue";
+import DatasetVisualConfigureWordCloud from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureWordCloud.vue";
 
 export default {
   name: 'DatasetAdhoc',
@@ -312,6 +338,8 @@ export default {
     }
   },
   components: {
+    DatasetVisualConfigureWordCloud,
+    DatasetVisualConfigureHistogram,
     DatasetVisualConfigurePie,
     DatasetVisualConfigureArea,
     DatasetColumnMetric,

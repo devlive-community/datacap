@@ -9,6 +9,7 @@ export class Configuration
   chartConfigure? = {
     xAxis: null,
     yAxis: null,
+    series: null,
     outerRadius: null
   }
 }
