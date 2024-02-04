@@ -53,6 +53,7 @@ export default {
   visualConfigureYAxis: 'Y轴',
   visualConfigureCategoryField: '类别',
   visualConfigureValueField: '值',
+  visualConfigureSeriesField: '系列',
   visualConfigureOuterRadius: '外半径',
   columnExpressionMax: '最大值',
   columnExpressionMin: '最小值',

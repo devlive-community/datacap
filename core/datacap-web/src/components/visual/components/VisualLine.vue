@@ -50,7 +50,8 @@ export default {
             type: 'line',
             data: {values: this.configuration.columns},
             xField: this.configuration.chartConfigure.xAxis,
-            yField: this.configuration.chartConfigure.yAxis
+            yField: this.configuration.chartConfigure.yAxis,
+            seriesField: this.configuration.chartConfigure.series,
           }
           if (!reset) {
             instance = new VChart(options, {dom: this.$refs.content})

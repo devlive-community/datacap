@@ -53,6 +53,7 @@ export default {
   visualConfigureYAxis: 'Y Axis',
   visualConfigureCategoryField: 'Category',
   visualConfigureValueField: 'Value',
+  visualConfigureSeriesField: 'Series',
   visualConfigureOuterRadius: 'Outer Radius',
   columnExpressionMax: 'Maximum',
   columnExpressionMin: 'Minimum',

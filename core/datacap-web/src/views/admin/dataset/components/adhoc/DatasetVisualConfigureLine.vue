@@ -3,7 +3,7 @@
     <Form :model="formState"
           :label-width="60">
       <FormItem prop="xAxis"
-                :label="$t('dataset.visualConfigureXAxis')">
+                :label="$t('dataset.visualConfigureCategoryField')">
         <Select v-model="formState.xAxis">
           <Option v-for="item in columns"
                   :key="item"
@@ -13,8 +13,18 @@
         </Select>
       </FormItem>
       <FormItem prop="yAxis"
-                :label="$t('dataset.visualConfigureYAxis')">
+                :label="$t('dataset.visualConfigureValueField')">
         <Select v-model="formState.yAxis">
+          <Option v-for="item in columns"
+                  :key="item"
+                  :value="item">
+            {{ item }}
+          </Option>
+        </Select>
+      </FormItem>
+      <FormItem prop="series"
+                :label="$t('dataset.visualConfigureSeriesField')">
+        <Select v-model="formState.series">
           <Option v-for="item in columns"
                   :key="item"
                   :value="item">
@@ -46,7 +56,8 @@ export default {
     return {
       formState: {
         xAxis: null,
-        yAxis: null
+        yAxis: null,
+        series: null
       }
     }
   },
