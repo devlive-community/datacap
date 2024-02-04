@@ -33,6 +33,10 @@
                  :configuration="configuration"
                  @commitOptions="handlerCommit">
       </VisualPie>
+      <VisualHistogram v-else-if="configuration.type === Type.HISTOGRAM"
+                       :configuration="configuration"
+                       @commitOptions="handlerCommit">
+      </VisualHistogram>
     </div>
   </div>
 </template>
@@ -44,6 +48,7 @@ import {Type} from "@/components/visual/Type";
 import VisualBar from "@/components/visual/components/VisualBar.vue";
 import VisualArea from "@/components/visual/components/VisualArea.vue";
 import VisualPie from "@/components/visual/components/VisualPie.vue";
+import VisualHistogram from "@/components/visual/components/VisualHistogram.vue";
 
 export default {
   name: 'VisualEditor',
@@ -53,7 +58,7 @@ export default {
       return Type
     }
   },
-  components: {VisualPie, VisualArea, VisualBar, VisualLine, VisualTable},
+  components: {VisualHistogram, VisualPie, VisualArea, VisualBar, VisualLine, VisualTable},
   props: {
     configuration: {
       type: Configuration

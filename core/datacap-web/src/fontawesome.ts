@@ -55,6 +55,7 @@ import {
   faTriangleExclamation,
   faUpload
 } from '@fortawesome/free-solid-svg-icons'
+import {faChartSimple} from "@fortawesome/free-solid-svg-icons/faChartSimple";
 
 /**
  * Creates icons for the given app.
@@ -64,6 +65,7 @@ import {
 const createIcons = (app: any) => {
   library.add(faArrowRight,
     faPen,
+    faChartSimple,
     faCirclePlus,
     faCirclePlay,
     faTriangleExclamation,

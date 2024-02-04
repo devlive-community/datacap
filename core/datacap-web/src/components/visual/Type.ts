@@ -5,4 +5,5 @@ export enum Type
   BAR = ('BAR'),
   AREA = ('AREA'),
   PIE = ('PIE'),
+  HISTOGRAM = ('HISTOGRAM'),
 }
