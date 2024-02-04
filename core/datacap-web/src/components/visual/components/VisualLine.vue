@@ -52,6 +52,7 @@ export default {
             xField: this.configuration.chartConfigure.xAxis,
             yField: this.configuration.chartConfigure.yAxis,
             seriesField: this.configuration.chartConfigure.series,
+            invalidType: this.configuration.chartConfigure?.invalidType
           }
           if (!reset) {
             instance = new VChart(options, {dom: this.$refs.content})

@@ -32,6 +32,27 @@
           </Option>
         </Select>
       </FormItem>
+      <FormItem prop="invalidType"
+                :label="$t('dataset.visualConfigureDataBreakpoint')">
+        <Select v-model="formState.invalidType">
+          <Option key="break"
+                  value="break">
+            {{ $t('dataset.visualConfigureDataBreakpointBreak') }}
+          </Option>
+          <Option key="link"
+                  value="link">
+            {{ $t('dataset.visualConfigureDataBreakpointContinuous') }}
+          </Option>
+          <Option key="zero"
+                  value="zero">
+            {{ $t('dataset.visualConfigureDataBreakpointZero') }}
+          </Option>
+          <Option key="ignore"
+                  value="ignore">
+            {{ $t('dataset.visualConfigureDataBreakpointIgnore') }}
+          </Option>
+        </Select>
+      </FormItem>
     </Form>
   </div>
 </template>
@@ -57,7 +78,8 @@ export default {
       formState: {
         xAxis: null,
         yAxis: null,
-        series: null
+        series: null,
+        invalidType: null
       }
     }
   },
