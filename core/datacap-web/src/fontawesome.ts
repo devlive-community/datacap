@@ -56,6 +56,7 @@ import {
   faUpload
 } from '@fortawesome/free-solid-svg-icons'
 import {faChartSimple} from "@fortawesome/free-solid-svg-icons/faChartSimple";
+import {faCloud} from "@fortawesome/free-solid-svg-icons/faCloud";
 
 /**
  * Creates icons for the given app.
@@ -65,6 +66,7 @@ import {faChartSimple} from "@fortawesome/free-solid-svg-icons/faChartSimple";
 const createIcons = (app: any) => {
   library.add(faArrowRight,
     faPen,
+    faCloud,
     faChartSimple,
     faCirclePlus,
     faCirclePlay,

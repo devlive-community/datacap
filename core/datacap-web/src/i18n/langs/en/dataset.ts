@@ -48,6 +48,7 @@ export default {
   visualTypeArea: 'Area',
   visualTypePie: 'Pie',
   visualTypeHistogram: 'Histogram',
+  visualTypeWordCloud: 'Word Cloud',
   visualConfigure: 'Visual Configure',
   visualConfigureNotSpecified: 'No configuration items are available',
   visualConfigureXAxis: 'X Axis',

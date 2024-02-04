@@ -6,4 +6,5 @@ export enum Type
   AREA = ('AREA'),
   PIE = ('PIE'),
   HISTOGRAM = ('HISTOGRAM'),
+  WORDCLOUD= ('WORDCLOUD'),
 }
