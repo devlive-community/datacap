@@ -232,5 +232,8 @@ Datacap is a fast, lightweight, and intuitive system. It can be used to manage m
 - <a href="https://www.scylladb.com/" target="_blank" class="connector-logo-index">
       <img src="/assets/plugin/paradedb.png" alt="ParadeDB" height=60" />
   </a>
+- <a href="https://www.timescale.com/" target="_blank" class="connector-logo-index">
+      <img src="/assets/plugin/timescale.png" alt="Timescale" height=60" />
+  </a>
 
 </div>
