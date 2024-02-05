@@ -71,6 +71,7 @@
         <module>plugin/datacap-plugin-cassandra</module>
         <module>plugin/datacap-plugin-matrixone</module>
         <module>plugin/datacap-plugin-scylladb</module>
+        <module>plugin/datacap-plugin-paradedb</module>
         <module>executor/datacap-executor-spi</module>
         <module>executor/datacap-executor-local</module>
         <module>executor/datacap-executor-seatunnel</module>
@@ -160,6 +161,9 @@
         <redis.version>3.8.0</redis.version>
         <testcontainers.version>1.17.6</testcontainers.version>
         <assembly-plugin.version>3.6.0</assembly-plugin.version>
+        <!-- datacap plugin dependency -->
+        <datacap.pgsql.version>42.6.0</datacap.pgsql.version>
+        <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
         <plugin.maven.compiler.version>3.12.1</plugin.maven.compiler.version>
