@@ -182,4 +182,5 @@ export default {
   alias: '别名',
   syncHistory: '同步历史',
   syncMetadata: '同步元数据',
+  totalSize: '总大小',
 }

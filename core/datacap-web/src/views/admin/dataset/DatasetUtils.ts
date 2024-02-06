@@ -52,6 +52,20 @@ const createHeaders = (i18n: any) => {
       align: 'center'
     },
     {
+      title: i18n.t('common.totalRows'),
+      key: 'totalRows',
+      ellipsis: true,
+      align: 'center',
+      tooltip: true
+    },
+    {
+      title: i18n.t('common.totalSize'),
+      key: 'totalSize',
+      ellipsis: true,
+      align: 'center',
+      tooltip: true
+    },
+    {
       title: i18n.t('common.createTime'),
       key: 'createTime',
       ellipsis: true,

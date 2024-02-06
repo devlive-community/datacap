@@ -6,3 +6,7 @@ USE `datacap`;
 
 ALTER TABLE `datacap_dataset_column`
     ADD COLUMN `is_primary_key` VARCHAR(100) DEFAULT FALSE;
+
+ALTER TABLE `datacap_dataset`
+    ADD COLUMN `total_rows` BIGINT(100) DEFAULT 0,
+    ADD COLUMN `total_size` VARCHAR(100);

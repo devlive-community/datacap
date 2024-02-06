@@ -12,6 +12,7 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.sql.SqlBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
+import io.edurt.datacap.common.sql.configure.SqlOperator;
 import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.executor.Executor;
@@ -517,6 +518,36 @@ public class DataSetServiceImpl
             history.setCount(response.getCount());
             history.setState(response.getState());
             Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
+
+            // Get the total number of rows and the total size of the dataset
+            log.info("Get the total number of rows and the total size of the dataset [ {} ]", entity.getName());
+            SqlBuilder builder = new SqlBuilder(SqlBody.builder()
+                    .type(SqlType.SELECT)
+                    .database("system")
+                    .table("parts")
+                    .columns(Lists.newArrayList(SqlColumn.builder().column("SUM(rows) AS totalCount").build(),
+                            SqlColumn.builder().column("formatReadableSize(SUM(data_compressed_bytes)) AS totalSize").build()))
+                    .where(Lists.newArrayList(SqlColumn.builder().column("database").operator(SqlOperator.EQ).value(database).build(),
+                            SqlColumn.builder().column("table").operator(SqlOperator.EQ).value(entity.getTableName()).build()))
+                    .condition(" AND ")
+                    .build());
+            outputPlugin.connect(output.getOriginConfigure());
+            Response outputResponse = outputPlugin.execute(builder.getSql());
+            if (outputResponse.getIsSuccessful()) {
+                Object columnData = outputResponse.getColumns().get(0);
+                if (columnData instanceof List<?>) {
+                    @SuppressWarnings("unchecked")
+                    List<Object> data = (List<Object>) columnData;
+                    if (!data.isEmpty()) {
+                        entity.setTotalRows(data.get(0).toString());
+                        entity.setTotalSize(data.get(1).toString());
+                        repository.save(entity);
+                    }
+                }
+                else {
+                    log.warn("The response data is not a list type");
+                }
+            }
         }
         catch (Exception e) {
             log.warn("Sync data for dataset [ {} ] failed", entity.getName(), e);
