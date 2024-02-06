@@ -69,6 +69,12 @@ public class DataSetEntity
     @Column(name = "executor")
     private String executor;
 
+    @Column(name = "total_rows")
+    private String totalRows;
+
+    @Column(name = "total_size")
+    private String totalSize;
+
     @ManyToOne
     @JoinTable(name = "datacap_dataset_source_relation",
             joinColumns = @JoinColumn(name = "dataset_id"),

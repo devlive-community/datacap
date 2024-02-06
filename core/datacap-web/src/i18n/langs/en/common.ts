@@ -182,4 +182,5 @@ export default {
   alias: 'Alias Name',
   syncHistory: 'Sync History',
   syncMetadata: 'Sync Metadata',
+  totalSize: 'Total Size',
 }
