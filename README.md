@@ -192,6 +192,9 @@ Here are some of the major database solutions that are supported:
     <a href="https://www.paradedb.com/" target="_blank" class="connector-logo-index">
         <img src="docs/docs/assets/plugin/paradedb.png" alt="ParadeDB" height=80" />
     </a>&nbsp;
+    <a href="https://www.timescale.com/" target="_blank" class="connector-logo-index">
+        <img src="docs/docs/assets/plugin/timescale.png" alt="Timescale" height=60" />
+    </a>&nbsp;
 </p>
 
 ## System architecture

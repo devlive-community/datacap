@@ -232,5 +232,8 @@ Datacap 是快速、轻量级、直观的系统。它可以用来管理多数据
 - <a href="https://www.scylladb.com/" target="_blank" class="connector-logo-index">
       <img src="/assets/plugin/paradedb.png" alt="ParadeDB" height=60" />
   </a>
+- <a href="https://www.timescale.com/" target="_blank" class="connector-logo-index">
+      <img src="/assets/plugin/timescale.png" alt="Timescale" height=60" />
+  </a>
 
 </div>

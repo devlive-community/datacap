@@ -72,6 +72,7 @@
         <module>plugin/datacap-plugin-matrixone</module>
         <module>plugin/datacap-plugin-scylladb</module>
         <module>plugin/datacap-plugin-paradedb</module>
+        <module>plugin/datacap-plugin-timescale</module>
         <module>executor/datacap-executor-spi</module>
         <module>executor/datacap-executor-local</module>
         <module>executor/datacap-executor-seatunnel</module>
