@@ -96,7 +96,12 @@ public class SqlBuilder
     private List<String> applyOrderByColumns()
     {
         return configure.getOrders().stream()
-                .map(v -> String.join(" ", v.getColumn(), v.getOrder().name()))
+                .map(v -> {
+                    if (StringUtils.isNotEmpty(v.getExpression())) {
+                        return String.format("%s(%s) %s", v.getExpression(), v.getColumn(), v.getOrder());
+                    }
+                    return String.format("%s %s", v.getColumn(), v.getOrder());
+                })
                 .collect(Collectors.toList());
     }
 

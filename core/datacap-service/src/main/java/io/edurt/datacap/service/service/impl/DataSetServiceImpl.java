@@ -61,6 +61,7 @@ import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.sql.builder.TableBuilder;
 import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
@@ -197,7 +198,7 @@ public class DataSetServiceImpl
                                                     .build());
                                         }
                                         // Add to Sort Sequence
-                                        if (column.getOrder() != null) {
+                                        if (StringUtils.isNotEmpty(column.getOrder())) {
                                             sqlColumn.setOrder(SqlOrder.valueOf(column.getOrder()));
                                             orderBy.add(sqlColumn);
                                         }
