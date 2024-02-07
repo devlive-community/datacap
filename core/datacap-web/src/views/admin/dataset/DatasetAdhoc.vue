@@ -87,6 +87,14 @@
                        class="point">
                     {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
                     <Tooltip transfer
+                             class="point"
+                             :content="$t('common.configure')">
+                      <FontAwesomeIcon icon="gear"
+                                       class="point"
+                                       @click="handlerColumnConfigure(true, element, ColumnType.DIMENSION)">
+                      </FontAwesomeIcon>
+                    </Tooltip>&nbsp;
+                    <Tooltip transfer
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
                                        class="point"
@@ -534,7 +542,9 @@ export default {
       const foundIndex = this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id)
       if (foundIndex !== -1) {
         this.configure.columns.splice(foundIndex, 1, value)
-        this.metrics.find((item: { id: any; }) => item.id === value.id).expression = value.expression
+        if (value.mode === ColumnType.METRIC) {
+          this.metrics.find((item: { id: any; }) => item.id === value.id).expression = value.expression
+        }
         this.handlerAdhoc()
       }
     },

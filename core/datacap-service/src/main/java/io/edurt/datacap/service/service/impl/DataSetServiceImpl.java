@@ -13,6 +13,7 @@ import io.edurt.datacap.common.sql.SqlBuilder;
 import io.edurt.datacap.common.sql.configure.SqlBody;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
 import io.edurt.datacap.common.sql.configure.SqlOperator;
+import io.edurt.datacap.common.sql.configure.SqlOrder;
 import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.executor.Executor;
@@ -60,6 +61,7 @@ import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.sql.builder.TableBuilder;
 import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
@@ -169,6 +171,7 @@ public class DataSetServiceImpl
                     String database = initializerConfigure.getDataSetConfigure().getDatabase();
                     List<SqlColumn> columns = Lists.newArrayList();
                     List<SqlColumn> groupBy = Lists.newArrayList();
+                    List<SqlColumn> orderBy = Lists.newArrayList();
                     configure.getColumns()
                             .forEach(column -> columnRepository.findById(column.getId())
                                     .ifPresent(entity -> {
@@ -194,6 +197,11 @@ public class DataSetServiceImpl
                                                     .column(columnName)
                                                     .build());
                                         }
+                                        // Add to Sort Sequence
+                                        if (StringUtils.isNotEmpty(column.getOrder())) {
+                                            sqlColumn.setOrder(SqlOrder.valueOf(column.getOrder()));
+                                            orderBy.add(sqlColumn);
+                                        }
                                     }));
 
                     if (configure.getGroups() != null) {
@@ -215,6 +223,7 @@ public class DataSetServiceImpl
                             .table(item.getTableName())
                             .columns(columns)
                             .groups(groupBy)
+                            .orders(orderBy)
                             .limit(configure.getLimit())
                             .build();
                     String sql = new SqlBuilder(body).getSql();
