@@ -27,6 +27,13 @@
         <FormItem :label="$t('common.alias')">
           <Input v-model="formState.alias"/>
         </FormItem>
+        <FormItem :label="$t('common.sort')">
+          <RadioGroup v-model="formState.order">
+            <Radio label="">{{ $t('dataset.columnSortNone') }}</Radio>
+            <Radio label="ASC">{{ $t('dataset.columnOrderAsc') }}</Radio>
+            <Radio label="DESC">{{ $t('dataset.columnOrderDesc') }}</Radio>
+          </RadioGroup>
+        </FormItem>
       </Form>
     </Modal>
   </div>
@@ -35,11 +42,9 @@
 import {defineComponent, PropType} from 'vue'
 import {ColumnType, Type} from "@/views/admin/dataset/Type";
 import {Expression} from "@/views/admin/dataset/Expression";
-import {FormItem} from "view-ui-plus";
 
 export default defineComponent({
   name: 'DatasetColumnConfigure',
-  components: {FormItem},
   props: {
     isVisible: {
       type: Boolean,
@@ -85,7 +90,8 @@ export default defineComponent({
         id: null,
         type: null,
         alias: null,
-        expression: null
+        expression: null,
+        order: null
       }
     }
   },
