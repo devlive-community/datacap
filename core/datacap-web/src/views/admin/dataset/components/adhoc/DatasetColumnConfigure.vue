@@ -8,7 +8,8 @@
            @cancel="handlerCancel()">
       <Form :model="formState"
             :label-width="80">
-        <FormItem :label="$t('common.expression')">
+        <FormItem v-if="columnType === 'METRIC'"
+                  :label="$t('common.expression')">
           <Select v-model="formState.expression">
             <Option v-if="formState.type === ColumnType.NUMBER"
                     :value="Expression.SUM">
