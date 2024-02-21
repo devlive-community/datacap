@@ -17,6 +17,7 @@ export default {
   columnIsOrderByKey: 'Sort key',
   columnIsPartitionKey: 'Partition key',
   columnIsPrimaryKey: 'Primary key',
+  columnIsSampling: 'Is Sampling',
   columnExpression: 'Expression',
   columnMode: 'Column Mode',
   columnModeMetric: 'Metric',
@@ -71,5 +72,6 @@ export default {
   columnExpressionMin: 'Minimum',
   columnExpressionSum: 'Sum',
   columnExpressionAvg: 'Average',
-  columnExpressionCount: 'Count'
+  columnExpressionCount: 'Count',
+  validatorSamplingTip: 'The order by key must contain a sampling key',
 }

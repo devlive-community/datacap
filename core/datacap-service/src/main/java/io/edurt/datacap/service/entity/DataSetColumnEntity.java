@@ -65,6 +65,9 @@ public class DataSetColumnEntity
     @Column(name = "is_primary_key")
     private boolean primaryKey;
 
+    @Column(name = "is_sampling_key")
+    private boolean samplingKey;
+
     @Column(name = "column_mode")
     @Enumerated(EnumType.STRING)
     private ColumnMode mode;
