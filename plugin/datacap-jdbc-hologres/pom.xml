@@ -14,7 +14,7 @@
     <description>DataCap - Hologres</description>
 
     <properties>
-        <pgsql.version>42.6.0</pgsql.version>
+        <pgsql.version>42.7.2</pgsql.version>
         <plugin.name>jdbc-hologres</plugin.name>
     </properties>
 
