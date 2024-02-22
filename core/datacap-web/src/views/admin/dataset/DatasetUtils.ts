@@ -3,12 +3,14 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.no'),
       key: 'id',
+      width: 100,
       sortable: 'custom',
       align: 'center'
     },
     {
       title: i18n.t('common.name'),
       key: 'name',
+      width: 150,
       ellipsis: true,
       tooltip: true
     },
@@ -16,6 +18,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.description'),
       key: 'description',
       ellipsis: true,
+      width: 200,
       align: 'center',
       tooltip: true
     },
@@ -23,6 +26,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.source'),
       key: 'source',
       slot: 'source',
+      width: 100,
       align: 'center'
     },
     {
@@ -30,18 +34,21 @@ const createHeaders = (i18n: any) => {
       key: 'syncMode',
       slot: 'syncMode',
       ellipsis: true,
+      width: 100,
       align: 'center'
     },
     {
       title: i18n.t('common.scheduler'),
       key: 'scheduler',
       ellipsis: true,
+      width: 100,
       align: 'center'
     },
     {
       title: i18n.t('common.executor'),
       key: 'executor',
       ellipsis: true,
+      width: 100,
       align: 'center'
     },
     {
@@ -49,6 +56,7 @@ const createHeaders = (i18n: any) => {
       key: 'state',
       slot: 'state',
       ellipsis: true,
+      width: 150,
       align: 'center'
     },
     {
@@ -56,12 +64,14 @@ const createHeaders = (i18n: any) => {
       key: 'totalRows',
       ellipsis: true,
       align: 'center',
+      width: 150,
       tooltip: true
     },
     {
       title: i18n.t('common.totalSize'),
       key: 'totalSize',
       ellipsis: true,
+      width: 150,
       align: 'center',
       tooltip: true
     },
@@ -69,6 +79,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.createTime'),
       key: 'createTime',
       ellipsis: true,
+      width: 170,
       align: 'center',
       tooltip: true
     },
@@ -76,6 +87,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.updateTime'),
       key: 'updateTime',
       ellipsis: true,
+      width: 170,
       align: 'center',
       tooltip: true
     },
@@ -83,6 +95,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.action'),
       slot: 'action',
       align: 'center',
+      width: 150,
       key: 'action'
     }
   ]
