@@ -108,7 +108,7 @@ public class SqlBuilder
     private List<String> applyGroupByColumns()
     {
         return configure.getGroups().stream()
-                .map(v -> String.join(" ", String.format("`%s`", v.getColumn())))
+                .map(v -> String.join(" ", String.format("%s", v.getColumn())))
                 .collect(Collectors.toList());
     }
 

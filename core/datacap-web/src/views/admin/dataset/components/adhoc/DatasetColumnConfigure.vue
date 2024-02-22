@@ -7,7 +7,7 @@
            @onOk="handlerCommit()"
            @cancel="handlerCancel()">
       <Form :model="formState"
-            :label-width="80">
+            :label-width="90">
         <FormItem v-if="columnType === 'METRIC'"
                   :label="$t('common.expression')">
           <Select v-model="formState.expression">
@@ -33,6 +33,10 @@
             <Radio label="ASC">{{ $t('dataset.columnOrderAsc') }}</Radio>
             <Radio label="DESC">{{ $t('dataset.columnOrderDesc') }}</Radio>
           </RadioGroup>
+        </FormItem>
+        <FormItem v-if="columnType === 'DIMENSION'"
+                  :label="$t('dataset.customFunction')">
+          <Input v-model="formState.function"/>
         </FormItem>
       </Form>
     </Modal>
@@ -91,7 +95,8 @@ export default defineComponent({
         type: null,
         alias: null,
         expression: null,
-        order: null
+        order: null,
+        function: null
       }
     }
   },

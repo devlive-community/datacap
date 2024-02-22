@@ -175,9 +175,12 @@ public class DataSetServiceImpl
                     configure.getColumns()
                             .forEach(column -> columnRepository.findById(column.getId())
                                     .ifPresent(entity -> {
-                                        String columnName = entity.getName();
                                         AtomicReference<String> columnAlias = new AtomicReference<>(null);
                                         AtomicReference<String> expression = new AtomicReference<>(null);
+                                        AtomicReference<String> columnName = new AtomicReference<>(entity.getName());
+                                        if (StringUtils.isNotEmpty(column.getFunction())) {
+                                            columnName.set(column.getFunction());
+                                        }
                                         configure.getColumns().stream()
                                                 .filter(it -> it.getId().equals(entity.getId()))
                                                 .findFirst()
@@ -186,7 +189,7 @@ public class DataSetServiceImpl
                                                     columnAlias.set(it.getAlias());
                                                 });
                                         SqlColumn sqlColumn = SqlColumn.builder()
-                                                .column(columnName)
+                                                .column(columnName.get())
                                                 .expression(expression.get())
                                                 .alias(columnAlias.get())
                                                 .build();
@@ -194,7 +197,7 @@ public class DataSetServiceImpl
                                         // Only dimensions are added to GROUP BY
                                         if (entity.getMode().equals(ColumnMode.DIMENSION)) {
                                             groupBy.add(SqlColumn.builder()
-                                                    .column(columnName)
+                                                    .column(columnName.get())
                                                     .build());
                                         }
                                         // Add to Sort Sequence
@@ -300,14 +303,14 @@ public class DataSetServiceImpl
     {
         switch (type) {
             case NUMBER:
-                return "bigint";
+                return "Bigint";
             case NUMBER_SIGNED:
                 return "UInt64";
             case BOOLEAN:
-                return "boolean";
+                return "Boolean";
             case STRING:
             default:
-                return "varchar";
+                return "String";
         }
     }
 
