@@ -21,6 +21,10 @@
       <Divider orientation="left">
         {{ $t('dataset.dataColumn') }}
       </Divider>
+      <Alert v-if="validator"
+             type="error">
+        {{ validatorMessage }}
+      </Alert>
       <CircularLoading v-if="loading"
                        :show="loading">
       </CircularLoading>
@@ -33,11 +37,12 @@
             <Col class="w150">{{ $t('dataset.columnAlias') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnType') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnMode') }}</Col>
-            <Col class="w150">{{ $t('dataset.columnDefaultValue') }}</Col>
+            <Col class="w100">{{ $t('dataset.columnDefaultValue') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnIsNullable') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnIsOrderByKey') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnIsPartitionKey') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnIsPrimaryKey') }}</Col>
+            <Col class="w100 center">{{ $t('dataset.columnIsSampling') }}</Col>
             <Col class="w100 center">{{ $t('dataset.columnLength') }}</Col>
             <Col class="w200">{{ $t('dataset.columnComment') }}</Col>
           </Row>
@@ -60,6 +65,7 @@
                 <Select v-model="item.type">
                   <Option value="STRING">{{ $t('dataset.columnTypeString') }}</Option>
                   <Option value="NUMBER">{{ $t('dataset.columnTypeNumber') }}</Option>
+                  <Option value="NUMBER_SIGNED">{{ $t('dataset.columnTypeNumberSigned') }}</Option>
                   <Option value="BOOLEAN">{{ $t('dataset.columnTypeBoolean') }}</Option>
                 </Select>
               </Col>
@@ -76,7 +82,7 @@
                   </template>
                 </Switch>
               </Col>
-              <Col class="w150">
+              <Col class="w100 center">
                 <Input v-model="item.defaultValue"
                        type="text">
                 </Input>
@@ -94,6 +100,11 @@
                 <Switch v-model="item.primaryKey"/>
               </Col>
               <Col class="w100 center">
+                <Switch v-model="item.samplingKey"
+                        @on-change="validatorSampling">
+                </Switch>
+              </Col>
+              <Col class="w100 center">
                 <InputNumber v-model="item.length"
                              min="0"
                              max="65536">
@@ -109,6 +120,7 @@
         </template>
         <Button type="primary"
                 style="margin-bottom: 15px; margin-right: 10px; float: right;"
+                :disabled="validator"
                 @click="infoVisible = true">
           {{ code ? $t('dataset.modify') : $t('dataset.create') }}
         </Button>
@@ -216,6 +228,8 @@ export default defineComponent({
       code: null,
       loading: false,
       saving: false,
+      validator: false,
+      validatorMessage: null,
       columnDefs: [],
       schedulers: [],
       executors: [],
@@ -286,6 +300,7 @@ export default defineComponent({
               orderByKey: false,
               partitionKey: false,
               primaryKey: false,
+              samplingKey: false,
               mode: 'DIMENSION'
             }
             this.formState.columns.push(column)
@@ -304,6 +319,30 @@ export default defineComponent({
           }
         })
         .finally(() => this.saving = false)
+    },
+    validatorSampling()
+    {
+      const samplingColumns = this.formState.columns
+        .filter((item: { samplingKey: boolean; }) => item.samplingKey)
+      if (samplingColumns.length === 0) {
+        this.validator = false
+        this.validatorMessage = null
+        return
+      }
+
+      const orderByColumns = this.formState.columns
+        .filter((item: { orderByKey: boolean; }) => item.orderByKey)
+      const isNameInOrderByColumns = samplingColumns.every((samplingItem: { name: string; }) => {
+        return orderByColumns.some((orderByItem: { name: string; }) => orderByItem.name === samplingItem.name);
+      })
+      if (!isNameInOrderByColumns) {
+        this.validator = true
+        this.validatorMessage = this.$t('dataset.validatorSamplingTip')
+      }
+      else {
+        this.validator = false
+        this.validatorMessage = null
+      }
     }
   }
 });

@@ -8,6 +8,7 @@ export default {
   columnType: '列类型',
   columnTypeString: '字符串',
   columnTypeNumber: '数字',
+  columnTypeNumberSigned: '数字 (符号)',
   columnTypeBoolean: '布尔',
   columnDescription: '列描述',
   columnComment: '列注释',
@@ -17,6 +18,7 @@ export default {
   columnIsOrderByKey: '排序键',
   columnIsPartitionKey: '分区键',
   columnIsPrimaryKey: '主键',
+  columnIsSampling: '是否抽样',
   columnExpression: '表达式',
   columnMode: '列模式',
   columnModeMetric: '指标',
@@ -71,5 +73,6 @@ export default {
   columnExpressionMin: '最小值',
   columnExpressionSum: '总和',
   columnExpressionAvg: '平均值',
-  columnExpressionCount: '计数'
+  columnExpressionCount: '计数',
+  validatorSamplingTip: '排序键中必须包含抽样键'
 }

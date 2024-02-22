@@ -46,6 +46,10 @@ class TableBuilder {
             sql().PRIMARY_KEY(values)
         }
 
+        fun SAMPLING_KEY(values: List<String>) {
+            sql().SAMPING_KEY(values)
+        }
+
         fun END() {
             sql().END()
         }

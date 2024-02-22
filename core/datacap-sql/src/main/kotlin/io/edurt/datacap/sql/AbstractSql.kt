@@ -163,6 +163,11 @@ abstract class AbstractSql<T> {
         return getSelf()
     }
 
+    fun SAMPING_KEY(columns: List<String>): T {
+        sql().samplingKey.addAll(columns.map { item -> "\t$item" })
+        return getSelf()
+    }
+
     fun FROM(table: String?): T {
         sql().tables.add(table)
         return getSelf()
@@ -533,6 +538,7 @@ abstract class AbstractSql<T> {
         var orderByKey: MutableList<String?> = ArrayList()
         val partitionByKey: MutableList<String?> = ArrayList()
         val primaryKey: MutableList<String?> = ArrayList()
+        val samplingKey: MutableList<String?> = ArrayList()
 
         init {
             // Prevent Synthetic Access
@@ -687,6 +693,9 @@ abstract class AbstractSql<T> {
             }
             if (primaryKey.isNotEmpty()) {
                 sqlClause(builder, "PRIMARY KEY", primaryKey, "(", ")", ", ")
+            }
+            if (samplingKey.isNotEmpty()) {
+                sqlClause(builder, "SAMPLE BY", samplingKey, "(", ")", ", ")
             }
             if (end) {
                 builder.append(";")

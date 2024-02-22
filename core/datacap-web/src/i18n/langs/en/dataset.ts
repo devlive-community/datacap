@@ -8,6 +8,7 @@ export default {
   columnType: 'Column Type',
   columnTypeString: 'String',
   columnTypeNumber: 'Number',
+  columnTypeNumberSigned: 'Number (Signed)',
   columnTypeBoolean: 'Boolean',
   columnDescription: 'Column Description',
   columnComment: 'Column Comment',
@@ -17,6 +18,7 @@ export default {
   columnIsOrderByKey: 'Sort key',
   columnIsPartitionKey: 'Partition key',
   columnIsPrimaryKey: 'Primary key',
+  columnIsSampling: 'Is Sampling',
   columnExpression: 'Expression',
   columnMode: 'Column Mode',
   columnModeMetric: 'Metric',
@@ -71,5 +73,6 @@ export default {
   columnExpressionMin: 'Minimum',
   columnExpressionSum: 'Sum',
   columnExpressionAvg: 'Average',
-  columnExpressionCount: 'Count'
+  columnExpressionCount: 'Count',
+  validatorSamplingTip: 'The order by key must contain a sampling key',
 }
