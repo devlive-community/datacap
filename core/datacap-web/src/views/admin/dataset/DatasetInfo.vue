@@ -65,6 +65,7 @@
                 <Select v-model="item.type">
                   <Option value="STRING">{{ $t('dataset.columnTypeString') }}</Option>
                   <Option value="NUMBER">{{ $t('dataset.columnTypeNumber') }}</Option>
+                  <Option value="NUMBER_SIGNED">{{ $t('dataset.columnTypeNumberSigned') }}</Option>
                   <Option value="BOOLEAN">{{ $t('dataset.columnTypeBoolean') }}</Option>
                 </Select>
               </Col>

@@ -8,6 +8,7 @@ export default {
   columnType: '列类型',
   columnTypeString: '字符串',
   columnTypeNumber: '数字',
+  columnTypeNumberSigned: '数字 (符号)',
   columnTypeBoolean: '布尔',
   columnDescription: '列描述',
   columnComment: '列注释',

@@ -301,6 +301,8 @@ public class DataSetServiceImpl
         switch (type) {
             case NUMBER:
                 return "bigint";
+            case NUMBER_SIGNED:
+                return "UInt64";
             case BOOLEAN:
                 return "boolean";
             case STRING:

@@ -8,6 +8,7 @@ export default {
   columnType: 'Column Type',
   columnTypeString: 'String',
   columnTypeNumber: 'Number',
+  columnTypeNumberSigned: 'Number (Signed)',
   columnTypeBoolean: 'Boolean',
   columnDescription: 'Column Description',
   columnComment: 'Column Comment',
