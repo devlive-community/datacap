@@ -75,4 +75,5 @@ export default {
   columnExpressionAvg: 'Average',
   columnExpressionCount: 'Count',
   validatorSamplingTip: 'The order by key must contain a sampling key',
+  customFunction: 'Custom Function'
 }

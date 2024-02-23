@@ -13,6 +13,7 @@ public class AdhocColumn
 {
     private Long id;
     private String expression;
+    private String function;
     private String alias;
     private String order;
 }

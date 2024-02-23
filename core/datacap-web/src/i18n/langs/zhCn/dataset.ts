@@ -74,5 +74,6 @@ export default {
   columnExpressionSum: '总和',
   columnExpressionAvg: '平均值',
   columnExpressionCount: '计数',
-  validatorSamplingTip: '排序键中必须包含抽样键'
+  validatorSamplingTip: '排序键中必须包含抽样键',
+  customFunction: '自定义函数'
 }
