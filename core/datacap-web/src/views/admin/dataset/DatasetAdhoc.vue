@@ -118,7 +118,27 @@
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
                                        class="point"
-                                       @click="handlerRemove(element.id, index, groups, true)">
+                                       @click="handlerRemove(element.id, index, groups, 'group')">
+                      </FontAwesomeIcon>
+                    </Tooltip>
+                  </Tag>
+                </template>
+              </Draggable>
+            </ListItem>
+            <ListItem>
+              {{ $t('dataset.columnModeFilter') }}: &nbsp;
+              <Draggable group="dimensions"
+                         item-key="id"
+                         :list="filters">
+                <template #item="{ element, index}">
+                  <Tag size="medium"
+                       class="point">
+                    {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
+                    <Tooltip transfer
+                             :content="$t('common.remove')">
+                      <FontAwesomeIcon icon="trash"
+                                       class="point"
+                                       @click="handlerRemove(element.id, index, filters, 'filter')">
                       </FontAwesomeIcon>
                     </Tooltip>
                   </Tag>
@@ -365,9 +385,11 @@ export default {
       metrics: [],
       dimensions: [],
       groups: [],
+      filters: [],
       configure: {
         columns: [],
         groups: [],
+        filters: [],
         limit: 1000
       },
       configuration: null as Configuration,
@@ -400,6 +422,10 @@ export default {
       deep: true
     },
     groups: {
+      handler: 'handlerApplyAdhoc',
+      deep: true
+    },
+    filters: {
       handler: 'handlerApplyAdhoc',
       deep: true
     }
@@ -505,12 +531,15 @@ export default {
     {
       return value
     },
-    handlerRemove(id: number, index: number, array: [], isGroup?: boolean)
+    handlerRemove(id: number, index: number, array: [], type?: string)
     {
       array.splice(index, 1)
       this.configure.columns = this.configure.columns.filter((item: { id: number; }) => item.id !== id)
-      if (isGroup) {
+      if (type === 'group') {
         this.configure.groups = this.configure.groups.filter((item: { id: number; }) => item.id !== id)
+      }
+      else if (type === 'filter') {
+        this.configure.filters = this.configure.filters.filter((item: { id: number; }) => item.id !== id)
       }
       this.handlerAdhoc()
     },
@@ -543,7 +572,7 @@ export default {
       if (foundIndex !== -1) {
         this.configure.columns.splice(foundIndex, 1, value)
         if (value.mode === ColumnType.METRIC) {
-          this.metrics.find((item: { id: any; }) => item.id === value.id).expression = value.expression
+          this.metrics.find((item: { id: number; }) => item.id === value.id).expression = value.expression
         }
         this.handlerAdhoc()
       }

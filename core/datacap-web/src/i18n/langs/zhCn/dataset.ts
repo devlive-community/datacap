@@ -24,6 +24,7 @@ export default {
   columnModeMetric: '指标',
   columnModeDimension: '维度',
   columnModeGroup: '分组',
+  columnModeFilter: '筛选器',
   columnSortNone: '无',
   columnOrderAsc: '升序',
   columnOrderDesc: '降序',
@@ -75,5 +76,5 @@ export default {
   columnExpressionAvg: '平均值',
   columnExpressionCount: '计数',
   validatorSamplingTip: '排序键中必须包含抽样键',
-  customFunction: '自定义函数'
+  customFunction: '自定义函数',
 }

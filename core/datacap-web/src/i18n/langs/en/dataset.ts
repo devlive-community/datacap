@@ -24,6 +24,7 @@ export default {
   columnModeMetric: 'Metric',
   columnModeDimension: 'Dimension',
   columnModeGroup: 'Group',
+  columnModeFilter: 'Filter',
   columnSortNone: 'None',
   columnOrderAsc: 'Ascending',
   columnOrderDesc: 'Descending',
@@ -75,5 +76,5 @@ export default {
   columnExpressionAvg: 'Average',
   columnExpressionCount: 'Count',
   validatorSamplingTip: 'The order by key must contain a sampling key',
-  customFunction: 'Custom Function'
+  customFunction: 'Custom Function',
 }
