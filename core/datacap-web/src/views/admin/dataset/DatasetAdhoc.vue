@@ -118,7 +118,7 @@
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
                                        class="point"
-                                       @click="handlerRemove(element.id, index, groups, 'group')">
+                                       @click="handlerRemove(element.id, index, groups)">
                       </FontAwesomeIcon>
                     </Tooltip>
                   </Tag>
@@ -464,12 +464,9 @@ export default {
                       const query = JSON.parse(response.data.query)
                       this.mergeColumns(query.columns, this.metrics, ColumnType.METRIC)
                       this.mergeColumns(query.columns, this.dimensions, ColumnType.DIMENSION)
+                      this.mergeColumns(query.columns, this.groups, ColumnType.GROUP)
                       this.configure.columns = query.columns
                       this.configure.limit = query.limit
-                      if (query.groups) {
-                        this.mergeColumns(query.groups, this.groups)
-                        this.configure.groups = query.groups
-                      }
                       this.configuration = JSON.parse(response.data.configure)
                     }
                   })
@@ -483,7 +480,12 @@ export default {
     },
     handlerApplyAdhoc()
     {
-      this.configure.columns = [...this.metrics, ...this.dimensions, ...this.groups]
+      // Set the mode to: GROUP
+      this.groups.forEach((item: { mode: ColumnType; }) => item.mode = ColumnType.GROUP)
+      // Set the mode to: FILTER
+      this.filters.forEach((item: { mode: ColumnType; }) => item.mode = ColumnType.FILTER)
+
+      this.configure.columns = [...this.metrics, ...this.dimensions, ...this.groups, ...this.filters]
       this.handlerAdhoc()
     },
     handlerAdhoc()
@@ -554,6 +556,9 @@ export default {
       }
       else if (clonedValue.mode === ColumnType.GROUP) {
         this.replaceColumn(this.groups, clonedValue)
+      }
+      else if (clonedValue.mode === ColumnType.FILTER) {
+        this.replaceColumn(this.filters, clonedValue)
       }
       this.handlerAdhoc()
     },
