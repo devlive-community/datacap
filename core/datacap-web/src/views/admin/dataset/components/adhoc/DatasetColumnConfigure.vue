@@ -113,7 +113,7 @@ export default defineComponent({
         type: null,
         alias: null,
         expression: null,
-        order: null,
+        order: '',
         function: null,
         value: null
       }

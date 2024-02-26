@@ -519,9 +519,9 @@ export default {
     {
       this.columnContent.visible = opened
       this.columnContent.type = type
-      this.columnContent.content = record
       if (record) {
-        const foundIndex = this.configure.columns.findIndex((item: { id: unknown }) => item.id === record.id)
+        this.columnContent.content = this.originalData.find((item: { id: number; }) => item.id === record.id)
+        const foundIndex = this.configure.columns.findIndex((item: { id: unknown; }) => item.id === record.id)
         if (foundIndex !== -1) {
           this.columnContent.configure = this.configure.columns[foundIndex]
         }
@@ -597,7 +597,8 @@ export default {
     {
       const index = originalColumns.findIndex((item: { id: number; }) => item.id === originalValue.id)
       if (index !== -1) {
-        originalColumns[index] = originalValue
+        const cloneValue = cloneDeep(originalValue)
+        originalColumns[index] = Object.assign(originalValue, originalColumns[index], cloneValue)
       }
     }
   }
