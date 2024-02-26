@@ -146,7 +146,7 @@
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
                                        class="point"
-                                       @click="handlerRemove(element.id, index, filters, 'filter')">
+                                       @click="handlerRemove(element.id, index, filters)">
                       </FontAwesomeIcon>
                     </Tooltip>
                   </Tag>
@@ -515,16 +515,9 @@ export default {
     {
       return cloneDeep(value)
     },
-    handlerRemove(id: number, index: number, array: [], type?: string)
+    handlerRemove(id: number, index: number, array: [])
     {
       array.splice(index, 1)
-      this.configure.columns = this.configure.columns.filter((item: { id: number; }) => item.id !== id)
-      if (type === 'group') {
-        this.configure.groups = this.configure.groups.filter((item: { id: number; }) => item.id !== id)
-      }
-      else if (type === 'filter') {
-        this.configure.filters = this.configure.filters.filter((item: { id: number; }) => item.id !== id)
-      }
       this.handlerAdhoc()
     },
     handlerCommit(value: any)
