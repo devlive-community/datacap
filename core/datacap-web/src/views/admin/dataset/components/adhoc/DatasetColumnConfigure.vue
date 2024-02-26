@@ -17,6 +17,8 @@
               <Option :value="Expression.IS_NOT_LIKE">{{ $t('dataset.columnExpressionIsNotLike') }}</Option>
               <Option :value="Expression.EQ">{{ $t('dataset.columnExpressionEquals') }}</Option>
               <Option :value="Expression.NE">{{ $t('dataset.columnExpressionNotEquals') }}</Option>
+              <Option :value="Expression.GT">{{ $t('dataset.columnExpressionGreaterThan') }}</Option>
+              <Option :value="Expression.GTE">{{ $t('dataset.columnExpressionGreaterThanOrEquals') }}</Option>
             </Select>
           </FormItem>
           <FormItem v-if="formState.expression

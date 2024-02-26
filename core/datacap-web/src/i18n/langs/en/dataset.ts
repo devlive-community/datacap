@@ -84,6 +84,8 @@ export default {
   columnExpressionIsLike: 'Is Like',
   columnExpressionIsNotLike: 'Is Not Like',
   columnExpressionIsContains: 'Is Contains',
+  columnExpressionGreaterThan: 'Greater Than',
+  columnExpressionGreaterThanOrEquals: 'Greater Than Or Equals',
   columnExpressionIsNotContains: 'Is Not Contains',
   validatorSamplingTip: 'The order by key must contain a sampling key',
   customFunction: 'Custom Function',

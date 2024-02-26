@@ -12,8 +12,8 @@ export enum Expression
   IS_NOT_NULL = 'NNULL',
   IS_LIKE = 'LIKE',
   IS_NOT_LIKE = 'NLIKE',
-  IS_IN = 'IS_IN',
-  IS_NOT_IN = 'IS_NOT_IN',
+  GT = 'GT',
+  GTE = 'GTE',
   IS_CONTAINS = 'IS_CONTAINS',
   IS_NOT_CONTAINS = 'IS_NOT_CONTAINS',
 }

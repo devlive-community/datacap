@@ -85,6 +85,8 @@ export default {
   columnExpressionIsNotLike: '不像',
   columnExpressionIsContains: '包含',
   columnExpressionIsNotContains: '不包含',
+  columnExpressionGreaterThan: '大于',
+  columnExpressionGreaterThanOrEquals: '大于等于',
   validatorSamplingTip: '排序键中必须包含抽样键',
   customFunction: '自定义函数',
 }
