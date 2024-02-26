@@ -118,7 +118,35 @@
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
                                        class="point"
-                                       @click="handlerRemove(element.id, index, groups, true)">
+                                       @click="handlerRemove(element.id, index, groups)">
+                      </FontAwesomeIcon>
+                    </Tooltip>
+                  </Tag>
+                </template>
+              </Draggable>
+            </ListItem>
+            <ListItem>
+              {{ $t('dataset.columnModeFilter') }}: &nbsp;
+              <Draggable group="dimensions"
+                         item-key="id"
+                         :list="filters">
+                <template #item="{ element, index}">
+                  <Tag size="medium"
+                       class="point">
+                    {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
+                    <Tooltip transfer
+                             class="point"
+                             :content="$t('common.configure')">
+                      <FontAwesomeIcon icon="gear"
+                                       class="point"
+                                       @click="handlerColumnConfigure(true, element, ColumnType.FILTER)">
+                      </FontAwesomeIcon>
+                    </Tooltip>&nbsp;
+                    <Tooltip transfer
+                             :content="$t('common.remove')">
+                      <FontAwesomeIcon icon="trash"
+                                       class="point"
+                                       @click="handlerRemove(element.id, index, filters)">
                       </FontAwesomeIcon>
                     </Tooltip>
                   </Tag>
@@ -143,15 +171,15 @@
                           icon="md-arrow-dropright-circle"
                           shape="circle"
                           :loading="loading"
-                          @click="handlerAdhoc">
+                          @click="handlerApplyAdhoc">
                   </Button>
                   <Button icon="md-eye"
                           shape="circle"
-                          :disabled="!showSql.content"
+                          :disabled="!showSql.content || loading"
                           @click="handlerShowSql(true)">
                   </Button>
                   <Button type="primary"
-                          :disabled="!isPublish"
+                          :disabled="!isPublish || loading"
                           @click="formState.visible = true">
                     {{ $t('common.publish') }}
                   </Button>
@@ -305,6 +333,7 @@
         </Button>
         <Button type="primary"
                 :disabled="!formState.name"
+                :loading="published"
                 @click="handlerPublish">
           {{ $t('common.publish') }}
         </Button>
@@ -332,6 +361,7 @@ import DatasetVisualConfigureArea from "@/views/admin/dataset/components/adhoc/D
 import DatasetVisualConfigurePie from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigurePie.vue";
 import DatasetVisualConfigureHistogram from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureHistogram.vue";
 import DatasetVisualConfigureWordCloud from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureWordCloud.vue";
+import {cloneDeep} from 'lodash';
 
 export default {
   name: 'DatasetAdhoc',
@@ -365,9 +395,9 @@ export default {
       metrics: [],
       dimensions: [],
       groups: [],
+      filters: [],
       configure: {
         columns: [],
-        groups: [],
         limit: 1000
       },
       configuration: null as Configuration,
@@ -388,20 +418,6 @@ export default {
         name: null
       },
       published: false
-    }
-  },
-  watch: {
-    metrics: {
-      handler: 'handlerApplyAdhoc',
-      deep: true
-    },
-    dimensions: {
-      handler: 'handlerApplyAdhoc',
-      deep: true
-    },
-    groups: {
-      handler: 'handlerApplyAdhoc',
-      deep: true
     }
   },
   created()
@@ -431,13 +447,12 @@ export default {
                       const query = JSON.parse(response.data.query)
                       this.mergeColumns(query.columns, this.metrics, ColumnType.METRIC)
                       this.mergeColumns(query.columns, this.dimensions, ColumnType.DIMENSION)
+                      this.mergeColumns(query.columns, this.groups, ColumnType.GROUP)
+                      this.mergeColumns(query.columns, this.filters, ColumnType.FILTER)
                       this.configure.columns = query.columns
                       this.configure.limit = query.limit
-                      if (query.groups) {
-                        this.mergeColumns(query.groups, this.groups)
-                        this.configure.groups = query.groups
-                      }
                       this.configuration = JSON.parse(response.data.configure)
+                      this.handlerApplyAdhoc()
                     }
                   })
               }
@@ -450,30 +465,12 @@ export default {
     },
     handlerApplyAdhoc()
     {
-      const columns = []
-      this.metrics
-        .filter((value: { id: unknown; }) => this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
-        .map((item: { id: unknown; type: unknown; mode: unknown; }) => columns.push({id: item.id, type: item.type, mode: item.mode}))
-      this.dimensions
-        .filter((value: { id: unknown; }) => this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
-        .map((item: { id: unknown; type: unknown; mode: unknown; }) => columns.push({id: item.id, type: item.type, mode: item.mode}))
-      if (this.configure.columns.length > 0) {
-        this.configure.columns = [...this.configure.columns, ...columns]
-      }
-      else {
-        this.configure.columns = columns
-      }
+      // Set the mode to: GROUP
+      this.groups.forEach((item: { mode: ColumnType; }) => item.mode = ColumnType.GROUP)
+      // Set the mode to: FILTER
+      this.filters.forEach((item: { mode: ColumnType; }) => item.mode = ColumnType.FILTER)
 
-      const groups = []
-      this.groups
-        .filter((value: { id: unknown; }) => this.configure.groups.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
-        .map((item: { id: unknown; type: unknown; mode: unknown; }) => groups.push({id: item.id, type: item.type, mode: item.mode}))
-      if (this.configure.groups.length > 0) {
-        this.configure.groups = [...this.configure.groups, ...groups]
-      }
-      else {
-        this.configure.groups = groups
-      }
+      this.configure.columns = [...this.metrics, ...this.dimensions, ...this.groups, ...this.filters]
       this.handlerAdhoc()
     },
     handlerAdhoc()
@@ -503,16 +500,12 @@ export default {
     },
     handlerClone(value: any)
     {
-      return value
+      return cloneDeep(value)
     },
-    handlerRemove(id: number, index: number, array: [], isGroup?: boolean)
+    handlerRemove(id: number, index: number, array: [])
     {
       array.splice(index, 1)
-      this.configure.columns = this.configure.columns.filter((item: { id: number; }) => item.id !== id)
-      if (isGroup) {
-        this.configure.groups = this.configure.groups.filter((item: { id: number; }) => item.id !== id)
-      }
-      this.handlerAdhoc()
+      this.handlerApplyAdhoc()
     },
     handlerCommit(value: any)
     {
@@ -526,9 +519,9 @@ export default {
     {
       this.columnContent.visible = opened
       this.columnContent.type = type
-      this.columnContent.content = record
       if (record) {
-        const foundIndex = this.configure.columns.findIndex((item: { id: unknown }) => item.id === record.id)
+        this.columnContent.content = this.originalData.find((item: { id: number; }) => item.id === record.id)
+        const foundIndex = this.configure.columns.findIndex((item: { id: unknown; }) => item.id === record.id)
         if (foundIndex !== -1) {
           this.columnContent.configure = this.configure.columns[foundIndex]
         }
@@ -539,14 +532,20 @@ export default {
     },
     handlerCommitColumnConfigure(value: any)
     {
-      const foundIndex = this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id)
-      if (foundIndex !== -1) {
-        this.configure.columns.splice(foundIndex, 1, value)
-        if (value.mode === ColumnType.METRIC) {
-          this.metrics.find((item: { id: any; }) => item.id === value.id).expression = value.expression
-        }
-        this.handlerAdhoc()
+      const clonedValue = cloneDeep(value)
+      if (clonedValue.mode === ColumnType.METRIC) {
+        this.replaceColumn(this.metrics, clonedValue)
       }
+      else if (clonedValue.mode === ColumnType.DIMENSION) {
+        this.replaceColumn(this.dimensions, clonedValue)
+      }
+      else if (clonedValue.mode === ColumnType.GROUP) {
+        this.replaceColumn(this.groups, clonedValue)
+      }
+      else if (clonedValue.mode === ColumnType.FILTER) {
+        this.replaceColumn(this.filters, clonedValue)
+      }
+      this.handlerApplyAdhoc()
     },
     handlerCommitOptions(value: any)
     {
@@ -593,6 +592,14 @@ export default {
           array.push(column)
         }
       })
+    },
+    replaceColumn(originalColumns: unknown[], originalValue: any)
+    {
+      const index = originalColumns.findIndex((item: { id: number; }) => item.id === originalValue.id)
+      if (index !== -1) {
+        const cloneValue = cloneDeep(originalValue)
+        originalColumns[index] = Object.assign(originalValue, originalColumns[index], cloneValue)
+      }
     }
   }
 }

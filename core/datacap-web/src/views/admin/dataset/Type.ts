@@ -1,7 +1,9 @@
 export enum Type
 {
   DIMENSION = ('DIMENSION'),
-  METRIC = ('METRIC')
+  METRIC = ('METRIC'),
+  GROUP = ('GROUP'),
+  FILTER = ('FILTER'),
 }
 
 export enum ColumnType
