@@ -14,6 +14,6 @@ export enum Expression
   IS_NOT_LIKE = 'NLIKE',
   GT = 'GT',
   GTE = 'GTE',
-  IS_CONTAINS = 'IS_CONTAINS',
-  IS_NOT_CONTAINS = 'IS_NOT_CONTAINS',
+  LT = 'LT',
+  LTE = 'LTE',
 }

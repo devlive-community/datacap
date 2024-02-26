@@ -19,6 +19,8 @@
               <Option :value="Expression.NE">{{ $t('dataset.columnExpressionNotEquals') }}</Option>
               <Option :value="Expression.GT">{{ $t('dataset.columnExpressionGreaterThan') }}</Option>
               <Option :value="Expression.GTE">{{ $t('dataset.columnExpressionGreaterThanOrEquals') }}</Option>
+              <Option :value="Expression.LT">{{ $t('dataset.columnExpressionLessThan') }}</Option>
+              <Option :value="Expression.LTE">{{ $t('dataset.columnExpressionLessThanOrEquals') }}</Option>
             </Select>
           </FormItem>
           <FormItem v-if="formState.expression
