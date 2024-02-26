@@ -67,6 +67,7 @@
 import {defineComponent, PropType} from 'vue'
 import {ColumnType, Type} from "@/views/admin/dataset/Type";
 import {Expression} from "@/views/admin/dataset/Expression";
+import {cloneDeep} from "lodash";
 
 export default defineComponent({
   name: 'DatasetColumnConfigure',
@@ -138,7 +139,8 @@ export default defineComponent({
       }
       this.title = `${prefix} [ ${this.content.aliasName ? this.content.aliasName : this.content.name} ] ${this.$t('common.configure')}`
       if (this.configure) {
-        this.formState = this.configure
+        const cloneValue = cloneDeep(this.configure)
+        this.formState = cloneValue
       }
       else {
         this.formState.id = this.content.id
