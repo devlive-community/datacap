@@ -171,7 +171,7 @@
                           icon="md-arrow-dropright-circle"
                           shape="circle"
                           :loading="loading"
-                          @click="handlerAdhoc">
+                          @click="handlerApplyAdhoc">
                   </Button>
                   <Button icon="md-eye"
                           shape="circle"
@@ -333,6 +333,7 @@
         </Button>
         <Button type="primary"
                 :disabled="!formState.name"
+                :loading="published"
                 @click="handlerPublish">
           {{ $t('common.publish') }}
         </Button>
@@ -419,24 +420,6 @@ export default {
       published: false
     }
   },
-  watch: {
-    metrics: {
-      handler: 'handlerApplyAdhoc',
-      deep: true
-    },
-    dimensions: {
-      handler: 'handlerApplyAdhoc',
-      deep: true
-    },
-    groups: {
-      handler: 'handlerApplyAdhoc',
-      deep: true
-    },
-    filters: {
-      handler: 'handlerApplyAdhoc',
-      deep: true
-    }
-  },
   created()
   {
     this.configuration = new Configuration()
@@ -465,6 +448,7 @@ export default {
                       this.mergeColumns(query.columns, this.metrics, ColumnType.METRIC)
                       this.mergeColumns(query.columns, this.dimensions, ColumnType.DIMENSION)
                       this.mergeColumns(query.columns, this.groups, ColumnType.GROUP)
+                      this.mergeColumns(query.columns, this.filters, ColumnType.FILTER)
                       this.configure.columns = query.columns
                       this.configure.limit = query.limit
                       this.configuration = JSON.parse(response.data.configure)
@@ -520,7 +504,7 @@ export default {
     handlerRemove(id: number, index: number, array: [])
     {
       array.splice(index, 1)
-      this.handlerAdhoc()
+      this.handlerApplyAdhoc()
     },
     handlerCommit(value: any)
     {
