@@ -195,6 +195,9 @@ public class DataSetServiceImpl
                                                 .alias(columnAlias.get())
                                                 .build();
                                         if (!column.getMode().equals(ColumnMode.FILTER)) {
+                                            if (column.getMode().equals(ColumnMode.DIMENSION)) {
+                                                sqlColumn.setExpression(null);
+                                            }
                                             columns.add(sqlColumn);
                                         }
                                         // Only dimensions are added to GROUP BY
