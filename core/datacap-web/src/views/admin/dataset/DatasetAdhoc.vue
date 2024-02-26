@@ -135,6 +135,14 @@
                        class="point">
                     {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
                     <Tooltip transfer
+                             class="point"
+                             :content="$t('common.configure')">
+                      <FontAwesomeIcon icon="gear"
+                                       class="point"
+                                       @click="handlerColumnConfigure(true, element, ColumnType.FILTER)">
+                      </FontAwesomeIcon>
+                    </Tooltip>&nbsp;
+                    <Tooltip transfer
                              :content="$t('common.remove')">
                       <FontAwesomeIcon icon="trash"
                                        class="point"
@@ -352,6 +360,7 @@ import DatasetVisualConfigureArea from "@/views/admin/dataset/components/adhoc/D
 import DatasetVisualConfigurePie from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigurePie.vue";
 import DatasetVisualConfigureHistogram from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureHistogram.vue";
 import DatasetVisualConfigureWordCloud from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureWordCloud.vue";
+import {cloneDeep} from 'lodash';
 
 export default {
   name: 'DatasetAdhoc',
@@ -388,8 +397,6 @@ export default {
       filters: [],
       configure: {
         columns: [],
-        groups: [],
-        filters: [],
         limit: 1000
       },
       configuration: null as Configuration,
@@ -476,30 +483,7 @@ export default {
     },
     handlerApplyAdhoc()
     {
-      const columns = []
-      this.metrics
-        .filter((value: { id: unknown; }) => this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
-        .map((item: { id: unknown; type: unknown; mode: unknown; }) => columns.push({id: item.id, type: item.type, mode: item.mode}))
-      this.dimensions
-        .filter((value: { id: unknown; }) => this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
-        .map((item: { id: unknown; type: unknown; mode: unknown; }) => columns.push({id: item.id, type: item.type, mode: item.mode}))
-      if (this.configure.columns.length > 0) {
-        this.configure.columns = [...this.configure.columns, ...columns]
-      }
-      else {
-        this.configure.columns = columns
-      }
-
-      const groups = []
-      this.groups
-        .filter((value: { id: unknown; }) => this.configure.groups.findIndex((item: { id: unknown }) => item.id === value.id) === -1)
-        .map((item: { id: unknown; type: unknown; mode: unknown; }) => groups.push({id: item.id, type: item.type, mode: item.mode}))
-      if (this.configure.groups.length > 0) {
-        this.configure.groups = [...this.configure.groups, ...groups]
-      }
-      else {
-        this.configure.groups = groups
-      }
+      this.configure.columns = [...this.metrics, ...this.dimensions, ...this.groups]
       this.handlerAdhoc()
     },
     handlerAdhoc()
@@ -529,7 +513,7 @@ export default {
     },
     handlerClone(value: any)
     {
-      return value
+      return cloneDeep(value)
     },
     handlerRemove(id: number, index: number, array: [], type?: string)
     {
@@ -568,14 +552,17 @@ export default {
     },
     handlerCommitColumnConfigure(value: any)
     {
-      const foundIndex = this.configure.columns.findIndex((item: { id: unknown }) => item.id === value.id)
-      if (foundIndex !== -1) {
-        this.configure.columns.splice(foundIndex, 1, value)
-        if (value.mode === ColumnType.METRIC) {
-          this.metrics.find((item: { id: number; }) => item.id === value.id).expression = value.expression
-        }
-        this.handlerAdhoc()
+      const clonedValue = cloneDeep(value)
+      if (clonedValue.mode === ColumnType.METRIC) {
+        this.replaceColumn(this.metrics, clonedValue)
       }
+      else if (clonedValue.mode === ColumnType.DIMENSION) {
+        this.replaceColumn(this.dimensions, clonedValue)
+      }
+      else if (clonedValue.mode === ColumnType.GROUP) {
+        this.replaceColumn(this.groups, clonedValue)
+      }
+      this.handlerAdhoc()
     },
     handlerCommitOptions(value: any)
     {
@@ -622,6 +609,13 @@ export default {
           array.push(column)
         }
       })
+    },
+    replaceColumn(originalColumns: unknown[], originalValue: any)
+    {
+      const index = originalColumns.findIndex((item: { id: number; }) => item.id === originalValue.id)
+      if (index !== -1) {
+        originalColumns[index] = originalValue
+      }
     }
   }
 }

@@ -195,7 +195,7 @@ public class DataSetServiceImpl
                                                 .build();
                                         columns.add(sqlColumn);
                                         // Only dimensions are added to GROUP BY
-                                        if (entity.getMode().equals(ColumnMode.DIMENSION)) {
+                                        if (entity.getMode().equals(ColumnMode.DIMENSION) || column.getMode().equals(ColumnMode.GROUP)) {
                                             groupBy.add(SqlColumn.builder()
                                                     .column(columnName.get())
                                                     .build());
@@ -206,19 +206,6 @@ public class DataSetServiceImpl
                                             orderBy.add(sqlColumn);
                                         }
                                     }));
-
-                    if (configure.getGroups() != null) {
-                        configure.getGroups()
-                                .forEach(column -> columnRepository.findById(column.getId())
-                                        .ifPresent(entity -> {
-                                            SqlColumn sqlColumn = SqlColumn.builder()
-                                                    .column(entity.getName())
-                                                    .build();
-                                            groupBy.add(sqlColumn);
-                                            // Add columns from GROUP BY to the query column
-                                            columns.add(sqlColumn);
-                                        }));
-                    }
 
                     SqlBody body = SqlBody.builder()
                             .type(SqlType.SELECT)

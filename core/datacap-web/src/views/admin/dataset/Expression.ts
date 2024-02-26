@@ -4,5 +4,16 @@ export enum Expression
   COUNT = 'COUNT',
   MAX = 'MAX',
   MIN = 'MIN',
-  AVG = 'AVG'
+  AVG = 'AVG',
+  // Filter Expression
+  EQ = 'EQ',
+  NE = 'NE',
+  IS_NULL = 'IS_NULL',
+  IS_NOT_NULL = 'IS_NOT_NULL',
+  IS_IN = 'IS_IN',
+  IS_NOT_IN = 'IS_NOT_IN',
+  IS_LIKE = 'IS_LIKE',
+  IS_NOT_LIKE = 'IS_NOT_LIKE',
+  IS_CONTAINS = 'IS_CONTAINS',
+  IS_NOT_CONTAINS = 'IS_NOT_CONTAINS',
 }

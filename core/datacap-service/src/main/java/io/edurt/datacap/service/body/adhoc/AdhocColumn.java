@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.body.adhoc;
 
+import io.edurt.datacap.service.enums.ColumnMode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,6 @@ public class AdhocColumn
     private String function;
     private String alias;
     private String order;
+    private ColumnMode mode;
+    private String value;
 }
