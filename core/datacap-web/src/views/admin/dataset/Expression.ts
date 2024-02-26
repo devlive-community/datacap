@@ -7,7 +7,7 @@ export enum Expression
   AVG = 'AVG',
   // Filter Expression
   EQ = 'EQ',
-  NE = 'NE',
+  NE = 'NEQ',
   IS_NULL = 'NULL',
   IS_NOT_NULL = 'NNULL',
   IS_LIKE = 'LIKE',

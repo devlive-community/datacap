@@ -15,6 +15,8 @@
               <Option :value="Expression.IS_NOT_NULL">{{ $t('dataset.columnExpressionIsNotNull') }}</Option>
               <Option :value="Expression.IS_LIKE">{{ $t('dataset.columnExpressionIsLike') }}</Option>
               <Option :value="Expression.IS_NOT_LIKE">{{ $t('dataset.columnExpressionIsNotLike') }}</Option>
+              <Option :value="Expression.EQ">{{ $t('dataset.columnExpressionEquals') }}</Option>
+              <Option :value="Expression.NE">{{ $t('dataset.columnExpressionNotEquals') }}</Option>
             </Select>
           </FormItem>
           <FormItem v-if="formState.expression

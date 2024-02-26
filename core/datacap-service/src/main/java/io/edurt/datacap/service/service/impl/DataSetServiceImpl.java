@@ -202,9 +202,11 @@ public class DataSetServiceImpl
                                         }
                                         // Only dimensions are added to GROUP BY
                                         if (entity.getMode().equals(ColumnMode.DIMENSION) || column.getMode().equals(ColumnMode.GROUP)) {
-                                            groupBy.add(SqlColumn.builder()
-                                                    .column(columnName.get())
-                                                    .build());
+                                            if (!column.getMode().equals(ColumnMode.FILTER)) {
+                                                groupBy.add(SqlColumn.builder()
+                                                        .column(columnName.get())
+                                                        .build());
+                                            }
                                         }
                                         // Add to Sort Sequence
                                         if (StringUtils.isNotEmpty(column.getOrder())) {
