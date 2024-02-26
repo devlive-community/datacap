@@ -10,10 +10,10 @@ export enum Expression
   NE = 'NE',
   IS_NULL = 'NULL',
   IS_NOT_NULL = 'NNULL',
+  IS_LIKE = 'LIKE',
+  IS_NOT_LIKE = 'NLIKE',
   IS_IN = 'IS_IN',
   IS_NOT_IN = 'IS_NOT_IN',
-  IS_LIKE = 'IS_LIKE',
-  IS_NOT_LIKE = 'IS_NOT_LIKE',
   IS_CONTAINS = 'IS_CONTAINS',
   IS_NOT_CONTAINS = 'IS_NOT_CONTAINS',
 }

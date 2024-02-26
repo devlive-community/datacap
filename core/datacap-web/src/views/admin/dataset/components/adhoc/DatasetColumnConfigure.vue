@@ -13,10 +13,14 @@
             <Select v-model="formState.expression">
               <Option :value="Expression.IS_NULL">{{ $t('dataset.columnExpressionIsNull') }}</Option>
               <Option :value="Expression.IS_NOT_NULL">{{ $t('dataset.columnExpressionIsNotNull') }}</Option>
+              <Option :value="Expression.IS_LIKE">{{ $t('dataset.columnExpressionIsLike') }}</Option>
+              <Option :value="Expression.IS_NOT_LIKE">{{ $t('dataset.columnExpressionIsNotLike') }}</Option>
             </Select>
           </FormItem>
-          <FormItem>
-
+          <FormItem v-if="formState.expression
+                          && formState.expression !== Expression.IS_NULL
+                          && formState.expression !== Expression.IS_NOT_NULL">
+            <Input v-model="formState.value"/>
           </FormItem>
         </div>
         <div v-else>
