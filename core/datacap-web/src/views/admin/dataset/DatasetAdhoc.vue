@@ -175,11 +175,11 @@
                   </Button>
                   <Button icon="md-eye"
                           shape="circle"
-                          :disabled="!showSql.content"
+                          :disabled="!showSql.content || loading"
                           @click="handlerShowSql(true)">
                   </Button>
                   <Button type="primary"
-                          :disabled="!isPublish"
+                          :disabled="!isPublish || loading"
                           @click="formState.visible = true">
                     {{ $t('common.publish') }}
                   </Button>
@@ -452,6 +452,7 @@ export default {
                       this.configure.columns = query.columns
                       this.configure.limit = query.limit
                       this.configuration = JSON.parse(response.data.configure)
+                      this.handlerApplyAdhoc()
                     }
                   })
               }
@@ -544,7 +545,7 @@ export default {
       else if (clonedValue.mode === ColumnType.FILTER) {
         this.replaceColumn(this.filters, clonedValue)
       }
-      this.handlerAdhoc()
+      this.handlerApplyAdhoc()
     },
     handlerCommitOptions(value: any)
     {

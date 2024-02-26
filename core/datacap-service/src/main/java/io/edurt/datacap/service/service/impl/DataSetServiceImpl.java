@@ -172,6 +172,7 @@ public class DataSetServiceImpl
                     List<SqlColumn> columns = Lists.newArrayList();
                     List<SqlColumn> groupBy = Lists.newArrayList();
                     List<SqlColumn> orderBy = Lists.newArrayList();
+                    List<SqlColumn> wheres = Lists.newArrayList();
                     configure.getColumns()
                             .forEach(column -> columnRepository.findById(column.getId())
                                     .ifPresent(entity -> {
@@ -193,7 +194,9 @@ public class DataSetServiceImpl
                                                 .expression(expression.get())
                                                 .alias(columnAlias.get())
                                                 .build();
-                                        columns.add(sqlColumn);
+                                        if (!column.getMode().equals(ColumnMode.FILTER)) {
+                                            columns.add(sqlColumn);
+                                        }
                                         // Only dimensions are added to GROUP BY
                                         if (entity.getMode().equals(ColumnMode.DIMENSION) || column.getMode().equals(ColumnMode.GROUP)) {
                                             groupBy.add(SqlColumn.builder()
@@ -205,6 +208,12 @@ public class DataSetServiceImpl
                                             sqlColumn.setOrder(SqlOrder.valueOf(column.getOrder()));
                                             orderBy.add(sqlColumn);
                                         }
+                                        // Add to where
+                                        if (column.getMode().equals(ColumnMode.FILTER) && column.getExpression() != null) {
+                                            sqlColumn.setOperator(SqlOperator.valueOf(column.getExpression()));
+                                            sqlColumn.setValue(column.getValue());
+                                            wheres.add(sqlColumn);
+                                        }
                                     }));
 
                     SqlBody body = SqlBody.builder()
@@ -214,6 +223,8 @@ public class DataSetServiceImpl
                             .columns(columns)
                             .groups(groupBy)
                             .orders(orderBy)
+                            .where(wheres)
+                            .condition(" AND ")
                             .limit(configure.getLimit())
                             .build();
                     String sql = new SqlBuilder(body).getSql();

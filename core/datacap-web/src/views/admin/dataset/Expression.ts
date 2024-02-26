@@ -8,8 +8,8 @@ export enum Expression
   // Filter Expression
   EQ = 'EQ',
   NE = 'NE',
-  IS_NULL = 'IS_NULL',
-  IS_NOT_NULL = 'IS_NOT_NULL',
+  IS_NULL = 'NULL',
+  IS_NOT_NULL = 'NNULL',
   IS_IN = 'IS_IN',
   IS_NOT_IN = 'IS_NOT_IN',
   IS_LIKE = 'IS_LIKE',

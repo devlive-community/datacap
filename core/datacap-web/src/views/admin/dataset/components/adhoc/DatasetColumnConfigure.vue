@@ -11,16 +11,8 @@
         <div v-if="columnType === 'FILTER'">
           <FormItem :label="$t('common.expression')">
             <Select v-model="formState.expression">
-              <Option :value="Expression.EQ">{{ $t('dataset.columnExpressionEquals') }}</Option>
-              <Option :value="Expression.NE">{{ $t('dataset.columnExpressionNotEquals') }}</Option>
               <Option :value="Expression.IS_NULL">{{ $t('dataset.columnExpressionIsNull') }}</Option>
               <Option :value="Expression.IS_NOT_NULL">{{ $t('dataset.columnExpressionIsNotNull') }}</Option>
-              <Option :value="Expression.IS_IN">{{ $t('dataset.columnExpressionIsIn') }}</Option>
-              <Option :value="Expression.IS_NOT_IN">{{ $t('dataset.columnExpressionIsNotIn') }}</Option>
-              <Option :value="Expression.IS_LIKE">{{ $t('dataset.columnExpressionIsLike') }}</Option>
-              <Option :value="Expression.IS_NOT_LIKE">{{ $t('dataset.columnExpressionIsNotLike') }}</Option>
-              <Option :value="Expression.IS_CONTAINS">{{ $t('dataset.columnExpressionIsContains') }}</Option>
-              <Option :value="Expression.IS_NOT_CONTAINS">{{ $t('dataset.columnExpressionIsNotContains') }}</Option>
             </Select>
           </FormItem>
           <FormItem>
