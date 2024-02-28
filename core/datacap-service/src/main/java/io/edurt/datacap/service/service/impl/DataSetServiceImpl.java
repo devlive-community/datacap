@@ -73,6 +73,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
@@ -84,7 +85,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION"})
+@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
 public class DataSetServiceImpl
         implements DataSetService
 {
@@ -549,7 +550,7 @@ public class DataSetServiceImpl
             history.setState(response.getState());
             Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
 
-            this.flushTableMetadata(entity, outputPlugin, database, output.getOriginConfigure());
+            this.flushTableMetadata(entity, outputPlugin, database, Objects.requireNonNull(output.getOriginConfigure()));
         }
         catch (Exception e) {
             log.warn("Sync data for dataset [ {} ] failed", entity.getName(), e);
