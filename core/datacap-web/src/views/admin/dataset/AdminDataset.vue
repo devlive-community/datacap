@@ -239,6 +239,9 @@ export default defineComponent({
       }
       this.contextData = record
       this.clearDataVisible = isOpen
+      if (!isOpen) {
+        this.handlerInitialize(this.filter)
+      }
     },
     getState(state: Array<any> | null)
     {
