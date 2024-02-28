@@ -91,4 +91,5 @@ export default {
   columnExpressionIsNotContains: 'Is Not Contains',
   validatorSamplingTip: 'The order by key must contain a sampling key',
   customFunction: 'Custom Function',
+  clearDataTip: 'Clear data will not be able to rollback, clear operation will run in the background, please be patient',
 }

@@ -164,6 +164,18 @@ public class DataSetServiceImpl
     }
 
     @Override
+    public CommonResponse<Boolean> clearData(String code)
+    {
+        return repository.findByCode(code)
+                .map(item -> {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.submit(() -> clearData(item, service));
+                    return CommonResponse.success(true);
+                })
+                .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
+    }
+
+    @Override
     public CommonResponse<Object> adhoc(String code, Adhoc configure)
     {
         return repository.findByCode(code)
@@ -574,6 +586,38 @@ public class DataSetServiceImpl
         }
         finally {
             historyRepository.save(history);
+            service.shutdownNow();
+        }
+    }
+
+    private void clearData(DataSetEntity entity, ExecutorService service)
+    {
+        try {
+            Plugin plugin = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
+            SourceEntity source = new SourceEntity();
+            source.setType(initializerConfigure.getDataSetConfigure().getType());
+            source.setDatabase(initializerConfigure.getDataSetConfigure().getDatabase());
+            source.setHost(initializerConfigure.getDataSetConfigure().getHost());
+            source.setPort(Integer.valueOf(initializerConfigure.getDataSetConfigure().getPort()));
+            source.setUsername(initializerConfigure.getDataSetConfigure().getUsername());
+            source.setPassword(initializerConfigure.getDataSetConfigure().getPassword());
+            source.setProtocol(PluginType.JDBC.name());
+
+            plugin.connect(source.toConfigure());
+            SqlBody body = SqlBody.builder()
+                    .type(SqlType.TRUNCATE)
+                    .database(initializerConfigure.getDataSetConfigure().getDatabase())
+                    .table(entity.getTableName())
+                    .build();
+            String sql = new SqlBuilder(body).getSql();
+            log.info("Clear data for dataset [ {} ] id [ {} ] sql \n {}", entity.getName(), entity.getId(), sql);
+            Response response = plugin.execute(sql);
+            Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+        }
+        catch (Exception e) {
+            log.warn("Clear data for dataset [ {} ] failed", entity.getName(), e);
+        }
+        finally {
             service.shutdownNow();
         }
     }

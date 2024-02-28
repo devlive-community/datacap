@@ -183,4 +183,5 @@ export default {
   syncHistory: '同步历史',
   syncMetadata: '同步元数据',
   totalSize: '总大小',
+  clearData: '清空数据',
 }

@@ -76,6 +76,11 @@
                       {{ $t('common.syncHistory') }}
                     </DropdownItem>
                   </DropdownMenu>
+                  <DropdownItem :disabled="!(row.totalRows > 0)"
+                                @click="handlerClearData(row, true )">
+                    <FontAwesomeIcon icon="trash"/>
+                    {{ $t('common.clearData') }}
+                  </DropdownItem>
                 </DropdownMenu>
               </template>
             </Dropdown>
@@ -116,6 +121,11 @@
                      :content="'```java\n' + contextData.message + '\n```'"
                      @close="handlerError(null, false)">
     </MarkdownPreview>
+    <DatasetClearData v-if="clearDataVisible"
+                      :is-visible="clearDataVisible"
+                      :data="contextData"
+                      @close="handlerClearData(null, false)">
+    </DatasetClearData>
   </div>
 </template>
 
@@ -133,11 +143,12 @@ import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import DatasetSyncData from "@/views/admin/dataset/components/DatasetSyncData.vue";
 import {DropdownItem} from "view-ui-plus";
 import DatasetHistory from "@/views/admin/dataset/components/DatasetHistory.vue";
+import DatasetClearData from "@/views/admin/dataset/components/DatasetClearData.vue";
 
 const filter: Filter = new Filter();
 export default defineComponent({
   name: 'AdminDataset',
-  components: {DatasetHistory, DropdownItem, DatasetSyncData, MarkdownPreview, DatasetState, DatasetRebuild, FontAwesomeIcon},
+  components: {DatasetClearData, DatasetHistory, DropdownItem, DatasetSyncData, MarkdownPreview, DatasetState, DatasetRebuild, FontAwesomeIcon},
   setup()
   {
     const i18n = useI18n()
@@ -158,7 +169,8 @@ export default defineComponent({
       contextData: null,
       errorVisible: false,
       syncDataVisible: false,
-      historyVisible: false
+      historyVisible: false,
+      clearDataVisible: false
     }
   },
   created()
@@ -219,6 +231,14 @@ export default defineComponent({
     {
       this.contextData = value
       this.historyVisible = isOpen
+    },
+    handlerClearData(record: any, isOpen: boolean)
+    {
+      if (record && !(record.totalRows > 0)) {
+        return
+      }
+      this.contextData = record
+      this.clearDataVisible = isOpen
     },
     getState(state: Array<any> | null)
     {

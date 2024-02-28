@@ -64,6 +64,12 @@ public class DataSetController
         return service.syncData(id);
     }
 
+    @PutMapping(value = "clearData/{code}")
+    public CommonResponse<Boolean> clearData(@PathVariable String code)
+    {
+        return service.clearData(code);
+    }
+
     @PostMapping(value = "adhoc/{code}")
     public CommonResponse<Object> adhoc(@PathVariable String code,
             @RequestBody Adhoc configure)

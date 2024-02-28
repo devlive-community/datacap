@@ -53,6 +53,11 @@ class DatasetService
     return new HttpCommon().put(`${baseUrl}/syncData/${id}`);
   }
 
+  clearData(code: string): Promise<ResponseModel>
+  {
+    return new HttpCommon().put(`${baseUrl}/clearData/${code}`);
+  }
+
   getActuators(): Promise<ResponseModel>
   {
     return new HttpCommon().get(`${baseUrl}/getActuators`);
