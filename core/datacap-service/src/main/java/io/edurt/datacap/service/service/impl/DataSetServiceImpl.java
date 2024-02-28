@@ -73,7 +73,6 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
@@ -82,6 +81,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.requireNonNull;
 
 @Service
 @Slf4j
@@ -550,7 +551,7 @@ public class DataSetServiceImpl
             history.setState(response.getState());
             Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
 
-            this.flushTableMetadata(entity, outputPlugin, database, Objects.requireNonNull(output.getOriginConfigure()));
+            this.flushTableMetadata(entity, outputPlugin, database, requireNonNull(output.getOriginConfigure()));
         }
         catch (Exception e) {
             log.warn("Sync data for dataset [ {} ] failed", entity.getName(), e);
