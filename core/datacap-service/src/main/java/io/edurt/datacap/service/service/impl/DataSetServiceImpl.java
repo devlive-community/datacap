@@ -82,9 +82,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 @Service
 @Slf4j
-@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION"})
+@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
 public class DataSetServiceImpl
         implements DataSetService
 {
@@ -161,6 +163,18 @@ public class DataSetServiceImpl
         DataSetEntity entity = entityOptional.get();
         service.submit(() -> syncData(entity, service));
         return CommonResponse.success(true);
+    }
+
+    @Override
+    public CommonResponse<Boolean> clearData(String code)
+    {
+        return repository.findByCode(code)
+                .map(item -> {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.submit(() -> clearData(item, service));
+                    return CommonResponse.success(true);
+                })
+                .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
     }
 
     @Override
@@ -537,35 +551,7 @@ public class DataSetServiceImpl
             history.setState(response.getState());
             Preconditions.checkArgument(response.getSuccessful(), response.getMessage());
 
-            // Get the total number of rows and the total size of the dataset
-            log.info("Get the total number of rows and the total size of the dataset [ {} ]", entity.getName());
-            SqlBuilder builder = new SqlBuilder(SqlBody.builder()
-                    .type(SqlType.SELECT)
-                    .database("system")
-                    .table("parts")
-                    .columns(Lists.newArrayList(SqlColumn.builder().column("SUM(rows) AS totalCount").build(),
-                            SqlColumn.builder().column("formatReadableSize(SUM(data_compressed_bytes)) AS totalSize").build()))
-                    .where(Lists.newArrayList(SqlColumn.builder().column("database").operator(SqlOperator.EQ).value(database).build(),
-                            SqlColumn.builder().column("table").operator(SqlOperator.EQ).value(entity.getTableName()).build()))
-                    .condition(" AND ")
-                    .build());
-            outputPlugin.connect(output.getOriginConfigure());
-            Response outputResponse = outputPlugin.execute(builder.getSql());
-            if (outputResponse.getIsSuccessful()) {
-                Object columnData = outputResponse.getColumns().get(0);
-                if (columnData instanceof List<?>) {
-                    @SuppressWarnings("unchecked")
-                    List<Object> data = (List<Object>) columnData;
-                    if (!data.isEmpty()) {
-                        entity.setTotalRows(data.get(0).toString());
-                        entity.setTotalSize(data.get(1).toString());
-                        repository.save(entity);
-                    }
-                }
-                else {
-                    log.warn("The response data is not a list type");
-                }
-            }
+            this.flushTableMetadata(entity, outputPlugin, database, requireNonNull(output.getOriginConfigure()));
         }
         catch (Exception e) {
             log.warn("Sync data for dataset [ {} ] failed", entity.getName(), e);
@@ -575,6 +561,81 @@ public class DataSetServiceImpl
         finally {
             historyRepository.save(history);
             service.shutdownNow();
+        }
+    }
+
+    private void clearData(DataSetEntity entity, ExecutorService service)
+    {
+        try {
+            Plugin plugin = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
+            SourceEntity source = new SourceEntity();
+            source.setType(initializerConfigure.getDataSetConfigure().getType());
+            source.setDatabase(initializerConfigure.getDataSetConfigure().getDatabase());
+            source.setHost(initializerConfigure.getDataSetConfigure().getHost());
+            source.setPort(Integer.valueOf(initializerConfigure.getDataSetConfigure().getPort()));
+            source.setUsername(initializerConfigure.getDataSetConfigure().getUsername());
+            source.setPassword(initializerConfigure.getDataSetConfigure().getPassword());
+            source.setProtocol(PluginType.JDBC.name());
+
+            plugin.connect(source.toConfigure());
+            SqlBody body = SqlBody.builder()
+                    .type(SqlType.TRUNCATE)
+                    .database(initializerConfigure.getDataSetConfigure().getDatabase())
+                    .table(entity.getTableName())
+                    .build();
+            String sql = new SqlBuilder(body).getSql();
+            log.info("Clear data for dataset [ {} ] id [ {} ] sql \n {}", entity.getName(), entity.getId(), sql);
+            Response response = plugin.execute(sql);
+            Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+            this.flushTableMetadata(entity, plugin, initializerConfigure.getDataSetConfigure().getDatabase(), source.toConfigure());
+        }
+        catch (Exception e) {
+            log.warn("Clear data for dataset [ {} ] failed", entity.getName(), e);
+        }
+        finally {
+            service.shutdownNow();
+        }
+    }
+
+    /**
+     * Flushes the table metadata for a given dataset entity using the specified plugin and database configuration.
+     *
+     * @param entity the dataset entity to flush
+     * @param plugin the plugin used to connect
+     * @param database the database name
+     * @param configure the configuration settings
+     */
+    private void flushTableMetadata(DataSetEntity entity, Plugin plugin, String database, Configure configure)
+    {
+        // Get the total number of rows and the total size of the dataset
+        log.info("Get the total number of rows and the total size of the dataset [ {} ]", entity.getName());
+        SqlBuilder builder = new SqlBuilder(SqlBody.builder()
+                .type(SqlType.SELECT)
+                .database("system")
+                .table("parts")
+                .columns(Lists.newArrayList(SqlColumn.builder().column("SUM(rows) AS totalCount").build(),
+                        SqlColumn.builder().column("formatReadableSize(SUM(data_compressed_bytes)) AS totalSize").build()))
+                .where(Lists.newArrayList(SqlColumn.builder().column("database").operator(SqlOperator.EQ).value(database).build(),
+                        SqlColumn.builder().column("table").operator(SqlOperator.EQ).value(entity.getTableName()).build()))
+                .condition(" AND ")
+                .build());
+        configure.setFormat(FormatType.NONE);
+        plugin.connect(configure);
+        Response outputResponse = plugin.execute(builder.getSql());
+        if (outputResponse.getIsSuccessful()) {
+            Object columnData = outputResponse.getColumns().get(0);
+            if (columnData instanceof List<?>) {
+                @SuppressWarnings("unchecked")
+                List<Object> data = (List<Object>) columnData;
+                if (!data.isEmpty()) {
+                    entity.setTotalRows(data.get(0).toString());
+                    entity.setTotalSize(data.get(1).toString());
+                    repository.save(entity);
+                }
+            }
+            else {
+                log.warn("The response data is not a list type");
+            }
         }
     }
 }

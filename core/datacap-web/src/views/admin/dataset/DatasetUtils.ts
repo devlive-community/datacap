@@ -10,7 +10,7 @@ const createHeaders = (i18n: any) => {
     {
       title: i18n.t('common.name'),
       key: 'name',
-      width: 150,
+      minWidth: 150,
       ellipsis: true,
       tooltip: true
     },
@@ -56,7 +56,7 @@ const createHeaders = (i18n: any) => {
       key: 'state',
       slot: 'state',
       ellipsis: true,
-      width: 150,
+      minWidth: 150,
       align: 'center'
     },
     {
@@ -64,14 +64,14 @@ const createHeaders = (i18n: any) => {
       key: 'totalRows',
       ellipsis: true,
       align: 'center',
-      width: 150,
+      minWidth: 150,
       tooltip: true
     },
     {
       title: i18n.t('common.totalSize'),
       key: 'totalSize',
       ellipsis: true,
-      width: 150,
+      minWidth: 150,
       align: 'center',
       tooltip: true
     },
@@ -79,7 +79,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.createTime'),
       key: 'createTime',
       ellipsis: true,
-      width: 170,
+      minWidth: 170,
       align: 'center',
       tooltip: true
     },
@@ -87,7 +87,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.updateTime'),
       key: 'updateTime',
       ellipsis: true,
-      width: 170,
+      minWidth: 170,
       align: 'center',
       tooltip: true
     },
@@ -95,7 +95,7 @@ const createHeaders = (i18n: any) => {
       title: i18n.t('common.action'),
       slot: 'action',
       align: 'center',
-      width: 150,
+      minWidth: 150,
       key: 'action'
     }
   ]

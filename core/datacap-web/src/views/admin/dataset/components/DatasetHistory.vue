@@ -13,7 +13,15 @@
         </template>
         <template #state="{row}">
           <Tag :color="getColor(row.state)">
-            {{ getStateText(row.state) }}
+            <Poptip v-if="row.state === 'FAILURE'"
+                    :content="row.message"
+                    transfer
+                    placement="bottom">
+              {{ getStateText(row.state) }}
+            </Poptip>
+            <span v-else>
+              {{ getStateText(row.state) }}
+            </span>
           </Tag>
         </template>
       </Table>

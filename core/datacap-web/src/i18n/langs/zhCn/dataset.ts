@@ -91,4 +91,5 @@ export default {
   columnExpressionLessThanOrEquals: '小于等于',
   validatorSamplingTip: '排序键中必须包含抽样键',
   customFunction: '自定义函数',
+  clearDataTip: '清除数据后无法进行回滚，清除操作将在后台运行，请耐心等待',
 }
