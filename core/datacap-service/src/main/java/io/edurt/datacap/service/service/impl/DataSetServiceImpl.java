@@ -44,10 +44,12 @@ import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.enums.ColumnMode;
 import io.edurt.datacap.service.enums.ColumnType;
+import io.edurt.datacap.service.enums.CreatedMode;
 import io.edurt.datacap.service.enums.QueryMode;
 import io.edurt.datacap.service.enums.SyncMode;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.initializer.job.DatasetJob;
+import io.edurt.datacap.service.model.CreatedModel;
 import io.edurt.datacap.service.repository.DataSetColumnRepository;
 import io.edurt.datacap.service.repository.DataSetRepository;
 import io.edurt.datacap.service.repository.DatasetHistoryRepository;
@@ -346,6 +348,9 @@ public class DataSetServiceImpl
     {
         if (entity.getId() == null) {
             entity.setCode(UUID.randomUUID().toString());
+            String tablePrefix = initializerConfigure.getDataSetConfigure().getTablePrefix();
+            String tableName = String.format("%s%s", tablePrefix, UUID.randomUUID().toString().replace("-", ""));
+            entity.setTableName(tableName);
         }
         DataSetState state = entity.getState().get(entity.getState().size() - 1);
         if (state.equals(DataSetState.METADATA_START) || state.equals(DataSetState.METADATA_FAILED)) {
@@ -357,6 +362,8 @@ public class DataSetServiceImpl
 
     private void createMetadata(DataSetEntity entity, boolean rebuildColumn)
     {
+        Set<DataSetColumnEntity> targetColumns = entity.getColumns();
+        Set<CreatedModel> createdModels = this.createdModeProcess(targetColumns, entity);
         try {
             repository.save(entity);
             if (rebuildColumn) {
@@ -378,7 +385,12 @@ public class DataSetServiceImpl
                     || state.equals(DataSetState.TABLE_START)
                     || state.equals(DataSetState.TABLE_FAILED)) {
                 log.info("Start build table for dataset [ {} ]", entity.getName());
-                createTable(entity);
+                Optional<CreatedModel> createdModel = createdModels.stream()
+                        .filter(item -> item.getMode().equals(CreatedMode.CREATE_TABLE))
+                        .findFirst();
+                if (createdModel.isPresent()) {
+                    createTable(entity);
+                }
             }
         }
     }
@@ -392,8 +404,7 @@ public class DataSetServiceImpl
             }
             Plugin plugin = pluginOptional.get();
             String database = initializerConfigure.getDataSetConfigure().getDatabase();
-            String tablePrefix = initializerConfigure.getDataSetConfigure().getTablePrefix();
-            String originTableName = String.format("%s%s", tablePrefix, UUID.randomUUID().toString().replace("-", ""));
+            String originTableName = entity.getTableName();
             String tableDefaultEngine = initializerConfigure.getDataSetConfigure().getTableDefaultEngine();
 
             List<Column> columns = Lists.newArrayList();
@@ -637,5 +648,94 @@ public class DataSetServiceImpl
                 log.warn("The response data is not a list type");
             }
         }
+    }
+
+    private Set<CreatedModel> createdModeProcess(Set<DataSetColumnEntity> targetColumns, DataSetEntity entity)
+    {
+        Set<CreatedModel> models = Sets.newHashSet();
+
+        // If the id tag data is not set to new
+        if (entity.getId() == null) {
+            models.add(new CreatedModel(null, CreatedMode.CREATE_TABLE));
+            return models;
+        }
+
+        // Check whether there is a data table bound to the current dataset
+        if (!checkTableExists(entity)) {
+            models.add(new CreatedModel(null, CreatedMode.CREATE_TABLE));
+            return models;
+        }
+
+        List<DataSetColumnEntity> sourceColumns = columnRepository.findAllByDataset(entity);
+        for (DataSetColumnEntity sourceColumn : sourceColumns) {
+            Optional<DataSetColumnEntity> filterColumn = targetColumns.stream()
+                    .filter(item -> item.getId().equals(sourceColumn.getId()))
+                    .findFirst();
+            if (!filterColumn.isPresent()) {
+                models.add(new CreatedModel(sourceColumn, CreatedMode.CREATE_COLUMN));
+            }
+            else {
+                boolean matchFound = targetColumns.stream()
+                        .filter(item -> item.getId().equals(sourceColumn.getId()))
+                        .anyMatch(targetColumn ->
+                                targetColumn.getType().equals(sourceColumn.getType()) && targetColumn.getName().equals(sourceColumn.getName()));
+                if (!matchFound) {
+                    models.add(new CreatedModel(filterColumn.get(), CreatedMode.MODIFY_COLUMN));
+                }
+            }
+        }
+        return models;
+    }
+
+    /**
+     * A function to check if a table exists in the database.
+     *
+     * @param entity the DataSetEntity to check
+     * @return true if the table exists, false otherwise
+     */
+    private boolean checkTableExists(DataSetEntity entity)
+    {
+        try {
+            Plugin plugin = getOutputPlugin();
+            SourceEntity source = getOutputSource();
+            plugin.connect(source.toConfigure());
+            String sql = String.format("SHOW CREATE TABLE `%s`.`%s`", initializerConfigure.getDataSetConfigure().getDatabase(), entity.getTableName());
+            log.info("Check table exists for dataset [ {} ] id [ {} ] sql \n {}", entity.getName(), entity.getId(), sql);
+            Response response = plugin.execute(sql);
+            Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+            return true;
+        }
+        catch (Exception e) {
+            log.warn("Check table exists for dataset [ {} ] failed", entity.getName(), e);
+            return false;
+        }
+    }
+
+    /**
+     * Retrieves the output plugin using the injector and initializer configuration data set type.
+     *
+     * @return an instance of the output plugin, or null if not found
+     */
+    private Plugin getOutputPlugin()
+    {
+        return PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
+    }
+
+    /**
+     * Retrieves the output source entity with the configured data set properties.
+     *
+     * @return the output source entity with the configured data set properties
+     */
+    private SourceEntity getOutputSource()
+    {
+        SourceEntity source = new SourceEntity();
+        source.setType(initializerConfigure.getDataSetConfigure().getType());
+        source.setDatabase(initializerConfigure.getDataSetConfigure().getDatabase());
+        source.setHost(initializerConfigure.getDataSetConfigure().getHost());
+        source.setPort(Integer.valueOf(initializerConfigure.getDataSetConfigure().getPort()));
+        source.setUsername(initializerConfigure.getDataSetConfigure().getUsername());
+        source.setPassword(initializerConfigure.getDataSetConfigure().getPassword());
+        source.setProtocol(PluginType.JDBC.name());
+        return source;
     }
 }
