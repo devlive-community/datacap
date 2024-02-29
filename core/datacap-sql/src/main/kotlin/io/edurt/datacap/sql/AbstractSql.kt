@@ -143,6 +143,11 @@ abstract class AbstractSql<T> {
         return getSelf()
     }
 
+    fun FORMAT_ENGINE(engine: EngineType?): T {
+        sql().formatEngine = engine
+        return getSelf()
+    }
+
     fun ENGINE(engine: String?): T {
         sql().engine = engine
         return getSelf()
@@ -539,6 +544,7 @@ abstract class AbstractSql<T> {
         val partitionByKey: MutableList<String?> = ArrayList()
         val primaryKey: MutableList<String?> = ArrayList()
         val samplingKey: MutableList<String?> = ArrayList()
+        var formatEngine: EngineType? = EngineType.MYSQL
 
         init {
             // Prevent Synthetic Access
@@ -566,6 +572,9 @@ abstract class AbstractSql<T> {
                     if (part != null) {
                         if (i > 0 && part != AND && part != OR && last != AND && last != OR) {
                             builder.append(conjunction)
+                        }
+                        if (i > 0 && formatEngine?.equals(EngineType.CLICKHOUSE) == true) {
+                            builder.append(keyword)
                         }
                         builder.append(part)
                         last = part
@@ -723,7 +732,12 @@ abstract class AbstractSql<T> {
 
         private fun modifyColumnSQL(builder: SafeAppendable): String {
             sqlClause(builder, "ALTER TABLE", tables, "", "", "")
-            sqlClause(builder, "MODIFY", columns, "", "", ",\n")
+            if (formatEngine == EngineType.CLICKHOUSE) {
+                sqlClause(builder, "MODIFY COLUMN", columns, "", "", ",\n")
+            }
+            else {
+                sqlClause(builder, "MODIFY", columns, "", "", ",\n")
+            }
             if (end) {
                 builder.append(";")
             }

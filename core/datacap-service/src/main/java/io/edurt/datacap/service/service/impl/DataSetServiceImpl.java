@@ -60,6 +60,8 @@ import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
+import io.edurt.datacap.sql.EngineType;
+import io.edurt.datacap.sql.builder.ColumnBuilder;
 import io.edurt.datacap.sql.builder.TableBuilder;
 import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
@@ -469,7 +471,43 @@ public class DataSetServiceImpl
     private void createAndModifyColumn(DataSetEntity entity, Set<CreatedModel> createdModels)
     {
         try {
+            String tableName = String.format("`%s`.`%s`", initializerConfigure.getDataSetConfigure().getDatabase(), entity.getTableName());
 
+            List<Column> createColumns = createdModels.stream()
+                    .filter(item -> item.getMode().equals(CreatedMode.CREATE_COLUMN))
+                    .map(this::formatColumn)
+                    .collect(Collectors.toList());
+            if (!createColumns.isEmpty()) {
+                ColumnBuilder.Companion.BEGIN();
+                ColumnBuilder.Companion.CREATE_COLUMN(tableName);
+                ColumnBuilder.Companion.COLUMNS(createColumns.stream().map(Column::toColumnVar).collect(Collectors.toList()));
+                ColumnBuilder.Companion.FORMAT_ENGINE(EngineType.CLICKHOUSE);
+                String sql = ColumnBuilder.Companion.SQL();
+                Plugin plugin = getOutputPlugin();
+                SourceEntity source = getOutputSource();
+                plugin.connect(source.toConfigure());
+                Response response = plugin.execute(sql);
+                Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+                log.info("Create column sql \n {} \n on dataset [ {} ] id [ {} ]", sql, entity.getName(), entity.getId());
+            }
+
+            List<Column> modifyColumns = createdModels.stream()
+                    .filter(item -> item.getMode().equals(CreatedMode.MODIFY_COLUMN))
+                    .map(this::formatColumn)
+                    .collect(Collectors.toList());
+            if (!modifyColumns.isEmpty()) {
+                ColumnBuilder.Companion.BEGIN();
+                ColumnBuilder.Companion.MODIFY_COLUMN(tableName);
+                ColumnBuilder.Companion.COLUMNS(modifyColumns.stream().map(Column::toColumnVar).collect(Collectors.toList()));
+                ColumnBuilder.Companion.FORMAT_ENGINE(EngineType.CLICKHOUSE);
+                String sql = ColumnBuilder.Companion.SQL();
+                log.info("Modify column sql \n {} \n on dataset [ {} ] id [ {} ]", sql, entity.getName(), entity.getId());
+                Plugin plugin = getOutputPlugin();
+                SourceEntity source = getOutputSource();
+                plugin.connect(source.toConfigure());
+                Response response = plugin.execute(sql);
+                Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+            }
         }
         catch (Exception e) {
             log.warn("Modify dataset [ {} ] id [ {} ] add column failed", entity.getName(), entity.getId(), e);
@@ -769,5 +807,24 @@ public class DataSetServiceImpl
         source.setPassword(initializerConfigure.getDataSetConfigure().getPassword());
         source.setProtocol(PluginType.JDBC.name());
         return source;
+    }
+
+    /**
+     * Formats the given CreatedModel item into a Column object.
+     *
+     * @param item the CreatedModel item to be formatted
+     * @return the formatted Column object
+     */
+    private Column formatColumn(CreatedModel item)
+    {
+        Column column = new Column();
+        column.setName(item.getColumn().getName());
+        column.setType(getColumnType(item.getColumn().getType()));
+        column.setComment(item.getColumn().getComment());
+        column.setLength(item.getColumn().getLength());
+        column.setNullable(item.getColumn().isNullable());
+        column.setDefaultValue(item.getColumn().getDefaultValue());
+        column.setPrimaryKey(item.getColumn().isPrimaryKey());
+        return column;
     }
 }
