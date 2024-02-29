@@ -1,6 +1,7 @@
 export default {
   dataPreview: 'Data Preview',
   dataColumn: 'Data Columns',
+  dataConfigure: 'Data Configure',
   onlyPreviewCreate: 'Only preview data can be used to create datasets',
   returnQuery: 'Return Query',
   columnName: 'Column Name',

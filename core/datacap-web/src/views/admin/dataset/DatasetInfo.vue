@@ -1,5 +1,10 @@
 <template>
   <div>
+    <Button type="primary"
+            style="float: right; margin-right: 20px;"
+            @click="configureVisible = true">
+      {{ $t('common.configure') }}
+    </Button>
     <div v-if="data || code">
       <Divider orientation="left">
         {{ $t('dataset.dataPreview') }}
@@ -18,116 +23,168 @@
           {{ i18n.t('dataset.modifyNotSupportDataPreview') }}
         </template>
       </Result>
-      <Divider orientation="left">
-        {{ $t('dataset.dataColumn') }}
-      </Divider>
-      <Alert v-if="validator"
-             type="error">
-        {{ validatorMessage }}
-      </Alert>
-      <CircularLoading v-if="loading"
-                       :show="loading">
-      </CircularLoading>
-      <Form v-else
-            style="padding: 0 20px;"
-            class="center-form">
-        <FormItem style="margin-bottom: 5px;">
-          <Row :gutter="10">
-            <Col class="w150">{{ $t('dataset.columnName') }}</Col>
-            <Col class="w150">{{ $t('dataset.columnAlias') }}</Col>
-            <Col class="w100 center">{{ $t('dataset.columnType') }}</Col>
-            <Col class="w100 center">{{ $t('dataset.columnMode') }}</Col>
-            <Col class="w100">{{ $t('dataset.columnDefaultValue') }}</Col>
-            <Col class="w100 center">{{ $t('dataset.columnIsNullable') }}</Col>
-            <Col class="w100 center">{{ $t('dataset.columnIsOrderByKey') }}</Col>
-            <Col class="w100 center">{{ $t('dataset.columnIsPartitionKey') }}</Col>
-            <Col class="w100 center">{{ $t('dataset.columnIsPrimaryKey') }}</Col>
-            <Col class="w100 center">{{ $t('dataset.columnIsSampling') }}</Col>
-            <Col class="w100 center">{{ $t('dataset.columnLength') }}</Col>
-            <Col class="w200">{{ $t('dataset.columnComment') }}</Col>
-          </Row>
-        </FormItem>
-        <template v-for="(item, index) in formState.columns"
-                  :key="index">
-          <FormItem>
-            <Row :gutter="10">
-              <Col class="w150">
-                <Input v-model="item.name"
-                       type="text">
-                </Input>
-              </Col>
-              <Col class="w150">
-                <Input v-model="item.aliasName"
-                       type="text">
-                </Input>
-              </Col>
-              <Col class="w100">
-                <Select v-model="item.type">
-                  <Option value="STRING">{{ $t('dataset.columnTypeString') }}</Option>
-                  <Option value="NUMBER">{{ $t('dataset.columnTypeNumber') }}</Option>
-                  <Option value="NUMBER_SIGNED">{{ $t('dataset.columnTypeNumberSigned') }}</Option>
-                  <Option value="BOOLEAN">{{ $t('dataset.columnTypeBoolean') }}</Option>
-                </Select>
-              </Col>
-              <Col class="w100 center">
-                <Switch v-model="item.mode"
-                        size="large"
-                        true-value="METRIC"
-                        false-value="DIMENSION">
-                  <template #open>
-                    {{ $t('dataset.columnModeMetric') }}
-                  </template>
-                  <template #close>
-                    {{ $t('dataset.columnModeDimension') }}
-                  </template>
-                </Switch>
-              </Col>
-              <Col class="w100 center">
-                <Input v-model="item.defaultValue"
-                       type="text">
-                </Input>
-              </Col>
-              <Col class="w100 center">
-                <Switch v-model="item.nullable"/>
-              </Col>
-              <Col class="w100 center">
-                <Switch v-model="item.orderByKey"/>
-              </Col>
-              <Col class="w100 center">
-                <Switch v-model="item.partitionKey"/>
-              </Col>
-              <Col class="w100 center">
-                <Switch v-model="item.primaryKey"/>
-              </Col>
-              <Col class="w100 center">
-                <Switch v-model="item.samplingKey"
-                        @on-change="validatorSampling">
-                </Switch>
-              </Col>
-              <Col class="w100 center">
-                <InputNumber v-model="item.length"
-                             min="0"
-                             max="65536">
-                </InputNumber>
-              </Col>
-              <Col class="w200">
-                <Input v-model="item.comment"
+      <Drawer v-model="configureVisible"
+              placement="bottom"
+              height="70%"
+              :title="$t('common.configure')">
+        <Tabs :animated="false">
+          <TabPane :label="$t('dataset.dataColumn')">
+            <Alert v-if="validator"
+                   type="error">
+              {{ validatorMessage }}
+            </Alert>
+            <CircularLoading v-if="loading"
+                             :show="loading">
+            </CircularLoading>
+            <Form v-else
+                  style="padding: 0 20px;"
+                  class="center-form">
+              <FormItem style="margin-bottom: 5px;">
+                <Row :gutter="10">
+                  <Col class="w150">{{ $t('dataset.columnName') }}</Col>
+                  <Col class="w150">{{ $t('dataset.columnAlias') }}</Col>
+                  <Col class="w100 center">{{ $t('dataset.columnType') }}</Col>
+                  <Col class="w100 center">{{ $t('dataset.columnMode') }}</Col>
+                  <Col class="w100">{{ $t('dataset.columnDefaultValue') }}</Col>
+                  <Col class="w100 center">{{ $t('dataset.columnIsNullable') }}</Col>
+                  <Col class="w100 center">{{ $t('dataset.columnIsOrderByKey') }}</Col>
+                  <Col class="w100 center">{{ $t('dataset.columnIsPartitionKey') }}</Col>
+                  <Col class="w100 center">{{ $t('dataset.columnIsPrimaryKey') }}</Col>
+                  <Col class="w100 center">{{ $t('dataset.columnIsSampling') }}</Col>
+                  <Col class="w100 center">{{ $t('dataset.columnLength') }}</Col>
+                  <Col class="w200">{{ $t('dataset.columnComment') }}</Col>
+                </Row>
+              </FormItem>
+              <template v-for="(item, index) in formState.columns"
+                        :key="index">
+                <FormItem>
+                  <Row :gutter="10">
+                    <Col class="w150">
+                      <Input v-model="item.name"
+                             type="text">
+                      </Input>
+                    </Col>
+                    <Col class="w150">
+                      <Input v-model="item.aliasName"
+                             type="text">
+                      </Input>
+                    </Col>
+                    <Col class="w100">
+                      <Select v-model="item.type">
+                        <Option value="STRING">{{ $t('dataset.columnTypeString') }}</Option>
+                        <Option value="NUMBER">{{ $t('dataset.columnTypeNumber') }}</Option>
+                        <Option value="NUMBER_SIGNED">{{ $t('dataset.columnTypeNumberSigned') }}</Option>
+                        <Option value="BOOLEAN">{{ $t('dataset.columnTypeBoolean') }}</Option>
+                      </Select>
+                    </Col>
+                    <Col class="w100 center">
+                      <Switch v-model="item.mode"
+                              size="large"
+                              true-value="METRIC"
+                              false-value="DIMENSION">
+                        <template #open>
+                          {{ $t('dataset.columnModeMetric') }}
+                        </template>
+                        <template #close>
+                          {{ $t('dataset.columnModeDimension') }}
+                        </template>
+                      </Switch>
+                    </Col>
+                    <Col class="w100 center">
+                      <Input v-model="item.defaultValue"
+                             type="text">
+                      </Input>
+                    </Col>
+                    <Col class="w100 center">
+                      <Switch v-model="item.nullable"/>
+                    </Col>
+                    <Col class="w100 center">
+                      <Switch v-model="item.orderByKey"/>
+                    </Col>
+                    <Col class="w100 center">
+                      <Switch v-model="item.partitionKey"/>
+                    </Col>
+                    <Col class="w100 center">
+                      <Switch v-model="item.primaryKey"/>
+                    </Col>
+                    <Col class="w100 center">
+                      <Switch v-model="item.samplingKey"
+                              @on-change="validatorSampling">
+                      </Switch>
+                    </Col>
+                    <Col class="w100 center">
+                      <InputNumber v-model="item.length"
+                                   min="0"
+                                   max="65536">
+                      </InputNumber>
+                    </Col>
+                    <Col class="w200">
+                      <Input v-model="item.comment"
+                             type="textarea">
+                      </Input>
+                    </Col>
+                  </Row>
+                </FormItem>
+              </template>
+            </Form>
+          </TabPane>
+          <TabPane :label="$t('dataset.dataConfigure')">
+            <Form :label-width="80"
+                  class="center-form">
+              <FormItem :label="$t('common.name')">
+                <Input v-model="formState.name"/>
+              </FormItem>
+              <FormItem :label="$t('common.description')">
+                <Input v-model="formState.description"
                        type="textarea">
                 </Input>
-              </Col>
-            </Row>
-          </FormItem>
+              </FormItem>
+              <FormItem :label="$t('common.executor')">
+                <RadioGroup v-model="formState.executor">
+                  <Radio v-for="item in executors"
+                         :key="item"
+                         :label="item">
+                    {{ item }}
+                  </Radio>
+                </RadioGroup>
+              </FormItem>
+              <FormItem :label="$t('dataset.syncMode')">
+                <RadioGroup v-model="formState.syncMode">
+                  <Radio label="MANUAL">{{ $t('dataset.syncModeManual') }}</Radio>
+                  <Radio label="TIMING">{{ $t('dataset.syncModeTiming') }}</Radio>
+                  <Radio label="OUT_SYNC">{{ $t('dataset.syncModeOutSync') }}</Radio>
+                </RadioGroup>
+              </FormItem>
+              <FormItem v-if="formState.syncMode === 'TIMING'"
+                        :label="$t('dataset.columnExpression')">
+                <Input v-model="formState.expression"
+                       placeholder="0 0 * * * ?">
+                </Input>
+              </FormItem>
+              <FormItem v-if="formState.syncMode === 'TIMING'"
+                        :label="$t('common.scheduler')">
+                <RadioGroup v-model="formState.scheduler">
+                  <Radio v-for="item in schedulers"
+                         :key="item"
+                         :label="item">
+                    {{ item }}
+                  </Radio>
+                </RadioGroup>
+              </FormItem>
+            </Form>
+          </TabPane>
+        </Tabs>
+        <template #close>
+          <Button type="primary"
+                  :loading="saving"
+                  @click="handlerCreate">
+            {{ code ? $t('dataset.modify') : $t('dataset.create') }}
+          </Button>
         </template>
-        <Button type="primary"
-                style="margin-bottom: 15px; margin-right: 10px; float: right;"
-                :disabled="validator"
-                @click="infoVisible = true">
-          {{ code ? $t('dataset.modify') : $t('dataset.create') }}
-        </Button>
-      </Form>
+      </Drawer>
     </div>
     <Result v-else
-            style="margin-top: 100px;"
+            style="margin-top: 100px; height: 300px; min-height: 300px;"
             type="warning">
       <template #desc>
         {{ i18n.t('dataset.onlyPreviewCreate') }}
@@ -139,59 +196,6 @@
         </Button>
       </template>
     </Result>
-    <Modal v-model="infoVisible"
-           :title="code ? $t('dataset.modify') : $t('dataset.create')"
-           :mask-closable="false">
-      <Form :label-width="80">
-        <FormItem :label="$t('common.name')">
-          <Input v-model="formState.name"/>
-        </FormItem>
-        <FormItem :label="$t('common.description')">
-          <Input v-model="formState.description"
-                 type="textarea">
-          </Input>
-        </FormItem>
-        <FormItem :label="$t('common.executor')">
-          <RadioGroup v-model="formState.executor">
-            <Radio v-for="item in executors"
-                   :key="item"
-                   :label="item">
-              {{ item }}
-            </Radio>
-          </RadioGroup>
-        </FormItem>
-        <FormItem :label="$t('dataset.syncMode')">
-          <RadioGroup v-model="formState.syncMode">
-            <Radio label="MANUAL">{{ $t('dataset.syncModeManual') }}</Radio>
-            <Radio label="TIMING">{{ $t('dataset.syncModeTiming') }}</Radio>
-            <Radio label="OUT_SYNC">{{ $t('dataset.syncModeOutSync') }}</Radio>
-          </RadioGroup>
-        </FormItem>
-        <FormItem v-if="formState.syncMode === 'TIMING'"
-                  :label="$t('dataset.columnExpression')">
-          <Input v-model="formState.expression"
-                 placeholder="0 0 * * * ?">
-          </Input>
-        </FormItem>
-        <FormItem v-if="formState.syncMode === 'TIMING'"
-                  :label="$t('common.scheduler')">
-          <RadioGroup v-model="formState.scheduler">
-            <Radio v-for="item in schedulers"
-                   :key="item"
-                   :label="item">
-              {{ item }}
-            </Radio>
-          </RadioGroup>
-        </FormItem>
-      </Form>
-      <template #footer>
-        <Button type="primary"
-                :loading="saving"
-                @click="handlerCreate">
-          {{ code ? $t('dataset.modify') : $t('dataset.create') }}
-        </Button>
-      </template>
-    </Modal>
   </div>
 </template>
 
@@ -233,7 +237,7 @@ export default defineComponent({
       columnDefs: [],
       schedulers: [],
       executors: [],
-      infoVisible: false,
+      configureVisible: false,
       formState: {
         id: null,
         name: null,

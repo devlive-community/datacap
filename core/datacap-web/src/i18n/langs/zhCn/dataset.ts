@@ -1,6 +1,7 @@
 export default {
   dataPreview: '数据预览',
   dataColumn: '数据列',
+  dataConfigure: '数据配置',
   onlyPreviewCreate: '仅支持预览数据创建数据集',
   returnQuery: '返回查询',
   columnName: '列名',
