@@ -26,6 +26,18 @@ class TableBuilder {
             sql().CREATE_TABLE(table)
         }
 
+        fun MODIFY_LIFECYCLE(table: String?) {
+            sql().MODIFY_LIFECYCLE(table)
+        }
+
+        fun LIFECYCLE(lifecycle: String?) {
+            sql().LIFECYCLE(lifecycle)
+        }
+
+        fun ADD_LIFECYCLE(lifecycle: String?) {
+            sql().ADD_LIFECYCLE(lifecycle)
+        }
+
         fun COLUMNS(values: List<String>) {
             sql().COLUMNS(values)
         }

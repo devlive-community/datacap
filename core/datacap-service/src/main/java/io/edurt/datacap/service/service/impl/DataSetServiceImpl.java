@@ -437,6 +437,7 @@ public class DataSetServiceImpl
             TableBuilder.Companion.PARTITION_BY(columnEntities.stream().filter(DataSetColumnEntity::isPartitionKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
             TableBuilder.Companion.PRIMARY_KEY(columnEntities.stream().filter(DataSetColumnEntity::isPrimaryKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
             TableBuilder.Companion.SAMPLING_KEY(columnEntities.stream().filter(DataSetColumnEntity::isSamplingKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
+            TableBuilder.Companion.ADD_LIFECYCLE(String.format("`%s` + INTERVAL %s %s", entity.getLifeCycleColumn(), entity.getLifeCycle(), entity.getLifeCycleType()));
             String sql = TableBuilder.Companion.SQL();
             log.info("Create table sql \n {} \n on dataset [ {} ]", sql, entity.getName());
 
@@ -512,6 +513,23 @@ public class DataSetServiceImpl
                 Response response = plugin.execute(sql);
                 Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
             }
+
+            createdModels.stream()
+                    .filter(item -> item.getMode().equals(CreatedMode.MODIFY_LIFECYCLE))
+                    .findFirst()
+                    .ifPresent(item -> {
+                        TableBuilder.Companion.BEGIN();
+                        TableBuilder.Companion.MODIFY_LIFECYCLE(tableName);
+                        TableBuilder.Companion.LIFECYCLE(String.format("`%s` + INTERVAL %s %s", item.getColumn().getName(), item.getColumn().getLength(), item.getColumn().getDefaultValue()));
+                        String sql = TableBuilder.Companion.SQL();
+                        log.info("Modify lifecycle sql \n {} \n on dataset [ {} ] id [ {} ]", sql, entity.getName(), entity.getId());
+                        Plugin plugin = getOutputPlugin();
+                        SourceEntity source = getOutputSource();
+                        plugin.connect(source.toConfigure());
+                        Response response = plugin.execute(sql);
+                        Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+                    });
+
             completeState(entity, DataSetState.TABLE_SUCCESS);
         }
         catch (Exception e) {
@@ -758,6 +776,15 @@ public class DataSetServiceImpl
                     models.add(new CreatedModel(filterColumn.get(), CreatedMode.MODIFY_COLUMN));
                 }
             }
+        }
+
+        if (entity.getLifeCycleColumn() != null) {
+            DataSetColumnEntity column = DataSetColumnEntity.builder()
+                    .name(entity.getLifeCycleColumn())
+                    .length(Integer.parseInt(entity.getLifeCycle()))
+                    .defaultValue(entity.getLifeCycleType())
+                    .build();
+            models.add(new CreatedModel(column, CreatedMode.MODIFY_LIFECYCLE));
         }
         return models;
     }
