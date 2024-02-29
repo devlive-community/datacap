@@ -329,6 +329,8 @@ public class DataSetServiceImpl
                 return "UInt64";
             case BOOLEAN:
                 return "Boolean";
+            case DATETIME:
+                return "DateTime";
             case STRING:
             default:
                 return "String";

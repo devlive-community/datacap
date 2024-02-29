@@ -75,6 +75,7 @@
                         <Option value="NUMBER">{{ $t('dataset.columnTypeNumber') }}</Option>
                         <Option value="NUMBER_SIGNED">{{ $t('dataset.columnTypeNumberSigned') }}</Option>
                         <Option value="BOOLEAN">{{ $t('dataset.columnTypeBoolean') }}</Option>
+                        <Option value="DATETIME">{{ $t('dataset.columnTypeDateTime') }}</Option>
                       </Select>
                     </Col>
                     <Col class="w100 center">
@@ -129,17 +130,20 @@
             </Form>
           </TabPane>
           <TabPane :label="$t('dataset.dataConfigure')">
-            <Form :label-width="80"
+            <Form :label-width="130"
                   class="center-form">
-              <FormItem :label="$t('common.name')">
+              <FormItem :label="$t('common.name')"
+                        class="wt30">
                 <Input v-model="formState.name"/>
               </FormItem>
-              <FormItem :label="$t('common.description')">
+              <FormItem :label="$t('common.description')"
+                        class="wt30">
                 <Input v-model="formState.description"
                        type="textarea">
                 </Input>
               </FormItem>
-              <FormItem :label="$t('common.executor')">
+              <FormItem :label="$t('common.executor')"
+                        class="wt30">
                 <RadioGroup v-model="formState.executor">
                   <Radio v-for="item in executors"
                          :key="item"
@@ -148,7 +152,8 @@
                   </Radio>
                 </RadioGroup>
               </FormItem>
-              <FormItem :label="$t('dataset.syncMode')">
+              <FormItem :label="$t('dataset.syncMode')"
+                        class="wt30">
                 <RadioGroup v-model="formState.syncMode">
                   <Radio label="MANUAL">{{ $t('dataset.syncModeManual') }}</Radio>
                   <Radio label="TIMING">{{ $t('dataset.syncModeTiming') }}</Radio>
@@ -156,12 +161,14 @@
                 </RadioGroup>
               </FormItem>
               <FormItem v-if="formState.syncMode === 'TIMING'"
+                        class="wt30"
                         :label="$t('dataset.columnExpression')">
                 <Input v-model="formState.expression"
                        placeholder="0 0 * * * ?">
                 </Input>
               </FormItem>
               <FormItem v-if="formState.syncMode === 'TIMING'"
+                        class="wt30"
                         :label="$t('common.scheduler')">
                 <RadioGroup v-model="formState.scheduler">
                   <Radio v-for="item in schedulers"
@@ -170,6 +177,48 @@
                     {{ item }}
                   </Radio>
                 </RadioGroup>
+              </FormItem>
+              <FormItem class="wt30">
+                <template #label>
+                  {{ $t('dataset.dataLifeCycle') }}
+                  <Poptip trigger="hover"
+                          :content="$t('dataset.lifeCycleTip')">
+                    <FontAwesomeIcon icon="circle-question"/>
+                  </Poptip>
+                </template>
+                <Input v-model="formState.lifeCycle"
+                       type="number"
+                       :disabled="formState.columns.filter(item => item.type === 'DATETIME').length === 0">
+                  <template #prepend>
+                    <Select v-model="formState.lifeCycleColumn"
+                            transfer
+                            style="width: 120px">
+                      <Option v-for="item in formState.columns.filter(item => item.type === 'DATETIME')"
+                              :key="item.name"
+                              :value="item.name">
+                        {{ item.name }}
+                      </Option>
+                    </Select>
+                  </template>
+                  <template #append>
+                    <Select v-model="formState.lifeCycleType"
+                            transfer
+                            style="width: 80px">
+                      <Option value="MONTH">
+                        {{ $t('dataset.lifeCycleMonth') }}
+                      </Option>
+                      <Option value="WEEK">
+                        {{ $t('dataset.lifeCycleWeek') }}
+                      </Option>
+                      <Option value="DAY">
+                        {{ $t('dataset.lifeCycleDay') }}
+                      </Option>
+                      <Option value="HOUR">
+                        {{ $t('dataset.lifeCycleHour') }}
+                      </Option>
+                    </Select>
+                  </template>
+                </Input>
               </FormItem>
             </Form>
           </TabPane>
@@ -210,10 +259,11 @@ import DatasetService from "@/services/admin/DatasetService";
 import {HttpCommon} from "@/common/HttpCommon";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import PluginService from "@/services/admin/PluginService";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 export default defineComponent({
   name: 'DatasetInfo',
-  components: {CircularLoading, AgGridVue},
+  components: {FontAwesomeIcon, CircularLoading, AgGridVue},
   computed: {
     ...mapState(['data'])
   },
@@ -248,7 +298,10 @@ export default defineComponent({
         source: {id: null},
         expression: null,
         scheduler: 'Default',
-        executor: 'Default'
+        executor: 'Default',
+        lifeCycle: null,
+        lifeCycleColumn: null,
+        lifeCycleType: null
       }
     }
   },
@@ -371,6 +424,10 @@ export default defineComponent({
 
 .w200 {
   width: 200px;
+}
+
+.wt30 {
+  min-width: 30%;
 }
 
 .center {

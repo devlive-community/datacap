@@ -5,5 +5,6 @@ public enum ColumnType
     STRING,
     NUMBER,
     NUMBER_SIGNED,
-    BOOLEAN
+    BOOLEAN,
+    DATETIME
 }
