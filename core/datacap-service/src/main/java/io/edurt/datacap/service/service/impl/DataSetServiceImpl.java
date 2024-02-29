@@ -355,8 +355,10 @@ public class DataSetServiceImpl
             entity.setTableName(tableName);
         }
         DataSetState state = entity.getState().get(entity.getState().size() - 1);
-        if (state.equals(DataSetState.METADATA_START) || state.equals(DataSetState.METADATA_FAILED)) {
-            log.info("Start build metadata for dataset [ {} ]", entity.getName());
+        if (state.equals(DataSetState.METADATA_START)
+                || state.equals(DataSetState.METADATA_FAILED)
+                || state.equals(DataSetState.TABLE_FAILED)) {
+            log.info("Start build metadata for dataset [ {} ] id [ {} ]", entity.getName(), entity.getId());
             createMetadata(entity, rebuildColumn);
         }
         throw new IllegalArgumentException(String.format("Invalid state [ %s ]", state));
@@ -508,6 +510,7 @@ public class DataSetServiceImpl
                 Response response = plugin.execute(sql);
                 Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
             }
+            completeState(entity, DataSetState.TABLE_SUCCESS);
         }
         catch (Exception e) {
             log.warn("Modify dataset [ {} ] id [ {} ] add column failed", entity.getName(), entity.getId(), e);
