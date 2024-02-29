@@ -1,6 +1,8 @@
 export default {
   dataPreview: 'Data Preview',
   dataColumn: 'Data Columns',
+  dataConfigure: 'Data Configure',
+  dataLifeCycle: 'Data Life Cycle',
   onlyPreviewCreate: 'Only preview data can be used to create datasets',
   returnQuery: 'Return Query',
   columnName: 'Column Name',
@@ -10,6 +12,7 @@ export default {
   columnTypeNumber: 'Number',
   columnTypeNumberSigned: 'Number (Signed)',
   columnTypeBoolean: 'Boolean',
+  columnTypeDateTime: 'DateTime',
   columnDescription: 'Column Description',
   columnComment: 'Column Comment',
   columnDefaultValue: 'Default Value',
@@ -92,4 +95,9 @@ export default {
   validatorSamplingTip: 'The order by key must contain a sampling key',
   customFunction: 'Custom Function',
   clearDataTip: 'Clear data will not be able to rollback, clear operation will run in the background, please be patient',
+  lifeCycleTip: 'Data set life cycle will be calculated according to the specified list expression',
+  lifeCycleMonth: 'Month',
+  lifeCycleWeek: 'Week',
+  lifeCycleDay: 'Day',
+  lifeCycleHour: 'Hour',
 }

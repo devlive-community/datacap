@@ -44,10 +44,12 @@ import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.enums.ColumnMode;
 import io.edurt.datacap.service.enums.ColumnType;
+import io.edurt.datacap.service.enums.CreatedMode;
 import io.edurt.datacap.service.enums.QueryMode;
 import io.edurt.datacap.service.enums.SyncMode;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.initializer.job.DatasetJob;
+import io.edurt.datacap.service.model.CreatedModel;
 import io.edurt.datacap.service.repository.DataSetColumnRepository;
 import io.edurt.datacap.service.repository.DataSetRepository;
 import io.edurt.datacap.service.repository.DatasetHistoryRepository;
@@ -58,6 +60,8 @@ import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
+import io.edurt.datacap.sql.EngineType;
+import io.edurt.datacap.sql.builder.ColumnBuilder;
 import io.edurt.datacap.sql.builder.TableBuilder;
 import io.edurt.datacap.sql.model.Column;
 import lombok.extern.slf4j.Slf4j;
@@ -325,6 +329,8 @@ public class DataSetServiceImpl
                 return "UInt64";
             case BOOLEAN:
                 return "Boolean";
+            case DATETIME:
+                return "DateTime";
             case STRING:
             default:
                 return "String";
@@ -346,10 +352,15 @@ public class DataSetServiceImpl
     {
         if (entity.getId() == null) {
             entity.setCode(UUID.randomUUID().toString());
+            String tablePrefix = initializerConfigure.getDataSetConfigure().getTablePrefix();
+            String tableName = String.format("%s%s", tablePrefix, UUID.randomUUID().toString().replace("-", ""));
+            entity.setTableName(tableName);
         }
         DataSetState state = entity.getState().get(entity.getState().size() - 1);
-        if (state.equals(DataSetState.METADATA_START) || state.equals(DataSetState.METADATA_FAILED)) {
-            log.info("Start build metadata for dataset [ {} ]", entity.getName());
+        if (state.equals(DataSetState.METADATA_START)
+                || state.equals(DataSetState.METADATA_FAILED)
+                || state.equals(DataSetState.TABLE_FAILED)) {
+            log.info("Start build metadata for dataset [ {} ] id [ {} ]", entity.getName(), entity.getId());
             createMetadata(entity, rebuildColumn);
         }
         throw new IllegalArgumentException(String.format("Invalid state [ %s ]", state));
@@ -357,6 +368,8 @@ public class DataSetServiceImpl
 
     private void createMetadata(DataSetEntity entity, boolean rebuildColumn)
     {
+        Set<DataSetColumnEntity> targetColumns = entity.getColumns();
+        Set<CreatedModel> createdModels = this.createdModeProcess(targetColumns, entity);
         try {
             repository.save(entity);
             if (rebuildColumn) {
@@ -378,7 +391,15 @@ public class DataSetServiceImpl
                     || state.equals(DataSetState.TABLE_START)
                     || state.equals(DataSetState.TABLE_FAILED)) {
                 log.info("Start build table for dataset [ {} ]", entity.getName());
-                createTable(entity);
+                Optional<CreatedModel> createdModel = createdModels.stream()
+                        .filter(item -> item.getMode().equals(CreatedMode.CREATE_TABLE))
+                        .findFirst();
+                if (createdModel.isPresent()) {
+                    createTable(entity);
+                }
+                else {
+                    createAndModifyColumn(entity, createdModels);
+                }
             }
         }
     }
@@ -392,8 +413,7 @@ public class DataSetServiceImpl
             }
             Plugin plugin = pluginOptional.get();
             String database = initializerConfigure.getDataSetConfigure().getDatabase();
-            String tablePrefix = initializerConfigure.getDataSetConfigure().getTablePrefix();
-            String originTableName = String.format("%s%s", tablePrefix, UUID.randomUUID().toString().replace("-", ""));
+            String originTableName = entity.getTableName();
             String tableDefaultEngine = initializerConfigure.getDataSetConfigure().getTableDefaultEngine();
 
             List<Column> columns = Lists.newArrayList();
@@ -417,6 +437,7 @@ public class DataSetServiceImpl
             TableBuilder.Companion.PARTITION_BY(columnEntities.stream().filter(DataSetColumnEntity::isPartitionKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
             TableBuilder.Companion.PRIMARY_KEY(columnEntities.stream().filter(DataSetColumnEntity::isPrimaryKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
             TableBuilder.Companion.SAMPLING_KEY(columnEntities.stream().filter(DataSetColumnEntity::isSamplingKey).map(DataSetColumnEntity::getName).collect(Collectors.toList()));
+            TableBuilder.Companion.ADD_LIFECYCLE(String.format("`%s` + INTERVAL %s %s", entity.getLifeCycleColumn(), entity.getLifeCycle(), entity.getLifeCycleType()));
             String sql = TableBuilder.Companion.SQL();
             log.info("Create table sql \n {} \n on dataset [ {} ]", sql, entity.getName());
 
@@ -447,35 +468,80 @@ public class DataSetServiceImpl
             repository.save(entity);
             DataSetState state = entity.getState().get(entity.getState().size() - 1);
             if (state.equals(DataSetState.TABLE_SUCCESS)) {
-                log.info("Start schedule for dataset [ {} ]", entity.getName());
-                if (entity.getSyncMode().equals(SyncMode.TIMING)) {
-                    SpiUtils.findSchedule(this.injector, entity.getScheduler())
-                            .ifPresent(scheduler -> {
-                                SchedulerRequest request = new SchedulerRequest();
-                                request.setName(entity.getId().toString());
-                                request.setGroup("datacap");
-                                request.setExpression(entity.getExpression());
-                                request.setJobId(String.valueOf(entity.getId()));
-                                request.setCreateBeforeDelete(true);
-                                if (scheduler.name().equals("Default")) {
-                                    request.setJob(new DatasetJob());
-                                    request.setScheduler(this.scheduler);
-                                }
-                                scheduler.initialize(request);
-                            });
-                }
-                else {
-                    SpiUtils.findSchedule(this.injector, entity.getScheduler())
-                            .ifPresent(scheduler -> {
-                                SchedulerRequest request = new SchedulerRequest();
-                                request.setName(entity.getId().toString());
-                                request.setGroup("datacap");
-                                if (scheduler.name().equals("Default")) {
-                                    request.setScheduler(this.scheduler);
-                                }
-                                scheduler.stop(request);
-                            });
-                }
+                flushSyncData(entity);
+            }
+        }
+    }
+
+    private void createAndModifyColumn(DataSetEntity entity, Set<CreatedModel> createdModels)
+    {
+        try {
+            String tableName = String.format("`%s`.`%s`", initializerConfigure.getDataSetConfigure().getDatabase(), entity.getTableName());
+
+            List<Column> createColumns = createdModels.stream()
+                    .filter(item -> item.getMode().equals(CreatedMode.CREATE_COLUMN))
+                    .map(this::formatColumn)
+                    .collect(Collectors.toList());
+            if (!createColumns.isEmpty()) {
+                ColumnBuilder.Companion.BEGIN();
+                ColumnBuilder.Companion.CREATE_COLUMN(tableName);
+                ColumnBuilder.Companion.COLUMNS(createColumns.stream().map(Column::toColumnVar).collect(Collectors.toList()));
+                ColumnBuilder.Companion.FORMAT_ENGINE(EngineType.CLICKHOUSE);
+                String sql = ColumnBuilder.Companion.SQL();
+                Plugin plugin = getOutputPlugin();
+                SourceEntity source = getOutputSource();
+                plugin.connect(source.toConfigure());
+                Response response = plugin.execute(sql);
+                Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+                log.info("Create column sql \n {} \n on dataset [ {} ] id [ {} ]", sql, entity.getName(), entity.getId());
+            }
+
+            List<Column> modifyColumns = createdModels.stream()
+                    .filter(item -> item.getMode().equals(CreatedMode.MODIFY_COLUMN))
+                    .map(this::formatColumn)
+                    .collect(Collectors.toList());
+            if (!modifyColumns.isEmpty()) {
+                ColumnBuilder.Companion.BEGIN();
+                ColumnBuilder.Companion.MODIFY_COLUMN(tableName);
+                ColumnBuilder.Companion.COLUMNS(modifyColumns.stream().map(Column::toColumnVar).collect(Collectors.toList()));
+                ColumnBuilder.Companion.FORMAT_ENGINE(EngineType.CLICKHOUSE);
+                String sql = ColumnBuilder.Companion.SQL();
+                log.info("Modify column sql \n {} \n on dataset [ {} ] id [ {} ]", sql, entity.getName(), entity.getId());
+                Plugin plugin = getOutputPlugin();
+                SourceEntity source = getOutputSource();
+                plugin.connect(source.toConfigure());
+                Response response = plugin.execute(sql);
+                Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+            }
+
+            createdModels.stream()
+                    .filter(item -> item.getMode().equals(CreatedMode.MODIFY_LIFECYCLE))
+                    .findFirst()
+                    .ifPresent(item -> {
+                        TableBuilder.Companion.BEGIN();
+                        TableBuilder.Companion.MODIFY_LIFECYCLE(tableName);
+                        TableBuilder.Companion.LIFECYCLE(String.format("`%s` + INTERVAL %s %s", item.getColumn().getName(), item.getColumn().getLength(), item.getColumn().getDefaultValue()));
+                        String sql = TableBuilder.Companion.SQL();
+                        log.info("Modify lifecycle sql \n {} \n on dataset [ {} ] id [ {} ]", sql, entity.getName(), entity.getId());
+                        Plugin plugin = getOutputPlugin();
+                        SourceEntity source = getOutputSource();
+                        plugin.connect(source.toConfigure());
+                        Response response = plugin.execute(sql);
+                        Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+                    });
+
+            completeState(entity, DataSetState.TABLE_SUCCESS);
+        }
+        catch (Exception e) {
+            log.warn("Modify dataset [ {} ] id [ {} ] add column failed", entity.getName(), entity.getId(), e);
+            completeState(entity, DataSetState.TABLE_FAILED);
+            entity.setMessage(e.getMessage());
+        }
+        finally {
+            repository.save(entity);
+            DataSetState state = entity.getState().get(entity.getState().size() - 1);
+            if (state.equals(DataSetState.TABLE_SUCCESS)) {
+                flushSyncData(entity);
             }
         }
     }
@@ -564,6 +630,44 @@ public class DataSetServiceImpl
         }
     }
 
+    /**
+     * Flushes the synchronous data for the given DataSetEntity.
+     *
+     * @param entity the DataSetEntity to flush
+     */
+    private void flushSyncData(DataSetEntity entity)
+    {
+        log.info("Start schedule for dataset [ {} ] id [ {} ]", entity.getName(), entity.getId());
+        if (entity.getSyncMode().equals(SyncMode.TIMING)) {
+            SpiUtils.findSchedule(this.injector, entity.getScheduler())
+                    .ifPresent(scheduler -> {
+                        SchedulerRequest request = new SchedulerRequest();
+                        request.setName(entity.getId().toString());
+                        request.setGroup("datacap");
+                        request.setExpression(entity.getExpression());
+                        request.setJobId(String.valueOf(entity.getId()));
+                        request.setCreateBeforeDelete(true);
+                        if (scheduler.name().equals("Default")) {
+                            request.setJob(new DatasetJob());
+                            request.setScheduler(this.scheduler);
+                        }
+                        scheduler.initialize(request);
+                    });
+        }
+        else {
+            SpiUtils.findSchedule(this.injector, entity.getScheduler())
+                    .ifPresent(scheduler -> {
+                        SchedulerRequest request = new SchedulerRequest();
+                        request.setName(entity.getId().toString());
+                        request.setGroup("datacap");
+                        if (scheduler.name().equals("Default")) {
+                            request.setScheduler(this.scheduler);
+                        }
+                        scheduler.stop(request);
+                    });
+        }
+    }
+
     private void clearData(DataSetEntity entity, ExecutorService service)
     {
         try {
@@ -637,5 +741,122 @@ public class DataSetServiceImpl
                 log.warn("The response data is not a list type");
             }
         }
+    }
+
+    private Set<CreatedModel> createdModeProcess(Set<DataSetColumnEntity> targetColumns, DataSetEntity entity)
+    {
+        Set<CreatedModel> models = Sets.newHashSet();
+
+        // If the id tag data is not set to new
+        if (entity.getId() == null) {
+            models.add(new CreatedModel(null, CreatedMode.CREATE_TABLE));
+            return models;
+        }
+
+        // Check whether there is a data table bound to the current dataset
+        if (!checkTableExists(entity)) {
+            models.add(new CreatedModel(null, CreatedMode.CREATE_TABLE));
+            return models;
+        }
+
+        List<DataSetColumnEntity> sourceColumns = columnRepository.findAllByDataset(entity);
+        for (DataSetColumnEntity sourceColumn : sourceColumns) {
+            Optional<DataSetColumnEntity> filterColumn = targetColumns.stream()
+                    .filter(item -> item.getId().equals(sourceColumn.getId()))
+                    .findFirst();
+            if (!filterColumn.isPresent()) {
+                models.add(new CreatedModel(sourceColumn, CreatedMode.CREATE_COLUMN));
+            }
+            else {
+                boolean matchFound = targetColumns.stream()
+                        .filter(item -> item.getId().equals(sourceColumn.getId()))
+                        .anyMatch(targetColumn ->
+                                targetColumn.getType().equals(sourceColumn.getType()) && targetColumn.getName().equals(sourceColumn.getName()));
+                if (!matchFound) {
+                    models.add(new CreatedModel(filterColumn.get(), CreatedMode.MODIFY_COLUMN));
+                }
+            }
+        }
+
+        if (entity.getLifeCycleColumn() != null) {
+            DataSetColumnEntity column = DataSetColumnEntity.builder()
+                    .name(entity.getLifeCycleColumn())
+                    .length(Integer.parseInt(entity.getLifeCycle()))
+                    .defaultValue(entity.getLifeCycleType())
+                    .build();
+            models.add(new CreatedModel(column, CreatedMode.MODIFY_LIFECYCLE));
+        }
+        return models;
+    }
+
+    /**
+     * A function to check if a table exists in the database.
+     *
+     * @param entity the DataSetEntity to check
+     * @return true if the table exists, false otherwise
+     */
+    private boolean checkTableExists(DataSetEntity entity)
+    {
+        try {
+            Plugin plugin = getOutputPlugin();
+            SourceEntity source = getOutputSource();
+            plugin.connect(source.toConfigure());
+            String sql = String.format("SHOW CREATE TABLE `%s`.`%s`", initializerConfigure.getDataSetConfigure().getDatabase(), entity.getTableName());
+            log.info("Check table exists for dataset [ {} ] id [ {} ] sql \n {}", entity.getName(), entity.getId(), sql);
+            Response response = plugin.execute(sql);
+            Preconditions.checkArgument(response.getIsSuccessful(), response.getMessage());
+            return true;
+        }
+        catch (Exception e) {
+            log.warn("Check table exists for dataset [ {} ] failed", entity.getName(), e);
+            return false;
+        }
+    }
+
+    /**
+     * Retrieves the output plugin using the injector and initializer configuration data set type.
+     *
+     * @return an instance of the output plugin, or null if not found
+     */
+    private Plugin getOutputPlugin()
+    {
+        return PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
+    }
+
+    /**
+     * Retrieves the output source entity with the configured data set properties.
+     *
+     * @return the output source entity with the configured data set properties
+     */
+    private SourceEntity getOutputSource()
+    {
+        SourceEntity source = new SourceEntity();
+        source.setType(initializerConfigure.getDataSetConfigure().getType());
+        source.setDatabase(initializerConfigure.getDataSetConfigure().getDatabase());
+        source.setHost(initializerConfigure.getDataSetConfigure().getHost());
+        source.setPort(Integer.valueOf(initializerConfigure.getDataSetConfigure().getPort()));
+        source.setUsername(initializerConfigure.getDataSetConfigure().getUsername());
+        source.setPassword(initializerConfigure.getDataSetConfigure().getPassword());
+        source.setProtocol(PluginType.JDBC.name());
+        return source;
+    }
+
+    /**
+     * Formats the given CreatedModel item into a Column object.
+     *
+     * @param item the CreatedModel item to be formatted
+     * @return the formatted Column object
+     */
+    private Column formatColumn(CreatedModel item)
+    {
+        Column column = new Column();
+        column.setName(item.getColumn().getName());
+        column.setType(getColumnType(item.getColumn().getType()));
+        column.setComment(item.getColumn().getComment());
+        column.setLength(item.getColumn().getLength());
+        column.setNullable(item.getColumn().isNullable());
+        column.setDefaultValue(item.getColumn().getDefaultValue());
+        column.setPrimaryKey(item.getColumn().isPrimaryKey());
+        return column;
     }
 }

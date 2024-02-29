@@ -18,6 +18,7 @@ import {
   faCircleMinus,
   faCirclePlay,
   faCirclePlus,
+  faCircleQuestion,
   faCircleStop,
   faClock,
   faClone,
@@ -65,6 +66,7 @@ import {faCloud} from "@fortawesome/free-solid-svg-icons/faCloud";
  */
 const createIcons = (app: any) => {
   library.add(faArrowRight,
+    faCircleQuestion,
     faPen,
     faCloud,
     faChartSimple,

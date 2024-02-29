@@ -120,6 +120,22 @@ abstract class AbstractSql<T> {
         return getSelf()
     }
 
+    fun MODIFY_LIFECYCLE(table: String?): T {
+        sql().statementType = StatementType.MODIFY_LIFECYCLE
+        sql().tables.add(table)
+        return getSelf()
+    }
+
+    fun LIFECYCLE(lifecycle: String?): T {
+        sql().lifecycle = lifecycle
+        return getSelf()
+    }
+
+    fun ADD_LIFECYCLE(lifecycle: String?): T {
+        sql().lifecycle = lifecycle
+        return getSelf()
+    }
+
     fun CREATE_COLUMN(table: String?): T {
         sql().statementType = StatementType.CREATE_COLUMN
         sql().tables.add(table)
@@ -140,6 +156,11 @@ abstract class AbstractSql<T> {
 
     fun COLUMNS(columns: List<String>): T {
         sql().columns.addAll(columns.map { item -> "\t$item" })
+        return getSelf()
+    }
+
+    fun FORMAT_ENGINE(engine: EngineType?): T {
+        sql().formatEngine = engine
         return getSelf()
     }
 
@@ -539,6 +560,8 @@ abstract class AbstractSql<T> {
         val partitionByKey: MutableList<String?> = ArrayList()
         val primaryKey: MutableList<String?> = ArrayList()
         val samplingKey: MutableList<String?> = ArrayList()
+        var formatEngine: EngineType? = EngineType.MYSQL
+        var lifecycle: String? = null
 
         init {
             // Prevent Synthetic Access
@@ -566,6 +589,9 @@ abstract class AbstractSql<T> {
                     if (part != null) {
                         if (i > 0 && part != AND && part != OR && last != AND && last != OR) {
                             builder.append(conjunction)
+                        }
+                        if (i > 0 && formatEngine?.equals(EngineType.CLICKHOUSE) == true) {
+                            builder.append(keyword)
                         }
                         builder.append(part)
                         last = part
@@ -697,6 +723,9 @@ abstract class AbstractSql<T> {
             if (samplingKey.isNotEmpty()) {
                 sqlClause(builder, "SAMPLE BY", samplingKey, "(", ")", ", ")
             }
+            if (lifecycle != null) {
+                sqlClause(builder, "TTL", listOf(lifecycle), "", "", ", ")
+            }
             if (end) {
                 builder.append(";")
             }
@@ -723,7 +752,21 @@ abstract class AbstractSql<T> {
 
         private fun modifyColumnSQL(builder: SafeAppendable): String {
             sqlClause(builder, "ALTER TABLE", tables, "", "", "")
-            sqlClause(builder, "MODIFY", columns, "", "", ",\n")
+            if (formatEngine == EngineType.CLICKHOUSE) {
+                sqlClause(builder, "MODIFY COLUMN", columns, "", "", ",\n")
+            }
+            else {
+                sqlClause(builder, "MODIFY", columns, "", "", ",\n")
+            }
+            if (end) {
+                builder.append(";")
+            }
+            return builder.toString()
+        }
+
+        private fun modifyLifecycleSQL(builder: SafeAppendable): String {
+            sqlClause(builder, "ALTER TABLE", tables, "", "", "")
+            sqlClause(builder, "MODIFY TTL", listOf(lifecycle), "", "", ",\n")
             if (end) {
                 builder.append(";")
             }
@@ -746,6 +789,7 @@ abstract class AbstractSql<T> {
                 StatementType.CREATE_COLUMN -> createColumnSQL(builder)
                 StatementType.DROP_COLUMN -> dropColumnSQL(builder)
                 StatementType.MODIFY_COLUMN -> modifyColumnSQL(builder)
+                StatementType.MODIFY_LIFECYCLE -> modifyLifecycleSQL(builder)
                 else -> throw SqlException("Unsupported statement type: [ $statementType ]")
             }
             return answer

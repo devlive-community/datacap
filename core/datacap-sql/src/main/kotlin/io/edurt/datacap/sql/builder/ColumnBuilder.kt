@@ -1,6 +1,7 @@
 package io.edurt.datacap.sql.builder
 
 import io.edurt.datacap.sql.BaseSql
+import io.edurt.datacap.sql.EngineType
 
 class ColumnBuilder {
     init {
@@ -30,12 +31,16 @@ class ColumnBuilder {
             sql().DROP_COLUMN(table)
         }
 
-        fun MODIFY_COLUMN(column: String?) {
-            sql().MODIFY_COLUMN(column)
+        fun MODIFY_COLUMN(table: String?) {
+            sql().MODIFY_COLUMN(table)
         }
 
         fun COLUMNS(columns: List<String>) {
             sql().COLUMNS(columns)
+        }
+
+        fun FORMAT_ENGINE(engine: EngineType?) {
+            sql().FORMAT_ENGINE(engine)
         }
 
         fun END() {
@@ -45,7 +50,8 @@ class ColumnBuilder {
         fun SQL(): String {
             try {
                 return sql().toString()
-            } finally {
+            }
+            finally {
                 RESET()
             }
         }

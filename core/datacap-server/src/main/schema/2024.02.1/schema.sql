@@ -9,5 +9,8 @@ ALTER TABLE `datacap_dataset_column`
     ADD COLUMN `is_sampling_key` BOOLEAN DEFAULT FALSE;
 
 ALTER TABLE `datacap_dataset`
-    ADD COLUMN `total_rows` BIGINT(100) DEFAULT 0,
-    ADD COLUMN `total_size` VARCHAR(100);
+    ADD COLUMN `total_rows`        BIGINT(100) DEFAULT 0,
+    ADD COLUMN `total_size`        VARCHAR(100),
+    ADD COLUMN `life_cycle`        BIGINT(100) DEFAULT 0,
+    ADD COLUMN `life_cycle_column` VARCHAR(100),
+    ADD COLUMN `life_cycle_type`   VARCHAR(100);

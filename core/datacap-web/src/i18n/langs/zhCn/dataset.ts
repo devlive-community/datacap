@@ -1,6 +1,8 @@
 export default {
   dataPreview: '数据预览',
   dataColumn: '数据列',
+  dataConfigure: '数据配置',
+  dataLifeCycle: '数据生命周期',
   onlyPreviewCreate: '仅支持预览数据创建数据集',
   returnQuery: '返回查询',
   columnName: '列名',
@@ -10,6 +12,7 @@ export default {
   columnTypeNumber: '数字',
   columnTypeNumberSigned: '数字 (符号)',
   columnTypeBoolean: '布尔',
+  columnTypeDateTime: '日期时间',
   columnDescription: '列描述',
   columnComment: '列注释',
   columnDefaultValue: '列默认值',
@@ -92,4 +95,9 @@ export default {
   validatorSamplingTip: '排序键中必须包含抽样键',
   customFunction: '自定义函数',
   clearDataTip: '清除数据后无法进行回滚，清除操作将在后台运行，请耐心等待',
+  lifeCycleTip: '数据集生命周期会根据指定列表达式进行计算',
+  lifeCycleMonth: '月',
+  lifeCycleWeek: '周',
+  lifeCycleDay: '天',
+  lifeCycleHour: '小时',
 }
