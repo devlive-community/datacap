@@ -75,6 +75,15 @@ public class DataSetEntity
     @Column(name = "total_size")
     private String totalSize;
 
+    @Column(name = "life_cycle")
+    private String lifeCycle;
+
+    @Column(name = "life_cycle_column")
+    private String lifeCycleColumn;
+
+    @Column(name = "life_cycle_type")
+    private String lifeCycleType;
+
     @ManyToOne
     @JoinTable(name = "datacap_dataset_source_relation",
             joinColumns = @JoinColumn(name = "dataset_id"),
