@@ -10,4 +10,6 @@ public interface DataSetColumnRepository
         extends PagingAndSortingRepository<DataSetColumnEntity, Long>
 {
     List<DataSetColumnEntity> findAllByDataset(DataSetEntity dataset);
+
+    List<DataSetColumnEntity> findAllByDatasetOrderByPositionAsc(DataSetEntity dataset);
 }
