@@ -164,7 +164,7 @@
         <testcontainers.version>1.17.6</testcontainers.version>
         <assembly-plugin.version>3.6.0</assembly-plugin.version>
         <!-- datacap plugin dependency -->
-        <datacap.pgsql.version>42.6.0</datacap.pgsql.version>
+        <datacap.pgsql.version>42.7.2</datacap.pgsql.version>
         <datacap.qiniu.version>7.15.0</datacap.qiniu.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
