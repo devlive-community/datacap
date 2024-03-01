@@ -1,107 +1,67 @@
 **DataCap 发布!**
 
-|   发布版本   |     发布时间     |
-|:--------:|:------------:|
-| `2024.01.1` | `2024-01-30` |
-
-#### General
-
----
-
-- [仪表盘] 支持移除报表
-- [仪表盘] 支持预览
-- [仪表盘] 支持修改
-- [元数据] 支持 PostgreSQL 数据库
-- [元数据] 支持同步错误消息
-- [元数据] 支持构建后元数据同步 (https://github.com/devlive-community/datacap/issues/585)
-- [元数据] 支持数据源手动同步元数据 (https://github.com/devlive-community/datacap/issues/586)
-- [元数据] 支持数据源同步历史记录
-- 添加查询模式
-- 修复了函数创建/更新时间问题
-- 优化问题模板
-- 支持 GitHub CI 本地化
-- 添加系统架构图 (https://github.com/devlive-community/datacap/issues/491)
-- 支持缓冲查询结果 (https://github.com/devlive-community/datacap/issues/490)
-
-#### SPI
-
----
-
-- 修复数据源并发异常问题 (https://github.com/devlive-community/datacap/issues/513)
-
-#### Parser
-
----
-
-- 添加 SQL 解析器 SPI
-- 添加 Trino SQL 解析器 (https://github.com/devlive-community/datacap/issues/569)
-- 添加 MySQL SQL 解析器 (https://github.com/devlive-community/datacap/issues/568)
-
-#### Scheduler
-
----
-
-- 添加调度 SPI
-- 支持默认调度器
-
-#### Pipeleine
-
----
-
-- 修复流水线分组问题
-- 支持 SqlServer
-- 重构 Seatunnel 执行器
-- 重构 SPI 使用 Kotlin 重写
-- 重构流水线配置方法
+|    发布版本     |     发布时间     |
+|:-----------:|:------------:|
+| `2024.02.1` | `2024-03-01` |
 
 #### Plugin
 
 ---
 
-- 支持 MatrixOne (https://github.com/devlive-community/datacap/issues/574)
-- 支持 ScyllaDB (https://github.com/devlive-community/datacap/issues/543)
+- 支持 ParadeDB (https://github.com/devlive-community/datacap/issues/589)
+- 支持 TimescaleDB (https://github.com/devlive-community/datacap/issues/593)
 
 #### DataSet
 
 ---
 
-- 添加列模型（指标｜维度）
-- 添加即席查询可视化编辑器
-- 添加折线图
-- 添加数据表格
-- 添加柱状图
-- 支持展示查询 SQL
-- 支持指标自定义表达式
-- 支持维度分组
-- 添加指标表达式提示
-- 按类型指定表达式
-- 支持指标别名
-- 支持发布|编辑数据集报表
-- 支持分区键
-- 支持列别名
-- 支持同步历史记录
-- 支持即席查询 (https://github.com/devlive-community/datacap/issues/581)
-- 支持定时数据同步 (https://github.com/devlive-community/datacap/issues/590)
-
-#### Docs
-
----
-
-- 新增文件系统集成开发文档
-- 添加合作伙伴演示文档 (https://github.com/devlive-community/datacap/issues/582)
+- [图表] 添加面积图 (https://github.com/devlive-community/datacap/issues/611)
+- [图表] 添加多面积图 (https://github.com/devlive-community/datacap/issues/610)
+- [图表] 添加饼图 (https://github.com/devlive-community/datacap/issues/613)
+- [图表] 支持折线图断点处理
+- [图表] 支持分组直方图 (https://github.com/devlive-community/datacap/issues/612)
+- [图表] 支持词云图 (https://github.com/devlive-community/datacap/issues/614)
+- 支持添加主键 (https://github.com/devlive-community/datacap/issues/624)
+- 添加`总行数`和`总大小` (https://github.com/devlive-community/datacap/pull/676)
+- 支持自定义别名的即席查询 (https://github.com/devlive-community/datacap/issues/615)
+- 支持维度排序
+- 支持指标排序
+- 支持数据采样列 (https://github.com/devlive-community/datacap/issues/605)
+- 添加有符号号码类型
+- 修复了小屏幕上列表中的显示问题
+- 支持即席查询自定义函数 (https://github.com/devlive-community/datacap/issues/603)
+- 添加筛选器分组
+- 合并查询列
+- 修复复制数据导致重复请求的问题
+- 修复编辑报表分组异常问题
+- 修复无限循环查询问题
+- 支持过滤器 `IS NULL`， `IS NOT NULL`
+- 修复了多列查询导致 expres 混淆的问题
+- 支持过滤器 `LIKE`， `NOT LIKE`
+- 支持过滤器 `=`， `<>`
+- 支持过滤器 `>`， `>=`
+- 支持过滤器 `<`， `<=`
+- 支持历史错误信息同步
+- 支持清空数据 (https://github.com/devlive-community/datacap/issues/622)
+- 支持动态添加列 (https://github.com/devlive-community/datacap/issues/623)
+- 重构数据集详细信息页面
+- 添加日期时间类型
+- 支持自定义生命周期 (https://github.com/devlive-community/datacap/issues/616)
+- 禁用 `BOOLEAN`、`DATETIME` 类型分配
+- 支持虚拟列 (https://github.com/devlive-community/datacap/issues/602)
+- 支持docker compose (https://github.com/devlive-community/datacap/issues/648)
+- 支持七牛云存储 (https://github.com/devlive-community/datacap/issues/618)
 
 #### Dependencies
 
 ---
 
-- 更新 org.apache.maven.plugins:maven-compiler-plugin `3.3` 到 `3.12.1`
-- 更新 com.dameng:DmJdbcDriver18 `8.1.2.192` 到 `8.1.3.62`
-- 更新 mysql 到 `8.0.30`
-- 更新 snowflake 到 `3.14.4`
-- 更新 com.taosdata.jdbc:taos-jdbcdriver `3.0.0` 到 `3.2.7`
-- 更新 org.apache.kylin:kylin-jdbc `2.6.3` 到 `4.0.3`
-- 更新 slf4j.version `1.7.36` 到 `2.0.10`
-- 更新 org.apache.maven.plugins:maven-assembly-plugin `3.5.0` 到 `3.6.0`
-- 更新 org.duckdb:duckdb_jdbc `0.8.1` 到 `0.9.2`
-- 更新 org.apache.ignite:ignite-core `2.8.1` 到 `2.16.0`
-- 更新 org.projectlombok:lombok `1.18.28` 到 `1.18.30`
+- 更新 io.crate:crate-jdbc `2.6.0` 到 `2.7.0`
+- 更新 Impala:ImpalaJDBC42 `2.6.29.1035` 到 `2.6.32.1041` 
+- 更新 org.yaml:snakeyaml `2.0` 到 `2.2`
+- 更新 org.apache.hive:hive-jdbc `3.1.2` 到 `3.1.3`
+- 更新 org.elasticsearch.plugin:x-pack-sql-jdbc `8.11.3` 到 `8.12.0`
+- 更新 jackson.version `2.16.0` 到 `2.16.1`
+- 更新 org.apache.maven.plugins:maven-javadoc-plugin `3.6.0` 到 `3.6.3`
+- 更新 com.microsoft.sqlserver:mssql-jdbc `11.2.1.jre8` 到 `12.6.0.jre8`
+- 更新 postgresql.version `42.6.0` 到 `42.7.2`
