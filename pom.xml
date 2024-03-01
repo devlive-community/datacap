@@ -80,6 +80,7 @@
         <module>shaded/datacap-shaded-pinot</module>
         <module>fs/datacap-fs-spi</module>
         <module>fs/datacap-fs-local</module>
+        <module>fs/datacap-fs-qiniu</module>
         <module>parser/datacap-parser-spi</module>
         <module>parser/datacap-parser-trino</module>
         <module>parser/datacap-parser-mysql</module>
@@ -164,6 +165,7 @@
         <assembly-plugin.version>3.6.0</assembly-plugin.version>
         <!-- datacap plugin dependency -->
         <datacap.pgsql.version>42.6.0</datacap.pgsql.version>
+        <datacap.qiniu.version>7.15.0</datacap.qiniu.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>

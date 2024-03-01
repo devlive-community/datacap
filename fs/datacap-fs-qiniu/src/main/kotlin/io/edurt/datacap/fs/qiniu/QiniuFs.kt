@@ -1,0 +1,53 @@
+package io.edurt.datacap.fs.qiniu
+
+import io.edurt.datacap.fs.Fs
+import io.edurt.datacap.fs.FsRequest
+import io.edurt.datacap.fs.FsResponse
+import io.edurt.datacap.fs.qiniu.IOUtils.Companion.copy
+import org.slf4j.LoggerFactory.getLogger
+import java.io.File
+import java.lang.String.join
+
+class QiniuFs : Fs {
+    private val log = getLogger(QiniuFs::class.java)
+
+    override fun writer(request: FsRequest?): FsResponse {
+        log.info("QiniuFs writer origin path [ {} ]", request !!.fileName)
+        val targetPath = join(File.separator, request.endpoint, request.bucket, request.fileName)
+        val response = FsResponse.builder()
+                .origin(request.fileName)
+                .remote(targetPath)
+                .successful(true)
+                .build()
+        log.info("QiniuFs writer target path [ {} ]", request.fileName)
+        try {
+            val key = copy(request, request.stream, request.fileName)
+            response.remote = key
+            log.info("QiniuFs writer [ {} ] successfully", key)
+        }
+        catch (e: Exception) {
+            log.error("QiniuFs writer error", e)
+            response.isSuccessful = false
+            response.message = e.message
+        }
+        return response
+    }
+
+    override fun reader(request: FsRequest?): FsResponse {
+        log.info("QiniuFs reader origin path [ {} ]", request !!.fileName)
+        val response = FsResponse.builder()
+                .remote(request.fileName)
+                .successful(true)
+                .build()
+        try {
+            response.context = IOUtils.reader(request)
+            log.info("QiniuFs reader [ {} ] successfully", request.fileName)
+        }
+        catch (e: java.lang.Exception) {
+            log.error("QiniuFs reader error", e)
+            response.isSuccessful = false
+            response.message = e.message
+        }
+        return response
+    }
+}
