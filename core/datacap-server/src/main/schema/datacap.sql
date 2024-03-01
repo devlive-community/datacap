@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.1.0, for macos14.0 (arm64)
+-- MySQL dump 10.13  Distrib 8.2.0, for macos14.0 (arm64)
 --
 -- Host: localhost    Database: datacap
 -- ------------------------------------------------------
--- Server version	8.1.0
+-- Server version	8.2.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -34,6 +34,7 @@ CREATE TABLE `audit_plugin` (
   `user_id` bigint NOT NULL,
   `count` bigint DEFAULT '0',
   `column_name` varchar(255) DEFAULT NULL,
+  `query_mode` varchar(100) DEFAULT 'ADHOC',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `full_text_index_for_content` (`content`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -112,6 +113,7 @@ CREATE TABLE `datacap_dashboard` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `configure` longtext,
+  `version` varchar(100) DEFAULT 'V2' COMMENT 'Dashboard version',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -185,10 +187,21 @@ CREATE TABLE `datacap_dataset` (
   `description` text,
   `query` longtext,
   `sync_mode` varchar(100) DEFAULT NULL,
-  `sync_value` varchar(100) DEFAULT NULL,
+  `expression` varchar(100) DEFAULT NULL,
   `state` varchar(100) DEFAULT NULL,
   `message` longtext,
   `table_name` varchar(255) DEFAULT NULL,
+  `code` varchar(100) DEFAULT (uuid()),
+  `column_mode` varchar(100) DEFAULT 'DIMENSION',
+  `scheduler` varchar(100) DEFAULT NULL,
+  `executor` varchar(100) DEFAULT 'Default',
+  `total_rows` bigint DEFAULT '0',
+  `total_size` varchar(100) DEFAULT NULL,
+  `life_cycle` bigint DEFAULT '0',
+  `life_cycle_column` varchar(100) DEFAULT NULL,
+  `life_cycle_type` varchar(100) DEFAULT NULL,
+  `is_custom_column` tinyint(1) DEFAULT '0',
+  `is_virtual_column` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -225,6 +238,13 @@ CREATE TABLE `datacap_dataset_column` (
   `length` int DEFAULT NULL,
   `dataset_id` int DEFAULT NULL,
   `is_order_by_key` tinyint(1) DEFAULT '0',
+  `column_mode` varchar(100) DEFAULT 'DIMENSION',
+  `is_partition_key` tinyint(1) DEFAULT '0',
+  `alias_name` varchar(200) DEFAULT NULL,
+  `is_primary_key` varchar(100) DEFAULT '0',
+  `is_sampling_key` tinyint(1) DEFAULT '0',
+  `is_custom_column` tinyint(1) DEFAULT '0',
+  `is_virtual_column` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -258,6 +278,60 @@ CREATE TABLE `datacap_dataset_column_relation` (
 LOCK TABLES `datacap_dataset_column_relation` WRITE;
 /*!40000 ALTER TABLE `datacap_dataset_column_relation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `datacap_dataset_column_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `datacap_dataset_history`
+--
+
+DROP TABLE IF EXISTS `datacap_dataset_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `datacap_dataset_history` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT '1',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `query` varchar(255) DEFAULT NULL,
+  `message` text,
+  `elapsed` bigint DEFAULT NULL,
+  `count` int DEFAULT NULL,
+  `query_mode` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `datacap_dataset_history`
+--
+
+LOCK TABLES `datacap_dataset_history` WRITE;
+/*!40000 ALTER TABLE `datacap_dataset_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `datacap_dataset_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `datacap_dataset_history_relation`
+--
+
+DROP TABLE IF EXISTS `datacap_dataset_history_relation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `datacap_dataset_history_relation` (
+  `dataset_history_id` bigint DEFAULT NULL,
+  `dataset_id` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `datacap_dataset_history_relation`
+--
+
+LOCK TABLES `datacap_dataset_history_relation` WRITE;
+/*!40000 ALTER TABLE `datacap_dataset_history_relation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `datacap_dataset_history_relation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -618,6 +692,28 @@ LOCK TABLES `datacap_report` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `datacap_report_dataset_relation`
+--
+
+DROP TABLE IF EXISTS `datacap_report_dataset_relation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `datacap_report_dataset_relation` (
+  `report_id` bigint DEFAULT NULL,
+  `dataset_id` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `datacap_report_dataset_relation`
+--
+
+LOCK TABLES `datacap_report_dataset_relation` WRITE;
+/*!40000 ALTER TABLE `datacap_report_dataset_relation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `datacap_report_dataset_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `datacap_report_source_relation`
 --
 
@@ -707,6 +803,7 @@ CREATE TABLE `datacap_scheduled_history` (
   `update_time` datetime DEFAULT NULL,
   `info` text,
   `state` varchar(100) DEFAULT NULL,
+  `message` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -740,6 +837,72 @@ CREATE TABLE `datacap_scheduled_history_relation` (
 LOCK TABLES `datacap_scheduled_history_relation` WRITE;
 /*!40000 ALTER TABLE `datacap_scheduled_history_relation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `datacap_scheduled_history_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `datacap_scheduled_history_source_relation`
+--
+
+DROP TABLE IF EXISTS `datacap_scheduled_history_source_relation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `datacap_scheduled_history_source_relation` (
+  `scheduled_history_id` bigint DEFAULT NULL,
+  `source_id` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `datacap_scheduled_history_source_relation`
+--
+
+LOCK TABLES `datacap_scheduled_history_source_relation` WRITE;
+/*!40000 ALTER TABLE `datacap_scheduled_history_source_relation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `datacap_scheduled_history_source_relation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `datacap_source`
+--
+
+DROP TABLE IF EXISTS `datacap_source`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `datacap_source` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `_catalog` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `_database` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `host` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `port` bigint NOT NULL,
+  `protocol` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `_type` varchar(100) NOT NULL,
+  `ssl` tinyint(1) DEFAULT '0',
+  `_ssl` tinyint(1) DEFAULT '0',
+  `publish` tinyint(1) DEFAULT '0',
+  `public` tinyint(1) DEFAULT '0',
+  `user_id` bigint DEFAULT NULL,
+  `configure` text,
+  `used_config` tinyint(1) DEFAULT '0',
+  `version` varchar(255) DEFAULT NULL,
+  `available` tinyint(1) DEFAULT '1',
+  `message` text,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='The storage is used to query the data connection source';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `datacap_source`
+--
+
+LOCK TABLES `datacap_source` WRITE;
+/*!40000 ALTER TABLE `datacap_source` DISABLE KEYS */;
+/*!40000 ALTER TABLE `datacap_source` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -836,7 +999,7 @@ CREATE TABLE `menus` (
 
 LOCK TABLES `menus` WRITE;
 /*!40000 ALTER TABLE `menus` DISABLE KEYS */;
-INSERT INTO `menus` VALUES (1,'全局 - 首页','HOME','全局路由：所有用户都可以访问','/dashboard/index',NULL,1,'VIEW',0,1,'common.home','ios-navigate','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(2,'全局 - 查询','QUERY','全局路由：所有用户都可以访问','/console/index',NULL,2,'VIEW',0,1,'common.query','md-browsers','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(3,'全局 - 管理主菜单','MANAGEMENT','全局：所有用户都可以访问\n位置：顶部管理主菜单','/admin',NULL,3,'VIEW',0,1,'common.admin','ios-hammer','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(4,'全局 - 管理 - 数据源','DATASOURCE','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/source','default',1,'VIEW',3,1,'common.source','md-appstore','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(5,'全局 - 管理 - 片段','SNIPPET','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/snippet',NULL,2,'VIEW',3,1,'common.snippet','ios-barcode','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(6,'全局 - 管理 - 查询历史','HISTORY','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/history',NULL,3,'VIEW',3,1,'common.history','ios-book','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(7,'全局 - 管理 - 流水线','PIPELINE','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/pipeline',NULL,4,'VIEW',3,1,'common.pipeline','md-list-box','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(8,'管理员 - 系统主菜单','SYSTEM','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system',NULL,4,'VIEW',0,1,'common.system','md-cog','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(9,'管理员 - 系统 - 函数','FUNCTION','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/function',NULL,1,'VIEW',8,1,'common.function','ios-basket','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(10,'管理员 - 系统 - 定时任务','SCHEDULE','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/schedule',NULL,2,'VIEW',8,1,'common.schedule','md-timer','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(11,'管理员 - 系统 - 模版','TEMPLATE','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/template',NULL,3,'VIEW',8,1,'common.template','md-browsers','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(12,'管理员 - 系统 - 权限','ROLE','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/role',NULL,4,'VIEW',8,1,'common.authority','md-flag','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(13,'管理员 - 系统 - 菜单','MENU','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/menu',NULL,5,'VIEW',8,1,'common.menu','md-menu','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(14,'管理员 - 系统 - 用户','USERS','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/user',NULL,6,'VIEW',8,1,'common.user','ios-man','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(15,'全局 - 管理 - 报表','REPORT','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/report',NULL,6,'VIEW',3,1,'common.report','md-analytics','2023-12-18 13:37:35',NULL,0,1),(16,'全局 - 仪表盘','DASHBOARD','全局路由：所有用户都可以访问','/console/dashboard',NULL,2,'VIEW',0,1,'common.dashboard','md-analytics','2023-12-19 10:26:21',NULL,0,1),(17,'全局 - 数据集','DATASET','全局路由：所有用户都可以访问','/admin/dataset',NULL,3,'VIEW',0,1,'common.dataset','md-contrast','2023-12-21 11:32:33',NULL,0,1);
+INSERT INTO `menus` VALUES (1,'全局 - 首页','HOME','全局路由：所有用户都可以访问','/dashboard/index',NULL,1,'VIEW',0,1,'common.home','ios-navigate','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(2,'全局 - 查询','QUERY','全局路由：所有用户都可以访问','/console/index',NULL,2,'VIEW',0,1,'common.query','md-browsers','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(3,'全局 - 管理主菜单','MANAGEMENT','全局：所有用户都可以访问\n位置：顶部管理主菜单','/admin',NULL,3,'VIEW',0,1,'common.admin','ios-hammer','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(4,'全局 - 管理 - 数据源','DATASOURCE','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/source','default',1,'VIEW',3,1,'common.source','md-appstore','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(5,'全局 - 管理 - 片段','SNIPPET','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/snippet',NULL,2,'VIEW',3,1,'common.snippet','ios-barcode','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(6,'全局 - 管理 - 查询历史','HISTORY','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/history',NULL,3,'VIEW',3,1,'common.history','ios-book','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(7,'全局 - 管理 - 流水线','PIPELINE','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/pipeline',NULL,4,'VIEW',3,1,'common.pipeline','md-list-box','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(8,'管理员 - 系统主菜单','SYSTEM','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system',NULL,4,'VIEW',0,1,'common.system','md-cog','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(9,'管理员 - 系统 - 函数','FUNCTION','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/function',NULL,1,'VIEW',8,1,'common.function','ios-basket','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(10,'管理员 - 系统 - 定时任务','SCHEDULE','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/schedule',NULL,2,'VIEW',8,1,'common.schedule','md-timer','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(11,'管理员 - 系统 - 模版','TEMPLATE','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/template',NULL,3,'VIEW',8,1,'common.template','md-browsers','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(12,'管理员 - 系统 - 权限','ROLE','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/role',NULL,4,'VIEW',8,1,'common.authority','md-flag','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(13,'管理员 - 系统 - 菜单','MENU','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/menu',NULL,5,'VIEW',8,1,'common.menu','md-menu','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(14,'管理员 - 系统 - 用户','USERS','管理员：管理员权限用户可以访问\n位置：顶部管理一级子菜单','/system/user',NULL,6,'VIEW',8,1,'common.user','ios-man','2023-07-04 21:47:24','2023-07-04 21:47:24',0,0),(15,'全局 - 管理 - 报表','REPORT','全局：所有用户都可以访问\n位置：顶部管理一级子菜单','/admin/report',NULL,6,'VIEW',3,1,'common.report','md-analytics','2023-12-18 13:37:35',NULL,0,0),(16,'全局 - 仪表盘','DASHBOARD','全局路由：所有用户都可以访问','/console/dashboard',NULL,2,'VIEW',0,1,'common.dashboard','md-analytics','2023-12-19 10:26:21',NULL,0,0),(17,'全局 - 数据集','DATASET','全局路由：所有用户都可以访问','/admin/dataset',NULL,3,'VIEW',0,1,'common.dataset','md-contrast','2023-12-21 11:32:33',NULL,0,0);
 /*!40000 ALTER TABLE `menus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -928,7 +1091,7 @@ CREATE TABLE `snippet` (
   `user_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `full_text_index_for_code` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -938,50 +1101,6 @@ CREATE TABLE `snippet` (
 LOCK TABLES `snippet` WRITE;
 /*!40000 ALTER TABLE `snippet` DISABLE KEYS */;
 /*!40000 ALTER TABLE `snippet` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `source`
---
-
-DROP TABLE IF EXISTS `source`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `source` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `_catalog` varchar(255) DEFAULT NULL,
-  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
-  `_database` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `host` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `port` bigint NOT NULL,
-  `protocol` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `_type` varchar(100) NOT NULL,
-  `ssl` tinyint(1) DEFAULT '0',
-  `_ssl` tinyint(1) DEFAULT '0',
-  `publish` tinyint(1) DEFAULT '0',
-  `public` tinyint(1) DEFAULT '0',
-  `user_id` bigint DEFAULT NULL,
-  `configure` text,
-  `used_config` tinyint(1) DEFAULT '0',
-  `version` varchar(255) DEFAULT NULL,
-  `available` tinyint(1) DEFAULT '1',
-  `message` text,
-  `update_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='The storage is used to query the data connection source';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `source`
---
-
-LOCK TABLES `source` WRITE;
-/*!40000 ALTER TABLE `source` DISABLE KEYS */;
-/*!40000 ALTER TABLE `source` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1002,7 +1121,7 @@ CREATE TABLE `template_sql` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_system` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='The system preset SQL template table';
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='The system preset SQL template table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1011,7 +1130,7 @@ CREATE TABLE `template_sql` (
 
 LOCK TABLES `template_sql` WRITE;
 /*!40000 ALTER TABLE `template_sql` DISABLE KEYS */;
-INSERT INTO `template_sql` VALUES (6,'getAllRunningProcess','SELECT\n  query_id AS id,\n  query AS content,\n  toUInt64(toUInt64(read_rows) + toUInt64(written_rows)) AS rows,\n  round(elapsed, 1) AS elapsed,\n  formatReadableSize(toUInt64(read_bytes) + toUInt64(written_bytes)) AS bytes,\n  formatReadableSize(memory_usage) AS memory,\n  formatReadableSize(read_bytes) AS bytesRead,\n  formatReadableSize(written_bytes) AS bytesWritten\nFROM\n  system.processes\nWHERE\n  round(elapsed, 1) > 0','Get a running list of all currently specified server nodes','ClickHouse','[]','2022-12-29 08:40:11','2022-12-29 08:40:11',0),(7,'getAllRunningProcess','SELECT\n  id AS id,\n  info AS content,\n  \' -\' AS rows,\n  time AS elapsed,\n  \' -\' AS bytes,\n  \' -\' AS memory,\n  \' -\' AS bytesRead,\n  \' -\' AS bytesWritten\nFROM\n  information_schema.PROCESSLIST','Get a running list of all currently specified server nodes','MySQL','[]','2022-12-29 11:33:04','2022-12-29 11:33:04',0),(29,'SYSTEM_FOR_GET_ALL_DATABASES','SELECT\n    `CATALOG_NAME` AS \"CATALOG_NODE\",\n    `SCHEMA_NAME` AS \"SCHEMA_NODE\",\n    `DEFAULT_CHARACTER_SET_NAME` AS \"CHARSET_NODE\"\nFROM\n    INFORMATION_SCHEMA.SCHEMATA','Find a list of databases that already exist in all services\n查找所有服务中已经存在的数据库列表','MySQL','[]','2023-09-15 08:47:13','2023-09-15 09:02:37',1),(30,'SYSTEM_FOR_GET_ALL_TABLES','SELECT\n    `TABLE_CATALOG` AS \"CATALOG_NODE\",\n    `TABLE_SCHEMA` AS \"SCHEMA_NODE\",\n    `TABLE_NAME` AS \"TABLE_NODE\",\n    CASE `TABLE_TYPE`\n        WHEN \'BASE TABLE\' THEN \'TABLE\'\n        WHEN \'VIEW\' THEN \'VIEW\'\n        WHEN \'SYSTEM VIEW\' THEN \'SYSTEM\'\n    END AS \"TYPE_NODE\",\n    `ENGINE` AS \"ENGINE_NODE\",\n    `ROW_FORMAT` AS \"FORMAT_NODE\",\n    `TABLE_ROWS` AS \"ROWS_NODE\",\n    `CREATE_TIME` AS \"CREATE_TIME_NODE\",\n    `UPDATE_TIME` AS \"UPDATE_TIME_NODE\",\n    `TABLE_COLLATION` AS \"COLLATION_NODE\",\n    `TABLE_COMMENT` AS \"COMMENT_NODE\",\n    `AVG_ROW_LENGTH` AS \"AVG_ROW_NODE\",\n    `DATA_LENGTH` AS \"DATA_NODE\",\n    `INDEX_LENGTH` AS \"INDEX_NODE\",\n    `AUTO_INCREMENT` AS \"AUTO_INCREMENT_NODE\"\nFROM\n    information_schema.TABLES\n-- WHERE\n--    TABLE_SCHEMA = \'${database:String}\'','Queries the list of tables in the library according to the specified data name\n根据指定数据名查询该库下数据表列表','MySQL','[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"}]','2023-09-18 12:10:53','2023-10-10 02:37:14',1),(31,'SYSTEM_FOR_GET_ALL_COLUMNS','SELECT\n    `TABLE_SCHEMA` AS \"CATALOG_NODE\",\n    `TABLE_NAME` AS \"SCHEMA_NODE\",\n    `COLUMN_NAME` AS \"COLUMN_NODE\",\n    `COLUMN_DEFAULT` AS \"DEFAULT_NODE\",\n    `ORDINAL_POSITION` AS \"POSITION_NODE\",\n    CASE `IS_NULLABLE`\n        WHEN \'YES\' THEN TRUE\n        WHEN \'NO\' THEN FALSE\n    END AS \"NULLABLE_NODE\",\n    `DATA_TYPE` AS \"DATA_TYPE_NODE\",\n    `COLUMN_TYPE` AS \"COLUMN_TYPE_NODE\",\n    `EXTRA` AS \"EXTRA_NODE\",\n    `CHARACTER_MAXIMUM_LENGTH` AS \"MAXIMUM_LENGTH_NODE\",\n    `CHARACTER_OCTET_LENGTH` AS \"OCTET_LENGTH_NODE\",\n    `NUMERIC_PRECISION` AS \"PRECISION_NODE\",\n    `NUMERIC_SCALE` AS \"SCALE_NODE\",\n    `NUMERIC_SCALE` AS \"SCALE_NODE\",\n    `CHARACTER_SET_NAME` AS \"CHARACTER_NODE\",\n    `COLLATION_NAME` AS \"COLLATION_NODE\",\n    `COLUMN_KEY` AS \"KEY_NODE\",\n    `PRIVILEGES` AS \"PRIVILEGES_NODE\",\n    `COLUMN_COMMENT` AS \"COMMENT_NODE\"\nFROM\n    information_schema.COLUMNS\n-- WHERE\n--     TABLE_SCHEMA = \'${database:String}\'\n-- AND TABLE_NAME = \'${table:String}\';','According to the specified database, the data table gets all the data columns under the current condition\n根据指定数据库，数据表获取当前条件下所有数据列','MySQL','[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"},{\"column\":\"table\",\"type\":\"String\",\"expression\":\"${table:String}\"}]','2023-09-18 15:40:26','2023-10-10 03:52:49',1),(32,'SYSTEM_FOR_GET_ALL_DATABASES','SELECT\n    \'public\' AS \"CATALOG_NODE\",\n    `name` AS \"SCHEMA_NODE\",\n    NULL AS \"CHARSET_NODE\"\nFROM\n    system.databases','Find a list of databases that already exist in all services\n查找所有服务中已经存在的数据库列表','ClickHouse','[]','2023-10-09 12:13:16','2023-10-10 02:33:11',1),(33,'SYSTEM_FOR_GET_ALL_TABLES','SELECT\n    \'public\' AS \"CATALOG_NODE\",\n    `database` AS \"SCHEMA_NODE\",\n    `name` AS \"TABLE_NODE\",\n    multiIf(`engine` = \'MaterializedView\', \'VIEW\', \'TABLE\') AS \"TYPE_NODE\",\n    `engine` AS \"ENGINE_NODE\",\n    `engine` AS \"FORMAT_NODE\",\n    if(isNotNull(`total_rows`), `total_rows`, 0) AS \"ROWS_NODE\",\n    NULL AS \"CREATE_TIME_NODE\",\n    `metadata_modification_time` AS \"UPDATE_TIME_NODE\",\n    \'utf8\' AS \"COLLATION_NODE\",\n    \'\' AS \"COMMENT_NODE\",\n    if(isNaN(round(`total_bytes` / `total_rows`, 2)), 0, round(`total_bytes` / `total_rows`, 2)) AS \"AVG_ROW_NODE\",\n    `total_bytes` AS \"DATA_NODE\",\n    NULL AS \"INDEX_NODE\",\n    NULL AS \"AUTO_INCREMENT_NODE\"\nFROM\n    system.tables\n-- WHERE\n--    `database` = \'${database:String}\'','Queries the list of tables in the library according to the specified data name\n根据指定数据名查询该库下数据表列表','ClickHouse','[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"}]','2023-10-09 13:01:44','2023-10-10 04:36:17',1),(34,'SYSTEM_FOR_GET_ALL_COLUMNS','SELECT\n    `database` AS \"CATALOG_NODE\",\n    `table` AS \"SCHEMA_NODE\",\n    `name` AS \"COLUMN_NODE\",\n    `default_expression` AS \"DEFAULT_NODE\",\n    `position` AS \"POSITION_NODE\",\n    if(position(`type`, \'Nullable\') > 0, 1, 0) AS \"NULLABLE_NODE\",\n    `type` AS \"DATA_TYPE_NODE\",\n    `type` AS \"COLUMN_TYPE_NODE\",\n    \'\' AS \"EXTRA_NODE\",\n    0 AS \"MAXIMUM_LENGTH_NODE\",\n    0 AS \"OCTET_LENGTH_NODE\",\n    \'\' AS \"PRECISION_NODE\",\n    \'\' AS \"SCALE_NODE\",\n    \'utf8\' AS \"CHARACTER_NODE\",\n    \'utf8\' AS \"COLLATION_NODE\",\n    if(`is_in_primary_key` == 1, \'PRI\', NULL) AS \"KEY_NODE\",\n    \'\' AS \"PRIVILEGES_NODE\",\n    `comment` AS \"COMMENT_NODE\"\nFROM\n    system.columns\n-- WHERE\n--     `database` = \'${database:String}\'\n-- AND `table` = \'${table:String}\';','According to the specified database, the data table gets all the data columns under the current condition\n根据指定数据库，数据表获取当前条件下所有数据列','ClickHouse','[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"},{\"column\":\"table\",\"type\":\"String\",\"expression\":\"${table:String}\"}]','2023-10-09 13:39:02','2023-10-10 04:37:38',1);
+INSERT INTO `template_sql` VALUES (6,'getAllRunningProcess','SELECT\n  query_id AS id,\n  query AS content,\n  toUInt64(toUInt64(read_rows) + toUInt64(written_rows)) AS rows,\n  round(elapsed, 1) AS elapsed,\n  formatReadableSize(toUInt64(read_bytes) + toUInt64(written_bytes)) AS bytes,\n  formatReadableSize(memory_usage) AS memory,\n  formatReadableSize(read_bytes) AS bytesRead,\n  formatReadableSize(written_bytes) AS bytesWritten\nFROM\n  system.processes\nWHERE\n  round(elapsed, 1) > 0','Get a running list of all currently specified server nodes','ClickHouse','[]','2022-12-29 08:40:11','2024-01-12 08:01:49',0),(7,'getAllRunningProcess','SELECT\n  id AS id,\n  info AS content,\n  \' -\' AS rows,\n  time AS elapsed,\n  \' -\' AS bytes,\n  \' -\' AS memory,\n  \' -\' AS bytesRead,\n  \' -\' AS bytesWritten\nFROM\n  information_schema.PROCESSLIST','Get a running list of all currently specified server nodes','MySQL,MatrixOne','[]','2022-12-29 11:33:04','2022-12-29 11:33:04',0),(29,'SYSTEM_FOR_GET_ALL_DATABASES','SELECT\n    `CATALOG_NAME` AS \"CATALOG_NODE\",\n    `SCHEMA_NAME` AS \"SCHEMA_NODE\",\n    `DEFAULT_CHARACTER_SET_NAME` AS \"CHARSET_NODE\"\nFROM\n    INFORMATION_SCHEMA.SCHEMATA','Find a list of databases that already exist in all services\n查找所有服务中已经存在的数据库列表','MySQL,MatrixOne','[]','2023-09-15 08:47:13','2023-09-15 09:02:37',1),(30,'SYSTEM_FOR_GET_ALL_TABLES','SELECT\n    `TABLE_CATALOG` AS \"CATALOG_NODE\",\n    `TABLE_SCHEMA` AS \"SCHEMA_NODE\",\n    `TABLE_NAME` AS \"TABLE_NODE\",\n    CASE `TABLE_TYPE`\n        WHEN \'BASE TABLE\' THEN \'TABLE\'\n        WHEN \'VIEW\' THEN \'VIEW\'\n        WHEN \'SYSTEM VIEW\' THEN \'SYSTEM\'\n    END AS \"TYPE_NODE\",\n    `ENGINE` AS \"ENGINE_NODE\",\n    `ROW_FORMAT` AS \"FORMAT_NODE\",\n    `TABLE_ROWS` AS \"ROWS_NODE\",\n    `CREATE_TIME` AS \"CREATE_TIME_NODE\",\n    `UPDATE_TIME` AS \"UPDATE_TIME_NODE\",\n    `TABLE_COLLATION` AS \"COLLATION_NODE\",\n    `TABLE_COMMENT` AS \"COMMENT_NODE\",\n    `AVG_ROW_LENGTH` AS \"AVG_ROW_NODE\",\n    `DATA_LENGTH` AS \"DATA_NODE\",\n    `INDEX_LENGTH` AS \"INDEX_NODE\",\n    `AUTO_INCREMENT` AS \"AUTO_INCREMENT_NODE\"\nFROM\n    information_schema.TABLES\n-- WHERE\n--    TABLE_SCHEMA = \'${database:String}\'','Queries the list of tables in the library according to the specified data name\n根据指定数据名查询该库下数据表列表','MySQL,MatrixOne','[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"}]','2023-09-18 12:10:53','2023-10-10 02:37:14',1),(31,'SYSTEM_FOR_GET_ALL_COLUMNS','SELECT\n    `TABLE_SCHEMA` AS \"CATALOG_NODE\",\n    `TABLE_NAME` AS \"SCHEMA_NODE\",\n    `COLUMN_NAME` AS \"COLUMN_NODE\",\n    `COLUMN_DEFAULT` AS \"DEFAULT_NODE\",\n    `ORDINAL_POSITION` AS \"POSITION_NODE\",\n    CASE `IS_NULLABLE`\n        WHEN \'YES\' THEN TRUE\n        WHEN \'NO\' THEN FALSE\n    END AS \"NULLABLE_NODE\",\n    `DATA_TYPE` AS \"DATA_TYPE_NODE\",\n    `COLUMN_TYPE` AS \"COLUMN_TYPE_NODE\",\n    `EXTRA` AS \"EXTRA_NODE\",\n    `CHARACTER_MAXIMUM_LENGTH` AS \"MAXIMUM_LENGTH_NODE\",\n    `CHARACTER_OCTET_LENGTH` AS \"OCTET_LENGTH_NODE\",\n    `NUMERIC_PRECISION` AS \"PRECISION_NODE\",\n    `NUMERIC_SCALE` AS \"SCALE_NODE\",\n    `NUMERIC_SCALE` AS \"SCALE_NODE\",\n    `CHARACTER_SET_NAME` AS \"CHARACTER_NODE\",\n    `COLLATION_NAME` AS \"COLLATION_NODE\",\n    `COLUMN_KEY` AS \"KEY_NODE\",\n    `PRIVILEGES` AS \"PRIVILEGES_NODE\",\n    `COLUMN_COMMENT` AS \"COMMENT_NODE\"\nFROM\n    information_schema.COLUMNS\n-- WHERE\n--     TABLE_SCHEMA = \'${database:String}\'\n-- AND TABLE_NAME = \'${table:String}\';','According to the specified database, the data table gets all the data columns under the current condition\n根据指定数据库，数据表获取当前条件下所有数据列','MySQL,MatrixOne','[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"},{\"column\":\"table\",\"type\":\"String\",\"expression\":\"${table:String}\"}]','2023-09-18 15:40:26','2023-10-10 03:52:49',1),(32,'SYSTEM_FOR_GET_ALL_DATABASES','SELECT\n    \'public\' AS \"CATALOG_NODE\",\n    `name` AS \"SCHEMA_NODE\",\n    NULL AS \"CHARSET_NODE\"\nFROM\n    system.databases','Find a list of databases that already exist in all services\n查找所有服务中已经存在的数据库列表','ClickHouse','[]','2023-10-09 12:13:16','2023-10-10 02:33:11',1),(33,'SYSTEM_FOR_GET_ALL_TABLES','SELECT\n    \'public\' AS \"CATALOG_NODE\",\n    `database` AS \"SCHEMA_NODE\",\n    `name` AS \"TABLE_NODE\",\n    multiIf(`engine` = \'MaterializedView\', \'VIEW\', \'TABLE\') AS \"TYPE_NODE\",\n    `engine` AS \"ENGINE_NODE\",\n    `engine` AS \"FORMAT_NODE\",\n    if(isNotNull(`total_rows`), `total_rows`, 0) AS \"ROWS_NODE\",\n    NULL AS \"CREATE_TIME_NODE\",\n    `metadata_modification_time` AS \"UPDATE_TIME_NODE\",\n    \'utf8\' AS \"COLLATION_NODE\",\n    \'\' AS \"COMMENT_NODE\",\n    if(isNaN(round(`total_bytes` / `total_rows`, 2)), 0, round(`total_bytes` / `total_rows`, 2)) AS \"AVG_ROW_NODE\",\n    `total_bytes` AS \"DATA_NODE\",\n    NULL AS \"INDEX_NODE\",\n    NULL AS \"AUTO_INCREMENT_NODE\"\nFROM\n    system.tables\n-- WHERE\n--    `database` = \'${database:String}\'','Queries the list of tables in the library according to the specified data name\n根据指定数据名查询该库下数据表列表','ClickHouse','[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"}]','2023-10-09 13:01:44','2023-10-10 04:36:17',1),(34,'SYSTEM_FOR_GET_ALL_COLUMNS','SELECT\n    `database` AS \"CATALOG_NODE\",\n    `table` AS \"SCHEMA_NODE\",\n    `name` AS \"COLUMN_NODE\",\n    `default_expression` AS \"DEFAULT_NODE\",\n    `position` AS \"POSITION_NODE\",\n    if(position(`type`, \'Nullable\') > 0, 1, 0) AS \"NULLABLE_NODE\",\n    `type` AS \"DATA_TYPE_NODE\",\n    `type` AS \"COLUMN_TYPE_NODE\",\n    \'\' AS \"EXTRA_NODE\",\n    0 AS \"MAXIMUM_LENGTH_NODE\",\n    0 AS \"OCTET_LENGTH_NODE\",\n    \'\' AS \"PRECISION_NODE\",\n    \'\' AS \"SCALE_NODE\",\n    \'utf8\' AS \"CHARACTER_NODE\",\n    \'utf8\' AS \"COLLATION_NODE\",\n    if(`is_in_primary_key` == 1, \'PRI\', NULL) AS \"KEY_NODE\",\n    \'\' AS \"PRIVILEGES_NODE\",\n    `comment` AS \"COMMENT_NODE\"\nFROM\n    system.columns\n-- WHERE\n--     `database` = \'${database:String}\'\n-- AND `table` = \'${table:String}\';','According to the specified database, the data table gets all the data columns under the current condition\n根据指定数据库，数据表获取当前条件下所有数据列','ClickHouse','[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"},{\"column\":\"table\",\"type\":\"String\",\"expression\":\"${table:String}\"}]','2023-10-09 13:39:02','2023-10-10 04:37:38',1),(35,'SYSTEM_FOR_GET_ALL_DATABASES','SELECT\n    catalog_name AS \"CATALOG_NODE\",\n    schema_name AS \"SCHEMA_NODE\",\n    NULL AS \"CHARSET_NODE\"\nFROM\n    information_schema.schemata;','Find a list of databases that already exist in all services\n查找所有服务中已经存在的数据库列表','PostgreSQL','[{\"column\":\"database\",\"type\":\"String\",\"expression\":\"${database:String}\"}]','2024-01-18 03:21:34','2024-01-18 03:21:34',1),(36,'SYSTEM_FOR_GET_ALL_TABLES','SELECT\n    table_catalog AS \"CATALOG_NODE\",\n    table_schema AS \"SCHEMA_NODE\",\n    table_name AS \"TABLE_NODE\",\n    CASE table_type\n        WHEN \'BASE TABLE\' THEN \'TABLE\'\n        WHEN \'VIEW\' THEN \'VIEW\'\n        WHEN \'MATERIALIZED VIEW\' THEN \'MATERIALIZED VIEW\'\n        -- Add additional cases if needed\n    END AS \"TYPE_NODE\",\n    table_name AS \"ENGINE_NODE\", -- Note: PostgreSQL does not have ENGINE information\n    NULL AS \"FORMAT_NODE\", -- Note: PostgreSQL does not have ROW_FORMAT information\n    NULL AS \"ROWS_NODE\", -- Note: PostgreSQL does not have TABLE_ROWS information\n    NULL AS \"CREATE_TIME_NODE\", -- Note: PostgreSQL does not have CREATE_TIME information\n    NULL AS \"UPDATE_TIME_NODE\", -- Note: PostgreSQL does not have UPDATE_TIME information\n    NULL AS \"COLLATION_NODE\",\n    NULL AS \"COMMENT_NODE\",\n    NULL AS \"AVG_ROW_NODE\", -- Note: PostgreSQL does not have AVG_ROW_LENGTH information\n    NULL AS \"DATA_NODE\",\n    NULL AS \"INDEX_NODE\", -- Note: PostgreSQL does not have INDEX_LENGTH information\n    NULL AS \"AUTO_INCREMENT_NODE\" -- Note: PostgreSQL does not have AUTO_INCREMENT information\nFROM\n    information_schema.tables;','Queries the list of tables in the library according to the specified data name\n根据指定数据名查询该库下数据表列表','PostgreSQL','[]','2024-01-18 03:32:48','2024-01-18 03:32:48',1),(37,'SYSTEM_FOR_GET_ALL_COLUMNS','SELECT\n    table_schema AS \"CATALOG_NODE\",\n    table_name AS \"SCHEMA_NODE\",\n    column_name AS \"COLUMN_NODE\",\n    column_default AS \"DEFAULT_NODE\",\n    ordinal_position AS \"POSITION_NODE\",\n    CASE is_nullable\n        WHEN \'YES\' THEN TRUE\n        WHEN \'NO\' THEN FALSE\n    END AS \"NULLABLE_NODE\",\n    data_type AS \"DATA_TYPE_NODE\",\n    data_type AS \"COLUMN_TYPE_NODE\",\n    NULL AS \"EXTRA_NODE\",\n    character_maximum_length AS \"MAXIMUM_LENGTH_NODE\",\n    character_octet_length AS \"OCTET_LENGTH_NODE\",\n    numeric_precision AS \"PRECISION_NODE\",\n    numeric_scale AS \"SCALE_NODE\",\n    character_set_name AS \"CHARACTER_NODE\",\n    collation_name AS \"COLLATION_NODE\",\n    CASE is_identity\n        WHEN \'YES\' THEN TRUE\n        WHEN \'NO\' THEN FALSE\n    END AS \"KEY_NODE\",\n    NULL AS \"PRIVILEGES_NODE\",\n    NULL AS \"COMMENT_NODE\"\nFROM\n    information_schema.columns;','According to the specified database, the data table gets all the data columns under the current condition\n根据指定数据库，数据表获取当前条件下所有数据列','PostgreSQL','[]','2024-01-18 05:15:06','2024-01-18 05:15:06',1);
 /*!40000 ALTER TABLE `template_sql` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1077,4 +1196,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-22  0:37:12
+-- Dump completed on 2024-03-01 22:02:46
