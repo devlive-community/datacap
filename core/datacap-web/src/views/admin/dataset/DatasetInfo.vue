@@ -53,6 +53,7 @@
                   <Col class="w100 center">{{ $t('dataset.columnIsSampling') }}</Col>
                   <Col class="w100 center">{{ $t('dataset.columnLength') }}</Col>
                   <Col class="w200">{{ $t('dataset.columnComment') }}</Col>
+                  <Col class="w100 center">{{ $t('common.action') }}</Col>
                 </Row>
               </FormItem>
               <template v-for="(item, index) in formState.columns"
@@ -93,23 +94,33 @@
                     </Col>
                     <Col class="w100 center">
                       <Input v-model="item.defaultValue"
-                             type="text">
+                             type="text"
+                             :disabled="item.virtualColumn">
                       </Input>
                     </Col>
                     <Col class="w100 center">
-                      <Switch v-model="item.nullable"/>
+                      <Switch v-model="item.nullable"
+                              :disabled="item.virtualColumn">
+                      </Switch>
                     </Col>
                     <Col class="w100 center">
-                      <Switch v-model="item.orderByKey"/>
+                      <Switch v-model="item.orderByKey"
+                              :disabled="item.virtualColumn">
+                      </Switch>
                     </Col>
                     <Col class="w100 center">
-                      <Switch v-model="item.partitionKey"/>
+                      <Switch v-model="item.partitionKey"
+                              :disabled="item.virtualColumn">
+                      </Switch>
                     </Col>
                     <Col class="w100 center">
-                      <Switch v-model="item.primaryKey"/>
+                      <Switch v-model="item.primaryKey"
+                              :disabled="item.virtualColumn">
+                      </Switch>
                     </Col>
                     <Col class="w100 center">
                       <Switch v-model="item.samplingKey"
+                              :disabled="item.virtualColumn"
                               @on-change="validatorSampling">
                       </Switch>
                     </Col>
@@ -117,13 +128,30 @@
                       <InputNumber v-model="item.length"
                                    min="0"
                                    max="65536"
-                                   :disabled="item.type === 'BOOLEAN' || item.type === 'DATETIME'">
+                                   :disabled="item.type === 'BOOLEAN' || item.type === 'DATETIME' || item.virtualColumn">
                       </InputNumber>
                     </Col>
                     <Col class="w200">
                       <Input v-model="item.comment"
                              type="textarea">
                       </Input>
+                    </Col>
+                    <Col class="w100 center">
+                      <Space>
+                        <Button type="error"
+                                size="small"
+                                shape="circle"
+                                icon="md-trash"
+                                :disabled="!item.customColumn"
+                                @click="handlerRemoveColumn(index)">
+                        </Button>
+                        <Button type="primary"
+                                size="small"
+                                shape="circle"
+                                icon="md-add"
+                                @click="handlerAddColumn(index)">
+                        </Button>
+                      </Space>
                     </Col>
                   </Row>
                 </FormItem>
@@ -359,7 +387,9 @@ export default defineComponent({
               partitionKey: false,
               primaryKey: false,
               samplingKey: false,
-              mode: 'DIMENSION'
+              mode: 'DIMENSION',
+              virtualColumn: false,
+              customColumn: false
             }
             this.formState.columns.push(column)
           })
@@ -377,6 +407,32 @@ export default defineComponent({
           }
         })
         .finally(() => this.saving = false)
+    },
+    handlerAddColumn(index: number)
+    {
+      this.formState.columns.splice(index + 1, 0, {
+        id: null,
+        name: null,
+        aliasName: null,
+        type: 'STRING',
+        comment: null,
+        defaultValue: null,
+        position: index + 1,
+        nullable: false,
+        length: 0,
+        original: null,
+        orderByKey: false,
+        partitionKey: false,
+        primaryKey: false,
+        samplingKey: false,
+        mode: 'DIMENSION',
+        virtualColumn: true,
+        customColumn: true
+      })
+    },
+    handlerRemoveColumn(index: number)
+    {
+      this.formState.columns.splice(index, 1)
     },
     validatorSampling()
     {

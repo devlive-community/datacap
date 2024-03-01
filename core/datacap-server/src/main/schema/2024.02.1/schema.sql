@@ -5,8 +5,10 @@
 USE `datacap`;
 
 ALTER TABLE `datacap_dataset_column`
-    ADD COLUMN `is_primary_key`  BOOLEAN DEFAULT FALSE,
-    ADD COLUMN `is_sampling_key` BOOLEAN DEFAULT FALSE;
+    ADD COLUMN `is_primary_key`    BOOLEAN DEFAULT FALSE,
+    ADD COLUMN `is_sampling_key`   BOOLEAN DEFAULT FALSE,
+    ADD COLUMN `is_custom_column`  BOOLEAN DEFAULT FALSE,
+    ADD COLUMN `is_virtual_column` BOOLEAN DEFAULT FALSE;
 
 ALTER TABLE `datacap_dataset`
     ADD COLUMN `total_rows`        BIGINT(100) DEFAULT 0,

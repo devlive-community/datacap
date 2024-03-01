@@ -142,17 +142,15 @@ public class DataSetServiceImpl
     public CommonResponse<Set<DataSetColumnEntity>> getColumns(Long id)
     {
         Optional<DataSetEntity> entity = repository.findById(id);
-        if (!entity.isPresent()) {
-            return CommonResponse.failure(String.format("DataSet [ %s ] not found", id));
-        }
-        return CommonResponse.success(columnRepository.findAllByDataset(entity.get()));
+        return entity.map(dataSet -> CommonResponse.success(columnRepository.findAllByDatasetOrderByPositionAsc(dataSet)))
+                .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", id)));
     }
 
     @Override
     public CommonResponse<Set<DataSetColumnEntity>> getColumnsByCode(String code)
     {
         Optional<DataSetEntity> entity = repository.findByCode(code);
-        return entity.map(item -> CommonResponse.success(columnRepository.findAllByDataset(item)))
+        return entity.map(item -> CommonResponse.success(columnRepository.findAllByDatasetOrderByPositionAsc(item)))
                 .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
     }
 
@@ -356,14 +354,8 @@ public class DataSetServiceImpl
             String tableName = String.format("%s%s", tablePrefix, UUID.randomUUID().toString().replace("-", ""));
             entity.setTableName(tableName);
         }
-        DataSetState state = entity.getState().get(entity.getState().size() - 1);
-        if (state.equals(DataSetState.METADATA_START)
-                || state.equals(DataSetState.METADATA_FAILED)
-                || state.equals(DataSetState.TABLE_FAILED)) {
-            log.info("Start build metadata for dataset [ {} ] id [ {} ]", entity.getName(), entity.getId());
-            createMetadata(entity, rebuildColumn);
-        }
-        throw new IllegalArgumentException(String.format("Invalid state [ %s ]", state));
+        log.info("Start build metadata for dataset [ {} ] id [ {} ]", entity.getName(), entity.getId());
+        createMetadata(entity, rebuildColumn);
     }
 
     private void createMetadata(DataSetEntity entity, boolean rebuildColumn)
@@ -376,6 +368,13 @@ public class DataSetServiceImpl
                 entity.getColumns()
                         .forEach(item -> item.setDataset(DataSetEntity.builder().id(entity.getId()).build()));
                 columnRepository.saveAll(entity.getColumns());
+
+                List<DataSetColumnEntity> originalColumns = columnRepository.findAllByDataset(entity);
+                List<DataSetColumnEntity> columnsNotInEntity = originalColumns.stream()
+                        .filter(originalColumn -> entity.getColumns().stream()
+                                .noneMatch(addedColumn -> addedColumn.getId().equals(originalColumn.getId())))
+                        .collect(Collectors.toList());
+                columnRepository.deleteAll(columnsNotInEntity);
             }
             completeState(entity, DataSetState.METADATA_SUCCESS);
         }
@@ -746,45 +745,55 @@ public class DataSetServiceImpl
     private Set<CreatedModel> createdModeProcess(Set<DataSetColumnEntity> targetColumns, DataSetEntity entity)
     {
         Set<CreatedModel> models = Sets.newHashSet();
-
-        // If the id tag data is not set to new
-        if (entity.getId() == null) {
-            models.add(new CreatedModel(null, CreatedMode.CREATE_TABLE));
-            return models;
-        }
-
-        // Check whether there is a data table bound to the current dataset
-        if (!checkTableExists(entity)) {
-            models.add(new CreatedModel(null, CreatedMode.CREATE_TABLE));
-            return models;
-        }
-
-        List<DataSetColumnEntity> sourceColumns = columnRepository.findAllByDataset(entity);
-        for (DataSetColumnEntity sourceColumn : sourceColumns) {
-            Optional<DataSetColumnEntity> filterColumn = targetColumns.stream()
-                    .filter(item -> item.getId().equals(sourceColumn.getId()))
-                    .findFirst();
-            if (!filterColumn.isPresent()) {
-                models.add(new CreatedModel(sourceColumn, CreatedMode.CREATE_COLUMN));
+        try {
+            // If the id tag data is not set to new
+            if (entity.getId() == null) {
+                models.add(new CreatedModel(null, CreatedMode.CREATE_TABLE));
+                return models;
             }
-            else {
-                boolean matchFound = targetColumns.stream()
+
+            // Check whether there is a data table bound to the current dataset
+            if (!checkTableExists(entity)) {
+                models.add(new CreatedModel(null, CreatedMode.CREATE_TABLE));
+                return models;
+            }
+
+            List<DataSetColumnEntity> sourceColumns = columnRepository.findAllByDataset(entity)
+                    .stream()
+                    .filter(item -> !item.isVirtualColumn())
+                    .collect(Collectors.toList());
+            targetColumns = targetColumns.stream()
+                    .filter(item -> !item.isVirtualColumn())
+                    .collect(Collectors.toSet());
+            for (DataSetColumnEntity sourceColumn : sourceColumns) {
+                Optional<DataSetColumnEntity> filterColumn = targetColumns.stream()
                         .filter(item -> item.getId().equals(sourceColumn.getId()))
-                        .anyMatch(targetColumn ->
-                                targetColumn.getType().equals(sourceColumn.getType()) && targetColumn.getName().equals(sourceColumn.getName()));
-                if (!matchFound) {
-                    models.add(new CreatedModel(filterColumn.get(), CreatedMode.MODIFY_COLUMN));
+                        .findFirst();
+                if (!filterColumn.isPresent()) {
+                    models.add(new CreatedModel(sourceColumn, CreatedMode.CREATE_COLUMN));
+                }
+                else {
+                    boolean matchFound = targetColumns.stream()
+                            .filter(item -> item.getId().equals(sourceColumn.getId()))
+                            .anyMatch(targetColumn ->
+                                    targetColumn.getType().equals(sourceColumn.getType()) && targetColumn.getName().equals(sourceColumn.getName()));
+                    if (!matchFound) {
+                        models.add(new CreatedModel(filterColumn.get(), CreatedMode.MODIFY_COLUMN));
+                    }
                 }
             }
-        }
 
-        if (entity.getLifeCycleColumn() != null) {
-            DataSetColumnEntity column = DataSetColumnEntity.builder()
-                    .name(entity.getLifeCycleColumn())
-                    .length(Integer.parseInt(entity.getLifeCycle()))
-                    .defaultValue(entity.getLifeCycleType())
-                    .build();
-            models.add(new CreatedModel(column, CreatedMode.MODIFY_LIFECYCLE));
+            if (entity.getLifeCycleColumn() != null) {
+                DataSetColumnEntity column = DataSetColumnEntity.builder()
+                        .name(entity.getLifeCycleColumn())
+                        .length(Integer.parseInt(entity.getLifeCycle()))
+                        .defaultValue(entity.getLifeCycleType())
+                        .build();
+                models.add(new CreatedModel(column, CreatedMode.MODIFY_LIFECYCLE));
+            }
+        }
+        catch (Exception e) {
+            log.warn("Get create model for dataset [ {} ] id [ {} ] failed", entity.getName(), entity.getId(), e);
         }
         return models;
     }

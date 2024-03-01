@@ -75,6 +75,12 @@ public class DataSetColumnEntity
     @Column(name = "alias_name")
     private String aliasName;
 
+    @Column(name = "is_custom_column")
+    private boolean customColumn;
+
+    @Column(name = "is_virtual_column")
+    private boolean virtualColumn;
+
     @ManyToOne
     @JoinTable(name = "datacap_dataset_column_relation",
             joinColumns = @JoinColumn(name = "column_id"),
