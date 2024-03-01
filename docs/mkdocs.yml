@@ -124,6 +124,7 @@ plugins:
             NavDeveloper: 开发
             NavDeveloperPlugin: 插件
             NavReleaseNote: 更新日志
+            NavDataset: 数据集
         - locale: en
           name: English
           build: true
@@ -138,6 +139,7 @@ plugins:
             NavDeveloper: Developer
             NavDeveloperPlugin: Plugin
             NavReleaseNote: Release Note
+            NavDataset: Dataset
   - search
   - git-revision-date-localized:
       enable_creation_date: true
@@ -154,10 +156,16 @@ nav:
   - NavDocumentation:
       - reference/getStarted/install.md
       - reference/getStarted/installContainers.md
+      - reference/getStarted/installFromDockerCompose.md
       - reference/getStarted/installRainbond.md
       - reference/getStarted/query/home.md
       - reference/getStarted/dashboard/home.md
-      - reference/getStarted/dataset/home.md
+      - NavDataset:
+        - reference/getStarted/dataset/create/home.md
+        - reference/getStarted/dataset/adhoc/home.md
+        - reference/getStarted/dataset/sync/home.md
+        - reference/getStarted/dataset/history/home.md
+        - reference/getStarted/dataset/clear/home.md
       - NavClient:
         - reference/clients/cli.md
       - NavManager:

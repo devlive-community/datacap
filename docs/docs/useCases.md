@@ -28,7 +28,7 @@ hide:
 
 <div class="grid cards" markdown>
 
-- :octicons-project-16: __DataCap 开发者__
+- __DataCap 开发者__
 
     ---
     
@@ -36,7 +36,7 @@ hide:
     
     [:octicons-arrow-right-24: 访问](https://github.com/EdurtIO/datacap)
 
-- :octicons-project-16: __Devlive 社区__
+- __Devlive 社区__
 
     ---
 

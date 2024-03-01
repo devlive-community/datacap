@@ -1,5 +1,5 @@
 ---
-title: 在 Docker 中部署
+title: Docker 部署
 ---
 
 DataCap 项目提供 [qianmoq/datacap](https://hub.docker.com/r/qianmoq/datacap) 包含 DataCap 服务器和默认配置的 Docker 映像。Docker 映像发布到 Docker Hub，可以与 Docker 运行时等一起使用。

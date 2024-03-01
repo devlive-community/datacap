@@ -1,5 +1,5 @@
 ---
-title: 在 Rainbond 中部署
+title: Rainbond 部署
 ---
 
 如果您不熟悉 Kubernetes，想在 Kubernetes 中安装 DataCap，可以使用 Rainbond 来部署。[Rainbond](https://www.rainbond.com/) 是一个基于 Kubernetes 构建的云原生应用管理平台，可以很简单的将你的应用部署到 Kubernetes 中。
