@@ -116,7 +116,8 @@
                     <Col class="w100 center">
                       <InputNumber v-model="item.length"
                                    min="0"
-                                   max="65536">
+                                   max="65536"
+                                   :disabled="item.type === 'BOOLEAN' || item.type === 'DATETIME'">
                       </InputNumber>
                     </Col>
                     <Col class="w200">
