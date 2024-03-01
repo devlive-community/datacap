@@ -12,7 +12,9 @@ class QiniuFs : Fs {
     private val log = getLogger(QiniuFs::class.java)
 
     override fun writer(request: FsRequest?): FsResponse {
-        log.info("QiniuFs writer origin path [ {} ]", request !!.fileName)
+        requireNotNull(request) { "request must not be null" }
+
+        log.info("QiniuFs writer origin path [ {} ]", request.fileName)
         val targetPath = join(File.separator, request.endpoint, request.bucket, request.fileName)
         val response = FsResponse.builder()
                 .origin(request.fileName)
@@ -34,7 +36,9 @@ class QiniuFs : Fs {
     }
 
     override fun reader(request: FsRequest?): FsResponse {
-        log.info("QiniuFs reader origin path [ {} ]", request !!.fileName)
+        requireNotNull(request) { "request must not be null" }
+
+        log.info("QiniuFs reader origin path [ {} ]", request.fileName)
         val response = FsResponse.builder()
                 .remote(request.fileName)
                 .successful(true)
