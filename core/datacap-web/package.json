@@ -1,7 +1,7 @@
 {
   "name": "datacap-console",
   "description": "DataCap console",
-  "version": "2024.2.1",
+  "version": "2024.3.1-SNAPSHOT",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
