@@ -1,0 +1,6 @@
+[dir=ltr] .md-nav__item--section>.md-nav {
+    margin-left: 5px;
+}
+.md-nav--lifted>.md-nav__list>.md-nav__item--active>.md-nav__link:not(.md-nav__container) {
+    margin-left: -12px;
+}
