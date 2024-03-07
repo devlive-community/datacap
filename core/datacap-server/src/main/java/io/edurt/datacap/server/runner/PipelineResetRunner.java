@@ -1,6 +1,6 @@
 package io.edurt.datacap.server.runner;
 
-import com.clearspring.analytics.util.Lists;
+import com.google.common.collect.Lists;
 import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.repository.PipelineRepository;
