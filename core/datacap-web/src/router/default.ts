@@ -166,6 +166,12 @@ const createDefaultRouter = (router: any) => {
         layout: LayoutContainer,
         meta: {title: 'common.dataset'},
         component: () => import("@/views/admin/dataset/DatasetAdhoc.vue")
+      },
+      {
+        path: "pipeline/info/:code?",
+        layout: LayoutContainer,
+        meta: {title: 'common.pipeline'},
+        component: () => import("@/views/admin/pipeline/PipelineInfo.vue")
       }
     ]
   })

@@ -1,23 +1,12 @@
 <template>
   <div>
-    <Modal v-model="visible"
-           :title="$t('pipeline.visualConstruction')"
-           :mask-closable="false"
-           :width="'80%'"
-           @cancel="handlerCancel()">
-      <CircularLoading v-if="loading"
-                       :show="loading">
-      </CircularLoading>
-      <FlowEditor v-else
-                  :data="contextData"
-                  @onCommit="handlerSave">
-      </FlowEditor>
-      <template #footer>
-        <Button @click="handlerCancel">
-          {{ $t('common.cancel') }}
-        </Button>
-      </template>
-    </Modal>
+    <CircularLoading v-if="loading"
+                     :show="loading">
+    </CircularLoading>
+    <FlowEditor v-else
+                :data="contextData"
+                @onCommit="handlerSave">
+    </FlowEditor>
   </div>
 </template>
 <script lang="ts">
@@ -27,15 +16,10 @@ import {SourceService} from "@/services/SourceService";
 import {Configuration} from "@/components/editor/flow/Configuration";
 import CircularLoading from "@/components/loading/CircularLoading.vue";
 import PipelineService from "@/services/user/PipelineService";
+import router from "@/router";
 
 export default defineComponent({
-  name: "PipelineCreate",
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: () => false
-    }
-  },
+  name: "PipelineInfo",
   components: {CircularLoading, FlowEditor},
   data()
   {
@@ -84,28 +68,12 @@ export default defineComponent({
         .then((response) => {
           if (response.status) {
             this.$Message.success(`${this.$t('common.publish')} [ ${response.data} ] ${this.$t('common.success')}`)
-            this.handlerCancel()
+            router.push('/admin/pipeline')
           }
           else {
             this.$Message.error(response.message)
           }
         })
-    },
-    handlerCancel()
-    {
-      this.visible = false;
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible;
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value);
-      }
     }
   }
 });
