@@ -4,21 +4,12 @@
           :title="$t('common.pipeline')"
           dis-hover>
       <template #extra>
-        <Dropdown>
-          <Button type="primary"
-                  size="small"
-                  icon="md-add"
-                  @click="handlerDetail(true)">
-            {{ $t('common.create') }}
-          </Button>
-          <template #list>
-            <DropdownMenu>
-              <DropdownItem @click="handlerCreate(true)">
-                {{ $t('pipeline.visualConstruction') }}
-              </DropdownItem>
-            </DropdownMenu>
-          </template>
-        </Dropdown>
+        <Button type="primary"
+                size="small"
+                icon="md-add"
+                @click="handlerCreate(true)">
+          {{ $t('common.create') }}
+        </Button>
       </template>
       <Table :loading="loading"
              :columns="headers"
@@ -128,10 +119,6 @@
                     :info="info"
                     @close="handlerDelete(null, false)">
     </DeletePipeline>
-    <DetailsPipeline v-if="detail"
-                     :is-visible="detail"
-                     @close="handlerDetail(false)">
-    </DetailsPipeline>
     <StopPipeline v-if="stopped"
                   :is-visible="stopped"
                   :info="info"
@@ -164,7 +151,6 @@ import {createHeaders, getColor, getText} from "@/views/admin/pipeline/PipelineG
 import PipelineService from "@/services/user/PipelineService";
 import MarkdownPreview from "@/components/common/MarkdownPreview.vue";
 import DeletePipeline from "@/views/admin/pipeline/DeletePipeline.vue";
-import DetailsPipeline from "@/views/admin/pipeline/DetailPipeline.vue";
 import StopPipeline from "@/views/admin/pipeline/StopPipeline.vue";
 import LoggerPipeline from "@/views/admin/pipeline/components/LoggerPipeline.vue";
 import PipelineCreate from "@/views/admin/pipeline/components/PipelineCreate.vue";
@@ -177,7 +163,7 @@ const pagination: Pagination = PaginationBuilder.newInstance();
 
 export default defineComponent({
   name: 'UserPipelineHome',
-  components: {PipelineFlow, FontAwesomeIcon, PipelineCreate, LoggerPipeline, StopPipeline, DetailsPipeline, DeletePipeline, MarkdownPreview},
+  components: {PipelineFlow, FontAwesomeIcon, PipelineCreate, LoggerPipeline, StopPipeline, DeletePipeline, MarkdownPreview},
   setup()
   {
     const i18n = useI18n();
@@ -198,8 +184,6 @@ export default defineComponent({
       finalData: null as ResponsePage,
       deleted: false,
       info: null,
-      // Pipeline detail
-      detail: false,
       stopped: false,
       logger: false,
       createVisible: false,
@@ -257,13 +241,6 @@ export default defineComponent({
     {
       this.deleted = isOpen;
       this.info = row
-      if (!isOpen) {
-        this.handlerInitialize(this.filter);
-      }
-    },
-    handlerDetail(isOpen: boolean)
-    {
-      this.detail = isOpen
       if (!isOpen) {
         this.handlerInitialize(this.filter);
       }
