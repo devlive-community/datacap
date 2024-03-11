@@ -723,7 +723,8 @@ public class DataSetServiceImpl
                 .columns(Lists.newArrayList(SqlColumn.builder().column("SUM(rows) AS totalCount").build(),
                         SqlColumn.builder().column("formatReadableSize(SUM(data_compressed_bytes)) AS totalSize").build()))
                 .where(Lists.newArrayList(SqlColumn.builder().column("database").operator(SqlOperator.EQ).value(database).build(),
-                        SqlColumn.builder().column("table").operator(SqlOperator.EQ).value(entity.getTableName()).build()))
+                        SqlColumn.builder().column("table").operator(SqlOperator.EQ).value(entity.getTableName()).build(),
+                        SqlColumn.builder().column("active").operator(SqlOperator.EQ).value("1").build()))
                 .condition(" AND ")
                 .build());
         configure.setFormat(FormatType.NONE);
