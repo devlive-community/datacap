@@ -100,4 +100,5 @@ export default {
   lifeCycleWeek: 'Week',
   lifeCycleDay: 'Day',
   lifeCycleHour: 'Hour',
+  notSpecifiedTitle: 'Not Specified',
 }
