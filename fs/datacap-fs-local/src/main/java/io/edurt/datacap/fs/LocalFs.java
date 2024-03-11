@@ -56,4 +56,25 @@ public class LocalFs
         }
         return response;
     }
+
+    @Override
+    public FsResponse delete(FsRequest request)
+    {
+        String targetPath = String.join(File.separator, request.getEndpoint(), request.getBucket(), request.getFileName());
+        log.info("LocalFs delete origin path [ {} ]", targetPath);
+        try {
+            boolean status = IOUtils.delete(targetPath);
+            log.info("LocalFs delete [ {} ] successfully", targetPath);
+            return FsResponse.builder()
+                    .successful(status)
+                    .build();
+        }
+        catch (Exception e) {
+            log.error("LocalFs delete error", e);
+            return FsResponse.builder()
+                    .successful(false)
+                    .message(e.getMessage())
+                    .build();
+        }
+    }
 }

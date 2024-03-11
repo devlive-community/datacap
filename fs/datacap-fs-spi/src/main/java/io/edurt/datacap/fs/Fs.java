@@ -22,9 +22,9 @@ public interface Fs
      * Delete file or directory
      *
      * @param request Request info
-     * @return delete status
+     * @return delete info
      */
-    default boolean delete(FsRequest request)
+    default FsResponse delete(FsRequest request)
     {
         throw new UnsupportedOperationException(request.getFileName() + " does not support delete");
     }

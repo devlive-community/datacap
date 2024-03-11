@@ -78,4 +78,16 @@ public class LocalFsTest
             log.error("Reader error", e);
         }
     }
+
+    @Test
+    public void testDelete()
+    {
+        injector.getInstance(Key.get(new TypeLiteral<Set<Fs>>() {}))
+                .stream()
+                .findFirst()
+                .ifPresent(it -> {
+                    FsResponse response = it.delete(request);
+                    Assert.assertTrue(response.isSuccessful());
+                });
+    }
 }
