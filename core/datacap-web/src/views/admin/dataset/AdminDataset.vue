@@ -38,6 +38,7 @@
                     size="small"
                     icon="md-analytics"
                     target="_blank"
+                    :disabled="!isSuccess(row.state)"
                     :to="`/admin/dataset/adhoc/${row.code}`">
             </Button>
             <Button shape="circle"
