@@ -217,7 +217,7 @@ public class DataSetServiceImpl
                                             columns.add(sqlColumn);
                                         }
                                         // Only dimensions are added to GROUP BY
-                                        if (entity.getMode().equals(ColumnMode.DIMENSION) || column.getMode().equals(ColumnMode.GROUP)) {
+                                        if (entity.getMode().equals(ColumnMode.DIMENSION)) {
                                             if (!column.getMode().equals(ColumnMode.FILTER)) {
                                                 groupBy.add(SqlColumn.builder()
                                                         .column(columnName.get())

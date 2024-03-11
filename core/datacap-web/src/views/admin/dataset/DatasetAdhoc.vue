@@ -106,26 +106,6 @@
               </Draggable>
             </ListItem>
             <ListItem>
-              {{ $t('dataset.columnModeGroup') }}: &nbsp;
-              <Draggable group="dimensions"
-                         item-key="id"
-                         :list="groups">
-                <template #item="{ element, index}">
-                  <Tag size="medium"
-                       class="point">
-                    {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
-                    <Tooltip transfer
-                             :content="$t('common.remove')">
-                      <FontAwesomeIcon icon="trash"
-                                       class="point"
-                                       @click="handlerRemove(element.id, index, groups)">
-                      </FontAwesomeIcon>
-                    </Tooltip>
-                  </Tag>
-                </template>
-              </Draggable>
-            </ListItem>
-            <ListItem>
               {{ $t('dataset.columnModeFilter') }}: &nbsp;
               <Draggable group="dimensions"
                          item-key="id"
@@ -394,7 +374,6 @@ export default {
       originalData: [],
       metrics: [],
       dimensions: [],
-      groups: [],
       filters: [],
       configure: {
         columns: [],
@@ -447,7 +426,6 @@ export default {
                       const query = JSON.parse(response.data.query)
                       this.mergeColumns(query.columns, this.metrics, ColumnType.METRIC)
                       this.mergeColumns(query.columns, this.dimensions, ColumnType.DIMENSION)
-                      this.mergeColumns(query.columns, this.groups, ColumnType.GROUP)
                       this.mergeColumns(query.columns, this.filters, ColumnType.FILTER)
                       this.configure.columns = query.columns
                       this.configure.limit = query.limit
@@ -465,12 +443,9 @@ export default {
     },
     handlerApplyAdhoc()
     {
-      // Set the mode to: GROUP
-      this.groups.forEach((item: { mode: ColumnType; }) => item.mode = ColumnType.GROUP)
       // Set the mode to: FILTER
       this.filters.forEach((item: { mode: ColumnType; }) => item.mode = ColumnType.FILTER)
-
-      this.configure.columns = [...this.metrics, ...this.dimensions, ...this.groups, ...this.filters]
+      this.configure.columns = [...this.metrics, ...this.dimensions, ...this.filters]
       this.handlerAdhoc()
     },
     handlerAdhoc()
@@ -538,9 +513,6 @@ export default {
       }
       else if (clonedValue.mode === ColumnType.DIMENSION) {
         this.replaceColumn(this.dimensions, clonedValue)
-      }
-      else if (clonedValue.mode === ColumnType.GROUP) {
-        this.replaceColumn(this.groups, clonedValue)
       }
       else if (clonedValue.mode === ColumnType.FILTER) {
         this.replaceColumn(this.filters, clonedValue)
