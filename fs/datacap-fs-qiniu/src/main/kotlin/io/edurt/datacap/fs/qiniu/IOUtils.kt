@@ -1,9 +1,6 @@
 package io.edurt.datacap.fs.qiniu
 
-import com.qiniu.storage.Configuration
-import com.qiniu.storage.DownloadUrl
-import com.qiniu.storage.Region
-import com.qiniu.storage.UploadManager
+import com.qiniu.storage.*
 import com.qiniu.storage.model.DefaultPutRet
 import com.qiniu.util.Auth
 import io.edurt.datacap.common.utils.JsonUtils
@@ -44,6 +41,21 @@ class IOUtils {
         fun reader(request: FsRequest): InputStream {
             val downloadUrl = DownloadUrl(request.endpoint, false, request.fileName)
             return getRemoteUrlAsStream(downloadUrl.buildURL())
+        }
+
+        @JvmStatic
+        fun delete(request: FsRequest): Boolean {
+            try {
+                val conf = Configuration(Region.autoRegion())
+                val auth = Auth.create(request.access, request.secret)
+
+                val manager = BucketManager(auth, conf)
+                manager.delete(request.bucket, request.fileName)
+                return true
+            }
+            catch (e: Exception) {
+                throw RuntimeException(e)
+            }
         }
     }
 }
