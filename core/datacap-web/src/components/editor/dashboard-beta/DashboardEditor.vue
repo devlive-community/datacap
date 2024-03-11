@@ -89,8 +89,8 @@
                                   :configure="JSON.parse(item.node.configure)">
                   </EchartsPreview>
                   <VisualView v-else-if="item.type === 'DATASET'"
-                              :width="item.width"
-                              :height="item.height"
+                              :width="item.width.replace('px', '') - 2 + 'px'"
+                              :height="item.height.replace('px', '') - 45 + 'px'"
                               :code="item.node.code"
                               :configuration="JSON.parse(item.node.configure)"
                               :query="JSON.parse(item.node.query)">
