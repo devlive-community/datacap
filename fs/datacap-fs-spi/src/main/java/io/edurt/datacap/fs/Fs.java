@@ -17,4 +17,15 @@ public interface Fs
     FsResponse writer(FsRequest request);
 
     FsResponse reader(FsRequest request);
+
+    /**
+     * Delete file or directory
+     *
+     * @param request Request info
+     * @return delete status
+     */
+    default boolean delete(FsRequest request)
+    {
+        throw new UnsupportedOperationException(request.getFileName() + " does not support delete");
+    }
 }
