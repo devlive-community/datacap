@@ -30,4 +30,9 @@ class IOUtilsTest {
     fun reader() {
         assertNotNull(IOUtils.reader(request))
     }
+
+    @Test
+    fun delete() {
+        assertTrue(IOUtils.delete(request))
+    }
 }

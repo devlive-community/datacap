@@ -76,4 +76,21 @@ public class IOUtils
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Deletes the file at the specified path.
+     *
+     * @param path the path of the file to be deleted
+     * @return true if the file is successfully deleted, false otherwise
+     */
+    public static boolean delete(String path)
+    {
+        try {
+            Files.delete(Paths.get(path));
+            return true;
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
