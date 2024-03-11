@@ -19,7 +19,7 @@
                       padding="0"
                       :style="{width: item.width, height: item.height}">
                   <template #title>
-                    {{ item.title ? item.title : $t('dataset.notSpecifiedTitle') }}
+                    {{ item.name ? item.name : $t('dataset.notSpecifiedTitle') }}
                   </template>
                   <EchartsPreview v-if="item.type === 'QUERY'"
                                   :width="'180px'"
