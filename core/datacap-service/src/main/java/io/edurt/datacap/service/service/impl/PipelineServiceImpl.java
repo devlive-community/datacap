@@ -7,6 +7,7 @@ import com.google.inject.TypeLiteral;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.BeanToPropertiesUtils;
 import io.edurt.datacap.executor.Executor;
+import io.edurt.datacap.executor.common.RunEngine;
 import io.edurt.datacap.executor.common.RunMode;
 import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.executor.common.RunWay;
@@ -158,7 +159,11 @@ public class PipelineServiceImpl
             }
 
             ExecutorRequest pipeline = new ExecutorRequest(work, environment.getProperty(String.format("datacap.executor.%s.home", configure.getExecutor().toLowerCase())),
-                    pipelineName, UserDetailsService.getUser().getUsername(), fromField, toField, RunMode.valueOf(environment.getProperty("datacap.executor.mode")), RunWay.valueOf(environment.getProperty("datacap.executor.way")));
+                    pipelineName, UserDetailsService.getUser().getUsername(), fromField, toField,
+                    RunMode.valueOf(environment.getProperty("datacap.executor.mode")),
+                    RunWay.valueOf(environment.getProperty("datacap.executor.way")),
+                    environment.getProperty("datacap.executor.startScript"),
+                    RunEngine.valueOf(environment.getProperty("datacap.executor.engine")));
 
             final ExecutorService executorService = Executors.newCachedThreadPool();
             PipelineEntity finalPipelineEntity = pipelineEntity;

@@ -18,6 +18,7 @@ import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.executor.Executor;
 import io.edurt.datacap.executor.ExecutorUtils;
+import io.edurt.datacap.executor.common.RunEngine;
 import io.edurt.datacap.executor.common.RunMode;
 import io.edurt.datacap.executor.common.RunProtocol;
 import io.edurt.datacap.executor.common.RunState;
@@ -608,7 +609,11 @@ public class DataSetServiceImpl
             String workHome = FolderUtils.getWorkHome(initializerConfigure.getDataHome(), entity.getUser().getUsername(), String.join(File.separator, "dataset", entity.getExecutor().toLowerCase(), taskName));
             ExecutorRequest request = new ExecutorRequest(taskName, entity.getUser().getUsername(), input, output,
                     environment.getProperty(String.format("datacap.executor.%s.home", entity.getExecutor().toLowerCase())),
-                    workHome, this.injector, 600, RunWay.LOCAL, RunMode.CLIENT);
+                    workHome, this.injector, 600,
+                    RunWay.valueOf(environment.getProperty("datacap.executor.way")),
+                    RunMode.valueOf(environment.getProperty("datacap.executor.mode")),
+                    environment.getProperty("datacap.executor.startScript"),
+                    RunEngine.valueOf(environment.getProperty("datacap.executor.engine")));
 
             history.setState(RunState.RUNNING);
             historyRepository.save(history);

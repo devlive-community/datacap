@@ -44,37 +44,44 @@ public class SeatunnelExecutor
     @Override
     public ExecutorResponse start(ExecutorRequest request)
     {
-        SeaTunnelCommander commander = new SeaTunnelCommander(
-                request.getExecutorHome() + "/bin",
-                request.getRunWay().name().toLowerCase(),
-                request.getRunMode().name().toLowerCase(),
-                String.join(File.separator, request.getWorkHome(), request.getTaskName() + ".configure"),
-                request.getTaskName());
+        try {
+            SeaTunnelCommander commander = new SeaTunnelCommander(
+                    request.getExecutorHome() + "/bin",
+                    request.getStartScript(),
+                    request.getRunWay().name().toLowerCase(),
+                    request.getRunMode().name().toLowerCase(),
+                    String.join(File.separator, request.getWorkHome(), request.getTaskName() + ".configure"),
+                    request.getTaskName(),
+                    request.getRunEngine());
 
-        LoggerExecutor loggerExecutor = new LogbackExecutor(request.getWorkHome(), request.getTaskName() + ".log");
-        String result = before(request, loggerExecutor.getLogger());
-        if (StringUtils.isNotEmpty(result)) {
-            return new ExecutorResponse(false, false, RunState.FAILURE, result);
+            LoggerExecutor loggerExecutor = new LogbackExecutor(request.getWorkHome(), request.getTaskName() + ".log");
+            String result = before(request, loggerExecutor.getLogger());
+            if (StringUtils.isNotEmpty(result)) {
+                return new ExecutorResponse(false, false, RunState.FAILURE, result);
+            }
+
+            ShellConfigure shellConfigure = ShellConfigure.builder()
+                    .directory(request.getWorkHome())
+                    .loggerExecutor(loggerExecutor)
+                    .command(Collections.singletonList(commander.toCommand()))
+                    .timeout(request.getTimeout())
+                    .username(request.getUserName())
+                    .build();
+            ShellCommander shellExecutor = new ProcessBuilderCommander(shellConfigure);
+            ShellResponse response = shellExecutor.execute();
+            log.info("Task [ {} ] executed code [ {} ]", request.getTaskName(), response.getCode());
+            RunState state = response.getSuccessful() ? RunState.SUCCESS : RunState.FAILURE;
+            log.info("Task [ {} ] executed state [ {} ]", request.getTaskName(), state);
+
+            String message = null;
+            if (response.getErrors() != null && !response.getSuccessful()) {
+                message = String.join("\n", response.getErrors());
+            }
+            return new ExecutorResponse(response.isTimeout(), response.getSuccessful(), state, message);
         }
-
-        ShellConfigure shellConfigure = ShellConfigure.builder()
-                .directory(request.getWorkHome())
-                .loggerExecutor(loggerExecutor)
-                .command(Collections.singletonList(commander.toCommand()))
-                .timeout(request.getTimeout())
-                .username(request.getUserName())
-                .build();
-        ShellCommander shellExecutor = new ProcessBuilderCommander(shellConfigure);
-        ShellResponse response = shellExecutor.execute();
-        log.info("Task [ {} ] executed code [ {} ]", request.getTaskName(), response.getCode());
-        RunState state = response.getSuccessful() ? RunState.SUCCESS : RunState.FAILURE;
-        log.info("Task [ {} ] executed state [ {} ]", request.getTaskName(), state);
-
-        String message = null;
-        if (response.getErrors() != null && !response.getSuccessful()) {
-            message = String.join("\n", response.getErrors());
+        catch (Exception exception) {
+            return new ExecutorResponse(false, false, RunState.FAILURE, exception.getMessage());
         }
-        return new ExecutorResponse(response.isTimeout(), response.getSuccessful(), state, message);
     }
 
     @Override
