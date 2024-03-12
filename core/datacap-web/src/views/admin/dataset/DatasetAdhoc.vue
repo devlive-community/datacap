@@ -342,6 +342,7 @@ import DatasetVisualConfigurePie from "@/views/admin/dataset/components/adhoc/Da
 import DatasetVisualConfigureHistogram from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureHistogram.vue";
 import DatasetVisualConfigureWordCloud from "@/views/admin/dataset/components/adhoc/DatasetVisualConfigureWordCloud.vue";
 import {cloneDeep} from 'lodash';
+import router from "@/router";
 
 export default {
   name: 'DatasetAdhoc',
@@ -545,6 +546,7 @@ export default {
           if (response.status) {
             this.$Message.success(this.$t('report.publishSuccess').replace('REPLACE_NAME', this.formState.name))
             this.formState.visible = false
+            router.push('/admin/report')
           }
         })
         .finally(() => this.published = false)

@@ -100,4 +100,5 @@ export default {
   lifeCycleWeek: '周',
   lifeCycleDay: '天',
   lifeCycleHour: '小时',
+  notSpecifiedTitle: '未指定'
 }

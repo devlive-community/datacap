@@ -2,6 +2,7 @@ import {Type} from "@/components/visual/Type";
 
 export class Configuration
 {
+  title?: null;
   headers: [] = [];
   columns: [] = [];
   type: Type = Type.TABLE;

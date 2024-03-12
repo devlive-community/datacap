@@ -15,18 +15,25 @@
                    :key="item.id"
                    @drag="handlerDrag(item, $event)"
                    @dragend="handlerDragend(item)">
-                <EchartsPreview v-if="item.type === 'QUERY'"
-                                :width="'180px'"
-                                :height="'100px'"
-                                :configure="JSON.parse(item.configure)">
-                </EchartsPreview>
-                <VisualView v-else-if="item.type === 'DATASET'"
-                            :width="'180px'"
-                            :height="'120px'"
-                            :code="item.dataset.code"
-                            :configuration="JSON.parse(item.configure)"
-                            :query="JSON.parse(item.query)">
-                </VisualView>
+                <Card dis-hover
+                      padding="0"
+                      :style="{width: item.width, height: item.height}">
+                  <template #title>
+                    {{ item.name ? item.name : $t('dataset.notSpecifiedTitle') }}
+                  </template>
+                  <EchartsPreview v-if="item.type === 'QUERY'"
+                                  :width="'180px'"
+                                  :height="'100px'"
+                                  :configure="JSON.parse(item.configure)">
+                  </EchartsPreview>
+                  <VisualView v-else-if="item.type === 'DATASET'"
+                              :width="'180px'"
+                              :height="'120px'"
+                              :code="item.dataset.code"
+                              :configuration="JSON.parse(item.configure)"
+                              :query="JSON.parse(item.query)">
+                  </VisualView>
+                </Card>
               </div>
             </template>
           </Panel>
@@ -69,12 +76,15 @@
                 <Card dis-hover
                       padding="0"
                       :style="{width: item.width, height: item.height}">
+                  <template #title>
+                    {{ item.title ? item.title : $t('dataset.notSpecifiedTitle') }}
+                  </template>
                   <template #extra>
                     <Button size="small"
                             type="error"
                             shape="circle"
                             icon="md-trash"
-                            style="z-index: 1000; position: absolute; right: 0; top: 0;"
+                            style="z-index: 1000; position: absolute; right: 0; top: -5px;"
                             @click="handlerRemove(item.i)">
                     </Button>
                   </template>
@@ -86,8 +96,8 @@
                                   :configure="JSON.parse(item.node.configure)">
                   </EchartsPreview>
                   <VisualView v-else-if="item.type === 'DATASET'"
-                              :width="item.width"
-                              :height="item.height"
+                              :width="item.width.replace('px', '') - 2 + 'px'"
+                              :height="item.height.replace('px', '') - 45 + 'px'"
                               :code="item.node.code"
                               :configuration="JSON.parse(item.node.configure)"
                               :query="JSON.parse(item.node.query)">
@@ -208,6 +218,7 @@ export default defineComponent({
           i: "drop",
           width: "350px",
           height: "150px",
+          title: node.name,
           node: {
             id: node.id,
             configure: node.configure
@@ -261,6 +272,7 @@ export default defineComponent({
             height: "150px",
             i: DragPos.i,
             type: node.type,
+            title: node.name,
             node: {
               id: node.id,
               configure: node.configure,

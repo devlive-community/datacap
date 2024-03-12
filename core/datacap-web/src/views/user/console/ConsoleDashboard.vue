@@ -116,13 +116,18 @@ export default defineComponent({
     },
     handlerInfo(opened: boolean, id: number, version?: string)
     {
-      this.dashboardInfoVisible = opened
       this.dashboardId = id
       if (!opened) {
         this.handlerInitialize()
       }
       if (version && version === 'V2') {
-        this.$router.push('/admin/dashboard/edit/' + id)
+        const routeData = this.$router.resolve({
+          path: `/admin/dashboard/edit/${id}`,
+        })
+        window.open(routeData.href, '_blank')
+      }
+      else {
+        this.dashboardInfoVisible = opened
       }
     },
     handlerDelete(opened: boolean, data: any)
