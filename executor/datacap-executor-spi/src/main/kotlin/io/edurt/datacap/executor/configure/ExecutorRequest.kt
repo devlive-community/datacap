@@ -13,7 +13,8 @@ data class ExecutorRequest(var taskName: String,
                            var injector: Injector? = null,
                            var timeout: Long = 600,
                            var runWay: RunWay = RunWay.LOCAL,
-                           var runMode: RunMode = RunMode.CLIENT) {
+                           var runMode: RunMode = RunMode.CLIENT,
+                           var startScript: String? = null) {
     constructor(workHome: String?,
                 input: ExecutorConfigure,
                 output: ExecutorConfigure) : this("", "", input, output, null, workHome, null, 600, RunWay.LOCAL, RunMode.CLIENT)
@@ -26,4 +27,14 @@ data class ExecutorRequest(var taskName: String,
                 output: ExecutorConfigure,
                 runMode: RunMode = RunMode.CLIENT,
                 runWay: RunWay = RunWay.LOCAL) : this(taskName, userName, input, output, executorHome, workHome, null, 600, runWay, runMode)
+
+    constructor(workHome: String? = null,
+                executorHome: String? = null,
+                taskName: String,
+                userName: String,
+                input: ExecutorConfigure,
+                output: ExecutorConfigure,
+                runMode: RunMode = RunMode.CLIENT,
+                runWay: RunWay = RunWay.LOCAL,
+                startScript: String?) : this(taskName, userName, input, output, executorHome, workHome, null, 600, runWay, runMode, startScript)
 }

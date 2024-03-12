@@ -24,10 +24,10 @@ public class SeaTunnelCommander
         this.applicationName = applicationName;
     }
 
-    public SeaTunnelCommander(String bin, String master, String deployMode, String config, String applicationName)
+    public SeaTunnelCommander(String bin, String startScript, String master, String deployMode, String config, String applicationName)
     {
         this.bin = bin;
-        this.startScript = "start-seatunnel-spark-connector-v2.sh";
+        this.startScript = startScript;
         this.master = master;
         this.deployMode = deployMode;
         this.config = config;

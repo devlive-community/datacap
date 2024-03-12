@@ -608,7 +608,10 @@ public class DataSetServiceImpl
             String workHome = FolderUtils.getWorkHome(initializerConfigure.getDataHome(), entity.getUser().getUsername(), String.join(File.separator, "dataset", entity.getExecutor().toLowerCase(), taskName));
             ExecutorRequest request = new ExecutorRequest(taskName, entity.getUser().getUsername(), input, output,
                     environment.getProperty(String.format("datacap.executor.%s.home", entity.getExecutor().toLowerCase())),
-                    workHome, this.injector, 600, RunWay.LOCAL, RunMode.CLIENT);
+                    workHome, this.injector, 600,
+                    RunWay.valueOf(environment.getProperty("datacap.executor.way")),
+                    RunMode.valueOf(environment.getProperty("datacap.executor.mode")),
+                    environment.getProperty("datacap.executor.startScript"));
 
             history.setState(RunState.RUNNING);
             historyRepository.save(history);

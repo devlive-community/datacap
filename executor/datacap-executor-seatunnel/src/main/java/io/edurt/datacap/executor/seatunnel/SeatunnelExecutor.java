@@ -46,6 +46,7 @@ public class SeatunnelExecutor
     {
         SeaTunnelCommander commander = new SeaTunnelCommander(
                 request.getExecutorHome() + "/bin",
+                request.getStartScript(),
                 request.getRunWay().name().toLowerCase(),
                 request.getRunMode().name().toLowerCase(),
                 String.join(File.separator, request.getWorkHome(), request.getTaskName() + ".configure"),

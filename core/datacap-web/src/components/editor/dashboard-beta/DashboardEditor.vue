@@ -308,7 +308,12 @@ export default defineComponent({
         .then(response => {
           if (response.status) {
             this.$Message.success(this.$t('common.save') + ' [ ' + this.formState.name + ' ] ' + this.$t('common.success'))
-            this.$router.push('/console/dashboard')
+            if (response.data?.id) {
+              this.$router.push(`/preview/dashboard/${response.data.id}`)
+            }
+            else {
+              this.$router.push('/console/dashboard')
+            }
           }
           else {
             this.$Message.error(response.message)

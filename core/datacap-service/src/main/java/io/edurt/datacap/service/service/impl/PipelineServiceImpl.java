@@ -158,7 +158,10 @@ public class PipelineServiceImpl
             }
 
             ExecutorRequest pipeline = new ExecutorRequest(work, environment.getProperty(String.format("datacap.executor.%s.home", configure.getExecutor().toLowerCase())),
-                    pipelineName, UserDetailsService.getUser().getUsername(), fromField, toField, RunMode.valueOf(environment.getProperty("datacap.executor.mode")), RunWay.valueOf(environment.getProperty("datacap.executor.way")));
+                    pipelineName, UserDetailsService.getUser().getUsername(), fromField, toField,
+                    RunMode.valueOf(environment.getProperty("datacap.executor.mode")),
+                    RunWay.valueOf(environment.getProperty("datacap.executor.way")),
+                    environment.getProperty("datacap.executor.startScript"));
 
             final ExecutorService executorService = Executors.newCachedThreadPool();
             PipelineEntity finalPipelineEntity = pipelineEntity;
