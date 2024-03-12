@@ -1,6 +1,7 @@
 package io.edurt.datacap.executor.seatunnel;
 
 import io.edurt.datacap.executor.common.RunEngine;
+import io.edurt.datacap.executor.common.RunWay;
 import lombok.Data;
 import lombok.ToString;
 
@@ -49,6 +50,10 @@ public class SeaTunnelCommander
             buffer.append(this.master);
             buffer.append(" --deploy-mode ");
             buffer.append(this.deployMode);
+        }
+        else if (this.runEngine.equals(RunEngine.SEATUNNEL) && RunWay.valueOf(this.master.toUpperCase()).equals(RunWay.LOCAL)) {
+            buffer.append(" -e ");
+            buffer.append(this.master);
         }
         buffer.append(" --config ");
         buffer.append(this.config);
