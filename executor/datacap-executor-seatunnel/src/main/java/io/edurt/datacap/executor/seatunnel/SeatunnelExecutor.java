@@ -50,7 +50,8 @@ public class SeatunnelExecutor
                 request.getRunWay().name().toLowerCase(),
                 request.getRunMode().name().toLowerCase(),
                 String.join(File.separator, request.getWorkHome(), request.getTaskName() + ".configure"),
-                request.getTaskName());
+                request.getTaskName(),
+                request.getRunEngine());
 
         LoggerExecutor loggerExecutor = new LogbackExecutor(request.getWorkHome(), request.getTaskName() + ".log");
         String result = before(request, loggerExecutor.getLogger());
