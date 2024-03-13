@@ -1,4 +1,4 @@
-import { Router } from 'vue-router';
+import { Router } from 'vue-router'
 
 const createAuthRoute = (router: Router) => {
     router.addRoute({

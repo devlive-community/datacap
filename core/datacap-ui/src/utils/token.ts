@@ -17,4 +17,19 @@ export class TokenUtils
             return undefined
         }
     }
+
+    /**
+     * Get user menu from local storage.
+     *
+     * @return {any} The user menu object parsed from local storage, or undefined if an error occurs.
+     */
+    public static getUserMenu(): any
+    {
+        try {
+            return JSON.parse(localStorage.getItem(Common.menu) || '{}')
+        }
+        catch (error) {
+            return undefined
+        }
+    }
 }
