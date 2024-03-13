@@ -1,7 +1,8 @@
 export interface UserRequest
 {
-    username: string
-    password: string
+    username: string | null
+    password: string | null
+    confirmPassword?: string
     captcha?: string
     timestamp?: number
     // Marks the error message returned after an operation

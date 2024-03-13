@@ -10,4 +10,4 @@ const app = createApp(App)
 app.config.warnHandler = () => null
 app.use(router)
 app.use(i18n)
-app.mount('#app')
+app.provide('$t', i18n.global.t).mount('#app')

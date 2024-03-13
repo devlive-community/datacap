@@ -16,11 +16,11 @@
         <CardContent class="grid gap-4">
           <div class="grid gap-2">
             <Label htmlFor="email">{{ $t('user.common.username') }}</Label>
-            <Input v-model="formState.username" id="email" type="email" :placeholder="$t('user.auth.usernameTip')"/>
+            <Input v-model="formState.username!" id="email" type="email" :placeholder="$t('user.auth.usernameTip')"/>
           </div>
           <div class="grid gap-2">
             <Label htmlFor="password">{{ $t('user.common.password') }}</Label>
-            <Input v-model="formState.password" id="password" type="password" :placeholder="$t('user.auth.passwordTip')"/>
+            <Input v-model="formState.password!" id="password" type="password" :placeholder="$t('user.auth.passwordTip')"/>
           </div>
           <div class="grid gap-2">
             <Label htmlFor="password">{{ $t('user.common.captcha') }}</Label>
