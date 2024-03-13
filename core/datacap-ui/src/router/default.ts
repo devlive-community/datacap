@@ -59,7 +59,7 @@ const createRemoteRouter = (items: RouterItem[], router: Router, parent?: any) =
                 _router.children.push({
                     path: viewAndPath[1],
                     meta: {title: item.i18nKey},
-                    component: () => import(`@/views/${url}`)
+                    component: () => import('@/views/' + url)
                 })
             }
             else {
@@ -71,7 +71,7 @@ const createRemoteRouter = (items: RouterItem[], router: Router, parent?: any) =
                         {
                             path: viewAndPath[1],
                             meta: {title: item.i18nKey},
-                            component: () => import(`@/views/${url}`)
+                            component: () => import('../views/' + url)
                         }
                     ]
                 }

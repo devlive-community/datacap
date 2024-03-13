@@ -5,7 +5,9 @@ export default {
         confirmPassword: '确认密码',
         signin: '登录',
         signup: '注册',
-        captcha: '验证码'
+        captcha: '验证码',
+        sourceCount: '数据源',
+        queryCount: '查询'
     },
     auth: {
         signinTip: '请输入用户名和密码登录',
@@ -20,5 +22,9 @@ export default {
         usernameSizeTip: '用户名必须在3-20个字符之间',
         passwordSizeTip: '密码必须在6-20个字符之间',
         captchaSizeTip: '验证码必须在1-6个字符之间'
+    },
+    tip: {
+        sourceCountTip: '创建数据源总数统计',
+        queryCountTip: '访问查询总数统计'
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="border-b hidden flex-col md:flex">
+    <div class="hidden flex-col md:flex">
       <LayoutHeader></LayoutHeader>
 
 

@@ -154,7 +154,7 @@ export default defineComponent({
                       createDefaultRouter(router)
                       createRemoteRouter(fetchMenu.data, router)
                       localStorage.setItem(CommonUtils.userEditorConfigure, JSON.stringify(fetchInfo.data.editorConfigure))
-                      router.push('/dashboard/index')
+                      router.push('/dashboard/home')
                     }
                     else {
                       if (!fetchMenu.status) {

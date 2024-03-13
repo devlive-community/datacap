@@ -3,19 +3,20 @@ import { createAuthRoute } from '@/router/auth'
 import { createDefaultRouter, createRemoteRouter } from '@/router/default'
 import { TokenUtils } from '@/utils/token'
 import { createHttpRoute } from '@/router/http'
+import { ObjectUtils } from '@/utils/object'
 
 const routes: Array<RouteRecordRaw> = []
 
 const router = createRouter({
     history: createWebHashHistory(),
     routes
-});
+})
 
 createHttpRoute(router)
 createAuthRoute(router)
 createDefaultRouter(router)
 const userMenu = TokenUtils.getUserMenu()
-if (userMenu && userMenu.length > 0) {
+if (ObjectUtils.isNotEmpty(userMenu)) {
     createRemoteRouter(userMenu, router)
 }
 

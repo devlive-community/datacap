@@ -4,6 +4,8 @@ import { HttpUtils } from '@/utils/http'
 
 const DEFAULT_PATH_AUTH = '/api/auth'
 const DEFAULT_PATH_USER = '/api/v1/user'
+const DEFAULT_PATH_SOURCE = '/api/v1/source'
+const DEFAULT_PATH_QUERY = '/api/v1/audit/plugin'
 
 class UserService
 {
@@ -47,6 +49,26 @@ class UserService
     getInfo(): Promise<ResponseModel>
     {
         return new HttpUtils().get(DEFAULT_PATH_USER)
+    }
+
+    /**
+     * Get the count of sources from the server.
+     *
+     * @return {Promise<ResponseModel>} the count of sources
+     */
+    getSourceCount(): Promise<ResponseModel>
+    {
+        return new HttpUtils().get(`${DEFAULT_PATH_SOURCE}/admin/count`)
+    }
+
+    /**
+     * Retrieves the count of queries from the server.
+     *
+     * @return {Promise<ResponseModel>} the response model promise
+     */
+    getQueryCount(): Promise<ResponseModel>
+    {
+        return new HttpUtils().get(`${DEFAULT_PATH_QUERY}/admin/count`)
     }
 }
 

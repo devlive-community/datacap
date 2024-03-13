@@ -6,6 +6,8 @@ export default {
         signin: 'Sign in',
         signup: 'Sign up',
         captcha: 'Captcha',
+        sourceCount: 'Sources',
+        queryCount: 'Queries'
     },
     auth: {
         signinTip: 'Enter your username and password to login',
@@ -20,5 +22,9 @@ export default {
         usernameSizeTip: 'Username must be between 3 and 20 characters',
         passwordSizeTip: 'Password must be between 6 and 20 characters',
         captchaSizeTip: 'Captcha must be between 1 and 6 characters'
+    },
+    tip: {
+        sourceCountTip: 'Statistics on the total number of access data sources',
+        queryCountTip: 'Statistics on the total number of access queries'
     }
 }
