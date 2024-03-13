@@ -8,7 +8,7 @@ const createHttpRoute = (router: Router) => {
             {
                 name: '404',
                 path: '404',
-                component: () => import('@/views/pages/common/error/NotFound.vue')
+                component: () => import('@/views/common/error/NotFound.vue')
             }
         ]
     })

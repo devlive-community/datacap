@@ -8,12 +8,12 @@ const createAuthRoute = (router: Router) => {
             {
                 name: 'signin',
                 path: 'signin',
-                component: () => import('@/views/pages/auth/signin/AuthSignin.vue')
+                component: () => import('@/views/auth/signin/AuthSignin.vue')
             },
             {
                 name: 'signup',
                 path: 'signup',
-                component: () => import('@/views/pages/auth/signup/AuthSignup.vue')
+                component: () => import('@/views/auth/signup/AuthSignup.vue')
             }
         ]
     })

@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils'
 import { NavigationMenuLink } from '@/components/ui/navigation-menu'
 
-defineProps<{ title?: string; href?: string }>()
+defineProps<{ title?: string; href: string }>()
 </script>
 
 <template>

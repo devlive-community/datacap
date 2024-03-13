@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@radix-icons/vue": "^1.0.0",
+    "@tanstack/vue-table": "^8.13.2",
     "@vee-validate/zod": "^4.12.6",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "lodash": "^4.17.21",
     "lucide-vue-next": "^0.356.0",
     "radix-vue": "^1.5.2",
     "tailwind-merge": "^2.2.1",
@@ -26,6 +28,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.0",
     "@types/node": "^20.11.26",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.18",

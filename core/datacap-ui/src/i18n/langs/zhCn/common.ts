@@ -20,4 +20,10 @@ export default {
     schedule: '调度',
     authority: '权限',
     user: '用户',
+    id: 'ID',
+    username: '用户名',
+    createTime: '创建时间',
+    updateTime: '更新时间',
+    action: '操作',
+    column: '列'
 }

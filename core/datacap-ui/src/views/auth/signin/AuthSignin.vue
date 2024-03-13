@@ -92,7 +92,7 @@ import { ToastUtils } from '@/utils/toast'
 import CommonUtils from '@/utils/common'
 import { HttpUtils } from '@/utils/http'
 import router from '@/router'
-import { createDefaultRouter, createRemoteRouter } from '@/router/default'
+import { createDefaultRouter } from '@/router/default'
 
 export default defineComponent({
   name: 'AuthSignin',
@@ -152,7 +152,6 @@ export default defineComponent({
                     if (fetchMenu.status && fetchInfo.status) {
                       localStorage.setItem(CommonUtils.menu, JSON.stringify(fetchMenu.data))
                       createDefaultRouter(router)
-                      createRemoteRouter(fetchMenu.data, router)
                       localStorage.setItem(CommonUtils.userEditorConfigure, JSON.stringify(fetchInfo.data.editorConfigure))
                       router.push('/dashboard/home')
                     }

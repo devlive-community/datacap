@@ -20,4 +20,10 @@ export default {
     schedule: 'Schedule',
     authority: 'Authority',
     user: 'User',
+    id: 'Id',
+    username: 'Username',
+    createTime: 'Create Time',
+    updateTime: 'Update Time',
+    action: 'Action',
+    column: 'Column'
 }

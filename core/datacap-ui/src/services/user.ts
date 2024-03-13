@@ -1,6 +1,7 @@
 import { UserRequest } from '@/model/user/request/user'
 import { ResponseModel } from '@/model/response'
 import { HttpUtils } from '@/utils/http'
+import { BaseService } from '@/services/base'
 
 const DEFAULT_PATH_AUTH = '/api/auth'
 const DEFAULT_PATH_USER = '/api/v1/user'
@@ -8,7 +9,13 @@ const DEFAULT_PATH_SOURCE = '/api/v1/source'
 const DEFAULT_PATH_QUERY = '/api/v1/audit/plugin'
 
 class UserService
+    extends BaseService
 {
+    constructor()
+    {
+        super(DEFAULT_PATH_USER)
+    }
+
     /**
      * Sign in with the given user request configuration.
      *

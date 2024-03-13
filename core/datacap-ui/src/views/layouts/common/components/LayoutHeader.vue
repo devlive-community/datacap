@@ -14,7 +14,7 @@
           <NavigationMenu>
             <NavigationMenuList>
               <div v-for="item in activeMenus" :key="item.id">
-                <NavigationMenuItem v-if="item?.children">
+                <NavigationMenuItem v-if="item.children">
                   <NavigationMenuTrigger>{{ $t(item.i18nKey) }}</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul class="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)]">
@@ -100,7 +100,7 @@ import { TokenUtils } from '@/utils/token'
 import { ObjectUtils } from '@/utils/object'
 import CommonUtils from '@/utils/common'
 import router from '@/router'
-import { createDefaultRouter, createRemoteRouter } from '@/router/default'
+import { createDefaultRouter } from '@/router/default'
 import { AuthResponse } from '@/model/user/response/auth'
 import {
   NavigationMenu,
@@ -112,6 +112,15 @@ import {
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
 import NavigationMenuListItem from '@/views/layouts/common/components/NavigationMenuListItem.vue'
+
+interface NavigationItem
+{
+  id: number
+  i18nKey: string
+  url: string
+  description: string
+  children: NavigationItem[] | undefined
+}
 
 export default defineComponent({
   name: 'LayoutHeader',
@@ -125,7 +134,7 @@ export default defineComponent({
     const isLoggedIn = ref(ObjectUtils.isEmpty(userInfo.value))
 
     const menu = TokenUtils.getUserMenu()
-    let activeMenus = ref([])
+    let activeMenus = ref(Array<NavigationItem>())
     if (ObjectUtils.isNotEmpty(menu)) {
       activeMenus.value = menu
     }
@@ -135,7 +144,6 @@ export default defineComponent({
       localStorage.removeItem(CommonUtils.menu)
       localStorage.removeItem(CommonUtils.userEditorConfigure)
       createDefaultRouter(router)
-      createRemoteRouter([], router)
       router.push('/auth/signin')
     }
 
