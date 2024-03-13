@@ -7,7 +7,8 @@ export default {
         signup: 'Sign up',
         captcha: 'Captcha',
         sourceCount: 'Sources',
-        queryCount: 'Queries'
+        queryCount: 'Queries',
+        signout: 'Sign out'
     },
     auth: {
         signinTip: 'Enter your username and password to login',

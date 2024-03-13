@@ -7,7 +7,8 @@ export default {
         signup: '注册',
         captcha: '验证码',
         sourceCount: '数据源',
-        queryCount: '查询'
+        queryCount: '查询',
+        signout: '退出登录'
     },
     auth: {
         signinTip: '请输入用户名和密码登录',

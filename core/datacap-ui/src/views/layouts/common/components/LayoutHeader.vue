@@ -11,18 +11,32 @@
         </RouterLink>
         <!-- Menu -->
         <div class="container flex h-14 max-w-screen-2xl items-center">
-          <nav :class="cn('flex items-center space-x-4 lg:space-x-6', $attrs.class ?? '')">
-            <a href="/#auth/signin" class="text-sm font-medium transition-colors hover:text-primary">
-              Overview
-            </a>
-            <a href="/#auth/signin" class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-              Customers
-            </a>
-          </nav>
+          <NavigationMenu>
+            <NavigationMenuList>
+              <div v-for="item in activeMenus" :key="item.id">
+                <NavigationMenuItem v-if="item?.children">
+                  <NavigationMenuTrigger>{{ $t(item.i18nKey) }}</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul class="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)]">
+                      <NavigationMenuListItem v-for="children in item.children" :title="$t(children.i18nKey)" :href="children.url">
+                        {{ children.description }}
+                      </NavigationMenuListItem>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem v-else>
+                  <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+                    <RouterLink :to="item.url">
+                      {{ $t(item.i18nKey) }}
+                    </RouterLink>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </div>
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
         <!-- Controller -->
         <div class="flex items-center">
-          <Search/>
           <div v-if="isLoggedIn" class="flex gap-x-2">
             <RouterLink to="/auth/signin">
               <Button size="sm" variant="outline">{{ $t('user.common.signin') }}</Button>
@@ -36,42 +50,27 @@
               <DropdownMenuTrigger as-child>
                 <Button variant="ghost" class="relative h-8 w-8 rounded-full">
                   <Avatar class="h-8 w-8">
-                    <AvatarImage src="/avatars/01.png" alt="@shadcn"/>
-                    <AvatarFallback>SC</AvatarFallback>
+                    <AvatarImage :src="userInfo.avatar" :alt="userInfo.username"></AvatarImage>
+                    <AvatarFallback>{{ userInfo.username }}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent class="w-56" align="end">
+              <DropdownMenuContent class="w-32" align="end">
                 <DropdownMenuLabel class="font-normal flex">
                   <div class="flex flex-col space-y-1">
-                    <p class="text-sm font-medium leading-none">
-                      shadcn
-                    </p>
-                    <p class="text-xs leading-none text-muted-foreground">
-                      m@example.com
-                    </p>
+                    <p class="text-sm font-medium leading-none text-center">{{ userInfo.username }}</p>
+                    <p class="text-xs leading-none text-muted-foreground"></p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator/>
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
-                    Profile
-                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                    {{ $t('common.profile') }}
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Billing
-                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Settings
-                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>New Team</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator/>
-                <DropdownMenuItem>
-                  Log out
-                  <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                <DropdownMenuItem @click="logout">
+                  {{ $t('user.common.signout') }}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -99,22 +98,61 @@ import {
 import { Button } from '@/components/ui/button'
 import { TokenUtils } from '@/utils/token'
 import { ObjectUtils } from '@/utils/object'
+import CommonUtils from '@/utils/common'
+import router from '@/router'
+import { createDefaultRouter, createRemoteRouter } from '@/router/default'
+import { AuthResponse } from '@/model/user/response/auth'
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle
+} from '@/components/ui/navigation-menu'
+import NavigationMenuListItem from '@/views/layouts/common/components/NavigationMenuListItem.vue'
 
 export default defineComponent({
   name: 'LayoutHeader',
   setup()
   {
-    const isLoggedIn = ref(ObjectUtils.isEmpty(TokenUtils.getAuthUser()))
+    const user = TokenUtils.getAuthUser()
+    let userInfo = ref<AuthResponse>({} as AuthResponse)
+    if (user) {
+      userInfo.value = user
+    }
+    const isLoggedIn = ref(ObjectUtils.isEmpty(userInfo.value))
+
+    const menu = TokenUtils.getUserMenu()
+    let activeMenus = ref([])
+    if (ObjectUtils.isNotEmpty(menu)) {
+      activeMenus.value = menu
+    }
+
+    const logout = () => {
+      localStorage.removeItem(CommonUtils.token)
+      localStorage.removeItem(CommonUtils.menu)
+      localStorage.removeItem(CommonUtils.userEditorConfigure)
+      createDefaultRouter(router)
+      createRemoteRouter([], router)
+      router.push('/auth/signin')
+    }
 
     return {
-      isLoggedIn
+      userInfo,
+      isLoggedIn,
+      activeMenus,
+      logout
     }
   },
-  methods: {cn},
+  methods: {navigationMenuTriggerStyle, cn},
   components: {
+    NavigationMenuLink, NavigationMenuContent, NavigationMenuTrigger, NavigationMenuItem, NavigationMenuList, NavigationMenu,
     DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuGroup, DropdownMenuItem, DropdownMenuShortcut, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     AvatarFallback, AvatarImage, Avatar,
-    Button, cn
+    NavigationMenuListItem,
+    Button
   }
 });
 </script>

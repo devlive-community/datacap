@@ -242,6 +242,7 @@ public class UserServiceImpl
                     }
                     TreeRecord children = TreeRecord.of(menu, true, true, Lists.newArrayList());
                     children.setNew(menu.isNew());
+                    children.setDescription(menu.getDescription());
                     childrens.add(children);
                     childrens.sort(Comparator.comparing(TreeRecord::getSorted));
                     temp.setChildren(childrens);

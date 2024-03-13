@@ -29,6 +29,7 @@ public class TreeRecord
     private boolean isNew;
     private Boolean checked = false;
     private Boolean selected = false;
+    private String description;
 
     public static TreeRecord of(MenuEntity entity, boolean checked, boolean selected, List<TreeRecord> children)
     {
