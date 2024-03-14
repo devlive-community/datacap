@@ -3,7 +3,7 @@
     <div class="container flex h-14 max-w-screen-2xl items-center">
       <div class="container flex h-14 items-center justify-between">
         <!-- Logo -->
-        <RouterLink to="1">
+        <RouterLink to="/">
           <Avatar>
             <AvatarImage src="/static/images/logo.png"></AvatarImage>
             <AvatarFallback>DataCap</AvatarFallback>
@@ -65,11 +65,13 @@
                 <DropdownMenuSeparator/>
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
+                    <User absoluteStrokeWidth :size="15" class="mr-2"></User>
                     {{ $t('common.profile') }}
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem @click="logout">
+                  <LogOut absoluteStrokeWidth :size="15" class="mr-2"></LogOut>
                   {{ $t('user.common.signout') }}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -112,6 +114,7 @@ import {
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
 import NavigationMenuListItem from '@/views/layouts/common/components/NavigationMenuListItem.vue'
+import { LogOut, User } from 'lucide-vue-next'
 
 interface NavigationItem
 {
@@ -160,7 +163,8 @@ export default defineComponent({
     DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuGroup, DropdownMenuItem, DropdownMenuShortcut, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     AvatarFallback, AvatarImage, Avatar,
     NavigationMenuListItem,
-    Button
+    Button,
+    LogOut, User
   }
 });
 </script>

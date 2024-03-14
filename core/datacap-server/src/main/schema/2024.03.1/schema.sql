@@ -5,6 +5,6 @@ If you are upgrading to 2024.03.1 from a different version, execute the followin
 
 USE `datacap`;
 
-UPDATE `menus` t
-SET t.url = '/dashboard/home'
-WHERE t.id = 1;
+UPDATE `menus`
+SET `url` = '/home'
+WHERE `id` = 1;

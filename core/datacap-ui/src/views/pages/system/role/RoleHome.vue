@@ -2,7 +2,7 @@
   <div class="w-full">
     <Card>
       <CardHeader class="border-b p-4">
-        <CardTitle>{{ $t('user.common.list') }}</CardTitle>
+        <CardTitle>{{ $t('role.common.list') }}</CardTitle>
       </CardHeader>
       <CardContent>
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
@@ -10,12 +10,12 @@
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger as-child>
-                  <Button variant="outline" size="sm" class="p-3">
-                    <ArrowBigUp :size="24"></ArrowBigUp>
+                  <Button variant="outline" size="sm" class="p-2" @click="handlerChangeInfo(true, row)">
+                    <Pencil :size="15"></Pencil>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{{ $t('user.common.assignAuthority') }}</p>
+                  <p>{{ $t('common.editData') }}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -23,36 +23,38 @@
         </TableCommon>
       </CardContent>
     </Card>
+    <RoleInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"></RoleInfo>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { FilterModel } from '@/model/filter'
-import UserService from '@/services/user'
-import TableCommon from '@/views/components/table/TableCommon.vue'
-import { useI18n } from 'vue-i18n'
-import { createHeaders } from './UserUtils'
-import { ArrowBigUp, Loader2 } from 'lucide-vue-next'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { PaginationModel } from '@/model/pagination'
+import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Pencil } from 'lucide-vue-next'
+import { FilterModel } from '@/model/filter'
+import { createHeaders } from '@/views/pages/system/role/RoleUtils'
+import { useI18n } from 'vue-i18n'
+import { PaginationModel } from '@/model/pagination'
+import RoleService from '@/services/role'
+import RoleInfo from '@/views/pages/system/role/RoleInfo.vue'
+import { RoleModel } from '@/model/role'
 
 export default defineComponent({
-  name: 'UserHome',
+  name: 'RoleHome',
   components: {
-    TooltipContent, TooltipTrigger, Tooltip, TooltipProvider,
-    CardContent, CardHeader, CardTitle, Card,
-    Loader2, Button,
-    TableCommon,
-    ArrowBigUp
+    RoleInfo,
+    TooltipContent, TooltipTrigger, TooltipProvider, Tooltip,
+    Card, CardHeader, CardTitle, TableCommon, CardContent,
+    Pencil,
+    Button
   },
   setup()
   {
     const filter: FilterModel = new FilterModel()
-    const i18n = useI18n()
-    const headers = createHeaders(i18n)
+    const headers = createHeaders(useI18n())
 
     return {
       filter,
@@ -63,8 +65,10 @@ export default defineComponent({
   {
     return {
       loading: false,
+      dataInfoVisible: false,
       data: [],
-      pagination: {} as PaginationModel
+      pagination: {} as PaginationModel,
+      dataInfo: null as RoleModel | null
     }
   },
   created()
@@ -75,7 +79,7 @@ export default defineComponent({
     handlerInitialize()
     {
       this.loading = true
-      UserService.getAll(this.filter)
+      RoleService.getAll(this.filter)
           .then((response) => {
             if (response.status) {
               this.data = response.data.content
@@ -94,6 +98,14 @@ export default defineComponent({
       this.filter.page = value.currentPage
       this.filter.size = value.pageSize
       this.handlerInitialize()
+    },
+    handlerChangeInfo(isOpen: boolean, dataInfo: any)
+    {
+      this.dataInfoVisible = isOpen
+      this.dataInfo = dataInfo
+      if (!isOpen) {
+        this.handlerInitialize()
+      }
     }
   }
 })

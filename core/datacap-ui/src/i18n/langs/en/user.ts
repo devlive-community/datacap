@@ -8,7 +8,9 @@ export default {
         captcha: 'Captcha',
         sourceCount: 'Sources',
         queryCount: 'Queries',
-        signout: 'Sign out'
+        signout: 'Sign out',
+        list: 'User List',
+        assignAuthority: 'Assign Authority'
     },
     auth: {
         signinTip: 'Enter your username and password to login',

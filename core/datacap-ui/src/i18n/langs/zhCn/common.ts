@@ -25,5 +25,10 @@ export default {
     createTime: '创建时间',
     updateTime: '更新时间',
     action: '操作',
-    column: '列'
+    column: '列',
+    description: '描述',
+    name: '名称',
+    code: '编码',
+    editData: '编辑数据',
+    successfully: '成功'
 }

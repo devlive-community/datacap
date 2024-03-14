@@ -37,6 +37,11 @@ const createSystemRouter = (router: any) => {
                 name: 'user',
                 path: 'user',
                 component: () => import('@/views/pages/system/user/UserHome.vue')
+            },
+            {
+                name: 'role',
+                path: 'role',
+                component: () => import('@/views/pages/system/role/RoleHome.vue')
             }
         ]
     };

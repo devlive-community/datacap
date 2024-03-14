@@ -25,5 +25,10 @@ export default {
     createTime: 'Create Time',
     updateTime: 'Update Time',
     action: 'Action',
-    column: 'Column'
+    column: 'Column',
+    description: 'Description',
+    name: 'Name',
+    code: 'Code',
+    editData: 'Edit Data',
+    successfully: 'Successfully',
 }

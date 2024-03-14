@@ -1,30 +1,16 @@
 <template>
   <div>
-    <!--    <div class="flex gap-2 items-center py-2">-->
-    <!--      <DropdownMenu>-->
-    <!--        <DropdownMenuTrigger as-child>-->
-    <!--          <Button variant="outline" class="ml-auto">-->
-    <!--            {{ $t('common.column') }}-->
-    <!--            <ChevronDown class="ml-2 h-4 w-4"/>-->
-    <!--          </Button>-->
-    <!--        </DropdownMenuTrigger>-->
-    <!--        <DropdownMenuContent align="end">-->
-    <!--          <DropdownMenuCheckboxItem v-for="item in columns" class="capitalize" :key="item.id" :checked="item.hidden" @update:checked="(value) => { item.hidden = value}">-->
-    <!--            {{ item.header }}-->
-    <!--          </DropdownMenuCheckboxItem>-->
-    <!--        </DropdownMenuContent>-->
-    <!--      </DropdownMenu>-->
-    <!--    </div>-->
     <div class="rounded-md mt-4">
-      <Table>
+      <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
+      <Table v-else>
         <TableHeader>
           <TableRow>
-            <TableHead v-for="item in columns" :key="item.key">{{ item.header }}</TableHead>
+            <TableHead v-for="item in columns" :key="item.key" :class="item.class ? item.class : ''">{{ item.header }}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow v-for="row in data" :key="row.id">
-            <TableCell v-for="column in columns" :key="column.key">
+            <TableCell v-for="column in columns" :key="column.key" :class="column.class ? column.class : ''">
               <template v-if="column.slot">
                 <slot :name="column.slot" :row="row"></slot>
               </template>
@@ -34,7 +20,7 @@
         </TableBody>
       </Table>
     </div>
-    <div v-if="pagination" class="flex w-full justify-center mt-3">
+    <div v-if="pagination && !loading" class="flex w-full justify-center mt-3">
       <Pagination v-slot="{ page }" :total="pagination.total" :items-per-page="pagination.pageSize" :sibling-count="1" show-edges
                   :default-page="pagination.currentPage + 1" @update:page="handlerChangePage($event)">
         <PaginationList v-slot="{ items }" class="flex items-center gap-1">
@@ -53,15 +39,15 @@
         </PaginationList>
       </Pagination>
       <div class="mt-0.5 ml-2">
-        <Select v-model="pagination.pageSize" :defaultValue="pagination.pageSize" @update:modelValue="handlerChangeSize">
+        <Select :defaultValue="pagination.pageSize.toString()" @update:modelValue="handlerChangeSize">
           <SelectTrigger class="w-[70px]">
             <SelectValue placeholder="Select a fruit"/>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem :value="10">10</SelectItem>
-            <SelectItem :value="20">20</SelectItem>
-            <SelectItem :value="50">50</SelectItem>
-            <SelectItem :value="100">100</SelectItem>
+            <SelectItem :value="'10'">10</SelectItem>
+            <SelectItem :value="'20'">20</SelectItem>
+            <SelectItem :value="'50'">50</SelectItem>
+            <SelectItem :value="'100'">100</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -75,16 +61,17 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { ArrowUpDown, ChevronDown } from 'lucide-vue-next'
+import { ArrowUpDown, ChevronDown, Loader2 } from 'lucide-vue-next'
 import { Pagination, PaginationEllipsis, PaginationFirst, PaginationLast, PaginationNext, PaginationPrev } from '@/components/ui/pagination'
 import { PaginationList, PaginationListItem } from 'radix-vue'
 import { PaginationModel } from '@/model/pagination'
 import { cloneDeep, toNumber } from 'lodash'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export default defineComponent({
   name: 'TableCommon',
   components: {
+    Loader2,
     SelectItem, SelectContent, SelectValue, SelectTrigger, Select,
     PaginationLast, PaginationNext, PaginationEllipsis, PaginationPrev, PaginationListItem, PaginationList, Pagination, PaginationFirst,
     DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
@@ -102,19 +89,22 @@ export default defineComponent({
       default: () => []
     },
     pagination: {
-      type: PaginationModel
+      type: Object as () => PaginationModel
+    },
+    loading: {
+      type: Boolean
     }
   },
   methods: {
     handlerChangePage(value: number)
     {
-      const pagination: PaginationModel = cloneDeep(this.pagination)
+      const pagination: PaginationModel = cloneDeep(this.pagination) as PaginationModel
       pagination.currentPage = value
       this.$emit('changePage', pagination)
     },
     handlerChangeSize(value: string)
     {
-      const pagination: PaginationModel = cloneDeep(this.pagination)
+      const pagination: PaginationModel = cloneDeep(this.pagination) as PaginationModel
       pagination.pageSize = toNumber(value)
       this.$emit('changePage', pagination)
     }

@@ -8,7 +8,9 @@ export default {
         captcha: '验证码',
         sourceCount: '数据源',
         queryCount: '查询',
-        signout: '退出登录'
+        signout: '退出登录',
+        list: '用户列表',
+        assignAuthority: '分配权限'
     },
     auth: {
         signinTip: '请输入用户名和密码登录',
