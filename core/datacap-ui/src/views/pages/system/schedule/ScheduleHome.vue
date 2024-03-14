@@ -29,6 +29,7 @@
         </TableCommon>
       </CardContent>
     </Card>
+    <ScheduleHistory v-if="dataHistoryVisible" :is-visible="dataHistoryVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"></ScheduleHistory>
   </div>
 </template>
 
@@ -45,10 +46,13 @@ import { useI18n } from 'vue-i18n'
 import { PaginationModel } from '@/model/pagination'
 import ScheduleService from '@/services/schedule'
 import { Switch } from '@/components/ui/switch';
+import ScheduleHistory from '@/views/pages/system/schedule/ScheduleHistory.vue'
+import { ScheduleModel } from '@/model/schedule'
 
 export default defineComponent({
   name: 'ScheduleHome',
   components: {
+    ScheduleHistory,
     ArrowBigUp, History, Pencil,
     Button, Switch,
     Card, CardHeader, CardTitle, CardContent,
@@ -69,8 +73,10 @@ export default defineComponent({
   {
     return {
       loading: false,
+      dataHistoryVisible: false,
       data: [],
-      pagination: {} as PaginationModel
+      pagination: {} as PaginationModel,
+      dataInfo: null as ScheduleModel | null
     }
   },
   created()
@@ -99,6 +105,11 @@ export default defineComponent({
       this.filter.page = value.currentPage
       this.filter.size = value.pageSize
       this.handlerInitialize()
+    },
+    handlerChangeInfo(isOpen: boolean, dataInfo: any)
+    {
+      this.dataHistoryVisible = isOpen
+      this.dataInfo = dataInfo
     }
   }
 })

@@ -1,3 +1,9 @@
+/**
+ * Creates headers for a table using the given internationalization object.
+ *
+ * @param {any} i18n - the internationalization object used for translating header labels
+ * @return {Array} an array of header objects
+ */
 const createHeaders = (i18n: any) => {
     return [
         {key: 'id', hidden: true, header: i18n.t('common.id'), width: 80},
@@ -13,6 +19,25 @@ const createHeaders = (i18n: any) => {
     ]
 }
 
+/**
+ * Creates history headers with internationalization support.
+ *
+ * @param {any} i18n - the internationalization object
+ * @return {Array} an array of history headers
+ */
+const createHistoryHeaders = (i18n: any) => {
+    return [
+        {key: 'id', hidden: true, header: i18n.t('common.id'), width: 80},
+        {key: 'name', hidden: true, header: i18n.t('common.name'), width: 100},
+        {key: 'createTime', hidden: true, header: i18n.t('common.createTime')},
+        {key: 'updateTime', hidden: true, header: i18n.t('common.updateTime')},
+        {key: 'elapsed', hidden: true, header: i18n.t('common.elapsed')},
+        {key: 'state', hidden: true, header: i18n.t('common.state')},
+        {key: 'result', hidden: true, header: i18n.t('common.result')}
+    ]
+}
+
 export {
-    createHeaders
+    createHeaders,
+    createHistoryHeaders
 }

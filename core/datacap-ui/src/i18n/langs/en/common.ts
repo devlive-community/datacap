@@ -34,4 +34,7 @@ export default {
     expression: 'Expression',
     active: 'Active Status',
     type: 'Type',
+    elapsed: 'Elapsed Time',
+    state: 'State',
+    result: 'Result',
 }

@@ -59,4 +59,4 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - run: chmod 755 ./mvnw
-      - run: ./mvnw -T 1C clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -q
+      - run: ./mvnw -T 1C clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true

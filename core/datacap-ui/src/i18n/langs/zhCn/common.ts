@@ -33,5 +33,8 @@ export default {
     successfully: '成功',
     expression: '表达式',
     active: '激活状态',
-    type: '类型'
+    type: '类型',
+    elapsed: '执行时间',
+    state: '状态',
+    result: '结果'
 }
