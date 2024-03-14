@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/v1/admin/schedule")
+@RequestMapping(value = {"/api/v1/schedule", "/api/v1/admin/schedule"})
 public class ScheduleController
 {
     private final ScheduledRepository scheduledRepository;

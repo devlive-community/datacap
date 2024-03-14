@@ -83,12 +83,11 @@ export default defineComponent({
           .then((response) => {
             if (response.status) {
               this.data = response.data.content
-              const pagination: PaginationModel = {
+              this.pagination = {
                 pageSize: response.data.size,
                 total: response.data.total,
                 currentPage: response.data.page
               }
-              this.pagination = pagination
             }
           })
           .finally(() => this.loading = false)

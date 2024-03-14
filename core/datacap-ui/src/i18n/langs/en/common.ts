@@ -31,4 +31,7 @@ export default {
     code: 'Code',
     editData: 'Edit Data',
     successfully: 'Successfully',
+    expression: 'Expression',
+    active: 'Active Status',
+    type: 'Type',
 }

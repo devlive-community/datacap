@@ -42,6 +42,11 @@ const createSystemRouter = (router: any) => {
                 name: 'role',
                 path: 'role',
                 component: () => import('@/views/pages/system/role/RoleHome.vue')
+            },
+            {
+                name: 'schedule',
+                path: 'schedule',
+                component: () => import('@/views/pages/system/schedule/ScheduleHome.vue')
             }
         ]
     };

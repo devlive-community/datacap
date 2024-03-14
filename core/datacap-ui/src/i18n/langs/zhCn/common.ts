@@ -30,5 +30,8 @@ export default {
     name: '名称',
     code: '编码',
     editData: '编辑数据',
-    successfully: '成功'
+    successfully: '成功',
+    expression: '表达式',
+    active: '激活状态',
+    type: '类型'
 }
