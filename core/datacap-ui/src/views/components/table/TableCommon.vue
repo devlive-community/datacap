@@ -5,12 +5,14 @@
       <Table v-else>
         <TableHeader>
           <TableRow>
-            <TableHead v-for="item in columns" :key="item.key" :class="item.class ? item.class : ''">{{ item.header }}</TableHead>
+            <TableHead v-for="item in columns" :key="item.key" :class="item.class ? item.class : ''" :style="{width: item.width ? item.width + 'px' : 'auto'}">
+              {{ item.header }}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow v-for="row in data" :key="row.id">
-            <TableCell v-for="column in columns" :key="column.key" :class="column.class ? column.class : ''">
+            <TableCell v-for="column in columns" :key="column.key" :class="column.class ? column.class : ''" :style="{width: column.width ? column.width + 'px' : 'auto'}">
               <template v-if="column.slot">
                 <slot :name="column.slot" :row="row"></slot>
               </template>

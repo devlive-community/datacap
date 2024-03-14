@@ -1,5 +1,6 @@
 export default {
     common: {
-        list: 'Schedule List'
+        list: 'Schedule List',
+        history: 'Schedule History'
     }
 }
