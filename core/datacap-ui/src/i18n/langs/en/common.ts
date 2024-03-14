@@ -37,4 +37,5 @@ export default {
     elapsed: 'Elapsed Time',
     state: 'State',
     result: 'Result',
+    noData: 'No Data to display',
 }

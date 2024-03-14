@@ -2,27 +2,32 @@
   <div>
     <div class="rounded-md mt-4">
       <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
-      <Table v-else>
-        <TableHeader>
-          <TableRow>
-            <TableHead v-for="item in columns" :key="item.key" :class="item.class ? item.class : ''" :style="{width: item.width ? item.width + 'px' : 'auto'}">
-              {{ item.header }}
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow v-for="row in data" :key="row.id">
-            <TableCell v-for="column in columns" :key="column.key" :class="column.class ? column.class : ''" :style="{width: column.width ? column.width + 'px' : 'auto'}">
-              <template v-if="column.slot">
-                <slot :name="column.slot" :row="row"></slot>
-              </template>
-              <template v-else>{{ row[column.key] }}</template>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <div v-else>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead v-for="item in columns" :key="item.key" :class="item.class ? item.class : ''" :style="{width: item.width ? item.width + 'px' : 'auto'}">
+                {{ item.header }}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow v-for="row in data" :key="row.id">
+              <TableCell v-for="column in columns" :key="column.key" :class="column.class ? column.class : ''" :style="{width: column.width ? column.width + 'px' : 'auto'}">
+                <template v-if="column.slot">
+                  <slot :name="column.slot" :row="row"></slot>
+                </template>
+                <template v-else>{{ row[column.key] }}</template>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <TableCaption v-if="data.length === 0" class="flex w-full justify-center mt-10">
+          {{ $t('common.noData') }}
+        </TableCaption>
+      </div>
     </div>
-    <div v-if="pagination && !loading" class="flex w-full justify-center mt-3">
+    <div v-if="pagination && !loading && data.length > 0" class="flex w-full justify-center mt-3">
       <Pagination v-slot="{ page }" :total="pagination.total" :items-per-page="pagination.pageSize" :sibling-count="1" show-edges
                   :default-page="pagination.currentPage + 1" @update:page="handlerChangePage($event)">
         <PaginationList v-slot="{ items }" class="flex items-center gap-1">

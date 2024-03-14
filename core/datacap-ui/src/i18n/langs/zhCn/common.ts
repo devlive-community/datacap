@@ -36,5 +36,6 @@ export default {
     type: '类型',
     elapsed: '执行时间',
     state: '状态',
-    result: '结果'
+    result: '结果',
+    noData: '没有数据可以展示',
 }

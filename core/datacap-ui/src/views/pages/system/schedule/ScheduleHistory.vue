@@ -5,7 +5,7 @@
         <DialogTitle class="pb-3.5">{{ $t('schedule.common.history') }}</DialogTitle>
         <DialogDescription></DialogDescription>
       </DialogHeader>
-      <CardContent class="grid gap-4 mt-5">
+      <CardContent class="grid gap-4">
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage"></TableCommon>
       </CardContent>
     </DialogContent>
