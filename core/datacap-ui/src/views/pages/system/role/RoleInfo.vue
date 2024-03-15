@@ -104,13 +104,14 @@ export default defineComponent({
               .max(50, $t('role.validate.descriptionSize'))
         })
 
-    const {validate} = useForm({
+    const {values, validate} = useForm({
       validationSchema: toTypedSchema(validator)
     })
 
     return {
       formState,
-      validate
+      validate,
+      values
     }
   },
   data()
@@ -143,7 +144,8 @@ export default defineComponent({
         return
       }
       this.loading = true
-      RoleService.saveOrUpdate(this.formState)
+      const configure = {...this.values, id: this.formState.id}
+      RoleService.saveOrUpdate(configure)
           .then(response => {
             if (response.status) {
               ToastUtils.success(`${this.title} ${this.$t('common.successfully')}`)

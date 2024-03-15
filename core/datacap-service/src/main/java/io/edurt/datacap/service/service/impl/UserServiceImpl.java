@@ -8,6 +8,7 @@ import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.response.JwtResponse;
 import io.edurt.datacap.common.utils.JsonUtils;
+import io.edurt.datacap.common.utils.NullAwareBeanUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.fs.Fs;
 import io.edurt.datacap.fs.FsRequest;
@@ -40,6 +41,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -94,14 +96,13 @@ public class UserServiceImpl
     @Override
     public CommonResponse<UserEntity> saveOrUpdate(UserEntity configure)
     {
-        UserEntity user = new UserEntity();
         if (ObjectUtils.isEmpty(configure.getId())) {
             Optional<UserEntity> userOptional = this.userRepository.findByUsername(configure.getUsername());
             if (userOptional.isPresent()) {
                 return CommonResponse.failure(ServiceState.USER_EXISTS);
             }
-            user.setUsername(configure.getUsername());
-            user.setPassword(encoder.encode(configure.getPassword()));
+            configure.setUsername(configure.getUsername());
+            configure.setPassword(encoder.encode(configure.getPassword()));
             Set<RoleEntity> userRoles = configure.getRoles();
             Set<RoleEntity> roles = new HashSet<>();
             if (ObjectUtils.isEmpty(userRoles)) {
@@ -111,13 +112,14 @@ public class UserServiceImpl
                 }
                 roles.add(userRoleOptional.get());
             }
-            user.setRoles(roles);
+            configure.setRoles(roles);
         }
         else {
-            user = userRepository.findById(configure.getId()).get();
-            user.setRoles(configure.getRoles());
+            userRepository.findById(configure.getId())
+                    .ifPresent(value -> NullAwareBeanUtils.copyNullProperties(value, configure));
+            configure.setRoles(configure.getRoles());
         }
-        return CommonResponse.success(userRepository.save(user));
+        return CommonResponse.success(userRepository.save(configure));
     }
 
     @AuditUserLog
@@ -132,7 +134,7 @@ public class UserServiceImpl
 
         UserDetailsService userDetails = (UserDetailsService) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         return CommonResponse.success(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles, userDetails.getAvatar()));
     }
