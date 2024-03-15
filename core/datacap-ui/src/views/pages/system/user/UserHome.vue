@@ -6,6 +6,11 @@
       </CardHeader>
       <CardContent>
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
+          <template #role="{row}">
+            <Badge v-for="role in row.roles" class="mt-1">
+              {{ role.name }}
+            </Badge>
+          </template>
           <template #action="{row}">
             <TooltipProvider>
               <Tooltip>
@@ -41,10 +46,12 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import UserRole from '@/views/pages/system/user/components/UserRole.vue'
 import { UserModel } from '@/model/user'
+import { Badge } from '@/components/ui/badge';
 
 export default defineComponent({
   name: 'UserHome',
   components: {
+    Badge,
     UserRole,
     TooltipContent, TooltipTrigger, Tooltip, TooltipProvider,
     CardContent, CardHeader, CardTitle, Card,

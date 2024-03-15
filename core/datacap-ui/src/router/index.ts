@@ -14,12 +14,12 @@ createHttpRoute(router)
 createAuthRoute(router)
 createDefaultRouter(router)
 
-router.beforeEach((to, _from, next) => {
-    if (to.matched.length === 0) {
-        next('/common/404')
+router.beforeEach((_to, _from, _next) => {
+    if (_to.matched.length === 0) {
+        _next('/common/404')
     }
     else {
-        next()
+        _next()
     }
 })
 
