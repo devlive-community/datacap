@@ -113,7 +113,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
-import NavigationMenuListItem from '@/views/layouts/common/components/NavigationMenuListItem.vue'
+import NavigationMenuListItem from '@/views/layouts/common/components/components/NavigationMenuListItem.vue'
 import { LogOut, User } from 'lucide-vue-next'
 
 interface NavigationItem

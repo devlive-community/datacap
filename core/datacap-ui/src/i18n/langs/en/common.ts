@@ -39,4 +39,5 @@ export default {
     result: 'Result',
     noData: 'No Data to display',
     invalidParam: 'If the parameter is invalid, check whether the parameter is correct',
+    role: 'Role',
 }

@@ -31,25 +31,41 @@ const createDefaultRouter = (router: any) => {
 const createSystemRouter = (router: any) => {
     const newRouter = {
         path: '/system',
+        meta: {
+            title: 'common.system',
+            isRoot: true
+        },
         component: LayoutContainer,
         children: [
             {
                 name: 'user',
                 path: 'user',
+                meta: {
+                    title: 'common.user',
+                    isRoot: false
+                },
                 component: () => import('@/views/pages/system/user/UserHome.vue')
             },
             {
                 name: 'role',
                 path: 'role',
+                meta: {
+                    title: 'common.role',
+                    isRoot: false
+                },
                 component: () => import('@/views/pages/system/role/RoleHome.vue')
             },
             {
                 name: 'schedule',
                 path: 'schedule',
+                meta: {
+                    title: 'common.schedule',
+                    isRoot: false
+                },
                 component: () => import('@/views/pages/system/schedule/ScheduleHome.vue')
             }
         ]
-    };
+    }
     router.addRoute(newRouter)
 }
 
