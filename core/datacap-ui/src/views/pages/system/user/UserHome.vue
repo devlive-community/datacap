@@ -10,12 +10,12 @@
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger as-child>
-                  <Button variant="outline" size="sm" class="p-3">
-                    <ArrowBigUp :size="24"></ArrowBigUp>
+                  <Button variant="outline" size="sm" class="p-3" @click="handlerChangeRole(true, row)">
+                    <ArrowUpFromLine :size="15"></ArrowUpFromLine>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{{ $t('user.common.assignAuthority') }}</p>
+                  <p>{{ $t('user.common.assignRole') }}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -23,6 +23,7 @@
         </TableCommon>
       </CardContent>
     </Card>
+    <UserRole v-if="dataRoleVisible" :is-visible="dataRoleVisible" :info="dataInfo" @close="handlerChangeRole(false, null)"></UserRole>
   </div>
 </template>
 
@@ -33,20 +34,23 @@ import UserService from '@/services/user'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { useI18n } from 'vue-i18n'
 import { createHeaders } from './UserUtils'
-import { ArrowBigUp, Loader2 } from 'lucide-vue-next'
+import { ArrowUpFromLine, Loader2 } from 'lucide-vue-next'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { PaginationModel } from '@/model/pagination'
+import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import UserRole from '@/views/pages/system/user/components/UserRole.vue'
+import { UserModel } from '@/model/user'
 
 export default defineComponent({
   name: 'UserHome',
   components: {
+    UserRole,
     TooltipContent, TooltipTrigger, Tooltip, TooltipProvider,
     CardContent, CardHeader, CardTitle, Card,
-    Loader2, Button,
+    Button,
     TableCommon,
-    ArrowBigUp
+    Loader2, ArrowUpFromLine
   },
   setup()
   {
@@ -63,8 +67,10 @@ export default defineComponent({
   {
     return {
       loading: false,
+      dataRoleVisible: false,
       data: [],
-      pagination: {} as PaginationModel
+      pagination: {} as PaginationModel,
+      dataInfo: null as UserModel | null
     }
   },
   created()
@@ -79,12 +85,7 @@ export default defineComponent({
           .then((response) => {
             if (response.status) {
               this.data = response.data.content
-              const pagination: PaginationModel = {
-                pageSize: response.data.size,
-                total: response.data.total,
-                currentPage: response.data.page
-              }
-              this.pagination = pagination
+              this.pagination = PaginationRequest.of(response.data)
             }
           })
           .finally(() => this.loading = false)
@@ -94,6 +95,14 @@ export default defineComponent({
       this.filter.page = value.currentPage
       this.filter.size = value.pageSize
       this.handlerInitialize()
+    },
+    handlerChangeRole(isOpen: boolean, dataInfo: UserModel | null)
+    {
+      this.dataRoleVisible = isOpen
+      this.dataInfo = dataInfo
+      if (!isOpen) {
+        this.handlerInitialize()
+      }
     }
   }
 })

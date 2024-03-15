@@ -4,7 +4,8 @@ export default {
         create: 'Create Role',
         edit: 'Edit Role [ $NAME ]',
         name: 'Role Name',
-        description: 'Role Description'
+        description: 'Role Description',
+        assignRole: 'Assign Role [ $NAME ]'
     },
     tip: {
         name: 'Please enter the role name',

@@ -2,6 +2,7 @@ import { UserRequest } from '@/model/user/request/user'
 import { ResponseModel } from '@/model/response'
 import { HttpUtils } from '@/utils/http'
 import { BaseService } from '@/services/base'
+import { UserRoleModel } from '@/model/user'
 
 const DEFAULT_PATH_AUTH = '/api/auth'
 const DEFAULT_PATH_USER = '/api/v1/user'
@@ -76,6 +77,17 @@ class UserService
     getQueryCount(): Promise<ResponseModel>
     {
         return new HttpUtils().get(`${DEFAULT_PATH_QUERY}/admin/count`)
+    }
+
+    /**
+     * Assigns a user role based on the provided configuration.
+     *
+     * @param {UserRoleModel} configure - the user role configuration
+     * @return {Promise<ResponseModel>} a promise that resolves with the response from the server
+     */
+    assignRole(configure: UserRoleModel): Promise<ResponseModel>
+    {
+        return new HttpUtils().put(`${DEFAULT_PATH_USER}/allocationRole`, configure)
     }
 }
 

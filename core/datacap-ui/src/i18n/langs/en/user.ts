@@ -10,7 +10,8 @@ export default {
         queryCount: 'Queries',
         signout: 'Sign out',
         list: 'User List',
-        assignAuthority: 'Assign Authority'
+        assignAuthority: 'Assign Authority',
+        assignRole: 'Assign Role'
     },
     auth: {
         signinTip: 'Enter your username and password to login',
@@ -28,6 +29,7 @@ export default {
     },
     tip: {
         sourceCountTip: 'Statistics on the total number of access data sources',
-        queryCountTip: 'Statistics on the total number of access queries'
+        queryCountTip: 'Statistics on the total number of access queries',
+        assignRoleSuccess: 'Role assignment succeeded'
     }
 }

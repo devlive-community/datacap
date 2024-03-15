@@ -4,7 +4,8 @@ export default {
         create: '创建路由',
         edit: '编辑路由 [ $NAME ]',
         name: '路由名称',
-        description: '路由描述'
+        description: '路由描述',
+        assignRole: '分配路由 [ $NAME ]'
     },
     tip: {
         name: '请输入路由名称',

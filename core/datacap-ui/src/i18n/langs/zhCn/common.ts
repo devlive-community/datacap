@@ -38,4 +38,5 @@ export default {
     state: '状态',
     result: '结果',
     noData: '没有数据可以展示',
+    invalidParam: '参数无效，请检查参数是否填写正确',
 }

@@ -10,7 +10,8 @@ export default {
         queryCount: '查询',
         signout: '退出登录',
         list: '用户列表',
-        assignAuthority: '分配权限'
+        assignAuthority: '分配权限',
+        assignRole: '分配路由'
     },
     auth: {
         signinTip: '请输入用户名和密码登录',
@@ -28,6 +29,7 @@ export default {
     },
     tip: {
         sourceCountTip: '创建数据源总数统计',
-        queryCountTip: '访问查询总数统计'
+        queryCountTip: '访问查询总数统计',
+        assignRoleSuccess: '分配路由成功',
     }
 }
