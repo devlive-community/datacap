@@ -54,7 +54,7 @@ export class HttpUtils
         // If the authorization key does not match, clear the local token reload page
         if (response.code === 4003) {
             this.handlerMessage(response.message)
-            router.push('/common/not_authorized')
+            router.push('/common/403')
         }
         if (response.code === 5000) {
             this.handlerMessage(response.message)

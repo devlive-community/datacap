@@ -1,7 +1,10 @@
 export default {
     pageNotFound: 'Oops! Page Not Found!',
     pageNotFoundTip: 'It seems like the page you\'re looking for, does not exist or might have been removed.',
+    pageNotAuthorized: 'Oops! Page Not Authorized!',
+    pageNotAuthorizedTip: 'Sorry, you don\'t have permission to access this page.',
     backToHome: 'Back to Home',
+    backToSignin: 'Back to Sign In',
     profile: 'Profile',
     home: 'Home',
     dashboard: 'Dashboard',

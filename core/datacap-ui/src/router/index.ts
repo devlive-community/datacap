@@ -14,7 +14,6 @@ createHttpRoute(router)
 createAuthRoute(router)
 createDefaultRouter(router)
 
-
 router.beforeEach((to, _from, next) => {
     if (to.matched.length === 0) {
         next('/common/404')

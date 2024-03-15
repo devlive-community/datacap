@@ -1,7 +1,10 @@
 export default {
     pageNotFound: '哎呀！页面未找到！',
     pageNotFoundTip: '您要查找的页面，似乎不存在或可能已被删除。',
+    pageNotAuthorized: '哎呀！页面未授权！',
+    pageNotAuthorizedTip: '抱歉，您没有权限访问该页面。',
     backToHome: '返回首页',
+    backToSignin: '返回登录',
     profile: '个人中心',
     home: '首页',
     dashboard: '仪表盘',
