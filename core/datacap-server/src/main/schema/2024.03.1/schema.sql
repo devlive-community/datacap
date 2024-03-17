@@ -8,3 +8,7 @@ USE `datacap`;
 UPDATE `menus`
 SET `url` = '/home'
 WHERE `id` = 1;
+
+UPDATE `menus`
+SET `url` = '/admin/dashboard'
+WHERE `id` = 16;

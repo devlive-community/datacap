@@ -26,8 +26,15 @@ const createDefaultRouter = (router: any) => {
     }
 
     createSystemRouter(router)
+    createAdminRouter(router)
 }
 
+/**
+ * Creates a system router and adds it to the provided router.
+ *
+ * @param {any} router - The router instance to which the system router will be added.
+ * @return {void}
+ */
 const createSystemRouter = (router: any) => {
     const newRouter = {
         path: '/system',
@@ -63,6 +70,29 @@ const createSystemRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/system/schedule/ScheduleHome.vue')
+            }
+        ]
+    }
+    router.addRoute(newRouter)
+}
+
+const createAdminRouter = (router: any) => {
+    const newRouter = {
+        path: '/admin',
+        meta: {
+            title: 'common.admin',
+            isRoot: true
+        },
+        component: LayoutContainer,
+        children: [
+            {
+                name: 'dashboard',
+                path: 'dashboard',
+                meta: {
+                    title: 'common.dashboard',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/dashboard/DashboardHome.vue')
             }
         ]
     }

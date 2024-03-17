@@ -153,7 +153,7 @@ export default defineComponent({
                       localStorage.setItem(CommonUtils.menu, JSON.stringify(fetchMenu.data))
                       createDefaultRouter(router)
                       localStorage.setItem(CommonUtils.userEditorConfigure, JSON.stringify(fetchInfo.data.editorConfigure))
-                      router.push('/dashboard/home')
+                      router.push('/home')
                     }
                     else {
                       if (!fetchMenu.status) {
