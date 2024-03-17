@@ -43,4 +43,5 @@ export default {
     noData: '没有数据可以展示',
     invalidParam: '参数无效，请检查参数是否填写正确',
     role: '权限',
+    cancel: '取消'
 }
