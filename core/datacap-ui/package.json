@@ -12,6 +12,8 @@
     "@radix-icons/vue": "^1.0.0",
     "@tanstack/vue-table": "^8.13.2",
     "@vee-validate/zod": "^4.12.6",
+    "@visactor/vchart": "^1.10.0",
+    "@visactor/vtable": "^0.21.2",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
@@ -26,6 +28,7 @@
     "vue": "^3.4.21",
     "vue-i18n": "^9.10.1",
     "vue-router": "^4.3.0",
+    "vue3-grid-layout-next": "^1.0.6",
     "zod": "^3.22.4"
   },
   "devDependencies": {

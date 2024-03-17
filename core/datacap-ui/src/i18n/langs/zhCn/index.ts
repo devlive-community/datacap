@@ -3,11 +3,13 @@ import common from '@/i18n/langs/zhCn/common'
 import role from '@/i18n/langs/zhCn/role'
 import schedule from '@/i18n/langs/zhCn/schedule'
 import dashboard from '@/i18n/langs/zhCn/dashboard'
+import dataset from '@/i18n/langs/zhCn/dataset'
 
 export default {
     common: common,
     user: user,
     role: role,
     schedule: schedule,
-    dashboard: dashboard
+    dashboard: dashboard,
+    dataset: dataset
 }

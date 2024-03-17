@@ -27,6 +27,7 @@ const createDefaultRouter = (router: any) => {
 
     createSystemRouter(router)
     createAdminRouter(router)
+    createPreviewRouter(router)
 }
 
 /**
@@ -76,6 +77,11 @@ const createSystemRouter = (router: any) => {
     router.addRoute(newRouter)
 }
 
+/**
+ * Creates an admin router and adds it to the given router.
+ *
+ * @param {any} router - The router to which the admin router will be added.
+ */
 const createAdminRouter = (router: any) => {
     const newRouter = {
         path: '/admin',
@@ -95,6 +101,24 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/dashboard/DashboardHome.vue')
             }
         ]
+    }
+    router.addRoute(newRouter)
+}
+
+/**
+ * Creates a new route for previewing a dashboard based on the provided ID.
+ *
+ * @param {any} router - The router instance where the new route will be added.
+ * @return {void}
+ */
+const createPreviewRouter = (router: any) => {
+    const newRouter = {
+        path: '/admin/dashboard/preview/:id',
+        meta: {
+            title: 'common.dashboard',
+            isRoot: false
+        },
+        component: () => import('@/views/pages/admin/dashboard/DashboardPreview.vue')
     }
     router.addRoute(newRouter)
 }

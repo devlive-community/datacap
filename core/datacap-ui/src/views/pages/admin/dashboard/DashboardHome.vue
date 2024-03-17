@@ -11,7 +11,9 @@
             <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <Card v-for="item in data">
                 <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle class="text-sm font-medium">{{ item.name }}</CardTitle>
+                  <CardTitle class="text-sm font-medium">
+                    <RouterLink :to="`/admin/dashboard/preview/${item.id}`" target="_blank">{{ item.name }}</RouterLink>
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div class="text-2xl font-bold"></div>
@@ -33,6 +35,7 @@ import { Loader2 } from 'lucide-vue-next';
 import DashboardService from '@/services/dashboard'
 import { FilterModel } from '@/model/filter'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
+import { DashboardModel } from '@/model/dashboard'
 
 export default defineComponent({
   name: 'DashboardHome',
@@ -52,7 +55,7 @@ export default defineComponent({
   {
     return {
       loading: false,
-      data: [],
+      data: [] as DashboardModel[],
       pagination: {} as PaginationModel
     }
   },
