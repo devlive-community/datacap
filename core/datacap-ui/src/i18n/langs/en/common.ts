@@ -44,4 +44,6 @@ export default {
     invalidParam: 'If the parameter is invalid, check whether the parameter is correct',
     role: 'Role',
     cancel: 'Cancel',
+    scheduler: 'Scheduler',
+    executor: 'Executor',
 }

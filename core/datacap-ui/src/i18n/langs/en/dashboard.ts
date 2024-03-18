@@ -1,7 +1,8 @@
 export default {
     common: {
         list: 'Dashboard List',
-        delete: 'Delete Dashboard'
+        delete: 'Delete Dashboard',
+        modify: 'Modify Dashboard'
     },
     tip: {
         deleteTip1: 'You are deleting a dashboard. This action permanently deletes the dashboard. Please be sure to confirm your actions before proceeding. ',

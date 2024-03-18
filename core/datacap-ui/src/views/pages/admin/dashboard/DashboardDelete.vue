@@ -1,10 +1,10 @@
 <template>
   <div>
     <AlertDialog :open="visible" :default-open="visible">
-      <AlertDialogContent>
+      <AlertDialogContent v-if="data">
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {{ $t('dashboard.common.delete') + ' [ ' + data?.name + ' ]' }}
+            {{ $t('dashboard.common.delete') + ' [ ' + data.name + ' ]' }}
           </AlertDialogTitle>
           <AlertDialogDescription>
             <Alert variant="destructive" class="mt-3">
@@ -14,7 +14,7 @@
               {{ $t('dashboard.tip.deleteTip2') }}
             </Alert>
             <Alert class="mt-3">
-              {{ $t('dashboard.tip.deleteTip3').replace('$NAME', data?.name) }}
+              {{ $t('dashboard.tip.deleteTip3').replace('$NAME', data.name) }}
               <Input v-model="inputValue" class="mt-3"/>
             </Alert>
           </AlertDialogDescription>
@@ -23,7 +23,7 @@
           <Button variant="outline" @click="handlerCancel">
             {{ $t('common.cancel') }}
           </Button>
-          <Button :disabled="inputValue !== data?.name || loading" @click="handlerDelete">
+          <Button :disabled="inputValue !== data.name || loading" @click="handlerDelete">
             <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
             {{ $t('dashboard.common.delete') }}
           </Button>
@@ -58,7 +58,8 @@ export default defineComponent({
       default: () => false
     },
     data: {
-      type: Object as () => DashboardModel
+      type: Object as () => DashboardModel | null,
+      default: null
     }
   },
   computed: {
@@ -77,7 +78,7 @@ export default defineComponent({
   {
     return {
       loading: false,
-      inputValue: null
+      inputValue: ''
     }
   },
   methods: {

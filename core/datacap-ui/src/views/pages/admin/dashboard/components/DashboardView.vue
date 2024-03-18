@@ -50,10 +50,12 @@ import { defineComponent } from 'vue'
 import { GridItem, GridLayout } from 'vue3-grid-layout-next'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import VisualView from '@/views/components/visual/VisualView.vue'
+import EchartsPreview from '@/views/components/echarts/EchartsPreview.vue'
 
 export default defineComponent({
   name: 'DashboardView',
   components: {
+    EchartsPreview,
     VisualView,
     CardContent, CardHeader, CardTitle, Card,
     GridItem, GridLayout

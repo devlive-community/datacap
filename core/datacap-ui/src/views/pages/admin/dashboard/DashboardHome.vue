@@ -19,6 +19,12 @@
                       <Cog :size="20"/>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
+                      <DropdownMenuItem>
+                        <RouterLink :to="`/admin/dashboard/info/${item.id}`" target="_blank" class="flex items-center">
+                          <Pencil :size="15" class="mr-1"/>
+                          {{ $t('dashboard.common.modify') }}
+                        </RouterLink>
+                      </DropdownMenuItem>
                       <DropdownMenuItem @click="handlerDelete(true, item)">
                         <Trash :size="15" class="mr-1"/>
                         {{ $t('dashboard.common.delete') }}
@@ -43,20 +49,20 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Cog, Loader2, Trash } from 'lucide-vue-next';
+import { Cog, Loader2, Pencil, Trash } from 'lucide-vue-next'
 import DashboardService from '@/services/dashboard'
 import { FilterModel } from '@/model/filter'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import { DashboardModel } from '@/model/dashboard'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import DashboardDelete from '@/views/pages/admin/dashboard/DashboardDelete.vue';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import DashboardDelete from '@/views/pages/admin/dashboard/DashboardDelete.vue'
 
 export default defineComponent({
   name: 'DashboardHome',
   components: {
     DashboardDelete,
     DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
-    Loader2, Cog, Trash,
+    Loader2, Cog, Trash, Pencil,
     CardContent, CardHeader, CardTitle, Card
   },
   setup()
@@ -94,7 +100,7 @@ export default defineComponent({
           })
           .finally(() => this.loading = false)
     },
-    handlerDelete(opened: boolean, data: any)
+    handlerDelete(opened: boolean, data: DashboardModel | null)
     {
       this.deleteVisible = opened
       this.dataInfo = data

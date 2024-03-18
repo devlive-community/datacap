@@ -99,6 +99,24 @@ const createAdminRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/dashboard/DashboardHome.vue')
+            },
+            {
+                name: 'info',
+                path: 'dashboard/info/:id',
+                meta: {
+                    title: 'common.dashboard',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/dashboard/DashboardInfo.vue')
+            },
+            {
+                name: 'dataset',
+                path: 'dataset',
+                meta: {
+                    title: 'common.dataset',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/dataset/DatasetHome.vue')
             }
         ]
     }
