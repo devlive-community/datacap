@@ -34,6 +34,17 @@ export class DatasetService
     {
         return new HttpUtils().get(`${DEFAULT_PATH}/columns/${code}`)
     }
+
+    /**
+     * Rebuilds the specified item identified by the given ID.
+     *
+     * @param {number} id - the ID of the item to be rebuilt
+     * @return {Promise<ResponseModel>} a Promise that resolves with the response from the rebuild request
+     */
+    rebuild(id: number): Promise<ResponseModel>
+    {
+        return new HttpUtils().put(`${DEFAULT_PATH}/rebuild/${id}`)
+    }
 }
 
 export default new DatasetService()

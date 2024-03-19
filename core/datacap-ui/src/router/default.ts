@@ -126,6 +126,15 @@ const createAdminRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/dataset/DatasetAdhoc.vue')
+            },
+            {
+                path: 'dataset/adhoc/:code/:id',
+                layout: LayoutContainer,
+                meta: {
+                    title: 'common.dataset',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/dataset/DatasetAdhoc.vue')
             }
         ]
     }

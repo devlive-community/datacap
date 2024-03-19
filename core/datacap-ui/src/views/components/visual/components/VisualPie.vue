@@ -45,12 +45,16 @@ export default defineComponent({
       setTimeout(() => {
         try {
           if (this.configuration) {
+            let outerRadius = 0.8
+            if (this.configuration.chartConfigure?.outerRadius) {
+              outerRadius = this.configuration.chartConfigure?.outerRadius[0]
+            }
             const options = {
               type: 'pie',
               data: [{values: this.configuration.columns}],
               categoryField: this.configuration.chartConfigure?.xAxis,
               valueField: this.configuration.chartConfigure?.yAxis,
-              outerRadius: this.configuration.chartConfigure?.outerRadius[0]
+              outerRadius: outerRadius
             }
             if (!reset) {
               instance = new VChart(options, {dom: this.$refs.content as HTMLElement})

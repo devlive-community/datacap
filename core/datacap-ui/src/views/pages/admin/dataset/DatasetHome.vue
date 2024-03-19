@@ -47,6 +47,11 @@
                       <span>{{ $t('dataset.common.adhoc') }}</span>
                     </RouterLink>
                   </DropdownMenuItem>
+                  <DropdownMenuItem :disabled="isSuccess(row?.state)" style="cursor: pointer;" @click="handlerRebuild(row, true)">
+                    <CirclePlay v-if="row?.state === 'SUCCESS'" class="mr-2 h-4 w-4"/>
+                    <CircleStop v-else class="mr-2 h-4 w-4"/>
+                    {{ $t('dataset.common.rebuild') }}
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -54,6 +59,7 @@
         </TableCommon>
       </CardContent>
     </Card>
+    <DatasetRebuild v-if="rebuildVisible" :is-visible="rebuildVisible" :data="contextData" @close="handlerRebuild(null, false)"/>
   </div>
 </template>
 
@@ -71,7 +77,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import DatasetState from '@/views/pages/admin/dataset/components/DatasetState.vue'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { BarChart2, Cog } from 'lucide-vue-next'
+import { BarChart2, CirclePlay, CircleStop, Cog } from 'lucide-vue-next'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,10 +87,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import { DatasetModel } from '@/model/dataset'
+import DatasetRebuild from '@/views/pages/admin/dataset/DatasetRebuild.vue'
 
 export default defineComponent({
   name: 'DatasetHome',
   components: {
+    DatasetRebuild,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     HoverCardContent, HoverCardTrigger, HoverCard,
     DatasetState,
@@ -93,7 +102,7 @@ export default defineComponent({
     TooltipTrigger, TooltipProvider, TooltipContent, Tooltip,
     TableCommon,
     CardContent, CardHeader, CardTitle, Card,
-    Cog, BarChart2
+    Cog, BarChart2, CirclePlay, CircleStop
   },
   setup()
   {
@@ -110,7 +119,9 @@ export default defineComponent({
     return {
       loading: false,
       data: [],
-      pagination: {} as PaginationModel
+      pagination: {} as PaginationModel,
+      contextData: null as DatasetModel | null,
+      rebuildVisible: false
     }
   },
   created()
@@ -135,6 +146,14 @@ export default defineComponent({
       this.filter.page = value.currentPage
       this.filter.size = value.pageSize
       this.handlerInitialize()
+    },
+    handlerRebuild(record: DatasetModel | null, opened: boolean)
+    {
+      if (record && this.isSuccess(record.state)) {
+        return
+      }
+      this.rebuildVisible = opened
+      this.contextData = record
     },
     getState(state: Array<any> | null): string | null
     {
