@@ -7,6 +7,8 @@ class CommonUtils
             data: items
         }
     }
+
+    userEditorConfigure = 'DataCapUserEditorConfigure'
 }
 
 export default new CommonUtils()

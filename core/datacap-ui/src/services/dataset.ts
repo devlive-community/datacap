@@ -23,6 +23,17 @@ export class DatasetService
     {
         return new HttpUtils().post(`${DEFAULT_PATH}/adhoc/${code}`, configure)
     }
+
+    /**
+     * Retrieves the columns for a given code.
+     *
+     * @param {string} code - The code to retrieve columns for.
+     * @return {Promise<ResponseModel>} A promise that resolves to the response model containing the columns.
+     */
+    getColumnsByCode(code: string): Promise<ResponseModel>
+    {
+        return new HttpUtils().get(`${DEFAULT_PATH}/columns/${code}`)
+    }
 }
 
 export default new DatasetService()

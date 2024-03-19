@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Alert v-if="configuration?.headers.length === 0 && !configuration?.message" variant="destructive">
+    <Alert v-if="configuration?.headers.length === 0 && !configuration?.message" class="mt-20">
       <AlertDescription>
         {{ $t('dataset.common.adhocDndTip') }}
       </AlertDescription>
     </Alert>
-    <Alert v-else-if="configuration?.message" variant="destructive">
+    <Alert v-else-if="configuration?.message" variant="destructive" class="mt-20">
       <AlertDescription>
         {{ configuration.message }}
       </AlertDescription>

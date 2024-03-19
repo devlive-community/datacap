@@ -16,6 +16,6 @@ export interface IChart
     x2Axis: null
     yAxis: null
     series: null
-    outerRadius: null
+    outerRadius: number[]
     invalidType: null
 }

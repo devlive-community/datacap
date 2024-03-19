@@ -17,3 +17,8 @@ export interface UserRoleModel
     roles: number[]
     userId: number
 }
+
+export interface UserEditor {
+    fontSize: number
+    theme: string
+}

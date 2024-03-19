@@ -46,4 +46,11 @@ export default {
     cancel: '取消',
     scheduler: '调度器',
     executor: '执行器',
+    configure: '配置',
+    remove: '移除',
+    publish: '发布',
+    save: '保存',
+    value: '值',
+    alias: '别名',
+    sort: '排序',
 }

@@ -32,6 +32,25 @@
               </HoverCardContent>
             </HoverCard>
           </template>
+          <template #action="{row}">
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="outline">
+                  <Cog class="w-full justify-center" size="20"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem :disabled="!isSuccess(row?.state)">
+                    <RouterLink :to="`/admin/dataset/adhoc/${row?.code}`" target="_blank" class="flex items-center">
+                      <BarChart2 class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('dataset.common.adhoc') }}</span>
+                    </RouterLink>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </template>
         </TableCommon>
       </CardContent>
     </Card>
@@ -51,18 +70,30 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import DatasetState from '@/views/pages/admin/dataset/components/DatasetState.vue'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import { BarChart2, Cog } from 'lucide-vue-next'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 
 export default defineComponent({
   name: 'DatasetHome',
   components: {
+    DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     HoverCardContent, HoverCardTrigger, HoverCard,
     DatasetState,
     Badge,
     AvatarFallback, AvatarImage, Avatar,
     TooltipTrigger, TooltipProvider, TooltipContent, Tooltip,
     TableCommon,
-    CardContent, CardHeader, CardTitle, Card
+    CardContent, CardHeader, CardTitle, Card,
+    Cog, BarChart2
   },
   setup()
   {
@@ -111,6 +142,13 @@ export default defineComponent({
         return state[state.length - 1]
       }
       return null
+    },
+    isSuccess(state: Array<any> | null)
+    {
+      if (state && state.length > 0) {
+        return state[state.length - 1].endsWith('SUCCESS')
+      }
+      return false
     }
   }
 })

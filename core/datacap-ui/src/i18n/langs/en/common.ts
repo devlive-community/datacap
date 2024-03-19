@@ -46,4 +46,11 @@ export default {
     cancel: 'Cancel',
     scheduler: 'Scheduler',
     executor: 'Executor',
+    configure: 'Configure',
+    remove: 'Remove',
+    publish: 'Publish',
+    save: 'Save',
+    value: 'Value',
+    alias: 'Alias',
+    sort: 'Sort',
 }

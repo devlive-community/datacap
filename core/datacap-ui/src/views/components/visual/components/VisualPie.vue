@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <div ref="content" :style="{width: width, height: height}"/>
-  </div>
+  <div ref="content" :style="{width: width, height: height}"/>
 </template>
+
 <script lang="ts">
 import VChart from '@visactor/vchart'
 import { cloneDeep } from 'lodash'
@@ -51,7 +50,7 @@ export default defineComponent({
               data: [{values: this.configuration.columns}],
               categoryField: this.configuration.chartConfigure?.xAxis,
               valueField: this.configuration.chartConfigure?.yAxis,
-              outerRadius: this.configuration.chartConfigure?.outerRadius
+              outerRadius: this.configuration.chartConfigure?.outerRadius[0]
             }
             if (!reset) {
               instance = new VChart(options, {dom: this.$refs.content as HTMLElement})
