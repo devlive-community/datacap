@@ -1,6 +1,6 @@
 <template>
-  <div v-for="state in states" :key="state">
-    <Alert class="flex items-center" v-if="state === 'START'">
+  <div v-for="state in states">
+    <Alert class="flex items-center" v-if="(state as string) === 'START'">
       <AlertTitle class="flex-grow">
         {{ $t('dataset.common.stateOfStarted') }}
       </AlertTitle>
@@ -8,28 +8,28 @@
         {{ $t('dataset.complete') }}
       </AlertDescription>
     </Alert>
-    <Alert class="flex items-center mt-2" v-else-if="state.startsWith('METADATA_')">
+    <Alert class="flex items-center mt-2" v-else-if="(state as string).startsWith('METADATA_')">
       <AlertTitle class="flex-grow">
         {{ $t('dataset.common.stateOfMetadata') }}
       </AlertTitle>
       <AlertDescription class="ml-4">
-        <span v-if="state.endsWith('SUCCESS')" class="content">
+        <span v-if="(state as string).endsWith('SUCCESS')" class="content">
           {{ $t('dataset.common.complete') }}
         </span>
-        <span v-else-if="state.endsWith('FAILED')" class="content">
+        <span v-else-if="(state as string).endsWith('FAILED')" class="content">
           {{ $t('dataset.common.failed') }}
         </span>
       </AlertDescription>
     </Alert>
-    <Alert class="flex items-center mt-2" v-else-if="state.startsWith('TABLE_')">
+    <Alert class="flex items-center mt-2" v-else-if="(state as string).startsWith('TABLE_')">
       <AlertTitle class="flex-grow">
         {{ $t('dataset.common.stateOfCreateTable') }}
       </AlertTitle>
       <AlertDescription class="ml-4">
-        <span v-if="state.endsWith('SUCCESS')" class="content">
+        <span v-if="(state as string).endsWith('SUCCESS')" class="content">
           {{ $t('dataset.common.complete') }}
         </span>
-        <span v-else-if="state.endsWith('FAILED')" class="content">
+        <span v-else-if="(state as string).endsWith('FAILED')" class="content">
           {{ $t('dataset.common.failed') }}
         </span>
       </AlertDescription>

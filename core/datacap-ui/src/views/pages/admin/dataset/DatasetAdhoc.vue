@@ -47,7 +47,7 @@
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger as-child>
-                          <Cog class="pointer" size="15" @click="handlerColumnConfigure(true, element, ColumnType.METRIC)"/>
+                          <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.METRIC)"/>
                         </TooltipTrigger>
                         <TooltipContent>
                           {{ $t('common.configure') }}
@@ -57,7 +57,7 @@
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger as-child>
-                          <Trash class="point ml-1" size="15" @click="handlerRemove(index, metrics)"/>
+                          <Trash class="point ml-1" :size="15" @click="handlerRemove(index, metrics)"/>
                         </TooltipTrigger>
                         <TooltipContent>
                           {{ $t('common.remove') }}
@@ -80,7 +80,7 @@
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger as-child>
-                          <Cog class="pointer" size="15" @click="handlerColumnConfigure(true, element, ColumnType.DIMENSION)"/>
+                          <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.DIMENSION)"/>
                         </TooltipTrigger>
                         <TooltipContent>
                           {{ $t('common.configure') }}
@@ -90,7 +90,7 @@
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger as-child>
-                          <Trash class="point ml-1" size="15" @click="handlerRemove(index, dimensions)"/>
+                          <Trash class="point ml-1" :size="15" @click="handlerRemove(index, dimensions)"/>
                         </TooltipTrigger>
                         <TooltipContent>
                           {{ $t('common.remove') }}
@@ -113,7 +113,7 @@
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger as-child>
-                          <Cog class="pointer" size="15" @click="handlerColumnConfigure(true, element, ColumnType.FILTER)"/>
+                          <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.FILTER)"/>
                         </TooltipTrigger>
                         <TooltipContent>
                           {{ $t('common.configure') }}
@@ -123,7 +123,7 @@
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger as-child>
-                          <Trash class="point ml-1" size="15" @click="handlerRemove(index, filters)"/>
+                          <Trash class="point ml-1" :size="15" @click="handlerRemove(index, filters)"/>
                         </TooltipTrigger>
                         <TooltipContent>
                           {{ $t('common.remove') }}
@@ -157,7 +157,7 @@
           <Separator class="p-0" style="margin-top: 20px;"/>
         </div>
         <!-- Result -->
-        <div class="flex">
+        <div class="flex h-full">
           <div class="left flex-1 justify-center">
             <CircularLoading v-if="loading" :show="loading"/>
             <VisualEditor v-else :configuration="configuration" @commitOptions="handlerCommitOptions"/>
@@ -167,7 +167,7 @@
               <CardHeader class="p-2 border-b text-center">
                 <CardTitle>{{ $t('dataset.common.visualType') }}</CardTitle>
               </CardHeader>
-              <CardContent class="pt-2">
+              <CardContent v-if="configuration" class="pt-2">
                 <ToggleGroup v-model="configuration.type" type="single">
                   <div class="toggle-group-row">
                     <ToggleGroupItem class="mr-1" :value="Type.TABLE">
@@ -260,7 +260,7 @@
               <CardHeader class="p-2 border-b text-center">
                 <CardTitle>{{ $t('dataset.common.visualConfigure') }}</CardTitle>
               </CardHeader>
-              <CardContent class="pt-2">
+              <CardContent v-if="configuration" class="pt-2">
                 <DatasetVisualConfigureLine v-if="configuration.type === Type.LINE" :columns="configuration.headers" @commit="handlerCommit"/>
                 <DatasetVisualConfigureBar v-else-if="configuration.type === Type.BAR" :columns="configuration.headers" @commit="handlerCommit"/>
                 <DatasetVisualConfigureArea v-else-if="configuration.type === Type.AREA" :columns="configuration.headers" @commit="handlerCommit"/>
@@ -285,7 +285,7 @@
       <AlertDialogHeader>
         <AlertDialogTitle class="border-b -mt-4 pb-2">{{ $t('common.configure') }}</AlertDialogTitle>
       </AlertDialogHeader>
-      <FormField class="flex items-center">
+      <FormField class="flex items-center" name="name">
         <FormItem class="flex-1">
           <div class="flex items-center">
             <FormLabel class="mr-1 w-20 text-right">
@@ -340,7 +340,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { ToastUtils } from '@/utils/toast'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
-import { AlertDialog, AlertDialogFooter, AlertDialogHeader, AlertDialogContent } from '@/components/ui/alert-dialog'
+import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from '@/components/ui/alert-dialog'
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Select } from '@/components/ui/select'
 
@@ -403,13 +403,13 @@ export default defineComponent({
       configuration: null as Configuration | null,
       showSql: {
         visible: false,
-        content: null
+        content: null as string | null
       },
       columnContent: {
         visible: false,
         type: null as ColumnType | null,
         content: [] as never[],
-        configure: null
+        configure: null as any | null
       },
       isPublish: false,
       commitOptions: null,
@@ -500,7 +500,7 @@ export default defineComponent({
     {
       return cloneDeep(value)
     },
-    handlerRemove(index: number, array: [])
+    handlerRemove(index: number, array: never[])
     {
       array.splice(index, 1)
       this.handlerApplyAdhoc()

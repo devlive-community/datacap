@@ -1,6 +1,6 @@
 <template>
-  <span>{{ element.aliasName ? element.aliasName : element.name }}</span>
-  <span v-if="element.expression">
+  <span>{{ element?.aliasName ? element?.aliasName : element?.name }}</span>
+  <span v-if="element?.expression">
       (
       <Text strong v-if="element.expression === Expression.SUM">
         {{ $t('dataset.common.columnExpressionSum') }}

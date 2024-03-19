@@ -36,7 +36,7 @@
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
                 <Button variant="outline">
-                  <Cog class="w-full justify-center" size="20"/>
+                  <Cog class="w-full justify-center" :size="20"/>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>

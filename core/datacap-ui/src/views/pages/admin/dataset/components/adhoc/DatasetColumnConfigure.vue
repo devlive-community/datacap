@@ -5,112 +5,115 @@
         <AlertDialogHeader>
           <AlertDialogTitle class="border-b -mt-4 pb-2">{{ title }}</AlertDialogTitle>
         </AlertDialogHeader>
-        <div v-if="columnType === 'FILTER'">
-          <FormField class="flex items-center">
-            <FormItem class="flex-1">
-              <div class="flex items-center">
-                <FormLabel class="mr-1 w-40 text-right">
-                  {{ $t('common.expression') }}
-                </FormLabel>
-                <FormControl>
-                  <Select v-model="formState.expression">
-                    <SelectTrigger class="w-full">
-                      <SelectValue :placeholder="$t('dataset.tip.selectExpressionTip')"/>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem :value="Expression.IS_NULL">{{ $t('dataset.common.columnExpressionIsNull') }}</SelectItem>
-                      <SelectItem :value="Expression.IS_NOT_NULL">{{ $t('dataset.common.columnExpressionIsNotNull') }}</SelectItem>
-                      <SelectItem :value="Expression.IS_LIKE">{{ $t('dataset.common.columnExpressionIsLike') }}</SelectItem>
-                      <SelectItem :value="Expression.IS_NOT_LIKE">{{ $t('dataset.common.columnExpressionIsNotLike') }}</SelectItem>
-                      <SelectItem :value="Expression.EQ">{{ $t('dataset.common.columnExpressionEquals') }}</SelectItem>
-                      <SelectItem :value="Expression.NE">{{ $t('dataset.common.columnExpressionNotEquals') }}</SelectItem>
-                      <SelectItem :value="Expression.GT">{{ $t('dataset.common.columnExpressionGreaterThan') }}</SelectItem>
-                      <SelectItem :value="Expression.GTE">{{ $t('dataset.common.columnExpressionGreaterThanOrEquals') }}</SelectItem>
-                      <SelectItem :value="Expression.LT">{{ $t('dataset.common.columnExpressionLessThan') }}</SelectItem>
-                      <SelectItem :value="Expression.LTE">{{ $t('dataset.common.columnExpressionLessThanOrEquals') }}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-              </div>
-            </FormItem>
-          </FormField>
-          <FormField v-if="formState.expression && formState.expression !== Expression.IS_NULL && formState.expression !== Expression.IS_NOT_NULL" class="flex items-center">
-            <FormItem class="flex-1 mt-3">
-              <div class="flex items-center">
-                <FormLabel class="mr-1 w-40 text-right">
-                  {{ $t('common.value') }}
-                </FormLabel>
-                <FormControl>
-                  <Input v-model="formState.value"/>
-                </FormControl>
-              </div>
-            </FormItem>
-          </FormField>
-        </div>
-        <div v-else>
-          <FormField v-if="columnType === 'METRIC'" class="flex items-center">
-            <FormItem class="flex-1">
-              <div class="flex items-center">
-                <FormLabel class="mr-1 w-40 text-right">
-                  {{ $t('common.expression') }}
-                </FormLabel>
-                <FormControl>
-                  <Select v-model="formState.expression">
-                    <SelectTrigger class="w-full">
-                      <SelectValue :placeholder="$t('dataset.tip.selectExpressionTip')"/>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem v-if="formState.type === ColumnType.NUMBER" :value="Expression.SUM"> {{ $t('dataset.common.columnExpressionSum') }}</SelectItem>
-                      <SelectItem :value="Expression.COUNT">{{ $t('dataset.common.columnExpressionCount') }}</SelectItem>
-                      <SelectItem :value="Expression.MAX">{{ $t('dataset.common.columnExpressionMax') }}</SelectItem>
-                      <SelectItem :value="Expression.MIN">{{ $t('dataset.common.columnExpressionMin') }}</SelectItem>
-                      <SelectItem v-if="formState.type === ColumnType.NUMBER" :value="Expression.AVG">{{ $t('dataset.common.columnExpressionAvg') }}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-              </div>
-            </FormItem>
-          </FormField>
-          <FormField class="flex items-center">
-            <FormItem class="flex-1 mt-3">
-              <div class="flex items-center">
-                <FormLabel class="mr-1 w-40 text-right">
-                  {{ $t('common.alias') }}
-                </FormLabel>
-                <FormControl>
-                  <Input v-model="formState.alias"/>
-                </FormControl>
-              </div>
-            </FormItem>
-          </FormField>
-          <FormField class="flex items-center">
-            <FormItem class="flex-1 mt-3">
-              <div class="flex items-center">
-                <FormLabel class="mr-1 w-[25%] text-right">
-                  {{ $t('common.sort') }}
-                </FormLabel>
-                <FormControl>
-                  <ToggleGroup v-model="formState.order" type="single">
-                    <ToggleGroupItem value="">{{ $t('dataset.common.columnSortNone') }}</ToggleGroupItem>
-                    <ToggleGroupItem value="ASC">{{ $t('dataset.common.columnOrderAsc') }}</ToggleGroupItem>
-                    <ToggleGroupItem value="DESC">{{ $t('dataset.common.columnOrderDesc') }}</ToggleGroupItem>
-                  </ToggleGroup>
-                </FormControl>
-              </div>
-            </FormItem>
-          </FormField>
-          <FormField v-if="columnType === 'DIMENSION'" class="flex items-center">
-            <FormItem class="flex-1 mt-3">
-              <div class="flex items-center">
-                <FormLabel class="mr-1 w-40 text-right">
-                  {{ $t('dataset.common.customFunction') }}
-                </FormLabel>
-                <FormControl>
-                  <Input v-model="formState.function"/>
-                </FormControl>
-              </div>
-            </FormItem>
-          </FormField>
+        <div v-if="formState">
+          <div v-if="columnType === 'FILTER'">
+            <FormField class="flex items-center" name="expression">
+              <FormItem class="flex-1">
+                <div class="flex items-center">
+                  <FormLabel class="mr-1 w-40 text-right">
+                    {{ $t('common.expression') }}
+                  </FormLabel>
+                  <FormControl>
+                    <Select v-model="formState.expression">
+                      <SelectTrigger class="w-full">
+                        <SelectValue :placeholder="$t('dataset.tip.selectExpressionTip')"/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem :value="Expression.IS_NULL">{{ $t('dataset.common.columnExpressionIsNull') }}</SelectItem>
+                        <SelectItem :value="Expression.IS_NOT_NULL">{{ $t('dataset.common.columnExpressionIsNotNull') }}</SelectItem>
+                        <SelectItem :value="Expression.IS_LIKE">{{ $t('dataset.common.columnExpressionIsLike') }}</SelectItem>
+                        <SelectItem :value="Expression.IS_NOT_LIKE">{{ $t('dataset.common.columnExpressionIsNotLike') }}</SelectItem>
+                        <SelectItem :value="Expression.EQ">{{ $t('dataset.common.columnExpressionEquals') }}</SelectItem>
+                        <SelectItem :value="Expression.NE">{{ $t('dataset.common.columnExpressionNotEquals') }}</SelectItem>
+                        <SelectItem :value="Expression.GT">{{ $t('dataset.common.columnExpressionGreaterThan') }}</SelectItem>
+                        <SelectItem :value="Expression.GTE">{{ $t('dataset.common.columnExpressionGreaterThanOrEquals') }}</SelectItem>
+                        <SelectItem :value="Expression.LT">{{ $t('dataset.common.columnExpressionLessThan') }}</SelectItem>
+                        <SelectItem :value="Expression.LTE">{{ $t('dataset.common.columnExpressionLessThanOrEquals') }}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </div>
+              </FormItem>
+            </FormField>
+            <FormField v-if="formState.expression && formState.expression !== Expression.IS_NULL && formState.expression !== Expression.IS_NOT_NULL" class="flex items-center"
+                       name="value">
+              <FormItem class="flex-1 mt-3">
+                <div class="flex items-center">
+                  <FormLabel class="mr-1 w-40 text-right">
+                    {{ $t('common.value') }}
+                  </FormLabel>
+                  <FormControl>
+                    <Input v-model="formState.value"/>
+                  </FormControl>
+                </div>
+              </FormItem>
+            </FormField>
+          </div>
+          <div v-else>
+            <FormField v-if="columnType === 'METRIC'" class="flex items-center" name="expression">
+              <FormItem class="flex-1">
+                <div class="flex items-center">
+                  <FormLabel class="mr-1 w-40 text-right">
+                    {{ $t('common.expression') }}
+                  </FormLabel>
+                  <FormControl>
+                    <Select v-model="formState.expression">
+                      <SelectTrigger class="w-full">
+                        <SelectValue :placeholder="$t('dataset.tip.selectExpressionTip')"/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem v-if="formState.type === ColumnType.NUMBER" :value="Expression.SUM"> {{ $t('dataset.common.columnExpressionSum') }}</SelectItem>
+                        <SelectItem :value="Expression.COUNT">{{ $t('dataset.common.columnExpressionCount') }}</SelectItem>
+                        <SelectItem :value="Expression.MAX">{{ $t('dataset.common.columnExpressionMax') }}</SelectItem>
+                        <SelectItem :value="Expression.MIN">{{ $t('dataset.common.columnExpressionMin') }}</SelectItem>
+                        <SelectItem v-if="formState.type === ColumnType.NUMBER" :value="Expression.AVG">{{ $t('dataset.common.columnExpressionAvg') }}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </div>
+              </FormItem>
+            </FormField>
+            <FormField class="flex items-center" name="alias">
+              <FormItem class="flex-1 mt-3">
+                <div class="flex items-center">
+                  <FormLabel class="mr-1 w-40 text-right">
+                    {{ $t('common.alias') }}
+                  </FormLabel>
+                  <FormControl>
+                    <Input v-model="formState.alias"/>
+                  </FormControl>
+                </div>
+              </FormItem>
+            </FormField>
+            <FormField class="flex items-center" name="order">
+              <FormItem class="flex-1 mt-3">
+                <div class="flex items-center">
+                  <FormLabel class="mr-1 w-[25%] text-right">
+                    {{ $t('common.sort') }}
+                  </FormLabel>
+                  <FormControl>
+                    <ToggleGroup v-model="formState.order" type="single">
+                      <ToggleGroupItem value="">{{ $t('dataset.common.columnSortNone') }}</ToggleGroupItem>
+                      <ToggleGroupItem value="ASC">{{ $t('dataset.common.columnOrderAsc') }}</ToggleGroupItem>
+                      <ToggleGroupItem value="DESC">{{ $t('dataset.common.columnOrderDesc') }}</ToggleGroupItem>
+                    </ToggleGroup>
+                  </FormControl>
+                </div>
+              </FormItem>
+            </FormField>
+            <FormField v-if="columnType === 'DIMENSION'" class="flex items-center" name="function">
+              <FormItem class="flex-1 mt-3">
+                <div class="flex items-center">
+                  <FormLabel class="mr-1 w-40 text-right">
+                    {{ $t('dataset.common.customFunction') }}
+                  </FormLabel>
+                  <FormControl>
+                    <Input v-model="formState.function"/>
+                  </FormControl>
+                </div>
+              </FormItem>
+            </FormField>
+          </div>
         </div>
         <AlertDialogFooter class="-mb-4 border-t pt-2">
           <Button @click="handlerCancel">{{ $t('common.cancel') }}</Button>
@@ -142,18 +145,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-
-interface Model
-{
-  id: number
-  type: string
-  alias: string
-  expression: string
-  order: string
-  function: string
-  value: string
-  mode: string
-}
+import { Model } from '../../model/model'
 
 export default defineComponent({
   name: 'DatasetColumnConfigure',
@@ -171,7 +163,7 @@ export default defineComponent({
       default: () => false
     },
     columnType: {
-      type: String as unknown as PropType<Type>,
+      type: String as unknown as PropType<Type | null>,
       default: () => Type.DIMENSION
     },
     content: {
@@ -179,18 +171,18 @@ export default defineComponent({
       default: () => null
     },
     configure: {
-      type: Object
+      type: Object as () => any
     }
   },
   computed: {
     visible: {
       get(): boolean
       {
-        return this.isVisible;
+        return this.isVisible
       },
       set(value: boolean)
       {
-        this.$emit('close', value);
+        this.$emit('close', value)
       }
     },
     Expression()
@@ -229,7 +221,6 @@ export default defineComponent({
         if (this.configure) {
           const cloneValue = cloneDeep(this.configure) as Model
           this.formState = cloneValue
-          console.log(cloneValue)
         }
         else {
           this.formState.id = this.content.id

@@ -11,34 +11,13 @@
       </AlertDescription>
     </Alert>
     <div v-else>
-      <VisualTable v-if="configuration?.type === Type.TABLE"
-                   :configuration="configuration"
-                   @commitOptions="handlerCommit">
-      </VisualTable>
-      <VisualLine v-else-if="configuration?.type === Type.LINE"
-                  :configuration="configuration"
-                  @commitOptions="handlerCommit">
-      </VisualLine>
-      <VisualBar v-else-if="configuration?.type === Type.BAR"
-                 :configuration="configuration"
-                 @commitOptions="handlerCommit">
-      </VisualBar>
-      <VisualArea v-else-if="configuration?.type === Type.AREA"
-                  :configuration="configuration"
-                  @commitOptions="handlerCommit">
-      </VisualArea>
-      <VisualPie v-else-if="configuration?.type === Type.PIE"
-                 :configuration="configuration"
-                 @commitOptions="handlerCommit">
-      </VisualPie>
-      <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM"
-                       :configuration="configuration"
-                       @commitOptions="handlerCommit">
-      </VisualHistogram>
-      <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD"
-                       :configuration="configuration"
-                       @commitOptions="handlerCommit">
-      </VisualWordCloud>
+      <VisualTable v-if="configuration?.type === Type.TABLE" :configuration="configuration" @commitOptions="handlerCommit"/>
+      <VisualLine v-else-if="configuration?.type === Type.LINE" :configuration="configuration" @commitOptions="handlerCommit"/>
+      <VisualBar v-else-if="configuration?.type === Type.BAR" :configuration="configuration" @commitOptions="handlerCommit"/>
+      <VisualArea v-else-if="configuration?.type === Type.AREA" :configuration="configuration" @commitOptions="handlerCommit"/>
+      <VisualPie v-else-if="configuration?.type === Type.PIE" :configuration="configuration" @commitOptions="handlerCommit"/>
+      <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM" :configuration="configuration" @commitOptions="handlerCommit"/>
+      <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD" :configuration="configuration" @commitOptions="handlerCommit"/>
     </div>
   </div>
 </template>
@@ -52,7 +31,7 @@ import { Configuration } from './Configuration'
 import VisualBar from '@/views/components/visual/components/VisualBar.vue'
 import VisualLine from '@/views/components/visual/components/VisualLine.vue'
 import VisualTable from '@/views/components/visual/components/VisualTable.vue'
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 
 export default defineComponent({
@@ -69,7 +48,7 @@ export default defineComponent({
   },
   props: {
     configuration: {
-      type: Object as () => Configuration
+      type: Object as PropType<Configuration | null>
     }
   },
   methods: {

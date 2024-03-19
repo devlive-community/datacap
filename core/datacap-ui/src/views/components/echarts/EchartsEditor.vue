@@ -19,10 +19,7 @@
       <Layout v-if="configure">
         <Layout>
           <Content>
-            <EchartsPreview :key="referKey"
-                            :height="'500px'"
-                            :configure="chartOptions">
-            </EchartsPreview>
+            <EchartsPreview :key="referKey" :height="'500px'" :configure="chartOptions"/>
           </Content>
           <Sider style="background-color: #FFFFFF;"
                  hide-trigger>
@@ -50,48 +47,52 @@
                 <Collapse v-if="chartType"
                           v-model="collapseValue"
                           accordion>
-                  <Panel name="xAxis">
-                    {{ $t('common.xAxis') }}
-                    <template #content>
-                      <FormItem :label="$t('common.column')">
-                        <Select v-model="defaultConfigure.xAxis" @on-change="handlerChangeValue('xAxis')">
-                          <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
-                        </Select>
-                      </FormItem>
-                      <FormItem :label="$t('common.type')">
-                        <RadioGroup v-model="chartOptions.xAxis.type" type="button" size="small" @on-change="handlerChangeValue">
-                          <Radio label="value">{{ $t('common.column') }}</Radio>
-                          <Radio label="category">{{ $t('common.tag') }}</Radio>
-                        </RadioGroup>
-                      </FormItem>
-                    </template>
-                  </Panel>
-                  <Panel v-if="chartOptions.xAxis && !chartOptions.yAxis.disabled" disabled name="yAxis">
-                    {{ $t('common.yAxis') }}
-                    <template #content>
-                      <FormItem label="Value">
-                        <Select v-model="defaultConfigure.yAxis">
-                          <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
-                        </Select>
-                      </FormItem>
-                      <FormItem label="Type">
-                        <RadioGroup v-model="chartOptions.yAxis.type" @on-change="handlerChangeValue">
-                          <Radio label="value"></Radio>
-                          <Radio label="category"></Radio>
-                        </RadioGroup>
-                      </FormItem>
-                    </template>
-                  </Panel>
-                  <Panel v-if="chartOptions.xAxis" name="Series">
-                    {{ $t('common.data') }}
-                    <template #content>
-                      <FormItem :label="$t('common.column')">
-                        <Select v-model="defaultConfigure.series" @on-change="handlerChangeValue('Series')">
-                          <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
-                        </Select>
-                      </FormItem>
-                    </template>
-                  </Panel>
+                  <div v-if="chartOptions">
+                    <Panel name="xAxis">
+                      {{ $t('common.xAxis') }}
+                      <template #content>
+                        <FormItem :label="$t('common.column')">
+                          <Select v-model="defaultConfigure.xAxis" @on-change="handlerChangeValue('xAxis')">
+                            <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
+                          </Select>
+                        </FormItem>
+                        <FormItem v-if="chartOptions.xAxis" :label="$t('common.type')">
+                          <RadioGroup v-model="chartOptions.xAxis.type" type="button" size="small" @on-change="handlerChangeValue">
+                            <Radio label="value">{{ $t('common.column') }}</Radio>
+                            <Radio label="category">{{ $t('common.tag') }}</Radio>
+                          </RadioGroup>
+                        </FormItem>
+                      </template>
+                    </Panel>
+                    <Panel v-if="chartOptions.xAxis && chartOptions.yAxis && !chartOptions.yAxis.disabled" disabled name="yAxis">
+                      {{ $t('common.yAxis') }}
+                      <template #content>
+                        <FormItem label="Value">
+                          <Select v-model="defaultConfigure.yAxis">
+                            <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
+                          </Select>
+                        </FormItem>
+                        <FormItem label="Type">
+                          <RadioGroup v-model="chartOptions.yAxis.type" @on-change="handlerChangeValue">
+                            <Radio label="value"></Radio>
+                            <Radio label="category"></Radio>
+                          </RadioGroup>
+                        </FormItem>
+                      </template>
+                    </Panel>
+                  </div>
+                  <div v-if="chartOptions">
+                    <Panel v-if="chartOptions.xAxis" name="Series">
+                      {{ $t('common.data') }}
+                      <template #content>
+                        <FormItem :label="$t('common.column')">
+                          <Select v-model="defaultConfigure.series" @on-change="handlerChangeValue('Series')">
+                            <Option v-for="value of configure.headers" :value="value" v-bind:key="value">{{ value }}</Option>
+                          </Select>
+                        </FormItem>
+                      </template>
+                    </Panel>
+                  </div>
                 </Collapse>
               </Card>
             </Form>
@@ -116,28 +117,28 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {ChartConfigure} from "@/components/editor/echarts/configure/ChartConfigure";
-import {getValueByKey} from "./DataUtils";
-import {getTimestamp} from "@/common/DateCommon";
-import {SeriesConfigure} from "@/components/editor/echarts/configure/SeriesConfigure";
-import {isEmpty} from "lodash";
-import {EchartsConfigure} from "@/components/editor/echarts/EchartsConfigure";
-import EchartsPreview from "@/components/editor/echarts/EchartsPreview.vue";
-import {AxisConfigure} from "@/components/editor/echarts/configure/AxisConfigure";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import ReportService from "@/services/admin/ReportService";
+import { defineComponent } from 'vue';
+import { ChartConfigure } from '@/views/components/echarts/configure/ChartConfigure'
+import { getValueByKey } from './DataUtils'
+import { SeriesConfigure } from '@/views/components/echarts/configure/SeriesConfigure'
+import { isEmpty } from 'lodash'
+import { EchartsConfigure } from '@/views/components/echarts/EchartsConfigure'
+import EchartsPreview from '@/views/components/echarts/EchartsPreview.vue'
+import { AxisConfigure } from '@/views/components/echarts/configure/AxisConfigure'
+import ReportService from '@/services/report'
+import { ObjectUtils } from '@/utils/object'
+import { ToastUtils } from '@/utils/toast'
 
 export default defineComponent({
   name: 'EchartsEditor',
-  components: {FontAwesomeIcon, EchartsPreview},
+  components: {EchartsPreview},
   props: {
     isVisible: {
       type: Boolean,
       default: () => false
     },
     configure: {
-      type: EchartsConfigure,
+      type: Object as () => EchartsConfigure,
       default: () => null
     },
     sourceId: {
@@ -157,48 +158,62 @@ export default defineComponent({
         yAxis: '',
         series: ''
       },
-      chartOptions: null as ChartConfigure,
+      chartOptions: null as ChartConfigure | null,
       chartType: null,
-      formState: {name: null, realtime: null, type: 'QUERY', configure: null, source: {id: null}, query: null},
+      formState: {
+        name: null as string | null,
+        realtime: null,
+        type: 'QUERY',
+        configure: null as string | null,
+        source: {id: null as number | null},
+        query: null as string | null
+      },
       loading: false
     }
   },
   created()
   {
-    this.handlerInitialize();
+    this.handlerInitialize()
   },
   methods: {
     handlerInitialize()
     {
-      this.chartOptions = new ChartConfigure();
+      this.chartOptions = new ChartConfigure()
     },
     handlerChangeValue(type: string)
     {
-      this.referKey = getTimestamp();
+      this.referKey = ObjectUtils.getTimestamp()
 
       switch (type) {
         case 'xAxis':
-          this.chartOptions.xAxis = new AxisConfigure();
-          this.chartOptions.xAxis.data = getValueByKey(this.defaultConfigure.xAxis, this.configure.columns);
-          this.chartOptions.xAxis.meta.column = this.defaultConfigure.xAxis;
-          this.chartOptions.yAxis = new AxisConfigure();
-          this.chartOptions.yAxis.type = 'value';
-          this.chartOptions.yAxis.data = getValueByKey(this.defaultConfigure.yAxis, this.configure.columns);
-          this.chartOptions.yAxis.disabled = true;
-          this.chartOptions.yAxis.meta.column = this.defaultConfigure.yAxis;
-          break;
+          if (this.chartOptions && this.configure) {
+            this.chartOptions.xAxis = new AxisConfigure()
+            this.chartOptions.xAxis.data = getValueByKey(this.defaultConfigure.xAxis, this.configure.columns as never[]) as never[]
+            this.chartOptions.xAxis.meta.column = this.defaultConfigure.xAxis
+            this.chartOptions.yAxis = new AxisConfigure()
+            this.chartOptions.yAxis.type = 'value'
+            this.chartOptions.yAxis.data = getValueByKey(this.defaultConfigure.yAxis, this.configure.columns as never[]) as never[]
+            this.chartOptions.yAxis.disabled = true
+            this.chartOptions.yAxis.meta.column = this.defaultConfigure.yAxis
+          }
+          break
         case 'Series': {
-          const series: SeriesConfigure = new SeriesConfigure();
-          series.data = getValueByKey(this.defaultConfigure.series, this.configure.columns);
-          series.type = this.chartType;
-          series.meta.column = this.defaultConfigure.series;
-          this.chartOptions.series = [];
-          this.chartOptions.series.push(series);
+          if (this.chartOptions && this.configure) {
+            const series: SeriesConfigure = new SeriesConfigure()
+            series.data = getValueByKey(this.defaultConfigure.series, this.configure.columns as never[])
+            series.type = this.chartType as any
+            series.meta.column = this.defaultConfigure.series
+            this.chartOptions.series = []
+            this.chartOptions.series.push(series)
+          }
           break;
         }
         case 'Type': {
-          if (this.chartOptions.series) {
-            this.chartOptions.series[0].type = this.chartType;
+          if (this.chartOptions) {
+            const array = this.chartOptions.series as never[]
+            if (array.length > 0) {
+              (array as any[])[0].type = this.chartType
+            }
           }
         }
       }
@@ -206,27 +221,31 @@ export default defineComponent({
     },
     handlerSetDefaultValue()
     {
-      if (isEmpty(this.defaultConfigure.xAxis)) {
-        this.chartOptions.xAxis.data = null;
-      }
-      if (isEmpty(this.defaultConfigure.yAxis)) {
-        this.chartOptions.yAxis.data = null;
+      if (this.chartOptions) {
+        if (isEmpty(this.defaultConfigure.xAxis)) {
+          this.chartOptions.xAxis = new AxisConfigure()
+        }
+        if (isEmpty(this.defaultConfigure.yAxis)) {
+          this.chartOptions.yAxis = new AxisConfigure()
+        }
       }
     },
     handlerPublish()
     {
-      this.loading = true;
-      this.formState.configure = JSON.stringify(this.chartOptions);
-      this.formState.source.id = this.sourceId;
-      this.formState.query = this.query;
-      ReportService.saveOrUpdate(this.formState)
-        .then(response => {
-          if (response.status) {
-            this.$Message.success(this.$t('report.publishSuccess').replace('REPLACE_NAME', this.formState.name));
-            this.visible = false;
-          }
-        })
-        .finally(() => this.loading = false);
+      if (this.formState) {
+        this.loading = true
+        this.formState.configure = JSON.stringify(this.chartOptions)
+        this.formState.source.id = this.sourceId as number
+        this.formState.query = this.query as string
+        ReportService.saveOrUpdate(this.formState)
+            .then(response => {
+              if (response.status) {
+                ToastUtils.success(this.$t('report.publishSuccess').replace('REPLACE_NAME', this.formState.name as string))
+                this.visible = false
+              }
+            })
+            .finally(() => this.loading = false)
+      }
     }
   },
   computed: {
@@ -243,8 +262,3 @@ export default defineComponent({
   }
 });
 </script>
-<style scoped>
-.ivu-drawer-body {
-  padding: 0px;
-}
-</style>

@@ -16,6 +16,14 @@ import { useRouter } from 'vue-router'
 import { DashboardModel } from '@/model/dashboard'
 import DashboardEditor from '@/views/pages/admin/dashboard/components/DashboardEditor.vue'
 
+interface Node {
+  id: number
+  type: string
+  label: string
+  position: { x: number, y: number }
+  data: any
+}
+
 export default defineComponent({
   name: 'DashboardInfo',
   components: {DashboardEditor, CircularLoading},
@@ -25,7 +33,7 @@ export default defineComponent({
       loading: false,
       saving: false,
       configure: null as DashboardModel | null,
-      nodes: [],
+      nodes: [] as Node[],
       sourceConfigure: null as DashboardModel | null
     }
   },

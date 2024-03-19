@@ -6,6 +6,6 @@ export class SeriesConfigure
     type: EchartsType = EchartsType.LINE
     smooth = true
     meta = {
-        column: ''
+        column: null as string | null
     }
 }

@@ -1,7 +1,9 @@
 export class AxisConfigure
 {
     type = 'category'
-    data: any[] = []
+    data: never[] = []
     disabled = false
-    meta = {column: null}
+    meta = {
+        column: null as string | null
+    }
 }

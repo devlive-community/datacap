@@ -3,8 +3,8 @@ import { Type } from '@/views/components/visual/Type'
 export class Configuration
 {
     title?: null
-    headers: [] = []
-    columns: [] = []
+    headers: never[] = []
+    columns: never[] = []
     type: Type = Type.TABLE
     message?: null
     chartConfigure?: IChart

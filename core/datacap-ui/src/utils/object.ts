@@ -21,4 +21,14 @@ export class ObjectUtils
     {
         return !this.isEmpty(obj)
     }
+
+    /**
+     * Returns the current timestamp as a number.
+     *
+     * @return {number} The current timestamp.
+     */
+    static getTimestamp(): number
+    {
+        return Date.parse(new Date().toString())
+    }
 }

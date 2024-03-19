@@ -5,7 +5,7 @@
  * @param {any[]} columns - The array of objects to extract values from.
  * @return {any[]} An array containing unique values extracted from the specified key in each object.
  */
-export function getValueByKey(key: string, columns: []): any[]
+export function getValueByKey(key: string, columns: never[]): any[]
 {
     const container: any[] = []
     columns.forEach(column => {

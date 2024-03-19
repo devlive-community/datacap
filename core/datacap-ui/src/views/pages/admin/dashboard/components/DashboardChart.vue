@@ -13,6 +13,7 @@
     </Card>
   </div>
 </template>
+
 <script lang="ts">
 import '../style.css'
 import { defineComponent } from 'vue'
@@ -21,6 +22,12 @@ import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { FilterModel } from '@/model/filter'
 import EchartsPreview from '@/views/components/echarts/EchartsPreview.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
+interface Node {
+  id: number
+  name: string
+  configure: string
+}
 
 export default defineComponent({
   name: 'DashboardChart',
@@ -31,7 +38,7 @@ export default defineComponent({
   },
   setup()
   {
-    const onDragStart = (event: { dataTransfer: { setData: (arg0: string, arg1: any) => void; effectAllowed: string; }; }, node: any) => {
+    const onDragStart = (event: any, node: any) => {
       if (event.dataTransfer) {
         event.dataTransfer.setData('application/vueflow', JSON.stringify(node))
         event.dataTransfer.effectAllowed = 'move'
@@ -45,7 +52,7 @@ export default defineComponent({
   {
     return {
       loading: false,
-      data: []
+      data: [] as Node[]
     }
   },
   created()

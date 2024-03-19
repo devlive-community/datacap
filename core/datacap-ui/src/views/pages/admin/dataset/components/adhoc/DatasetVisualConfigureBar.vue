@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FormField class="flex items-center">
+    <FormField class="flex items-center" name="xAxis">
       <FormItem class="flex-1">
         <div class="flex items-center">
           <FormLabel class="mr-1 w-2/3 text-right">
@@ -12,7 +12,7 @@
                 <SelectValue placeholder="Select"/>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem v-for="item in columns" :value="item">
+                <SelectItem v-for="item in columns" :value="item as string">
                   {{ item }}
                 </SelectItem>
               </SelectContent>
@@ -21,7 +21,7 @@
         </div>
       </FormItem>
     </FormField>
-    <FormField class="flex items-center">
+    <FormField class="flex items-center" name="yAxis">
       <FormItem class="flex-1">
         <div class="flex items-center mt-2 text-right">
           <FormLabel class="mr-1 w-2/3">
@@ -33,7 +33,7 @@
                 <SelectValue placeholder="Select"/>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem v-for="item in columns" :value="item">
+                <SelectItem v-for="item in columns" :value="item as string">
                   {{ item }}
                 </SelectItem>
               </SelectContent>
@@ -72,8 +72,8 @@ export default defineComponent({
   {
     return {
       formState: {
-        xAxis: null,
-        yAxis: null
+        xAxis: undefined,
+        yAxis: undefined
       }
     }
   },

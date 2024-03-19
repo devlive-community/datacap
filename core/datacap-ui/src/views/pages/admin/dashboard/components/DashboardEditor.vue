@@ -37,6 +37,12 @@ import { v4 as uuidv4 } from 'uuid'
 import { Background } from '@vue-flow/background'
 import DashboardNode from '@/views/pages/admin/dashboard/components/DashboardNode.vue'
 import DashboardChart from '@/views/pages/admin/dashboard/components/DashboardChart.vue'
+import { DashboardModel } from '@/model/dashboard'
+
+interface ReportNode
+{
+  id: number
+}
 
 export default defineComponent({
   name: 'DashboardEditor',
@@ -50,7 +56,7 @@ export default defineComponent({
       default: () => ref([])
     },
     sourceConfigure: {
-      type: Object
+      type: Object as () => DashboardModel | null
     }
   },
   setup(props, {emit})
@@ -61,12 +67,12 @@ export default defineComponent({
       name: props.sourceConfigure ? props.sourceConfigure.name : null,
       configure: null,
       version: 'V1',
-      reports: []
+      reports: [] as ReportNode[]
     });
 
     const {findNode, onConnect, addEdges, addNodes, project, vueFlowRef, setTransform, toObject} = useVueFlow({nodes: []})
 
-    props.elements.forEach((item) => {
+    props.elements.forEach((item: any) => {
       const newNode = {id: item.id, position: item.position, label: item.label, type: 'resizable', data: item.data}
       addNodes([newNode])
     })
@@ -74,13 +80,13 @@ export default defineComponent({
     onConnect((params: any) => addEdges(params))
 
     const onDrop = (event: { dataTransfer: { getData: (arg0: string) => any; }; clientX: number; clientY: number; }) => {
-      const data = JSON.parse(event.dataTransfer?.getData('application/vueflow'));
-      const {left, top} = vueFlowRef.value.getBoundingClientRect();
-      const position = project({x: event.clientX - left, y: event.clientY - top});
+      const data = JSON.parse(event.dataTransfer?.getData('application/vueflow'))
+      const {left, top} = (vueFlowRef.value as any).getBoundingClientRect()
+      const position = project({x: event.clientX - left, y: event.clientY - top})
       const newNode = {id: `${uuidv4()}`, position, label: `${data.name}`, type: 'resizable', data: data}
       addNodes([newNode])
       nextTick(() => {
-        const node = findNode(newNode.id)
+        const node = findNode(newNode.id) as any
         const stop = watch(
             () => node.dimensions,
             (dimensions) => {
@@ -94,7 +100,7 @@ export default defineComponent({
       })
     }
 
-    const onDragOver = (event: { preventDefault: () => void; dataTransfer: { dropEffect: string; }; }) => {
+    const onDragOver = (event: any) => {
       event.preventDefault()
       if (event.dataTransfer) {
         event.dataTransfer.dropEffect = 'move'
@@ -106,14 +112,15 @@ export default defineComponent({
     }
 
     const saveConfigure = (configure: any, opened: boolean) => {
-      configureVisible.value = opened;
+      configureVisible.value = opened
       if (!opened) {
         const obj = toObject()
-        configure.configure = JSON.stringify(obj);
-        obj.nodes.forEach((item: { data: { id: any } }) => {
-          configure.reports.push({id: item.data.id})
+        configure.configure = JSON.stringify(obj)
+        obj.nodes.forEach((item) => {
+          const node: ReportNode = {id: item.data.id}
+          configure.reports.push(node)
         })
-        emit('onCommit', configure);
+        emit('onCommit', configure)
       }
     }
 

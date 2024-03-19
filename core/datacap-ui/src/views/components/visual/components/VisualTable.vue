@@ -44,7 +44,7 @@ export default defineComponent({
             },
             autoFillWidth: true
           }
-          const tableInstance = new VTable.ListTable(this.$refs.content as HTMLElement, options)
+          const tableInstance = new VTable.ListTable(this.$refs.content as HTMLElement, options as any)
           // Add cell tooltip
           tableInstance.on('mouseenter_cell', (args) => {
             const {col, row} = args

@@ -1,7 +1,7 @@
 <template>
   <div>
     <CircularLoading v-if="loading" :show="loading"/>
-    <div :style="{width: width, height: height, padding: '0'}" :id="key"/>
+    <div v-else :style="{width: width, height: height, padding: '0'}" :id="key"/>
   </div>
 </template>
 <script lang="ts">
@@ -29,7 +29,7 @@ export default defineComponent({
       default: () => '300px'
     },
     configure: {
-      type: Object as () => ChartConfigure
+      type: Object as () => ChartConfigure | null
     },
     id: {
       type: Number
@@ -47,7 +47,7 @@ export default defineComponent({
   {
     return {
       loading: false,
-      key: null as string | null
+      key: ''
     }
   },
   methods: {
@@ -79,7 +79,7 @@ export default defineComponent({
                               configure.yAxis.data = getValueByKey(configure.yAxis.meta.column, response.data.columns)
                               configure.series.forEach((item: SeriesConfigure) => {
                                 const series: SeriesConfigure = item as SeriesConfigure
-                                series.data = getValueByKey(series.meta.column, response.data.columns)
+                                series.data = getValueByKey(series.meta.column as string, response.data.columns)
                               })
                               echartsChart.setOption(configure)
                             })
@@ -87,13 +87,13 @@ export default defineComponent({
                       }
                     }
                     else {
-                      echartsChart.setOption(this.configure)
+                      echartsChart.setOption(this.configure as any)
                     }
                   })
                   .finally(() => this.loading = false)
             }
             else {
-              echartsChart.setOption(this.configure)
+              echartsChart.setOption(this.configure as any)
             }
           }
         }
