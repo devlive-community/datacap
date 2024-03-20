@@ -47,6 +47,10 @@
                       <span>{{ $t('dataset.common.adhoc') }}</span>
                     </RouterLink>
                   </DropdownMenuItem>
+                  <DropdownMenuItem style="cursor: pointer;" @click="handlerHistory(row, true)">
+                    <History class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('dataset.common.history') }}</span>
+                  </DropdownMenuItem>
                   <DropdownMenuItem :disabled="isSuccess(row?.state)" style="cursor: pointer;" @click="handlerRebuild(row, true)">
                     <CirclePlay v-if="row?.state === 'SUCCESS'" class="mr-2 h-4 w-4"/>
                     <CircleStop v-else class="mr-2 h-4 w-4"/>
@@ -60,6 +64,7 @@
       </CardContent>
     </Card>
     <DatasetRebuild v-if="rebuildVisible" :is-visible="rebuildVisible" :data="contextData" @close="handlerRebuild(null, false)"/>
+    <DatasetHistory v-if="historyVisible" :is-visible="historyVisible" :info="contextData" @close="handlerHistory(null, false)"/>
   </div>
 </template>
 
@@ -77,7 +82,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import DatasetState from '@/views/pages/admin/dataset/components/DatasetState.vue'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { BarChart2, CirclePlay, CircleStop, Cog } from 'lucide-vue-next'
+import { BarChart2, CirclePlay, CircleStop, Cog, History } from 'lucide-vue-next'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,10 +94,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { DatasetModel } from '@/model/dataset'
 import DatasetRebuild from '@/views/pages/admin/dataset/DatasetRebuild.vue'
+import DatasetHistory from '@/views/pages/admin/dataset/DatasetHistory.vue';
 
 export default defineComponent({
   name: 'DatasetHome',
   components: {
+    DatasetHistory,
     DatasetRebuild,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     HoverCardContent, HoverCardTrigger, HoverCard,
@@ -102,7 +109,7 @@ export default defineComponent({
     TooltipTrigger, TooltipProvider, TooltipContent, Tooltip,
     TableCommon,
     CardContent, CardHeader, CardTitle, Card,
-    Cog, BarChart2, CirclePlay, CircleStop
+    Cog, BarChart2, CirclePlay, CircleStop, History
   },
   setup()
   {
@@ -121,7 +128,8 @@ export default defineComponent({
       data: [],
       pagination: {} as PaginationModel,
       contextData: null as DatasetModel | null,
-      rebuildVisible: false
+      rebuildVisible: false,
+      historyVisible: false
     }
   },
   created()
@@ -154,6 +162,11 @@ export default defineComponent({
       }
       this.rebuildVisible = opened
       this.contextData = record
+    },
+    handlerHistory(record: DatasetModel | null, opened: boolean)
+    {
+      this.contextData = record
+      this.historyVisible = opened
     },
     getState(state: Array<any> | null): string | null
     {

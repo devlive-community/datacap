@@ -44,7 +44,7 @@ export default {
         syncModeManual: '手动',
         syncModeTiming: '定时同步',
         syncModeOutSync: '不同步',
-        rebuild: '重建',
+        rebuild: '重新构建',
         rebuildProgress: '重建只会进行未完成进度',
         complete: '完成',
         failed: '失败',
@@ -106,7 +106,8 @@ export default {
         lifeCycleWeek: '周',
         lifeCycleDay: '天',
         lifeCycleHour: '小时',
-        notSpecifiedTitle: '未指定'
+        notSpecifiedTitle: '未指定',
+        history: '同步历史',
     },
     tip: {
         selectExpressionTip: '请选择表达式'

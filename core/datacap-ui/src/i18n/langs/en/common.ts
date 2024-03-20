@@ -53,4 +53,5 @@ export default {
     value: 'Value',
     alias: 'Alias',
     sort: 'Sort',
+    count: 'Count',
 }

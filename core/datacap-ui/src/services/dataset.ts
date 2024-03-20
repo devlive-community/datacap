@@ -1,6 +1,7 @@
 import { ResponseModel } from '@/model/response'
 import { BaseService } from '@/services/base'
 import { HttpUtils } from '@/utils/http'
+import { FilterModel } from '@/model/filter'
 
 const DEFAULT_PATH = '/api/v1/dataset'
 
@@ -44,6 +45,18 @@ export class DatasetService
     rebuild(id: number): Promise<ResponseModel>
     {
         return new HttpUtils().put(`${DEFAULT_PATH}/rebuild/${id}`)
+    }
+
+    /**
+     * Retrieves the history for a given code using the provided pagination model.
+     *
+     * @param {string} code - The code for which to retrieve the history.
+     * @param {FilterModel} configure - The file model to use for the request.
+     * @return {Promise<ResponseModel>} A promise that resolves with the response model containing the history data.
+     */
+    getHistory(code: string, configure: FilterModel): Promise<ResponseModel>
+    {
+        return new HttpUtils().post(`${DEFAULT_PATH}/history/${code}`, configure)
     }
 }
 

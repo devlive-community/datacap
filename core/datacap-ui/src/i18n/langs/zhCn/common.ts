@@ -53,4 +53,5 @@ export default {
     value: '值',
     alias: '别名',
     sort: '排序',
+    count: '总数',
 }

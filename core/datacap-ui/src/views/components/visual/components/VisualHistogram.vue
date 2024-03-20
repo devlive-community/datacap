@@ -53,6 +53,7 @@ export default defineComponent({
               x2Field: this.configuration.chartConfigure?.x2Axis,
               yField: this.configuration.chartConfigure?.yAxis
             }
+            console.log(options)
             if (!reset) {
               instance = new VChart(options, {dom: this.$refs.content as HTMLElement})
               instance.renderAsync()

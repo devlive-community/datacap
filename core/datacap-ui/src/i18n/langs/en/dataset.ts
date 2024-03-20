@@ -107,6 +107,7 @@ export default {
         lifeCycleDay: 'Day',
         lifeCycleHour: 'Hour',
         notSpecifiedTitle: 'Not Specified',
+        history: 'Sync History',
     },
     tip: {
         selectExpressionTip: 'Please select the expression',

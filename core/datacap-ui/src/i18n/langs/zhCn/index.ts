@@ -4,6 +4,7 @@ import role from '@/i18n/langs/zhCn/role'
 import schedule from '@/i18n/langs/zhCn/schedule'
 import dashboard from '@/i18n/langs/zhCn/dashboard'
 import dataset from '@/i18n/langs/zhCn/dataset'
+import state from '@/i18n/langs/zhCn/state'
 
 export default {
     common: common,
@@ -11,5 +12,6 @@ export default {
     role: role,
     schedule: schedule,
     dashboard: dashboard,
-    dataset: dataset
+    dataset: dataset,
+    state: state
 }
