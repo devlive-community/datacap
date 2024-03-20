@@ -58,6 +58,17 @@ export class DatasetService
     {
         return new HttpUtils().post(`${DEFAULT_PATH}/history/${code}`, configure)
     }
+
+    /**
+     * Sync data with the server using the provided id.
+     *
+     * @param {number} id - The id of the data to sync
+     * @return {Promise<ResponseModel>} A promise that resolves with the response from the server
+     */
+    syncData(id: number): Promise<ResponseModel>
+    {
+        return new HttpUtils().put(`${DEFAULT_PATH}/syncData/${id}`)
+    }
 }
 
 export default new DatasetService()

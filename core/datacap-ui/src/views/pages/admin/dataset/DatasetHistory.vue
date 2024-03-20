@@ -17,7 +17,7 @@
                     {{ getStateText(row?.state) }}
                   </Button>
                 </HoverCardTrigger>
-                <HoverCardContent class="w-80">
+                <HoverCardContent class="w-full">
                   {{ row?.message }}
                 </HoverCardContent>
               </HoverCard>

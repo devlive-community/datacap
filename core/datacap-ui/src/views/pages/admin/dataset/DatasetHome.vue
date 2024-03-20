@@ -47,6 +47,11 @@
                       <span>{{ $t('dataset.common.adhoc') }}</span>
                     </RouterLink>
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator/>
+                  <DropdownMenuItem :disabled="!isSuccess(row?.state)" style="cursor: pointer;" @click="handlerSyncData(row, true)">
+                    <RefreshCcw class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('dataset.common.syncData') }}</span>
+                  </DropdownMenuItem>
                   <DropdownMenuItem style="cursor: pointer;" @click="handlerHistory(row, true)">
                     <History class="mr-2 h-4 w-4"/>
                     <span>{{ $t('dataset.common.history') }}</span>
@@ -65,6 +70,7 @@
     </Card>
     <DatasetRebuild v-if="rebuildVisible" :is-visible="rebuildVisible" :data="contextData" @close="handlerRebuild(null, false)"/>
     <DatasetHistory v-if="historyVisible" :is-visible="historyVisible" :info="contextData" @close="handlerHistory(null, false)"/>
+    <DatasetSync v-if="syncDataVisible" :is-visible="syncDataVisible" :info="contextData" @close="handlerSyncData(null, false)"/>
   </div>
 </template>
 
@@ -82,7 +88,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import DatasetState from '@/views/pages/admin/dataset/components/DatasetState.vue'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { BarChart2, CirclePlay, CircleStop, Cog, History } from 'lucide-vue-next'
+import { BarChart2, CirclePlay, CircleStop, Cog, History, RefreshCcw } from 'lucide-vue-next'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -95,10 +101,12 @@ import {
 import { DatasetModel } from '@/model/dataset'
 import DatasetRebuild from '@/views/pages/admin/dataset/DatasetRebuild.vue'
 import DatasetHistory from '@/views/pages/admin/dataset/DatasetHistory.vue';
+import DatasetSync from '@/views/pages/admin/dataset/DatasetSync.vue';
 
 export default defineComponent({
   name: 'DatasetHome',
   components: {
+    DatasetSync,
     DatasetHistory,
     DatasetRebuild,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
@@ -109,7 +117,7 @@ export default defineComponent({
     TooltipTrigger, TooltipProvider, TooltipContent, Tooltip,
     TableCommon,
     CardContent, CardHeader, CardTitle, Card,
-    Cog, BarChart2, CirclePlay, CircleStop, History
+    Cog, BarChart2, CirclePlay, CircleStop, History, RefreshCcw
   },
   setup()
   {
@@ -129,7 +137,8 @@ export default defineComponent({
       pagination: {} as PaginationModel,
       contextData: null as DatasetModel | null,
       rebuildVisible: false,
-      historyVisible: false
+      historyVisible: false,
+      syncDataVisible: false
     }
   },
   created()
@@ -167,6 +176,14 @@ export default defineComponent({
     {
       this.contextData = record
       this.historyVisible = opened
+    },
+    handlerSyncData(record: DatasetModel | null, opened: boolean)
+    {
+      if (record && !this.isSuccess(record.state)) {
+        return
+      }
+      this.contextData = record
+      this.syncDataVisible = opened
     },
     getState(state: Array<any> | null): string | null
     {

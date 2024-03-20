@@ -111,5 +111,6 @@ export default {
     },
     tip: {
         selectExpressionTip: 'Please select the expression',
+        syncData: 'The data synchronization schedule will run in the background, see the logs for the specific synchronization results'
     }
 }

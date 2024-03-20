@@ -110,6 +110,7 @@ export default {
         history: '同步历史',
     },
     tip: {
-        selectExpressionTip: '请选择表达式'
+        selectExpressionTip: '请选择表达式',
+        syncData: '数据同步计划将在后台运行，具体同步结果请参考日志'
     }
 }
