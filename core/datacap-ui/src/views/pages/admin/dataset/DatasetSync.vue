@@ -4,7 +4,7 @@
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle class="border-b -mt-4 pb-2">
-            {{ `[ ${info.name} ] ${$t('dataset.common.syncData')}` }}
+            {{ `[ ${info?.name} ] ${$t('dataset.common.syncData')}` }}
           </AlertDialogTitle>
         </AlertDialogHeader>
         <Alert>

@@ -2,7 +2,7 @@
   <div>
     <Alert v-if="configuration?.headers.length === 0 && !configuration?.message" class="mt-20">
       <AlertDescription>
-        {{ $t('dataset.common.adhocDndTip') }}
+        {{ $t('dataset.tip.adhocDnd') }}
       </AlertDescription>
     </Alert>
     <Alert v-else-if="configuration?.message" variant="destructive" class="mt-20">

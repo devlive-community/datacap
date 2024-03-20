@@ -56,10 +56,15 @@
                     <History class="mr-2 h-4 w-4"/>
                     <span>{{ $t('dataset.common.history') }}</span>
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator/>
                   <DropdownMenuItem :disabled="isSuccess(row?.state)" style="cursor: pointer;" @click="handlerRebuild(row, true)">
                     <CirclePlay v-if="row?.state === 'SUCCESS'" class="mr-2 h-4 w-4"/>
                     <CircleStop v-else class="mr-2 h-4 w-4"/>
                     {{ $t('dataset.common.rebuild') }}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem :disabled="!(row?.totalRows > 0)" style="cursor: pointer;" @click="handlerClearData(row, true)">
+                    <SquareX class="mr-2 h-4 w-4"/>
+                    {{ $t('dataset.common.clearData') }}
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
@@ -71,6 +76,7 @@
     <DatasetRebuild v-if="rebuildVisible" :is-visible="rebuildVisible" :data="contextData" @close="handlerRebuild(null, false)"/>
     <DatasetHistory v-if="historyVisible" :is-visible="historyVisible" :info="contextData" @close="handlerHistory(null, false)"/>
     <DatasetSync v-if="syncDataVisible" :is-visible="syncDataVisible" :info="contextData" @close="handlerSyncData(null, false)"/>
+    <DatasetClear v-if="clearDataVisible" :is-visible="clearDataVisible" :info="contextData" @close="handlerClearData(null, false)"/>
   </div>
 </template>
 
@@ -88,7 +94,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import DatasetState from '@/views/pages/admin/dataset/components/DatasetState.vue'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { BarChart2, CirclePlay, CircleStop, Cog, History, RefreshCcw } from 'lucide-vue-next'
+import { BarChart2, CirclePlay, CircleStop, Cog, History, RefreshCcw, SquareX } from 'lucide-vue-next'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -100,12 +106,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { DatasetModel } from '@/model/dataset'
 import DatasetRebuild from '@/views/pages/admin/dataset/DatasetRebuild.vue'
-import DatasetHistory from '@/views/pages/admin/dataset/DatasetHistory.vue';
-import DatasetSync from '@/views/pages/admin/dataset/DatasetSync.vue';
+import DatasetHistory from '@/views/pages/admin/dataset/DatasetHistory.vue'
+import DatasetSync from '@/views/pages/admin/dataset/DatasetSync.vue'
+import DatasetClear from '@/views/pages/admin/dataset/DatasetClear.vue'
 
 export default defineComponent({
   name: 'DatasetHome',
   components: {
+    DatasetClear,
     DatasetSync,
     DatasetHistory,
     DatasetRebuild,
@@ -117,7 +125,7 @@ export default defineComponent({
     TooltipTrigger, TooltipProvider, TooltipContent, Tooltip,
     TableCommon,
     CardContent, CardHeader, CardTitle, Card,
-    Cog, BarChart2, CirclePlay, CircleStop, History, RefreshCcw
+    Cog, BarChart2, CirclePlay, CircleStop, History, RefreshCcw, SquareX
   },
   setup()
   {
@@ -138,7 +146,8 @@ export default defineComponent({
       contextData: null as DatasetModel | null,
       rebuildVisible: false,
       historyVisible: false,
-      syncDataVisible: false
+      syncDataVisible: false,
+      clearDataVisible: false
     }
   },
   created()
@@ -184,6 +193,17 @@ export default defineComponent({
       }
       this.contextData = record
       this.syncDataVisible = opened
+    },
+    handlerClearData(record: DatasetModel | null, opened: boolean)
+    {
+      if (record && !(record.totalRows > 0)) {
+        return
+      }
+      this.contextData = record
+      this.clearDataVisible = opened
+      if (!opened) {
+        this.handlerInitialize()
+      }
     },
     getState(state: Array<any> | null): string | null
     {

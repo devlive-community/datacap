@@ -16,7 +16,7 @@
                   <FormControl>
                     <Select v-model="formState.expression">
                       <SelectTrigger class="w-full">
-                        <SelectValue :placeholder="$t('dataset.tip.selectExpressionTip')"/>
+                        <SelectValue :placeholder="$t('dataset.tip.selectExpression')"/>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem :value="Expression.IS_NULL">{{ $t('dataset.common.columnExpressionIsNull') }}</SelectItem>
@@ -59,7 +59,7 @@
                   <FormControl>
                     <Select v-model="formState.expression">
                       <SelectTrigger class="w-full">
-                        <SelectValue :placeholder="$t('dataset.tip.selectExpressionTip')"/>
+                        <SelectValue :placeholder="$t('dataset.tip.selectExpression')"/>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem v-if="formState.type === ColumnType.NUMBER" :value="Expression.SUM"> {{ $t('dataset.common.columnExpressionSum') }}</SelectItem>

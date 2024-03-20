@@ -69,6 +69,17 @@ export class DatasetService
     {
         return new HttpUtils().put(`${DEFAULT_PATH}/syncData/${id}`)
     }
+
+    /**
+     * Clears the data associated with the given code.
+     *
+     * @param {string} code - the code for which data needs to be cleared
+     * @return {Promise<ResponseModel>} a Promise that resolves with the response from the server
+     */
+    clearData(code: string): Promise<ResponseModel>
+    {
+        return new HttpUtils().put(`${DEFAULT_PATH}/clearData/${code}`)
+    }
 }
 
 export default new DatasetService()
