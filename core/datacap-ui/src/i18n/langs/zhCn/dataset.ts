@@ -104,6 +104,7 @@ export default {
         history: '同步历史',
         clearData: '清除数据',
         error: '查看错误',
+        info: '查看详情',
     },
     tip: {
         selectExpression: '请选择表达式',

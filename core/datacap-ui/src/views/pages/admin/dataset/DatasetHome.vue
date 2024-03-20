@@ -41,6 +41,12 @@
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <RouterLink :to="`/admin/dataset/info/${row?.code}`" target="_blank" class="flex items-center">
+                      <Info class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('dataset.common.info') }}</span>
+                    </RouterLink>
+                  </DropdownMenuItem>
                   <DropdownMenuItem :disabled="!isSuccess(row?.state)">
                     <RouterLink :to="`/admin/dataset/adhoc/${row?.code}`" target="_blank" class="flex items-center">
                       <BarChart2 class="mr-2 h-4 w-4"/>
@@ -99,7 +105,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import DatasetState from '@/views/pages/admin/dataset/components/DatasetState.vue'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { BarChart2, CirclePlay, CircleStop, Cog, History, RefreshCcw, SquareX, TriangleAlert } from 'lucide-vue-next'
+import { BarChart2, CirclePlay, CircleStop, Cog, History, Info, RefreshCcw, SquareX, TriangleAlert } from 'lucide-vue-next'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -114,7 +120,7 @@ import DatasetRebuild from '@/views/pages/admin/dataset/DatasetRebuild.vue'
 import DatasetHistory from '@/views/pages/admin/dataset/DatasetHistory.vue'
 import DatasetSync from '@/views/pages/admin/dataset/DatasetSync.vue'
 import DatasetClear from '@/views/pages/admin/dataset/DatasetClear.vue'
-import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue';
+import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
 
 export default defineComponent({
   name: 'DatasetHome',
@@ -132,7 +138,7 @@ export default defineComponent({
     TooltipTrigger, TooltipProvider, TooltipContent, Tooltip,
     TableCommon,
     CardContent, CardHeader, CardTitle, Card,
-    Cog, BarChart2, CirclePlay, CircleStop, History, RefreshCcw, SquareX, TriangleAlert
+    Cog, BarChart2, CirclePlay, CircleStop, History, RefreshCcw, SquareX, TriangleAlert, Info
   },
   setup()
   {

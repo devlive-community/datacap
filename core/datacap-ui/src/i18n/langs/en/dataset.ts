@@ -104,6 +104,7 @@ export default {
         history: 'Sync History',
         clearData: 'Clear Data',
         error: 'View Error',
+        info: 'View Info',
     },
     tip: {
         selectExpression: 'Please select the expression',
