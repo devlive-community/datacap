@@ -54,4 +54,5 @@ export default {
     alias: '别名',
     sort: '排序',
     count: '总数',
+    content: '内容',
 }

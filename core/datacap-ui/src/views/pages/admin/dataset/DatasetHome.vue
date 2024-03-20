@@ -57,6 +57,10 @@
                     <span>{{ $t('dataset.common.history') }}</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator/>
+                  <DropdownMenuItem :disabled="isSuccess(row?.state)" style="cursor: pointer;" @click="handlerError(row, true)">
+                    <TriangleAlert class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('dataset.common.error') }}</span>
+                  </DropdownMenuItem>
                   <DropdownMenuItem :disabled="isSuccess(row?.state)" style="cursor: pointer;" @click="handlerRebuild(row, true)">
                     <CirclePlay v-if="row?.state === 'SUCCESS'" class="mr-2 h-4 w-4"/>
                     <CircleStop v-else class="mr-2 h-4 w-4"/>
@@ -77,6 +81,7 @@
     <DatasetHistory v-if="historyVisible" :is-visible="historyVisible" :info="contextData" @close="handlerHistory(null, false)"/>
     <DatasetSync v-if="syncDataVisible" :is-visible="syncDataVisible" :info="contextData" @close="handlerSyncData(null, false)"/>
     <DatasetClear v-if="clearDataVisible" :is-visible="clearDataVisible" :info="contextData" @close="handlerClearData(null, false)"/>
+    <MarkdownPreview v-if="errorVisible && contextData" :is-visible="errorVisible" :content="'```java\n' + contextData.message + '\n```'" @close="handlerError(null, false)"/>
   </div>
 </template>
 
@@ -94,7 +99,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import DatasetState from '@/views/pages/admin/dataset/components/DatasetState.vue'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { BarChart2, CirclePlay, CircleStop, Cog, History, RefreshCcw, SquareX } from 'lucide-vue-next'
+import { BarChart2, CirclePlay, CircleStop, Cog, History, RefreshCcw, SquareX, TriangleAlert } from 'lucide-vue-next'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -109,10 +114,12 @@ import DatasetRebuild from '@/views/pages/admin/dataset/DatasetRebuild.vue'
 import DatasetHistory from '@/views/pages/admin/dataset/DatasetHistory.vue'
 import DatasetSync from '@/views/pages/admin/dataset/DatasetSync.vue'
 import DatasetClear from '@/views/pages/admin/dataset/DatasetClear.vue'
+import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue';
 
 export default defineComponent({
   name: 'DatasetHome',
   components: {
+    MarkdownPreview,
     DatasetClear,
     DatasetSync,
     DatasetHistory,
@@ -125,7 +132,7 @@ export default defineComponent({
     TooltipTrigger, TooltipProvider, TooltipContent, Tooltip,
     TableCommon,
     CardContent, CardHeader, CardTitle, Card,
-    Cog, BarChart2, CirclePlay, CircleStop, History, RefreshCcw, SquareX
+    Cog, BarChart2, CirclePlay, CircleStop, History, RefreshCcw, SquareX, TriangleAlert
   },
   setup()
   {
@@ -147,7 +154,8 @@ export default defineComponent({
       rebuildVisible: false,
       historyVisible: false,
       syncDataVisible: false,
-      clearDataVisible: false
+      clearDataVisible: false,
+      errorVisible: false
     }
   },
   created()
@@ -204,6 +212,11 @@ export default defineComponent({
       if (!opened) {
         this.handlerInitialize()
       }
+    },
+    handlerError(record: DatasetModel | null, opened: boolean)
+    {
+      this.errorVisible = opened
+      this.contextData = record
     },
     getState(state: Array<any> | null): string | null
     {

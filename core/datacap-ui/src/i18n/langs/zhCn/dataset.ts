@@ -102,7 +102,8 @@ export default {
         lifeCycleHour: '小时',
         notSpecifiedTitle: '未指定',
         history: '同步历史',
-        clearData: '清除数据'
+        clearData: '清除数据',
+        error: '查看错误',
     },
     tip: {
         selectExpression: '请选择表达式',

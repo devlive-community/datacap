@@ -102,7 +102,8 @@ export default {
         lifeCycleHour: 'Hour',
         notSpecifiedTitle: 'Not Specified',
         history: 'Sync History',
-        clearData: 'Clear Data'
+        clearData: 'Clear Data',
+        error: 'View Error',
     },
     tip: {
         selectExpression: 'Please select the expression',
