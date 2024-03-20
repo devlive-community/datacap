@@ -37,6 +37,21 @@
         </div>
         <!-- Controller -->
         <div class="flex items-center">
+          <div class="mr-3 mt-1.5">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <a target="_blank" href="https://github.com/devlive-community/datacap/issues/new/choose">
+                    <CircleHelp :size="20"/>
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>{{ $t('common.feedback') }}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <div class="ml-3 mr-5 mt-0.5">
+            <LanguageSwitcher @changeLanguage="handlerChangeLanguage($event)"/>
+          </div>
           <div v-if="isLoggedIn" class="flex gap-x-2">
             <RouterLink to="/auth/signin">
               <Button size="sm" variant="outline">{{ $t('user.common.signin') }}</Button>
@@ -114,7 +129,9 @@ import {
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
 import NavigationMenuListItem from '@/views/layouts/common/components/components/NavigationMenuListItem.vue'
-import { LogOut, User } from 'lucide-vue-next'
+import { CircleHelp, LogOut, User } from 'lucide-vue-next'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import LanguageSwitcher from '@/views/layouts/common/components/components/LanguageSwitcher.vue'
 
 interface NavigationItem
 {
@@ -157,14 +174,23 @@ export default defineComponent({
       logout
     }
   },
-  methods: {navigationMenuTriggerStyle, cn},
   components: {
+    LanguageSwitcher,
+    TooltipContent, Tooltip, TooltipTrigger, TooltipProvider,
     NavigationMenuLink, NavigationMenuContent, NavigationMenuTrigger, NavigationMenuItem, NavigationMenuList, NavigationMenu,
     DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuGroup, DropdownMenuItem, DropdownMenuShortcut, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     AvatarFallback, AvatarImage, Avatar,
     NavigationMenuListItem,
     Button,
-    LogOut, User
+    CircleHelp, LogOut, User
+  },
+  methods: {
+    navigationMenuTriggerStyle,
+    cn,
+    handlerChangeLanguage(language: string)
+    {
+      this.$emit('changeLanguage', language)
+    }
   }
 });
 </script>
