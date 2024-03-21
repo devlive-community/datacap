@@ -56,6 +56,7 @@ export default {
     count: '总数',
     content: '内容',
     feedback: '反馈',
+    createEditor: '创建编辑器',
     selectLanguage: '选择语言',
     region: {
         asia: {

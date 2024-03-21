@@ -110,6 +110,15 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/dashboard/DashboardInfo.vue')
             },
             {
+                name: 'query',
+                path: 'query',
+                meta: {
+                    title: 'common.query',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/query/QueryHome.vue')
+            },
+            {
                 name: 'dataset',
                 path: 'dataset',
                 meta: {
