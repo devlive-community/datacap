@@ -4,6 +4,7 @@ export default {
         executeSelection: '执行 (选中)',
         connectionTime: '连接耗时',
         executionTime: '执行耗时',
+        format: '格式化',
     },
     tip: {
         pageShow: '打开 / 关闭分页',

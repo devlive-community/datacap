@@ -21,6 +21,11 @@
                         <PlayCircle v-else class="mr-1" :size="18"/>
                         {{ selectEditor.isSelection ? $t('query.common.executeSelection') : $t('query.common.execute') }}
                       </Button>
+                      <Button :disabled="(!selectSource.id && !loading.formatting) || loading.formatting" size="sm" class="ml-2" variant="secondary" @click="handlerFormat()">
+                        <Loader2 v-if="loading.formatting" class="w-full justify-center animate-spin mr-1" :size="18"/>
+                        <RemoveFormatting v-else class="mr-1" :size="18"/>
+                        {{ $t('query.common.format') }}
+                      </Button>
                       <Button size="sm" style="background-color: #FF4D4F;" class="ml-2" :disabled="!selectSource.id || !loading.running" @click="handlerCancel()">
                         <Ban class="mr-1" :size="18"/>
                         {{ $t('common.cancel') }}
@@ -103,7 +108,7 @@ import AuditService from '@/services/audit'
 import { ExecuteModel } from '@/model/execute'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
-import { Ban, CircleX, Loader2, PlayCircle, Plus, Clock } from 'lucide-vue-next'
+import { Ban, CircleX, Clock, Loader2, PlayCircle, Plus, RemoveFormatting } from 'lucide-vue-next'
 import langTools from 'ace-builds/src-noconflict/ext-language_tools'
 import { HttpUtils } from '@/utils/http'
 import FunctionService from '@/services/function'
@@ -114,6 +119,7 @@ import GridTable from '@/views/components/grid/GridTable.vue'
 import { GridConfigure } from '@/views/components/grid/GridConfigure'
 import { ResponseModel } from '@/model/response'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import FormatService from '@/services/format'
 import Editor = Ace.Editor;
 
 interface EditorInstance
@@ -133,14 +139,15 @@ export default defineComponent({
     Tabs, TabsContent, TabsList, TabsTrigger,
     CardTitle, CardContent, CardHeader, Card,
     SourceSelect,
-    Loader2, Plus, CircleX, PlayCircle, Ban, Clock,
+    Loader2, Plus, CircleX, PlayCircle, Ban, Clock, RemoveFormatting,
     VAceEditor
   },
   data()
   {
     return {
       loading: {
-        running: false
+        running: false,
+        formatting: false
       },
       selectSource: {
         id: null as string | null | undefined,
@@ -385,6 +392,25 @@ export default defineComponent({
     handlerCancel()
     {
       this.queryConfigure.cancelToken.cancel('Cancel query')
+    },
+    handlerFormat()
+    {
+      const editorInstance = this.selectEditor.editorInstance
+      if (editorInstance) {
+        this.loading.formatting = true
+        const configure = {sql: editorInstance.instance?.getValue()}
+        FormatService.formatSql(configure)
+            .then((response) => {
+              if (response.status) {
+                editorInstance.instance?.setValue(response.data)
+                this.selectEditor.isSelection = false
+              }
+              else {
+                ToastUtils.error(response.message)
+              }
+            })
+            .finally(() => this.loading.formatting = false)
+      }
     },
     createEditor()
     {

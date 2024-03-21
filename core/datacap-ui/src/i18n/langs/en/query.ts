@@ -4,6 +4,7 @@ export default {
         executeSelection: 'Execute (Selection)',
         connectionTime: 'Connection Time',
         executionTime: 'Execution Time',
+        format: 'Format',
     },
     tip: {
         pageShow: 'Open / Close the page',
