@@ -5,6 +5,9 @@ import schedule from '@/i18n/langs/en/schedule'
 import dashboard from '@/i18n/langs/en/dashboard'
 import dataset from '@/i18n/langs/en/dataset'
 import state from '@/i18n/langs/en/state'
+import query from '@/i18n/langs/en/query'
+import source from '@/i18n/langs/en/source'
+import grid from '@/i18n/langs/en/grid'
 
 export default {
     common: common,
@@ -13,5 +16,8 @@ export default {
     schedule: schedule,
     dashboard: dashboard,
     dataset: dataset,
-    state: state
+    state: state,
+    query: query,
+    source: source,
+    grid: grid
 }

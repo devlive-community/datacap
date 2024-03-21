@@ -12,3 +12,7 @@ WHERE `id` = 1;
 UPDATE `menus`
 SET `url` = '/admin/dashboard'
 WHERE `id` = 16;
+
+UPDATE `menus`
+SET `url` = '/admin/query'
+WHERE `id` = 2;

@@ -56,6 +56,7 @@ export default {
     count: 'Count',
     content: 'Content',
     feedback: 'Feedback',
+    createEditor: 'Create Editor',
     selectLanguage: 'Select Language',
     region: {
         asia: {

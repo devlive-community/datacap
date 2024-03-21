@@ -5,6 +5,9 @@ import schedule from '@/i18n/langs/zhCn/schedule'
 import dashboard from '@/i18n/langs/zhCn/dashboard'
 import dataset from '@/i18n/langs/zhCn/dataset'
 import state from '@/i18n/langs/zhCn/state'
+import query from '@/i18n/langs/zhCn/query'
+import source from '@/i18n/langs/zhCn/source'
+import grid from '@/i18n/langs/zhCn/grid'
 
 export default {
     common: common,
@@ -13,5 +16,8 @@ export default {
     schedule: schedule,
     dashboard: dashboard,
     dataset: dataset,
-    state: state
+    state: state,
+    query: query,
+    source: source,
+    grid: grid
 }
