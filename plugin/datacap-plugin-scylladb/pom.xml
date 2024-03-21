@@ -13,7 +13,7 @@
 
     <properties>
         <plugin.name>datacap-scylladb</plugin.name>
-        <cassandra.driver.version>4.16.0</cassandra.driver.version>
+        <cassandra.driver.version>4.17.0</cassandra.driver.version>
     </properties>
 
     <dependencies>
