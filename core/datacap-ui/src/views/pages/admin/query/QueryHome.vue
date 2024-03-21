@@ -11,7 +11,7 @@
       <div class="flex-1">
         <div class="space-y-6">
           <div class="flex items-center space-x-4 text-sm">
-            <Card class="w-full h-full">
+            <Card class="w-full h-full" style="border-radius: 0">
               <CardHeader class="p-2 pl-5">
                 <CardTitle>
                   <div class="flex justify-between items-center h-5 pt-3 pb-3">
@@ -58,10 +58,15 @@
                           </div>
                         </HoverCardContent>
                       </HoverCard>
+                      <Button v-if="selectSource.id && (responseConfigure.response?.data || !responseConfigure.response?.status)" size="sm" class="ml-2"
+                              variant="ghost" @click="handlerQueryHelp(true)">
+                        <Bot class="mr-1" :size="18"/>
+                        {{ $t('query.common.help') }}
+                      </Button>
                     </div>
                     <div class="flex items-center space-x-4 text-sm">
                       <Button size="sm" variant="outline" @click="handlerPlusEditor">
-                        <Ban class="mr-1" :size="18"/>
+                        <Pencil class="mr-1" :size="15"/>
                         {{ $t('common.createEditor') }}
                       </Button>
                     </div>
@@ -90,6 +95,9 @@
         </div>
       </div>
     </div>
+    <!-- Ai Help -->
+    <QueryHelp v-if="visibility.queryHelp" :is-visible="visibility.queryHelp" :content="selectEditor.editorInstance?.instance?.getValue() as string"
+               :help-type="queryConfigure.queryType" :engine="selectSource.engine" :message="responseConfigure.message" @close="handlerQueryHelp(false)"/>
   </div>
 </template>
 
@@ -108,7 +116,7 @@ import AuditService from '@/services/audit'
 import { ExecuteModel } from '@/model/execute'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
-import { Ban, CircleX, Clock, Loader2, PlayCircle, Plus, RemoveFormatting } from 'lucide-vue-next'
+import { Ban, Bot, CircleX, Clock, Loader2, Pencil, PlayCircle, Plus, RemoveFormatting } from 'lucide-vue-next'
 import langTools from 'ace-builds/src-noconflict/ext-language_tools'
 import { HttpUtils } from '@/utils/http'
 import FunctionService from '@/services/function'
@@ -120,6 +128,8 @@ import { GridConfigure } from '@/views/components/grid/GridConfigure'
 import { ResponseModel } from '@/model/response'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import FormatService from '@/services/format'
+import { HelpType } from '@/views/pages/admin/query/HelpType'
+import QueryHelp from '@/views/pages/admin/query/QueryHelp.vue'
 import Editor = Ace.Editor;
 
 interface EditorInstance
@@ -133,13 +143,14 @@ interface EditorInstance
 export default defineComponent({
   name: 'QueryHome',
   components: {
+    QueryHelp,
     HoverCardContent, HoverCardTrigger, HoverCard,
     GridTable,
     Button,
     Tabs, TabsContent, TabsList, TabsTrigger,
     CardTitle, CardContent, CardHeader, Card,
     SourceSelect,
-    Loader2, Plus, CircleX, PlayCircle, Ban, Clock, RemoveFormatting,
+    Loader2, Plus, CircleX, PlayCircle, Ban, Clock, RemoveFormatting, Pencil, Bot,
     VAceEditor
   },
   data()
@@ -148,6 +159,9 @@ export default defineComponent({
       loading: {
         running: false,
         formatting: false
+      },
+      visibility: {
+        queryHelp: false
       },
       selectSource: {
         id: null as string | null | undefined,
@@ -163,11 +177,13 @@ export default defineComponent({
       },
       queryConfigure: {
         configure: null as ExecuteModel | null,
-        cancelToken: null as any | null
+        cancelToken: null as any | null,
+        queryType: [HelpType.ANALYSIS, HelpType.OPTIMIZE]
       },
       responseConfigure: {
         response: null as ResponseModel | null,
-        gridConfigure: null as GridConfigure | null
+        gridConfigure: null as GridConfigure | null,
+        message: null as string | null
       }
     }
   },
@@ -237,8 +253,7 @@ export default defineComponent({
     },
     handlerPlusEditor()
     {
-      // this.error = null;
-      // this.aiSupportType = ['ANALYSIS', 'OPTIMIZE'];
+      this.responseConfigure.message = null
       this.createEditor()
     },
     handlerMinusEditor(targetKey: string, index: number)
@@ -257,8 +272,8 @@ export default defineComponent({
     },
     handlerChangeEditor(value: string | null)
     {
-      // this.error = null;
-      // this.aiSupportType = ['ANALYSIS', 'OPTIMIZE'];
+      this.responseConfigure.message = null
+      this.queryConfigure.queryType = [HelpType.ANALYSIS, HelpType.OPTIMIZE]
       const instance = this.selectEditor.editorMaps.get(value as string)
       if (instance) {
         this.selectEditor.editorInstance = instance
@@ -342,18 +357,12 @@ export default defineComponent({
     {
       this.responseConfigure.gridConfigure = null
       this.responseConfigure.response = null
-      // this.error = null;
-      // this.aiSupportType = ['ANALYSIS', 'OPTIMIZE'];
+      this.responseConfigure.message = null
+      this.queryConfigure.queryType = [HelpType.ANALYSIS, HelpType.OPTIMIZE]
       this.queryConfigure.cancelToken = axios.CancelToken.source()
       const editorContainer: HTMLElement = this.$refs.editorContainer as HTMLElement
       const editorInstance = this.selectEditor.editorInstance
-      // const configure: ExecuteModel = {
-      //   name: this.applySource,
-      //   content: this.isSelection ? editorInstance.instance.getSelectedText() : editorInstance.instance.getValue(),
-      //   format: "JSON",
       //   limit: this.queryLimit,
-      //   mode: this.queryMode
-      // };
       if (editorInstance && this.queryConfigure.configure) {
         const content = this.selectEditor.isSelection ? editorInstance.instance?.getSelectedText() : editorInstance.instance?.getValue()
         this.queryConfigure.configure.content = content as string
@@ -382,8 +391,8 @@ export default defineComponent({
             }
             else {
               ToastUtils.error(response.message)
-              //   this.error = response.message;
-              //   this.aiSupportType.push('FIXEDBUGS');
+              this.responseConfigure.message = response.message
+              this.queryConfigure.queryType.push(HelpType.FIXEDBUGS)
               this.responseConfigure.gridConfigure = null
             }
           })
@@ -411,6 +420,10 @@ export default defineComponent({
             })
             .finally(() => this.loading.formatting = false)
       }
+    },
+    handlerQueryHelp(value: boolean)
+    {
+      this.visibility.queryHelp = value
     },
     createEditor()
     {

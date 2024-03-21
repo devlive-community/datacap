@@ -4,7 +4,7 @@ export interface UserModel
 {
     id: number
     username: string
-    chatConfigure?: string
+    chatConfigure?: any
     system?: boolean
     editorConfigure?: string
     createTime?: string
@@ -18,7 +18,21 @@ export interface UserRoleModel
     userId: number
 }
 
-export interface UserEditor {
+export interface UserEditor
+{
     fontSize: number
     theme: string
+}
+
+export interface UserQuestionModel
+{
+    content: string
+    type: string
+    newChat: true
+    locale?: string
+    engine?: string
+    error?: string
+    transType?: string
+    from?: string
+    model?: string
 }
