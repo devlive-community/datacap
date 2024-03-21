@@ -1,7 +1,9 @@
 export default {
     common: {
         execute: 'Execute',
-        executeSelection: 'Execute (Selection)'
+        executeSelection: 'Execute (Selection)',
+        connectionTime: 'Connection Time',
+        executionTime: 'Execution Time',
     },
     tip: {
         pageShow: 'Open / Close the page',

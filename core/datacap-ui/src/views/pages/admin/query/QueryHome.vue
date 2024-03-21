@@ -25,6 +25,34 @@
                         <Ban class="mr-1" :size="18"/>
                         {{ $t('common.cancel') }}
                       </Button>
+                      <HoverCard v-if="responseConfigure.response">
+                        <HoverCardTrigger as-child>
+                          <Button size="sm" class="ml-2" variant="outline">
+                            <Clock class="mr-1" :size="18"/>
+                            {{ responseConfigure.response.data.processor.elapsed }} ms
+                          </Button>
+                        </HoverCardTrigger>
+                        <HoverCardContent class="w-80">
+                          <div class="flex">
+                            <Card class="left text-center w-1/2">
+                              <CardHeader class="border-b p-4">
+                                <CardTitle>{{ $t('query.common.connectionTime') }}</CardTitle>
+                              </CardHeader>
+                              <CardContent class="mt-3">
+                                <p>{{ responseConfigure.response.data.connection.elapsed }} ms</p>
+                              </CardContent>
+                            </Card>
+                            <Card class="ml-3 right text-center w-1/2">
+                              <CardHeader class="border-b p-4">
+                                <CardTitle>{{ $t('query.common.executionTime') }}</CardTitle>
+                              </CardHeader>
+                              <CardContent class="mt-3">
+                                <p>{{ responseConfigure.response.data.processor.elapsed }} ms</p>
+                              </CardContent>
+                            </Card>
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
                     </div>
                     <div class="flex items-center space-x-4 text-sm">
                       <Button size="sm" variant="outline" @click="handlerPlusEditor">
@@ -75,7 +103,7 @@ import AuditService from '@/services/audit'
 import { ExecuteModel } from '@/model/execute'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
-import { Ban, CircleX, Loader2, PlayCircle, Plus } from 'lucide-vue-next'
+import { Ban, CircleX, Loader2, PlayCircle, Plus, Clock } from 'lucide-vue-next'
 import langTools from 'ace-builds/src-noconflict/ext-language_tools'
 import { HttpUtils } from '@/utils/http'
 import FunctionService from '@/services/function'
@@ -85,6 +113,7 @@ import { ToastUtils } from '@/utils/toast'
 import GridTable from '@/views/components/grid/GridTable.vue'
 import { GridConfigure } from '@/views/components/grid/GridConfigure'
 import { ResponseModel } from '@/model/response'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import Editor = Ace.Editor;
 
 interface EditorInstance
@@ -98,13 +127,13 @@ interface EditorInstance
 export default defineComponent({
   name: 'QueryHome',
   components: {
+    HoverCardContent, HoverCardTrigger, HoverCard,
     GridTable,
     Button,
     Tabs, TabsContent, TabsList, TabsTrigger,
-    CardTitle,
-    CardContent, CardHeader, Card,
+    CardTitle, CardContent, CardHeader, Card,
     SourceSelect,
-    Loader2, Plus, CircleX, PlayCircle, Ban,
+    Loader2, Plus, CircleX, PlayCircle, Ban, Clock,
     VAceEditor
   },
   data()
@@ -159,7 +188,7 @@ export default defineComponent({
                       instance.instance?.setValue(response.data.code)
                     }
                   }
-                });
+                })
           }
           else if (from === 'history') {
             this.queryConfigure.configure.mode = 'HISTORY'

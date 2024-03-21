@@ -2,6 +2,8 @@ export default {
     common: {
         execute: '执行',
         executeSelection: '执行 (选中)',
+        connectionTime: '连接耗时',
+        executionTime: '执行耗时',
     },
     tip: {
         pageShow: '打开 / 关闭分页',
