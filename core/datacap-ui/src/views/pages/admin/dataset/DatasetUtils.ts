@@ -22,6 +22,18 @@ const createHeaders = (i18n: any) => {
     ]
 }
 
+const createHistoryHeaders = (i18n: any) => {
+    return [
+        {key: 'id', hidden: true, header: i18n.t('common.id'), width: 80, class: 'text-center'},
+        {key: 'elapsed', hidden: true, header: i18n.t('common.elapsed'), width: 80, class: 'text-center'},
+        {key: 'count', hidden: true, header: i18n.t('common.count'), width: 80, class: 'text-center'},
+        {key: 'createTime', hidden: true, header: i18n.t('common.createTime'), class: 'text-center'},
+        {key: 'updateTime', hidden: true, header: i18n.t('common.updateTime'), class: 'text-center'},
+        {key: 'state', hidden: true, header: i18n.t('common.state'), slot: 'state', width: 100, class: 'text-center'}
+    ]
+}
+
 export {
-    createHeaders
+    createHeaders,
+    createHistoryHeaders
 }

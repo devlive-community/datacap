@@ -53,4 +53,18 @@ export default {
     value: '值',
     alias: '别名',
     sort: '排序',
+    count: '总数',
+    content: '内容',
+    feedback: '反馈',
+    selectLanguage: '选择语言',
+    region: {
+        asia: {
+            common: '亚洲',
+            chineseSimple: '简体中文'
+        },
+        northAmerica: {
+            common: '北美洲',
+            english: '英语'
+        }
+    }
 }

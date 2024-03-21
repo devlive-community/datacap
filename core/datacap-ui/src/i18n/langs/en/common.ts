@@ -53,4 +53,18 @@ export default {
     value: 'Value',
     alias: 'Alias',
     sort: 'Sort',
+    count: 'Count',
+    content: 'Content',
+    feedback: 'Feedback',
+    selectLanguage: 'Select Language',
+    region: {
+        asia: {
+            common: 'Asia',
+            chineseSimple: 'Simple Chinese'
+        },
+        northAmerica: {
+            common: 'North America',
+            english: 'English'
+        }
+    }
 }
