@@ -5,6 +5,7 @@
         <Card>
           <CardHeader class="p-0">
             <SourceSelect @changeValue="handlerChangeValue($event)"/>
+            <DataStructureLazyTree v-if="selectSource.id" :id="selectSource.id as string"/>
           </CardHeader>
         </Card>
       </aside>
@@ -97,7 +98,7 @@
     </div>
     <!-- Ai Help -->
     <QueryHelp v-if="visibility.queryHelp" :is-visible="visibility.queryHelp" :content="selectEditor.editorInstance?.instance?.getValue() as string"
-               :help-type="queryConfigure.queryType" :engine="selectSource.engine" :message="responseConfigure.message" @close="handlerQueryHelp(false)"/>
+               :help-type="queryConfigure.queryType" :engine="selectSource.engine as string" :message="responseConfigure.message as string" @close="handlerQueryHelp(false)"/>
   </div>
 </template>
 
@@ -130,6 +131,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import FormatService from '@/services/format'
 import { HelpType } from '@/views/pages/admin/query/HelpType'
 import QueryHelp from '@/views/pages/admin/query/QueryHelp.vue'
+import DataStructureLazyTree from '@/views/components/tree/DataStructureLazyTree.vue';
 import Editor = Ace.Editor;
 
 interface EditorInstance
@@ -143,6 +145,7 @@ interface EditorInstance
 export default defineComponent({
   name: 'QueryHome',
   components: {
+    DataStructureLazyTree,
     QueryHelp,
     HoverCardContent, HoverCardTrigger, HoverCard,
     GridTable,

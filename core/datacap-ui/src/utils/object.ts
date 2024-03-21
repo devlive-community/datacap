@@ -1,3 +1,5 @@
+import useClipboard from 'vue-clipboard3'
+
 export class ObjectUtils
 {
     /**
@@ -30,5 +32,11 @@ export class ObjectUtils
     static getTimestamp(): number
     {
         return Date.parse(new Date().toString())
+    }
+
+    static copy(obj: string)
+    {
+        useClipboard().toClipboard(obj)
+            .finally(() => console.log('Copy'))
     }
 }

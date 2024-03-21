@@ -5,10 +5,10 @@
         <AlertDialogHeader>
           <AlertDialogTitle class="border-b -mt-4 pb-2">{{ $t('query.common.help') }}</AlertDialogTitle>
         </AlertDialogHeader>
-        <Tabs :default-value="helpType[0]" @update:modelValue="handlerTab">
+        <Tabs :default-value="getEnumName(helpType[0])" @update:modelValue="handlerTab">
           <TabsList class="w-full">
-            <TabsTrigger v-for="item in helpType" :value="item">
-              {{ item }}
+            <TabsTrigger v-for="item in helpType" :value="getEnumName(item)">
+              {{ getEnumName(item) }}
             </TabsTrigger>
           </TabsList>
           <CircularLoading v-if="loading" :show="loading"/>
@@ -63,7 +63,7 @@ export default defineComponent({
       default: () => ''
     },
     helpType: {
-      type: Array,
+      type: Array as () => Array<HelpType>,
       default: () => []
     }
   },
@@ -103,7 +103,7 @@ export default defineComponent({
             }
           })
     },
-    handlerTab(value: HelpType)
+    handlerTab(value: string)
     {
       this.loading = true
       const userQuestion: UserQuestionModel = {
@@ -129,6 +129,10 @@ export default defineComponent({
     handlerCancel()
     {
       this.visible = false
+    },
+    getEnumName(value: HelpType): string
+    {
+      return HelpType[value]
     }
   }
 });

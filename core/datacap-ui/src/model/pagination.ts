@@ -10,6 +10,7 @@ export interface PaginationResponseModel
     size: number
     total: number
     page: number
+    current?: number
 }
 
 export class PaginationRequest
