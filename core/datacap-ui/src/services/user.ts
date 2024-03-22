@@ -89,6 +89,16 @@ class UserService
     {
         return new HttpUtils().put(`${DEFAULT_PATH_USER}/allocationRole`, configure)
     }
+
+    getUserContribution()
+    {
+        return new HttpUtils().get(`${DEFAULT_PATH_QUERY}/admin/contribution`)
+    }
+
+    getUserContributionRadar()
+    {
+        return new HttpUtils().get(`${DEFAULT_PATH_QUERY}/admin/radar`)
+    }
 }
 
 export default new UserService()

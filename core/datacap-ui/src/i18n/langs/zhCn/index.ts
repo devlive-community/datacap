@@ -8,6 +8,7 @@ import state from '@/i18n/langs/zhCn/state'
 import query from '@/i18n/langs/zhCn/query'
 import source from '@/i18n/langs/zhCn/source'
 import grid from '@/i18n/langs/zhCn/grid'
+import heatmap from '@/i18n/langs/zhCn/heatmap'
 
 export default {
     common: common,
@@ -19,5 +20,6 @@ export default {
     state: state,
     query: query,
     source: source,
-    grid: grid
+    grid: grid,
+    heatmap: heatmap
 }

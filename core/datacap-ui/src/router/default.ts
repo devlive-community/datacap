@@ -1,4 +1,5 @@
 import LayoutContainer from '@/views/layouts/common/LayoutContainer.vue'
+import ProfileContainer from '@/views/layouts/profile/LayoutContainer.vue'
 import { TokenUtils } from '@/utils/token'
 
 /**
@@ -28,6 +29,7 @@ const createDefaultRouter = (router: any) => {
     createSystemRouter(router)
     createAdminRouter(router)
     createPreviewRouter(router)
+    createProfileRouter(router)
 }
 
 /**
@@ -173,6 +175,30 @@ const createPreviewRouter = (router: any) => {
             isRoot: false
         },
         component: () => import('@/views/pages/admin/dashboard/DashboardPreview.vue')
+    }
+    router.addRoute(newRouter)
+}
+
+const createProfileRouter = (router: any) => {
+    const newRouter = {
+        path: '/user',
+        meta: {
+            title: 'user.common.setting',
+            isRoot: true
+        },
+        redirect: '/user/info',
+        component: ProfileContainer,
+        children: [
+            {
+                name: 'info',
+                path: 'info',
+                meta: {
+                    title: 'user.common.info',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/user/profile/InfoHome.vue')
+            }
+        ]
     }
     router.addRoute(newRouter)
 }

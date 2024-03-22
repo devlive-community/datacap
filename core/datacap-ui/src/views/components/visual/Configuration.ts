@@ -12,10 +12,10 @@ export class Configuration
 
 export interface IChart
 {
-    xAxis: null
-    x2Axis: null
-    yAxis: null
-    series: null
-    outerRadius: number[]
-    invalidType: null
+    xAxis?: null | string
+    x2Axis?: null | string
+    yAxis?: null | string
+    series?: null | string
+    outerRadius?: number[]
+    invalidType?: null | string
 }

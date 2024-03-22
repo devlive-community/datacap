@@ -11,7 +11,12 @@ export default {
         signout: 'Sign out',
         list: 'User List',
         assignAuthority: 'Assign Authority',
-        assignRole: 'Assign Role'
+        assignRole: 'Assign Role',
+        setting: 'Settings',
+        info: 'User Info',
+        profile: 'Public profile',
+        contribution: 'Contribution',
+        radar7Days: 'Radar chart of the data source within 7 days',
     },
     auth: {
         signinTip: 'Enter your username and password to login',
@@ -30,6 +35,9 @@ export default {
     tip: {
         sourceCountTip: 'Statistics on the total number of access data sources',
         queryCountTip: 'Statistics on the total number of access queries',
-        assignRoleSuccess: 'Role assignment succeeded'
+        assignRoleSuccess: 'Role assignment succeeded',
+        info: 'The main information displayed here is some personal contribution information, including some queries, data sources and other information',
+        contribution: 'The contribution degree is calculated based on the number of data source queries, the larger the number of queries, the higher the contribution degree.',
+        radar7Days: 'The data here refers to the number of times the data source was used in a 7-day period'
     }
 }

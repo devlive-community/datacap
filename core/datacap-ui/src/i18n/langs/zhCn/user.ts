@@ -11,7 +11,12 @@ export default {
         signout: '退出登录',
         list: '用户列表',
         assignAuthority: '分配权限',
-        assignRole: '分配路由'
+        assignRole: '分配路由',
+        setting: '设置',
+        info: '用户信息',
+        profile: '个人资料',
+        contribution: '贡献',
+        radar7Days: '7天内数据源雷达图',
     },
     auth: {
         signinTip: '请输入用户名和密码登录',
@@ -31,5 +36,8 @@ export default {
         sourceCountTip: '创建数据源总数统计',
         queryCountTip: '访问查询总数统计',
         assignRoleSuccess: '分配路由成功',
+        info: '这里主要展示的是一些个人的贡献信息，包含了一些查询，数据源等信息',
+        contribution: '这里的贡献度是根据数据源的查询次数进行计算，数据源的查询次数越多，贡献度越高。',
+        radar7Days: '这里的数据是指 7 天内的数据源使用次数情况'
     }
 }

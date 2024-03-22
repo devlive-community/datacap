@@ -79,13 +79,17 @@
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator/>
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <User absoluteStrokeWidth :size="15" class="mr-2"></User>
-                    {{ $t('common.profile') }}
+                  <DropdownMenuItem style="cursor: pointer;">
+                    <RouterLink to="/user">
+                      <div class="flex items-center">
+                        <Settings absoluteStrokeWidth :size="18" class="mr-2"/>
+                        {{ $t('user.common.setting') }}
+                      </div>
+                    </RouterLink>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator/>
-                <DropdownMenuItem @click="logout">
+                <DropdownMenuItem style="cursor: pointer;" @click="logout">
                   <LogOut absoluteStrokeWidth :size="15" class="mr-2"></LogOut>
                   {{ $t('user.common.signout') }}
                 </DropdownMenuItem>
@@ -129,7 +133,7 @@ import {
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
 import NavigationMenuListItem from '@/views/layouts/common/components/components/NavigationMenuListItem.vue'
-import { CircleHelp, LogOut, User } from 'lucide-vue-next'
+import { CircleHelp, LogOut, Settings } from 'lucide-vue-next'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import LanguageSwitcher from '@/views/layouts/common/components/components/LanguageSwitcher.vue'
 
@@ -182,7 +186,7 @@ export default defineComponent({
     AvatarFallback, AvatarImage, Avatar,
     NavigationMenuListItem,
     Button,
-    CircleHelp, LogOut, User
+    CircleHelp, LogOut, Settings
   },
   methods: {
     navigationMenuTriggerStyle,
