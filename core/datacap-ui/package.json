@@ -33,7 +33,6 @@
     "lodash": "^4.17.21",
     "lucide-vue-next": "^0.356.0",
     "md-editor-v3": "^4.12.1",
-    "moment": "^2.30.1",
     "naive-ui": "^2.38.1",
     "radix-vue": "^1.5.2",
     "tailwind-merge": "^2.2.1",

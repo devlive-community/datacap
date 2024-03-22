@@ -27,7 +27,10 @@ export default {
         host: '主机地址',
         token: '令牌',
         timeout: '超时时间',
-        contentCount: '上下文数量'
+        contentCount: '上下文数量',
+        modifyUsername: '修改用户名',
+        oldUsername: '旧用户名',
+        newUsername: '新用户名'
     },
     auth: {
         signinTip: '请输入用户名和密码登录',
@@ -62,6 +65,11 @@ export default {
         host: '这里主要用于配置 AI 助手的主机地址',
         token: '这里主要用于配置 AI 助手的令牌',
         timeout: '这里主要用于配置 AI 助手的超时时间',
-        contentCount: '这里主要用于配置 AI 助手的上下文数量'
+        contentCount: '这里主要用于配置 AI 助手的上下文数量',
+        modifyUsername: '这里主要用于修改用户的用户名',
+        oldUsername: '这主要用于修改用户的旧用户名',
+        newUsername: '这主要用于修改用户的新用户名',
+        password: '密码是用户登录的密码',
+        changeUsernameSuccessfully: '修改用户名成功，请重新登录',
     }
 }

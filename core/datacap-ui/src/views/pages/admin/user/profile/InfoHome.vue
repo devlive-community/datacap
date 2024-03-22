@@ -69,10 +69,10 @@ import { CalendarHeatmap } from 'vue3-calendar-heatmap'
 import './vue3-calendar-heatmap.css'
 import { HttpUtils } from '@/utils/http'
 import UserService from '@/services/user'
-import * as moment from 'moment/moment'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { Configuration } from '@/views/components/visual/Configuration'
 import VisualPie from '@/views/components/visual/components/VisualPie.vue'
+import { DateUtils } from '@/utils/date'
 
 export default defineComponent({
   name: 'InfoHome',
@@ -116,7 +116,8 @@ export default defineComponent({
                 }
               }
               else {
-                this.heatmap.endDate = moment().format('YYYY-MM-DD') as string
+                const now = new Date()
+                this.heatmap.endDate = DateUtils.formatTime(now, 'YYYY-MM-DD')
               }
             }
             if (fetchRadar.status) {

@@ -13,10 +13,17 @@ export interface UserModel
     avatarConfigure?: UserAvatarModel
 }
 
+export interface UsernameModel
+{
+    oldUsername: string
+    newUsername: string | undefined
+    password: string | undefined
+}
+
 export interface UserChatModel
 {
-    host: string
-    token: string
+    host: string | undefined
+    token: string | undefined
     timeout: number
     contentCount: number
 }

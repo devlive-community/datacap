@@ -27,7 +27,10 @@ export default {
         host: 'Host Address',
         token: 'Token',
         timeout: 'Timeout',
-        contentCount: 'Content Count'
+        contentCount: 'Content Count',
+        modifyUsername: 'Modify Username',
+        oldUsername: 'Old Username',
+        newUsername: 'New Username'
     },
     auth: {
         signinTip: 'Enter your username and password to login',
@@ -62,6 +65,11 @@ export default {
         host: 'This is mainly used to configure the host address of the AI assistant',
         token: 'This is mainly used to configure the token of the AI assistant',
         timeout: 'This is mainly used to configure the timeout of the AI assistant',
-        contentCount: 'This is mainly used to configure the content count of the AI assistant'
+        contentCount: 'This is mainly used to configure the content count of the AI assistant',
+        modifyUsername: 'This is mainly used to modify the username of the user',
+        oldUsername: 'This is mainly used to modify the old username of the user',
+        newUsername: 'This is mainly used to modify the new username of the user',
+        password: 'The password is the user\'s login password',
+        changeUsernameSuccessfully: 'Username modification succeeded, please log in again'
     }
 }

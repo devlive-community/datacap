@@ -2,40 +2,31 @@
   <div>
     <CircularLoading v-if="loading.default" :show="loading.default"/>
     <form class="space-y-8" v-else-if="formState">
-      <FormField name="host">
+      <FormField name="oldUsername">
         <FormItem>
-          <FormLabel>{{ $t('user.common.host') }}</FormLabel>
+          <FormLabel>{{ $t('user.common.oldUsername') }}</FormLabel>
           <FormControl>
-            <Input v-model="formState.host"/>
+            <Input :disabled="true" v-model="formState.oldUsername"/>
           </FormControl>
-          <FormDescription>{{ $t('user.tip.host') }}</FormDescription>
+          <FormDescription>{{ $t('user.tip.oldUsername') }}</FormDescription>
         </FormItem>
       </FormField>
-      <FormField name="token">
+      <FormField name="newUsername">
         <FormItem class="space-y-1">
-          <FormLabel>{{ $t('user.common.token') }}</FormLabel>
+          <FormLabel>{{ $t('user.common.newUsername') }}</FormLabel>
           <FormControl>
-            <Input v-model="formState.token"/>
+            <Input v-model="formState.newUsername"/>
           </FormControl>
-          <FormDescription>{{ $t('user.tip.token') }}</FormDescription>
+          <FormDescription>{{ $t('user.tip.newUsername') }}</FormDescription>
         </FormItem>
       </FormField>
-      <FormField name="timeout">
+      <FormField name="password">
         <FormItem class="space-y-1">
-          <FormLabel>{{ $t('user.common.timeout') }}</FormLabel>
+          <FormLabel>{{ $t('user.common.password') }}</FormLabel>
           <FormControl>
-            <Input type="number" v-model="formState.timeout"/>
+            <Input v-model="formState.password"/>
           </FormControl>
-          <FormDescription>{{ $t('user.tip.timeout') }}</FormDescription>
-        </FormItem>
-      </FormField>
-      <FormField name="contentCount">
-        <FormItem class="space-y-1">
-          <FormLabel>{{ $t('user.common.contentCount') }}</FormLabel>
-          <FormControl>
-            <Input type="number" v-model="formState.contentCount"/>
-          </FormControl>
-          <FormDescription>{{ $t('user.tip.contentCount') }}</FormDescription>
+          <FormDescription>{{ $t('user.tip.password') }}</FormDescription>
         </FormItem>
       </FormField>
       <div class="flex justify-start">
@@ -53,16 +44,15 @@ import { defineComponent } from 'vue'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import UserService from '@/services/user'
-import { UserChatModel } from '@/model/user'
+import { UsernameModel } from '@/model/user'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { ToastUtils } from '@/utils/toast'
 import Common from '@/utils/common'
 import { Loader2 } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
-import { isEmpty } from 'lodash'
 
 export default defineComponent({
-  name: 'AssistantForm',
+  name: 'UsernameForm',
   components: {
     Button,
     Loader2,
@@ -77,7 +67,7 @@ export default defineComponent({
         default: false,
         submitting: false
       },
-      formState: null as UserChatModel | null
+      formState: null as UsernameModel | null
     }
   },
   created()
@@ -91,12 +81,8 @@ export default defineComponent({
       UserService.getInfo()
           .then(response => {
             if (response.status) {
-              const configure = response.data.chatConfigure
-              if (response.data && configure && !isEmpty(configure)) {
-                this.formState = JSON.parse(configure) as UserChatModel
-              }
-              else {
-                this.formState = {host: undefined, token: undefined, timeout: 60, contentCount: 10}
+              if (response.data) {
+                this.formState = {oldUsername: response.data.username, newUsername: undefined, password: undefined}
               }
             }
           })
@@ -105,11 +91,13 @@ export default defineComponent({
     handlerSubmit()
     {
       this.loading.submitting = true
-      UserService.changeChart(this.formState as UserChatModel)
+      UserService.changeUsername(this.formState as UsernameModel)
           .then((response) => {
             if (response.status) {
-              ToastUtils.success(this.$t('common.successfully') as string)
-              localStorage.setItem(Common.userEditorConfigure, JSON.stringify(this.formState))
+              ToastUtils.success(this.$t('user.tip.changeUsernameSuccessfully') as string)
+              localStorage.removeItem(Common.token)
+              localStorage.removeItem(Common.menu)
+              this.$router.push('/auth/signin')
             }
             else {
               ToastUtils.error(response.message)

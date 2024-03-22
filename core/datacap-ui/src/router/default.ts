@@ -233,6 +233,15 @@ const createProfileRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/user/profile/AssistantHome.vue')
+            },
+            {
+                name: 'username',
+                path: 'username',
+                meta: {
+                    title: 'user.common.modifyUsername',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/security/UsernameHome.vue')
             }
         ]
     }
