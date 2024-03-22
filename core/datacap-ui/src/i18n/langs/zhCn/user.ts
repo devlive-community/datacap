@@ -30,7 +30,10 @@ export default {
         contentCount: '上下文数量',
         modifyUsername: '修改用户名',
         oldUsername: '旧用户名',
-        newUsername: '新用户名'
+        newUsername: '新用户名',
+        modifyPassword: '修改密码',
+        oldPassword: '旧密码',
+        newPassword: '新密码'
     },
     auth: {
         signinTip: '请输入用户名和密码登录',
@@ -71,5 +74,10 @@ export default {
         newUsername: '这主要用于修改用户的新用户名',
         password: '密码是用户登录的密码',
         changeUsernameSuccessfully: '修改用户名成功，请重新登录',
+        modifyPassword: '这里主要用于修改用户的密码',
+        changePasswordSuccessfully: '修改密码成功，请重新登录',
+        oldPassword: '这里主要用于修改用户的旧密码',
+        newPassword: '这里主要用于修改用户的新密码',
+        confirmPassword: '这里主要用于确认用户的新密码',
     }
 }

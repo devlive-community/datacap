@@ -15,7 +15,7 @@
 import { defineComponent } from 'vue'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator';
+import { Separator } from '@/components/ui/separator'
 
 interface NavigationItem
 {
@@ -54,7 +54,8 @@ export default defineComponent({
         {title: this.$t('user.common.editor'), href: '/admin/user/editor'},
         {title: this.$t('user.common.assistant'), href: '/admin/user/assistant'},
         {isDriver: true},
-        {title: this.$t('user.common.username'), href: '/admin/user/username'}
+        {title: this.$t('user.common.modifyPassword'), href: '/admin/user/password'},
+        {title: this.$t('user.common.modifyUsername'), href: '/admin/user/username'}
       ]
       this.items = [...items]
     }

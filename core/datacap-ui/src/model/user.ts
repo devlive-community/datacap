@@ -28,6 +28,13 @@ export interface UserChatModel
     contentCount: number
 }
 
+export interface UserPasswordModel
+{
+    oldPassword: string | null
+    newPassword: string | null
+    confirmPassword: string | null
+}
+
 export interface UserAvatarModel
 {
     path?: string

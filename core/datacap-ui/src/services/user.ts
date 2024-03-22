@@ -2,7 +2,7 @@ import { UserRequest } from '@/model/user/request/user'
 import { ResponseModel } from '@/model/response'
 import { HttpUtils } from '@/utils/http'
 import { BaseService } from '@/services/base'
-import { UserChatModel, UserEditor, UsernameModel, UserRoleModel } from '@/model/user'
+import { UserChatModel, UserEditor, UsernameModel, UserPasswordModel, UserRoleModel } from '@/model/user'
 import { FilterModel } from '@/model/filter'
 
 const DEFAULT_PATH_AUTH = '/api/auth'
@@ -119,6 +119,11 @@ class UserService
     changeUsername(configure: UsernameModel): Promise<ResponseModel>
     {
         return new HttpUtils().put(`${DEFAULT_PATH_USER}/changeUsername`, configure)
+    }
+
+    changePassword(configure: UserPasswordModel): Promise<ResponseModel>
+    {
+        return new HttpUtils().put(`${DEFAULT_PATH_USER}/changePassword`, configure)
     }
 }
 

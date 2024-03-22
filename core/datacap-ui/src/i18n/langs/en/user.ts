@@ -30,7 +30,10 @@ export default {
         contentCount: 'Content Count',
         modifyUsername: 'Modify Username',
         oldUsername: 'Old Username',
-        newUsername: 'New Username'
+        newUsername: 'New Username',
+        modifyPassword: 'Modify Password',
+        oldPassword: 'Old Password',
+        newPassword: 'New Password'
     },
     auth: {
         signinTip: 'Enter your username and password to login',
@@ -70,6 +73,11 @@ export default {
         oldUsername: 'This is mainly used to modify the old username of the user',
         newUsername: 'This is mainly used to modify the new username of the user',
         password: 'The password is the user\'s login password',
-        changeUsernameSuccessfully: 'Username modification succeeded, please log in again'
+        changeUsernameSuccessfully: 'Username modification succeeded, please log in again',
+        modifyPassword: 'This is mainly used to modify the password of the user',
+        changePasswordSuccessfully: 'Password modification succeeded, please log in again',
+        oldPassword: 'This is mainly used to modify the old password of the user',
+        newPassword: 'This is mainly used to modify the new password of the user',
+        confirmPassword: 'This is mainly used to confirm the new password of the user'
     }
 }

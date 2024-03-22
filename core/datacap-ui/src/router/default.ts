@@ -242,6 +242,15 @@ const createProfileRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/user/security/UsernameHome.vue')
+            },
+            {
+                username: 'password',
+                path: 'password',
+                meta: {
+                    title: 'user.common.modifyPassword',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/security/PasswordHome.vue')
             }
         ]
     }

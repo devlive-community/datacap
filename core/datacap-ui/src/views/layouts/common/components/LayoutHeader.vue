@@ -63,7 +63,7 @@
           <div v-else>
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
-                <Button variant="ghost" class="relative h-8 w-8 rounded-full">
+                <Button variant="ghost" class="relative h-8 w-8 rounded-full mt-2">
                   <Avatar class="h-8 w-8">
                     <AvatarImage :src="userInfo.avatar" :alt="userInfo.username"></AvatarImage>
                     <AvatarFallback>{{ userInfo.username }}</AvatarFallback>
