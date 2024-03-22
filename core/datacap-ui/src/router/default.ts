@@ -186,7 +186,7 @@ const createProfileRouter = (router: any) => {
             title: 'user.common.setting',
             isRoot: true
         },
-        redirect: '/admin/user/info',
+        redirect: '/admin/user/profile',
         component: ProfileContainer,
         children: [
             {
