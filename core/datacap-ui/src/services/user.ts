@@ -2,7 +2,7 @@ import { UserRequest } from '@/model/user/request/user'
 import { ResponseModel } from '@/model/response'
 import { HttpUtils } from '@/utils/http'
 import { BaseService } from '@/services/base'
-import { UserRoleModel } from '@/model/user'
+import { UserEditor, UserRoleModel } from '@/model/user'
 import { FilterModel } from '@/model/filter'
 
 const DEFAULT_PATH_AUTH = '/api/auth'
@@ -104,6 +104,11 @@ class UserService
     getLogs(filter: FilterModel): Promise<ResponseModel>
     {
         return new HttpUtils().post(`${DEFAULT_PATH_USER}/log`, filter)
+    }
+
+    changeEditor(configure: UserEditor): Promise<ResponseModel>
+    {
+        return new HttpUtils().put(`${DEFAULT_PATH_USER}/changeEditorConfigure`, configure)
     }
 }
 

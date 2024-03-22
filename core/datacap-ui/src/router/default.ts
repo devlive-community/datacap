@@ -215,6 +215,15 @@ const createProfileRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/user/profile/LogHome.vue')
+            },
+            {
+                name: 'editor',
+                path: 'editor',
+                meta: {
+                    title: 'user.common.editor',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/profile/EditorHome.vue')
             }
         ]
     }
