@@ -80,7 +80,7 @@
                 <DropdownMenuSeparator/>
                 <DropdownMenuGroup>
                   <DropdownMenuItem style="cursor: pointer;">
-                    <RouterLink to="/user">
+                    <RouterLink to="/admin/user">
                       <div class="flex items-center">
                         <Settings absoluteStrokeWidth :size="18" class="mr-2"/>
                         {{ $t('user.common.setting') }}

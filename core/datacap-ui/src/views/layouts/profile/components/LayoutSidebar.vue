@@ -24,8 +24,9 @@ export default defineComponent({
   {
     return {
       items: [
-        {title: this.$t('user.common.info'), href: '/user/info'},
-        {title: this.$t('user.common.profile'), href: '/user/profile'}
+        {title: this.$t('user.common.info'), href: '/admin/user/info'},
+        {title: this.$t('user.common.profile'), href: '/admin/user/profile'},
+        {title: this.$t('user.common.log'), href: '/admin/user/log'}
       ]
     }
   }

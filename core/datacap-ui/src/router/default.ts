@@ -181,12 +181,12 @@ const createPreviewRouter = (router: any) => {
 
 const createProfileRouter = (router: any) => {
     const newRouter = {
-        path: '/user',
+        path: '/admin/user',
         meta: {
             title: 'user.common.setting',
             isRoot: true
         },
-        redirect: '/user/info',
+        redirect: '/admin/user/info',
         component: ProfileContainer,
         children: [
             {
@@ -196,7 +196,7 @@ const createProfileRouter = (router: any) => {
                     title: 'user.common.info',
                     isRoot: false
                 },
-                component: () => import('@/views/pages/user/profile/InfoHome.vue')
+                component: () => import('@/views/pages/admin/user/profile/InfoHome.vue')
             },
             {
                 name: 'profile',
@@ -205,7 +205,16 @@ const createProfileRouter = (router: any) => {
                     title: 'user.common.profile',
                     isRoot: false
                 },
-                component: () => import('@/views/pages/user/profile/ProfileHome.vue')
+                component: () => import('@/views/pages/admin/user/profile/ProfileHome.vue')
+            },
+            {
+                name: 'log',
+                path: 'log',
+                meta: {
+                    title: 'user.common.log',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/profile/LogHome.vue')
             }
         ]
     }

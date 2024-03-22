@@ -2,10 +2,10 @@
   <div>
     <LayoutHeader/>
     <div class="flex flex-col space-y-8 lg:flex-row justify-center lg:space-x-12 lg:space-y-0 mt-5">
-      <aside class="-mx-4 lg:w-1/6">
+      <aside class="-mx-4 lg:w-1/12">
         <LayoutSidebar/>
       </aside>
-      <div class="flex-1 lg:max-w-2xl">
+      <div class="flex-1 lg:max-w-3xl">
         <div class="space-y-6">
           <RouterView/>
         </div>

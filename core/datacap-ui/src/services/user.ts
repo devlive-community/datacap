@@ -3,6 +3,7 @@ import { ResponseModel } from '@/model/response'
 import { HttpUtils } from '@/utils/http'
 import { BaseService } from '@/services/base'
 import { UserRoleModel } from '@/model/user'
+import { FilterModel } from '@/model/filter'
 
 const DEFAULT_PATH_AUTH = '/api/auth'
 const DEFAULT_PATH_USER = '/api/v1/user'
@@ -98,6 +99,11 @@ class UserService
     getUserContributionRadar()
     {
         return new HttpUtils().get(`${DEFAULT_PATH_QUERY}/admin/radar`)
+    }
+
+    getLogs(filter: FilterModel): Promise<ResponseModel>
+    {
+        return new HttpUtils().post(`${DEFAULT_PATH_USER}/log`, filter)
     }
 }
 

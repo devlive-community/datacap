@@ -8,7 +8,7 @@
           <FormControl>
             <div>
               <Avatar>
-                <AvatarImage :src="formState.avatarConfigure?.path" :alt="formState.username"/>
+                <AvatarImage :src="formState.avatarConfigure?.path as string" :alt="formState.username"/>
                 <AvatarFallback>{{ formState.username }}</AvatarFallback>
               </Avatar>
             </div>

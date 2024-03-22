@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Separator } from '@/components/ui/separator'
-import ProfileForm from '@/views/pages/user/profile/components/ProfileForm.vue'
+import ProfileForm from '@/views/pages/admin/user/profile/components/ProfileForm.vue'
 
 export default defineComponent({
   name: 'ProfileHome',

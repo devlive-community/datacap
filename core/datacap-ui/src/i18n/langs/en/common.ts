@@ -58,6 +58,11 @@ export default {
     feedback: 'Feedback',
     createEditor: 'Create Editor',
     selectLanguage: 'Select Language',
+    device: 'Device',
+    client: 'Client',
+    ip: 'IP Address',
+    ua: 'User Agent',
+    loginTime: 'Login Time',
     region: {
         asia: {
             common: 'Asia',
