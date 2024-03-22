@@ -224,6 +224,15 @@ const createProfileRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/user/profile/EditorHome.vue')
+            },
+            {
+                name: 'assistant',
+                path: 'assistant',
+                meta: {
+                    title: 'user.common.assistant',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/profile/AssistantHome.vue')
             }
         ]
     }

@@ -22,7 +22,12 @@ export default {
         log: 'Login Log',
         editor: 'Editor',
         fontSize: 'Font Size',
-        theme: 'Theme'
+        theme: 'Theme',
+        assistant: 'Ai Assistant',
+        host: 'Host Address',
+        token: 'Token',
+        timeout: 'Timeout',
+        contentCount: 'Content Count'
     },
     auth: {
         signinTip: 'Enter your username and password to login',
@@ -52,6 +57,11 @@ export default {
         log: 'The main display here is some login log information, including the login time, IP address and other information',
         editor: 'The main display here is some editor information, including the editor\'s configuration information, such as code highlighting, themes and other information',
         fontSize: 'Here you can modify some text size, the default is 12',
-        theme: 'Here you can modify some themes, including various theme styles'
+        theme: 'Here you can modify some themes, including various theme styles',
+        assistant: 'The main display here is some AI assistant configuration information, including the configuration information, such as the operator, proxy and other information',
+        host: 'This is mainly used to configure the host address of the AI assistant',
+        token: 'This is mainly used to configure the token of the AI assistant',
+        timeout: 'This is mainly used to configure the timeout of the AI assistant',
+        contentCount: 'This is mainly used to configure the content count of the AI assistant'
     }
 }

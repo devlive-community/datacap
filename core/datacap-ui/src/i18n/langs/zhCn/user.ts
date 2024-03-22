@@ -23,6 +23,11 @@ export default {
         editor: '编辑器',
         fontSize: '字体大小',
         theme: '主题',
+        assistant: 'AI 助手',
+        host: '主机地址',
+        token: '令牌',
+        timeout: '超时时间',
+        contentCount: '上下文数量'
     },
     auth: {
         signinTip: '请输入用户名和密码登录',
@@ -53,5 +58,10 @@ export default {
         editor: '这里主要展示的是一些编辑器信息，包含了编辑器的一些配置信息，如代码高亮、主题等信息',
         fontSize: '这里可以修改一些文字的大小，默认为 12',
         theme: '这里可以修改一些主题，包含各种主题样式',
+        assistant: '这里主要展示的是一些 AI 助手配置信息，包含了一些配置信息，如运营商，代理等信息',
+        host: '这里主要用于配置 AI 助手的主机地址',
+        token: '这里主要用于配置 AI 助手的令牌',
+        timeout: '这里主要用于配置 AI 助手的超时时间',
+        contentCount: '这里主要用于配置 AI 助手的上下文数量'
     }
 }

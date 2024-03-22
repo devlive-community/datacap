@@ -4,13 +4,21 @@ export interface UserModel
 {
     id: number
     username: string
-    chatConfigure?: any
+    chatConfigure?: UserChatModel
     system?: boolean
     editorConfigure?: string
     createTime?: string
     updateTime?: string
     roles?: RoleModel[] | []
     avatarConfigure?: UserAvatarModel
+}
+
+export interface UserChatModel
+{
+    host: string
+    token: string
+    timeout: number
+    contentCount: number
 }
 
 export interface UserAvatarModel
