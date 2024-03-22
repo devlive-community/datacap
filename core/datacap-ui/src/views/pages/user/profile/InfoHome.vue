@@ -5,18 +5,17 @@
       <p class="text-sm text-muted-foreground">{{ $t('user.tip.info') }}</p>
     </div>
     <Separator class="my-4"/>
-    <div class="flex justify-center">
-      <Card>
-        <CardHeader class="p-0">
-          <CardTitle class="pt-3 pl-3 pb-2">{{ $t('user.common.contribution') }}</CardTitle>
-          <Separator/>
-          <CardDescription class="pt-3 pl-3 pb-2 pr-2 min-w-full">{{ $t('user.tip.contribution') }}</CardDescription>
-        </CardHeader>
-        <CardContent class="pt-2">
-          <CircularLoading v-if="loading" :show="loading"/>
-          <CalendarHeatmap v-else :tooltip-unit="$t('heatmap.common.query')" :end-date="heatmap.endDate"
-                           :round="50" :values="heatmap.data"
-                           :locale="{
+    <Card>
+      <CardHeader class="p-0">
+        <CardTitle class="pt-3 pl-3 pb-2">{{ $t('user.common.contribution') }}</CardTitle>
+        <Separator/>
+        <CardDescription class="pt-3 pl-3 pb-2 pr-2 min-w-full">{{ $t('user.tip.contribution') }}</CardDescription>
+      </CardHeader>
+      <CardContent class="pt-2">
+        <CircularLoading v-if="loading" :show="loading"/>
+        <CalendarHeatmap v-else :tooltip-unit="$t('heatmap.common.query')" :end-date="heatmap.endDate"
+                         :round="50" :values="heatmap.data"
+                         :locale="{
                                   months: [
                                             $t('heatmap.common.jan'),
                                             $t('heatmap.common.feb'),
@@ -44,9 +43,8 @@
                                   less  : $t('heatmap.common.less'),
                                   more  : $t('heatmap.common.more')
                              }"/>
-        </CardContent>
-      </Card>
-    </div>
+      </CardContent>
+    </Card>
     <div class="flex mt-2 space-x-4">
       <Card class="w-1/2">
         <CardHeader class="p-0">

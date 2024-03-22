@@ -1,15 +1,13 @@
 <template>
   <div>
     <LayoutHeader/>
-    <div class="hidden flex-col md:flex justify-center items-center mt-5">
-      <div class="flex flex-1 flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <aside class="w-full top-0 lg:w-1/5">
-          <LayoutSidebar/>
-        </aside>
-        <div class="flex-1 lg:max-w-6xl">
-          <div class="p-1 pr-4">
-            <RouterView/>
-          </div>
+    <div class="flex flex-col space-y-8 lg:flex-row justify-center lg:space-x-12 lg:space-y-0 mt-5">
+      <aside class="-mx-4 lg:w-1/6">
+        <LayoutSidebar/>
+      </aside>
+      <div class="flex-1 lg:max-w-2xl">
+        <div class="space-y-6">
+          <RouterView/>
         </div>
       </div>
     </div>

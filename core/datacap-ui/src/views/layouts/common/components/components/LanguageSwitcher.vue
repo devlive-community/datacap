@@ -43,7 +43,7 @@ export default defineComponent({
   data()
   {
     return {
-      language: 'language_en'
+      language: 'language_zh_cn'
     }
   }
 })

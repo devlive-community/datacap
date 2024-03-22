@@ -10,6 +10,12 @@ export interface UserModel
     createTime?: string
     updateTime?: string
     roles?: RoleModel[] | []
+    avatarConfigure?: UserAvatarModel
+}
+
+export interface UserAvatarModel
+{
+    path?: string
 }
 
 export interface UserRoleModel

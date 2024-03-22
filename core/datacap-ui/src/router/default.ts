@@ -197,6 +197,15 @@ const createProfileRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/user/profile/InfoHome.vue')
+            },
+            {
+                name: 'profile',
+                path: 'profile',
+                meta: {
+                    title: 'user.common.profile',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/user/profile/ProfileHome.vue')
             }
         ]
     }
