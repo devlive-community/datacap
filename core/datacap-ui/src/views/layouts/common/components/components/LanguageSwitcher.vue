@@ -1,14 +1,14 @@
 <template>
   <Select v-model="language" @update:modelValue="setLangCondition">
     <SelectTrigger class="w-[150px]">
-      <SelectValue :placeholder="$t('common.selectLanguage')"/>
+      <SelectValue :placeholder="$t('region.common.selectLanguage')"/>
     </SelectTrigger>
     <SelectContent>
       <SelectGroup>
-        <SelectLabel>{{ $t('common.region.asia.common') }}</SelectLabel>
-        <SelectItem class="pl-6" value="language_zh_cn">{{ $t('common.region.asia.chineseSimple') }}</SelectItem>
-        <SelectLabel>{{ $t('common.region.northAmerica.common') }}</SelectLabel>
-        <SelectItem class="pl-6" value="language_en">{{ $t('common.region.northAmerica.english') }}</SelectItem>
+        <SelectLabel>{{ $t('region.common.asia.default') }}</SelectLabel>
+        <SelectItem class="pl-6" value="language_zh_cn">{{ $t('region.common.asia.chineseSimple') }}</SelectItem>
+        <SelectLabel>{{ $t('region.common.northAmerica.default') }}</SelectLabel>
+        <SelectItem class="pl-6" value="language_en">{{ $t('region.common.northAmerica.english') }}</SelectItem>
       </SelectGroup>
     </SelectContent>
   </Select>

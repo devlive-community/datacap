@@ -9,6 +9,7 @@ import query from '@/i18n/langs/zhCn/query'
 import source from '@/i18n/langs/zhCn/source'
 import grid from '@/i18n/langs/zhCn/grid'
 import heatmap from '@/i18n/langs/zhCn/heatmap'
+import region from '@/i18n/langs/zhCn/region'
 
 export default {
     common: common,
@@ -21,5 +22,6 @@ export default {
     query: query,
     source: source,
     grid: grid,
-    heatmap: heatmap
+    heatmap: heatmap,
+    region: region
 }

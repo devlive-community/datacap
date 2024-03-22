@@ -57,20 +57,9 @@ export default {
     content: 'Content',
     feedback: 'Feedback',
     createEditor: 'Create Editor',
-    selectLanguage: 'Select Language',
     device: 'Device',
     client: 'Client',
     ip: 'IP Address',
     ua: 'User Agent',
-    loginTime: 'Login Time',
-    region: {
-        asia: {
-            common: 'Asia',
-            chineseSimple: 'Simple Chinese'
-        },
-        northAmerica: {
-            common: 'North America',
-            english: 'English'
-        }
-    }
+    loginTime: 'Login Time'
 }
