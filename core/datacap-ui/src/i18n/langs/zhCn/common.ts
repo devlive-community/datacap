@@ -57,15 +57,9 @@ export default {
     content: '内容',
     feedback: '反馈',
     createEditor: '创建编辑器',
-    selectLanguage: '选择语言',
-    region: {
-        asia: {
-            common: '亚洲',
-            chineseSimple: '简体中文'
-        },
-        northAmerica: {
-            common: '北美洲',
-            english: '英语'
-        }
-    }
+    device: '设备',
+    client: '客户端',
+    ip: 'IP 地址',
+    ua: 'User Agent',
+    loginTime: '登录时间'
 }

@@ -4,12 +4,40 @@ export interface UserModel
 {
     id: number
     username: string
-    chatConfigure?: any
+    chatConfigure?: UserChatModel
     system?: boolean
     editorConfigure?: string
     createTime?: string
     updateTime?: string
     roles?: RoleModel[] | []
+    avatarConfigure?: UserAvatarModel
+}
+
+export interface UsernameModel
+{
+    oldUsername: string
+    newUsername: string | undefined
+    password: string | undefined
+}
+
+export interface UserChatModel
+{
+    host: string | undefined
+    token: string | undefined
+    timeout: number
+    contentCount: number
+}
+
+export interface UserPasswordModel
+{
+    oldPassword: string | null
+    newPassword: string | null
+    confirmPassword: string | null
+}
+
+export interface UserAvatarModel
+{
+    path?: string
 }
 
 export interface UserRoleModel

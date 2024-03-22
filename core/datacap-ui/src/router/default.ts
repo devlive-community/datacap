@@ -1,4 +1,5 @@
 import LayoutContainer from '@/views/layouts/common/LayoutContainer.vue'
+import ProfileContainer from '@/views/layouts/profile/LayoutContainer.vue'
 import { TokenUtils } from '@/utils/token'
 
 /**
@@ -28,6 +29,7 @@ const createDefaultRouter = (router: any) => {
     createSystemRouter(router)
     createAdminRouter(router)
     createPreviewRouter(router)
+    createProfileRouter(router)
 }
 
 /**
@@ -173,6 +175,84 @@ const createPreviewRouter = (router: any) => {
             isRoot: false
         },
         component: () => import('@/views/pages/admin/dashboard/DashboardPreview.vue')
+    }
+    router.addRoute(newRouter)
+}
+
+const createProfileRouter = (router: any) => {
+    const newRouter = {
+        path: '/admin/user',
+        meta: {
+            title: 'user.common.setting',
+            isRoot: true
+        },
+        redirect: '/admin/user/profile',
+        component: ProfileContainer,
+        children: [
+            {
+                name: 'info',
+                path: 'info',
+                meta: {
+                    title: 'user.common.info',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/profile/InfoHome.vue')
+            },
+            {
+                name: 'profile',
+                path: 'profile',
+                meta: {
+                    title: 'user.common.profile',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/profile/ProfileHome.vue')
+            },
+            {
+                name: 'log',
+                path: 'log',
+                meta: {
+                    title: 'user.common.log',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/profile/LogHome.vue')
+            },
+            {
+                name: 'editor',
+                path: 'editor',
+                meta: {
+                    title: 'user.common.editor',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/profile/EditorHome.vue')
+            },
+            {
+                name: 'assistant',
+                path: 'assistant',
+                meta: {
+                    title: 'user.common.assistant',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/profile/AssistantHome.vue')
+            },
+            {
+                name: 'username',
+                path: 'username',
+                meta: {
+                    title: 'user.common.modifyUsername',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/security/UsernameHome.vue')
+            },
+            {
+                username: 'password',
+                path: 'password',
+                meta: {
+                    title: 'user.common.modifyPassword',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/user/security/PasswordHome.vue')
+            }
+        ]
     }
     router.addRoute(newRouter)
 }

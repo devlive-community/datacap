@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="hidden flex-col md:flex">
-      <LayoutHeader @changeLanguage="setLangCondition($event)"></LayoutHeader>
-      <LayoutBreadcrumb></LayoutBreadcrumb>
+      <LayoutHeader/>
+      <LayoutBreadcrumb/>
       <div class="flex-1 space-y-4 pl-8 pr-8">
-        <RouterView></RouterView>
+        <RouterView />
       </div>
     </div>
   </div>
@@ -21,7 +21,6 @@ import { ObjectUtils } from '@/utils/object'
 import { HttpUtils } from '@/utils/http'
 import UserService from '@/services/user'
 import CommonUtils from '@/utils/common'
-import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'LayoutContainer',
@@ -29,22 +28,6 @@ export default defineComponent({
   beforeUnmount()
   {
     clearInterval(this.timer)
-  },
-  setup()
-  {
-    const {locale} = useI18n()
-    const setLangCondition = (language: string) => {
-      const prefix = 'language_'
-      if (language.startsWith(prefix)) {
-        locale.value = language.substring(prefix.length)
-      }
-      else {
-        locale.value = language
-      }
-    }
-    return {
-      setLangCondition
-    }
   },
   data()
   {
