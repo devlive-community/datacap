@@ -1,6 +1,6 @@
 export interface DatasetModel {
     id: number
-    name: string
+    name: string | null | undefined
     description: string
     query: string
     syncMode: string

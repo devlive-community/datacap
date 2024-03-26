@@ -7,7 +7,7 @@
     </div>
     <div v-if="data || code" class="mt-3">
       <AgGridVue v-if="data?.columns" :style="{height: '300px'}" class="ag-theme-datacap" :pagination="true" :columnDefs="columnDefs" :rowData="data.columns"
-                 :gridOptions="gridOptions"/>
+                 :gridOptions="gridOptions as any"/>
       <Alert v-else variant="destructive">
         {{ i18n.t('dataset.tip.modifyNotSupportDataPreview') }}
       </Alert>
@@ -134,7 +134,7 @@
                   <div class="grid grid-cols-2 gap-4">
                     <div class="grid gap-2">
                       <Label for="name">{{ $t('common.name') }}</Label>
-                      <Input v-model="formState.name"/>
+                      <Input v-model="formState.name as string"/>
                     </div>
                     <div class="grid gap-2">
                       <Label for="executor">{{ $t('common.executor') }}</Label>
@@ -162,7 +162,7 @@
                     </div>
                     <div class="grid gap-2" v-if="formState.syncMode === 'TIMING'">
                       <Label for="syncMode">{{ $t('dataset.common.columnExpression') }}</Label>
-                      <Input v-model="formState.expression" placeholder="0 0 * * * ?"/>
+                      <Input v-model="formState.expression as string" placeholder="0 0 * * * ?"/>
                     </div>
                     <div class="grid gap-2" v-if="formState.syncMode === 'TIMING'">
                       <Label for="syncMode">{{ $t('common.scheduler') }}</Label>
@@ -195,7 +195,7 @@
                   <div v-else class="grid grid-cols-2 gap-4 -mt-3">
                     <div class="grid gap-2">
                       <Label>{{ $t('dataset.common.lifeCycleColumn') }}</Label>
-                      <Select v-model="formState.lifeCycleColumn">
+                      <Select v-model="formState.lifeCycleColumn as string">
                         <SelectTrigger>
                           <SelectValue/>
                         </SelectTrigger>
@@ -208,11 +208,11 @@
                     </div>
                     <div class="grid gap-2">
                       <Label>{{ $t('dataset.common.lifeCycleNumber') }}</Label>
-                      <Input :disabled="!formState.lifeCycleColumn" type="number" v-model="formState.lifeCycle"/>
+                      <Input :disabled="!formState.lifeCycleColumn" type="number" v-model="formState.lifeCycle as number"/>
                     </div>
                     <div class="grid gap-2">
                       <Label>{{ $t('dataset.common.lifeCycleNumber') }}</Label>
-                      <Select :disabled="!formState.lifeCycleColumn" v-model="formState.lifeCycleType">
+                      <Select :disabled="!formState.lifeCycleColumn" v-model="formState.lifeCycleType as string">
                         <SelectTrigger>
                           <SelectValue/>
                         </SelectTrigger>
@@ -236,7 +236,7 @@
                   <Separator/>
                   <div class="grid gap-2 -mt-3">
                     <Label for="description">{{ $t('common.description') }}</Label>
-                    <Textarea v-model="formState.description"/>
+                    <Textarea v-model="formState.description as string"/>
                   </div>
                 </CardContent>
               </Card>
@@ -286,6 +286,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { Separator } from '@/components/ui/separator'
 import { ToastUtils } from '@/utils/toast'
 import { AgGridVue } from 'ag-grid-vue3'
+import { DatasetModel } from '@/model/dataset'
 
 export default defineComponent({
   name: 'DatasetInfo',
@@ -333,18 +334,18 @@ export default defineComponent({
       configureVisible: false,
       formState: {
         id: null,
-        name: null,
-        description: null,
+        name: null as string | null | undefined,
+        description: null as string | null | undefined,
         query: null,
         syncMode: 'MANUAL',
         columns: [] as any[],
         source: {id: null},
-        expression: null,
+        expression: null as string | null,
         scheduler: 'Default',
         executor: 'Default',
-        lifeCycle: null,
-        lifeCycleColumn: null,
-        lifeCycleType: null
+        lifeCycle: null as number | null,
+        lifeCycleColumn: null as string | null,
+        lifeCycleType: null as string | null
       }
     }
   },
@@ -413,7 +414,7 @@ export default defineComponent({
     handlerCreate()
     {
       this.saving = true
-      DatasetService.saveOrUpdate(this.formState)
+      DatasetService.saveOrUpdate(this.formState as unknown as DatasetModel)
           .then(response => {
             if (response.status) {
               ToastUtils.success(`${this.$t('dataset.create')} [ ${this.formState.name} ] ${this.$t('common.success')}`)

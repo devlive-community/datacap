@@ -2,6 +2,7 @@ import { ResponseModel } from '@/model/response'
 import { BaseService } from '@/services/base'
 import { HttpUtils } from '@/utils/http'
 import { FilterModel } from '@/model/filter'
+import { DatasetModel } from '@/model/dataset'
 
 const DEFAULT_PATH = '/api/v1/dataset'
 
@@ -13,7 +14,7 @@ export class DatasetService
         super(DEFAULT_PATH)
     }
 
-    saveOrUpdate<T>(configure: T): Promise<ResponseModel>
+    saveOrUpdate(configure: DatasetModel): Promise<ResponseModel>
     {
         const url = `${DEFAULT_PATH}/create`
         // @ts-ignore
