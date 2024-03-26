@@ -51,7 +51,6 @@ export default {
         stateOfMetadata: 'Metadata State',
         stateOfMetadataStarted: 'Metadata Started',
         stateOfCreateTable: 'Create Table State',
-        modifyNotSupportDataPreview: 'Data preview is not supported to modify',
         syncData: 'Sync Data',
         visualType: 'Visual Type',
         visualTypeTable: 'Table',
@@ -105,6 +104,8 @@ export default {
         clearData: 'Clear Data',
         error: 'View Error',
         info: 'View Info',
+        lifeCycleColumn: 'Lifecycle columns',
+        lifeCycleNumber: 'Lifecycle number',
     },
     tip: {
         selectExpression: 'Please select the expression',
@@ -114,5 +115,7 @@ export default {
         validatorSampling: 'The order by key must contain a sampling key',
         adhocDnd: 'Drag the indicator dimension on the left to the corresponding position to query and render the data',
         rebuildProgress: 'Rebuilding will only progress unfinished',
+        lifeCycleMustDateColumn: 'The lifecycle must contain a date column',
+        modifyNotSupportDataPreview: 'Data preview is not supported to modify',
     }
 }

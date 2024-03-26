@@ -13,6 +13,18 @@ export class DatasetService
         super(DEFAULT_PATH)
     }
 
+    saveOrUpdate<T>(configure: T): Promise<ResponseModel>
+    {
+        const url = `${DEFAULT_PATH}/create`
+        // @ts-ignore
+        if (configure['id'] > 0) {
+            return new HttpUtils().put(url, configure)
+        }
+        else {
+            return new HttpUtils().post(url, configure)
+        }
+    }
+
     /**
      * Adhoc function for executing custom code.
      *
@@ -79,6 +91,11 @@ export class DatasetService
     clearData(code: string): Promise<ResponseModel>
     {
         return new HttpUtils().put(`${DEFAULT_PATH}/clearData/${code}`)
+    }
+
+    getByCode(code: string): Promise<ResponseModel>
+    {
+        return new HttpUtils().get(`${DEFAULT_PATH}/info/${code}`)
     }
 }
 
