@@ -16,6 +16,11 @@ class SourceService
     {
         return new HttpUtils().get(DEFAULT_PATH_V1, {page: page, size: size})
     }
+
+    getPlugins(): Promise<ResponseModel>
+    {
+        return new HttpUtils().get(`${DEFAULT_PATH_V1}/plugins`)
+    }
 }
 
 export default new SourceService()

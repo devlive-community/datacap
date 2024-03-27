@@ -61,5 +61,8 @@ export default {
     client: 'Client',
     ip: 'IP Address',
     ua: 'User Agent',
-    loginTime: 'Login Time'
+    loginTime: 'Login Time',
+    submit: 'Submit',
+    create: 'Create',
+    plugin: 'Plugin',
 }

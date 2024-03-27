@@ -61,5 +61,8 @@ export default {
     client: '客户端',
     ip: 'IP 地址',
     ua: 'User Agent',
-    loginTime: '登录时间'
+    loginTime: '登录时间',
+    submit: '提交',
+    create: '创建',
+    plugin: '插件',
 }

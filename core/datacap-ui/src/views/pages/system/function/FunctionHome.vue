@@ -1,9 +1,16 @@
 <template>
   <div class="w-full">
     <Card>
-      <CardHeader class="border-b p-4">
-        <CardTitle>{{ $t('function.common.list') }}</CardTitle>
+      <CardHeader class="flex flex-row items-center border-b p-4">
+        <div class="grid gap-2">
+          <CardTitle>{{ $t('function.common.list') }}</CardTitle>
+        </div>
+        <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true)">
+          <Plus :size="20"/>
+        </Button>
       </CardHeader>
+
+
       <CardContent>
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
           <template #action="{row}">
@@ -23,6 +30,7 @@
         </TableCommon>
       </CardContent>
     </Card>
+    <FunctionInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :id="applyId" @close="handlerInfo(false)"/>
   </div>
 </template>
 
@@ -30,18 +38,22 @@
 import { defineComponent } from 'vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
-import { Pencil } from 'lucide-vue-next'
+import { Pencil, Plus } from 'lucide-vue-next'
 import { FilterModel } from '@/model/filter'
 import { createHeaders } from '@/views/pages/system/function/FunctionUtils'
 import { useI18n } from 'vue-i18n'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import { RoleModel } from '@/model/role'
 import FunctionService from '@/services/function'
+import FunctionInfo from '@/views/pages/system/function/FunctionInfo.vue'
+import { Button } from '@/components/ui/button'
 
 export default defineComponent({
   name: 'FunctionHome',
   components: {
-    Pencil,
+    Button,
+    FunctionInfo,
+    Pencil, Plus,
     Card, CardHeader, CardTitle, CardContent,
     TableCommon
   },
@@ -62,6 +74,7 @@ export default defineComponent({
       dataInfoVisible: false,
       data: [],
       pagination: {} as PaginationModel,
+      applyId: 0,
       dataInfo: null as RoleModel | null
     }
   },
@@ -87,6 +100,16 @@ export default defineComponent({
       this.filter.page = value.currentPage
       this.filter.size = value.pageSize
       this.handlerInitialize()
+    },
+    handlerInfo(opened: boolean, value?: number)
+    {
+      this.dataInfoVisible = opened
+      if (value) {
+        this.applyId = value
+      }
+      if (!opened) {
+        this.handlerInitialize()
+      }
     }
   }
 })
