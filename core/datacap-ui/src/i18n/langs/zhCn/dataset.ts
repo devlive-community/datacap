@@ -51,7 +51,6 @@ export default {
         stateOfMetadata: '元数据状态',
         stateOfMetadataStarted: '元数据已启动',
         stateOfCreateTable: '创建表状态',
-        modifyNotSupportDataPreview: '修改暂不支持数据预览',
         syncData: '同步数据',
         visualType: '可视化类型',
         visualTypeTable: '表格',
@@ -105,6 +104,8 @@ export default {
         clearData: '清除数据',
         error: '查看错误',
         info: '查看详情',
+        lifeCycleColumn: '生命周期列',
+        lifeCycleNumber: '生命周期数',
     },
     tip: {
         selectExpression: '请选择表达式',
@@ -114,5 +115,7 @@ export default {
         validatorSampling: '排序键中必须包含抽样键',
         adhocDnd: '拖拽左侧指标｜维度到相应位置即可查询并渲染数据',
         rebuildProgress: '重建只会进行未完成进度',
+        lifeCycleMustDateColumn: '生命周期必须包含一个日期列',
+        modifyNotSupportDataPreview: '修改暂不支持数据预览',
     }
 }

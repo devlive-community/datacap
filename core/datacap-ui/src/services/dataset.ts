@@ -2,6 +2,7 @@ import { ResponseModel } from '@/model/response'
 import { BaseService } from '@/services/base'
 import { HttpUtils } from '@/utils/http'
 import { FilterModel } from '@/model/filter'
+import { DatasetModel } from '@/model/dataset'
 
 const DEFAULT_PATH = '/api/v1/dataset'
 
@@ -11,6 +12,18 @@ export class DatasetService
     constructor()
     {
         super(DEFAULT_PATH)
+    }
+
+    saveOrUpdate(configure: DatasetModel): Promise<ResponseModel>
+    {
+        const url = `${DEFAULT_PATH}/create`
+        // @ts-ignore
+        if (configure['id'] > 0) {
+            return new HttpUtils().put(url, configure)
+        }
+        else {
+            return new HttpUtils().post(url, configure)
+        }
     }
 
     /**
@@ -79,6 +92,11 @@ export class DatasetService
     clearData(code: string): Promise<ResponseModel>
     {
         return new HttpUtils().put(`${DEFAULT_PATH}/clearData/${code}`)
+    }
+
+    getByCode(code: string): Promise<ResponseModel>
+    {
+        return new HttpUtils().get(`${DEFAULT_PATH}/info/${code}`)
     }
 }
 
