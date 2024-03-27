@@ -9,15 +9,22 @@
           <Plus :size="20"/>
         </Button>
       </CardHeader>
-
-
       <CardContent>
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
+          <template #plugin="{row}">
+            <Avatar>
+              <AvatarImage :src="'/static/images/plugin/' + row?.plugin + '.png'"/>
+              <AvatarFallback>{{ row?.plugin }}</AvatarFallback>
+            </Avatar>
+          </template>
+          <template #type="{ row }">
+            <Badge>{{ $t('function.common.' + row.type.toLowerCase()) }}</Badge>
+          </template>
           <template #action="{row}">
-            <TooltipProvider>
+            <TooltipProvider :delay-duration="0">
               <Tooltip>
                 <TooltipTrigger as-child>
-                  <Button variant="outline" size="sm" class="p-2" @click="handlerChangeInfo(true, row)">
+                  <Button variant="outline" size="icon" @click="handlerInfo(true, row?.id)">
                     <Pencil :size="15"></Pencil>
                   </Button>
                 </TooltipTrigger>
@@ -43,19 +50,24 @@ import { FilterModel } from '@/model/filter'
 import { createHeaders } from '@/views/pages/system/function/FunctionUtils'
 import { useI18n } from 'vue-i18n'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
-import { RoleModel } from '@/model/role'
 import FunctionService from '@/services/function'
 import FunctionInfo from '@/views/pages/system/function/FunctionInfo.vue'
 import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 export default defineComponent({
   name: 'FunctionHome',
   components: {
+    Badge,
     Button,
     FunctionInfo,
     Pencil, Plus,
     Card, CardHeader, CardTitle, CardContent,
-    TableCommon
+    TableCommon,
+    Avatar, AvatarFallback, AvatarImage,
+    Tooltip, TooltipContent, TooltipProvider, TooltipTrigger
   },
   setup()
   {
@@ -74,8 +86,7 @@ export default defineComponent({
       dataInfoVisible: false,
       data: [],
       pagination: {} as PaginationModel,
-      applyId: 0,
-      dataInfo: null as RoleModel | null
+      applyId: 0
     }
   },
   created()

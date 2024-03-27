@@ -1,11 +1,11 @@
 <template>
   <Sheet :open="visible" class="w-full" @update:open="handlerCancel">
-    <CircularLoading v-if="loading" :show="loading"/>
-    <SheetContent v-else class="w-[80%]">
+    <SheetContent class="w-[80%]">
       <SheetHeader class="border-b pb-3">
         <SheetTitle class="-mt-3">{{ `${$t('common.create')}${$t('common.function')}` }}</SheetTitle>
       </SheetHeader>
-      <div class="grid gap-4 py-4">
+      <CircularLoading v-if="loading" :show="loading"/>
+      <div v-else class="grid gap-4 py-4">
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="name" class="text-right">{{ $t('common.name') }}</Label>
           <Input v-model="formState.name" class="col-span-3"/>
@@ -76,7 +76,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import CircularLoading from '@/views/components/loading/CircularLoading.vue';
+import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 
 export default defineComponent({
   name: 'FunctionInfo',
@@ -155,6 +155,7 @@ export default defineComponent({
             .then(response => {
               if (response.status) {
                 this.formState = response.data as FunctionModel
+                this.formState.plugin = response.data.plugin[0] as string
               }
             })
             .finally(() => this.loading = false)
@@ -163,7 +164,9 @@ export default defineComponent({
     handlerSave()
     {
       this.created = true
-      this.formState.plugin = [...this.formState.plugin as string]
+      const plugins = []
+      plugins.push(this.formState.plugin as string)
+      this.formState.plugin = plugins
       FunctionService.saveOrUpdate(this.formState)
           .then((response) => {
             if (response.status) {
