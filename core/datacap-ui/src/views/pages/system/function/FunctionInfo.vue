@@ -12,14 +12,14 @@
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="plugin" class="text-right">{{ $t('common.plugin') }}</Label>
-          <Select v-model="formState.plugin">
+          <Select v-model="formState.plugin as string">
             <SelectTrigger class="col-span-3">
               <SelectValue :placeholder="$t('function.tip.selectPluginHolder')"/>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup v-for="key in Object.keys(plugins)">
                 <SelectLabel>{{ key }}</SelectLabel>
-                <SelectItem v-for="plugin in plugins[key]" :value="plugin.name" class="cursor-pointer">{{ plugin.name }}</SelectItem>
+                <SelectItem v-for="plugin in plugins[key as any]" :value="(plugin as any).name" class="cursor-pointer">{{ (plugin as any).name }}</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
