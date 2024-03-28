@@ -10,6 +10,7 @@ import source from '@/i18n/langs/zhCn/source'
 import grid from '@/i18n/langs/zhCn/grid'
 import heatmap from '@/i18n/langs/zhCn/heatmap'
 import region from '@/i18n/langs/zhCn/region'
+import function1 from '@/i18n/langs/zhCn/function'
 
 export default {
     common: common,
@@ -23,5 +24,6 @@ export default {
     source: source,
     grid: grid,
     heatmap: heatmap,
-    region: region
+    region: region,
+    function: function1
 }

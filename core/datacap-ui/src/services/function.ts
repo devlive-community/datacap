@@ -1,6 +1,7 @@
 import { BaseService } from '@/services/base'
 import { ResponseModel } from '@/model/response'
 import { HttpUtils } from '@/utils/http'
+import { FunctionImportModel } from '@/model/function'
 
 const DEFAULT_PATH = '/api/v1/function'
 
@@ -12,10 +13,10 @@ class FunctionService
         super(DEFAULT_PATH)
     }
 
-    // import(configure: FunctionsImport): Promise<ResponseModel>
-    // {
-    //     return new HttpCommon().put(baseUrl + '/import', configure);
-    // }
+    import(configure: FunctionImportModel): Promise<ResponseModel>
+    {
+        return new HttpUtils().put(`${DEFAULT_PATH}/import`, configure)
+    }
 
     getByPlugin(plugin: string): Promise<ResponseModel>
     {

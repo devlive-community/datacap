@@ -73,6 +73,15 @@ const createSystemRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/system/schedule/ScheduleHome.vue')
+            },
+            {
+                name: 'function',
+                path: 'function',
+                meta: {
+                    title: 'common.function',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/system/function/FunctionHome.vue')
             }
         ]
     }
