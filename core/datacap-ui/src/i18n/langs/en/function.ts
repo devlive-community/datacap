@@ -5,6 +5,8 @@ export default {
         operator: 'Operator',
         function: 'Function',
         example: 'Example',
+        import: 'Import Data',
+        importFromUrl: 'Import from URL',
     },
     tip: {
         selectPluginHolder: 'Please select a plugin',

@@ -5,6 +5,8 @@ export default {
         operator: '运算符',
         function: '函数',
         example: '示例',
+        import: '导入数据',
+        importFromUrl: '从 URL 导入',
     },
     tip: {
         selectPluginHolder: '请选择插件',

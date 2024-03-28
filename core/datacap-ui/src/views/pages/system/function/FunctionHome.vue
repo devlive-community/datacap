@@ -8,6 +8,21 @@
         <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true)">
           <Plus :size="20"/>
         </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger as-child>
+            <Button variant="secondary" size="icon" class="gap-1 h-6 w-6 ml-2">
+              <Cog class="w-full justify-center" :size="20"/>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuGroup>
+              <DropdownMenuItem class="cursor-pointer" @click="handlerImport(true)">
+                <Import class="mr-2 h-4 w-4"/>
+                <span>{{ $t('function.common.import') }}</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </CardHeader>
       <CardContent>
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
@@ -24,7 +39,7 @@
             <TooltipProvider :delay-duration="0">
               <Tooltip>
                 <TooltipTrigger as-child>
-                  <Button variant="outline" size="icon" @click="handlerInfo(true, row?.id)">
+                  <Button variant="outline" size="icon" class="rounded-full" @click="handlerInfo(true, row?.id)">
                     <Pencil :size="15"></Pencil>
                   </Button>
                 </TooltipTrigger>
@@ -38,6 +53,7 @@
       </CardContent>
     </Card>
     <FunctionInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :id="applyId" @close="handlerInfo(false)"/>
+    <FunctionImport v-if="dataImportVisible" :is-visible="dataImportVisible" @close="handlerImport(false)"/>
   </div>
 </template>
 
@@ -45,7 +61,7 @@
 import { defineComponent } from 'vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
-import { Pencil, Plus } from 'lucide-vue-next'
+import { Cog, Import, Pencil, Plus } from 'lucide-vue-next'
 import { FilterModel } from '@/model/filter'
 import { createHeaders } from '@/views/pages/system/function/FunctionUtils'
 import { useI18n } from 'vue-i18n'
@@ -56,18 +72,30 @@ import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import FunctionImport from '@/views/pages/system/function/FunctionImport.vue'
 
 export default defineComponent({
   name: 'FunctionHome',
   components: {
+    FunctionImport,
+    Import, Pencil, Cog, Plus,
     Badge,
     Button,
     FunctionInfo,
-    Pencil, Plus,
     Card, CardHeader, CardTitle, CardContent,
     TableCommon,
     Avatar, AvatarFallback, AvatarImage,
-    Tooltip, TooltipContent, TooltipProvider, TooltipTrigger
+    Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
+    DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger
   },
   setup()
   {
@@ -84,6 +112,7 @@ export default defineComponent({
     return {
       loading: false,
       dataInfoVisible: false,
+      dataImportVisible: false,
       data: [],
       pagination: {} as PaginationModel,
       applyId: 0
@@ -121,6 +150,11 @@ export default defineComponent({
       if (!opened) {
         this.handlerInitialize()
       }
+    },
+    handlerImport(value: boolean)
+    {
+      this.dataImportVisible = value
+      this.handlerInitialize()
     }
   }
 })
