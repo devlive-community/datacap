@@ -11,6 +11,7 @@ import grid from '@/i18n/langs/en/grid'
 import heatmap from '@/i18n/langs/en/heatmap'
 import region from '@/i18n/langs/en/region'
 import function1 from '@/i18n/langs/en/function'
+import template from '@/i18n/langs/en/template'
 
 export default {
     common: common,
@@ -25,5 +26,6 @@ export default {
     grid: grid,
     heatmap: heatmap,
     region: region,
-    function: function1
+    function: function1,
+    template: template
 }
