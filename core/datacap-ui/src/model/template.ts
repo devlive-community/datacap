@@ -4,7 +4,7 @@ export interface TemplateModel
     name?: string
     description?: string
     content?: string
-    plugin?: string | string[]
+    plugin?: string
     configure?: string
     system?: boolean
     createTime?: string
