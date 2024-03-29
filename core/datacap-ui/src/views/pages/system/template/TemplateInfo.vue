@@ -93,7 +93,7 @@ export default defineComponent({
       type: Boolean
     },
     info: {
-      type: Object as () => TemplateModel
+      type: Object as () => TemplateModel | null
     }
   },
   data()
@@ -113,11 +113,13 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.formState = TemplateRequest.of()
       this.title = `${this.$t('template.common.create')}`
       if (this.info) {
         this.formState = cloneDeep(this.info)
         this.title = `${this.$t('template.common.modify').replace('$NAME', this.info.name as string)}`
+      }
+      else {
+        this.formState = TemplateRequest.of()
       }
 
       this.loading = true
