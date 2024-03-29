@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
-@RequestMapping(value = "/api/v1/admin/template/sql")
+@RequestMapping(value = {"/api/v1/admin/template/sql", "/api/v1/template"})
 public class TemplateSqlController
 {
     private final TemplateSqlService templateSqlService;

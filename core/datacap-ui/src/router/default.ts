@@ -82,6 +82,15 @@ const createSystemRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/system/function/FunctionHome.vue')
+            },
+            {
+                name: 'template',
+                path: 'template',
+                meta: {
+                    title: 'common.template',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/system/template/TemplateHome.vue')
             }
         ]
     }

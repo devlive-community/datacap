@@ -51,7 +51,7 @@
       <SheetFooter class="absolute bottom-0 left-0 right-0 mb-3 mr-3 pt-3 border-t">
         <SheetClose as-child>
           <Button :disabled="created" variant="destructive" @click="handlerCancel()">{{ $t('common.cancel') }}</Button>
-          <Button :loading="created" @click="handlerSave()">
+          <Button :disabled="created" @click="handlerSave()">
             <Loader2 v-if="created" class="w-full justify-center animate-spin"/>
             {{ $t('common.submit') }}
           </Button>
