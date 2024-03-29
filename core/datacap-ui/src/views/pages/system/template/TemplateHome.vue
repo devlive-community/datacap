@@ -5,7 +5,7 @@
         <div class="grid gap-2">
           <CardTitle>{{ $t('template.common.list') }}</CardTitle>
         </div>
-        <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true)">
+        <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true, null)">
           <Plus :size="20"/>
         </Button>
       </CardHeader>
@@ -28,7 +28,7 @@
             <TooltipProvider :delay-duration="0">
               <Tooltip>
                 <TooltipTrigger as-child>
-                  <Button variant="outline" size="icon" class="rounded-full" @click="handlerInfo(true, row?.id)">
+                  <Button variant="outline" size="icon" class="rounded-full w-8 h-8" @click="handlerInfo(true, row)">
                     <Pencil :size="15"></Pencil>
                   </Button>
                 </TooltipTrigger>
@@ -42,6 +42,7 @@
       </CardContent>
     </Card>
   </div>
+  <TemplateInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -59,10 +60,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { TemplateModel } from '@/model/template'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Switch } from '@/components/ui/switch'
+import TemplateInfo from '@/views/pages/system/template/TemplateInfo.vue'
 
 export default defineComponent({
   name: 'TemplateHome',
   components: {
+    TemplateInfo,
     Switch,
     Button,
     Pencil, Plus, Import, Cog,
@@ -87,7 +90,8 @@ export default defineComponent({
       loading: false,
       dataInfoVisible: false,
       data: [] as TemplateModel[],
-      pagination: {} as PaginationModel
+      pagination: {} as PaginationModel,
+      dataInfo: null as TemplateModel | null
     }
   },
   created()
@@ -113,20 +117,13 @@ export default defineComponent({
       this.filter.size = value.pageSize
       this.handlerInitialize()
     },
-    handlerInfo(opened: boolean, value?: number)
+    handlerInfo(opened: boolean, value: null | TemplateModel)
     {
       this.dataInfoVisible = opened
-      if (value) {
-        this.applyId = value
-      }
+      this.dataInfo = value
       if (!opened) {
         this.handlerInitialize()
       }
-    },
-    handlerImport(value: boolean)
-    {
-      this.dataImportVisible = value
-      this.handlerInitialize()
     }
   }
 })
