@@ -5,7 +5,7 @@
         <div class="grid gap-2">
           <CardTitle>{{ $t('function.common.list') }}</CardTitle>
         </div>
-        <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true)">
+        <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true, null)">
           <Plus :size="20"/>
         </Button>
         <DropdownMenu>

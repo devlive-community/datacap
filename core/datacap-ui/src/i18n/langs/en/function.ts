@@ -7,6 +7,8 @@ export default {
         example: 'Example',
         import: 'Import Data',
         importFromUrl: 'Import from URL',
+        create: 'Create Function',
+        modify: 'Modify Function [ $NAME ]',
     },
     tip: {
         selectPluginHolder: 'Please select a plugin',

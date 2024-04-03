@@ -27,7 +27,7 @@ export default defineComponent({
   },
   props: {
     plugins: {
-      type: Array,
+      type: Array as () => Array<{ checked: boolean; name: string }>,
       default: []
     }
   },
