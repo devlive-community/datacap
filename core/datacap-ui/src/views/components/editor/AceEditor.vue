@@ -1,5 +1,5 @@
 <template>
-  <VAceEditor lang="mysql" :value="internalValue" :theme="configure.theme"
+  <VAceEditor lang="mysql" :value="internalValue as string" :theme="configure.theme"
               :style="{ height: '300px', fontSize: configure.fontSize + 'px' }"
               :key="key" :options="{ enableSnippets: true, enableLiveAutocompletion: true }"
               @init="handlerEditorDidMount($event, 'mysql')" @update:value="handlerUpdateValue" @input="handleInput"/>
