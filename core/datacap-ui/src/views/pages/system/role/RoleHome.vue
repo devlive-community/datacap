@@ -7,23 +7,38 @@
       <CardContent>
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
           <template #action="{row}">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger as-child>
-                  <Button variant="outline" size="sm" class="p-2" @click="handlerChangeInfo(true, row)">
-                    <Pencil :size="15"></Pencil>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{{ $t('common.editData') }}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div class="space-x-2">
+              <TooltipProvider :delay-duration="0">
+                <Tooltip>
+                  <TooltipTrigger as-child>
+                    <Button variant="outline" size="icon" class="p-2 w-8 h-8 rounded-full" @click="handlerChangeInfo(true, row)">
+                      <Pencil :size="15"/>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{{ $t('common.editData') }}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider :delay-duration="0">
+                <Tooltip>
+                  <TooltipTrigger as-child>
+                    <Button variant="outline" size="icon" class="p-2 w-8 h-8 rounded-full" @click="handlerAssignMenu(true, row)">
+                      <Menu :size="15"/>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{{ $t('role.common.assignMenu').replace('$NAME', row?.name) }}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </template>
         </TableCommon>
       </CardContent>
     </Card>
-    <RoleInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"></RoleInfo>
+    <RoleInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"/>
+    <RoleMenu v-if="dataAllocationVisible" :is-visible="dataAllocationVisible" :info="dataInfo" @close="handlerAssignMenu(false, null)"/>
   </div>
 </template>
 
@@ -33,7 +48,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Pencil } from 'lucide-vue-next'
+import { Menu, Pencil } from 'lucide-vue-next'
 import { FilterModel } from '@/model/filter'
 import { createHeaders } from '@/views/pages/system/role/RoleUtils'
 import { useI18n } from 'vue-i18n'
@@ -41,14 +56,16 @@ import { PaginationModel } from '@/model/pagination'
 import RoleService from '@/services/role'
 import RoleInfo from '@/views/pages/system/role/RoleInfo.vue'
 import { RoleModel } from '@/model/role'
+import RoleMenu from '@/views/pages/system/role/RoleMenu.vue'
 
 export default defineComponent({
   name: 'RoleHome',
   components: {
+    RoleMenu,
     RoleInfo,
     TooltipContent, TooltipTrigger, TooltipProvider, Tooltip,
     Card, CardHeader, CardTitle, TableCommon, CardContent,
-    Pencil,
+    Pencil, Menu,
     Button
   },
   setup()
@@ -66,6 +83,7 @@ export default defineComponent({
     return {
       loading: false,
       dataInfoVisible: false,
+      dataAllocationVisible: false,
       data: [],
       pagination: {} as PaginationModel,
       dataInfo: null as RoleModel | null
@@ -105,6 +123,11 @@ export default defineComponent({
       if (!isOpen) {
         this.handlerInitialize()
       }
+    },
+    handlerAssignMenu(opened: boolean, dataInfo: RoleModel | null)
+    {
+      this.dataAllocationVisible = opened
+      this.dataInfo = dataInfo
     }
   }
 })

@@ -5,7 +5,8 @@ export default {
         edit: 'Edit Role [ $NAME ]',
         name: 'Role Name',
         description: 'Role Description',
-        assignRole: 'Assign Role [ $NAME ]'
+        assignRole: 'Assign Role [ $NAME ]',
+        assignMenu: 'Assign Menu [ $NAME ]'
     },
     tip: {
         name: 'Please enter the role name',
