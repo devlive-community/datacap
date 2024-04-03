@@ -1,8 +1,8 @@
 <template>
   <Sheet :open="visible" class="w-full" @update:open="handlerCancel">
-    <SheetContent class="w-[80%]">
+    <SheetContent class="min-w-[25%]">
       <SheetHeader class="border-b pb-3">
-        <SheetTitle class="-mt-3">{{ `${$t('common.create')}${$t('common.function')}` }}</SheetTitle>
+        <SheetTitle class="-mt-3">{{ title }}</SheetTitle>
       </SheetHeader>
       <CircularLoading v-if="loading" :show="loading"/>
       <div v-else class="grid gap-4 py-4">
@@ -12,17 +12,7 @@
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="plugin" class="text-right">{{ $t('common.plugin') }}</Label>
-          <Select v-model="formState.plugin as string">
-            <SelectTrigger class="col-span-3">
-              <SelectValue :placeholder="$t('function.tip.selectPluginHolder')"/>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup v-for="key in Object.keys(plugins)">
-                <SelectLabel>{{ key }}</SelectLabel>
-                <SelectItem v-for="plugin in plugins[key as any]" :value="(plugin as any).name" class="cursor-pointer">{{ (plugin as any).name }}</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <MultipleSelect :plugins="plugins" @changeValue="handlerPluginChange"/>
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="content" class="text-right">{{ $t('common.content') }}</Label>
@@ -50,9 +40,9 @@
       </div>
       <SheetFooter class="absolute bottom-0 left-0 right-0 mb-3 mr-3 pt-3 border-t">
         <SheetClose as-child>
-          <Button :disabled="created" variant="destructive" @click="handlerCancel()">{{ $t('common.cancel') }}</Button>
-          <Button :disabled="created" @click="handlerSave()">
-            <Loader2 v-if="created" class="w-full justify-center animate-spin"/>
+          <Button :disabled="saving" variant="destructive" @click="handlerCancel()">{{ $t('common.cancel') }}</Button>
+          <Button :disabled="saving" @click="handlerSave()">
+            <Loader2 v-if="saving" class="w-full justify-center animate-spin"/>
             {{ $t('common.submit') }}
           </Button>
         </SheetClose>
@@ -77,10 +67,13 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
+import MultipleSelect from '@/views/components/select/MultipleSelect.vue'
+import { cloneDeep } from 'lodash'
 
 export default defineComponent({
   name: 'FunctionInfo',
   components: {
+    MultipleSelect,
     CircularLoading,
     Textarea,
     SelectItem, SelectLabel, SelectValue, SelectTrigger, SelectGroup, SelectContent, Select,
@@ -95,9 +88,8 @@ export default defineComponent({
       type: Boolean,
       default: () => false
     },
-    id: {
-      type: Number,
-      default: () => 0
+    info: {
+      type: Object as () => FunctionModel | null
     }
   },
   setup()
@@ -124,8 +116,9 @@ export default defineComponent({
     return {
       formState: null as unknown as FunctionModel,
       loading: false,
-      created: false,
-      plugins: []
+      saving: false,
+      title: null as string | null,
+      plugins: [] as any[]
     }
   },
   created()
@@ -135,35 +128,40 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.formState = {
-        name: undefined,
-        plugin: undefined,
-        content: undefined,
-        description: undefined,
-        type: undefined,
-        example: undefined
+      this.title = `${this.$t('function.common.create')}`
+      if (this.info) {
+        this.formState = cloneDeep(this.info)
+        this.title = `${this.$t('function.common.modify').replace('$NAME', this.info.name as string)}`
       }
+      else {
+        this.formState = {
+          name: undefined,
+          plugin: undefined,
+          content: undefined,
+          description: undefined,
+          type: undefined,
+          example: undefined
+        }
+      }
+
+      this.loading = true
       SourceService.getPlugins()
           .then(response => {
             if (response.status) {
-              this.plugins = response.data
+              this.plugins = Object.values(response.data).reduce((acc, curr) => (acc as any).concat(curr), []) as any[]
+              (this.formState.plugin as string[]).forEach(formPlugin => {
+                const foundPlugin = this.plugins.find(plugin => plugin.name === formPlugin)
+                if (foundPlugin) {
+                  foundPlugin.checked = true
+                }
+              })
             }
           })
-      if (this.id > 0) {
-        this.loading = true
-        FunctionService.getById(this.id)
-            .then(response => {
-              if (response.status) {
-                this.formState = response.data as FunctionModel
-                this.formState.plugin = response.data.plugin[0] as string
-              }
-            })
-            .finally(() => this.loading = false)
-      }
+          .finally(() => this.loading = false)
     },
     handlerSave()
     {
-      this.created = true
+      this.saving = true
       const plugins = []
       plugins.push(this.formState.plugin as string)
       this.formState.plugin = plugins
@@ -177,7 +175,12 @@ export default defineComponent({
               ToastUtils.error(response.message)
             }
           })
-          .finally(() => this.created = false)
+          .finally(() => this.saving = false)
+    },
+    handlerPluginChange(value: string)
+    {
+      this.formState.plugin = value.split(',')
+          .join(',')
     },
     handlerCancel()
     {

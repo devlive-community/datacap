@@ -27,10 +27,14 @@
       <CardContent>
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
           <template #plugin="{row}">
-            <Avatar>
-              <AvatarImage :src="'/static/images/plugin/' + row?.plugin + '.png'"/>
-              <AvatarFallback>{{ row?.plugin }}</AvatarFallback>
-            </Avatar>
+            <div class="flex items-center p-4 sm:justify-between">
+              <div class="flex -space-x-2 overflow-hidden">
+                <Avatar v-for="item in row?.plugin" size="sm" class="border-2 border-background w-8 h-8 cursor-pointer">
+                  <AvatarImage :src="'/static/images/plugin/' + item + '.png'"/>
+                  <AvatarFallback>{{ item }}</AvatarFallback>
+                </Avatar>
+              </div>
+            </div>
           </template>
           <template #type="{ row }">
             <Badge>{{ $t('function.common.' + row.type.toLowerCase()) }}</Badge>
@@ -39,7 +43,7 @@
             <TooltipProvider :delay-duration="0">
               <Tooltip>
                 <TooltipTrigger as-child>
-                  <Button variant="outline" size="icon" class="rounded-full" @click="handlerInfo(true, row?.id)">
+                  <Button variant="outline" size="icon" class="rounded-full" @click="handlerInfo(true, row)">
                     <Pencil :size="15"></Pencil>
                   </Button>
                 </TooltipTrigger>
@@ -52,7 +56,7 @@
         </TableCommon>
       </CardContent>
     </Card>
-    <FunctionInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :id="applyId" @close="handlerInfo(false)"/>
+    <FunctionInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
     <FunctionImport v-if="dataImportVisible" :is-visible="dataImportVisible" @close="handlerImport(false)"/>
   </div>
 </template>
@@ -82,6 +86,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import FunctionImport from '@/views/pages/system/function/FunctionImport.vue'
+import { FunctionModel } from '@/model/function'
 
 export default defineComponent({
   name: 'FunctionHome',
@@ -115,7 +120,7 @@ export default defineComponent({
       dataImportVisible: false,
       data: [],
       pagination: {} as PaginationModel,
-      applyId: 0
+      dataInfo: null as FunctionModel | null
     }
   },
   created()
@@ -141,12 +146,10 @@ export default defineComponent({
       this.filter.size = value.pageSize
       this.handlerInitialize()
     },
-    handlerInfo(opened: boolean, value?: number)
+    handlerInfo(opened: boolean, value: FunctionModel | null)
     {
       this.dataInfoVisible = opened
-      if (value) {
-        this.applyId = value
-      }
+      this.dataInfo = value
       if (!opened) {
         this.handlerInitialize()
       }

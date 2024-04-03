@@ -6,11 +6,11 @@
       </SheetHeader>
       <CircularLoading v-if="loading" :show="loading"/>
       <div v-else class="grid gap-4 py-4">
-        <FormField v-slot="{ componentField }" name="username">
+        <FormField v-slot="{ componentField }" name="name">
           <FormItem>
             <FormLabel>{{ $t('common.name') }}</FormLabel>
             <FormControl>
-              <Input v-model="formState.name" :disabled="formState.system" v-bind="componentField"/>
+              <Input v-model="formState.name" :default-value="formState.name" :disabled="formState.system" v-bind="componentField"/>
             </FormControl>
           </FormItem>
         </FormField>
@@ -41,7 +41,7 @@
           <FormItem>
             <FormLabel>{{ $t('common.description') }}</FormLabel>
             <FormControl>
-              <Textarea v-model="formState.description" v-bind="componentField"/>
+              <Textarea v-model="formState.description" :default-value="formState.description" v-bind="componentField"/>
             </FormControl>
           </FormItem>
         </FormField>
