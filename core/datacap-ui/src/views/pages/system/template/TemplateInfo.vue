@@ -1,39 +1,58 @@
 <template>
   <Sheet :open="visible" class="w-full" @update:open="handlerCancel">
-    <SheetContent class="min-w-[30%]">
+    <SheetContent class="min-w-[25%]">
       <SheetHeader class="border-b pb-3">
         <SheetTitle class="-mt-3">{{ title }}</SheetTitle>
       </SheetHeader>
       <CircularLoading v-if="loading" :show="loading"/>
       <div v-else class="grid gap-4 py-4">
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="content" class="text-right">{{ $t('common.name') }}</Label>
-          <Input v-model="formState.name" :disabled="formState.system" class="col-span-3"/>
-        </div>
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="plugin" class="text-right">{{ $t('common.plugin') }}</Label>
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <Button variant="outline" class="col-span-3">
-                {{ $t('function.tip.selectPluginHolder') }}
-                <span v-if="formState.plugin"> [ {{ formState.plugin.split(',').length }} ]</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent class="w-56 max-h-48 overflow-y-auto">
-              <DropdownMenuCheckboxItem class="cursor-pointer" v-for="plugin in plugins" v-model:checked="plugin.checked" @update:checked="setChecked">
-                {{ (plugin as any).name }}
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <div class="grid grid-cols-4 items-center mt-2 gap-4">
-          <Label for="description" class="text-right">{{ $t('common.description') }}</Label>
-          <Textarea v-model="formState.description" class="col-span-3"/>
-        </div>
-        <div class="grid grid-cols-4 items-center mt-2 gap-4">
-          <Label for="content" class="text-right">{{ $t('common.content') }}</Label>
-          <Textarea v-model="formState.content" class="col-span-3"/>
-        </div>
+        <FormField v-slot="{ componentField }" name="name">
+          <FormItem>
+            <FormLabel>{{ $t('common.name') }}</FormLabel>
+            <FormControl>
+              <Input v-model="formState.name" :default-value="formState.name" :disabled="formState.system" v-bind="componentField"/>
+            </FormControl>
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="plugin">
+          <FormItem>
+            <FormLabel>{{ $t('common.plugin') }}</FormLabel>
+            <FormControl>
+              <div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger as-child>
+                    <Button variant="outline" class="col-span-3">
+                      {{ $t('function.tip.selectPluginHolder') }}
+                      <span v-if="formState.plugin" class="ml-1">[ {{ formState.plugin.split(',').length }} ]</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent class="max-h-48 overflow-y-auto">
+                    <DropdownMenuCheckboxItem class="cursor-pointer" v-for="plugin in plugins" v-model:checked="plugin.checked" @update:checked="setChecked"
+                                              v-bind="componentField">
+                      {{ (plugin as any).name }}
+                    </DropdownMenuCheckboxItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </FormControl>
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="description">
+          <FormItem>
+            <FormLabel>{{ $t('common.description') }}</FormLabel>
+            <FormControl>
+              <Textarea v-model="formState.description" :default-value="formState.description" v-bind="componentField"/>
+            </FormControl>
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="content">
+          <FormItem>
+            <FormLabel>{{ $t('common.content') }}</FormLabel>
+            <FormControl>
+              <AceEditor :value="formState.content" v-bind="componentField" @update:value="setContent"/>
+            </FormControl>
+          </FormItem>
+        </FormField>
       </div>
       <SheetFooter class="absolute bottom-0 left-0 right-0 mb-3 mr-3 pt-3 border-t">
         <SheetClose as-child>
@@ -63,10 +82,13 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { cloneDeep } from 'lodash'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import AceEditor from '@/views/components/editor/AceEditor.vue'
 
 export default defineComponent({
   name: 'TemplateInfo',
   components: {
+    AceEditor,
     CircularLoading,
     Button,
     Input,
@@ -74,7 +96,8 @@ export default defineComponent({
     SheetClose, SheetFooter, SheetTitle, SheetHeader, Sheet, SheetContent,
     Textarea,
     Loader2,
-    DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger
+    DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
+    FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage
   },
   computed: {
     visible: {
@@ -129,7 +152,6 @@ export default defineComponent({
               this.plugins = Object.values(response.data).reduce((acc, curr) => (acc as any).concat(curr), []) as any[]
               this.formState.plugin?.split(',').forEach(formPlugin => {
                 const foundPlugin = this.plugins.find(plugin => plugin.name === formPlugin)
-                console.log(formPlugin, foundPlugin)
                 if (foundPlugin) {
                   foundPlugin.checked = true
                 }
@@ -163,6 +185,10 @@ export default defineComponent({
       this.formState.plugin = this.plugins.filter(it => it.checked)
           .map(it => it.name)
           .join(',')
+    },
+    setContent(value: string)
+    {
+      this.formState.content = value
     }
   }
 })
