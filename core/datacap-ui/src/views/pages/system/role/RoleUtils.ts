@@ -6,7 +6,7 @@ const createHeaders = (i18n: any) => {
         {key: 'description', hidden: true, header: i18n.t('common.description')},
         {key: 'createTime', hidden: true, header: i18n.t('common.createTime')},
         {key: 'updateTime', hidden: true, header: i18n.t('common.updateTime')},
-        {key: 'action', hidden: true, header: i18n.t('common.action'), slot: 'action', class: 'text-right'}
+        {key: 'action', hidden: true, header: i18n.t('common.action'), slot: 'action', class: 'text-center'}
     ]
 }
 
