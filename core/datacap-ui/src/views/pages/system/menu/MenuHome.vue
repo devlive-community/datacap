@@ -5,9 +5,11 @@
         <div class="grid gap-2">
           <CardTitle>{{ $t('menu.common.list') }}</CardTitle>
         </div>
-        <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerChangeInfo(true, null)">
-          <Plus :size="20"/>
-        </Button>
+        <Tooltip :content="$t('menu.common.create')">
+          <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerChangeInfo(true, null)">
+            <Plus :size="20"/>
+          </Button>
+        </Tooltip>
       </CardHeader>
       <CardContent>
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
@@ -16,18 +18,11 @@
           </template>
           <template #action="{row}">
             <div class="space-x-2">
-              <TooltipProvider :delay-duration="0">
-                <Tooltip>
-                  <TooltipTrigger as-child>
-                    <Button variant="outline" size="icon" class="p-2 w-8 h-8 rounded-full" @click="handlerChangeInfo(true, row)">
-                      <Pencil :size="15"/>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{{ $t('common.editData') }}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip :content="$t('common.editData')">
+                <Button variant="outline" size="icon" class="p-2 w-8 h-8 rounded-full" @click="handlerChangeInfo(true, row)">
+                  <Pencil :size="15"/>
+                </Button>
+              </Tooltip>
             </div>
           </template>
         </TableCommon>
@@ -48,17 +43,17 @@ import { createHeaders } from '@/views/pages/system/menu/MenuUtils'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import { MenuModel } from '@/model/menu'
 import MenuService from '@/services/menu'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Switch } from '@/components/ui/switch'
+import Tooltip from '@/views/ui/tooltip'
 
 export default defineComponent({
   name: 'MenuHome',
   components: {
+    Tooltip,
     Switch,
     Button,
     Pencil, Plus,
-    CardHeader, CardTitle, TableCommon, CardContent, Card,
-    Tooltip, TooltipContent, TooltipProvider, TooltipTrigger
+    CardHeader, CardTitle, TableCommon, CardContent, Card
   },
   setup()
   {

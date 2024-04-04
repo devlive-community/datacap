@@ -85,7 +85,7 @@ export default defineComponent({
     {
       this.loading = true
       if (this.info) {
-        this.title = this.$t('role.common.assignMenu').replace('$NAME', this.info.name)
+        this.title = this.$t('role.common.assignMenu').replace('$NAME', this.info.name as string)
         RoleService.getAllMenuById(this.info?.id as number)
             .then((response) => {
               if (response.status) {

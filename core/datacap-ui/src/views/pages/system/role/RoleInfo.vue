@@ -134,7 +134,7 @@ export default defineComponent({
     handlerInitialize()
     {
       if (this.info) {
-        this.title = `${StringUtils.replace(this.$t('role.common.edit'), '$NAME', this.info.name)}`
+        this.title = `${StringUtils.replace(this.$t('role.common.edit'), '$NAME', this.info.name as string)}`
       }
     },
     handlerCancel()
