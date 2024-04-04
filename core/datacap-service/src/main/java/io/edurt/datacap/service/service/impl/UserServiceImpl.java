@@ -238,17 +238,19 @@ public class UserServiceImpl
                 }
                 else {
                     TreeRecord temp = treeMap.get(menu.getParent());
-                    List<TreeRecord> childrens = temp.getChildren();
-                    if (ObjectUtils.isEmpty(childrens)) {
-                        childrens = Lists.newArrayList();
+                    if (temp != null) {
+                        List<TreeRecord> childrens = temp.getChildren();
+                        if (ObjectUtils.isEmpty(childrens)) {
+                            childrens = Lists.newArrayList();
+                        }
+                        TreeRecord children = TreeRecord.of(menu, true, true, Lists.newArrayList());
+                        children.setNew(menu.isNew());
+                        children.setDescription(menu.getDescription());
+                        childrens.add(children);
+                        childrens.sort(Comparator.comparing(TreeRecord::getSorted));
+                        temp.setChildren(childrens);
+                        treeMap.put(temp.getId(), temp);
                     }
-                    TreeRecord children = TreeRecord.of(menu, true, true, Lists.newArrayList());
-                    children.setNew(menu.isNew());
-                    children.setDescription(menu.getDescription());
-                    childrens.add(children);
-                    childrens.sort(Comparator.comparing(TreeRecord::getSorted));
-                    temp.setChildren(childrens);
-                    treeMap.put(temp.getId(), temp);
                 }
             });
             treeMap.keySet().forEach(v -> tree.add(treeMap.get(v)));
