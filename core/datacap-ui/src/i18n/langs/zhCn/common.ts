@@ -65,4 +65,6 @@ export default {
     submit: '提交',
     create: '创建',
     plugin: '插件',
+    group: '分组',
+    sorted: '排序',
 }

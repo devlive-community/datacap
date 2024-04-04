@@ -12,6 +12,7 @@ import heatmap from '@/i18n/langs/zhCn/heatmap'
 import region from '@/i18n/langs/zhCn/region'
 import function1 from '@/i18n/langs/zhCn/function'
 import template from '@/i18n/langs/zhCn/template'
+import menu from '@/i18n/langs/zhCn/menu'
 
 export default {
     common: common,
@@ -27,5 +28,6 @@ export default {
     heatmap: heatmap,
     region: region,
     function: function1,
-    template: template
+    template: template,
+    menu: menu
 }

@@ -65,4 +65,6 @@ export default {
     submit: 'Submit',
     create: 'Create',
     plugin: 'Plugin',
+    group: 'Group',
+    sorted: 'Sorted',
 }

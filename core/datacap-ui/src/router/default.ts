@@ -91,6 +91,15 @@ const createSystemRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/system/template/TemplateHome.vue')
+            },
+            {
+                name: 'menu',
+                path: 'menu',
+                meta: {
+                    title: 'common.menu',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/system/menu/MenuHome.vue')
             }
         ]
     }
