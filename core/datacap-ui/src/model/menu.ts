@@ -1,6 +1,6 @@
 export interface MenuModel
 {
-    id?: number
+    id?: number | string
     name?: string
     code?: string
     description?: string
@@ -8,11 +8,11 @@ export interface MenuModel
     group?: string
     sorted?: number
     type?: string
-    parent?: number
+    parent?: number | string
     active?: boolean
     i18nKey?: string
     icon?: string
-    redirect?: number
+    redirect?: number | string
     new?: boolean
     createTime?: string
     updateTime?: string

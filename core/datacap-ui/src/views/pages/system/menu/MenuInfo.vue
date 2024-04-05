@@ -66,13 +66,13 @@
             <FormItem>
               <FormLabel>{{ $t('menu.common.parent') }}</FormLabel>
               <FormControl>
-                <Select v-model="formState.parent" :default-value="formState.parent" v-bind="componentField">
+                <Select v-model="formState.parent" :default-value="formState.parent as string" v-bind="componentField">
                   <SelectTrigger class="w-full">
                     <SelectValue class="cursor-pointer" :placeholder="$t('menu.tip.selectParent')"/>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem v-for="menu in fullMenus" :value="menu.id">{{ menu.name }}</SelectItem>
+                      <SelectItem v-for="menu in fullMenus" :value="menu.id as string">{{ menu.name }}</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -83,13 +83,13 @@
             <FormItem>
               <FormLabel>{{ $t('menu.common.redirect') }}</FormLabel>
               <FormControl>
-                <Select v-model="formState.redirect" :default-value="formState.redirect" v-bind="componentField">
+                <Select v-model="formState.redirect" :default-value="formState.redirect as string" v-bind="componentField">
                   <SelectTrigger class="w-full">
                     <SelectValue class="cursor-pointer" :placeholder="$t('menu.tip.selectRedirect')"/>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem v-for="menu in fullMenus" :value="menu.id">{{ menu.name }}</SelectItem>
+                      <SelectItem v-for="menu in fullMenus" :value="menu.id as string">{{ menu.name }}</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -238,7 +238,7 @@ export default defineComponent({
       MenuService.saveOrUpdate(this.formState)
           .then(response => {
             if (response.status) {
-              ToastUtils.success('successful');
+              ToastUtils.success('successful')
               this.handlerCancel()
             }
             else {
