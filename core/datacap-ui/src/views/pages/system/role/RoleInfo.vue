@@ -45,7 +45,7 @@
 import { defineComponent, inject, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { RoleModel } from '@/model/role'
+import { RoleModel, RoleRequest } from '@/model/role'
 import { StringUtils } from '@/utils/string'
 import { CardContent } from '@/components/ui/card'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -92,7 +92,11 @@ export default defineComponent({
   },
   setup(props)
   {
-    const formState = ref<RoleModel>(cloneDeep(props.info) as RoleModel)
+    let info = RoleRequest.of()
+    if (props.info) {
+      info = cloneDeep(props.info) as RoleModel
+    }
+    const formState = ref<RoleModel>(info)
     const $t: any = inject('$t')
     const validator = z
         .object({
@@ -130,7 +134,7 @@ export default defineComponent({
     handlerInitialize()
     {
       if (this.info) {
-        this.title = `${StringUtils.replace(this.$t('role.common.edit'), '$NAME', this.info.name)}`
+        this.title = `${StringUtils.replace(this.$t('role.common.edit'), '$NAME', this.info.name as string)}`
       }
     },
     handlerCancel()

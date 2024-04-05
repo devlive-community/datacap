@@ -31,6 +31,8 @@ import '@/views/components/tree/style.css'
 import RoleService from '@/services/role'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { ToastUtils } from '@/utils/toast'
+import UserService from '@/services/user'
+import CommonUtils from '@/utils/common'
 
 export default defineComponent({
   name: 'RoleMenu',
@@ -83,7 +85,7 @@ export default defineComponent({
     {
       this.loading = true
       if (this.info) {
-        this.title = this.$t('role.common.assignMenu').replace('$NAME', this.info.name)
+        this.title = this.$t('role.common.assignMenu').replace('$NAME', this.info.name as string)
         RoleService.getAllMenuById(this.info?.id as number)
             .then((response) => {
               if (response.status) {
@@ -105,6 +107,12 @@ export default defineComponent({
       RoleService.saveMenu(this.info?.id as number, this.selectNodes)
           .then((response) => {
             if (response.status) {
+              UserService.getMenus()
+                  .then(response => {
+                    if (response.status) {
+                      localStorage.setItem(CommonUtils.menu, JSON.stringify(response.data))
+                    }
+                  })
               this.handlerCancel()
             }
             else {

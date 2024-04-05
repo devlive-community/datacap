@@ -1,8 +1,13 @@
 <template>
   <div class="w-full">
     <Card>
-      <CardHeader class="border-b p-4">
-        <CardTitle>{{ $t('role.common.list') }}</CardTitle>
+      <CardHeader class="flex flex-row items-center border-b p-4">
+        <div class="grid gap-2">
+          <CardTitle>{{ $t('role.common.list') }}</CardTitle>
+        </div>
+        <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerChangeInfo(true, null)">
+          <Plus :size="20"/>
+        </Button>
       </CardHeader>
       <CardContent>
         <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
@@ -48,7 +53,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Menu, Pencil } from 'lucide-vue-next'
+import { Menu, Pencil, Plus } from 'lucide-vue-next'
 import { FilterModel } from '@/model/filter'
 import { createHeaders } from '@/views/pages/system/role/RoleUtils'
 import { useI18n } from 'vue-i18n'
@@ -61,6 +66,7 @@ import RoleMenu from '@/views/pages/system/role/RoleMenu.vue'
 export default defineComponent({
   name: 'RoleHome',
   components: {
+    Plus,
     RoleMenu,
     RoleInfo,
     TooltipContent, TooltipTrigger, TooltipProvider, Tooltip,

@@ -9,7 +9,8 @@
         <h1 class='text-xl font-medium ml-5'>DataCap Console</h1>
       </div>
       <Card>
-        <form @submit="onSubmit">
+        <CircularLoading v-if="loading" :show="loading"/>
+        <form v-else @submit="onSubmit">
           <CardHeader class="space-y-1">
             <CardTitle class="text-2xl text-center">{{ $t('user.common.signup') }}</CardTitle>
             <CardDescription class="text-center">{{ $t('user.auth.signupTip') }}</CardDescription>
@@ -66,8 +67,8 @@
             </div>
           </CardContent>
           <CardFooter class="flex flex-col">
-            <Button class="w-full" type="submit" :disabled="loading">
-              <Loader2 v-if="loading" class="w-4 h-4 mr-2 animate-spin"/>
+            <Button class="w-full" type="submit" :disabled="submitting">
+              <Loader2 v-if="submitting" class="w-4 h-4 mr-2 animate-spin"/>
               {{ $t('user.common.signup') }}
             </Button>
           </CardFooter>
@@ -100,10 +101,12 @@ import CaptchaService from '@/services/captcha'
 import UserService from '@/services/user'
 import router from '@/router';
 import { ToastUtils } from '@/utils/toast'
+import CircularLoading from '@/views/components/loading/CircularLoading.vue';
 
 export default defineComponent({
   name: 'AuthSignup',
   components: {
+    CircularLoading,
     FormField, FormItem, FormMessage, FormControl, FormLabel,
     CardDescription, Card, CardContent, CardFooter, CardTitle, CardHeader,
     AvatarImage, AvatarFallback, Avatar,
@@ -113,6 +116,7 @@ export default defineComponent({
   setup()
   {
     let loading = ref(false)
+    let submitting = ref(false)
     let showCaptcha = ref(false)
     let captchaImage = ref(null)
     const $t: any = inject('$t')
@@ -143,6 +147,7 @@ export default defineComponent({
     })
 
     const refererCaptcha = () => {
+      loading.value = true
       formState.value.timestamp = Date.parse(new Date().toString());
       CaptchaService.getCaptcha(formState.value.timestamp)
           .then(response => {
@@ -151,10 +156,11 @@ export default defineComponent({
               captchaImage.value = response.data.image
             }
           })
+          .finally(() => loading.value = false)
     }
 
     const onSubmit = handleSubmit(() => {
-      loading.value = true
+      submitting.value = true
       UserService.signup(formState.value)
           .then(response => {
             if (response.status) {
@@ -165,11 +171,12 @@ export default defineComponent({
               refererCaptcha()
             }
           })
-          .finally(() => loading.value = false)
+          .finally(() => submitting.value = false)
     })
 
     return {
       loading,
+      submitting,
       showCaptcha,
       formState,
       captchaImage,
