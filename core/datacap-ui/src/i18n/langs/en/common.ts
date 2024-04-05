@@ -67,4 +67,5 @@ export default {
     plugin: 'Plugin',
     group: 'Group',
     sorted: 'Sorted',
+    url: 'Url',
 }

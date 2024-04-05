@@ -67,4 +67,5 @@ export default {
     plugin: '插件',
     group: '分组',
     sorted: '排序',
+    url: '地址'
 }

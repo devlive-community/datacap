@@ -13,7 +13,7 @@ export interface MenuModel
     i18nKey?: string
     icon?: string
     redirect?: number
-    isNew?: boolean
+    new?: boolean
     createTime?: string
     updateTime?: string
 }
@@ -30,12 +30,12 @@ export class MenuRequest
             group: undefined,
             sorted: 0,
             type: undefined,
-            parent: 0,
+            parent: undefined,
             active: true,
             i18nKey: undefined,
             icon: undefined,
-            redirect: 0,
-            isNew: false
+            redirect: undefined,
+            new: false
         }
     }
 }

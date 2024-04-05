@@ -28,6 +28,7 @@
         </TableCommon>
       </CardContent>
     </Card>
+    <MenuInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"/>
   </div>
 </template>
 
@@ -45,10 +46,12 @@ import { MenuModel } from '@/model/menu'
 import MenuService from '@/services/menu'
 import { Switch } from '@/components/ui/switch'
 import Tooltip from '@/views/ui/tooltip'
+import MenuInfo from '@/views/pages/system/menu/MenuInfo.vue'
 
 export default defineComponent({
   name: 'MenuHome',
   components: {
+    MenuInfo,
     Tooltip,
     Switch,
     Button,
