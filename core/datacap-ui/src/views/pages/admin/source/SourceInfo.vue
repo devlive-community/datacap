@@ -3,7 +3,7 @@
     <CircularLoading v-if="loading" :show="loading"/>
     <div v-else class="pl-3 pr-3">
       <Tabs v-model="activeTab" :default-value="activeTab" class="w-full" @update:modelValue="handlerChangeConfigure($event)">
-        <TabsList :class="cn(`grid w-full grid-cols-${ configureTabs.length }`)">
+        <TabsList>
           <TabsTrigger v-for="tab in configureTabs" :value="tab">{{ $t(`source.common.${ tab }`) }}</TabsTrigger>
         </TabsList>
         <TabsContent v-if="activeTab === 'source'" value="source" class="max-h-96 overflow-y-auto">
