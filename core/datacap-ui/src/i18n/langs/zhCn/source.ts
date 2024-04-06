@@ -15,9 +15,14 @@ export default {
         database: '数据库',
         ssl: 'SSL',
         file: '文件',
-        create: '创建数据源'
+        create: '创建数据源',
+        delete: '删除数据源 [ $NAME ]'
     },
     tip: {
-        selectSource: '请选择数据源'
+        selectSource: '请选择数据源',
+        deleteSuccess: '删除数据源 [ $NAME ] 成功',
+        deleteAlert1: '您正在删除数据源。此操作将永久删除所有与该数据源相关的数据和配置。请务必在继续操作之前确认您的操作。',
+        deleteAlert2: '警告：执行此操作将不可逆。所有与该数据源相关的数据和配置都会被永久删除。',
+        deleteAlert3: '要确认，请在下面的框中键入 [ $NAME ]'
     }
 }

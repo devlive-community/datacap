@@ -78,6 +78,7 @@ export default {
     test: 'Test',
     field: 'Field',
     upload: 'Upload',
+    deleteData: 'Delete Data',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }

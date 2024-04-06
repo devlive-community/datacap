@@ -78,6 +78,7 @@ export default {
     test: '测试',
     field: '属性',
     upload: '上传',
+    deleteData: '删除数据',
     tip: {
         pageNotNetwork: '哎呀！无法连接到网络，请检查网络是否正常！'
     }

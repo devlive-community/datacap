@@ -29,23 +29,39 @@
         <template #action="{ row }">
           <div class="space-x-2">
             <Tooltip :content="$t('source.common.modify').replace('$NAME', row.name)">
-              <Button :disabled="loginUserId !== row.user.id" size="icon" class="rounded-full w-8 h-8" @click="handlerInfo(true, row)">
-                <Pencil :size="15"/>
+              <Button :disabled="loginUserId !== row.user.id" size="icon" class="rounded-full w-6 h-6" @click="handlerInfo(true, row)">
+                <Pencil :size="14"/>
               </Button>
             </Tooltip>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
+                  <Cog class="w-full justify-center" :size="14"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem :disabled="loginUserId !== row.user.id" class="cursor-pointer" @click="handlerDelete(true, row)">
+                    <Trash class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('common.deleteData') }}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </template>
       </TableCommon>
     </Card>
     <SourceInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
+    <SourceDelete v-if="dataDeleteVisible" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Card from '@/views/ui/card'
-import { Button } from '@/components/ui/button'
-import { CirclePlay, CircleX, Pencil, Plus } from 'lucide-vue-next'
+import Button from '@/views/ui/button'
+import { CirclePlay, CircleX, Cog, Pencil, Plus, Trash } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter'
 import { useI18n } from 'vue-i18n'
@@ -59,20 +75,31 @@ import Tag from '@/views/ui/tag'
 import { Switch } from '@/components/ui/switch'
 import Common from '@/utils/common'
 import SourceInfo from '@/views/pages/admin/source/SourceInfo.vue'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import SourceDelete from '@/views/pages/admin/source/SourceDelete.vue'
 
 export default defineComponent({
   name: 'SourceHome',
   components: {
+    SourceDelete,
+    DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     SourceInfo,
     Tag,
     Tooltip,
     Switch,
     Avatar,
     TableCommon,
-    Pencil, CircleX, CirclePlay,
+    Pencil, CircleX, CirclePlay, Cog, Trash, Plus,
     Button,
-    Card,
-    Plus
+    Card
   },
   setup()
   {
@@ -93,7 +120,8 @@ export default defineComponent({
       data: [],
       pagination: {} as PaginationModel,
       dataInfoVisible: false,
-      dataInfo: null as SourceModel | null
+      dataInfo: null as SourceModel | null,
+      dataDeleteVisible: false
     }
   },
   created()
@@ -122,6 +150,14 @@ export default defineComponent({
     handlerInfo(opened: boolean, value: null | SourceModel)
     {
       this.dataInfoVisible = opened
+      this.dataInfo = value
+      if (!opened) {
+        this.handlerInitialize()
+      }
+    },
+    handlerDelete(opened: boolean, value: null | SourceModel)
+    {
+      this.dataDeleteVisible = opened
       this.dataInfo = value
       if (!opened) {
         this.handlerInitialize()
