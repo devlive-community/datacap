@@ -2,6 +2,11 @@
   <div class="w-full">
     <Card>
       <template #title>{{ $t('source.common.list') }}</template>
+      <template #extra>
+        <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true, null)">
+          <Plus :size="15"/>
+        </Button>
+      </template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #type="{row}">
           <Tooltip :content="row.type">
@@ -21,8 +26,18 @@
           </Tooltip>
           <CirclePlay v-else class="cursor-pointer" style="color: hsl(var(--primary))"/>
         </template>
+        <template #action="{ row }">
+          <div class="space-x-2">
+            <Tooltip :content="$t('source.common.modify').replace('$NAME', row.name)">
+              <Button :disabled="loginUserId !== row.user.id" size="icon" class="rounded-full w-8 h-8" @click="handlerInfo(true, row)">
+                <Pencil :size="15"/>
+              </Button>
+            </Tooltip>
+          </div>
+        </template>
       </TableCommon>
     </Card>
+    <SourceInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
   </div>
 </template>
 
@@ -30,7 +45,7 @@
 import { defineComponent } from 'vue'
 import Card from '@/views/ui/card'
 import { Button } from '@/components/ui/button'
-import { CirclePlay, CircleX, Pencil } from 'lucide-vue-next'
+import { CirclePlay, CircleX, Pencil, Plus } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter'
 import { useI18n } from 'vue-i18n'
@@ -42,10 +57,13 @@ import Avatar from '@/views/ui/avatar'
 import Tooltip from '@/views/ui/tooltip'
 import Tag from '@/views/ui/tag'
 import { Switch } from '@/components/ui/switch'
+import Common from '@/utils/common'
+import SourceInfo from '@/views/pages/admin/source/SourceInfo.vue'
 
 export default defineComponent({
   name: 'SourceHome',
   components: {
+    SourceInfo,
     Tag,
     Tooltip,
     Switch,
@@ -53,16 +71,19 @@ export default defineComponent({
     TableCommon,
     Pencil, CircleX, CirclePlay,
     Button,
-    Card
+    Card,
+    Plus
   },
   setup()
   {
     const filter: FilterModel = new FilterModel()
     const headers = createHeaders(useI18n())
+    const loginUserId = Common.getCurrentUserId()
 
     return {
       filter,
-      headers
+      headers,
+      loginUserId
     }
   },
   data()
@@ -71,6 +92,7 @@ export default defineComponent({
       loading: false,
       data: [],
       pagination: {} as PaginationModel,
+      dataInfoVisible: false,
       dataInfo: null as SourceModel | null
     }
   },
@@ -96,6 +118,14 @@ export default defineComponent({
       this.filter.page = value.currentPage
       this.filter.size = value.pageSize
       this.handlerInitialize()
+    },
+    handlerInfo(opened: boolean, value: null | SourceModel)
+    {
+      this.dataInfoVisible = opened
+      this.dataInfo = value
+      if (!opened) {
+        this.handlerInitialize()
+      }
     }
   }
 })

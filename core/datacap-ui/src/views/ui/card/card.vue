@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <CardHeader class="flex flex-row items-center border-b p-4">
+    <CardHeader class="flex flex-row items-center justify-between border-b p-4">
       <div class="grid gap-2">
         <CardTitle>
           <span v-if="title">{{ title }}</span>

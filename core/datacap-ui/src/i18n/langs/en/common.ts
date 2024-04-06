@@ -75,6 +75,9 @@ export default {
     public: 'Public',
     version: 'Version',
     available: 'Available',
+    test: 'Test',
+    field: 'Field',
+    upload: 'Upload',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }
