@@ -7,7 +7,9 @@
           <slot v-else name="title"/>
         </CardTitle>
       </div>
-      <slot name="extra"/>
+      <div>
+        <slot name="extra"/>
+      </div>
     </CardHeader>
     <CardContent>
       <slot/>

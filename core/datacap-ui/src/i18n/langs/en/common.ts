@@ -69,6 +69,12 @@ export default {
     sorted: 'Sorted',
     url: 'Url',
     pageNotNetwork: 'Oops! Not Network!',
+    protocol: 'Protocol',
+    host: 'Host',
+    port: 'Port',
+    public: 'Public',
+    version: 'Version',
+    available: 'Available',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }

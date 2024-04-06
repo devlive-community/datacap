@@ -69,6 +69,12 @@ export default {
     sorted: '排序',
     url: '地址',
     pageNotNetwork: '哎呀！网络未连接！',
+    protocol: '协议',
+    host: '主机',
+    port: '端口',
+    public: '公开',
+    version: '版本',
+    available: '可用',
     tip: {
         pageNotNetwork: '哎呀！无法连接到网络，请检查网络是否正常！'
     }
