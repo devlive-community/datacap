@@ -68,4 +68,8 @@ export default {
     group: 'Group',
     sorted: 'Sorted',
     url: 'Url',
+    pageNotNetwork: 'Oops! Not Network!',
+    tip: {
+        pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
+    }
 }

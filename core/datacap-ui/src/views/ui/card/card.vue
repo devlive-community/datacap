@@ -1,15 +1,13 @@
 <template>
   <Card>
-    <CardHeader class="border-b p-4">
-      <CardHeader class="flex flex-row items-center border-b p-4">
-        <div class="grid gap-2">
-          <CardTitle>
-            <span v-if="title">{{ title }}</span>
-            <slot v-else name="title"/>
-          </CardTitle>
-        </div>
-        <slot name="extra"/>
-      </CardHeader>
+    <CardHeader class="flex flex-row items-center border-b p-4">
+      <div class="grid gap-2">
+        <CardTitle>
+          <span v-if="title">{{ title }}</span>
+          <slot v-else name="title"/>
+        </CardTitle>
+      </div>
+      <slot name="extra"/>
     </CardHeader>
     <CardContent>
       <slot/>

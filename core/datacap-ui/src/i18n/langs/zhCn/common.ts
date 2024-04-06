@@ -67,5 +67,9 @@ export default {
     plugin: '插件',
     group: '分组',
     sorted: '排序',
-    url: '地址'
+    url: '地址',
+    pageNotNetwork: '哎呀！网络未连接！',
+    tip: {
+        pageNotNetwork: '哎呀！无法连接到网络，请检查网络是否正常！'
+    }
 }

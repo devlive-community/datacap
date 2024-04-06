@@ -14,6 +14,11 @@ const createHttpRoute = (router: Router) => {
                 name: '403',
                 path: '403',
                 component: () => import('@/views/common/error/NotAuthorized.vue')
+            },
+            {
+                name: 'not_network',
+                path: 'not_network',
+                component: () => import('@/views/common/error/NotNetwork.vue')
             }
         ]
     })
