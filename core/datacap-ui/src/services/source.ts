@@ -3,6 +3,7 @@ import { BaseService } from '@/services/base'
 import { HttpUtils } from '@/utils/http'
 import { SourceModel } from '@/model/source.ts'
 import { isEmpty } from 'lodash'
+import { FilterModel } from '@/model/filter.ts'
 
 const DEFAULT_PATH_V1 = '/api/v1/source'
 const DEFAULT_PATH_V2 = '/api/v2/source'
@@ -49,6 +50,11 @@ class SourceService
     syncMetadata(id: number): Promise<ResponseModel>
     {
         return new HttpUtils().put(`${ DEFAULT_PATH_V2 }/syncMetadata/${ id }`)
+    }
+
+    getHistory(id: number, configure: FilterModel): Promise<ResponseModel>
+    {
+        return new HttpUtils().post(`${ DEFAULT_PATH_V2 }/getHistory/${ id }`, configure)
     }
 }
 

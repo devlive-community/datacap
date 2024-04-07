@@ -18,6 +18,7 @@ export default {
         create: '创建数据源',
         delete: '删除数据源 [ $NAME ]',
         syncMetadata: '同步元数据',
+        syncHistory: '同步历史',
     },
     tip: {
         selectSource: '请选择数据源',

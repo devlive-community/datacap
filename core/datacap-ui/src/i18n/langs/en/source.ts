@@ -18,6 +18,7 @@ export default {
         create: 'Create Source',
         delete: 'Delete Source [ $NAME ]',
         syncMetadata: 'Sync Metadata',
+        syncHistory: 'Sync History',
     },
     tip: {
         selectSource: 'Please select a source',

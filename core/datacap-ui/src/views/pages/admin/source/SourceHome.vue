@@ -45,6 +45,10 @@
                     <Trash class="mr-2 h-4 w-4"/>
                     <span>{{ $t('common.deleteData') }}</span>
                   </DropdownMenuItem>
+                  <DropdownMenuItem :disabled="(loginUserId !== row.user.id)" class="cursor-pointer" @click="handlerHistory(true, row)">
+                    <History class="mr-2 h-4 w-4"/>
+                    {{ $t('source.common.syncHistory') }}
+                  </DropdownMenuItem>
                   <DropdownMenuItem :disabled="(loginUserId !== row.user.id) || !row.available" class="cursor-pointer" @click="handlerSyncMetadata(true, row)">
                     <RefreshCcwDot class="mr-2 h-4 w-4"/>
                     {{ $t('source.common.syncMetadata') }}
@@ -59,6 +63,7 @@
     <SourceInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
     <SourceDelete v-if="dataDeleteVisible" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
     <SourceMetadata v-if="dataSyncMetadataVisible" :is-visible="dataSyncMetadataVisible" :info="dataInfo" @close="handlerSyncMetadata(false, null)"/>
+    <SourceHistory v-if="dataHistoryVisible" :is-visible="dataHistoryVisible" :info="dataInfo" @close="handlerHistory(false, null)"/>
   </div>
 </template>
 
@@ -66,7 +71,7 @@
 import { defineComponent } from 'vue'
 import Card from '@/views/ui/card'
 import Button from '@/views/ui/button'
-import { CirclePlay, CircleX, Cog, Pencil, Plus, RefreshCcwDot, Trash } from 'lucide-vue-next'
+import { CirclePlay, CircleX, Cog, History, Pencil, Plus, RefreshCcwDot, Trash } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter'
 import { useI18n } from 'vue-i18n'
@@ -91,10 +96,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import SourceDelete from '@/views/pages/admin/source/SourceDelete.vue'
 import SourceMetadata from '@/views/pages/admin/source/SourceMetadata.vue'
+import SourceHistory from '@/views/pages/admin/source/SourceHistory.vue'
 
 export default defineComponent({
   name: 'SourceHome',
   components: {
+    SourceHistory,
     SourceMetadata,
     SourceDelete,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
@@ -104,7 +111,7 @@ export default defineComponent({
     Switch,
     Avatar,
     TableCommon,
-    Pencil, CircleX, CirclePlay, Cog, Trash, Plus, RefreshCcwDot,
+    Pencil, CircleX, CirclePlay, Cog, Trash, Plus, RefreshCcwDot, History,
     Button,
     Card
   },
@@ -129,7 +136,8 @@ export default defineComponent({
       dataInfoVisible: false,
       dataInfo: null as SourceModel | null,
       dataDeleteVisible: false,
-      dataSyncMetadataVisible: false
+      dataSyncMetadataVisible: false,
+      dataHistoryVisible: false
     }
   },
   created()
@@ -174,6 +182,11 @@ export default defineComponent({
     handlerSyncMetadata(opened: boolean, value: null | SourceModel)
     {
       this.dataSyncMetadataVisible = opened
+      this.dataInfo = value
+    },
+    handlerHistory(opened: boolean, value: null | SourceModel)
+    {
+      this.dataHistoryVisible = opened
       this.dataInfo = value
     }
   }
