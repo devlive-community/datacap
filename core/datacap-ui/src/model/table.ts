@@ -1,4 +1,25 @@
 import { PaginationResponseModel } from '@/model/pagination'
+import { BaseModel } from '@/model/base'
+import { DatabaseModel } from '@/model/database'
+
+export interface TableModel
+    extends BaseModel
+{
+    description?: string
+    type?: string
+    engine?: string
+    format?: string
+    rows?: string
+    inCreateTime?: string
+    inUpdateTime?: string
+    collation?: string
+    comment?: string
+    avgRowLength?: string
+    dataLength?: string
+    indexLength?: string
+    autoIncrement?: string
+    database?: DatabaseModel
+}
 
 export interface Filter
 {
@@ -20,7 +41,7 @@ export interface TableFilter
     columns?: Array<SqlColumn>
     original?: Map<string, string>
     preview?: boolean
-    value?: string
+    value?: string | number
     filter?: Filter
     newColumns?: Array<any>
     columnId?: number

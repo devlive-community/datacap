@@ -19,6 +19,27 @@ export default {
         delete: '删除数据源 [ $NAME ]',
         syncMetadata: '同步元数据',
         syncHistory: '同步历史',
+        manager: '数据管理',
+        info: '基本信息',
+        notSpecified: '未指定',
+        notUpdated: '未更新',
+        engine: '引擎',
+        notSpecifiedEngine: '未指定引擎',
+        collation: '排序规则',
+        notSpecifiedCollation: '未指定排序规则',
+        dataInfo: '数据信息',
+        totalRows: '总行数',
+        format: '格式',
+        notSpecifiedFormat: '未指定格式',
+        avgRowLength: '平均行长度',
+        dataSize: '数据大小',
+        indexSize: '索引大小',
+        notSpecifiedIndex: '未指定索引',
+        autoIncrement: '自增列',
+        notSpecifiedPrimaryKey: '未指定主键',
+        resetAutoIncrement: '重置自增列',
+        resetTo: '重置为',
+        comment: '表注释'
     },
     tip: {
         selectSource: '请选择数据源',
@@ -30,5 +51,8 @@ export default {
         syncMetadata2: '同步元数据将会覆盖当前的元数据，可能会导致数据丢失，是否继续？',
         syncMetadata3: '要确认，请在下面的框中键入 [ $NAME ]',
         syncMetadata4: '任务 [ $NAME ] 已开始',
+        selectDatabase: '请选择数据库',
+        notSelectedNode: '请在左侧选择节点方可展示结果',
+        resetAutoIncrementSuccess: '重置自增列为 [ $VALUE ] 成功'
     }
 }

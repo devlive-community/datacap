@@ -22,7 +22,7 @@ const createDefaultRouter = (router: any) => {
                     component: () => import('@/views/pages/default/dashboard/DashboardHome.vue')
                 }
             ]
-        };
+        }
         router.addRoute(indexRouter)
     }
 
@@ -190,6 +190,14 @@ const createAdminRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/source/SourceHome.vue')
+            },
+            {
+                path: 'source/:id/manager',
+                meta: {
+                    title: 'common.source',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/source/SourceManager.vue')
             }
         ]
     }

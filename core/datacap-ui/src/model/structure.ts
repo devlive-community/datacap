@@ -2,7 +2,7 @@ export interface StructureModel
 {
     title?: null | string
     catalog?: null
-    database?: null
+    database?: null | any
     databaseId?: null
     table?: null
     tableId?: null

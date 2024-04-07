@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <CardHeader class="flex flex-row items-center justify-between border-b p-4">
+    <CardHeader v-if="!hiddenTitle" :class="`flex flex-row items-center justify-between border-b p-4 ${titleClass}`">
       <div class="grid gap-2">
         <CardTitle>
           <span v-if="title">{{ title }}</span>
@@ -11,7 +11,7 @@
         <slot name="extra"/>
       </div>
     </CardHeader>
-    <CardContent>
+    <CardContent :class="`${bodyClass}`">
       <slot/>
     </CardContent>
   </Card>
@@ -29,6 +29,16 @@ export default defineComponent({
   props: {
     title: {
       type: String
+    },
+    titleClass: {
+      type: String
+    },
+    bodyClass: {
+      type: String
+    },
+    hiddenTitle: {
+      type: Boolean,
+      default: false
     }
   }
 })
