@@ -199,7 +199,7 @@ export default defineComponent({
                         type: null;
                         engine: null;
                         comment: null;
-                        database: { name: null, id: null };
+                        database: { name: null, id: string };
                       }) => {
                         const structure: StructureModel = {
                           title: item.name,
@@ -271,7 +271,7 @@ export default defineComponent({
                          engine: null;
                          isKey: null;
                          defaultValue: null;
-                         table: { name: null, id: null, database: { name: null, id: null } };
+                         table: { name: null, id: null, database: { name: null, id: string } };
                        }) => {
                          const structure: StructureModel = {
                            title: item.name,
