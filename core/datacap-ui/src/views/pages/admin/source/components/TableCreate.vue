@@ -1,0 +1,228 @@
+<template>
+  <Dialog :is-visible="visible" :title="$t('source.common.menuNewTable')" :width="'40%'">
+    <div class="grid w-full grid-cols-2 gap-4 pt-2 pl-3 pr-3">
+      <FormField name="name">
+        <FormItem class="space-y-1">
+          <FormLabel>{{ $t('source.common.tableName') }}</FormLabel>
+          <FormMessage/>
+          <Input v-model="formState.name"/>
+        </FormItem>
+      </FormField>
+      <FormField name="engine">
+        <FormItem class="space-y-1">
+          <FormLabel>{{ $t('source.common.engine') }}</FormLabel>
+          <FormMessage/>
+          <Input v-model="formState.engine"/>
+        </FormItem>
+      </FormField>
+    </div>
+    <div class="pt-2 pl-3 pr-3">
+      <FormField name="comment">
+        <FormItem class="space-y-1">
+          <FormLabel>{{ $t('source.common.comment') }}</FormLabel>
+          <FormMessage/>
+          <Textarea v-model="formState.comment"/>
+        </FormItem>
+      </FormField>
+    </div>
+    <Divider class="mt-2 mb-2"/>
+    <div class="h-96 overflow-y-auto">
+      <div v-for="(item, index) in formState.columns" class="mt-1">
+        <Collapsible :default-open="item.opened">
+          <div class="flex items-center justify-between bg-color-gray">
+            <CollapsibleTrigger class="p-2 cursor-pointer" as-child>
+              <div class="flex items-center text-sm font-semibold">{{ item.name }}</div>
+            </CollapsibleTrigger>
+            <div class="space-x-2 mr-4">
+              <Button size="icon" class="rounded-full w-4 h-4 mt-2" @click="handlerAdd">
+                <Plus/>
+              </Button>
+              <Button size="icon" color="#ed4014" class="rounded-full w-4 h-4 mt-2" :disabled="item.removed" @click="handlerRemove(index)">
+                <Minus/>
+              </Button>
+            </div>
+          </div>
+          <CollapsibleContent class="space-y-2 mt-1 pl-3 pr-3 pb-3">
+            <div class="grid w-full grid-cols-2 gap-4 pt-2 pl-3 pr-3">
+              <FormField name="columnName">
+                <FormItem class="space-y-1">
+                  <FormLabel>{{ $t('source.common.columnName') }}</FormLabel>
+                  <FormMessage/>
+                  <Input v-model="item.name"/>
+                </FormItem>
+              </FormField>
+              <FormField name="columnType">
+                <FormItem class="space-y-1">
+                  <FormLabel>{{ $t('source.common.columnType') }}</FormLabel>
+                  <FormMessage/>
+                  <Input v-model="item.type"/>
+                </FormItem>
+              </FormField>
+              <FormField name="columnLength">
+                <FormItem class="space-y-1">
+                  <FormLabel>{{ $t('source.common.columnLength') }}</FormLabel>
+                  <FormMessage/>
+                  <Input type="number" v-model="item.length"/>
+                </FormItem>
+              </FormField>
+              <FormField name="columnDefaultValue">
+                <FormItem class="space-y-1">
+                  <FormLabel>{{ $t('source.common.columnDefaultValue') }}</FormLabel>
+                  <FormMessage/>
+                  <Input v-model="item.defaultValue"/>
+                </FormItem>
+              </FormField>
+              <FormField name="columnPrimaryKey">
+                <FormItem class="space-y-1">
+                  <FormLabel>{{ $t('source.common.columnPrimaryKey') }}</FormLabel>
+                  <FormMessage/>
+                  <Input v-model="item.primaryKey as any"/>
+                </FormItem>
+              </FormField>
+              <FormField name="columnAutoIncrement">
+                <FormItem class="space-y-1">
+                  <FormLabel>{{ $t('source.common.columnAutoIncrement') }}</FormLabel>
+                  <FormMessage/>
+                  <Input v-model="item.autoIncrement as any"/>
+                </FormItem>
+              </FormField>
+              <FormField name="columnAutoIncrement">
+                <FormItem class="space-y-1">
+                  <FormLabel>{{ $t('source.common.columnIsNullable') }}</FormLabel>
+                  <FormMessage/>
+                  <Input v-model="item.isNullable as any"/>
+                </FormItem>
+              </FormField>
+            </div>
+            <div class="pt-2 pl-3 pr-3">
+              <FormField name="columnComment">
+                <FormItem class="space-y-1">
+                  <FormLabel>{{ $t('source.common.columnComment') }}</FormLabel>
+                  <FormMessage/>
+                  <Textarea v-model="item.comment"/>
+                </FormItem>
+              </FormField>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      </div>
+    </div>
+    <template #footer>
+      <div class="space-x-5">
+        <Button variant="outline" size="sm" @click="handlerCancel">
+          {{ $t('common.cancel') }}
+        </Button>
+        <Button size="sm" :loading="loading" :disabled="loading" @click="handlerSave()">
+          {{ $t('common.save') }}
+        </Button>
+      </div>
+    </template>
+  </Dialog>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import Dialog from '@/views/ui/dialog'
+import Button from '@/views/ui/button'
+import Divider from '@/views/ui/divider'
+import { StructureModel } from '@/model/structure'
+import { TableModel, TableRequest } from '@/model/table'
+import TableService from '@/services/table'
+import { toNumber } from 'lodash'
+import { ToastUtils } from '@/utils/toast'
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Minus, Plus } from 'lucide-vue-next'
+import { ColumnRequest } from '@/model/column'
+import { Textarea } from '@/components/ui/textarea'
+
+export default defineComponent({
+  name: 'TableCreate',
+  components: {
+    Textarea,
+    Input,
+    Dialog,
+    Button,
+    Divider,
+    FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,
+    Collapsible, CollapsibleContent, CollapsibleTrigger,
+    Plus, Minus
+  },
+  computed: {
+    visible: {
+      get(): boolean
+      {
+        return this.isVisible
+      },
+      set(value: boolean)
+      {
+        this.$emit('close', value)
+      }
+    }
+  },
+  props: {
+    isVisible: {
+      type: Boolean
+    },
+    info: {
+      type: Object as () => StructureModel | null
+    }
+  },
+  data()
+  {
+    return {
+      loading: false,
+      formState: null as unknown as TableModel
+    }
+  },
+  created()
+  {
+    this.formState = TableRequest.of()
+    this.handlerAdd()
+  },
+  methods: {
+    handlerSave()
+    {
+      if (this.info) {
+        this.loading = true
+        TableService.createTable(toNumber(this.info.databaseId), this.formState)
+                    .then(response => {
+                      if (response.data) {
+                        if (response.data.isSuccessful) {
+                          if (this.formState.name) {
+                            ToastUtils.success(this.$t('source.tip.createTableSuccess').replace('$VALUE', this.formState.name))
+                          }
+                          this.handlerCancel()
+                        }
+                        else {
+                          ToastUtils.error(response.data.message)
+                        }
+                      }
+                    })
+                    .finally(() => this.loading = false)
+      }
+    },
+    handlerAdd()
+    {
+      if (this.formState.columns) {
+        const newColumn = ColumnRequest.of()
+        if (this.formState.columns.length === 0) {
+          newColumn.removed = true
+        }
+        this.formState.columns.push(newColumn)
+      }
+    },
+    handlerRemove(index: number)
+    {
+      if (this.formState.columns) {
+        this.formState.columns.splice(index, 1)
+      }
+    },
+    handlerCancel()
+    {
+      this.visible = false
+    }
+  }
+})
+</script>

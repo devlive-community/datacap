@@ -3,7 +3,7 @@ export interface StructureModel
     title?: null | string
     catalog?: null
     database?: null | any
-    databaseId?: null
+    databaseId?: string
     table?: null
     tableId?: null
     applyId?: null | number

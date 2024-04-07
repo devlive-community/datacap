@@ -39,7 +39,18 @@ export default {
         notSpecifiedPrimaryKey: '未指定主键',
         resetAutoIncrement: '重置自增列',
         resetTo: '重置为',
-        comment: '表注释'
+        comment: '表注释',
+        menuNew: '新建',
+        menuNewTable: '新建表',
+        tableName: '表名',
+        columnName: '列名',
+        columnType: '类型',
+        columnLength: '长度',
+        columnDefaultValue: '默认值',
+        columnPrimaryKey: '主键',
+        columnAutoIncrement: '自增列',
+        columnIsNullable: '允许为空',
+        columnComment: '列注释',
     },
     tip: {
         selectSource: '请选择数据源',
@@ -53,6 +64,7 @@ export default {
         syncMetadata4: '任务 [ $NAME ] 已开始',
         selectDatabase: '请选择数据库',
         notSelectedNode: '请在左侧选择节点方可展示结果',
-        resetAutoIncrementSuccess: '重置自增列为 [ $VALUE ] 成功'
+        resetAutoIncrementSuccess: '重置自增列为 [ $VALUE ] 成功',
+        createTableSuccess: '创建表 [ $VALUE ] 成功'
     }
 }

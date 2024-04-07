@@ -40,6 +40,17 @@ export default {
         resetAutoIncrement: 'Reset Auto Increment',
         resetTo: 'Reset to',
         comment: 'Table Comment',
+        menuNew: 'New',
+        menuNewTable: 'New Table',
+        tableName: 'Table Name',
+        columnName: 'Column Name',
+        columnType: 'Column Type',
+        columnLength: 'Column Length',
+        columnDefaultValue: 'Default Value',
+        columnPrimaryKey: 'Primary Key',
+        columnAutoIncrement: 'Auto Increment',
+        columnIsNullable: 'Is Nullable',
+        columnComment: 'Column Comment',
     },
     tip: {
         selectSource: 'Please select a source',
@@ -54,5 +65,6 @@ export default {
         selectDatabase: 'Please select a database',
         notSelectedNode: 'Please select the node on the left to display the results',
         resetAutoIncrementSuccess: 'Reset auto increment to [ $VALUE ] success',
+        createTableSuccess: 'Create table [ $VALUE ] success'
     }
 }

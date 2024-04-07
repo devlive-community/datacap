@@ -6,7 +6,7 @@
         <aside class="-mx-4 w-[200px]">
           <Card :title-class="'p-0'" :body-class="'p-0'">
             <template #title>
-              <Select v-model="applyValue.database as any" @update:modelValue="handlerChangeDatabase">
+              <Select v-model="applyValue.database" @update:modelValue="handlerChangeDatabase">
                 <SelectTrigger class="border-0 w-[200px]">
                   <SelectValue :placeholder="$t('source.tip.selectDatabase')"/>
                 </SelectTrigger>
@@ -22,8 +22,32 @@
             <div class="h-[500px] overflow-x-auto overflow-y-auto">
               <CircularLoading v-if="dataTreeLoading" :show="dataTreeLoading"/>
               <div v-else>
-                <Alert v-if="dataTreeArray && dataTreeArray.length === 0" :title="$t('source.tip.selectDatabase')"/>
-                <Tree v-else :data="dataTreeArray" :load-data="handlerLoadChildData" @on-select-change="handlerSelectNode">
+                <Tree :data="dataTreeArray" :empty-text="$t('source.tip.selectDatabase')" :load-data="handlerLoadChildData" @on-select-change="handlerSelectNode"
+                      @on-contextmenu="handlerContextMenu">
+                  <template #contextMenu>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger as-child>
+                        <span id="contextMenu"></span>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent class="-mt-3">
+                        <DropdownMenuLabel>{{ $t('common.action') }}</DropdownMenuLabel>
+                        <DropdownMenuSeparator/>
+                        <DropdownMenuGroup>
+                          <DropdownMenuSub>
+                            <DropdownMenuSubTrigger class="cursor-pointer">{{ $t('source.common.menuNew') }}</DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                              <DropdownMenuSubContent>
+                                <DropdownMenuItem class="cursor-pointer" @click="handlerCreateTable(true)">
+                                  <Table :size="18" class="mr-2"/>
+                                  {{ $t('source.common.menuNewTable') }}
+                                </DropdownMenuItem>
+                              </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                          </DropdownMenuSub>
+                        </DropdownMenuGroup>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </template>
                 </Tree>
               </div>
             </div>
@@ -52,6 +76,7 @@
       </div>
     </div>
   </div>
+  <TableCreate v-if="tableCreateVisible" :isVisible="tableCreateVisible" :info="dataInfo" @close="handlerCreateTable(false)"/>
 </template>
 
 <script lang="ts">
@@ -68,12 +93,29 @@ import '@/views/components/tree/style.css'
 import ColumnService from '@/services/column'
 import Alert from '@/views/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Info } from 'lucide-vue-next'
+import { Info, Table } from 'lucide-vue-next'
 import TableInfo from '@/views/pages/admin/source/components/TableInfo.vue'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { toNumber } from 'lodash'
+import TableCreate from '@/views/pages/admin/source/components/TableCreate.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    TableCreate,
     TableInfo,
     Alert,
     Card,
@@ -81,7 +123,25 @@ export default defineComponent({
     Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue,
     Tree,
     Tabs, TabsContent, TabsList, TabsTrigger,
-    Info
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+    Info, Table
+  },
+  computed: {
+    StructureEnum()
+    {
+      return StructureEnum
+    }
   },
   data()
   {
@@ -89,12 +149,14 @@ export default defineComponent({
       loading: false,
       databaseArray: Array<StructureModel>(),
       applyValue: {
-        database: null as number | null,
+        database: undefined,
         node: null as StructureModel | null,
         tabType: 'info'
       },
       dataTreeLoading: false,
-      dataTreeArray: Array<StructureModel>()
+      dataTreeArray: Array<StructureModel>(),
+      dataInfo: null as StructureModel | null,
+      tableCreateVisible: false
     }
   },
   created()
@@ -126,7 +188,7 @@ export default defineComponent({
     {
       this.dataTreeLoading = true
       this.dataTreeArray = []
-      TableService.getAllByDatabase(this.applyValue.database as number)
+      TableService.getAllByDatabase(toNumber(this.applyValue.database))
                   .then(response => {
                     if (response.status) {
                       response.data.forEach((item: {
@@ -151,6 +213,7 @@ export default defineComponent({
                           comment: item.comment,
                           origin: item,
                           loading: false,
+                          contextmenu: true,
                           children: [] as StructureModel[],
                           render: (h: any, { data }: { data: StructureModel }) => {
                             return h('div', [
@@ -252,6 +315,19 @@ export default defineComponent({
                      }
                    })
                    .finally(() => callback(dataChildArray))
+    },
+    handlerContextMenu(node: StructureModel)
+    {
+      this.dataInfo = node
+      // Simulate right-click to trigger right-click menu
+      const element = document.getElementById('contextMenu') as HTMLElement
+      if (element) {
+        element.click()
+      }
+    },
+    handlerCreateTable(opened: boolean)
+    {
+      this.tableCreateVisible = opened
     },
     getColumnIcon(type: string)
     {

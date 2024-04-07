@@ -1,6 +1,7 @@
 import { PaginationResponseModel } from '@/model/pagination'
 import { BaseModel } from '@/model/base'
 import { DatabaseModel } from '@/model/database'
+import { ColumnModel } from '@/model/column'
 
 export interface TableModel
     extends BaseModel
@@ -19,6 +20,20 @@ export interface TableModel
     indexLength?: string
     autoIncrement?: string
     database?: DatabaseModel
+    columns?: Array<ColumnModel>
+}
+
+export class TableRequest
+{
+    public static of(): TableModel
+    {
+        return {
+            name: undefined,
+            comment: undefined,
+            engine: undefined,
+            columns: new Array<ColumnModel>()
+        }
+    }
 }
 
 export interface Filter
