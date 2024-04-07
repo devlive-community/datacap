@@ -45,6 +45,11 @@ class SourceService
             return new HttpUtils().post(DEFAULT_PATH_V2, JSON.stringify(configure))
         }
     }
+
+    syncMetadata(id: number): Promise<ResponseModel>
+    {
+        return new HttpUtils().put(`${ DEFAULT_PATH_V2 }/syncMetadata/${ id }`)
+    }
 }
 
 export default new SourceService()
