@@ -111,6 +111,10 @@
                     <SatelliteDish :size="18" class="mr-2"/>
                     {{ $t('source.common.statement') }}
                   </TabsTrigger>
+                  <TabsTrigger value="erDiagram" class="cursor-pointer">
+                    <Wind :size="18" class="mr-2"/>
+                    {{ $t('source.common.erDiagram') }}
+                  </TabsTrigger>
                 </TabsList>
               </template>
               <TabsContent value="info" class="p-3">
@@ -124,6 +128,9 @@
               </TabsContent>
               <TabsContent value="statement">
                 <TableStatement v-if="applyValue.node" :info="applyValue.node"/>
+              </TabsContent>
+              <TabsContent value="erDiagram">
+                <TableErDiagram v-if="applyValue.node" :info="applyValue.node"/>
               </TabsContent>
             </Card>
           </Tabs>
@@ -154,7 +161,7 @@ import '@/views/components/tree/style.css'
 import ColumnService from '@/services/column'
 import Alert from '@/views/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ArrowUpFromLine, Columns, Delete, Info, LayoutPanelTop, Pencil, SatelliteDish, Table, Trash } from 'lucide-vue-next'
+import { ArrowUpFromLine, Columns, Delete, Info, LayoutPanelTop, Pencil, SatelliteDish, Table, Trash, Wind } from 'lucide-vue-next'
 import TableInfo from '@/views/pages/admin/source/components/TableInfo.vue'
 import {
   DropdownMenu,
@@ -181,10 +188,12 @@ import ColumnChange from '@/views/pages/admin/source/components/ColumnChange.vue
 import ColumnDrop from '@/views/pages/admin/source/components/ColumnDrop.vue'
 import TableData from '@/views/pages/admin/source/components/TableData.vue'
 import TableStatement from '@/views/pages/admin/source/components/TableStatement.vue'
+import TableErDiagram from '@/views/pages/admin/source/components/TableErDiagram.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    TableErDiagram,
     TableStatement,
     TableData,
     ColumnDrop,
@@ -214,7 +223,7 @@ export default defineComponent({
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-    Info, Table, Columns, ArrowUpFromLine, Trash, Delete, LayoutPanelTop, Pencil, SatelliteDish
+    Info, Table, Columns, ArrowUpFromLine, Trash, Delete, LayoutPanelTop, Pencil, SatelliteDish, Wind
   },
   computed: {
     StructureEnum()

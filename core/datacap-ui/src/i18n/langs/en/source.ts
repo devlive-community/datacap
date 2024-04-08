@@ -89,6 +89,7 @@ export default {
         filterCondition: 'Filter Condition',
         addFilter: 'Add Filter',
         statement: 'Statement',
+        erDiagram: 'ER Diagram',
     },
     tip: {
         selectSource: 'Please select a source',
