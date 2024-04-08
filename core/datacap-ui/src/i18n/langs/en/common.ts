@@ -83,6 +83,9 @@ export default {
     length: 'Length',
     preview: 'Preview',
     refresh: 'Refresh',
+    endTime: 'End Time',
+    from: 'From',
+    adhoc: 'Adhoc Query',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }
