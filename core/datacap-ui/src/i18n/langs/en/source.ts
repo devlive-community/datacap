@@ -88,6 +88,7 @@ export default {
         filterData: 'Filter Data',
         filterCondition: 'Filter Condition',
         addFilter: 'Add Filter',
+        statement: 'Statement',
     },
     tip: {
         selectSource: 'Please select a source',

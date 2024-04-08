@@ -25,9 +25,6 @@ export default defineComponent({
     Switch
   },
   props: {
-    isVisible: {
-      type: Boolean
-    },
     info: {
       type: Object as () => StructureModel | null
     }

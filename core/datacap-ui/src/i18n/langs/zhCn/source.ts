@@ -88,6 +88,7 @@ export default {
         filterData: '筛选数据',
         filterCondition: '筛选条件',
         addFilter: '添加筛选条件',
+        statement: 'SQL 语句',
     },
     tip: {
         selectSource: '请选择数据源',

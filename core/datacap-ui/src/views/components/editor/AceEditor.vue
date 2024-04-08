@@ -1,9 +1,9 @@
 <template>
   <VAceEditor v-if="readOnly" lang="mysql" :value="internalValue as string" :theme="configure.theme"
-              :style="{ height: '300px', fontSize: configure.fontSize + 'px' }"
+              :style="{ height: height, fontSize: configure.fontSize + 'px' }"
               :key="key" :options="{ readOnly: true }"/>
   <VAceEditor v-else lang="mysql" :value="internalValue as string" :theme="configure.theme"
-              :style="{ height: '300px', fontSize: configure.fontSize + 'px' }"
+              :style="{ height: height, fontSize: configure.fontSize + 'px' }"
               :key="key" :options="{ enableSnippets: true, enableLiveAutocompletion: true }"
               @init="handlerEditorDidMount($event, 'mysql')" @update:value="handlerUpdateValue" @input="handleInput"/>
 </template>
@@ -32,6 +32,10 @@ export default defineComponent({
     },
     readOnly: {
       type: Boolean
+    },
+    height: {
+      type: String,
+      default: '300px'
     }
   },
   emits: ['update:value'],
