@@ -80,7 +80,7 @@
           </Card>
         </aside>
         <div class="flex-1">
-          <Card v-if="!applyValue.node" :body-class="'p-0'" :hidden-title="true">
+          <Card v-if="!applyValue.node" :body-class="'p-8'" :hidden-title="true">
             <Alert :description="$t('source.tip.notSelectedNode')"/>
           </Card>
           <Tabs v-else v-model="applyValue.tabType" :default-value="applyValue.tabType" class="w-full">
@@ -91,10 +91,17 @@
                     <Info :size="18" class="mr-2"/>
                     {{ $t('source.common.info') }}
                   </TabsTrigger>
+                  <TabsTrigger value="structure">
+                    <LayoutPanelTop :size="18" class="mr-2"/>
+                    {{ $t('source.common.structure') }}
+                  </TabsTrigger>
                 </TabsList>
               </template>
               <TabsContent value="info">
                 <TableInfo v-if="applyValue.node" :info="applyValue.node"/>
+              </TabsContent>
+              <TabsContent value="structure">
+                <TableStructure v-if="applyValue.node" :info="applyValue.node"/>
               </TabsContent>
             </Card>
           </Tabs>
@@ -123,7 +130,7 @@ import '@/views/components/tree/style.css'
 import ColumnService from '@/services/column'
 import Alert from '@/views/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ArrowUpFromLine, Columns, Delete, Info, Table, Trash } from 'lucide-vue-next'
+import { ArrowUpFromLine, Columns, Delete, Info, LayoutPanelTop, Table, Trash } from 'lucide-vue-next'
 import TableInfo from '@/views/pages/admin/source/components/TableInfo.vue'
 import {
   DropdownMenu,
@@ -145,10 +152,12 @@ import ColumnCreate from '@/views/pages/admin/source/components/ColumnCreate.vue
 import TableExport from '@/views/pages/admin/source/components/TableExport.vue'
 import TableTruncate from '@/views/pages/admin/source/components/TableTruncate.vue'
 import TableDrop from '@/views/pages/admin/source/components/TableDrop.vue'
+import TableStructure from '@/views/pages/admin/source/components/TableStructure.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    TableStructure,
     TableDrop,
     TableTruncate,
     TableExport,
@@ -173,7 +182,7 @@ export default defineComponent({
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-    Info, Table, Columns, ArrowUpFromLine, Trash, Delete
+    Info, Table, Columns, ArrowUpFromLine, Trash, Delete, LayoutPanelTop
   },
   computed: {
     StructureEnum()

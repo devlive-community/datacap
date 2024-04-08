@@ -45,7 +45,7 @@
           <PaginationLast></PaginationLast>
         </PaginationList>
       </Pagination>
-      <div class="mt-0.5 ml-2">
+      <div v-if="pagination" class="mt-0.5 ml-2">
         <Select :defaultValue="pagination.pageSize.toString()" @update:modelValue="handlerChangeSize">
           <SelectTrigger class="w-[70px]">
             <SelectValue placeholder="Select a fruit"/>

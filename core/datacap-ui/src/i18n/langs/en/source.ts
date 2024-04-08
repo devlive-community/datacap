@@ -62,7 +62,11 @@ export default {
         truncateTable: 'Truncate Table',
         truncateTableInfo: 'Truncate [ $VALUE ] Table',
         dropTable: 'Drop Table',
-        dropTableInfo: 'Drop [ $VALUE ] Table'
+        dropTableInfo: 'Drop [ $VALUE ] Table',
+        structure: 'Structure',
+        isNullable: 'Is Nullable',
+        defaultValue: 'Default Value',
+        extra: 'Extra',
     },
     tip: {
         selectSource: 'Please select a source',

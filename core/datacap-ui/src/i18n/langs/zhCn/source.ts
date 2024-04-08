@@ -63,6 +63,10 @@ export default {
         truncateTableInfo: '截断 [ $VALUE ] 表',
         dropTable: '删除表',
         dropTableInfo: '删除 [ $VALUE ] 表',
+        structure: '结构',
+        isNullable: '允许为空',
+        defaultValue: '默认值',
+        extra: '额外信息',
     },
     tip: {
         selectSource: '请选择数据源',

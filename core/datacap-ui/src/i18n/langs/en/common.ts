@@ -80,6 +80,7 @@ export default {
     upload: 'Upload',
     deleteData: 'Delete Data',
     apply: 'Apply',
+    length: 'Length',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }
