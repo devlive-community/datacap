@@ -70,7 +70,16 @@ export default {
         changeColumn: 'Change Column',
         changeColumnInfo: 'Change [ $VALUE ] Column',
         dropColumn: 'Drop Column',
-        dropColumnInfo: 'Drop [ $VALUE ] Column'
+        dropColumnInfo: 'Drop [ $VALUE ] Column',
+        tableData: 'Table Data',
+        firstPage: 'First Page',
+        previousPage: 'Previous Page',
+        nextPage: 'Next Page',
+        lastPage: 'Last Page',
+        jumpPage: 'Jump to Page',
+        showPageSize: 'Show Page Size',
+        records: 'Records',
+        addRows: 'Add Rows',
     },
     tip: {
         selectSource: 'Please select a source',

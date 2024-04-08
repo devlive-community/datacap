@@ -1,4 +1,4 @@
-import { PaginationResponseModel } from '@/model/pagination'
+import { PaginationModel } from '@/model/pagination'
 import { BaseModel } from '@/model/base'
 import { DatabaseModel } from '@/model/database'
 import { ColumnModel } from '@/model/column'
@@ -50,7 +50,7 @@ export interface OrderFilter
 
 export interface TableFilter
 {
-    pagination?: PaginationResponseModel
+    pagination?: PaginationModel
     orders?: Array<OrderFilter>
     type?: SqlType
     columns?: Array<SqlColumn>
@@ -61,6 +61,8 @@ export interface TableFilter
     newColumns?: Array<any>
     columnId?: number
     statement?: string
+    headers?: Array<any>
+    datasets?: Array<any>
 }
 
 export class TableFilterRequest

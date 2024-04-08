@@ -1,16 +1,33 @@
-export class PaginationModel
+import { toNumber } from 'lodash'
+
+export interface PaginationModel
+    extends PaginationResponseModel
 {
-    pageSize: number = 10
-    currentPage: number = 0
-    total: number = 0
+    pageSize: number
+    currentPage: number
+    totalRecords?: number
+    startIndex?: number
+    endIndex?: number
+    totalPages?: number
+    hasPreviousPage?: boolean
+    hasNextPage?: boolean
 }
 
 export interface PaginationResponseModel
 {
-    size: number
-    total: number
-    page: number
+    size?: number
+    total?: number
+    page?: number
     current?: number
+}
+
+export enum PaginationEnum
+{
+    PREVIOUS,
+    NEXT,
+    FIRST,
+    LAST,
+    JUMP
 }
 
 export class PaginationRequest
@@ -24,9 +41,9 @@ export class PaginationRequest
     public static of(data: PaginationResponseModel): PaginationModel
     {
         return {
-            pageSize: data.size,
+            pageSize: toNumber(data.size),
             total: data.total,
-            currentPage: data.page
+            currentPage: toNumber(data.page)
         }
     }
 }

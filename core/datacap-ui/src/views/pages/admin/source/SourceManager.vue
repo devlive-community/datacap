@@ -92,24 +92,31 @@
             <Alert :description="$t('source.tip.notSelectedNode')"/>
           </Card>
           <Tabs v-else v-model="applyValue.tabType" :default-value="applyValue.tabType" class="w-full">
-            <Card :title-class="'p-1'">
+            <Card :title-class="'p-0'" :body-class="'p-0'">
               <template #title>
                 <TabsList>
-                  <TabsTrigger value="info">
+                  <TabsTrigger value="info" class="cursor-pointer">
                     <Info :size="18" class="mr-2"/>
                     {{ $t('source.common.info') }}
                   </TabsTrigger>
-                  <TabsTrigger value="structure">
+                  <TabsTrigger value="structure" class="cursor-pointer">
                     <LayoutPanelTop :size="18" class="mr-2"/>
                     {{ $t('source.common.structure') }}
                   </TabsTrigger>
+                  <TabsTrigger value="data" class="cursor-pointer">
+                    <Table :size="18" class="mr-2"/>
+                    {{ $t('source.common.tableData') }}
+                  </TabsTrigger>
                 </TabsList>
               </template>
-              <TabsContent value="info">
+              <TabsContent value="info" class="p-3">
                 <TableInfo v-if="applyValue.node" :info="applyValue.node"/>
               </TabsContent>
               <TabsContent value="structure">
                 <TableStructure v-if="applyValue.node" :info="applyValue.node"/>
+              </TabsContent>
+              <TabsContent value="data" class="mt-0">
+                <TableData v-if="applyValue.node" :info="applyValue.node"/>
               </TabsContent>
             </Card>
           </Tabs>
@@ -165,10 +172,12 @@ import TableDrop from '@/views/pages/admin/source/components/TableDrop.vue'
 import TableStructure from '@/views/pages/admin/source/components/TableStructure.vue'
 import ColumnChange from '@/views/pages/admin/source/components/ColumnChange.vue'
 import ColumnDrop from '@/views/pages/admin/source/components/ColumnDrop.vue'
+import TableData from '@/views/pages/admin/source/components/TableData.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    TableData,
     ColumnDrop,
     ColumnChange,
     TableStructure,
