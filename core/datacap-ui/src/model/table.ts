@@ -18,7 +18,7 @@ export interface TableModel
     avgRowLength?: string
     dataLength?: string
     indexLength?: string
-    autoIncrement?: string
+    autoIncrement?: boolean
     database?: DatabaseModel
     columns?: Array<ColumnModel>
 }

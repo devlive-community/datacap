@@ -67,6 +67,8 @@ export default {
         isNullable: 'Is Nullable',
         defaultValue: 'Default Value',
         extra: 'Extra',
+        changeColumn: 'Change Column',
+        changeColumnInfo: 'Change [ $VALUE ] Column',
     },
     tip: {
         selectSource: 'Please select a source',
@@ -94,6 +96,7 @@ export default {
         dropTable2: 'Please note that dropping a table is irreversible. Doing this will permanently delete the table and all its data. Please make sure you have backed up important data. ',
         dropTable3: 'Performing a drop table operation will immediately delete the table and all its data, which may affect ongoing work. Please make sure you have saved the data you need and that other users are not affected. ',
         dropTable4: 'We recommend that you first test the drop table operation in a non-production environment to ensure that it does not have unintended effects on your production data. ',
-        dropTable5: 'If you have any questions or need assistance performing a drop table operation, please contact your database administrator or technical support team. '
+        dropTable5: 'If you have any questions or need assistance performing a drop table operation, please contact your database administrator or technical support team. ',
+        changeColumnSuccess: 'Change column [ $VALUE ] success'
     }
 }

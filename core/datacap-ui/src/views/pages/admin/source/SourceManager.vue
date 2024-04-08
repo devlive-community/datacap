@@ -71,6 +71,10 @@
                           <Delete :size="18" class="mr-2"/>
                           {{ $t('source.common.dropTable') }}
                         </DropdownMenuItem>
+                        <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.COLUMN" class="cursor-pointer" @click="handlerChangeColumn(true)">
+                          <Pencil :size="18" class="mr-2"/>
+                          {{ $t('source.common.changeColumn') }}
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </template>
@@ -110,6 +114,7 @@
     </div>
   </div>
   <ColumnCreate v-if="columnCreateVisible" :isVisible="columnCreateVisible" :info="dataInfo" @close="handlerCreateColumn(false)"/>
+  <ColumnChange v-if="columnChangeVisible" :isVisible="columnChangeVisible" :info="dataInfo" @close="handlerChangeColumn(false)"/>
   <TableCreate v-if="tableCreateVisible" :isVisible="tableCreateVisible" :info="dataInfo" @close="handlerCreateTable(false)"/>
   <TableExport v-if="tableExportVisible" :isVisible="tableExportVisible" :info="dataInfo" @close="handlerExportData(false)"/>
   <TableTruncate v-if="tableTruncateVisible" :isVisible="tableTruncateVisible" :info="dataInfo" @close="handlerTruncateTable(false)"/>
@@ -130,7 +135,7 @@ import '@/views/components/tree/style.css'
 import ColumnService from '@/services/column'
 import Alert from '@/views/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ArrowUpFromLine, Columns, Delete, Info, LayoutPanelTop, Table, Trash } from 'lucide-vue-next'
+import { ArrowUpFromLine, Columns, Delete, Info, LayoutPanelTop, Pencil, Table, Trash } from 'lucide-vue-next'
 import TableInfo from '@/views/pages/admin/source/components/TableInfo.vue'
 import {
   DropdownMenu,
@@ -153,10 +158,12 @@ import TableExport from '@/views/pages/admin/source/components/TableExport.vue'
 import TableTruncate from '@/views/pages/admin/source/components/TableTruncate.vue'
 import TableDrop from '@/views/pages/admin/source/components/TableDrop.vue'
 import TableStructure from '@/views/pages/admin/source/components/TableStructure.vue'
+import ColumnChange from '@/views/pages/admin/source/components/ColumnChange.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    ColumnChange,
     TableStructure,
     TableDrop,
     TableTruncate,
@@ -182,7 +189,7 @@ export default defineComponent({
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-    Info, Table, Columns, ArrowUpFromLine, Trash, Delete, LayoutPanelTop
+    Info, Table, Columns, ArrowUpFromLine, Trash, Delete, LayoutPanelTop, Pencil
   },
   computed: {
     StructureEnum()
@@ -207,7 +214,8 @@ export default defineComponent({
       tableExportVisible: false,
       tableTruncateVisible: false,
       tableDropVisible: false,
-      columnCreateVisible: false
+      columnCreateVisible: false,
+      columnChangeVisible: false
     }
   },
   created()
@@ -396,6 +404,10 @@ export default defineComponent({
     handlerDropTable(opened: boolean)
     {
       this.tableDropVisible = opened
+    },
+    handlerChangeColumn(opened: boolean)
+    {
+      this.columnChangeVisible = opened
     },
     getColumnIcon(type: string)
     {

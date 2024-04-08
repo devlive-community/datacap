@@ -67,6 +67,8 @@ export default {
         isNullable: '允许为空',
         defaultValue: '默认值',
         extra: '额外信息',
+        changeColumn: '修改列',
+        changeColumnInfo: '修改 [ $VALUE ] 列',
     },
     tip: {
         selectSource: '请选择数据源',
@@ -94,6 +96,7 @@ export default {
         dropTable2: '请注意，删除表操作是不可逆的。执行此操作将永久删除表及其所有数据。请确保您已经备份了重要数据。',
         dropTable3: '执行删除表操作将立即删除表及其所有数据，这可能会对正在进行的工作造成影响。请确保您已经保存了需要的数据，并且其他用户不会受到影响。',
         dropTable4: '我们建议您首先在非生产环境中测试删除表操作，以确保它不会对您的生产数据造成意外的影响。',
-        dropTable5: '如果您对执行删除表操作有任何疑问或需要帮助，请联系您的数据库管理员或技术支持团队。'
+        dropTable5: '如果您对执行删除表操作有任何疑问或需要帮助，请联系您的数据库管理员或技术支持团队。',
+        changeColumnSuccess: '修改列 [ $VALUE ] 成功'
     }
 }
