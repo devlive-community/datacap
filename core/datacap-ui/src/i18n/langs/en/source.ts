@@ -51,6 +51,7 @@ export default {
         columnAutoIncrement: 'Auto Increment',
         columnIsNullable: 'Is Nullable',
         columnComment: 'Column Comment',
+        newColumn: 'New Column',
     },
     tip: {
         selectSource: 'Please select a source',
@@ -65,6 +66,7 @@ export default {
         selectDatabase: 'Please select a database',
         notSelectedNode: 'Please select the node on the left to display the results',
         resetAutoIncrementSuccess: 'Reset auto increment to [ $VALUE ] success',
-        createTableSuccess: 'Create table [ $VALUE ] success'
+        createTableSuccess: 'Create table [ $VALUE ] success',
+        createColumnSuccess: 'Create column [ $VALUE ] success'
     }
 }

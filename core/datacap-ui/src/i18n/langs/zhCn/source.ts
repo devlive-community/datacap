@@ -51,6 +51,7 @@ export default {
         columnAutoIncrement: '自增列',
         columnIsNullable: '允许为空',
         columnComment: '列注释',
+        newColumn: '新建列',
     },
     tip: {
         selectSource: '请选择数据源',
@@ -65,6 +66,7 @@ export default {
         selectDatabase: '请选择数据库',
         notSelectedNode: '请在左侧选择节点方可展示结果',
         resetAutoIncrementSuccess: '重置自增列为 [ $VALUE ] 成功',
-        createTableSuccess: '创建表 [ $VALUE ] 成功'
+        createTableSuccess: '创建表 [ $VALUE ] 成功',
+        createColumnSuccess: '创建列 [ $VALUE ] 成功'
     }
 }

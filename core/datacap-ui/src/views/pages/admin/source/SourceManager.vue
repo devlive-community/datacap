@@ -37,9 +37,13 @@
                             <DropdownMenuSubTrigger class="cursor-pointer">{{ $t('source.common.menuNew') }}</DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                               <DropdownMenuSubContent>
-                                <DropdownMenuItem class="cursor-pointer" @click="handlerCreateTable(true)">
+                                <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.TABLE" class="cursor-pointer" @click="handlerCreateTable(true)">
                                   <Table :size="18" class="mr-2"/>
                                   {{ $t('source.common.menuNewTable') }}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem class="cursor-pointer" @click="handlerCreateColumn(true)">
+                                  <Columns :size="18" class="mr-2"/>
+                                  {{ $t('source.common.newColumn') }}
                                 </DropdownMenuItem>
                               </DropdownMenuSubContent>
                             </DropdownMenuPortal>
@@ -77,6 +81,7 @@
     </div>
   </div>
   <TableCreate v-if="tableCreateVisible" :isVisible="tableCreateVisible" :info="dataInfo" @close="handlerCreateTable(false)"/>
+  <ColumnCreate v-if="columnCreateVisible" :isVisible="columnCreateVisible" :info="dataInfo" @close="handlerCreateColumn(false)"/>
 </template>
 
 <script lang="ts">
@@ -93,7 +98,7 @@ import '@/views/components/tree/style.css'
 import ColumnService from '@/services/column'
 import Alert from '@/views/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Info, Table } from 'lucide-vue-next'
+import { Columns, Info, Table } from 'lucide-vue-next'
 import TableInfo from '@/views/pages/admin/source/components/TableInfo.vue'
 import {
   DropdownMenu,
@@ -111,10 +116,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { toNumber } from 'lodash'
 import TableCreate from '@/views/pages/admin/source/components/TableCreate.vue'
+import ColumnCreate from '@/views/pages/admin/source/components/ColumnCreate.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    ColumnCreate,
     TableCreate,
     TableInfo,
     Alert,
@@ -135,7 +142,7 @@ export default defineComponent({
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-    Info, Table
+    Info, Table, Columns
   },
   computed: {
     StructureEnum()
@@ -156,7 +163,8 @@ export default defineComponent({
       dataTreeLoading: false,
       dataTreeArray: Array<StructureModel>(),
       dataInfo: null as StructureModel | null,
-      tableCreateVisible: false
+      tableCreateVisible: false,
+      columnCreateVisible: false
     }
   },
   created()
@@ -288,6 +296,7 @@ export default defineComponent({
                            engine: item.engine,
                            isKey: item.isKey,
                            defaultValue: item.defaultValue,
+                           contextmenu: true,
                            render: (h: any, { data }: { data: StructureModel }) => {
                              return h('div', [
                                h('span', [
@@ -328,6 +337,10 @@ export default defineComponent({
     handlerCreateTable(opened: boolean)
     {
       this.tableCreateVisible = opened
+    },
+    handlerCreateColumn(opened: boolean)
+    {
+      this.columnCreateVisible = opened
     },
     getColumnIcon(type: string)
     {

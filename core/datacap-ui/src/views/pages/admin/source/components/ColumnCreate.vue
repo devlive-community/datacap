@@ -1,31 +1,5 @@
 <template>
-  <Dialog :is-visible="visible" :title="$t('source.common.menuNewTable')" :width="'40%'">
-    <div class="grid w-full grid-cols-2 gap-4 pt-2 pl-3 pr-3">
-      <FormField name="name">
-        <FormItem class="space-y-1">
-          <FormLabel>{{ $t('source.common.tableName') }}</FormLabel>
-          <FormMessage/>
-          <Input v-model="formState.name"/>
-        </FormItem>
-      </FormField>
-      <FormField name="engine">
-        <FormItem class="space-y-1">
-          <FormLabel>{{ $t('source.common.engine') }}</FormLabel>
-          <FormMessage/>
-          <Input v-model="formState.engine"/>
-        </FormItem>
-      </FormField>
-    </div>
-    <div class="pt-2 pl-3 pr-3">
-      <FormField name="comment">
-        <FormItem class="space-y-1">
-          <FormLabel>{{ $t('source.common.comment') }}</FormLabel>
-          <FormMessage/>
-          <Textarea v-model="formState.comment"/>
-        </FormItem>
-      </FormField>
-    </div>
-    <Divider class="mt-2 mb-2"/>
+  <Dialog :is-visible="visible" :title="$t('source.common.newColumn')" :width="'40%'">
     <div class="h-96 overflow-y-auto">
       <div v-for="(item, index) in formState.columns" class="mt-1">
         <Collapsible :default-open="item.opened">
@@ -125,33 +99,31 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Dialog from '@/views/ui/dialog'
-import Button from '@/views/ui/button'
-import Divider from '@/views/ui/divider'
 import { StructureModel } from '@/model/structure'
-import { TableModel, TableRequest } from '@/model/table'
-import TableService from '@/services/table'
-import { toNumber } from 'lodash'
-import { ToastUtils } from '@/utils/toast'
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { Minus, Plus } from 'lucide-vue-next'
+import { SqlType, TableModel, TableRequest } from '@/model/table'
+import Button from '@/views/ui/button'
 import { ColumnRequest } from '@/model/column'
 import { Textarea } from '@/components/ui/textarea'
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Minus, Plus } from 'lucide-vue-next'
+import { Input } from '@/components/ui/input'
 import Switch from '@/views/ui/switch'
+import { ToastUtils } from '@/utils/toast'
+import { toNumber } from 'lodash'
+import TableService from '@/services/table'
 
 export default defineComponent({
-  name: 'TableCreate',
+  name: 'ColumnCreate',
   components: {
-    Textarea,
+    Switch,
     Input,
-    Dialog,
-    Button,
-    Divider,
     FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,
+    Minus, Plus,
+    Textarea,
     Collapsible, CollapsibleContent, CollapsibleTrigger,
-    Plus, Minus,
-    Switch
+    Button,
+    Dialog
   },
   computed: {
     visible: {
@@ -183,6 +155,7 @@ export default defineComponent({
   created()
   {
     this.formState = TableRequest.of()
+    this.formState.type = SqlType.CREATE
     this.handlerAdd()
   },
   methods: {
@@ -190,17 +163,16 @@ export default defineComponent({
     {
       if (this.info) {
         this.loading = true
-        TableService.createTable(toNumber(this.info.databaseId), this.formState)
+        TableService.manageColumn(toNumber(this.info.applyId), this.formState)
                     .then(response => {
                       if (response.data) {
                         if (response.data.isSuccessful) {
-                          if (this.formState.name) {
-                            ToastUtils.success(this.$t('source.tip.createTableSuccess').replace('$VALUE', this.formState.name))
-                          }
+                          const columns = this.formState?.columns?.map(item => item.name).join(', ') as string
+                          ToastUtils.success(this.$t('source.tip.createColumnSuccess').replace('$VALUE', columns))
                           this.handlerCancel()
                         }
                         else {
-                          ToastUtils.error(response.data.message)
+                          ToastUtils.error(response.data?.message)
                         }
                       }
                     })
