@@ -82,6 +82,7 @@ export default {
         addRows: '添加行',
         previewPendingChanges: '预览未保存的变更',
         previewDML: '预览 DML 语句',
+        copyRows: '复制行',
     },
     tip: {
         selectSource: '请选择数据源',

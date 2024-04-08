@@ -66,6 +66,11 @@
                 <Plus :size="15"/>
               </Button>
             </Tooltip>
+            <Tooltip :content="$t('source.common.copyRows')">
+              <Button size="icon" class="w-6 h-6" :disabled="dataSelectedChanged.columns.length === 0" @click="handlerAddOrCloneRow(true)">
+                <Copy :size="15"/>
+              </Button>
+            </Tooltip>
 
             <Tooltip :content="$t('source.common.previewPendingChanges')">
               <Button size="icon" class="w-6 h-6" :disabled="!dataCellChanged.changed && dataCellChanged.columns.length === 0" @click="handlerCellChangedPreview(true)">
@@ -104,7 +109,7 @@ import { ToastUtils } from '@/utils/toast'
 import Button from '@/views/ui/button'
 import Tooltip from '@/views/ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis } from 'lucide-vue-next'
+import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Copy, Plus, RectangleEllipsis } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import TableCellInfo from '@/views/pages/admin/source/components/TableCellInfo.vue'
 
@@ -119,7 +124,7 @@ export default defineComponent({
     Button,
     Tooltip,
     Popover, PopoverContent, PopoverTrigger,
-    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis
+    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy
   },
   props: {
     info: {

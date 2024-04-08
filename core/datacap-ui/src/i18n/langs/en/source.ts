@@ -82,6 +82,7 @@ export default {
         addRows: 'Add Rows',
         previewPendingChanges: 'Preview Pending Changes',
         previewDML: 'Preview DML',
+        copyRows: 'Copy Rows',
     },
     tip: {
         selectSource: 'Please select a source',
