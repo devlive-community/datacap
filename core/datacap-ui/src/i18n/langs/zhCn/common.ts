@@ -82,6 +82,7 @@ export default {
     apply: '应用',
     length: '长度',
     preview: '预览',
+    refresh: '刷新',
     tip: {
         pageNotNetwork: '哎呀！无法连接到网络，请检查网络是否正常！'
     }

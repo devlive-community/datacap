@@ -86,9 +86,15 @@
                 <Eye :size="15"/>
               </Button>
             </Tooltip>
+            <Tooltip :content="$t('common.refresh')">
+              <Button size="icon" class="w-6 h-6" @click="handlerRefresh">
+                <RefreshCw :size="15"/>
+              </Button>
+            </Tooltip>
           </div>
         </div>
       </template>
+      <CircularLoading v-if="refererLoading" :show="refererLoading"/>
       <AgGridVue class="ag-theme-datacap" style="width: 100%; min-height: 460px; height: 460px;" :gridOptions="gridOptions" :columnDefs="configure.headers"
                  :rowData="configure.datasets" :tooltipShowDelay="100" :sortingOrder="['desc', 'asc', null]" :rowSelection="'multiple'" @grid-ready="handlerGridReady"
                  @sortChanged="handlerSortChanged" @cellValueChanged="handlerCellValueChanged" @selectionChanged="handlerSelectionChanged" @columnVisible="handlerColumnVisible"
@@ -121,7 +127,7 @@ import { ToastUtils } from '@/utils/toast'
 import Button from '@/views/ui/button'
 import Tooltip from '@/views/ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Copy, Eye, Minus, Plus, RectangleEllipsis } from 'lucide-vue-next'
+import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Copy, Eye, Minus, Plus, RectangleEllipsis, RefreshCw } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import TableCellInfo from '@/views/pages/admin/source/components/TableCellInfo.vue'
 import TableRowDelete from '@/views/pages/admin/source/components/TableRowDelete.vue'
@@ -140,7 +146,7 @@ export default defineComponent({
     Button,
     Tooltip,
     Popover, PopoverContent, PopoverTrigger,
-    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus, Eye
+    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus, Eye, RefreshCw
   },
   props: {
     info: {

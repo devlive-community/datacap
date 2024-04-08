@@ -82,6 +82,7 @@ export default {
     apply: 'Apply',
     length: 'Length',
     preview: 'Preview',
+    refresh: 'Refresh',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }
