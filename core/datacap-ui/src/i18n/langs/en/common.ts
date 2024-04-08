@@ -81,6 +81,7 @@ export default {
     deleteData: 'Delete Data',
     apply: 'Apply',
     length: 'Length',
+    preview: 'Preview',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }

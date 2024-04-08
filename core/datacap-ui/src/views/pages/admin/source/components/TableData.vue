@@ -76,10 +76,14 @@
                 <Minus :size="15"/>
               </Button>
             </Tooltip>
-
             <Tooltip :content="$t('source.common.previewPendingChanges')">
               <Button size="icon" class="w-6 h-6" :disabled="!dataCellChanged.changed && dataCellChanged.columns.length === 0" @click="handlerCellChangedPreview(true)">
                 <RectangleEllipsis :size="15"/>
+              </Button>
+            </Tooltip>
+            <Tooltip :content="$t('common.preview')">
+              <Button size="icon" class="w-6 h-6" @click="handlerVisibleContent(true)">
+                <Eye :size="15"/>
               </Button>
             </Tooltip>
           </div>
@@ -94,6 +98,7 @@
                    :type="dataCellChanged.type" @close="handlerCellChangedPreview(false)"/>
     <TableRowDelete v-if="dataSelectedChanged.pending && info" :isVisible="dataSelectedChanged.pending" :tableId="info.applyId as number" :columns="dataSelectedChanged.columns"
                     @close="handlerSelectedChangedPreview(false)"/>
+    <SqlInfo v-if="visibleContent.show" :isVisible="visibleContent.show" :content="visibleContent.content" @close="handlerVisibleContent(false)"/>
   </div>
 </template>
 
@@ -116,14 +121,16 @@ import { ToastUtils } from '@/utils/toast'
 import Button from '@/views/ui/button'
 import Tooltip from '@/views/ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Copy, Minus, Plus, RectangleEllipsis } from 'lucide-vue-next'
+import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Copy, Eye, Minus, Plus, RectangleEllipsis } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import TableCellInfo from '@/views/pages/admin/source/components/TableCellInfo.vue'
 import TableRowDelete from '@/views/pages/admin/source/components/TableRowDelete.vue'
+import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 
 export default defineComponent({
   name: 'TableData',
   components: {
+    SqlInfo,
     TableRowDelete,
     TableCellInfo,
     Input,
@@ -133,7 +140,7 @@ export default defineComponent({
     Button,
     Tooltip,
     Popover, PopoverContent, PopoverTrigger,
-    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus
+    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus, Eye
   },
   props: {
     info: {
@@ -217,7 +224,7 @@ export default defineComponent({
                         this.configure.datasets = response.data.columns
                         this.originalDatasets = cloneDeep(response.data.columns)
                         this.configure.pagination = response.data.pagination
-                        this.visibleContent.content = '```sql\n' + response.data.content + '\n```'
+                        this.visibleContent.content = response.data.content
                         this.filterConfigure.columns = cloneDeep(response.data.headers)
                         this.filterConfigure.types = cloneDeep(response.data.types)
                       }
@@ -249,7 +256,7 @@ export default defineComponent({
                           this.gridOptions.overlayNoRowsTemplate = '<span>No Rows To Show</span>'
                         }
                         this.configure.pagination = response.data.pagination
-                        this.visibleContent.content = '```sql\n' + response.data.content + '\n```'
+                        this.visibleContent.content = response.data.content
                         this.filterConfigure.columns = cloneDeep(response.data.headers)
                         this.filterConfigure.types = cloneDeep(response.data.types)
                       }
