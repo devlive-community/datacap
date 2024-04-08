@@ -30,7 +30,7 @@ import Dialog from '@/views/ui/dialog'
 import { StructureModel } from '@/model/structure.ts'
 import TableService from '@/services/table'
 import { ToastUtils } from '@/utils/toast'
-import { SqlType, TableModel, TableRequest } from '@/model/table'
+import { SqlType, TableFilter, TableFilterRequest } from '@/model/table'
 import Button from '@/views/ui/button'
 import Alert from '@/views/ui/alert'
 import Divider from '@/views/ui/divider'
@@ -74,12 +74,12 @@ export default defineComponent({
       loading: false,
       submitting: false,
       title: null as string | null,
-      formState: null as unknown as TableModel
+      formState: null as unknown as TableFilter
     }
   },
   created()
   {
-    this.formState = TableRequest.of()
+    this.formState = TableFilterRequest.of()
     this.formState.type = SqlType.TRUNCATE
     if (this.info) {
       this.title = this.$t('source.common.truncateTableData').replace('$VALUE', this.info.title as string)
