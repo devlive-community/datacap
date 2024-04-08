@@ -59,6 +59,8 @@ export default {
         exportDataCount: 'Export Data Count',
         downloadPath: 'Download Path',
         downloadFile: 'Download File',
+        truncateData: 'Truncate Data',
+        truncateTableData: 'Truncate [ $VALUE ] Table Data'
     },
     tip: {
         selectSource: 'Please select a source',
@@ -74,6 +76,12 @@ export default {
         notSelectedNode: 'Please select the node on the left to display the results',
         resetAutoIncrementSuccess: 'Reset auto increment to [ $VALUE ] success',
         createTableSuccess: 'Create table [ $VALUE ] success',
-        createColumnSuccess: 'Create column [ $VALUE ] success'
+        createColumnSuccess: 'Create column [ $VALUE ] success',
+        truncateTableDataSuccess: 'Truncate table [ $VALUE ] data success',
+        truncateTable1: 'You are about to truncate the table. This will delete all data in the table. Are you sure you want to continue? ',
+        truncateTable2: 'Please note that the truncation table operation is irreversible. Doing this will permanently delete all data in the table. Please make sure you have backed up important data. ',
+        truncateTable3: 'Performing a truncate table operation will immediately delete all data in the table, which may affect ongoing work. Please make sure you have saved the data you need and that other users are not affected. ',
+        truncateTable4: 'We recommend that you first test the truncate table operation in a non-production environment to ensure that it does not have unexpected effects on your production data. ',
+        truncateTable5: 'If you have any questions or need assistance performing a truncate table operation, please contact your database administrator or technical support team. '
     }
 }

@@ -62,6 +62,11 @@
                             </DropdownMenuPortal>
                           </DropdownMenuSub>
                         </DropdownMenuGroup>
+                        <DropdownMenuSeparator/>
+                        <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.TABLE" class="cursor-pointer" @click="handlerTruncateTable(true)">
+                          <Trash :size="18" class="mr-2"/>
+                          {{ $t('source.common.truncateData') }}
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </template>
@@ -96,6 +101,7 @@
   <TableCreate v-if="tableCreateVisible" :isVisible="tableCreateVisible" :info="dataInfo" @close="handlerCreateTable(false)"/>
   <ColumnCreate v-if="columnCreateVisible" :isVisible="columnCreateVisible" :info="dataInfo" @close="handlerCreateColumn(false)"/>
   <TableExport v-if="tableExportVisible" :isVisible="tableExportVisible" :info="dataInfo" @close="handlerExportData(false)"/>
+  <TableTruncate v-if="tableTruncateVisible" :isVisible="tableTruncateVisible" :info="dataInfo" @close="handlerTruncateTable(false)"/>
 </template>
 
 <script lang="ts">
@@ -112,7 +118,7 @@ import '@/views/components/tree/style.css'
 import ColumnService from '@/services/column'
 import Alert from '@/views/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ArrowUpFromLine, Columns, Info, Table } from 'lucide-vue-next'
+import { ArrowUpFromLine, Columns, Info, Table, Trash } from 'lucide-vue-next'
 import TableInfo from '@/views/pages/admin/source/components/TableInfo.vue'
 import {
   DropdownMenu,
@@ -132,10 +138,12 @@ import { toNumber } from 'lodash'
 import TableCreate from '@/views/pages/admin/source/components/TableCreate.vue'
 import ColumnCreate from '@/views/pages/admin/source/components/ColumnCreate.vue'
 import TableExport from '@/views/pages/admin/source/components/TableExport.vue'
+import TableTruncate from '@/views/pages/admin/source/components/TableTruncate.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    TableTruncate,
     TableExport,
     ColumnCreate,
     TableCreate,
@@ -158,7 +166,7 @@ export default defineComponent({
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-    Info, Table, Columns, ArrowUpFromLine
+    Info, Table, Columns, ArrowUpFromLine, Trash
   },
   computed: {
     StructureEnum()
@@ -181,6 +189,7 @@ export default defineComponent({
       dataInfo: null as StructureModel | null,
       tableCreateVisible: false,
       tableExportVisible: false,
+      tableTruncateVisible: false,
       columnCreateVisible: false
     }
   },
@@ -362,6 +371,10 @@ export default defineComponent({
     handlerExportData(opened: boolean)
     {
       this.tableExportVisible = opened
+    },
+    handlerTruncateTable(opened: boolean)
+    {
+      this.tableTruncateVisible = opened
     },
     getColumnIcon(type: string)
     {

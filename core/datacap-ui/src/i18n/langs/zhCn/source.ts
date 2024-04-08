@@ -59,6 +59,8 @@ export default {
         exportDataCount: '导出条数',
         downloadPath: '下载路径',
         downloadFile: '下载文件',
+        truncateData: '截断数据',
+        truncateTableData: '截断 [ $VALUE ] 表数据',
     },
     tip: {
         selectSource: '请选择数据源',
@@ -74,6 +76,12 @@ export default {
         notSelectedNode: '请在左侧选择节点方可展示结果',
         resetAutoIncrementSuccess: '重置自增列为 [ $VALUE ] 成功',
         createTableSuccess: '创建表 [ $VALUE ] 成功',
-        createColumnSuccess: '创建列 [ $VALUE ] 成功'
+        createColumnSuccess: '创建列 [ $VALUE ] 成功',
+        truncateTableDataSuccess: '截断表 [ $VALUE ] 数据成功',
+        truncateTable1: '您即将执行截断表操作。这将会删除表中的所有数据。您确定要继续吗？',
+        truncateTable2: '请注意，截断表操作是不可逆的。执行此操作将永久删除表中的所有数据。请确保您已经备份了重要数据。',
+        truncateTable3: '执行截断表操作将立即删除表中的所有数据，这可能会对正在进行的工作造成影响。请确保您已经保存了需要的数据，并且其他用户不会受到影响。',
+        truncateTable4: '我们建议您首先在非生产环境中测试截断表操作，以确保它不会对您的生产数据造成意外的影响。',
+        truncateTable5: '如果您对执行截断表操作有任何疑问或需要帮助，请联系您的数据库管理员或技术支持团队。'
     }
 }
