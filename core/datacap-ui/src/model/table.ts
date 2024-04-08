@@ -82,6 +82,20 @@ export interface ColumnFilter
     value?: any
 }
 
+export class ColumnFilterRequest
+{
+    public static of(): ColumnFilter
+    {
+        return {
+            index: 0,
+            column: undefined,
+            operator: undefined,
+            operations: Array<Operator>(),
+            value: undefined
+        }
+    }
+}
+
 export interface SqlColumn
 {
     column?: string

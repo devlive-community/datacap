@@ -95,11 +95,18 @@
         </div>
       </template>
       <template #extra>
-        <Tooltip :content="$t('source.common.visibleColumn')">
-          <Button size="icon" class="w-6 h-6" @click="handlerVisibleColumn(null, true)">
-            <Columns :size="15"/>
-          </Button>
-        </Tooltip>
+        <div class="space-x-2">
+          <Tooltip :content="$t('source.common.visibleColumn')">
+            <Button size="icon" class="w-6 h-6" @click="handlerVisibleColumn(null, true)">
+              <Columns :size="15"/>
+            </Button>
+          </Tooltip>
+          <Tooltip :content="$t('source.common.filterData')">
+            <Button size="icon" class="w-6 h-6" @click="handlerFilterConfigure(true)">
+              <Filter :size="15"/>
+            </Button>
+          </Tooltip>
+        </div>
       </template>
       <CircularLoading v-if="refererLoading" :show="refererLoading"/>
       <AgGridVue class="ag-theme-datacap" style="width: 100%; min-height: 460px; height: 460px;" :gridOptions="gridOptions" :columnDefs="configure.headers"
@@ -113,6 +120,8 @@
                     @close="handlerSelectedChangedPreview(false)"/>
     <TableColumn v-if="visibleColumn.show" :isVisible="visibleColumn.show" :columns="visibleColumn.columns" @close="handlerVisibleColumn($event, false)"
                  @change="handlerVisibleColumn($event, false)"/>
+    <TableRowFilter v-if="filterConfigure.show" :isVisible="filterConfigure.show" :columns="filterConfigure.columns" :types="filterConfigure.types"
+                    :configure="filterConfigure.configure" @apply="handlerApplyFilter" @close="handlerFilterConfigure(false)"/>
     <SqlInfo v-if="visibleContent.show" :isVisible="visibleContent.show" :content="visibleContent.content" @close="handlerVisibleContent(false)"/>
   </div>
 </template>
@@ -136,16 +145,18 @@ import { ToastUtils } from '@/utils/toast'
 import Button from '@/views/ui/button'
 import Tooltip from '@/views/ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Columns, Copy, Eye, Minus, Plus, RectangleEllipsis, RefreshCw } from 'lucide-vue-next'
+import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Columns, Copy, Eye, Filter, Minus, Plus, RectangleEllipsis, RefreshCw } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import TableCellInfo from '@/views/pages/admin/source/components/TableCellInfo.vue'
 import TableRowDelete from '@/views/pages/admin/source/components/TableRowDelete.vue'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import TableColumn from '@/views/pages/admin/source/components/TableColumn.vue'
+import TableRowFilter from '@/views/pages/admin/source/components/TableRowFilter.vue'
 
 export default defineComponent({
   name: 'TableData',
   components: {
+    TableRowFilter,
     TableColumn,
     SqlInfo,
     TableRowDelete,
@@ -157,7 +168,7 @@ export default defineComponent({
     Button,
     Tooltip,
     Popover, PopoverContent, PopoverTrigger,
-    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus, Eye, RefreshCw, Columns
+    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus, Eye, RefreshCw, Columns, Filter
   },
   props: {
     info: {

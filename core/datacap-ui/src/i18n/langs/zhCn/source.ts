@@ -85,6 +85,9 @@ export default {
         copyRows: '复制行',
         deleteRows: '删除行',
         visibleColumn: '可见列',
+        filterData: '筛选数据',
+        filterCondition: '筛选条件',
+        addFilter: '添加筛选条件',
     },
     tip: {
         selectSource: '请选择数据源',

@@ -85,6 +85,9 @@ export default {
         copyRows: 'Copy Rows',
         deleteRows: 'Delete Rows',
         visibleColumn: 'Visible Column',
+        filterData: 'Filter Data',
+        filterCondition: 'Filter Condition',
+        addFilter: 'Add Filter',
     },
     tip: {
         selectSource: 'Please select a source',
