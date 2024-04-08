@@ -6,6 +6,7 @@ export default {
         executionTime: 'Execution Time',
         format: 'Format',
         help: 'Help',
+        showSql: 'Show SQL',
     },
     tip: {
         pageShow: 'Open / Close the page',

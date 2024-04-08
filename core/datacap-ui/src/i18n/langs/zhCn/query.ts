@@ -6,6 +6,7 @@ export default {
         executionTime: '执行耗时',
         format: '格式化',
         help: '帮助',
+        showSql: '显示 SQL',
     },
     tip: {
         pageShow: '打开 / 关闭分页',

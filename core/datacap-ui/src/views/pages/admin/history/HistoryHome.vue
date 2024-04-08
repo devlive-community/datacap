@@ -27,6 +27,21 @@
                 <TriangleAlert :size="14"/>
               </Button>
             </Tooltip>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
+                  <Cog class="w-full justify-center" :size="14"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem class="cursor-pointer" @click="handlerShowContent(true, row?.content)">
+                    <SquareChevronRight class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('query.common.showSql') }}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </template>
       </TableCommon>
@@ -38,7 +53,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Card from '@/views/ui/card'
-import { Pencil, TriangleAlert } from 'lucide-vue-next'
+import { Cog, SquareChevronRight, TriangleAlert } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter.ts'
 import { useI18n } from 'vue-i18n'
@@ -50,6 +65,15 @@ import Avatar from '@/views/ui/avatar'
 import Tag from '@/views/ui/tag'
 import Button from '@/views/ui/button'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 
 export default defineComponent({
   name: 'HistoryHome',
@@ -57,12 +81,12 @@ export default defineComponent({
     SqlInfo,
     Button,
     TableCommon,
-    Pencil,
+    TriangleAlert, Cog, SquareChevronRight,
     Card,
     Tooltip,
     Avatar,
     Tag,
-    TriangleAlert
+    DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
   {
