@@ -71,6 +71,11 @@
                 <Copy :size="15"/>
               </Button>
             </Tooltip>
+            <Tooltip :content="$t('source.common.deleteRows')">
+              <Button size="icon" class="w-6 h-6" :disabled="!dataSelectedChanged.changed" @click="handlerSelectedChangedPreview(true)">
+                <Minus :size="15"/>
+              </Button>
+            </Tooltip>
 
             <Tooltip :content="$t('source.common.previewPendingChanges')">
               <Button size="icon" class="w-6 h-6" :disabled="!dataCellChanged.changed && dataCellChanged.columns.length === 0" @click="handlerCellChangedPreview(true)">
@@ -85,8 +90,10 @@
                  @sortChanged="handlerSortChanged" @cellValueChanged="handlerCellValueChanged" @selectionChanged="handlerSelectionChanged" @columnVisible="handlerColumnVisible"
                  @columnMoved="handlerColumnMoved"/>
     </Card>
-    <TableCellInfo v-if="dataCellChanged.pending" :isVisible="dataCellChanged.pending" :columns="dataCellChanged.columns" :tableId="info?.applyId" :type="dataCellChanged.type"
-                   @close="handlerCellChangedPreview(false)"/>
+    <TableCellInfo v-if="dataCellChanged.pending && info" :isVisible="dataCellChanged.pending" :columns="dataCellChanged.columns" :tableId="info.applyId as number"
+                   :type="dataCellChanged.type" @close="handlerCellChangedPreview(false)"/>
+    <TableRowDelete v-if="dataSelectedChanged.pending && info" :isVisible="dataSelectedChanged.pending" :tableId="info.applyId as number" :columns="dataSelectedChanged.columns"
+                    @close="handlerSelectedChangedPreview(false)"/>
   </div>
 </template>
 
@@ -109,13 +116,15 @@ import { ToastUtils } from '@/utils/toast'
 import Button from '@/views/ui/button'
 import Tooltip from '@/views/ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Copy, Plus, RectangleEllipsis } from 'lucide-vue-next'
+import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Copy, Minus, Plus, RectangleEllipsis } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import TableCellInfo from '@/views/pages/admin/source/components/TableCellInfo.vue'
+import TableRowDelete from '@/views/pages/admin/source/components/TableRowDelete.vue'
 
 export default defineComponent({
   name: 'TableData',
   components: {
+    TableRowDelete,
     TableCellInfo,
     Input,
     CircularLoading,
@@ -124,7 +133,7 @@ export default defineComponent({
     Button,
     Tooltip,
     Popover, PopoverContent, PopoverTrigger,
-    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy
+    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus
   },
   props: {
     info: {

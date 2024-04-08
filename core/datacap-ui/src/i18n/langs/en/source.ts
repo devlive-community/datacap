@@ -83,10 +83,11 @@ export default {
         previewPendingChanges: 'Preview Pending Changes',
         previewDML: 'Preview DML',
         copyRows: 'Copy Rows',
+        deleteRows: 'Delete Rows'
     },
     tip: {
         selectSource: 'Please select a source',
-        deleteSuccess: 'Delete source [ $NAME ] success',
+        deleteSourceSuccess: 'Delete source [ $NAME ] success',
         deleteAlert1: 'You are deleting a data source. This action permanently deletes all data and configurations associated with that data source. Please be sure to confirm your actions before proceeding.',
         deleteAlert2: 'Warning: Doing this will not be undone. All data and configurations associated with that data source will be permanently deleted.',
         deleteAlert3: 'To confirm, type [ $NAME ] in the box below',
@@ -119,5 +120,6 @@ export default {
         dropColumn4: 'We recommend that you first test the drop column operation in a non-production environment to ensure that it does not have unintended effects on your production data. ',
         dropColumn5: 'If you have any questions or need assistance performing a drop column operation, please contact your database administrator or technical support team. ',
         updateSuccess: 'Update success',
+        deleteSuccess: 'Delete success'
     }
 }

@@ -89,7 +89,7 @@ export default defineComponent({
         SourceService.deleteById(this.info.id as number)
                      .then((response) => {
                        if (response.status) {
-                         ToastUtils.success(this.$t('source.tip.deleteSuccess').replace('$NAME', this.info?.name as string))
+                         ToastUtils.success(this.$t('source.tip.deleteSourceSuccess').replace('$NAME', this.info?.name as string))
                          this.handlerCancel()
                        }
                        else {

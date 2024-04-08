@@ -83,10 +83,11 @@ export default {
         previewPendingChanges: '预览未保存的变更',
         previewDML: '预览 DML 语句',
         copyRows: '复制行',
+        deleteRows: '删除行',
     },
     tip: {
         selectSource: '请选择数据源',
-        deleteSuccess: '删除数据源 [ $NAME ] 成功',
+        deleteSourceSuccess: '删除数据源 [ $NAME ] 成功',
         deleteAlert1: '您正在删除数据源。此操作将永久删除所有与该数据源相关的数据和配置。请务必在继续操作之前确认您的操作。',
         deleteAlert2: '警告：执行此操作将不可逆。所有与该数据源相关的数据和配置都会被永久删除。',
         deleteAlert3: '要确认，请在下面的框中键入 [ $NAME ]',
@@ -119,5 +120,6 @@ export default {
         dropColumn4: '我们建议您首先在非生产环境中测试删除列操作，以确保它不会对您的生产数据造成意外的影响。',
         dropColumn5: '如果您对执行删除列操作有任何疑问或需要帮助，请联系您的数据库管理员或技术支持团队。',
         updateSuccess: '更新成功',
+        deleteSuccess: '删除成功'
     }
 }
