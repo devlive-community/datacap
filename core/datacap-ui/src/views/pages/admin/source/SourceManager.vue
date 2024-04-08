@@ -49,6 +49,19 @@
                             </DropdownMenuPortal>
                           </DropdownMenuSub>
                         </DropdownMenuGroup>
+                        <DropdownMenuGroup>
+                          <DropdownMenuSub>
+                            <DropdownMenuSubTrigger class="cursor-pointer">{{ $t('source.common.menuExport') }}</DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                              <DropdownMenuSubContent>
+                                <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.TABLE" class="cursor-pointer" @click="handlerExportData(true)">
+                                  <ArrowUpFromLine :size="18" class="mr-2"/>
+                                  {{ $t('source.common.exportData') }}
+                                </DropdownMenuItem>
+                              </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                          </DropdownMenuSub>
+                        </DropdownMenuGroup>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </template>
@@ -72,7 +85,7 @@
                 </TabsList>
               </template>
               <TabsContent value="info">
-                <TableInfo v-if="applyValue.node" :id="applyValue.node.applyId as number"/>
+                <TableInfo v-if="applyValue.node" :info="applyValue.node"/>
               </TabsContent>
             </Card>
           </Tabs>
@@ -82,6 +95,7 @@
   </div>
   <TableCreate v-if="tableCreateVisible" :isVisible="tableCreateVisible" :info="dataInfo" @close="handlerCreateTable(false)"/>
   <ColumnCreate v-if="columnCreateVisible" :isVisible="columnCreateVisible" :info="dataInfo" @close="handlerCreateColumn(false)"/>
+  <TableExport v-if="tableExportVisible" :isVisible="tableExportVisible" :info="dataInfo" @close="handlerExportData(false)"/>
 </template>
 
 <script lang="ts">
@@ -98,7 +112,7 @@ import '@/views/components/tree/style.css'
 import ColumnService from '@/services/column'
 import Alert from '@/views/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Columns, Info, Table } from 'lucide-vue-next'
+import { ArrowUpFromLine, Columns, Info, Table } from 'lucide-vue-next'
 import TableInfo from '@/views/pages/admin/source/components/TableInfo.vue'
 import {
   DropdownMenu,
@@ -117,10 +131,12 @@ import {
 import { toNumber } from 'lodash'
 import TableCreate from '@/views/pages/admin/source/components/TableCreate.vue'
 import ColumnCreate from '@/views/pages/admin/source/components/ColumnCreate.vue'
+import TableExport from '@/views/pages/admin/source/components/TableExport.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    TableExport,
     ColumnCreate,
     TableCreate,
     TableInfo,
@@ -142,7 +158,7 @@ export default defineComponent({
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-    Info, Table, Columns
+    Info, Table, Columns, ArrowUpFromLine
   },
   computed: {
     StructureEnum()
@@ -164,6 +180,7 @@ export default defineComponent({
       dataTreeArray: Array<StructureModel>(),
       dataInfo: null as StructureModel | null,
       tableCreateVisible: false,
+      tableExportVisible: false,
       columnCreateVisible: false
     }
   },
@@ -341,6 +358,10 @@ export default defineComponent({
     handlerCreateColumn(opened: boolean)
     {
       this.columnCreateVisible = opened
+    },
+    handlerExportData(opened: boolean)
+    {
+      this.tableExportVisible = opened
     },
     getColumnIcon(type: string)
     {

@@ -52,6 +52,13 @@ export default {
         columnIsNullable: '允许为空',
         columnComment: '列注释',
         newColumn: '新建列',
+        menuExport: '导出',
+        exportData: '导出数据',
+        exportDataTable: '导出 [ $VALUE ] 表数据',
+        exportDataFormat: '导出格式',
+        exportDataCount: '导出条数',
+        downloadPath: '下载路径',
+        downloadFile: '下载文件',
     },
     tip: {
         selectSource: '请选择数据源',

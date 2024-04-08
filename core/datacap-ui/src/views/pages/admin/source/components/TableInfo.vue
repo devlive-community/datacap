@@ -92,8 +92,8 @@
                   <div class="grid gap-2">
                     <div class="grid grid-cols-3 items-center gap-4">
                       <Label for="autoIncrement">{{ $t('source.common.resetTo') }}</Label>
-                      <Input v-model="autoIncrement" id="autoIncrement" type="number" :default-value="autoIncrement"/>
-                      <Button :loading="loadingAutoIncrement" @click="handlerApply">
+                      <Input v-model="dataInfo.autoIncrement" id="autoIncrement" type="number" :default-value="dataInfo.autoIncrement"/>
+                      <Button :loading="loading" @click="handlerApply">
                         {{ $t('common.apply') }}
                       </Button>
                     </div>
@@ -115,7 +115,6 @@
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
 import TableService from '@/services/table'
-import { cloneDeep, toNumber } from 'lodash'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { ArrowUp10, ArrowUpDown, CalendarHeart, Clock, Cog, Database, RemoveFormatting, Search, Table, TableCellsMerge } from 'lucide-vue-next'
 import Tooltip from '@/views/ui/tooltip'
@@ -128,6 +127,8 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { ToastUtils } from '@/utils/toast'
 import { Textarea } from '@/components/ui/textarea'
+import { StructureModel } from '@/model/structure'
+import { cloneDeep, toNumber } from 'lodash'
 
 export default defineComponent({
   name: 'TableInfo',
@@ -144,9 +145,8 @@ export default defineComponent({
     Popover, PopoverContent, PopoverTrigger
   },
   props: {
-    id: {
-      type: Number,
-      default: 0
+    info: {
+      type: Object as () => StructureModel | null
     }
   },
   created()
@@ -158,47 +158,41 @@ export default defineComponent({
   {
     return {
       loading: false,
-      loadingAutoIncrement: false,
-      dataInfo: null as TableModel | null,
-      autoIncrement: 0
+      dataInfo: null as TableModel | null
     }
   },
   methods: {
     handlerInitialize()
     {
-      this.loading = true
-      TableService.getById(this.id)
-                  .then(response => {
-                    if (response.status) {
-                      this.dataInfo = response.data
-                      this.autoIncrement = cloneDeep(toNumber(this.dataInfo?.autoIncrement))
-                    }
-                  })
-                  .finally(() => this.loading = false)
+      if (this.info) {
+        this.dataInfo = cloneDeep(this.info.origin)
+      }
     },
     handlerApply()
     {
-      this.loadingAutoIncrement = true
-      const configure: TableFilter = {
-        type: SqlType.ALTER,
-        value: this.autoIncrement
+      if (this.dataInfo) {
+        this.loading = true
+        const configure: TableFilter = {
+          type: SqlType.ALTER,
+          value: this.dataInfo.autoIncrement
+        }
+        TableService.getData(toNumber(this.dataInfo.id), configure)
+                    .then(response => {
+                      if (response.status) {
+                        ToastUtils.success(this.$t('source.tip.resetAutoIncrementSuccess').replace('$VALUE', this.dataInfo?.autoIncrement as string))
+                        this.handlerInitialize()
+                      }
+                      else {
+                        ToastUtils.error(response.message)
+                      }
+                    })
+                    .finally(() => this.loading = false)
       }
-      TableService.getData(this.id, configure)
-                  .then(response => {
-                    if (response.status) {
-                      ToastUtils.success(this.$t('source.tip.resetAutoIncrementSuccess').replace('$VALUE', this.autoIncrement.toString()))
-                      this.handlerInitialize()
-                    }
-                    else {
-                      ToastUtils.error(response.message)
-                    }
-                  })
-                  .finally(() => this.loadingAutoIncrement = false)
     },
     watchId()
     {
       watch(
-          () => this.id,
+          () => this.info,
           () => {
             this.handlerInitialize()
           }

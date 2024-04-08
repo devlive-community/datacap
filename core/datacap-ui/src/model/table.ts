@@ -78,10 +78,22 @@ export interface SqlColumn
     original?: Map<string, object>
 }
 
-export interface ExportBody
+export interface TableExportModel
 {
     count: number
     format: string
+    path?: string
+}
+
+export class TableExportRequest
+{
+    public static of(): TableExportModel
+    {
+        return {
+            count: 100,
+            format: 'CSV'
+        }
+    }
 }
 
 export enum SqlType

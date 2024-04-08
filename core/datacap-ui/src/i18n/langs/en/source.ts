@@ -52,6 +52,13 @@ export default {
         columnIsNullable: 'Is Nullable',
         columnComment: 'Column Comment',
         newColumn: 'New Column',
+        menuExport: 'Export',
+        exportData: 'Export Data',
+        exportDataTable: 'Export [ $VALUE ] Table Data',
+        exportDataFormat: 'Export Data Format',
+        exportDataCount: 'Export Data Count',
+        downloadPath: 'Download Path',
+        downloadFile: 'Download File',
     },
     tip: {
         selectSource: 'Please select a source',
