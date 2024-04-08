@@ -80,6 +80,8 @@ export default {
         showPageSize: 'Show Page Size',
         records: 'Records',
         addRows: 'Add Rows',
+        previewPendingChanges: 'Preview Pending Changes',
+        previewDML: 'Preview DML',
     },
     tip: {
         selectSource: 'Please select a source',
@@ -114,6 +116,7 @@ export default {
         dropColumn2: 'Please note that deleting a column is irreversible. Doing this will permanently delete the column and all its data. Please make sure you have backed up important data. ',
         dropColumn3: 'Performing a drop column operation will immediately delete the column and all its data, which may affect ongoing work. Please make sure you have saved the data you need and that other users are not affected. ',
         dropColumn4: 'We recommend that you first test the drop column operation in a non-production environment to ensure that it does not have unintended effects on your production data. ',
-        dropColumn5: 'If you have any questions or need assistance performing a drop column operation, please contact your database administrator or technical support team. '
+        dropColumn5: 'If you have any questions or need assistance performing a drop column operation, please contact your database administrator or technical support team. ',
+        updateSuccess: 'Update success',
     }
 }

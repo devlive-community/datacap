@@ -80,6 +80,8 @@ export default {
         showPageSize: '每页显示',
         records: '条记录',
         addRows: '添加行',
+        previewPendingChanges: '预览未保存的变更',
+        previewDML: '预览 DML 语句',
     },
     tip: {
         selectSource: '请选择数据源',
@@ -114,6 +116,7 @@ export default {
         dropColumn2: '请注意，删除列操作是不可逆的。执行此操作将永久删除列及其所有数据。请确保您已经备份了重要数据。',
         dropColumn3: '执行删除列操作将立即删除列及其所有数据，这可能会对正在进行的工作造成影响。请确保您已经保存了需要的数据，并且其他用户不会受到影响。',
         dropColumn4: '我们建议您首先在非生产环境中测试删除列操作，以确保它不会对您的生产数据造成意外的影响。',
-        dropColumn5: '如果您对执行删除列操作有任何疑问或需要帮助，请联系您的数据库管理员或技术支持团队。'
+        dropColumn5: '如果您对执行删除列操作有任何疑问或需要帮助，请联系您的数据库管理员或技术支持团队。',
+        updateSuccess: '更新成功',
     }
 }
