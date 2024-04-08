@@ -69,6 +69,8 @@ export default {
         extra: '额外信息',
         changeColumn: '修改列',
         changeColumnInfo: '修改 [ $VALUE ] 列',
+        dropColumn: '删除列',
+        dropColumnInfo: '删除 [ $VALUE ] 列',
     },
     tip: {
         selectSource: '请选择数据源',
@@ -97,6 +99,12 @@ export default {
         dropTable3: '执行删除表操作将立即删除表及其所有数据，这可能会对正在进行的工作造成影响。请确保您已经保存了需要的数据，并且其他用户不会受到影响。',
         dropTable4: '我们建议您首先在非生产环境中测试删除表操作，以确保它不会对您的生产数据造成意外的影响。',
         dropTable5: '如果您对执行删除表操作有任何疑问或需要帮助，请联系您的数据库管理员或技术支持团队。',
-        changeColumnSuccess: '修改列 [ $VALUE ] 成功'
+        changeColumnSuccess: '修改列 [ $VALUE ] 成功',
+        dropColumnSuccess: '删除列 [ $VALUE ] 成功',
+        dropColumn1: '您即将执行删除列的操作。此操作将永久删除列及其所有数据。您确定要继续吗？',
+        dropColumn2: '请注意，删除列操作是不可逆的。执行此操作将永久删除列及其所有数据。请确保您已经备份了重要数据。',
+        dropColumn3: '执行删除列操作将立即删除列及其所有数据，这可能会对正在进行的工作造成影响。请确保您已经保存了需要的数据，并且其他用户不会受到影响。',
+        dropColumn4: '我们建议您首先在非生产环境中测试删除列操作，以确保它不会对您的生产数据造成意外的影响。',
+        dropColumn5: '如果您对执行删除列操作有任何疑问或需要帮助，请联系您的数据库管理员或技术支持团队。'
     }
 }

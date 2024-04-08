@@ -8,9 +8,9 @@ export interface StructureModel
     tableId?: null
     applyId?: null | number
     type?: null
-    dataType?: string
-    extra?: string
-    engine?: string
+    dataType?: null
+    extra?: null
+    engine?: null
     level?: null | StructureEnum
     loading?: false
     render?: any

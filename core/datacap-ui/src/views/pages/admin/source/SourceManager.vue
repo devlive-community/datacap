@@ -37,7 +37,7 @@
                             <DropdownMenuSubTrigger class="cursor-pointer">{{ $t('source.common.menuNew') }}</DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                               <DropdownMenuSubContent>
-                                <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.TABLE" class="cursor-pointer" @click="handlerCreateTable(true)">
+                                <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerCreateTable(true)">
                                   <Table :size="18" class="mr-2"/>
                                   {{ $t('source.common.menuNewTable') }}
                                 </DropdownMenuItem>
@@ -49,12 +49,12 @@
                             </DropdownMenuPortal>
                           </DropdownMenuSub>
                         </DropdownMenuGroup>
-                        <DropdownMenuGroup>
+                        <DropdownMenuGroup v-if="dataInfo?.level === StructureEnum.TABLE">
                           <DropdownMenuSub>
                             <DropdownMenuSubTrigger class="cursor-pointer">{{ $t('source.common.menuExport') }}</DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                               <DropdownMenuSubContent>
-                                <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.TABLE" class="cursor-pointer" @click="handlerExportData(true)">
+                                <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerExportData(true)">
                                   <ArrowUpFromLine :size="18" class="mr-2"/>
                                   {{ $t('source.common.exportData') }}
                                 </DropdownMenuItem>
@@ -63,17 +63,21 @@
                           </DropdownMenuSub>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator/>
-                        <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.TABLE" class="cursor-pointer" @click="handlerTruncateTable(true)">
+                        <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerTruncateTable(true)">
                           <Trash :size="18" class="mr-2"/>
                           {{ $t('source.common.truncateTable') }}
                         </DropdownMenuItem>
-                        <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.TABLE" class="cursor-pointer" @click="handlerDropTable(true)">
+                        <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerDropTable(true)">
                           <Delete :size="18" class="mr-2"/>
                           {{ $t('source.common.dropTable') }}
                         </DropdownMenuItem>
-                        <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.COLUMN" class="cursor-pointer" @click="handlerChangeColumn(true)">
+                        <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.COLUMN" class="cursor-pointer" @click="handlerChangeColumn(true)">
                           <Pencil :size="18" class="mr-2"/>
                           {{ $t('source.common.changeColumn') }}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.COLUMN" class="cursor-pointer" @click="handlerDropColumn(true)">
+                          <Delete :size="18" class="mr-2"/>
+                          {{ $t('source.common.dropColumn') }}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -115,6 +119,7 @@
   </div>
   <ColumnCreate v-if="columnCreateVisible" :isVisible="columnCreateVisible" :info="dataInfo" @close="handlerCreateColumn(false)"/>
   <ColumnChange v-if="columnChangeVisible" :isVisible="columnChangeVisible" :info="dataInfo" @close="handlerChangeColumn(false)"/>
+  <ColumnDrop v-if="columnDropVisible" :isVisible="columnDropVisible" :info="dataInfo" @close="handlerDropColumn(false)"/>
   <TableCreate v-if="tableCreateVisible" :isVisible="tableCreateVisible" :info="dataInfo" @close="handlerCreateTable(false)"/>
   <TableExport v-if="tableExportVisible" :isVisible="tableExportVisible" :info="dataInfo" @close="handlerExportData(false)"/>
   <TableTruncate v-if="tableTruncateVisible" :isVisible="tableTruncateVisible" :info="dataInfo" @close="handlerTruncateTable(false)"/>
@@ -159,10 +164,12 @@ import TableTruncate from '@/views/pages/admin/source/components/TableTruncate.v
 import TableDrop from '@/views/pages/admin/source/components/TableDrop.vue'
 import TableStructure from '@/views/pages/admin/source/components/TableStructure.vue'
 import ColumnChange from '@/views/pages/admin/source/components/ColumnChange.vue'
+import ColumnDrop from '@/views/pages/admin/source/components/ColumnDrop.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    ColumnDrop,
     ColumnChange,
     TableStructure,
     TableDrop,
@@ -215,7 +222,8 @@ export default defineComponent({
       tableTruncateVisible: false,
       tableDropVisible: false,
       columnCreateVisible: false,
-      columnChangeVisible: false
+      columnChangeVisible: false,
+      columnDropVisible: false
     }
   },
   created()
@@ -408,6 +416,10 @@ export default defineComponent({
     handlerChangeColumn(opened: boolean)
     {
       this.columnChangeVisible = opened
+    },
+    handlerDropColumn(opened: boolean)
+    {
+      this.columnDropVisible = opened
     },
     getColumnIcon(type: string)
     {
