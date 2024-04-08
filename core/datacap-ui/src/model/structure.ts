@@ -2,8 +2,8 @@ export interface StructureModel
 {
     title?: null | string
     catalog?: null
-    database?: null
-    databaseId?: null
+    database?: null | any
+    databaseId?: string
     table?: null
     tableId?: null
     applyId?: null | number

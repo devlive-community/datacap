@@ -79,6 +79,10 @@ export default {
     field: 'Field',
     upload: 'Upload',
     deleteData: 'Delete Data',
+    apply: 'Apply',
+    length: 'Length',
+    preview: 'Preview',
+    refresh: 'Refresh',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }

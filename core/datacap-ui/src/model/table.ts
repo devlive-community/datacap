@@ -1,4 +1,40 @@
-import { PaginationResponseModel } from '@/model/pagination'
+import { PaginationModel } from '@/model/pagination'
+import { BaseModel } from '@/model/base'
+import { DatabaseModel } from '@/model/database'
+import { ColumnModel } from '@/model/column'
+
+export interface TableModel
+    extends BaseModel
+{
+    description?: string
+    type?: string
+    engine?: string
+    format?: string
+    rows?: string
+    inCreateTime?: string
+    inUpdateTime?: string
+    collation?: string
+    comment?: string
+    avgRowLength?: string
+    dataLength?: string
+    indexLength?: string
+    autoIncrement?: string
+    database?: DatabaseModel
+    columns?: Array<ColumnModel>
+}
+
+export class TableRequest
+{
+    public static of(): TableModel
+    {
+        return {
+            name: undefined,
+            comment: undefined,
+            engine: undefined,
+            columns: new Array<ColumnModel>()
+        }
+    }
+}
 
 export interface Filter
 {
@@ -14,16 +50,27 @@ export interface OrderFilter
 
 export interface TableFilter
 {
-    pagination?: PaginationResponseModel
+    pagination?: PaginationModel
     orders?: Array<OrderFilter>
     type?: SqlType
     columns?: Array<SqlColumn>
     original?: Map<string, string>
     preview?: boolean
-    value?: string
+    value?: string | number
     filter?: Filter
     newColumns?: Array<any>
     columnId?: number
+    statement?: string
+    headers?: Array<any>
+    datasets?: Array<any>
+}
+
+export class TableFilterRequest
+{
+    public static of(): TableFilter
+    {
+        return {}
+    }
 }
 
 export interface ColumnFilter
@@ -35,6 +82,20 @@ export interface ColumnFilter
     value?: any
 }
 
+export class ColumnFilterRequest
+{
+    public static of(): ColumnFilter
+    {
+        return {
+            index: 0,
+            column: undefined,
+            operator: undefined,
+            operations: Array<Operator>(),
+            value: undefined
+        }
+    }
+}
+
 export interface SqlColumn
 {
     column?: string
@@ -42,10 +103,22 @@ export interface SqlColumn
     original?: Map<string, object>
 }
 
-export interface ExportBody
+export interface TableExportModel
 {
     count: number
     format: string
+    path?: string
+}
+
+export class TableExportRequest
+{
+    public static of(): TableExportModel
+    {
+        return {
+            count: 100,
+            format: 'CSV'
+        }
+    }
 }
 
 export enum SqlType

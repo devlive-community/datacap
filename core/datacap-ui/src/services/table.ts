@@ -1,7 +1,7 @@
-import { ResponseModel } from '@/model/response';
+import { ResponseModel } from '@/model/response'
 import { BaseService } from '@/services/base'
 import { HttpUtils } from '@/utils/http'
-import { ExportBody, TableFilter } from '@/model/table'
+import { TableExportModel, TableFilter, TableModel } from '@/model/table'
 
 const DEFAULT_PATH = '/api/v1/table'
 
@@ -21,7 +21,7 @@ class TableService
      */
     getAllByDatabase(id: number): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH}/database/${id}`)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/database/${ id }`)
     }
 
     /**
@@ -36,7 +36,7 @@ class TableService
         if (!configure) {
             configure = <TableFilter>{}
         }
-        return new HttpUtils().post(`${DEFAULT_PATH}/${id}`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/${ id }`, configure)
     }
 
     /**
@@ -48,29 +48,29 @@ class TableService
      */
     putData(id: number, configure: TableFilter): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${DEFAULT_PATH}/${id}`, configure);
+        return new HttpUtils().put(`${ DEFAULT_PATH }/${ id }`, configure)
     }
 
     /**
      * Export data with the given id and configuration.
      *
      * @param {number} id - The id of the data to export.
-     * @param {ExportBody} configure - The configuration for the export.
+     * @param {TableExportModel} configure - The configuration for the export.
      * @return {Promise<ResponseModel>} - A promise that resolves to a ResponseModel.
      */
-    exportData(id: number, configure: ExportBody): Promise<ResponseModel>
+    exportData(id: number, configure: TableExportModel): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH}/export/${id}`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/export/${ id }`, configure)
     }
 
-    createTable(databaseId: number, configure: any): Promise<ResponseModel>
+    createTable(databaseId: number, configure: TableModel): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH}/createTable/${databaseId}`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/createTable/${ databaseId }`, configure)
     }
 
     manageColumn(tableId: number, configure: any): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH}/manageColumn/${tableId}`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/manageColumn/${ tableId }`, configure)
     }
 }
 

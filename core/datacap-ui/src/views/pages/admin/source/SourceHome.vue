@@ -41,6 +41,12 @@
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
+                  <DropdownMenuItem :disabled="(loginUserId !== row.user.id) || !row.available" class="cursor-pointer">
+                    <RouterLink :to="`/admin/source/${row?.id}/manager`" target="_blank" class="flex items-center">
+                      <Cog class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('source.common.manager') }}</span>
+                    </RouterLink>
+                  </DropdownMenuItem>
                   <DropdownMenuItem :disabled="loginUserId !== row.user.id" class="cursor-pointer" @click="handlerDelete(true, row)">
                     <Trash class="mr-2 h-4 w-4"/>
                     <span>{{ $t('common.deleteData') }}</span>
@@ -71,7 +77,7 @@
 import { defineComponent } from 'vue'
 import Card from '@/views/ui/card'
 import Button from '@/views/ui/button'
-import { CirclePlay, CircleX, Cog, History, Pencil, Plus, RefreshCcwDot, Trash } from 'lucide-vue-next'
+import { CirclePlay, CircleX, Cog, History, Info, Pencil, Plus, RefreshCcwDot, Trash } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter'
 import { useI18n } from 'vue-i18n'
@@ -101,6 +107,7 @@ import SourceHistory from '@/views/pages/admin/source/SourceHistory.vue'
 export default defineComponent({
   name: 'SourceHome',
   components: {
+    Info,
     SourceHistory,
     SourceMetadata,
     SourceDelete,

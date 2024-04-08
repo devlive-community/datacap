@@ -1,3 +1,7 @@
 .pointer {
     cursor: pointer;
 }
+
+.bg-color-gray {
+    background-color: #e8eaec;
+}
