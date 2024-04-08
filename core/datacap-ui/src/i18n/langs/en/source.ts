@@ -59,8 +59,10 @@ export default {
         exportDataCount: 'Export Data Count',
         downloadPath: 'Download Path',
         downloadFile: 'Download File',
-        truncateData: 'Truncate Data',
-        truncateTableData: 'Truncate [ $VALUE ] Table Data'
+        truncateTable: 'Truncate Table',
+        truncateTableInfo: 'Truncate [ $VALUE ] Table',
+        dropTable: 'Drop Table',
+        dropTableInfo: 'Drop [ $VALUE ] Table'
     },
     tip: {
         selectSource: 'Please select a source',
@@ -77,11 +79,17 @@ export default {
         resetAutoIncrementSuccess: 'Reset auto increment to [ $VALUE ] success',
         createTableSuccess: 'Create table [ $VALUE ] success',
         createColumnSuccess: 'Create column [ $VALUE ] success',
-        truncateTableDataSuccess: 'Truncate table [ $VALUE ] data success',
+        truncateTableSuccess: 'Truncate table [ $VALUE ] success',
         truncateTable1: 'You are about to truncate the table. This will delete all data in the table. Are you sure you want to continue? ',
         truncateTable2: 'Please note that the truncation table operation is irreversible. Doing this will permanently delete all data in the table. Please make sure you have backed up important data. ',
         truncateTable3: 'Performing a truncate table operation will immediately delete all data in the table, which may affect ongoing work. Please make sure you have saved the data you need and that other users are not affected. ',
         truncateTable4: 'We recommend that you first test the truncate table operation in a non-production environment to ensure that it does not have unexpected effects on your production data. ',
-        truncateTable5: 'If you have any questions or need assistance performing a truncate table operation, please contact your database administrator or technical support team. '
+        truncateTable5: 'If you have any questions or need assistance performing a truncate table operation, please contact your database administrator or technical support team. ',
+        dropTableSuccess: 'Drop table [ $VALUE ] success',
+        dropTable1: 'You are about to delete a table. This operation will permanently delete the table and all its data. Are you sure you want to continue? ',
+        dropTable2: 'Please note that dropping a table is irreversible. Doing this will permanently delete the table and all its data. Please make sure you have backed up important data. ',
+        dropTable3: 'Performing a drop table operation will immediately delete the table and all its data, which may affect ongoing work. Please make sure you have saved the data you need and that other users are not affected. ',
+        dropTable4: 'We recommend that you first test the drop table operation in a non-production environment to ensure that it does not have unintended effects on your production data. ',
+        dropTable5: 'If you have any questions or need assistance performing a drop table operation, please contact your database administrator or technical support team. '
     }
 }

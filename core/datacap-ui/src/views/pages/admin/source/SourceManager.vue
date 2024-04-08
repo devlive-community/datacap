@@ -65,7 +65,11 @@
                         <DropdownMenuSeparator/>
                         <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.TABLE" class="cursor-pointer" @click="handlerTruncateTable(true)">
                           <Trash :size="18" class="mr-2"/>
-                          {{ $t('source.common.truncateData') }}
+                          {{ $t('source.common.truncateTable') }}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem :disabled="dataInfo?.level !== StructureEnum.TABLE" class="cursor-pointer" @click="handlerDropTable(true)">
+                          <Delete :size="18" class="mr-2"/>
+                          {{ $t('source.common.dropTable') }}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -98,10 +102,11 @@
       </div>
     </div>
   </div>
-  <TableCreate v-if="tableCreateVisible" :isVisible="tableCreateVisible" :info="dataInfo" @close="handlerCreateTable(false)"/>
   <ColumnCreate v-if="columnCreateVisible" :isVisible="columnCreateVisible" :info="dataInfo" @close="handlerCreateColumn(false)"/>
+  <TableCreate v-if="tableCreateVisible" :isVisible="tableCreateVisible" :info="dataInfo" @close="handlerCreateTable(false)"/>
   <TableExport v-if="tableExportVisible" :isVisible="tableExportVisible" :info="dataInfo" @close="handlerExportData(false)"/>
   <TableTruncate v-if="tableTruncateVisible" :isVisible="tableTruncateVisible" :info="dataInfo" @close="handlerTruncateTable(false)"/>
+  <TableDrop v-if="tableDropVisible" :isVisible="tableDropVisible" :info="dataInfo" @close="handlerDropTable(false)"/>
 </template>
 
 <script lang="ts">
@@ -118,7 +123,7 @@ import '@/views/components/tree/style.css'
 import ColumnService from '@/services/column'
 import Alert from '@/views/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ArrowUpFromLine, Columns, Info, Table, Trash } from 'lucide-vue-next'
+import { ArrowUpFromLine, Columns, Delete, Info, Table, Trash } from 'lucide-vue-next'
 import TableInfo from '@/views/pages/admin/source/components/TableInfo.vue'
 import {
   DropdownMenu,
@@ -139,10 +144,12 @@ import TableCreate from '@/views/pages/admin/source/components/TableCreate.vue'
 import ColumnCreate from '@/views/pages/admin/source/components/ColumnCreate.vue'
 import TableExport from '@/views/pages/admin/source/components/TableExport.vue'
 import TableTruncate from '@/views/pages/admin/source/components/TableTruncate.vue'
+import TableDrop from '@/views/pages/admin/source/components/TableDrop.vue'
 
 export default defineComponent({
   name: 'SourceManager',
   components: {
+    TableDrop,
     TableTruncate,
     TableExport,
     ColumnCreate,
@@ -166,7 +173,7 @@ export default defineComponent({
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-    Info, Table, Columns, ArrowUpFromLine, Trash
+    Info, Table, Columns, ArrowUpFromLine, Trash, Delete
   },
   computed: {
     StructureEnum()
@@ -190,6 +197,7 @@ export default defineComponent({
       tableCreateVisible: false,
       tableExportVisible: false,
       tableTruncateVisible: false,
+      tableDropVisible: false,
       columnCreateVisible: false
     }
   },
@@ -375,6 +383,10 @@ export default defineComponent({
     handlerTruncateTable(opened: boolean)
     {
       this.tableTruncateVisible = opened
+    },
+    handlerDropTable(opened: boolean)
+    {
+      this.tableDropVisible = opened
     },
     getColumnIcon(type: string)
     {

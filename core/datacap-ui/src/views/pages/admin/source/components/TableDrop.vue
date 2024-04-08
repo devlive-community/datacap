@@ -1,11 +1,11 @@
 <template>
   <Dialog :is-visible="visible" :title="title as string" :width="'40%'">
     <div class="grid w-full gap-2 pt-1 pl-3 pr-3">
-      <Alert type="error" :description="$t('source.tip.truncateTable1')"/>
-      <Alert type="error" :description="$t('source.tip.truncateTable2')"/>
-      <Alert type="error" :description="$t('source.tip.truncateTable3')"/>
-      <Alert type="error" :description="$t('source.tip.truncateTable4')"/>
-      <Alert type="error" :description="$t('source.tip.truncateTable5')"/>
+      <Alert type="error" :description="$t('source.tip.dropTable1')"/>
+      <Alert type="error" :description="$t('source.tip.dropTable2')"/>
+      <Alert type="error" :description="$t('source.tip.dropTable3')"/>
+      <Alert type="error" :description="$t('source.tip.dropTable4')"/>
+      <Alert type="error" :description="$t('source.tip.dropTable5')"/>
     </div>
     <CircularLoading v-if="loading" :show="loading"/>
     <div v-else>
@@ -18,7 +18,7 @@
           {{ $t('common.cancel') }}
         </Button>
         <Button size="sm" color="#ed4014" :loading="submitting" :disabled="submitting" @click="handlerSubmit(false)">
-          {{ $t('source.common.truncateTable') }}
+          {{ $t('source.common.dropTable') }}
         </Button>
       </div>
     </template>
@@ -40,7 +40,7 @@ import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import AceEditor from '@/views/components/editor/AceEditor.vue'
 
 export default defineComponent({
-  name: 'TableTruncate',
+  name: 'TableDrop',
   components: {
     AceEditor,
     CircularLoading,
@@ -81,9 +81,9 @@ export default defineComponent({
   created()
   {
     this.formState = TableFilterRequest.of()
-    this.formState.type = SqlType.TRUNCATE
+    this.formState.type = SqlType.DROP
     if (this.info) {
-      this.title = this.$t('source.common.truncateTableInfo').replace('$VALUE', this.info.title as string)
+      this.title = this.$t('source.common.dropTableInfo').replace('$VALUE', this.info.title as string)
       this.handlerSubmit(true)
     }
   },
@@ -105,7 +105,7 @@ export default defineComponent({
                           this.formState.statement = response.data.content
                         }
                         else {
-                          ToastUtils.success(this.$t('source.tip.truncateTableSuccess').replace('$VALUE', this.info?.title as string))
+                          ToastUtils.success(this.$t('source.tip.dropTableSuccess').replace('$VALUE', this.info?.title as string))
                           this.handlerCancel()
                         }
                       }
