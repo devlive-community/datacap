@@ -83,7 +83,8 @@ export default {
         previewPendingChanges: 'Preview Pending Changes',
         previewDML: 'Preview DML',
         copyRows: 'Copy Rows',
-        deleteRows: 'Delete Rows'
+        deleteRows: 'Delete Rows',
+        visibleColumn: 'Visible Column',
     },
     tip: {
         selectSource: 'Please select a source',

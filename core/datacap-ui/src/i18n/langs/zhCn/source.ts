@@ -84,6 +84,7 @@ export default {
         previewDML: '预览 DML 语句',
         copyRows: '复制行',
         deleteRows: '删除行',
+        visibleColumn: '可见列',
     },
     tip: {
         selectSource: '请选择数据源',

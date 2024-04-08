@@ -94,6 +94,13 @@
           </div>
         </div>
       </template>
+      <template #extra>
+        <Tooltip :content="$t('source.common.visibleColumn')">
+          <Button size="icon" class="w-6 h-6" @click="handlerVisibleColumn(null, true)">
+            <Columns :size="15"/>
+          </Button>
+        </Tooltip>
+      </template>
       <CircularLoading v-if="refererLoading" :show="refererLoading"/>
       <AgGridVue class="ag-theme-datacap" style="width: 100%; min-height: 460px; height: 460px;" :gridOptions="gridOptions" :columnDefs="configure.headers"
                  :rowData="configure.datasets" :tooltipShowDelay="100" :sortingOrder="['desc', 'asc', null]" :rowSelection="'multiple'" @grid-ready="handlerGridReady"
@@ -104,6 +111,8 @@
                    :type="dataCellChanged.type" @close="handlerCellChangedPreview(false)"/>
     <TableRowDelete v-if="dataSelectedChanged.pending && info" :isVisible="dataSelectedChanged.pending" :tableId="info.applyId as number" :columns="dataSelectedChanged.columns"
                     @close="handlerSelectedChangedPreview(false)"/>
+    <TableColumn v-if="visibleColumn.show" :isVisible="visibleColumn.show" :columns="visibleColumn.columns" @close="handlerVisibleColumn($event, false)"
+                 @change="handlerVisibleColumn($event, false)"/>
     <SqlInfo v-if="visibleContent.show" :isVisible="visibleContent.show" :content="visibleContent.content" @close="handlerVisibleContent(false)"/>
   </div>
 </template>
@@ -127,15 +136,17 @@ import { ToastUtils } from '@/utils/toast'
 import Button from '@/views/ui/button'
 import Tooltip from '@/views/ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Copy, Eye, Minus, Plus, RectangleEllipsis, RefreshCw } from 'lucide-vue-next'
+import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, Cog, Columns, Copy, Eye, Minus, Plus, RectangleEllipsis, RefreshCw } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import TableCellInfo from '@/views/pages/admin/source/components/TableCellInfo.vue'
 import TableRowDelete from '@/views/pages/admin/source/components/TableRowDelete.vue'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
+import TableColumn from '@/views/pages/admin/source/components/TableColumn.vue'
 
 export default defineComponent({
   name: 'TableData',
   components: {
+    TableColumn,
     SqlInfo,
     TableRowDelete,
     TableCellInfo,
@@ -146,7 +157,7 @@ export default defineComponent({
     Button,
     Tooltip,
     Popover, PopoverContent, PopoverTrigger,
-    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus, Eye, RefreshCw
+    ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus, Eye, RefreshCw, Columns
   },
   props: {
     info: {
