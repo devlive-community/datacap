@@ -86,6 +86,7 @@ export default {
     endTime: 'End Time',
     from: 'From',
     adhoc: 'Adhoc Query',
+    error: 'Error',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }

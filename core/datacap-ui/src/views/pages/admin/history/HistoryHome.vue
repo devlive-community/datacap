@@ -20,15 +20,25 @@
         <template #state="{ row }">
           <Tag :class="row.state === 'SUCCESS' ? '' : 'bg-color-error'">{{ row.state }}</Tag>
         </template>
+        <template #action="{row}">
+          <div class="space-x-2">
+            <Tooltip :content="$t('common.error')">
+              <Button :disabled="row.state === 'SUCCESS'" :color="'#ed4014'" size="icon" class="w-6 h-6 rounded-full" @click="handlerShowContent(true, row?.message)">
+                <TriangleAlert :size="14"/>
+              </Button>
+            </Tooltip>
+          </div>
+        </template>
       </TableCommon>
     </Card>
   </div>
+  <SqlInfo v-if="contentVisible" :is-visible="contentVisible" :content="content as string" @close="handlerShowContent(false, null)"/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Card from '@/views/ui/card'
-import { Pencil } from 'lucide-vue-next'
+import { Pencil, TriangleAlert } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter.ts'
 import { useI18n } from 'vue-i18n'
@@ -38,16 +48,21 @@ import { createHeaders } from '@/views/pages/admin/history/HistoryUtils'
 import Tooltip from '@/views/ui/tooltip'
 import Avatar from '@/views/ui/avatar'
 import Tag from '@/views/ui/tag'
+import Button from '@/views/ui/button'
+import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 
 export default defineComponent({
   name: 'HistoryHome',
   components: {
+    SqlInfo,
+    Button,
     TableCommon,
     Pencil,
     Card,
     Tooltip,
     Avatar,
-    Tag
+    Tag,
+    TriangleAlert
   },
   setup()
   {
@@ -63,7 +78,9 @@ export default defineComponent({
     return {
       loading: false,
       data: [],
-      pagination: {} as PaginationModel
+      pagination: {} as PaginationModel,
+      contentVisible: false,
+      content: null as string | null
     }
   },
   created()
@@ -88,6 +105,11 @@ export default defineComponent({
       this.filter.page = value.currentPage
       this.filter.size = value.pageSize
       this.handlerInitialize()
+    },
+    handlerShowContent(opened: boolean, content: string | null)
+    {
+      this.contentVisible = opened
+      this.content = content
     }
   }
 })
