@@ -7,6 +7,7 @@ export default {
         format: 'Format',
         help: 'Help',
         showSql: 'Show SQL',
+        quoteRecord: 'Quote Record',
     },
     tip: {
         pageShow: 'Open / Close the page',

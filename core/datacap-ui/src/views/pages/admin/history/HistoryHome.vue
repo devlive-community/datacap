@@ -35,6 +35,12 @@
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
+                  <DropdownMenuItem class="cursor-pointer">
+                    <RouterLink :to="`/admin/query?id=${row?.id}&from=history`" target="_blank" class="flex items-center">
+                      <Quote class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('query.common.quoteRecord') }}</span>
+                    </RouterLink>
+                  </DropdownMenuItem>
                   <DropdownMenuItem class="cursor-pointer" @click="handlerShowContent(true, row?.content)">
                     <SquareChevronRight class="mr-2 h-4 w-4"/>
                     <span>{{ $t('query.common.showSql') }}</span>
@@ -53,7 +59,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Card from '@/views/ui/card'
-import { Cog, SquareChevronRight, TriangleAlert } from 'lucide-vue-next'
+import { Cog, Quote, SquareChevronRight, TriangleAlert } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter.ts'
 import { useI18n } from 'vue-i18n'
@@ -81,7 +87,7 @@ export default defineComponent({
     SqlInfo,
     Button,
     TableCommon,
-    TriangleAlert, Cog, SquareChevronRight,
+    TriangleAlert, Cog, SquareChevronRight, Quote,
     Card,
     Tooltip,
     Avatar,
