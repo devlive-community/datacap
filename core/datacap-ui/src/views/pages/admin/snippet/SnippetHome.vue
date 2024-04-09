@@ -30,6 +30,10 @@
                     <SquareChevronRight class="mr-2 h-4 w-4"/>
                     <span>{{ $t('query.common.showSql') }}</span>
                   </DropdownMenuItem>
+                  <DropdownMenuItem class="cursor-pointer" @click="handlerDelete(true, row)">
+                    <Delete class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('snippet.common.delete') }}</span>
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -39,6 +43,7 @@
     </Card>
   </div>
   <SnippetInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
+  <SnippetDelete v-if="dataDeleteVisible" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
   <SqlInfo v-if="contentVisible && content" :is-visible="contentVisible" :content="content" @close="handlerShowContent(false, null)"/>
 </template>
 
@@ -55,7 +60,7 @@ import { ToastUtils } from '@/utils/toast'
 import Avatar from '@/views/ui/avatar'
 import Tooltip from '@/views/ui/tooltip'
 import Button from '@/views/ui/button'
-import { Cog, Pencil, Quote, SquareChevronRight } from 'lucide-vue-next'
+import { Cog, Delete, Pencil, Quote, SquareChevronRight } from 'lucide-vue-next'
 import { SnippetModel } from '@/model/snippet'
 import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
 import {
@@ -68,13 +73,15 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
+import SnippetDelete from '@/views/pages/admin/snippet/SnippetDelete.vue'
 
 export default defineComponent({
   name: 'SnippetHome',
   components: {
+    SnippetDelete,
     SqlInfo,
     SnippetInfo,
-    Quote, Pencil, Cog, SquareChevronRight,
+    Quote, Pencil, Cog, SquareChevronRight, Delete,
     TableCommon,
     Card,
     Avatar,
@@ -100,7 +107,8 @@ export default defineComponent({
       dataInfoVisible: false,
       dataInfo: null as null | SnippetModel,
       contentVisible: false,
-      content: null as string | null
+      content: null as string | null,
+      dataDeleteVisible: false
     }
   },
   created()
@@ -141,6 +149,14 @@ export default defineComponent({
     {
       this.contentVisible = opened
       this.content = value
+    },
+    handlerDelete(opened: boolean, data: null | SnippetModel)
+    {
+      this.dataDeleteVisible = opened
+      this.dataInfo = data
+      if (!opened) {
+        this.handlerInitialize()
+      }
     }
   }
 })
