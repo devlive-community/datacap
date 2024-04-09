@@ -20,7 +20,13 @@
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
-                  <DropdownMenuItem  class="cursor-pointer" @click="handlerShowContent(true, row?.code)">
+                  <DropdownMenuItem class="cursor-pointer">
+                    <RouterLink :to="`/admin/query?id=${row?.id}&from=snippet`" target="_blank" class="flex items-center">
+                      <Quote class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('query.common.quoteRecord') }}</span>
+                    </RouterLink>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem class="cursor-pointer" @click="handlerShowContent(true, row?.code)">
                     <SquareChevronRight class="mr-2 h-4 w-4"/>
                     <span>{{ $t('query.common.showSql') }}</span>
                   </DropdownMenuItem>
@@ -49,7 +55,7 @@ import { ToastUtils } from '@/utils/toast'
 import Avatar from '@/views/ui/avatar'
 import Tooltip from '@/views/ui/tooltip'
 import Button from '@/views/ui/button'
-import { Cog, Pencil, SquareChevronRight } from 'lucide-vue-next'
+import { Cog, Pencil, Quote, SquareChevronRight } from 'lucide-vue-next'
 import { SnippetModel } from '@/model/snippet'
 import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
 import {
@@ -68,7 +74,7 @@ export default defineComponent({
   components: {
     SqlInfo,
     SnippetInfo,
-    Pencil, Cog,SquareChevronRight,
+    Quote, Pencil, Cog, SquareChevronRight,
     TableCommon,
     Card,
     Avatar,
