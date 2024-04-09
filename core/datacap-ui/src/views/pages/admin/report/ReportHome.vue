@@ -34,6 +34,10 @@
                       <span>{{ $t('report.common.modify') }}</span>
                     </RouterLink>
                   </DropdownMenuItem>
+                  <DropdownMenuItem class="cursor-pointer" @click="handlerDelete(true, row)">
+                    <Delete class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('report.common.delete') }}</span>
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -43,6 +47,7 @@
     </Card>
   </div>
   <ReportView v-if="dataViewVisible" :is-visible="dataViewVisible" :info="dataInfo" @close="handlerView(false, null)"/>
+  <ReportDelete v-if="dataDeleteVisible" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -60,7 +65,7 @@ import Tooltip from '@/views/ui/tooltip'
 import Avatar from '@/views/ui/avatar'
 import Tag from '@/views/ui/tag'
 import Button from '@/views/ui/button'
-import { Cog, Eye, Pencil } from 'lucide-vue-next'
+import { Cog, Delete, Eye, Pencil } from 'lucide-vue-next'
 import { ReportModel } from '@/model/report'
 import ReportView from '@/views/pages/admin/report/ReportView.vue'
 import {
@@ -72,10 +77,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import ReportDelete from '@/views/pages/admin/report/ReportDelete.vue'
 
 export default defineComponent({
   name: 'ReportHome',
   components: {
+    ReportDelete,
     ReportView,
     TableCommon,
     Card,
@@ -84,7 +91,7 @@ export default defineComponent({
     Avatar,
     Tag,
     Button,
-    Eye, Cog, Pencil,
+    Eye, Cog, Pencil, Delete,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
@@ -103,7 +110,8 @@ export default defineComponent({
       data: [],
       pagination: {} as PaginationModel,
       dataInfo: null as ReportModel | null,
-      dataViewVisible: false
+      dataViewVisible: false,
+      dataDeleteVisible: false
     }
   },
   created()
@@ -136,6 +144,14 @@ export default defineComponent({
     {
       this.dataViewVisible = opened
       this.dataInfo = value
+    },
+    handlerDelete(opened: boolean, data: ReportModel | null)
+    {
+      this.dataDeleteVisible = opened
+      this.dataInfo = data
+      if (!opened) {
+        this.handlerInitialize()
+      }
     }
   }
 })
