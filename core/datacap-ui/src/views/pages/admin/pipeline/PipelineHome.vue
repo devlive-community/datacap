@@ -31,12 +31,28 @@
                 <TriangleAlert :size="14"/>
               </Button>
             </Tooltip>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
+                  <Cog class="w-full justify-center" :size="14"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem class="cursor-pointer" @click="handlerLogger(true, row)">
+                    <Rss class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('pipeline.common.logger') }}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </template>
       </TableCommon>
     </Card>
   </div>
   <MarkdownPreview v-if="dataMessageVisible && dataInfo" :is-visible="dataMessageVisible" :content="dataInfo.message" @close="handlerShowMessage(false, null)"/>
+  <PipelineLogger v-if="dataLoggerVisible && dataInfo" :is-visible="dataLoggerVisible" :info="dataInfo" @close="handlerLogger(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -53,13 +69,24 @@ import { useI18n } from 'vue-i18n'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import PipelineService from '@/services/pipeline'
 import Common from '@/utils/common.ts'
-import { TriangleAlert } from 'lucide-vue-next'
+import { Cog, TriangleAlert,Rss } from 'lucide-vue-next'
 import { PipelineModel } from '@/model/pipeline.ts'
 import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import PipelineLogger from '@/views/pages/admin/pipeline/PipelineLogger.vue'
 
 export default defineComponent({
   name: 'PipelineHome',
   components: {
+    PipelineLogger,
     MarkdownPreview,
     Button,
     TableCommon,
@@ -67,7 +94,8 @@ export default defineComponent({
     Tooltip,
     Avatar,
     Tag,
-    TriangleAlert
+    TriangleAlert, Cog,Rss,
+    DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
   {
@@ -93,7 +121,8 @@ export default defineComponent({
       data: [],
       pagination: {} as PaginationModel,
       dataInfo: null as PipelineModel | null,
-      dataMessageVisible: false
+      dataMessageVisible: false,
+      dataLoggerVisible: false
     }
   },
   created()
@@ -122,6 +151,11 @@ export default defineComponent({
     handlerShowMessage(opened: boolean, value: null | PipelineModel)
     {
       this.dataMessageVisible = opened
+      this.dataInfo = value
+    },
+    handlerLogger(opened: boolean, value: null | PipelineModel)
+    {
+      this.dataLoggerVisible = opened
       this.dataInfo = value
     }
   }
