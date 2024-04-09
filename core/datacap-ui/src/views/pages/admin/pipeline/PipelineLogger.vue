@@ -68,7 +68,7 @@ export default defineComponent({
     handlerInitialize()
     {
       if (this.info) {
-        this.title = `${ this.$t('pipeline.common.loggerInfo').replace('$VALUE', this.info.id as unknown as string) }`
+        this.title = `${ this.$t('pipeline.common.loggerInfo').replace('$VALUE', this.info.name as string) }`
         this.loading = true
         PipelineService.getLogger(toNumber(this.info.id))
                        .then(response => {

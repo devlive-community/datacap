@@ -43,6 +43,10 @@
                     <Rss class="mr-2 h-4 w-4"/>
                     <span>{{ $t('pipeline.common.logger') }}</span>
                   </DropdownMenuItem>
+                  <DropdownMenuItem class="cursor-pointer" :disabled="row.state == 'RUNNING'" @click="handlerDelete(true, row)">
+                    <Delete class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('pipeline.common.delete') }}</span>
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -53,6 +57,7 @@
   </div>
   <MarkdownPreview v-if="dataMessageVisible && dataInfo" :is-visible="dataMessageVisible" :content="dataInfo.message" @close="handlerShowMessage(false, null)"/>
   <PipelineLogger v-if="dataLoggerVisible && dataInfo" :is-visible="dataLoggerVisible" :info="dataInfo" @close="handlerLogger(false, null)"/>
+  <PipelineDelete v-if="dataDeleteVisible && dataInfo" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -69,7 +74,7 @@ import { useI18n } from 'vue-i18n'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import PipelineService from '@/services/pipeline'
 import Common from '@/utils/common.ts'
-import { Cog, TriangleAlert,Rss } from 'lucide-vue-next'
+import { Cog, Delete, Rss, TriangleAlert } from 'lucide-vue-next'
 import { PipelineModel } from '@/model/pipeline.ts'
 import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
 import {
@@ -82,10 +87,12 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import PipelineLogger from '@/views/pages/admin/pipeline/PipelineLogger.vue'
+import PipelineDelete from '@/views/pages/admin/pipeline/PipelineDelete.vue'
 
 export default defineComponent({
   name: 'PipelineHome',
   components: {
+    PipelineDelete,
     PipelineLogger,
     MarkdownPreview,
     Button,
@@ -94,7 +101,7 @@ export default defineComponent({
     Tooltip,
     Avatar,
     Tag,
-    TriangleAlert, Cog,Rss,
+    TriangleAlert, Cog, Rss, Delete,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
@@ -122,7 +129,8 @@ export default defineComponent({
       pagination: {} as PaginationModel,
       dataInfo: null as PipelineModel | null,
       dataMessageVisible: false,
-      dataLoggerVisible: false
+      dataLoggerVisible: false,
+      dataDeleteVisible: false
     }
   },
   created()
@@ -157,6 +165,14 @@ export default defineComponent({
     {
       this.dataLoggerVisible = opened
       this.dataInfo = value
+    },
+    handlerDelete(opened: boolean, value: null | PipelineModel)
+    {
+      this.dataDeleteVisible = opened
+      this.dataInfo = value
+      if (!opened) {
+        this.handlerInitialize()
+      }
     }
   }
 })
