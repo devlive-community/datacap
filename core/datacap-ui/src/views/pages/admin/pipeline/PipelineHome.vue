@@ -39,6 +39,10 @@
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
+                  <DropdownMenuItem class="cursor-pointer" :disabled="row.state !== 'RUNNING'" @click="handlerStop(true, row)">
+                    <CircleStop class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('pipeline.common.stop') }}</span>
+                  </DropdownMenuItem>
                   <DropdownMenuItem class="cursor-pointer" @click="handlerLogger(true, row)">
                     <Rss class="mr-2 h-4 w-4"/>
                     <span>{{ $t('pipeline.common.logger') }}</span>
@@ -58,6 +62,7 @@
   <MarkdownPreview v-if="dataMessageVisible && dataInfo" :is-visible="dataMessageVisible" :content="dataInfo.message" @close="handlerShowMessage(false, null)"/>
   <PipelineLogger v-if="dataLoggerVisible && dataInfo" :is-visible="dataLoggerVisible" :info="dataInfo" @close="handlerLogger(false, null)"/>
   <PipelineDelete v-if="dataDeleteVisible && dataInfo" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
+  <PipelineStop v-if="dataStopVisible && dataInfo" :is-visible="dataStopVisible" :info="dataInfo" @close="handlerStop(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -74,7 +79,7 @@ import { useI18n } from 'vue-i18n'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import PipelineService from '@/services/pipeline'
 import Common from '@/utils/common.ts'
-import { Cog, Delete, Rss, TriangleAlert } from 'lucide-vue-next'
+import { CircleStop, Cog, Delete, Rss, TriangleAlert } from 'lucide-vue-next'
 import { PipelineModel } from '@/model/pipeline.ts'
 import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
 import {
@@ -88,10 +93,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import PipelineLogger from '@/views/pages/admin/pipeline/PipelineLogger.vue'
 import PipelineDelete from '@/views/pages/admin/pipeline/PipelineDelete.vue'
+import PipelineStop from '@/views/pages/admin/pipeline/PipelineStop.vue'
 
 export default defineComponent({
   name: 'PipelineHome',
   components: {
+    PipelineStop,
     PipelineDelete,
     PipelineLogger,
     MarkdownPreview,
@@ -101,7 +108,7 @@ export default defineComponent({
     Tooltip,
     Avatar,
     Tag,
-    TriangleAlert, Cog, Rss, Delete,
+    TriangleAlert, Cog, Rss, Delete, CircleStop,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
@@ -130,7 +137,8 @@ export default defineComponent({
       dataInfo: null as PipelineModel | null,
       dataMessageVisible: false,
       dataLoggerVisible: false,
-      dataDeleteVisible: false
+      dataDeleteVisible: false,
+      dataStopVisible: false
     }
   },
   created()
@@ -169,6 +177,14 @@ export default defineComponent({
     handlerDelete(opened: boolean, value: null | PipelineModel)
     {
       this.dataDeleteVisible = opened
+      this.dataInfo = value
+      if (!opened) {
+        this.handlerInitialize()
+      }
+    },
+    handlerStop(opened: boolean, value: null | PipelineModel)
+    {
+      this.dataStopVisible = opened
       this.dataInfo = value
       if (!opened) {
         this.handlerInitialize()

@@ -16,6 +16,11 @@ class PipelineService
     {
         return new HttpUtils().get(`${ DEFAULT_PATH }/log/${ id }`)
     }
+
+    stop(id: number): Promise<ResponseModel>
+    {
+        return new HttpUtils().put(`${ DEFAULT_PATH }/stop/${ id }`)
+    }
 }
 
 export default new PipelineService()
