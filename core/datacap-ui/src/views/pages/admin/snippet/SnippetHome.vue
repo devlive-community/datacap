@@ -12,41 +12,28 @@
                 <Pencil :size="14"/>
               </Button>
             </Tooltip>
-            <!--            <DropdownMenu>-->
-            <!--              <DropdownMenuTrigger as-child>-->
-            <!--                <Button size="icon" class="rounded-full w-6 h-6" variant="outline">-->
-            <!--                  <Cog class="w-full justify-center" :size="14"/>-->
-            <!--                </Button>-->
-            <!--              </DropdownMenuTrigger>-->
-            <!--              <DropdownMenuContent>-->
-            <!--                <DropdownMenuGroup>-->
-            <!--                  <DropdownMenuItem :disabled="(loginUserId !== row.user.id) || !row.available" class="cursor-pointer">-->
-            <!--                    <RouterLink :to="`/admin/source/${row?.id}/manager`" target="_blank" class="flex items-center">-->
-            <!--                      <Cog class="mr-2 h-4 w-4"/>-->
-            <!--                      <span>{{ $t('source.common.manager') }}</span>-->
-            <!--                    </RouterLink>-->
-            <!--                  </DropdownMenuItem>-->
-            <!--                  <DropdownMenuItem :disabled="loginUserId !== row.user.id" class="cursor-pointer" @click="handlerDelete(true, row)">-->
-            <!--                    <Trash class="mr-2 h-4 w-4"/>-->
-            <!--                    <span>{{ $t('common.deleteData') }}</span>-->
-            <!--                  </DropdownMenuItem>-->
-            <!--                  <DropdownMenuItem :disabled="(loginUserId !== row.user.id)" class="cursor-pointer" @click="handlerHistory(true, row)">-->
-            <!--                    <History class="mr-2 h-4 w-4"/>-->
-            <!--                    {{ $t('source.common.syncHistory') }}-->
-            <!--                  </DropdownMenuItem>-->
-            <!--                  <DropdownMenuItem :disabled="(loginUserId !== row.user.id) || !row.available" class="cursor-pointer" @click="handlerSyncMetadata(true, row)">-->
-            <!--                    <RefreshCcwDot class="mr-2 h-4 w-4"/>-->
-            <!--                    {{ $t('source.common.syncMetadata') }}-->
-            <!--                  </DropdownMenuItem>-->
-            <!--                </DropdownMenuGroup>-->
-            <!--              </DropdownMenuContent>-->
-            <!--            </DropdownMenu>-->
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
+                  <Cog class="w-full justify-center" :size="14"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem  class="cursor-pointer" @click="handlerShowContent(true, row?.code)">
+                    <SquareChevronRight class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('query.common.showSql') }}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </template>
       </TableCommon>
     </Card>
   </div>
   <SnippetInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
+  <SqlInfo v-if="contentVisible && content" :is-visible="contentVisible" :content="content" @close="handlerShowContent(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -62,20 +49,32 @@ import { ToastUtils } from '@/utils/toast'
 import Avatar from '@/views/ui/avatar'
 import Tooltip from '@/views/ui/tooltip'
 import Button from '@/views/ui/button'
-import { Pencil } from 'lucide-vue-next'
+import { Cog, Pencil, SquareChevronRight } from 'lucide-vue-next'
 import { SnippetModel } from '@/model/snippet'
 import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 
 export default defineComponent({
   name: 'SnippetHome',
   components: {
+    SqlInfo,
     SnippetInfo,
-    Pencil,
+    Pencil, Cog,SquareChevronRight,
     TableCommon,
     Card,
     Avatar,
     Tooltip,
-    Button
+    Button,
+    DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
   {
@@ -93,7 +92,9 @@ export default defineComponent({
       data: [],
       pagination: {} as PaginationModel,
       dataInfoVisible: false,
-      dataInfo: null as null | SnippetModel
+      dataInfo: null as null | SnippetModel,
+      contentVisible: false,
+      content: null as string | null
     }
   },
   created()
@@ -129,6 +130,11 @@ export default defineComponent({
       if (!opened) {
         this.handlerInitialize()
       }
+    },
+    handlerShowContent(opened: boolean, value: string | null)
+    {
+      this.contentVisible = opened
+      this.content = value
     }
   }
 })
