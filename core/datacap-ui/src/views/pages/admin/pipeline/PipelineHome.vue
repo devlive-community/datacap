@@ -23,9 +23,20 @@
             {{ Common.getText(i18n, row.state) }}
           </Tag>
         </template>
+        <template #action="{row}">
+          <div class="space-x-2">
+            <Tooltip :content="$t('common.error')">
+              <Button :disabled="row.state !== 'FAILURE' && !(row.state == 'STOPPED' && row.message)" :color="'#ed4014'" size="icon" class="w-6 h-6 rounded-full"
+                      @click="handlerShowMessage(true, row)">
+                <TriangleAlert :size="14"/>
+              </Button>
+            </Tooltip>
+          </div>
+        </template>
       </TableCommon>
     </Card>
   </div>
+  <MarkdownPreview v-if="dataMessageVisible && dataInfo" :is-visible="dataMessageVisible" :content="dataInfo.message" @close="handlerShowMessage(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -42,16 +53,21 @@ import { useI18n } from 'vue-i18n'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import PipelineService from '@/services/pipeline'
 import Common from '@/utils/common.ts'
+import { TriangleAlert } from 'lucide-vue-next'
+import { PipelineModel } from '@/model/pipeline.ts'
+import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
 
 export default defineComponent({
   name: 'PipelineHome',
   components: {
+    MarkdownPreview,
     Button,
     TableCommon,
     Card,
     Tooltip,
     Avatar,
-    Tag
+    Tag,
+    TriangleAlert
   },
   setup()
   {
@@ -75,7 +91,9 @@ export default defineComponent({
     return {
       loading: false,
       data: [],
-      pagination: {} as PaginationModel
+      pagination: {} as PaginationModel,
+      dataInfo: null as PipelineModel | null,
+      dataMessageVisible: false
     }
   },
   created()
@@ -100,6 +118,11 @@ export default defineComponent({
       this.filter.page = value.currentPage
       this.filter.size = value.pageSize
       this.handlerInitialize()
+    },
+    handlerShowMessage(opened: boolean, value: null | PipelineModel)
+    {
+      this.dataMessageVisible = opened
+      this.dataInfo = value
     }
   }
 })
