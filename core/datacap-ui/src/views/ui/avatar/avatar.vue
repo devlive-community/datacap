@@ -1,5 +1,5 @@
 <template>
-  <Avatar :size="size as any" class="border-2 border-background w-8 h-8">
+  <Avatar :size="size as any" class="border-2 border-background w-8 h-8 cursor-pointer">
     <AvatarImage :src="src"/>
     <AvatarFallback>{{ alt }}</AvatarFallback>
   </Avatar>

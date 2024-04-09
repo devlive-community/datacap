@@ -214,6 +214,14 @@ const createAdminRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/snippet/SnippetHome.vue')
+            },
+            {
+                path: 'report',
+                meta: {
+                    title: 'common.report',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/report/ReportHome.vue')
             }
         ]
     }

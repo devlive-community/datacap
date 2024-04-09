@@ -14,6 +14,7 @@ import function1 from '@/i18n/langs/en/function'
 import template from '@/i18n/langs/en/template'
 import menu from '@/i18n/langs/en/menu'
 import snippet from '@/i18n/langs/en/snippet'
+import report from '@/i18n/langs/en/report'
 
 export default {
     common: common,
@@ -31,5 +32,6 @@ export default {
     function: function1,
     template: template,
     menu: menu,
-    snippet: snippet
+    snippet: snippet,
+    report: report
 }

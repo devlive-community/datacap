@@ -1,5 +1,5 @@
 <template>
-  <Badge>
+  <Badge class="cursor-pointer">
     <span v-if="content">{{ content }}</span>
     <slot v-else/>
   </Badge>
