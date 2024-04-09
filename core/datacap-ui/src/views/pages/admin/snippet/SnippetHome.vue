@@ -2,6 +2,9 @@
   <div class="w-full">
     <Card>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
+        <template #username="{ row }">
+          <Avatar :src="row.user.avatar" :alt="row.user.username"/>
+        </template>
       </TableCommon>
     </Card>
   </div>
@@ -17,12 +20,14 @@ import TableCommon from '@/views/components/table/TableCommon.vue'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import SnippetService from '@/services/snippet'
 import { ToastUtils } from '@/utils/toast'
+import Avatar from '@/views/ui/avatar'
 
 export default defineComponent({
   name: 'SnippetHome',
   components: {
     TableCommon,
-    Card
+    Card,
+    Avatar
   },
   setup()
   {

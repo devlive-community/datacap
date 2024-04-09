@@ -13,6 +13,7 @@ import region from '@/i18n/langs/en/region'
 import function1 from '@/i18n/langs/en/function'
 import template from '@/i18n/langs/en/template'
 import menu from '@/i18n/langs/en/menu'
+import snippet from '@/i18n/langs/en/snippet'
 
 export default {
     common: common,
@@ -29,5 +30,6 @@ export default {
     region: region,
     function: function1,
     template: template,
-    menu: menu
+    menu: menu,
+    snippet: snippet
 }
