@@ -13,9 +13,19 @@
             <Tag>{{ $t('common.dataset') }}</Tag>
           </Tooltip>
         </template>
+        <template #action="{ row }">
+          <div class="space-x-2">
+            <Tooltip :content="$t('report.common.view').replace('$VALUE', row.name)">
+              <Button size="icon" class="rounded-full w-6 h-6" @click="handlerView(true, row)">
+                <Eye :size="14"/>
+              </Button>
+            </Tooltip>
+          </div>
+        </template>
       </TableCommon>
     </Card>
   </div>
+  <ReportView v-if="dataViewVisible" :is-visible="dataViewVisible" :info="dataInfo" @close="handlerView(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -32,16 +42,23 @@ import Switch from '@/views/ui/switch'
 import Tooltip from '@/views/ui/tooltip'
 import Avatar from '@/views/ui/avatar'
 import Tag from '@/views/ui/tag'
+import Button from '@/views/ui/button'
+import { Eye } from 'lucide-vue-next'
+import { ReportModel } from '@/model/report'
+import ReportView from '@/views/pages/admin/report/ReportView.vue'
 
 export default defineComponent({
   name: 'ReportHome',
   components: {
+    ReportView,
     TableCommon,
     Card,
     Switch,
     Tooltip,
     Avatar,
-    Tag
+    Tag,
+    Button,
+    Eye
   },
   setup()
   {
@@ -57,7 +74,9 @@ export default defineComponent({
     return {
       loading: false,
       data: [],
-      pagination: {} as PaginationModel
+      pagination: {} as PaginationModel,
+      dataInfo: null as ReportModel | null,
+      dataViewVisible: false
     }
   },
   created()
@@ -85,6 +104,11 @@ export default defineComponent({
       this.filter.page = value.currentPage
       this.filter.size = value.pageSize
       this.handlerInitialize()
+    },
+    handlerView(opened: boolean, value: ReportModel | null)
+    {
+      this.dataViewVisible = opened
+      this.dataInfo = value
     }
   }
 })
