@@ -31,6 +31,10 @@
                         <Ban class="mr-1" :size="18"/>
                         {{ $t('common.cancel') }}
                       </Button>
+                      <Button v-if="responseConfigure.response" size="sm" class="ml-2" @click="handlerSnippet(true)">
+                        <Plus class="mr-1" :size="18"/>
+                        {{ $t('common.snippet') }}
+                      </Button>
                       <HoverCard v-if="responseConfigure.response">
                         <HoverCardTrigger as-child>
                           <Button size="sm" class="ml-2" variant="outline">
@@ -99,6 +103,7 @@
     <!-- Ai Help -->
     <QueryHelp v-if="visibility.queryHelp" :is-visible="visibility.queryHelp" :content="selectEditor.editorInstance?.instance?.getValue() as string"
                :help-type="queryConfigure.queryType" :engine="selectSource.engine as string" :message="responseConfigure.message as string" @close="handlerQueryHelp(false)"/>
+    <SnippetInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerSnippet(false)"/>
   </div>
 </template>
 
@@ -131,8 +136,10 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import FormatService from '@/services/format'
 import { HelpType } from '@/views/pages/admin/query/HelpType'
 import QueryHelp from '@/views/pages/admin/query/QueryHelp.vue'
-import DataStructureLazyTree from '@/views/components/tree/DataStructureLazyTree.vue';
-import Editor = Ace.Editor;
+import DataStructureLazyTree from '@/views/components/tree/DataStructureLazyTree.vue'
+import { SnippetModel, SnippetRequest } from '@/model/snippet'
+import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
+import Editor = Ace.Editor
 
 interface EditorInstance
 {
@@ -145,6 +152,7 @@ interface EditorInstance
 export default defineComponent({
   name: 'QueryHome',
   components: {
+    SnippetInfo,
     DataStructureLazyTree,
     QueryHelp,
     HoverCardContent, HoverCardTrigger, HoverCard,
@@ -187,7 +195,9 @@ export default defineComponent({
         response: null as ResponseModel | null,
         gridConfigure: null as GridConfigure | null,
         message: null as string | null
-      }
+      },
+      dataInfo: null as unknown as SnippetModel,
+      dataInfoVisible: false
     }
   },
   created()
@@ -198,7 +208,7 @@ export default defineComponent({
     handlerInitialize()
     {
       this.createEditor()
-      this.queryConfigure.configure = {name: this.selectSource.id as string, content: '', mode: 'ADHOC', format: 'JSON'}
+      this.queryConfigure.configure = { name: this.selectSource.id as string, content: '', mode: 'ADHOC', format: 'JSON' }
       const router = useRouter()
       if (router.currentRoute?.value?.query) {
         const id = router.currentRoute.value.query.id as unknown as number
@@ -207,27 +217,27 @@ export default defineComponent({
           if (from === 'snippet') {
             this.queryConfigure.configure.mode = 'SNIPPET'
             SnippetService.getById(id)
-                .then((response) => {
-                  if (response.status && response.data?.code) {
-                    const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
-                    if (instance) {
-                      instance.instance?.setValue(response.data.code)
-                    }
-                  }
-                })
+                          .then((response) => {
+                            if (response.status && response.data?.code) {
+                              const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
+                              if (instance) {
+                                instance.instance?.setValue(response.data.code)
+                              }
+                            }
+                          })
           }
           else if (from === 'history') {
             this.queryConfigure.configure.mode = 'HISTORY'
             AuditService.getById(id)
-                .then((response) => {
-                  if (response.status && response.data?.content) {
-                    const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
-                    if (instance) {
-                      instance.instance?.setValue(response.data.content)
-                      this.handlerChangeValue(`${response.data.plugin.id}:${response.data.plugin.type}`)
-                    }
-                  }
-                })
+                        .then((response) => {
+                          if (response.status && response.data?.content) {
+                            const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
+                            if (instance) {
+                              instance.instance?.setValue(response.data.content)
+                              this.handlerChangeValue(`${ response.data.plugin.id }:${ response.data.plugin.type }`)
+                            }
+                          }
+                        })
           }
         }
       }
@@ -289,7 +299,7 @@ export default defineComponent({
       try {
         // The configuration editor selects content events
         editor.selection.on('changeSelection', () => {
-          const selection = editor.getSelection();
+          const selection = editor.getSelection()
           if (selection.isEmpty()) {
             this.selectEditor.isSelection = false
           }
@@ -310,47 +320,47 @@ export default defineComponent({
         const that = this
         const client = new HttpUtils().getAxios()
         client.all([FunctionService.getByPlugin(language.toLowerCase()), SnippetService.getSnippets(0, 100000)])
-            .then(client.spread((keyword: any, snippet: any) => {
-              if (keyword.status) {
-                const keywordCompleter = {
-                  // @ts-ignore
-                  getCompletions: function (editor, session, pos, prefix, callback) {
-                    return callback(null, keyword.data.content.map(function (item: { example: string; name: string; type: any; description: string; }) {
-                      return {
-                        value: item.example,
-                        caption: item.name,
-                        meta: that.$t('common.' + item.type.toLowerCase()),
-                        docHTML: '<div>' +
-                            '<strong>' + item.name + '</strong><br/><hr/>'
-                            + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
-                            + that.$t('common.example') + ':\n' + item.example + '<br/><hr/>'
-                            + '</div>'
-                      }
-                    }))
+              .then(client.spread((keyword: any, snippet: any) => {
+                if (keyword.status) {
+                  const keywordCompleter = {
+                    // @ts-ignore
+                    getCompletions: function (editor, session, pos, prefix, callback) {
+                      return callback(null, keyword.data.content.map(function (item: { example: string; name: string; type: any; description: string; }) {
+                        return {
+                          value: item.example,
+                          caption: item.name,
+                          meta: that.$t('common.' + item.type.toLowerCase()),
+                          docHTML: '<div>' +
+                              '<strong>' + item.name + '</strong><br/><hr/>'
+                              + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
+                              + that.$t('common.example') + ':\n' + item.example + '<br/><hr/>'
+                              + '</div>'
+                        }
+                      }))
+                    }
                   }
-                };
-                editor.completers.push(keywordCompleter);
-              }
-              if (snippet.status) {
-                const snippetCompleter = {
-                  // @ts-ignore
-                  getCompletions: function (editor, session, pos, prefix, callback) {
-                    return callback(null, snippet.data.content.map(function (item: { code: any; name: string; description: string; }) {
-                      return {
-                        value: item.code,
-                        caption: item.name,
-                        meta: that.$t('common.snippet'),
-                        docHTML: '<div>' +
-                            '<strong>' + item.name + '</strong><br/><hr/>'
-                            + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
-                            + '</div>'
-                      }
-                    }))
+                  editor.completers.push(keywordCompleter)
+                }
+                if (snippet.status) {
+                  const snippetCompleter = {
+                    // @ts-ignore
+                    getCompletions: function (editor, session, pos, prefix, callback) {
+                      return callback(null, snippet.data.content.map(function (item: { code: any; name: string; description: string; }) {
+                        return {
+                          value: item.code,
+                          caption: item.name,
+                          meta: that.$t('common.snippet'),
+                          docHTML: '<div>' +
+                              '<strong>' + item.name + '</strong><br/><hr/>'
+                              + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
+                              + '</div>'
+                        }
+                      }))
+                    }
                   }
-                };
-                editor.completers.push(snippetCompleter);
-              }
-            }))
+                  editor.completers.push(snippetCompleter)
+                }
+              }))
       }
       catch (e) {
         console.error(e)
@@ -374,32 +384,32 @@ export default defineComponent({
 
       this.loading.running = true
       ExecuteService.execute(this.queryConfigure.configure!, this.queryConfigure.cancelToken.token)
-          .then((response) => {
-            if (response.status) {
-              if (editorInstance) {
-                const content = this.selectEditor.isSelection ? editorInstance.instance?.getSelectedText() : editorInstance.instance?.getValue()
-                this.responseConfigure.response = response
-                const tConfigure: GridConfigure = {
-                  headers: response.data.headers,
-                  columns: response.data.columns,
-                  height: 340,
-                  width: editorContainer.offsetWidth + 20,
-                  showSeriesNumber: false,
-                  sourceId: this.selectSource.id as unknown as number,
-                  query: content
-                };
-                this.responseConfigure.gridConfigure = tConfigure
-                editorInstance.instance?.setValue(response.data.content)
-              }
-            }
-            else {
-              ToastUtils.error(response.message)
-              this.responseConfigure.message = response.message
-              this.queryConfigure.queryType.push(HelpType.FIXEDBUGS)
-              this.responseConfigure.gridConfigure = null
-            }
-          })
-          .finally(() => this.loading.running = false)
+                    .then((response) => {
+                      if (response.status) {
+                        if (editorInstance) {
+                          const content = this.selectEditor.isSelection ? editorInstance.instance?.getSelectedText() : editorInstance.instance?.getValue()
+                          this.responseConfigure.response = response
+                          const tConfigure: GridConfigure = {
+                            headers: response.data.headers,
+                            columns: response.data.columns,
+                            height: 340,
+                            width: editorContainer.offsetWidth + 20,
+                            showSeriesNumber: false,
+                            sourceId: this.selectSource.id as unknown as number,
+                            query: content
+                          }
+                          this.responseConfigure.gridConfigure = tConfigure
+                          editorInstance.instance?.setValue(response.data.content)
+                        }
+                      }
+                      else {
+                        ToastUtils.error(response.message)
+                        this.responseConfigure.message = response.message
+                        this.queryConfigure.queryType.push(HelpType.FIXEDBUGS)
+                        this.responseConfigure.gridConfigure = null
+                      }
+                    })
+                    .finally(() => this.loading.running = false)
     },
     handlerCancel()
     {
@@ -410,35 +420,45 @@ export default defineComponent({
       const editorInstance = this.selectEditor.editorInstance
       if (editorInstance) {
         this.loading.formatting = true
-        const configure = {sql: editorInstance.instance?.getValue()}
+        const configure = { sql: editorInstance.instance?.getValue() }
         FormatService.formatSql(configure)
-            .then((response) => {
-              if (response.status) {
-                editorInstance.instance?.setValue(response.data)
-                this.selectEditor.isSelection = false
-              }
-              else {
-                ToastUtils.error(response.message)
-              }
-            })
-            .finally(() => this.loading.formatting = false)
+                     .then((response) => {
+                       if (response.status) {
+                         editorInstance.instance?.setValue(response.data)
+                         this.selectEditor.isSelection = false
+                       }
+                       else {
+                         ToastUtils.error(response.message)
+                       }
+                     })
+                     .finally(() => this.loading.formatting = false)
       }
     },
     handlerQueryHelp(value: boolean)
     {
       this.visibility.queryHelp = value
     },
+    handlerSnippet(opened: boolean)
+    {
+      const editorInstance = this.selectEditor.editorInstance
+      this.dataInfoVisible = opened
+      if (editorInstance) {
+        const content = this.selectEditor.isSelection ? editorInstance.instance?.getSelectedText() : editorInstance.instance?.getValue()
+        this.dataInfo = SnippetRequest.of()
+        this.dataInfo.code = content as string
+      }
+    },
     createEditor()
     {
       const localEditorConfigure = localStorage.getItem(Common.userEditorConfigure)
-      const defaultEditorConfigure: UserEditor = {fontSize: 12, theme: 'chrome'}
+      const defaultEditorConfigure: UserEditor = { fontSize: 12, theme: 'chrome' }
       this.selectEditor.configure = localEditorConfigure ? JSON.parse(localEditorConfigure) : defaultEditorConfigure
-      const defaultEditor: EditorInstance = {title: 'New Query', key: Date.now().toString(), configure: this.selectEditor.configure as any}
+      const defaultEditor: EditorInstance = { title: 'New Query', key: Date.now().toString(), configure: this.selectEditor.configure as any }
       this.selectEditor.activeKey = defaultEditor.key
       this.selectEditor.editorMaps.set(defaultEditor.key, defaultEditor)
       this.selectEditor.editorInstance = defaultEditor
       this.selectEditor.isSelection = false
     }
   }
-});
+})
 </script>

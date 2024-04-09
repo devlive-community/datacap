@@ -1,6 +1,7 @@
 package io.edurt.datacap.server.controller.user;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.SnippetEntity;
 import io.edurt.datacap.service.service.SnippetService;
@@ -29,11 +30,17 @@ public class SnippetController
         this.snippetService = snippetService;
     }
 
+    @Deprecated
     @GetMapping
-    public CommonResponse<PageEntity<SnippetEntity>> getAll(@RequestParam(value = "page", defaultValue = "1") int start,
-            @RequestParam(value = "size", defaultValue = "10") int end)
+    public CommonResponse<PageEntity<SnippetEntity>> getAll(@RequestParam(value = "page", defaultValue = "1") int start, @RequestParam(value = "size", defaultValue = "10") int end)
     {
         return this.snippetService.getAll(start, end);
+    }
+
+    @PostMapping(value = "list")
+    public CommonResponse list(@RequestBody FilterBody filter)
+    {
+        return snippetService.getAll(filter);
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
