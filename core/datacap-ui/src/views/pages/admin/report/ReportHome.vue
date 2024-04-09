@@ -1,6 +1,7 @@
 <template>
   <div class="w-full">
     <Card>
+      <template #title>{{ $t('report.common.list') }}</template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #realtime="{row}">
           <Switch :value="row.realtime" :disabled="true"/>

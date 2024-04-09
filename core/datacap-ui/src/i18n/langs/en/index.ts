@@ -15,6 +15,7 @@ import template from '@/i18n/langs/en/template'
 import menu from '@/i18n/langs/en/menu'
 import snippet from '@/i18n/langs/en/snippet'
 import report from '@/i18n/langs/en/report'
+import pipeline from '@/i18n/langs/en/pipeline'
 
 export default {
     common: common,
@@ -33,5 +34,6 @@ export default {
     template: template,
     menu: menu,
     snippet: snippet,
-    report: report
+    report: report,
+    pipeline: pipeline
 }

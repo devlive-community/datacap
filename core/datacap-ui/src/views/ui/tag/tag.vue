@@ -1,5 +1,5 @@
 <template>
-  <Badge class="cursor-pointer">
+  <Badge class="cursor-pointer" :style="{backgroundColor: color}">
     <span v-if="content">{{ content }}</span>
     <slot v-else/>
   </Badge>
@@ -14,6 +14,9 @@ export default defineComponent({
   components: { Badge },
   props: {
     content: {
+      type: String
+    },
+    color: {
       type: String
     }
   }
