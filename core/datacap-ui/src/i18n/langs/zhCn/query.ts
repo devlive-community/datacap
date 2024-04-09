@@ -7,7 +7,9 @@ export default {
         format: '格式化',
         help: '帮助',
         showSql: '显示 SQL',
-        quoteRecord: '引用记录'
+        quoteRecord: '引用记录',
+        historyData: '历史数据',
+        historyDataInfo: '[ $VALUE ] 历史数据',
     },
     tip: {
         pageShow: '打开 / 关闭分页',

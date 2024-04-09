@@ -45,6 +45,10 @@
                     <SquareChevronRight class="mr-2 h-4 w-4"/>
                     <span>{{ $t('query.common.showSql') }}</span>
                   </DropdownMenuItem>
+                  <DropdownMenuItem class="cursor-pointer" :disabled="row.state === 'FAILURE'" @click="handlerShowData(true, row)">
+                    <Table class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('query.common.historyData') }}</span>
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -53,13 +57,14 @@
       </TableCommon>
     </Card>
   </div>
-  <SqlInfo v-if="contentVisible" :is-visible="contentVisible" :content="content as string" @close="handlerShowContent(false, null)"/>
+  <SqlInfo v-if="contentVisible && content" :is-visible="contentVisible" :content="content" @close="handlerShowContent(false, null)"/>
+  <HistoryData v-if="dataVisible && dataInfo" :is-visible="dataVisible" :info="dataInfo" @close="handlerShowData(false, null)"/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Card from '@/views/ui/card'
-import { Cog, Quote, SquareChevronRight, TriangleAlert } from 'lucide-vue-next'
+import { Cog, Quote, SquareChevronRight, Table, TriangleAlert } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter.ts'
 import { useI18n } from 'vue-i18n'
@@ -80,14 +85,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import { HistoryModel } from '@/model/history'
+import HistoryData from '@/views/pages/admin/history/HistoryData.vue'
 
 export default defineComponent({
   name: 'HistoryHome',
   components: {
+    HistoryData,
     SqlInfo,
     Button,
     TableCommon,
-    TriangleAlert, Cog, SquareChevronRight, Quote,
+    TriangleAlert, Cog, SquareChevronRight, Quote, Table,
     Card,
     Tooltip,
     Avatar,
@@ -110,6 +118,8 @@ export default defineComponent({
       data: [],
       pagination: {} as PaginationModel,
       contentVisible: false,
+      dataInfo: null as HistoryModel | null,
+      dataVisible: false,
       content: null as string | null
     }
   },
@@ -136,10 +146,15 @@ export default defineComponent({
       this.filter.size = value.pageSize
       this.handlerInitialize()
     },
-    handlerShowContent(opened: boolean, content: string | null)
+    handlerShowContent(opened: boolean, value: string | null)
     {
       this.contentVisible = opened
-      this.content = content
+      this.content = value
+    },
+    handlerShowData(opened: boolean, value: HistoryModel | null)
+    {
+      this.dataVisible = opened
+      this.dataInfo = value
     }
   }
 })
