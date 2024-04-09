@@ -20,6 +20,23 @@
                 <Eye :size="14"/>
               </Button>
             </Tooltip>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
+                  <Cog class="w-full justify-center" :size="14"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem class="cursor-pointer">
+                    <RouterLink :to="`/admin/dataset/adhoc/${row.dataset?.code}/${row.id}`" target="_blank" class="flex items-center">
+                      <Pencil class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('report.common.modify') }}</span>
+                    </RouterLink>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </template>
       </TableCommon>
@@ -43,9 +60,18 @@ import Tooltip from '@/views/ui/tooltip'
 import Avatar from '@/views/ui/avatar'
 import Tag from '@/views/ui/tag'
 import Button from '@/views/ui/button'
-import { Eye } from 'lucide-vue-next'
+import { Cog, Eye, Pencil } from 'lucide-vue-next'
 import { ReportModel } from '@/model/report'
 import ReportView from '@/views/pages/admin/report/ReportView.vue'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 
 export default defineComponent({
   name: 'ReportHome',
@@ -58,7 +84,8 @@ export default defineComponent({
     Avatar,
     Tag,
     Button,
-    Eye
+    Eye, Cog, Pencil,
+    DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
   {
