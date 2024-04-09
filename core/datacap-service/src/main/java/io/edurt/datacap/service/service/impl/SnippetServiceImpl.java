@@ -2,6 +2,7 @@ package io.edurt.datacap.service.service.impl;
 
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
+import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.SnippetEntity;
 import io.edurt.datacap.service.entity.UserEntity;
@@ -35,6 +36,13 @@ public class SnippetServiceImpl
         Pageable pageable = PageRequestAdapter.of(offset, limit);
         UserEntity user = UserDetailsService.getUser();
         return CommonResponse.success(PageEntity.build(this.snippetRepository.findAllByUser(user, pageable)));
+    }
+
+    @Override
+    public CommonResponse<PageEntity<SnippetEntity>> getAll(FilterBody filter)
+    {
+        Pageable pageable = PageRequestAdapter.of(filter);
+        return CommonResponse.success(PageEntity.build(snippetRepository.findAll(pageable)));
     }
 
     @Override
