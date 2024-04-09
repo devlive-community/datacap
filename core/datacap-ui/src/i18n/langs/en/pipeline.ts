@@ -6,7 +6,9 @@ export default {
         delete: 'Delete Pipeline',
         deleteInfo: 'Delete Pipeline [ $VALUE ]',
         stop: 'Stop Pipeline',
-        stopInfo: 'Stop Pipeline [ $VALUE ]'
+        stopInfo: 'Stop Pipeline [ $VALUE ]',
+        flow: 'Pipeline Flow',
+        flowInfo: 'Pipeline [ $VALUE ] Flow'
     },
     tip: {
         deleteSuccess: 'Delete pipeline [ $VALUE ] successfully',

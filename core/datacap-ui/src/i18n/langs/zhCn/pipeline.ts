@@ -6,7 +6,9 @@ export default {
         delete: '删除流水线',
         deleteInfo: '删除流水线 [ $VALUE ]',
         stop: '停止流水线',
-        stopInfo: '停止流水线 [ $VALUE ]'
+        stopInfo: '停止流水线 [ $VALUE ]',
+        flow: '流水线视图',
+        flowInfo: '流水线 [ $VALUE ] 视图'
     },
     tip: {
         deleteSuccess: '删除流水线 [ $VALUE ] 成功',

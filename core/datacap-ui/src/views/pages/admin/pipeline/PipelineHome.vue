@@ -51,6 +51,10 @@
                     <Delete class="mr-2 h-4 w-4"/>
                     <span>{{ $t('pipeline.common.delete') }}</span>
                   </DropdownMenuItem>
+                  <DropdownMenuItem class="cursor-pointer" @click="handlerFlow(true, row)">
+                    <Flower class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('pipeline.common.flow') }}</span>
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -63,6 +67,7 @@
   <PipelineLogger v-if="dataLoggerVisible && dataInfo" :is-visible="dataLoggerVisible" :info="dataInfo" @close="handlerLogger(false, null)"/>
   <PipelineDelete v-if="dataDeleteVisible && dataInfo" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
   <PipelineStop v-if="dataStopVisible && dataInfo" :is-visible="dataStopVisible" :info="dataInfo" @close="handlerStop(false, null)"/>
+  <PipelineFlow v-if="dataFlowVisible && dataInfo" :is-visible="dataFlowVisible" :info="dataInfo" @close="handlerFlow(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -79,7 +84,7 @@ import { useI18n } from 'vue-i18n'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import PipelineService from '@/services/pipeline'
 import Common from '@/utils/common.ts'
-import { CircleStop, Cog, Delete, Rss, TriangleAlert } from 'lucide-vue-next'
+import { CircleStop, Cog, Delete, Flower, Rss, TriangleAlert } from 'lucide-vue-next'
 import { PipelineModel } from '@/model/pipeline.ts'
 import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
 import {
@@ -94,10 +99,12 @@ import {
 import PipelineLogger from '@/views/pages/admin/pipeline/PipelineLogger.vue'
 import PipelineDelete from '@/views/pages/admin/pipeline/PipelineDelete.vue'
 import PipelineStop from '@/views/pages/admin/pipeline/PipelineStop.vue'
+import PipelineFlow from '@/views/pages/admin/pipeline/PipelineFlow.vue'
 
 export default defineComponent({
   name: 'PipelineHome',
   components: {
+    PipelineFlow,
     PipelineStop,
     PipelineDelete,
     PipelineLogger,
@@ -108,7 +115,7 @@ export default defineComponent({
     Tooltip,
     Avatar,
     Tag,
-    TriangleAlert, Cog, Rss, Delete, CircleStop,
+    TriangleAlert, Cog, Rss, Delete, CircleStop, Flower,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
@@ -138,7 +145,8 @@ export default defineComponent({
       dataMessageVisible: false,
       dataLoggerVisible: false,
       dataDeleteVisible: false,
-      dataStopVisible: false
+      dataStopVisible: false,
+      dataFlowVisible: false
     }
   },
   created()
@@ -189,6 +197,11 @@ export default defineComponent({
       if (!opened) {
         this.handlerInitialize()
       }
+    },
+    handlerFlow(opened: boolean, value: null | PipelineModel)
+    {
+      this.dataFlowVisible = opened
+      this.dataInfo = value
     }
   }
 })
