@@ -198,6 +198,14 @@ const createAdminRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/source/SourceManager.vue')
+            },
+            {
+                path: 'history',
+                meta: {
+                    title: 'common.history',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/history/HistoryHome.vue')
             }
         ]
     }

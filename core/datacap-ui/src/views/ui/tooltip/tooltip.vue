@@ -4,7 +4,7 @@
       <TooltipTrigger as-child>
         <slot/>
       </TooltipTrigger>
-      <TooltipContent>
+      <TooltipContent style="background-color: rgba(70,76,91,.9)">
         <p v-if="content">{{ content }}</p>
         <slot v-else name="content"/>
       </TooltipContent>

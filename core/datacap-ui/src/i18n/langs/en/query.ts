@@ -6,6 +6,10 @@ export default {
         executionTime: 'Execution Time',
         format: 'Format',
         help: 'Help',
+        showSql: 'Show SQL',
+        quoteRecord: 'Quote Record',
+        historyData: 'History Data',
+        historyDataInfo: '[ $VALUE ] History Data'
     },
     tip: {
         pageShow: 'Open / Close the page',
