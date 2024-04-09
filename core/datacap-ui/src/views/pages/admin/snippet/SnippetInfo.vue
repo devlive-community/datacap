@@ -102,7 +102,7 @@ export default defineComponent({
       if (this.info) {
         this.formState = cloneDeep(this.info)
         if (this.info.id) {
-          this.title = `${ this.$t('function.common.modify').replace('$VALUE', this.info.name as string) }`
+          this.title = `${ this.$t('snippet.common.modify').replace('$VALUE', this.info.name as string) }`
         }
       }
       else {
