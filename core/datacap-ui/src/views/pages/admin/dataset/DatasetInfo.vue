@@ -360,7 +360,7 @@ export default defineComponent({
         id: null,
         name: null as string | null | undefined,
         description: null as string | null | undefined,
-        query: null,
+        query: null as string | null,
         syncMode: 'MANUAL',
         columns: [] as any[],
         source: { id: null },
@@ -434,7 +434,7 @@ export default defineComponent({
         DatasetService.saveOrUpdate(this.formState as unknown as DatasetModel)
                       .then(response => {
                         if (response.status) {
-                          ToastUtils.success(`${ this.$t('dataset.tip.publishSuccess').replace('$VALUE', this.formState.name) }`)
+                          ToastUtils.success(`${ this.$t('dataset.tip.publishSuccess').replace('$VALUE', this.formState.name as string) }`)
                           this.$router.push('/admin/dataset')
                         }
                       })
