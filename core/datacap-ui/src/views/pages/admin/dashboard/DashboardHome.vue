@@ -2,11 +2,15 @@
   <div class="w-full">
     <Card>
       <template #title>{{ $t('dashboard.common.list') }}</template>
-      <template #extra></template>
+      <template #extra>
+        <Button class="w-24" size="sm" to="/admin/dashboard/info">
+          {{ $t('dashboard.common.create') }}
+        </Button>
+      </template>
       <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
       <div v-else class="hidden flex-col md:flex">
         <div class="flex-1 space-y-4 pt-6">
-          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
             <Card title-class="p-2 pl-4 pr-4" v-for="item in data">
               <template #title>
                 <RouterLink :to="`/admin/dashboard/info/${item.id}/preview`" target="_blank">{{ item.name }}</RouterLink>
@@ -34,6 +38,9 @@
               <p class="text-xs text-muted-foreground mt-2">{{ item.createTime }}</p>
             </Card>
           </div>
+          <div>
+            <Pagination :pagination="pagination" @changePage="handlerChangePage"/>
+          </div>
         </div>
       </div>
     </Card>
@@ -51,18 +58,23 @@ import { DashboardModel } from '@/model/dashboard'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import DashboardDelete from '@/views/pages/admin/dashboard/DashboardDelete.vue'
 import Card from '@/views/ui/card'
+import Pagination from '@/views/ui/pagination'
+import Button from '@/views/ui/button'
 
 export default defineComponent({
   name: 'DashboardHome',
   components: {
+    Pagination,
     DashboardDelete,
     DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     Loader2, Cog, Trash, Pencil,
-    Card
+    Card,
+    Button
   },
   setup()
   {
     const filter: FilterModel = new FilterModel()
+    filter.size = 30
 
     return {
       filter
@@ -102,6 +114,12 @@ export default defineComponent({
       if (!opened) {
         this.handlerInitialize()
       }
+    },
+    handlerChangePage(value: PaginationModel)
+    {
+      this.filter.page = value.currentPage
+      this.filter.size = value.pageSize
+      this.handlerInitialize()
     }
   }
 })
