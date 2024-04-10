@@ -21,7 +21,7 @@
 import { defineComponent } from 'vue'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
-import CalendarModel from 'echarts/types/src/coord/calendar/CalendarModel'
+import { CarouselModel } from './model.ts'
 import Alert from '@/views/ui/alert'
 import DcLink from '@/views/components/link/DcLink.vue'
 
@@ -60,8 +60,8 @@ export default defineComponent({
       default: 'horizontal'
     },
     items: {
-      type: Array as () => CalendarModel[],
-      default: () => new Array<CalendarModel>()
+      type: Array as () => CarouselModel[],
+      default: () => new Array<CarouselModel>()
     }
   }
 })

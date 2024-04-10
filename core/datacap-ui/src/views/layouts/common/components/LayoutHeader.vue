@@ -1,4 +1,5 @@
 <template>
+  <Carousel :items="carouselItems" :delay="3000"/>
   <header class="sticky z-40 top-0 bg-background/80 backdrop-blur-lg border-b border-border">
     <div class="container flex h-14 max-w-screen-2xl items-center">
       <div class="container flex h-14 items-center justify-between">
@@ -136,6 +137,7 @@ import NavigationMenuListItem from '@/views/layouts/common/components/components
 import { CircleHelp, LogOut, Settings } from 'lucide-vue-next'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import LanguageSwitcher from '@/views/layouts/common/components/components/LanguageSwitcher.vue'
+import Carousel from '@/views/ui/carousel'
 
 interface NavigationItem
 {
@@ -171,14 +173,25 @@ export default defineComponent({
       router.push('/auth/signin')
     }
 
+    const carouselItems = [
+      {
+        title: 'Support ChatGPT',
+        link: '/admin/chat',
+        external: false,
+        isAlert: true
+      }
+    ]
+
     return {
       userInfo,
       isLoggedIn,
       activeMenus,
-      logout
+      logout,
+      carouselItems
     }
   },
   components: {
+    Carousel,
     LanguageSwitcher,
     TooltipContent, Tooltip, TooltipTrigger, TooltipProvider,
     NavigationMenuLink, NavigationMenuContent, NavigationMenuTrigger, NavigationMenuItem, NavigationMenuList, NavigationMenu,
@@ -196,6 +209,6 @@ export default defineComponent({
       this.$emit('changeLanguage', language)
     }
   }
-});
+})
 </script>
 
