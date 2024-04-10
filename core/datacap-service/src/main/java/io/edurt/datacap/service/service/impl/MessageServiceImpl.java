@@ -2,7 +2,6 @@ package io.edurt.datacap.service.service.impl;
 
 import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.AiSupportUtils;
 import io.edurt.datacap.common.utils.JsonUtils;
@@ -34,7 +33,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -60,16 +58,12 @@ public class MessageServiceImpl
     @Override
     public CommonResponse<MessageEntity> saveOrUpdate(PagingAndSortingRepository repository, MessageEntity configure)
     {
-        Optional<UserEntity> userOptional = this.userRepository.findById(configure.getUser().getId());
-        if (!userOptional.isPresent()) {
-            return CommonResponse.failure(ServiceState.USER_NOT_FOUND);
-        }
         String openApiHost = environment.getProperty("datacap.openai.backend");
         String openApiToken = environment.getProperty("datacap.openai.token");
         String openApiModel = environment.getProperty("datacap.openai.model");
         long openApiTimeout = Long.parseLong(environment.getProperty("datacap.openai.timeout"));
 
-        UserEntity user = userOptional.get();
+        UserEntity user = UserDetailsService.getUser();
         MessageEntity questionMessage = MessageEntity.builder()
                 .user(user)
                 .chat(configure.getChat())

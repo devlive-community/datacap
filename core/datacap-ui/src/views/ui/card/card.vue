@@ -14,17 +14,20 @@
     <CardContent :class="`${bodyClass}`">
       <slot/>
     </CardContent>
+    <CardFooter>
+      <slot name="footer"/>
+    </CardFooter>
   </Card>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default defineComponent({
   name: 'DcCard',
   components: {
-    Card, CardContent, CardHeader, CardTitle
+    CardFooter, Card, CardContent, CardHeader, CardTitle
   },
   props: {
     title: {

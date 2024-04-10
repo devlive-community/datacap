@@ -90,6 +90,8 @@ export default {
     realtime: '实时',
     to: '目标',
     work: '工作目录',
+    chat: '聊天室',
+    avatar: '头像',
     tip: {
         pageNotNetwork: '哎呀！无法连接到网络，请检查网络是否正常！'
     }

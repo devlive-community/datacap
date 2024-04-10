@@ -90,6 +90,8 @@ export default {
     realtime: 'Realtime',
     to: 'To',
     work: 'Work Home',
+    chat: 'Chat',
+    avatar: 'Avatar',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }

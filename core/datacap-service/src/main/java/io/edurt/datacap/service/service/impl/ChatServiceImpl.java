@@ -35,4 +35,11 @@ public class ChatServiceImpl
         Pageable pageable = PageRequestAdapter.of(filter);
         return CommonResponse.success(PageEntity.build(repository.findAllByUser(UserDetailsService.getUser(), pageable)));
     }
+
+    @Override
+    public CommonResponse<ChatEntity> saveOrUpdate(PagingAndSortingRepository repository, ChatEntity configure)
+    {
+        configure.setUser(UserDetailsService.getUser());
+        return CommonResponse.success(repository.save(configure));
+    }
 }
