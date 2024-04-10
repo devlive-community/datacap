@@ -2,6 +2,13 @@
   <div class="w-full">
     <Card>
       <template #title>{{ $t('pipeline.common.list') }}</template>
+      <template #extra>
+        <Tooltip :content="$t('pipeline.common.create')">
+          <Button size="icon" class="w-6 h-6 rounded-full" to="/admin/pipeline/info">
+            <Plus :size="14"/>
+          </Button>
+        </Tooltip>
+      </template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #executor="{row}">
           <Tooltip :content="row.executor">
@@ -84,7 +91,7 @@ import { useI18n } from 'vue-i18n'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import PipelineService from '@/services/pipeline'
 import Common from '@/utils/common.ts'
-import { CircleStop, Cog, Delete, Flower, Rss, TriangleAlert } from 'lucide-vue-next'
+import { CircleStop, Cog, Delete, Flower, Plus, Rss, TriangleAlert } from 'lucide-vue-next'
 import { PipelineModel } from '@/model/pipeline.ts'
 import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
 import {
@@ -115,7 +122,7 @@ export default defineComponent({
     Tooltip,
     Avatar,
     Tag,
-    TriangleAlert, Cog, Rss, Delete, CircleStop, Flower,
+    TriangleAlert, Cog, Rss, Delete, CircleStop, Flower, Plus,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
