@@ -14,12 +14,15 @@ import io.edurt.datacap.executor.common.RunWay;
 import io.edurt.datacap.executor.configure.ExecutorConfigure;
 import io.edurt.datacap.executor.configure.ExecutorRequest;
 import io.edurt.datacap.executor.configure.ExecutorResponse;
+import io.edurt.datacap.service.adapter.PageRequestAdapter;
+import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.PipelineBody;
 import io.edurt.datacap.service.common.ConfigureUtils;
 import io.edurt.datacap.service.common.FolderUtils;
 import io.edurt.datacap.service.configure.FieldType;
 import io.edurt.datacap.service.configure.IConfigureExecutorField;
 import io.edurt.datacap.service.configure.IConfigurePipelineType;
+import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
@@ -66,6 +69,12 @@ public class PipelineServiceImpl
         this.environment = environment;
         this.repository = repository;
         this.initializer = initializer;
+    }
+
+    @Override
+    public CommonResponse<PageEntity> getAll(PagingAndSortingRepository repository1, FilterBody filter)
+    {
+        return CommonResponse.success(repository.findAllByUser(UserDetailsService.getUser(), PageRequestAdapter.of(filter)));
     }
 
     @Override
