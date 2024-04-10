@@ -21,6 +21,7 @@
           </RadioGroup>
         </FormItem>
       </FormField>
+      <Pagination :pagination="pagination" @changePage="handlerChangePage"/>
     </div>
     <template #footer>
       <div class="space-x-5">
@@ -47,10 +48,13 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import VisualView from '@/views/components/visual/VisualView.vue'
 import Button from '@/views/ui/button'
 import { toNumber } from 'lodash'
+import Pagination from '@/views/ui/pagination'
+import { PaginationModel, PaginationRequest } from '@/model/pagination.ts'
 
 export default defineComponent({
   name: 'ChartContainer',
   components: {
+    Pagination,
     VisualView,
     CircularLoading,
     Dialog,
@@ -78,6 +82,7 @@ export default defineComponent({
   setup()
   {
     const filter: FilterModel = new FilterModel()
+    filter.size = 12
 
     return {
       filter
@@ -92,7 +97,8 @@ export default defineComponent({
     return {
       loading: false,
       data: [] as ReportModel[],
-      report: ''
+      report: '',
+      pagination: {} as PaginationModel
     }
   },
   methods: {
@@ -103,9 +109,16 @@ export default defineComponent({
                    .then(response => {
                      if (response.status) {
                        this.data = response.data.content
+                       this.pagination = PaginationRequest.of(response.data)
                      }
                    })
                    .finally(() => this.loading = false)
+    },
+    handlerChangePage(value: PaginationModel)
+    {
+      this.filter.page = value.currentPage
+      this.filter.size = value.pageSize
+      this.handlerInitialize()
     },
     handlerSave()
     {

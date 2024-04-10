@@ -106,6 +106,7 @@ export default {
         info: '查看详情',
         lifeCycleColumn: '生命周期列',
         lifeCycleNumber: '生命周期数',
+        continuousBuild: '连续构建',
     },
     validator: {
         duplicateColumn: '列名 [ $VALUE ] 已存在',

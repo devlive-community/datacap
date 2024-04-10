@@ -106,6 +106,7 @@ export default {
         info: 'View Info',
         lifeCycleColumn: 'Lifecycle columns',
         lifeCycleNumber: 'Lifecycle number',
+        continuousBuild: 'Continuous Build',
     },
     validator: {
         duplicateColumn: 'Column name [ $VALUE ] already exists',
