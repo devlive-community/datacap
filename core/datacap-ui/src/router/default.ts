@@ -28,7 +28,6 @@ const createDefaultRouter = (router: any) => {
 
     createSystemRouter(router)
     createAdminRouter(router)
-    createPreviewRouter(router)
     createProfileRouter(router)
 }
 
@@ -130,8 +129,15 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/dashboard/DashboardHome.vue')
             },
             {
-                name: 'info',
-                path: 'dashboard/info/:id',
+                path: 'dashboard/info/:id/preview',
+                meta: {
+                    title: 'common.dashboard',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/dashboard/DashboardPreview.vue')
+            },
+            {
+                path: 'dashboard/info/:id?',
                 meta: {
                     title: 'common.dashboard',
                     isRoot: false
@@ -240,24 +246,6 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/pipeline/PipelineInfo.vue')
             }
         ]
-    }
-    router.addRoute(newRouter)
-}
-
-/**
- * Creates a new route for previewing a dashboard based on the provided ID.
- *
- * @param {any} router - The router instance where the new route will be added.
- * @return {void}
- */
-const createPreviewRouter = (router: any) => {
-    const newRouter = {
-        path: '/admin/dashboard/preview/:id',
-        meta: {
-            title: 'common.dashboard',
-            isRoot: false
-        },
-        component: () => import('@/views/pages/admin/dashboard/DashboardPreview.vue')
     }
     router.addRoute(newRouter)
 }
