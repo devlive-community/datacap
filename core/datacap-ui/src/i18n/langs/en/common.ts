@@ -88,6 +88,8 @@ export default {
     adhoc: 'Adhoc Query',
     error: 'Error',
     realtime: 'Realtime',
+    to: 'To',
+    work: 'Work Home',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }

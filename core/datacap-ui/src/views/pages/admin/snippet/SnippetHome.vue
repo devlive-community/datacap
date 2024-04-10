@@ -1,6 +1,7 @@
 <template>
   <div class="w-full">
     <Card>
+      <template #title>{{ $t('snippet.common.list') }}</template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #username="{ row }">
           <Avatar :src="row.user.avatar" :alt="row.user.username"/>

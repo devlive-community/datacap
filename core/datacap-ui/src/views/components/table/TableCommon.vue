@@ -15,7 +15,28 @@
             <TableRow v-for="row in data" :key="row.id">
               <TableCell v-for="column in columns" :key="column.key" :class="column.class ? column.class : ''" :style="{width: column.width ? column.width + 'px' : 'auto'}">
                 <template v-if="column.slot">
-                  <slot :name="column.slot" :row="row"></slot>
+                  <slot :name="column.slot" :row="row"/>
+                </template>
+                <template v-else-if="column.tooltip">
+                  <Tooltip :content="row[column.key]">
+                    <span class="cursor-pointer">{{ row[column.key] }}</span>
+                  </Tooltip>
+                </template>
+                <template v-else-if="column.length">
+                  <Tooltip :content="row[column.key]">
+                    <div class="cursor-pointer flex">
+                      {{ (row[column.key] as string).substring(0, column.length) }}
+                      <BreadcrumbEllipsis class="-ml-2 -mt-1"/>
+                    </div>
+                  </Tooltip>
+                </template>
+                <template v-else-if="column.ellipsis">
+                  <Tooltip :content="row[column.key]">
+                    <div class="cursor-pointer flex">
+                      {{ (row[column.key] as string).substring(0, 10) }}
+                      <BreadcrumbEllipsis class="-ml-2 -mt-1"/>
+                    </div>
+                  </Tooltip>
                 </template>
                 <template v-else>{{ row[column.key] }}</template>
               </TableCell>
@@ -31,30 +52,30 @@
       <Pagination v-slot="{ page }" :total="pagination.total" :items-per-page="pagination.pageSize" :sibling-count="1" show-edges
                   :default-page="pagination.currentPage + 1" @update:page="handlerChangePage($event)">
         <PaginationList v-slot="{ items }" class="flex items-center gap-1">
-          <PaginationFirst></PaginationFirst>
-          <PaginationPrev></PaginationPrev>
+          <PaginationFirst class="w-6 h-6"/>
+          <PaginationPrev class="w-6 h-6"/>
           <template v-for="(item, index) in items">
-            <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
-              <Button class="w-10 h-10 p-0" size="sm" :variant="item.value === page ? 'default' : 'outline'">
+            <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" class="w-6 h-6" as-child>
+              <Button class="w-6 h-6 p-0" size="sm" :variant="item.value === page ? 'default' : 'outline'">
                 {{ item.value }}
               </Button>
             </PaginationListItem>
-            <PaginationEllipsis v-else :key="item.type" :index="index"/>
+            <PaginationEllipsis class="w-6 h-6" v-else :key="item.type" :index="index"/>
           </template>
-          <PaginationNext></PaginationNext>
-          <PaginationLast></PaginationLast>
+          <PaginationNext class="w-6 h-6"/>
+          <PaginationLast class="w-6 h-6"/>
         </PaginationList>
       </Pagination>
-      <div v-if="pagination" class="mt-0.5 ml-2">
+      <div v-if="pagination" class="ml-2">
         <Select :defaultValue="pagination.pageSize.toString()" @update:modelValue="handlerChangeSize">
-          <SelectTrigger class="w-[70px]">
-            <SelectValue placeholder="Select a fruit"/>
+          <SelectTrigger class="h-6">
+            <SelectValue placeholder="Select a size"/>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem :value="'10'">10</SelectItem>
-            <SelectItem :value="'20'">20</SelectItem>
-            <SelectItem :value="'50'">50</SelectItem>
-            <SelectItem :value="'100'">100</SelectItem>
+            <SelectItem class="h-6 cursor-pointer" :value="'10'">10</SelectItem>
+            <SelectItem class="h-6 cursor-pointer" :value="'20'">20</SelectItem>
+            <SelectItem class="h-6 cursor-pointer" :value="'50'">50</SelectItem>
+            <SelectItem class="h-6 cursor-pointer" :value="'100'">100</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -74,17 +95,21 @@ import { PaginationList, PaginationListItem } from 'radix-vue'
 import { PaginationModel } from '@/model/pagination'
 import { cloneDeep, toNumber } from 'lodash'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import Tooltip from '@/views/ui/tooltip'
+import { BreadcrumbEllipsis } from '@/components/ui/breadcrumb'
 
 export default defineComponent({
   name: 'TableCommon',
   components: {
+    BreadcrumbEllipsis,
     Loader2,
     SelectItem, SelectContent, SelectValue, SelectTrigger, Select,
     PaginationLast, PaginationNext, PaginationEllipsis, PaginationPrev, PaginationListItem, PaginationList, Pagination, PaginationFirst,
     DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     TableCell, TableRow, TableBody, TableHeader, TableHead, Table, TableCaption,
     Button, Input,
-    ArrowUpDown, ChevronDown
+    ArrowUpDown, ChevronDown,
+    Tooltip
   },
   props: {
     columns: {

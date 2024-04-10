@@ -1,7 +1,10 @@
 <template>
   <Button :size="size as any" :disabled="disabled" :style="{backgroundColor: color}">
     <Loader2 v-if="loading" class="w-3.5 h-3.5 mr-2 animate-spin"/>
-    <slot/>
+    <RouterLink v-if="to" :to="to" target="_blank">
+      <slot/>
+    </RouterLink>
+    <slot v-else/>
   </Button>
 </template>
 
@@ -29,6 +32,9 @@ export default defineComponent({
     },
     disabled: {
       type: Boolean
+    },
+    to: {
+      type: String
     }
   }
 })
