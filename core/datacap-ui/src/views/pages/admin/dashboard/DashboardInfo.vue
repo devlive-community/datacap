@@ -2,7 +2,7 @@
   <div class="w-full">
     <CircularLoading v-if="loading" :show="loading" class="mt-20"></CircularLoading>
     <div v-else>
-      <DashboardEditor :elements="nodes" :source-configure="sourceConfigure"/>
+      <DashboardEditor :info="dataInfo"/>
     </div>
   </div>
 </template>
@@ -15,26 +15,17 @@ import { ToastUtils } from '@/utils/toast'
 import { useRouter } from 'vue-router'
 import { DashboardModel } from '@/model/dashboard'
 import DashboardEditor from '@/views/pages/admin/dashboard/components/DashboardEditor.vue'
-
-interface Node {
-  id: number
-  type: string
-  label: string
-  position: { x: number, y: number }
-  data: any
-}
+import { toNumber } from 'lodash'
 
 export default defineComponent({
   name: 'DashboardInfo',
-  components: {DashboardEditor, CircularLoading},
+  components: { DashboardEditor, CircularLoading },
   data()
   {
     return {
       loading: false,
       saving: false,
-      configure: null as DashboardModel | null,
-      nodes: [] as Node[],
-      sourceConfigure: null as DashboardModel | null
+      dataInfo: null as DashboardModel | null
     }
   },
   created()
@@ -44,23 +35,22 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.loading = true
       const router = useRouter()
       const params = router.currentRoute.value.params
-      DashboardService.getById(params['id'] as unknown as number)
-          .then(response => {
-            if (response.status) {
-              const configure = JSON.parse(response.data.configure)
-              configure.nodes?.forEach((node: any) => {
-                this.nodes.push({id: node.id, type: node.type, label: node.label, position: node.position, data: node.data})
-              })
-              this.sourceConfigure = response.data
-            }
-            else {
-              ToastUtils.error(response.message)
-            }
-          })
-          .finally(() => this.loading = false)
+      const id = params['id']
+      if (id) {
+        this.loading = true
+        DashboardService.getById(toNumber(id))
+                        .then(response => {
+                          if (response.status) {
+                            this.dataInfo = response.data
+                          }
+                          else {
+                            ToastUtils.error(response.message)
+                          }
+                        })
+                        .finally(() => this.loading = false)
+      }
     }
   }
 })

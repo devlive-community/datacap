@@ -14,7 +14,7 @@
               {{ $t('dashboard.tip.deleteTip2') }}
             </Alert>
             <Alert class="mt-3">
-              {{ $t('dashboard.tip.deleteTip3').replace('$NAME', data.name) }}
+              {{ $t('dashboard.tip.deleteTip3').replace('$NAME', data.name as string) }}
               <Input v-model="inputValue" class="mt-3"/>
             </Alert>
           </AlertDialogDescription>

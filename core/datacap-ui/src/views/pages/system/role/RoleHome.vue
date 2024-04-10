@@ -1,46 +1,42 @@
 <template>
   <div class="w-full">
     <Card>
-      <CardHeader class="flex flex-row items-center border-b p-4">
-        <div class="grid gap-2">
-          <CardTitle>{{ $t('role.common.list') }}</CardTitle>
-        </div>
+      <template #title>{{ $t('role.common.list') }}</template>
+      <template #extra>
         <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerChangeInfo(true, null)">
           <Plus :size="20"/>
         </Button>
-      </CardHeader>
-      <CardContent>
-        <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
-          <template #action="{row}">
-            <div class="space-x-2">
-              <TooltipProvider :delay-duration="0">
-                <Tooltip>
-                  <TooltipTrigger as-child>
-                    <Button variant="outline" size="icon" class="p-2 w-8 h-8 rounded-full" @click="handlerChangeInfo(true, row)">
-                      <Pencil :size="15"/>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{{ $t('common.editData') }}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider :delay-duration="0">
-                <Tooltip>
-                  <TooltipTrigger as-child>
-                    <Button variant="outline" size="icon" class="p-2 w-8 h-8 rounded-full" @click="handlerAssignMenu(true, row)">
-                      <Menu :size="15"/>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{{ $t('role.common.assignMenu').replace('$NAME', row?.name) }}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-          </template>
-        </TableCommon>
-      </CardContent>
+      </template>
+      <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
+        <template #action="{row}">
+          <div class="space-x-2">
+            <TooltipProvider :delay-duration="0">
+              <Tooltip>
+                <TooltipTrigger as-child>
+                  <Button variant="outline" size="icon" class="p-2 w-8 h-8 rounded-full" @click="handlerChangeInfo(true, row)">
+                    <Pencil :size="15"/>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{{ $t('common.editData') }}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider :delay-duration="0">
+              <Tooltip>
+                <TooltipTrigger as-child>
+                  <Button variant="outline" size="icon" class="p-2 w-8 h-8 rounded-full" @click="handlerAssignMenu(true, row)">
+                    <Menu :size="15"/>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{{ $t('role.common.assignMenu').replace('$NAME', row?.name) }}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        </template>
+      </TableCommon>
     </Card>
     <RoleInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"/>
     <RoleMenu v-if="dataAllocationVisible" :is-visible="dataAllocationVisible" :info="dataInfo" @close="handlerAssignMenu(false, null)"/>
@@ -49,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Card from '@/views/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -70,7 +66,8 @@ export default defineComponent({
     RoleMenu,
     RoleInfo,
     TooltipContent, TooltipTrigger, TooltipProvider, Tooltip,
-    Card, CardHeader, CardTitle, TableCommon, CardContent,
+    Card,
+    TableCommon,
     Pencil, Menu,
     Button
   },
@@ -104,17 +101,17 @@ export default defineComponent({
     {
       this.loading = true
       RoleService.getAll(this.filter)
-          .then((response) => {
-            if (response.status) {
-              this.data = response.data.content
-              this.pagination = {
-                pageSize: response.data.size,
-                total: response.data.total,
-                currentPage: response.data.page
-              }
-            }
-          })
-          .finally(() => this.loading = false)
+                 .then((response) => {
+                   if (response.status) {
+                     this.data = response.data.content
+                     this.pagination = {
+                       pageSize: response.data.size,
+                       total: response.data.total,
+                       currentPage: response.data.page
+                     }
+                   }
+                 })
+                 .finally(() => this.loading = false)
     },
     handlerChangePage(value: PaginationModel)
     {

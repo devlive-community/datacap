@@ -1,10 +1,8 @@
 <template>
   <div class="w-full">
     <Card>
-      <CardHeader class="flex flex-row items-center border-b p-4">
-        <div class="grid gap-2">
-          <CardTitle>{{ $t('function.common.list') }}</CardTitle>
-        </div>
+      <template #title>{{ $t('function.common.list') }}</template>
+      <template #extra>
         <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true, null)">
           <Plus :size="20"/>
         </Button>
@@ -23,38 +21,36 @@
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-      </CardHeader>
-      <CardContent>
-        <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
-          <template #plugin="{row}">
-            <div class="flex items-center p-4 sm:justify-between">
-              <div class="flex -space-x-2 overflow-hidden">
-                <Avatar v-for="item in row?.plugin" size="sm" class="border-2 border-background w-8 h-8 cursor-pointer">
-                  <AvatarImage :src="'/static/images/plugin/' + item + '.png'"/>
-                  <AvatarFallback>{{ item }}</AvatarFallback>
-                </Avatar>
-              </div>
+      </template>
+      <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
+        <template #plugin="{row}">
+          <div class="flex items-center p-4 sm:justify-between">
+            <div class="flex -space-x-2 overflow-hidden">
+              <Avatar v-for="item in row?.plugin" size="sm" class="border-2 border-background w-8 h-8 cursor-pointer">
+                <AvatarImage :src="'/static/images/plugin/' + item + '.png'"/>
+                <AvatarFallback>{{ item }}</AvatarFallback>
+              </Avatar>
             </div>
-          </template>
-          <template #type="{ row }">
-            <Badge>{{ $t('function.common.' + row.type.toLowerCase()) }}</Badge>
-          </template>
-          <template #action="{row}">
-            <TooltipProvider :delay-duration="0">
-              <Tooltip>
-                <TooltipTrigger as-child>
-                  <Button variant="outline" size="icon" class="rounded-full" @click="handlerInfo(true, row)">
-                    <Pencil :size="15"></Pencil>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{{ $t('common.editData') }}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </template>
-        </TableCommon>
-      </CardContent>
+          </div>
+        </template>
+        <template #type="{ row }">
+          <Badge>{{ $t('function.common.' + row.type.toLowerCase()) }}</Badge>
+        </template>
+        <template #action="{row}">
+          <TooltipProvider :delay-duration="0">
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <Button variant="outline" size="icon" class="rounded-full" @click="handlerInfo(true, row)">
+                  <Pencil :size="15"></Pencil>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{{ $t('common.editData') }}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </template>
+      </TableCommon>
     </Card>
     <FunctionInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
     <FunctionImport v-if="dataImportVisible" :is-visible="dataImportVisible" @close="handlerImport(false)"/>
@@ -63,7 +59,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Card from '@/views/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Cog, Import, Pencil, Plus } from 'lucide-vue-next'
 import { FilterModel } from '@/model/filter'
@@ -96,7 +92,7 @@ export default defineComponent({
     Badge,
     Button,
     FunctionInfo,
-    Card, CardHeader, CardTitle, CardContent,
+    Card,
     TableCommon,
     Avatar, AvatarFallback, AvatarImage,
     Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
@@ -132,13 +128,13 @@ export default defineComponent({
     {
       this.loading = true
       FunctionService.getAll(this.filter)
-          .then((response) => {
-            if (response.status) {
-              this.data = response.data.content
-              this.pagination = PaginationRequest.of(response.data)
-            }
-          })
-          .finally(() => this.loading = false)
+                     .then((response) => {
+                       if (response.status) {
+                         this.data = response.data.content
+                         this.pagination = PaginationRequest.of(response.data)
+                       }
+                     })
+                     .finally(() => this.loading = false)
     },
     handlerChangePage(value: PaginationModel)
     {
