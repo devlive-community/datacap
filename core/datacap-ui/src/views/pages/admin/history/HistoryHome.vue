@@ -16,6 +16,8 @@
           <Tag v-else-if="row.mode === 'HISTORY'">{{ $t('common.history') }}</Tag>
           <Tag v-else-if="row.mode === 'REPORT'">{{ $t('common.report') }}</Tag>
           <Tag v-else-if="row.mode === 'SNIPPET'">{{ $t('common.snippet') }}</Tag>
+          <Tag v-else-if="row.mode === 'DATASET'">{{ $t('common.dataset') }}</Tag>
+          <Tag v-else>{{ row.mode }}</Tag>
         </template>
         <template #state="{ row }">
           <Tag :class="row.state === 'SUCCESS' ? '' : 'bg-color-error'">{{ row.state }}</Tag>
