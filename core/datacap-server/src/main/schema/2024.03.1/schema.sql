@@ -16,3 +16,10 @@ WHERE `id` = 16;
 UPDATE `menus`
 SET `url` = '/admin/query'
 WHERE `id` = 2;
+
+ALTER TABLE `datacap_source`
+    ADD COLUMN `code` VARCHAR(100);
+
+UPDATE `datacap_source`
+SET `code` = REPLACE(UUID(), '-', '')
+WHERE `code` IS NULL;

@@ -4,7 +4,7 @@
       <CardHeader class="p-0">
         <CardTitle class="pt-1">
           <Button size="sm" class="ml-2">
-            <RouterLink to="/admin/dataset/info" target="_blank">
+            <RouterLink :to="`/admin/dataset/info/source/${configure.code}`" target="_blank">
               <span class="flex items-center">
                 <Plus :size="20"/> {{ $t('common.dataset') }}
               </span>
@@ -101,7 +101,7 @@ export default defineComponent({
       if (this.configure) {
         this.updateData(this.configure)
         this.configure.headers!.forEach((header: string) => {
-          const columnDef: GridColumn = {headerName: header, field: header}
+          const columnDef: GridColumn = { headerName: header, field: header }
           this.columnDefs.push(columnDef)
         })
       }
@@ -117,5 +117,5 @@ export default defineComponent({
       this.isPage = value
     }
   }
-});
+})
 </script>

@@ -10,4 +10,5 @@ export interface GridConfigure
     context?: string
     sourceId?: number
     query?: string
+    code?: string
 }

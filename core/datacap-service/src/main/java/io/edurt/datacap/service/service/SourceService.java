@@ -26,6 +26,8 @@ public interface SourceService
 
     CommonResponse<SourceEntity> getById(Long id);
 
+    CommonResponse<SourceEntity> getByCode(String code);
+
     CommonResponse<Map<String, List<PluginEntity>>> getPlugins();
 
     CommonResponse<Long> count();

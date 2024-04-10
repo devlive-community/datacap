@@ -107,6 +107,11 @@ export default {
         lifeCycleColumn: '生命周期列',
         lifeCycleNumber: '生命周期数',
     },
+    validator: {
+        duplicateColumn: '列名 [ $VALUE ] 已存在',
+        specifiedColumn: '排序键或主键必须指定',
+        specifiedName: '数据集名必须指定',
+    },
     tip: {
         selectExpression: '请选择表达式',
         syncData: '数据同步计划将在后台运行，具体同步结果请参考日志',
@@ -117,5 +122,6 @@ export default {
         rebuildProgress: '重建只会进行未完成进度',
         lifeCycleMustDateColumn: '生命周期必须包含一个日期列',
         modifyNotSupportDataPreview: '修改暂不支持数据预览',
+        publishSuccess: '数据集 [ $VALUE ] 发布成功',
     }
 }

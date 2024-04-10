@@ -6,5 +6,6 @@ public enum QueryMode
     HISTORY,
     REPORT,
     SNIPPET,
-    SYNC
+    SYNC,
+    DATASET
 }

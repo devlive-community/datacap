@@ -172,6 +172,14 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/dataset/DatasetInfo.vue')
             },
             {
+                path: 'dataset/info/source/:sourceCode?',
+                meta: {
+                    title: 'common.dataset',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/dataset/DatasetInfo.vue')
+            },
+            {
                 path: 'dataset/adhoc/:code',
                 layout: LayoutContainer,
                 meta: {

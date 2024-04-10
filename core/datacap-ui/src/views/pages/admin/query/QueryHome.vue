@@ -177,7 +177,8 @@ export default defineComponent({
       selectSource: {
         id: null as string | null | undefined,
         type: null as string | null | undefined,
-        engine: null as string | null | undefined
+        engine: null as string | null | undefined,
+        code: null as string | null | undefined
       },
       selectEditor: {
         editorMaps: new Map<string, EditorInstance>(),
@@ -259,6 +260,7 @@ export default defineComponent({
       this.selectSource.id = idAndType[0]
       this.selectSource.type = idAndType[1]
       this.selectSource.engine = idAndType[1]
+      this.selectSource.code = idAndType[2]
       const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
       if (instance) {
         this.handlerEditorDidMount(instance.instance as any, idAndType[1])
@@ -396,7 +398,8 @@ export default defineComponent({
                             width: editorContainer.offsetWidth + 20,
                             showSeriesNumber: false,
                             sourceId: this.selectSource.id as unknown as number,
-                            query: content
+                            query: content,
+                            code: this.selectSource.code as string
                           }
                           this.responseConfigure.gridConfigure = tConfigure
                           editorInstance.instance?.setValue(response.data.content)
