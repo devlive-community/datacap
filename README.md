@@ -11,7 +11,7 @@
 ![version](https://img.shields.io/github/v/release/EdurtIO/datacap.svg)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/EdurtIO/datacap/develop?style=flat-square)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/EdurtIO/datacap/dev?style=flat-square)
 ![GitHub Release Date](https://img.shields.io/github/release-date/EdurtIO/datacap?style=flat-square)
 
 ![Docker Automated build](https://img.shields.io/docker/automated/qianmoq/datacap)

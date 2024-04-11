@@ -19,7 +19,7 @@ hide:
 
 <div class="grid cards" markdown style="margin-top: 30px; padding: 50px;">
 
-- :fontawesome-brands-app-store-ios: __服务器软件包__
+- __服务器软件包__
 
     ---
 
@@ -27,9 +27,9 @@ hide:
 
     <br />
 
-    [datacap-server-2024.02.1.tar.gz](http://downloads.edurt.io/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
+    [datacap-server-2024.03.1.tar.gz](https://cdn.north.devlive.org/applications/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
 
-- :material-application-outline: __命令行客户端__
+- __命令行客户端__
 
      ---
   
@@ -37,9 +37,9 @@ hide:
      
      <br />
   
-     [datacap-client-cli-2024.02.1.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/2024.02.1/datacap-client-cli-2024.02.1.jar){ .md-button .md-button-primary }
+     [datacap-client-cli-2024.03.1.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/2024.03.1/datacap-client-cli-2024.03.1.jar){ .md-button .md-button-primary }
   
-- :material-more: __更多__
+- __更多__
 
     ---
 

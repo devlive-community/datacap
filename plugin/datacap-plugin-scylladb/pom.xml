@@ -4,7 +4,7 @@
     <parent>
         <groupId>io.edurt.datacap</groupId>
         <artifactId>datacap</artifactId>
-        <version>2024.03.1-SNAPSHOT</version>
+        <version>2024.03.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 

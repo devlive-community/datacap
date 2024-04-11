@@ -19,7 +19,7 @@ The current datacap release is version <img src="https://img.shields.io/github/v
 
 <div class="grid cards" markdown style="margin-top: 30px; padding: 50px;">
 
-- :fontawesome-brands-app-store-ios: __Server packages__
+- __Server packages__
 
     ---
 
@@ -27,9 +27,9 @@ The current datacap release is version <img src="https://img.shields.io/github/v
 
     <br />
 
-    [datacap-server-2024.02.1.tar.gz](http://downloads.edurt.io/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
+    [datacap-server-2024.03.1.tar.gz](https://cdn.north.devlive.org/applications/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
 
-- :material-application-outline: __Command line client__
+- __Command line client__
 
      ---
   
@@ -37,9 +37,9 @@ The current datacap release is version <img src="https://img.shields.io/github/v
      
      <br />
   
-     [datacap-client-cli-2024.02.1.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/2024.02.1/datacap-client-cli-2024.02.1.jar){ .md-button .md-button-primary }
+     [datacap-client-cli-2024.03.1.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/2024.03.1/datacap-client-cli-2024.03.1.jar){ .md-button .md-button-primary }
   
-- :material-more: __More package__
+- __More package__
 
     ---
 
