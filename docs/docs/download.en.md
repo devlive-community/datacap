@@ -27,7 +27,7 @@ The current datacap release is version <img src="https://img.shields.io/github/v
 
     <br />
 
-    [datacap-server-2024.03.1.tar.gz](http://downloads.edurt.io/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
+    [datacap-server-2024.03.1.tar.gz](https://cdn.north.devlive.org/applications/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
 
 - __Command line client__
 

@@ -27,7 +27,7 @@ hide:
 
     <br />
 
-    [datacap-server-2024.03.1.tar.gz](http://downloads.edurt.io/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
+    [datacap-server-2024.03.1.tar.gz](https://cdn.north.devlive.org/applications/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
 
 - __命令行客户端__
 
