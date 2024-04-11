@@ -1,5 +1,5 @@
 <template>
-  <footer class="font-sans py-8 px-10 mt-5">
+  <footer class="font-sans bg-[#f8f8f9] py-8 px-10 mt-5">
     <div :class="`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${data.length} gap-8`">
       <div v-for="item in data" :key="item.title">
         <h4 class="text-[#808695] font-bold text-lg mb-5">{{ item.title }}</h4>
