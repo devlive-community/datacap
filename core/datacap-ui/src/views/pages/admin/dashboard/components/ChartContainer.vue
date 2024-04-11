@@ -21,7 +21,10 @@
           </RadioGroup>
         </FormItem>
       </FormField>
-      <Pagination :pagination="pagination" @changePage="handlerChangePage"/>
+      <div v-if="data.length === 0" class="flex w-full items-center">
+        {{ $t('common.noData') }}
+      </div>
+      <Pagination v-if="pagination && !loading && data.length > 0" :pagination="pagination" @changePage="handlerChangePage"/>
     </div>
     <template #footer>
       <div class="space-x-5">
