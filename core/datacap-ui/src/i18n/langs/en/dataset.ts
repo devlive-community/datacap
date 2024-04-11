@@ -106,6 +106,12 @@ export default {
         info: 'View Info',
         lifeCycleColumn: 'Lifecycle columns',
         lifeCycleNumber: 'Lifecycle number',
+        continuousBuild: 'Continuous Build',
+    },
+    validator: {
+        duplicateColumn: 'Column name [ $VALUE ] already exists',
+        specifiedColumn: 'Sort key or primary key must be specified',
+        specifiedName: 'Name must be specified',
     },
     tip: {
         selectExpression: 'Please select the expression',
@@ -117,5 +123,6 @@ export default {
         rebuildProgress: 'Rebuilding will only progress unfinished',
         lifeCycleMustDateColumn: 'The lifecycle must contain a date column',
         modifyNotSupportDataPreview: 'Data preview is not supported to modify',
+        publishSuccess: 'Dataset [ $VALUE ] published successfully',
     }
 }

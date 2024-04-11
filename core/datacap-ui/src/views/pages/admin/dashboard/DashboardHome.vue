@@ -38,8 +38,11 @@
               <p class="text-xs text-muted-foreground mt-2">{{ item.createTime }}</p>
             </Card>
           </div>
+          <div v-if="data.length === 0" class="text-center">
+            {{ $t('common.noData') }}
+          </div>
           <div>
-            <Pagination :pagination="pagination" @changePage="handlerChangePage"/>
+            <Pagination v-if="pagination && !loading && data.length > 0" :pagination="pagination" @changePage="handlerChangePage"/>
           </div>
         </div>
       </div>
@@ -60,10 +63,12 @@ import DashboardDelete from '@/views/pages/admin/dashboard/DashboardDelete.vue'
 import Card from '@/views/ui/card'
 import Pagination from '@/views/ui/pagination'
 import Button from '@/views/ui/button'
+import { TableCaption } from '@/components/ui/table'
 
 export default defineComponent({
   name: 'DashboardHome',
   components: {
+    TableCaption,
     Pagination,
     DashboardDelete,
     DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,

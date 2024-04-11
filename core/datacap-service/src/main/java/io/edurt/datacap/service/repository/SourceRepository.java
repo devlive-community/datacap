@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SourceRepository
         extends PagingAndSortingRepository<SourceEntity, Long>
@@ -14,6 +15,8 @@ public interface SourceRepository
     List<SourceEntity> findAll();
 
     SourceEntity findByName(String name);
+
+    Optional<SourceEntity> findByCode(String code);
 
     Page<SourceEntity> findAllByUserOrPublishIsTrue(UserEntity user, Pageable pageable);
 

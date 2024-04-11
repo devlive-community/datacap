@@ -22,6 +22,7 @@ export interface SourceModel
     updateTime?: string
     configures?: Map<string, string>
     schema?: any
+    code?: string
 }
 
 export class SourceRequest

@@ -172,6 +172,14 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/dataset/DatasetInfo.vue')
             },
             {
+                path: 'dataset/info/source/:sourceCode?',
+                meta: {
+                    title: 'common.dataset',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/dataset/DatasetInfo.vue')
+            },
+            {
                 path: 'dataset/adhoc/:code',
                 layout: LayoutContainer,
                 meta: {
@@ -244,6 +252,14 @@ const createAdminRouter = (router: any) => {
                     isRoot: false
                 },
                 component: () => import('@/views/pages/admin/pipeline/PipelineInfo.vue')
+            },
+            {
+                path: 'chat',
+                meta: {
+                    title: 'common.chat',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/chat/ChatHome.vue')
             }
         ]
     }

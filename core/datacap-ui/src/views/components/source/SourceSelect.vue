@@ -7,7 +7,7 @@
       <SelectContent>
         <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
         <SelectGroup v-else>
-          <SelectItem v-for="item in items" :value="`${item.id}:${item.type}`" :disabled="!item.available">
+          <SelectItem v-for="item in items" :value="`${item.id}:${item.type}:${item.code}`" :disabled="!item.available">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>{{ `${item.name} (${item.protocol})` }}</TooltipTrigger>

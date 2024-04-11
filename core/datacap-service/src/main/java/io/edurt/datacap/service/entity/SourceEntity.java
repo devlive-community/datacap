@@ -122,6 +122,9 @@ public class SourceEntity
     @Column(name = "message")
     private String message;
 
+    @Column(name = "code")
+    private String code;
+
     @Column(name = "create_time")
     @CreatedDate
     private Timestamp createTime;

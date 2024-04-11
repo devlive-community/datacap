@@ -21,6 +21,11 @@ class SourceService
         return new HttpUtils().get(DEFAULT_PATH_V1, { page: page, size: size })
     }
 
+    getByCode(code: string): Promise<ResponseModel>
+    {
+        return new HttpUtils().get(`${ DEFAULT_PATH_V2 }/code/${ code }`)
+    }
+
     getPlugins(): Promise<ResponseModel>
     {
         return new HttpUtils().get(`${ DEFAULT_PATH_V1 }/plugins`)

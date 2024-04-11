@@ -42,9 +42,14 @@
         </FormField>
       </div>
       <template #footer>
-        <Button :loading="loading" @click="handlerSave">
-          {{ $t('common.save') }}
-        </Button>
+        <div class="space-x-5">
+          <Button variant="outline" size="sm" @click="configureVisible = false">
+            {{ $t('common.cancel') }}
+          </Button>
+          <Button :loading="loading" size="sm" @click="handlerSave">
+            {{ $t('common.save') }}
+          </Button>
+        </div>
       </template>
     </Dialog>
   </div>

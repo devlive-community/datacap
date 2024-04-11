@@ -1,14 +1,11 @@
 <template>
   <div class="hidden space-y-6 pb-16 w-full h-full md:block">
     <div class="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-      <aside class="-mx-4 w-[200px]">
-        <Card>
-          <CardHeader class="p-3 border-b">
-            <CardTitle>
-              {{ $t('dataset.common.columnModeMetric') }}
-            </CardTitle>
-          </CardHeader>
-          <CardContent class="p-3">
+      <aside class="-mx-4 w-[200px] space-y-5">
+        <Card body-class="p-3" title-class="p-2">
+          <template #title>{{ $t('dataset.common.columnModeMetric') }}</template>
+          <CircularLoading v-if="initialize" :show="initialize"/>
+          <div v-else>
             <Draggable item-key="id" :clone="handlerClone" :group="{ name: 'metrics', pull: 'clone', put: false }" :list="originalMetrics">
               <template #item="{ element }">
                 <Badge variant="outline" class="cursor-pointer mr-1">
@@ -16,15 +13,12 @@
                 </Badge>
               </template>
             </Draggable>
-          </CardContent>
+          </div>
         </Card>
-        <Card class="mt-5">
-          <CardHeader class="p-3 border-b">
-            <CardTitle>
-              {{ $t('dataset.common.columnModeDimension') }}
-            </CardTitle>
-          </CardHeader>
-          <CardContent class="p-3">
+        <Card body-class="p-3" title-class="p-2">
+          <template #title>{{ $t('dataset.common.columnModeDimension') }}</template>
+          <CircularLoading v-if="initialize" :show="initialize"/>
+          <div v-else>
             <Draggable item-key="id" :clone="handlerClone" :group="{ name: 'dimensions', pull: 'clone', put: false }" :list="originalDimensions">
               <template #item="{ element }">
                 <Badge variant="outline" class="cursor-pointer mr-1 mt-1">
@@ -32,7 +26,7 @@
                 </Badge>
               </template>
             </Draggable>
-          </CardContent>
+          </div>
         </Card>
       </aside>
       <div class="flex-1">
@@ -297,6 +291,18 @@
           </div>
         </FormItem>
       </FormField>
+      <FormField class="flex items-center" name="build">
+        <FormItem class="flex-1">
+          <div class="flex items-center">
+            <FormLabel class="mr-1 w-20 text-right">
+              {{ $t('dataset.common.continuousBuild') }}
+            </FormLabel>
+            <FormControl>
+              <Switch :value="formState.build" @changeValue="formState.build = $event"/>
+            </FormControl>
+          </div>
+        </FormItem>
+      </FormField>
       <AlertDialogFooter class="-mb-4 border-t pt-2">
         <Button @click="formState.visible = false">{{ $t('common.cancel') }}</Button>
         <Button :disabled="!formState.name" @click="handlerPublish">
@@ -329,7 +335,7 @@ import DatasetVisualConfigureBar from '@/views/pages/admin/dataset/components/ad
 import DatasetVisualConfigureLine from '@/views/pages/admin/dataset/components/adhoc/DatasetVisualConfigureLine.vue'
 import { defineComponent } from 'vue'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Card from '@/views/ui/card'
 import { AreaChart, BarChart4, BarChartHorizontal, Baseline, CirclePlay, Cog, Eye, LineChart, Loader2, PieChart, Table, Trash } from 'lucide-vue-next'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
@@ -343,6 +349,7 @@ import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from '@/components/ui/alert-dialog'
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Select } from '@/components/ui/select'
+import Switch from '@/views/ui/switch'
 
 export default defineComponent({
   name: 'DatasetAdhoc',
@@ -357,6 +364,7 @@ export default defineComponent({
     }
   },
   components: {
+    Switch,
     FormField,
     FormControl,
     FormLabel, Select, FormItem,
@@ -369,7 +377,7 @@ export default defineComponent({
     Input,
     Tooltip, TooltipContent, TooltipTrigger, TooltipProvider,
     Separator,
-    CardTitle, CardHeader, CardContent, Card,
+    Card,
     Badge,
     DatasetVisualConfigureWordCloud,
     DatasetVisualConfigureHistogram,
@@ -415,9 +423,11 @@ export default defineComponent({
       commitOptions: null,
       formState: {
         visible: false,
-        name: ''
+        name: '',
+        build: false
       },
-      published: false
+      published: false,
+      initialize: false
     }
   },
   created()
@@ -429,37 +439,39 @@ export default defineComponent({
     handlerInitialize()
     {
       setTimeout(() => {
+        this.initialize = true
         const code = this.$route.params.code as string
         this.code = code as string
         const id = this.$route.params.id
         this.id = id as unknown as number
         DatasetService.getColumnsByCode(this.code)
-            .then(response => {
-              if (response.status) {
-                this.originalData = response.data
-                this.originalMetrics = response.data.filter((item: { mode: string; }) => item.mode === 'METRIC')
-                this.originalDimensions = response.data.filter((item: { mode: string; }) => item.mode === 'DIMENSION')
-                if (id) {
-                  ReportService.getById(this.id as number)
                       .then(response => {
                         if (response.status) {
-                          this.formState.name = response.data.name
-                          const query = JSON.parse(response.data.query)
-                          this.mergeColumns(query.columns, this.metrics, ColumnType.METRIC)
-                          this.mergeColumns(query.columns, this.dimensions, ColumnType.DIMENSION)
-                          this.mergeColumns(query.columns, this.filters, ColumnType.FILTER)
-                          this.configure.columns = query.columns
-                          this.configure.limit = query.limit
-                          this.configuration = JSON.parse(response.data.configure)
-                          this.handlerApplyAdhoc()
+                          this.originalData = response.data
+                          this.originalMetrics = response.data.filter((item: { mode: string; }) => item.mode === 'METRIC')
+                          this.originalDimensions = response.data.filter((item: { mode: string; }) => item.mode === 'DIMENSION')
+                          if (id) {
+                            ReportService.getById(this.id as number)
+                                         .then(response => {
+                                           if (response.status) {
+                                             this.formState.name = response.data.name
+                                             const query = JSON.parse(response.data.query)
+                                             this.mergeColumns(query.columns, this.metrics, ColumnType.METRIC)
+                                             this.mergeColumns(query.columns, this.dimensions, ColumnType.DIMENSION)
+                                             this.mergeColumns(query.columns, this.filters, ColumnType.FILTER)
+                                             this.configure.columns = query.columns
+                                             this.configure.limit = query.limit
+                                             this.configuration = JSON.parse(response.data.configure)
+                                             this.handlerApplyAdhoc()
+                                           }
+                                         })
+                          }
+                        }
+                        else {
+                          ToastUtils.error(response.message)
                         }
                       })
-                }
-              }
-              else {
-                ToastUtils.error(response.message)
-              }
-            })
+                      .finally(() => this.initialize = false)
       }, 0)
     },
     handlerApplyAdhoc()
@@ -474,27 +486,27 @@ export default defineComponent({
       this.isPublish = true
       this.loading = true
       DatasetService.adhoc(this.code as string, this.configure)
-          .then(response => {
-            if (response.status) {
-              if (this.configuration) {
-                if (response.data.isSuccessful) {
-                  this.configuration.headers = response.data.headers
-                  this.configuration.columns = response.data.columns
-                  this.showSql.content = response.data.content
-                  this.configuration.message = null
-                }
-                else {
-                  this.configuration.headers = []
-                  this.configuration.columns = []
-                  this.configuration.message = response.data.message
-                }
-              }
-            }
-            else {
-              ToastUtils.error(response.message)
-            }
-          })
-          .finally(() => this.loading = false)
+                    .then(response => {
+                      if (response.status) {
+                        if (this.configuration) {
+                          if (response.data.isSuccessful) {
+                            this.configuration.headers = response.data.headers
+                            this.configuration.columns = response.data.columns
+                            this.showSql.content = response.data.content
+                            this.configuration.message = null
+                          }
+                          else {
+                            this.configuration.headers = []
+                            this.configuration.columns = []
+                            this.configuration.message = response.data.message
+                          }
+                        }
+                      }
+                      else {
+                        ToastUtils.error(response.message)
+                      }
+                    })
+                    .finally(() => this.loading = false)
     },
     handlerClone(value: any)
     {
@@ -567,14 +579,16 @@ export default defineComponent({
         configure.id = this.id
       }
       ReportService.saveOrUpdate(configure)
-          .then(response => {
-            if (response.status) {
-              ToastUtils.success(this.$t('report.common.publishSuccess').replace('REPLACE_NAME', this.formState.name))
-              this.formState.visible = false
-              router.push('/admin/report')
-            }
-          })
-          .finally(() => this.published = false)
+                   .then(response => {
+                     if (response.status) {
+                       ToastUtils.success(this.$t('report.tip.publishSuccess').replace('$VALUE', this.formState.name))
+                       this.formState.visible = false
+                       if (!this.formState.build) {
+                         router.push('/admin/report')
+                       }
+                     }
+                   })
+                   .finally(() => this.published = false)
     },
     mergeColumns(originalColumns: any[], array: any[], type?: ColumnType)
     {

@@ -57,17 +57,17 @@ export default defineComponent({
     handlerInitialize()
     {
       this.loading = true
-      const axios = new HttpUtils().getAxios();
+      const axios = new HttpUtils().getAxios()
       axios.all([UserService.getSourceCount(), UserService.getQueryCount()])
-          .then(axios.spread((source, query) => {
-            if (source.status) {
-              this.summary.sourceCount = source.data
-            }
-            if (query.status) {
-              this.summary.queryCount = query.data
-            }
-          }))
-          .finally(() => this.loading = false)
+           .then(axios.spread((source, query) => {
+             if (source.status) {
+               this.summary.sourceCount = source.data
+             }
+             if (query.status) {
+               this.summary.queryCount = query.data
+             }
+           }))
+           .finally(() => this.loading = false)
     }
   }
 })

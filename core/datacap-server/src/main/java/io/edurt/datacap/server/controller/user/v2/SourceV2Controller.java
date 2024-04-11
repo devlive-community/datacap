@@ -53,6 +53,12 @@ public class SourceV2Controller
         return this.sourceService.getByIdV2(id);
     }
 
+    @GetMapping(value = "code/{code}")
+    public CommonResponse<SourceEntity> getByCode(@PathVariable(value = "code") String code)
+    {
+        return this.sourceService.getByCode(code);
+    }
+
     @PostMapping(value = "getHistory/{id}")
     public CommonResponse<PageEntity<ScheduledHistoryEntity>> getHistory(@PathVariable(value = "id") Long id,
             @RequestBody FilterBody filter)
