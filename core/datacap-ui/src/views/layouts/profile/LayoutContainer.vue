@@ -5,7 +5,7 @@
       <aside class="-mx-4 lg:w-1/12">
         <LayoutSidebar/>
       </aside>
-      <div class="flex-1 lg:max-w-3xl">
+      <div class="flex-1 lg:max-w-5xl">
         <div class="space-y-6">
           <RouterView/>
         </div>
