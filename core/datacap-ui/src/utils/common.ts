@@ -64,11 +64,24 @@ const getColor = (origin: string): string => {
     }
 }
 
+const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => {
+            const base64String = reader.result as string
+            resolve(base64String)
+        }
+        reader.onerror = reject
+        reader.readAsDataURL(file)
+    })
+}
+
 export default {
     token: token,
     menu: menu,
     getCurrentUserId: getCurrentUserId,
     userEditorConfigure: userEditorConfigure,
     getText: getText,
-    getColor: getColor
+    getColor: getColor,
+    fileToBase64: fileToBase64
 }

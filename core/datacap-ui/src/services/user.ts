@@ -26,7 +26,7 @@ class UserService
      */
     signin(configure: UserRequest): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH_AUTH}/signin`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH_AUTH }/signin`, configure)
     }
 
     /**
@@ -37,7 +37,7 @@ class UserService
      */
     signup(configure: UserRequest): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH_AUTH}/signup`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH_AUTH }/signup`, configure)
     }
 
     /**
@@ -47,7 +47,7 @@ class UserService
      */
     getMenus(): Promise<ResponseModel>
     {
-        return new HttpUtils().get(`${DEFAULT_PATH_USER}/menus`)
+        return new HttpUtils().get(`${ DEFAULT_PATH_USER }/menus`)
     }
 
     /**
@@ -67,7 +67,7 @@ class UserService
      */
     getSourceCount(): Promise<ResponseModel>
     {
-        return new HttpUtils().get(`${DEFAULT_PATH_SOURCE}/admin/count`)
+        return new HttpUtils().get(`${ DEFAULT_PATH_SOURCE }/admin/count`)
     }
 
     /**
@@ -77,7 +77,7 @@ class UserService
      */
     getQueryCount(): Promise<ResponseModel>
     {
-        return new HttpUtils().get(`${DEFAULT_PATH_QUERY}/admin/count`)
+        return new HttpUtils().get(`${ DEFAULT_PATH_QUERY }/admin/count`)
     }
 
     /**
@@ -88,42 +88,47 @@ class UserService
      */
     assignRole(configure: UserRoleModel): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${DEFAULT_PATH_USER}/allocationRole`, configure)
+        return new HttpUtils().put(`${ DEFAULT_PATH_USER }/allocationRole`, configure)
     }
 
     getUserContribution()
     {
-        return new HttpUtils().get(`${DEFAULT_PATH_QUERY}/admin/contribution`)
+        return new HttpUtils().get(`${ DEFAULT_PATH_QUERY }/admin/contribution`)
     }
 
     getUserContributionRadar()
     {
-        return new HttpUtils().get(`${DEFAULT_PATH_QUERY}/admin/radar`)
+        return new HttpUtils().get(`${ DEFAULT_PATH_QUERY }/admin/radar`)
     }
 
     getLogs(filter: FilterModel): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH_USER}/log`, filter)
+        return new HttpUtils().post(`${ DEFAULT_PATH_USER }/log`, filter)
     }
 
     changeEditor(configure: UserEditor): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${DEFAULT_PATH_USER}/changeEditorConfigure`, configure)
+        return new HttpUtils().put(`${ DEFAULT_PATH_USER }/changeEditorConfigure`, configure)
     }
 
     changeChart(configure: UserChatModel): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${DEFAULT_PATH_USER}/changeThirdConfigure`, configure)
+        return new HttpUtils().put(`${ DEFAULT_PATH_USER }/changeThirdConfigure`, configure)
     }
 
     changeUsername(configure: UsernameModel): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${DEFAULT_PATH_USER}/changeUsername`, configure)
+        return new HttpUtils().put(`${ DEFAULT_PATH_USER }/changeUsername`, configure)
     }
 
     changePassword(configure: UserPasswordModel): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${DEFAULT_PATH_USER}/changePassword`, configure)
+        return new HttpUtils().put(`${ DEFAULT_PATH_USER }/changePassword`, configure)
+    }
+
+    uploadAvatar(configure: FormData): Promise<ResponseModel>
+    {
+        return new HttpUtils().upload(`${ DEFAULT_PATH_USER }/uploadAvatar`, configure)
     }
 }
 
