@@ -47,3 +47,5 @@ TRUNCATE TABLE `user_log`;
 TRUNCATE TABLE `datacap_source`;
 
 TRUNCATE TABLE `snippet`;
+
+mysqldump -u root -p datacap > $(pwd)/core/datacap-server/src/main/schema/datacap.sql
