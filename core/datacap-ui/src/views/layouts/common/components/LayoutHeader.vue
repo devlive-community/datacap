@@ -26,7 +26,7 @@
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem v-else>
-                  <NavigationMenuLink :class="navigationMenuTriggerStyle()">
+                  <NavigationMenuLink :class="cn(navigationMenuTriggerStyle(), $route.path === `${item.url}` && 'bg-muted hover:bg-muted')">
                     <RouterLink :to="item.url">
                       {{ $t(item.i18nKey) }}
                     </RouterLink>
