@@ -73,20 +73,6 @@
             <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
-            <directory>src/main/schema</directory>
-            <outputDirectory>schema</outputDirectory>
-            <fileMode>0755</fileMode>
-            <lineEnding>unix</lineEnding>
-            <filtered>true</filtered>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/functions</directory>
-            <outputDirectory>functions</outputDirectory>
-            <fileMode>0755</fileMode>
-            <lineEnding>unix</lineEnding>
-            <filtered>true</filtered>
-        </fileSet>
-        <fileSet>
             <directory>${project.parent.basedir}/dist/plugins</directory>
             <outputDirectory>./plugins</outputDirectory>
             <includes>
