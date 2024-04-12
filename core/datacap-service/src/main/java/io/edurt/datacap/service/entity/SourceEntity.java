@@ -97,7 +97,7 @@ public class SourceEntity
     @Column(name = "_ssl", columnDefinition = "boolean default false")
     private Boolean ssl;
 
-    @OneToMany(mappedBy = "plugin", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "source", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PluginAuditEntity> pluginAudits;
 

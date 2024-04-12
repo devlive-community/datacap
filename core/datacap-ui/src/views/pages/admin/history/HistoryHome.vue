@@ -3,12 +3,12 @@
     <Card>
       <template #title>{{ $t('common.history') }}</template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
-        <template #plugin="{ row }">
-          <span>{{ row?.plugin?.name }}</span>
+        <template #source="{ row }">
+          <span>{{ row?.source?.name }}</span>
         </template>
         <template #type="{row}">
-          <Tooltip :content="row?.plugin?.type">
-            <Avatar :size="'sm'" :src="'/static/images/plugin/' + row?.plugin?.type + '.png'" :alt="row?.plugin?.type" class="cursor-pointer"/>
+          <Tooltip :content="row?.source?.type">
+            <Avatar :size="'sm'" :src="'/static/images/plugin/' + row?.source?.type + '.png'" :alt="row?.source?.type" class="cursor-pointer"/>
           </Tooltip>
         </template>
         <template #mode="{ row }">

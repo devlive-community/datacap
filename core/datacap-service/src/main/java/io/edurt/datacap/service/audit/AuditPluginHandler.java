@@ -85,11 +85,12 @@ public class AuditPluginHandler
                 pluginAudit.setContent(executeEntity.getContent());
                 pluginAudit.setMode(executeEntity.getMode());
                 Optional<SourceEntity> sourceEntity = this.sourceRepository.findById(Long.valueOf(executeEntity.getName()));
-                pluginAudit.setPlugin(sourceEntity.get());
+                pluginAudit.setSource(sourceEntity.get());
             }
             UserEntity user = UserDetailsService.getUser();
             pluginAudit.setUser(user);
-            pluginAudit.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
+            pluginAudit.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
+            pluginAudit.setElapsed(pluginAudit.getUpdateTime().getTime() - pluginAudit.getCreateTime().getTime());
             this.pluginAuditRepository.save(pluginAudit);
             ExecutorService service = Executors.newSingleThreadExecutor();
             service.submit(() -> {
