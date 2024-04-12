@@ -1,9 +1,7 @@
-package io.edurt.datacap.service.entity.metadata;
+package io.edurt.datacap.service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.edurt.datacap.service.entity.BaseEntity;
-import io.edurt.datacap.service.entity.SourceEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

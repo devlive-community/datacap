@@ -1,7 +1,7 @@
 package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.common.response.CommonResponse;
-import io.edurt.datacap.service.entity.metadata.ColumnEntity;
+import io.edurt.datacap.service.entity.ColumnEntity;
 import io.edurt.datacap.service.repository.metadata.ColumnRepository;
 import io.edurt.datacap.service.service.ColumnService;
 import org.springframework.web.bind.annotation.PathVariable;

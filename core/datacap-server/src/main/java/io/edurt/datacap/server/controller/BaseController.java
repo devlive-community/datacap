@@ -2,8 +2,8 @@ package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.service.BaseService;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +18,10 @@ import java.io.Serializable;
 public abstract class BaseController<T>
         implements Serializable
 {
-    private final PagingAndSortingRepository repository;
+    private final BaseRepository repository;
     private final BaseService<T> service;
 
-    protected BaseController(PagingAndSortingRepository repository, BaseService<T> service)
+    protected BaseController(BaseRepository repository, BaseService<T> service)
     {
         this.repository = repository;
         this.service = service;

@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_log")
+@Table(name = "datacap_user_log")
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class UserLogEntity

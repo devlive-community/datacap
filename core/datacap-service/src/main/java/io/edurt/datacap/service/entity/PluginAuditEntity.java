@@ -16,8 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -61,11 +59,4 @@ public class PluginAuditEntity
     @JoinColumn(name = "user_id")
     @JsonIncludeProperties(value = {"id", "username"})
     private UserEntity user;
-
-    public void setCode(String code)
-    {
-        this.code = UUID.randomUUID()
-                .toString()
-                .replace("-", "");
-    }
 }

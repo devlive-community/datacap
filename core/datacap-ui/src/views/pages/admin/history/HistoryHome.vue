@@ -38,7 +38,7 @@
               <DropdownMenuContent>
                 <DropdownMenuGroup>
                   <DropdownMenuItem class="cursor-pointer">
-                    <RouterLink :to="`/admin/query?id=${row?.id}&from=history`" target="_blank" class="flex items-center">
+                    <RouterLink :to="`/admin/query/history/${row?.code}`" target="_blank" class="flex items-center">
                       <Quote class="mr-2 h-4 w-4"/>
                       <span>{{ $t('query.common.quoteRecord') }}</span>
                     </RouterLink>

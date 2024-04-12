@@ -1,7 +1,7 @@
 package io.edurt.datacap.service.service;
 
 import io.edurt.datacap.common.response.CommonResponse;
-import io.edurt.datacap.service.entity.metadata.ColumnEntity;
+import io.edurt.datacap.service.entity.ColumnEntity;
 
 import java.util.List;
 

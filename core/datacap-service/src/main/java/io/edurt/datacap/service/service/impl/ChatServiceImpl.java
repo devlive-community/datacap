@@ -5,11 +5,11 @@ import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.ChatEntity;
 import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.repository.ChatRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.ChatService;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +24,7 @@ public class ChatServiceImpl
     }
 
     @Override
-    public CommonResponse<PageEntity<ChatEntity>> getAll(PagingAndSortingRepository repository, FilterBody filter)
+    public CommonResponse<PageEntity<ChatEntity>> getAll(BaseRepository repository, FilterBody filter)
     {
         return CommonResponse.success(PageEntity.build(repository.findAll(PageRequestAdapter.of(filter))));
     }
@@ -37,7 +37,7 @@ public class ChatServiceImpl
     }
 
     @Override
-    public CommonResponse<ChatEntity> saveOrUpdate(PagingAndSortingRepository repository, ChatEntity configure)
+    public CommonResponse<ChatEntity> saveOrUpdate(BaseRepository repository, ChatEntity configure)
     {
         configure.setUser(UserDetailsService.getUser());
         return CommonResponse.success(repository.save(configure));

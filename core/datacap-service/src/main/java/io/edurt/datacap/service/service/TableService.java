@@ -4,7 +4,7 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.ExportBody;
 import io.edurt.datacap.service.body.TableBody;
 import io.edurt.datacap.service.body.TableFilter;
-import io.edurt.datacap.service.entity.metadata.TableEntity;
+import io.edurt.datacap.service.entity.TableEntity;
 
 import java.util.List;
 

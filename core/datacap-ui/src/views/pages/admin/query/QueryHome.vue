@@ -115,7 +115,6 @@ import { VAceEditor } from 'vue3-ace-editor'
 import { Ace } from 'ace-builds'
 import '@/ace-editor-theme'
 import { UserEditor } from '@/model/user'
-import { useRouter } from 'vue-router'
 import Common from '@/utils/common'
 import SnippetService from '@/services/snippet'
 import AuditService from '@/services/audit'
@@ -210,12 +209,12 @@ export default defineComponent({
     {
       this.createEditor()
       this.queryConfigure.configure = { name: this.selectSource.id as string, content: '', mode: 'ADHOC', format: 'JSON' }
-      const router = useRouter()
-      if (router.currentRoute?.value?.query) {
-        const id = router.currentRoute.value.query.id as unknown as number
-        const from = router.currentRoute.value.query.from
-        if (id && from) {
-          if (from === 'snippet') {
+      const params = this.$route.params
+      if (params) {
+        const code = params.code
+        const type = params.type
+        if (code && type) {
+          if (type === 'snippet') {
             this.queryConfigure.configure.mode = 'SNIPPET'
             SnippetService.getById(id)
                           .then((response) => {
@@ -227,7 +226,7 @@ export default defineComponent({
                             }
                           })
           }
-          else if (from === 'history') {
+          else if (type === 'history') {
             this.queryConfigure.configure.mode = 'HISTORY'
             AuditService.getById(id)
                         .then((response) => {

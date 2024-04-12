@@ -19,3 +19,75 @@ ALTER TABLE `datacap_source_query`
 UPDATE `datacap_source_query`
 SET `code` = REPLACE(UUID(), '-', '')
 WHERE `code` IS NULL;
+
+ALTER TABLE `datacap_pipeline`
+    ADD COLUMN `active` BOOLEAN DEFAULT TRUE,
+    ADD COLUMN `code` VARCHAR(100);
+
+ALTER TABLE `datacap_pipeline`
+    CHANGE `start_time` `create_time` DATETIME,
+    CHANGE `end_time` `update_time` DATETIME;
+
+ALTER TABLE `datacap_scheduled`
+    ADD COLUMN `code` varchar(100);
+
+RENAME
+TABLE `role` TO `datacap_role`;
+
+ALTER TABLE `datacap_role`
+    ADD COLUMN `active` BOOLEAN DEFAULT TRUE,
+    ADD COLUMN `code` VARCHAR(100),
+    ADD COLUMN `update_time` DATETIME;
+
+RENAME
+TABLE `role_menu_relation` TO `datacap_role_menu_relation`;
+
+ALTER TABLE `datacap_dashboard`
+    ADD COLUMN `code` VARCHAR(100);
+
+ALTER TABLE `datacap_source`
+    ADD COLUMN `active` BOOLEAN DEFAULT TRUE;
+
+RENAME
+TABLE `snippet` TO `datacap_snippet`;
+
+ALTER TABLE `datacap_report`
+    ADD COLUMN `code` VARCHAR(100);
+
+ALTER TABLE `datacap_metadata_database`
+    ADD COLUMN `code` VARCHAR(100);
+
+ALTER TABLE `datacap_metadata_table`
+    ADD COLUMN `code` VARCHAR(100);
+
+ALTER TABLE `datacap_metadata_column`
+    ADD COLUMN `code` VARCHAR(100);
+
+ALTER TABLE `datacap_scheduled_history`
+    ADD COLUMN `code` VARCHAR(100);
+
+RENAME
+TABLE `menus` TO `datacap_menu`;
+
+RENAME
+TABLE `pipeline_user_relation` TO `datacap_pipeline_user_relation`;
+
+RENAME
+TABLE `user_roles` TO `datacap_user_role_relation`;
+
+RENAME
+TABLE `functions` TO `datacap_function`;
+
+RENAME
+TABLE `template_sql` TO `datacap_template`;
+
+RENAME
+TABLE `user_log` TO `datacap_user_log`;
+
+ALTER TABLE `datacap_function`
+    ADD COLUMN `active` BOOLEAN DEFAULT TRUE,
+    ADD COLUMN `code` VARCHAR(100);
+
+ALTER TABLE `datacap_template`
+    ADD COLUMN `active` BOOLEAN DEFAULT TRUE,
+    ADD COLUMN `code` VARCHAR(100);

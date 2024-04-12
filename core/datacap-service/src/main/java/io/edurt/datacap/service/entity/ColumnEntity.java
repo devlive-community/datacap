@@ -1,7 +1,6 @@
-package io.edurt.datacap.service.entity.metadata;
+package io.edurt.datacap.service.entity;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.edurt.datacap.service.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -78,6 +77,6 @@ public class ColumnEntity
 
     public ColumnEntity(Long id, String name, Date createTime)
     {
-        super(id, name, true, createTime, null);
+        super(id, name, null, true, createTime, null);
     }
 }

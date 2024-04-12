@@ -51,6 +51,7 @@ import io.edurt.datacap.service.enums.SyncMode;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.initializer.job.DatasetJob;
 import io.edurt.datacap.service.model.CreatedModel;
+import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.repository.DataSetColumnRepository;
 import io.edurt.datacap.service.repository.DataSetRepository;
 import io.edurt.datacap.service.repository.DatasetHistoryRepository;
@@ -70,7 +71,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -301,7 +301,7 @@ public class DataSetServiceImpl
     }
 
     @Override
-    public CommonResponse<PageEntity<DataSetEntity>> getAll(PagingAndSortingRepository pagingAndSortingRepository, FilterBody filter)
+    public CommonResponse<PageEntity<DataSetEntity>> getAll(BaseRepository pagingAndSortingRepository, FilterBody filter)
     {
         Pageable pageable = PageRequestAdapter.of(filter);
         return CommonResponse.success(PageEntity.build(repository.findAllByUser(UserDetailsService.getUser(), pageable)));

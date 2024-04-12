@@ -8,8 +8,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.configure.IConfigureExecutor;
-import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
-import io.edurt.datacap.service.validation.ValidationGroup;
 import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.model.Configure;
 import lombok.Getter;
@@ -17,8 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.CascadeType;
@@ -26,9 +22,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -37,7 +30,6 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -53,16 +45,8 @@ import java.util.Optional;
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class SourceEntity
+        extends BaseEntity
 {
-    @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = {ValidationGroup.Crud.Update.class}, message = "The passed source id cannot be empty")
-    private Long id;
-
-    @Column(name = "name", unique = true, nullable = false)
-    @NotEmpty(message = "The passed name cannot by empty")
-    private String name;
-
     @Column(name = "description")
     private String description;
 
@@ -121,17 +105,6 @@ public class SourceEntity
 
     @Column(name = "message")
     private String message;
-
-    @Column(name = "code")
-    private String code;
-
-    @Column(name = "create_time")
-    @CreatedDate
-    private Timestamp createTime;
-
-    @Column(name = "update_time")
-    @LastModifiedDate
-    private Timestamp updateTime;
 
     @Transient
     private Map<String, Object> configures;

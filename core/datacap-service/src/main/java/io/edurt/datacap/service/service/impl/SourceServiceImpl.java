@@ -22,17 +22,18 @@ import io.edurt.datacap.service.common.ConfigureUtils;
 import io.edurt.datacap.service.common.PluginUtils;
 import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.configure.IConfigureField;
+import io.edurt.datacap.service.entity.ColumnEntity;
+import io.edurt.datacap.service.entity.DatabaseEntity;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.PluginEntity;
 import io.edurt.datacap.service.entity.ScheduledEntity;
 import io.edurt.datacap.service.entity.ScheduledHistoryEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
-import io.edurt.datacap.service.entity.TemplateSqlEntity;
+import io.edurt.datacap.service.entity.TableEntity;
+import io.edurt.datacap.service.entity.TemplateEntity;
 import io.edurt.datacap.service.entity.UserEntity;
-import io.edurt.datacap.service.entity.metadata.ColumnEntity;
-import io.edurt.datacap.service.entity.metadata.DatabaseEntity;
-import io.edurt.datacap.service.entity.metadata.TableEntity;
 import io.edurt.datacap.service.itransient.SqlConfigure;
+import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.repository.ScheduledHistoryRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.repository.TemplateSqlRepository;
@@ -55,7 +56,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -114,7 +114,7 @@ public class SourceServiceImpl
     }
 
     @Override
-    public CommonResponse<PageEntity<SourceEntity>> getAll(PagingAndSortingRepository repository, FilterBody filter)
+    public CommonResponse<PageEntity<SourceEntity>> getAll(BaseRepository repository, FilterBody filter)
     {
         UserEntity user = UserDetailsService.getUser();
         Page<SourceEntity> page = this.sourceRepository.findAllByUserOrPublishIsTrue(user, PageRequestAdapter.of(filter));
@@ -178,7 +178,7 @@ public class SourceServiceImpl
     }
 
     @Override
-    public CommonResponse<SourceEntity> getById(PagingAndSortingRepository repository, Long id)
+    public CommonResponse<SourceEntity> getById(BaseRepository repository, Long id)
     {
         Optional<SourceEntity> optionalSource = this.sourceRepository.findById(id);
         if (!optionalSource.isPresent()) {
@@ -451,7 +451,7 @@ public class SourceServiceImpl
      * @param map the map of key-value pairs used for replacing expressions in the SQL content
      * @return the SQL content with the expressions replaced by the corresponding values in the map
      */
-    private String getSqlContext(TemplateSqlEntity entity, Map<String, String> map)
+    private String getSqlContext(TemplateEntity entity, Map<String, String> map)
     {
         try {
             if (ObjectUtils.isNotEmpty(entity.getConfigure())) {
@@ -505,7 +505,7 @@ public class SourceServiceImpl
      * @param entity the SourceEntity object to use for filtering
      * @return the TemplateSqlEntity object that matches the given criteria
      */
-    private TemplateSqlEntity getTemplate(String templateName, SourceEntity entity)
+    private TemplateEntity getTemplate(String templateName, SourceEntity entity)
     {
         return templateHandler.findByNameAndPluginContaining(templateName, entity.getType());
     }
@@ -532,7 +532,7 @@ public class SourceServiceImpl
     private void startSyncDatabase(SourceEntity entity, Plugin plugin, Map<String, DatabaseEntity> databaseCache, Map<String, List<TableEntity>> databaseTableCache, Map<String, TableEntity> tableCache, Map<String, List<ColumnEntity>> tableColumnCache, AtomicInteger databaseAddedCount, AtomicInteger databaseUpdatedCount, AtomicInteger databaseRemovedCount, AtomicInteger tableAddedCount, AtomicInteger tableUpdatedCount, AtomicInteger tableRemovedCount, AtomicInteger columnAddedCount, AtomicInteger columnUpdatedCount, AtomicInteger columnRemovedCount)
     {
         String templateName = "SYSTEM_FOR_GET_ALL_DATABASES";
-        TemplateSqlEntity template = getTemplate(templateName, entity);
+        TemplateEntity template = getTemplate(templateName, entity);
         if (template == null) {
             log.warn("The source [ {} ] protocol [ {} ] template [ {} ] is not available, skip sync database", entity.getName(), entity.getProtocol(), templateName);
         }
@@ -594,7 +594,7 @@ public class SourceServiceImpl
     private void startSyncTable(SourceEntity entity, Plugin plugin, Map<String, DatabaseEntity> databaseCache, Map<String, List<TableEntity>> databaseTableCache, Map<String, TableEntity> tableCache, Map<String, List<ColumnEntity>> tableColumnCache, AtomicInteger tableAddedCount, AtomicInteger tableUpdatedCount, AtomicInteger tableRemovedCount, AtomicInteger columnAddedCount, AtomicInteger columnUpdatedCount, AtomicInteger columnRemovedCount)
     {
         String templateName = "SYSTEM_FOR_GET_ALL_TABLES";
-        TemplateSqlEntity template = getTemplate(templateName, entity);
+        TemplateEntity template = getTemplate(templateName, entity);
         if (template == null) {
             log.warn("The source [ {} ] protocol [ {} ] template [ {} ] is not available, skip sync table", entity.getName(), entity.getProtocol(), templateName);
         }
@@ -663,7 +663,7 @@ public class SourceServiceImpl
     private void startSyncColumn(SourceEntity entity, Plugin plugin, Map<String, TableEntity> tableCache, Map<String, List<ColumnEntity>> tableColumnCache, AtomicInteger columnAddedCount, AtomicInteger columnUpdatedCount, AtomicInteger columnRemovedCount)
     {
         String templateName = "SYSTEM_FOR_GET_ALL_COLUMNS";
-        TemplateSqlEntity template = getTemplate(templateName, entity);
+        TemplateEntity template = getTemplate(templateName, entity);
         if (template == null) {
             log.warn("The source [ {} ] protocol [ {} ] template [ {} ] is not available, skip sync column", entity.getName(), entity.getProtocol(), templateName);
         }

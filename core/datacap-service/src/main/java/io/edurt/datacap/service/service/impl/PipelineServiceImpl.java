@@ -26,6 +26,7 @@ import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
+import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.repository.PipelineRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
@@ -37,7 +38,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.core.env.Environment;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -72,7 +72,7 @@ public class PipelineServiceImpl
     }
 
     @Override
-    public CommonResponse<PageEntity> getAll(PagingAndSortingRepository repository1, FilterBody filter)
+    public CommonResponse<PageEntity> getAll(BaseRepository repository1, FilterBody filter)
     {
         return CommonResponse.success(repository.findAllByUser(UserDetailsService.getUser(), PageRequestAdapter.of(filter)));
     }
@@ -132,7 +132,7 @@ public class PipelineServiceImpl
             pipelineEntity.setContent(configure.getContent());
             pipelineEntity.setState(RunState.CREATED);
             pipelineEntity.setWork(workHome);
-            pipelineEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
+            pipelineEntity.setCreateTime(new Timestamp(System.currentTimeMillis()));
             pipelineEntity.setUser(UserDetailsService.getUser());
             pipelineEntity.setFrom(fromSource);
             pipelineEntity.setFromConfigures(fromProperties);
@@ -182,10 +182,10 @@ public class PipelineServiceImpl
                 ExecutorResponse response = executorOptional.get()
                         .start(pipeline);
                 log.info("Pipeline [ {} ] executed successfully", pipelineName);
-                finalPipelineEntity.setEndTime(new Timestamp(System.currentTimeMillis()));
+                finalPipelineEntity.setUpdateTime(new Timestamp(System.currentTimeMillis()));
                 finalPipelineEntity.setState(response.getState());
                 finalPipelineEntity.setMessage(response.getMessage());
-                finalPipelineEntity.setElapsed(finalPipelineEntity.getElapsed());
+                finalPipelineEntity.setElapsed(finalPipelineEntity.getUpdateTime().getTime() - finalPipelineEntity.getCreateTime().getTime());
                 repository.save(finalPipelineEntity);
                 initializer.getTaskExecutors()
                         .remove(pipelineName);
@@ -274,7 +274,7 @@ public class PipelineServiceImpl
     }
 
     @Override
-    public CommonResponse<Long> deleteById(PagingAndSortingRepository repository, Long id)
+    public CommonResponse<Long> deleteById(BaseRepository repository, Long id)
     {
         Optional<PipelineEntity> pipelineOptional = this.repository.findById(id);
         if (!pipelineOptional.isPresent()) {
