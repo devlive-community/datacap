@@ -93,6 +93,7 @@ export default {
     chat: 'Chat',
     avatar: 'Avatar',
     file: 'File',
+    backTo: 'Back',
     tip: {
         pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
     }
