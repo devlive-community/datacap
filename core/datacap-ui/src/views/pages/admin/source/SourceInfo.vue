@@ -4,7 +4,7 @@
     <div v-else class="pl-3 pr-3">
       <Tabs v-model="activeTab" :default-value="activeTab" class="w-full" @update:modelValue="handlerChangeConfigure($event)">
         <TabsList>
-          <TabsTrigger v-for="tab in configureTabs" :value="tab">{{ $t(`source.common.${ tab }`) }}</TabsTrigger>
+          <TabsTrigger v-for="tab in configureTabs" :value="tab">{{ $t(`source.common.${tab}`) }}</TabsTrigger>
         </TabsList>
         <TabsContent v-if="activeTab === 'source'" value="source" class="max-h-96 overflow-y-auto">
           <FormField v-for="key in Object.keys(plugins)" :key="key" type="radio" name="plugin">
@@ -184,10 +184,10 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.testInfo = { connected: false, percent: 0, successful: false }
-      this.title = `${ this.$t('source.common.create') }`
+      this.testInfo = {connected: false, percent: 0, successful: false}
+      this.title = `${this.$t('source.common.create')}`
       if (this.info) {
-        this.title = `${ this.$t('source.common.modify').replace('$NAME', this.info.name as string) }`
+        this.title = `${this.$t('source.common.modify').replace('$NAME', this.info.name as string)}`
         this.loading = true
         SourceService.getById(this.info.id as number)
                      .then(response => {
@@ -246,7 +246,7 @@ export default defineComponent({
       const temp = (cloneDeep(this.formState.type) as string).split('_')
       const type = temp[1]
       const name = temp[0]
-      const configure = { type: type, name: name, configure: this.applyConfigure }
+      const configure = {type: type, name: name, configure: this.applyConfigure}
       SourceService.testConnection(configure)
                    .then((response) => {
                      this.testInfo.percent = 100
@@ -273,7 +273,7 @@ export default defineComponent({
       this.pluginConfigure = applyPlugin?.configure?.configures
       this.resetConfigureTab()
     },
-    handlerChangeConfigure(value: string)
+    handlerChangeConfigure(value: any)
     {
       if (value !== 'source') {
         this.pluginTabConfigure = this.pluginConfigure.filter((field: { group: string }) => field.group === value)
@@ -296,7 +296,7 @@ export default defineComponent({
       if (!array) {
         array = new Array<any>()
       }
-      const configure = { field: '', value: '' }
+      const configure = {field: '', value: ''}
       array.push(configure)
     },
     handlerMinusConfigure(configure: any, array: Array<any>)
