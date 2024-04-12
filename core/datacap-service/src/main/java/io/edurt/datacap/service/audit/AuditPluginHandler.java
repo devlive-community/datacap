@@ -29,6 +29,7 @@ import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -91,6 +92,7 @@ public class AuditPluginHandler
             pluginAudit.setUser(user);
             pluginAudit.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
             pluginAudit.setElapsed(pluginAudit.getUpdateTime().getTime() - pluginAudit.getCreateTime().getTime());
+            pluginAudit.setCode(UUID.randomUUID().toString().replace("-", ""));
             this.pluginAuditRepository.save(pluginAudit);
             ExecutorService service = Executors.newSingleThreadExecutor();
             service.submit(() -> {

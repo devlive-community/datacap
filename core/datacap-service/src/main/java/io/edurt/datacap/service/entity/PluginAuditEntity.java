@@ -51,7 +51,7 @@ public class PluginAuditEntity
 
     @ManyToOne
     @JoinColumn(name = "plugin_id")
-    @JsonIncludeProperties(value = {"id", "name", "type"})
+    @JsonIncludeProperties(value = {"id", "name", "type", "code"})
     private SourceEntity source;
 
     // Add from 1.1.0.20221115

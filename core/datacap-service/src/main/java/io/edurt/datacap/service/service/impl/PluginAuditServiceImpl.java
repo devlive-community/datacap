@@ -15,6 +15,7 @@ import io.edurt.datacap.service.entity.PluginAuditEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.initializer.InitializerConfigure;
 import io.edurt.datacap.service.itransient.ContributionRadar;
+import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.repository.PluginAuditRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.PluginAuditService;
@@ -50,14 +51,7 @@ public class PluginAuditServiceImpl
     }
 
     @Override
-    public CommonResponse<PageEntity<PluginAuditEntity>> getAll(int offset, int limit)
-    {
-        Pageable pageable = PageRequestAdapter.of(offset, limit);
-        return CommonResponse.success(PageEntity.build(this.pluginAuditRepository.findAllByUser(UserDetailsService.getUser(), pageable)));
-    }
-
-    @Override
-    public CommonResponse<PageEntity<PluginAuditEntity>> getAllByFilter(FilterBody filter)
+    public CommonResponse<PageEntity<PluginAuditEntity>> getAll(BaseRepository repository, FilterBody filter)
     {
         Pageable pageable = PageRequestAdapter.of(filter);
         return CommonResponse.success(PageEntity.build(this.pluginAuditRepository.findAllByUser(UserDetailsService.getUser(), pageable)));

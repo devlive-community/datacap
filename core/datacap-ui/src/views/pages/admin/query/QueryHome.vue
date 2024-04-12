@@ -4,7 +4,7 @@
       <aside class="-mx-4 w-[200px]">
         <Card>
           <CardHeader class="p-0">
-            <SourceSelect @changeValue="handlerChangeValue($event)"/>
+            <SourceSelect :value="selectSource.full as string" @changeValue="handlerChangeValue($event)"/>
             <DataStructureLazyTree v-if="selectSource.id" :id="selectSource.id as string"/>
           </CardHeader>
         </Card>
@@ -180,7 +180,8 @@ export default defineComponent({
         id: null as string | null | undefined,
         type: null as string | null | undefined,
         engine: null as string | null | undefined,
-        code: null as string | null | undefined
+        code: null as string | null | undefined,
+        full: null as string | null
       },
       selectEditor: {
         editorMaps: new Map<string, EditorInstance>(),
@@ -240,7 +241,9 @@ export default defineComponent({
                             const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
                             if (instance) {
                               instance.instance?.setValue(response.data.content)
-                              this.handlerChangeValue(`${ response.data.source.id }:${ response.data.source.type }`)
+                              const full = `${ response.data.source.id }:${ response.data.source.type }:${ response.data.source.code }`
+                              this.selectSource.full = full
+                              this.handlerChangeValue(full)
                             }
                           }
                         })
