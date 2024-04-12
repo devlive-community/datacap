@@ -128,10 +128,10 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      this.title = `${this.$t('function.common.create')}`
+      this.title = `${ this.$t('function.common.create') }`
       if (this.info) {
         this.formState = cloneDeep(this.info)
-        this.title = `${this.$t('function.common.modify').replace('$NAME', this.info.name as string)}`
+        this.title = `${ this.$t('function.common.modify').replace('$NAME', this.info.name as string) }`
       }
       else {
         this.formState = {
@@ -146,18 +146,20 @@ export default defineComponent({
 
       this.loading = true
       SourceService.getPlugins()
-          .then(response => {
-            if (response.status) {
-              this.plugins = Object.values(response.data).reduce((acc, curr) => (acc as any).concat(curr), []) as any[]
-              (this.formState.plugin as string[]).forEach(formPlugin => {
-                const foundPlugin = this.plugins.find(plugin => plugin.name === formPlugin)
-                if (foundPlugin) {
-                  foundPlugin.checked = true
-                }
-              })
-            }
-          })
-          .finally(() => this.loading = false)
+                   .then(response => {
+                     if (response.status) {
+                       this.plugins = Object.values(response.data).reduce((acc, curr) => (acc as any).concat(curr), []) as any[]
+                       if (this.formState.plugin) {
+                         (this.formState.plugin as string[]).forEach(formPlugin => {
+                           const foundPlugin = this.plugins.find(plugin => plugin.name === formPlugin)
+                           if (foundPlugin) {
+                             foundPlugin.checked = true
+                           }
+                         })
+                       }
+                     }
+                   })
+                   .finally(() => this.loading = false)
     },
     handlerSave()
     {
@@ -166,21 +168,21 @@ export default defineComponent({
       plugins.push(this.formState.plugin as string)
       this.formState.plugin = plugins
       FunctionService.saveOrUpdate(this.formState)
-          .then((response) => {
-            if (response.status) {
-              ToastUtils.success('Create successful')
-              this.visible = false
-            }
-            else {
-              ToastUtils.error(response.message)
-            }
-          })
-          .finally(() => this.saving = false)
+                     .then((response) => {
+                       if (response.status) {
+                         ToastUtils.success('Create successful')
+                         this.visible = false
+                       }
+                       else {
+                         ToastUtils.error(response.message)
+                       }
+                     })
+                     .finally(() => this.saving = false)
     },
     handlerPluginChange(value: string)
     {
       this.formState.plugin = value.split(',')
-          .join(',')
+                                   .join(',')
     },
     handlerCancel()
     {
