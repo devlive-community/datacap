@@ -2,6 +2,7 @@ package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.entity.BaseEntity;
 import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.service.BaseService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
 
-public abstract class BaseController<T>
+public abstract class BaseController<T extends BaseEntity>
         implements Serializable
 {
     private final BaseRepository repository;
@@ -68,5 +69,11 @@ public abstract class BaseController<T>
     public CommonResponse<T> getInfoForPath(@PathVariable(value = "id") Long id)
     {
         return service.getById(repository, id);
+    }
+
+    @GetMapping(value = "info/{code}")
+    public CommonResponse<T> getByCode(@PathVariable(value = "code") String code)
+    {
+        return service.findByCode(repository, code);
     }
 }

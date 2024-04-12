@@ -133,7 +133,7 @@ export default defineComponent({
     handlerInitialize()
     {
       this.loading = true
-      AuditService.getPluginAudits(this.filter)
+      AuditService.getAll(this.filter)
                   .then((response) => {
                     if (response.status) {
                       this.data = response.data.content

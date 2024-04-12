@@ -9,7 +9,7 @@ import io.edurt.datacap.service.body.FunctionsImportBody;
 import io.edurt.datacap.service.entity.FunctionEntity;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.repository.FunctionsRepository;
-import io.edurt.datacap.service.service.FunctionsService;
+import io.edurt.datacap.service.service.FunctionService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,20 +22,14 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class FunctionsServiceImpl
-        implements FunctionsService
+public class FunctionServiceImpl
+        implements FunctionService
 {
     private final FunctionsRepository functionsRepository;
 
-    public FunctionsServiceImpl(FunctionsRepository functionsRepository)
+    public FunctionServiceImpl(FunctionsRepository functionsRepository)
     {
         this.functionsRepository = functionsRepository;
-    }
-
-    @Override
-    public CommonResponse<FunctionEntity> saveOrUpdate(FunctionEntity configure)
-    {
-        return CommonResponse.success(this.functionsRepository.save(configure));
     }
 
     @Override

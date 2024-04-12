@@ -88,7 +88,7 @@
                   </TabsList>
                   <VAceEditor lang="mysql" :value="selectEditor.editorInstance?.instance?.getValue() as string" :theme="selectEditor.editorInstance?.configure?.theme"
                               :style="{ height: '300px', fontSize: selectEditor.editorInstance?.configure?.fontSize + 'px' }"
-                              :key="selectEditor.editorInstance?.key" :options="{ enableSnippets: true, enableLiveAutocompletion: true }"
+                              :key="selectEditor.editorInstance?.key" :options="{ enableSnippets: true, enableLiveAutocompletion: true, readOnly: loading.froming }"
                               @init="handlerEditorDidMount($event, 'mysql', selectEditor.editorInstance?.key)"/>
                 </Tabs>
               </CardContent>
@@ -138,6 +138,7 @@ import QueryHelp from '@/views/pages/admin/query/QueryHelp.vue'
 import DataStructureLazyTree from '@/views/components/tree/DataStructureLazyTree.vue'
 import { SnippetModel, SnippetRequest } from '@/model/snippet'
 import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
+import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import Editor = Ace.Editor
 
 interface EditorInstance
@@ -151,6 +152,7 @@ interface EditorInstance
 export default defineComponent({
   name: 'QueryHome',
   components: {
+    CircularLoading,
     SnippetInfo,
     DataStructureLazyTree,
     QueryHelp,
@@ -168,7 +170,8 @@ export default defineComponent({
     return {
       loading: {
         running: false,
-        formatting: false
+        formatting: false,
+        froming: false
       },
       visibility: {
         queryHelp: false
@@ -215,8 +218,9 @@ export default defineComponent({
         const type = params.type
         if (code && type) {
           if (type === 'snippet') {
+            this.loading.froming = true
             this.queryConfigure.configure.mode = 'SNIPPET'
-            SnippetService.getById(id)
+            SnippetService.getByCode(code as string)
                           .then((response) => {
                             if (response.status && response.data?.code) {
                               const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
@@ -225,19 +229,22 @@ export default defineComponent({
                               }
                             }
                           })
+                          .finally(() => this.loading.froming = false)
           }
           else if (type === 'history') {
+            this.loading.froming = true
             this.queryConfigure.configure.mode = 'HISTORY'
-            AuditService.getById(id)
+            AuditService.getByCode(code as string)
                         .then((response) => {
                           if (response.status && response.data?.content) {
                             const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
                             if (instance) {
                               instance.instance?.setValue(response.data.content)
-                              this.handlerChangeValue(`${ response.data.plugin.id }:${ response.data.plugin.type }`)
+                              this.handlerChangeValue(`${ response.data.source.id }:${ response.data.source.type }`)
                             }
                           }
                         })
+                        .finally(() => this.loading.froming = false)
           }
         }
       }

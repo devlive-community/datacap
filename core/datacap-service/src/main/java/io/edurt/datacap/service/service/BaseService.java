@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.service;
 
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.common.utils.NullAwareBeanUtils;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.BaseEntity;
@@ -8,7 +9,7 @@ import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.repository.BaseRepository;
 import org.springframework.data.domain.Pageable;
 
-public interface BaseService<T>
+public interface BaseService<T extends BaseEntity>
 {
     default CommonResponse<PageEntity<T>> getAll(BaseRepository repository, FilterBody filter)
     {
@@ -23,6 +24,10 @@ public interface BaseService<T>
 
     default CommonResponse<T> saveOrUpdate(BaseRepository repository, T configure)
     {
+        if (configure.getId() != null) {
+            repository.findById(configure.getId())
+                    .ifPresent(value -> NullAwareBeanUtils.copyNullProperties(value, configure));
+        }
         return CommonResponse.success(repository.save(configure));
     }
 
@@ -32,8 +37,10 @@ public interface BaseService<T>
         return CommonResponse.success(id);
     }
 
-    default CommonResponse<BaseEntity> findByCode(BaseRepository repository, String code)
+    default CommonResponse<T> findByCode(BaseRepository repository, String code)
     {
-        return CommonResponse.success(repository.findByCode(code));
+        return (CommonResponse<T>) repository.findByCode(code)
+                .map(CommonResponse::success)
+                .orElseGet(() -> CommonResponse.failure(String.format("Resource [ %s ] not found", code)));
     }
 }

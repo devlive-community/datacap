@@ -10,6 +10,7 @@ import io.edurt.datacap.service.itransient.ContributionRadar;
 import java.util.List;
 
 public interface PluginAuditService
+        extends BaseService<PluginAuditEntity>
 {
     @Deprecated
     CommonResponse<PageEntity<PluginAuditEntity>> getAll(int offset, int limit);

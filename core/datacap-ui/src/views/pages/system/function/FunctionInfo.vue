@@ -68,7 +68,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Textarea } from '@/components/ui/textarea'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import MultipleSelect from '@/views/components/select/MultipleSelect.vue'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, omit } from 'lodash'
 
 export default defineComponent({
   name: 'FunctionInfo',
@@ -130,7 +130,7 @@ export default defineComponent({
     {
       this.title = `${ this.$t('function.common.create') }`
       if (this.info) {
-        this.formState = cloneDeep(this.info)
+        this.formState = cloneDeep(omit(this.info, ['createTime', 'updateTime']))
         this.title = `${ this.$t('function.common.modify').replace('$NAME', this.info.name as string) }`
       }
       else {

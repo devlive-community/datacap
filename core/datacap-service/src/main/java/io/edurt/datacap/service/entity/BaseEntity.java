@@ -61,13 +61,19 @@ public class BaseEntity
         }
     }
 
+    public void setUpdateTime(Date updateTime)
+    {
+        this.updateTime = updateTime;
+    }
+
     @PrePersist
-    public void generateCode()
+    public void prePersist()
     {
         if (this.code == null) {
             this.code = UUID.randomUUID()
                     .toString()
                     .replace("-", "");
         }
+        this.updateTime = new Date();
     }
 }

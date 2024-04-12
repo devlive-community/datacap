@@ -6,10 +6,9 @@ import io.edurt.datacap.service.body.FunctionsImportBody;
 import io.edurt.datacap.service.entity.FunctionEntity;
 import io.edurt.datacap.service.entity.PageEntity;
 
-public interface FunctionsService
+public interface FunctionService
+        extends BaseService<FunctionEntity>
 {
-    CommonResponse<FunctionEntity> saveOrUpdate(FunctionEntity configure);
-
     CommonResponse<PageEntity<FunctionEntity>> getAllByFilter(FilterBody filter);
 
     CommonResponse<FunctionEntity> getById(Long id);

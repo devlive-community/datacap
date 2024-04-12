@@ -6,14 +6,13 @@ import io.edurt.datacap.service.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Map;
 
 public interface PluginAuditRepository
-        extends PagingAndSortingRepository<PluginAuditEntity, Long>
+        extends BaseRepository<PluginAuditEntity, Long>
 {
     Page<PluginAuditEntity> findAllByUser(UserEntity user, Pageable pageable);
 
