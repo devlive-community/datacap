@@ -293,8 +293,13 @@ public class SourceServiceImpl
         }
 
         // Filter required
-        List<IConfigureField> requiredMismatchConfigures = configure.getConfigure().getConfigures().stream().filter(v -> v.isRequired()).filter(v -> ObjectUtils.isEmpty(v.getValue())).collect(Collectors.toList());
-        if (requiredMismatchConfigures.size() > 0) {
+        List<IConfigureField> requiredMismatchConfigures = configure.getConfigure()
+                .getConfigures()
+                .stream()
+                .filter(IConfigureField::isRequired)
+                .filter(v -> ObjectUtils.isEmpty(v.getValue()))
+                .collect(Collectors.toList());
+        if (!requiredMismatchConfigures.isEmpty()) {
             return CommonResponse.failure(ServiceState.PLUGIN_CONFIGURE_REQUIRED, ConfigureUtils.preparedMessage(requiredMismatchConfigures));
         }
 
@@ -304,6 +309,9 @@ public class SourceServiceImpl
         source.setProtocol(configure.getType());
         source.setType(configure.getName());
         source.setUser(UserDetailsService.getUser());
+        if (configure.getId() == null) {
+            source.setCode(UUID.randomUUID().toString().replace("-", ""));
+        }
         if (ObjectUtils.isNotEmpty(configure.getId()) && configure.getId() > 0) {
             source.setId(configure.getId());
         }
