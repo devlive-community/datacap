@@ -13,18 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 public interface SourceService
+        extends BaseService<SourceEntity>
 {
     @Deprecated
     CommonResponse<SourceEntity> saveOrUpdate(SourceEntity configure);
-
-    CommonResponse<PageEntity<SourceEntity>> getAll(int offset, int limit);
 
     CommonResponse<Long> delete(Long id);
 
     @Deprecated
     CommonResponse<Object> testConnection(SourceEntity configure);
-
-    CommonResponse<SourceEntity> getById(Long id);
 
     CommonResponse<SourceEntity> getByCode(String code);
 
@@ -37,8 +34,6 @@ public interface SourceService
     CommonResponse<Object> testConnectionV2(SourceBody configure);
 
     CommonResponse<SourceEntity> saveOrUpdateV2(SourceBody configure);
-
-    CommonResponse<SourceEntity> getByIdV2(Long id);
 
     CommonResponse<PageEntity<ScheduledHistoryEntity>> getHistory(Long id, FilterBody filter);
 

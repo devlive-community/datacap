@@ -55,6 +55,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -113,13 +114,12 @@ public class SourceServiceImpl
     }
 
     @Override
-    public CommonResponse<PageEntity<SourceEntity>> getAll(int offset, int limit)
+    public CommonResponse<PageEntity<SourceEntity>> getAll(PagingAndSortingRepository repository, FilterBody filter)
     {
-        Pageable pageable = PageRequestAdapter.of(offset, limit);
         UserEntity user = UserDetailsService.getUser();
-        Page<SourceEntity> page = this.sourceRepository.findAllByUserOrPublishIsTrue(user, pageable);
+        Page<SourceEntity> page = this.sourceRepository.findAllByUserOrPublishIsTrue(user, PageRequestAdapter.of(filter));
         // Populate pipeline configuration information
-        page.getContent().stream().forEach(item -> {
+        page.getContent().forEach(item -> {
             IConfigure fromConfigure = PluginUtils.loadYamlConfigure(item.getProtocol(), item.getType(), item.getType(), environment);
             if (fromConfigure != null) {
                 item.setPipelines(fromConfigure.getPipelines());
@@ -178,9 +178,22 @@ public class SourceServiceImpl
     }
 
     @Override
-    public CommonResponse<SourceEntity> getById(Long id)
+    public CommonResponse<SourceEntity> getById(PagingAndSortingRepository repository, Long id)
     {
-        return CommonResponse.success(this.sourceRepository.findById(id));
+        Optional<SourceEntity> optionalSource = this.sourceRepository.findById(id);
+        if (!optionalSource.isPresent()) {
+            return CommonResponse.failure(ServiceState.SOURCE_NOT_FOUND);
+        }
+        SourceEntity entity = optionalSource.get();
+        SourceBody configure = new SourceBody();
+        configure.setId(id);
+        configure.setName(entity.getType());
+        configure.setType(entity.getProtocol());
+        // Load default configure
+        IConfigure iConfigure = PluginUtils.loadYamlConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
+        configure.setConfigure(ConfigureUtils.preparedConfigure(iConfigure, entity));
+        entity.setSchema(iConfigure);
+        return CommonResponse.success(entity);
     }
 
     @Override
@@ -352,25 +365,6 @@ public class SourceServiceImpl
         // Start sync metadata
         this.syncMetadata(source.getId());
         return CommonResponse.success(source);
-    }
-
-    @Override
-    public CommonResponse<SourceEntity> getByIdV2(Long id)
-    {
-        Optional<SourceEntity> optionalSource = this.sourceRepository.findById(id);
-        if (!optionalSource.isPresent()) {
-            return CommonResponse.failure(ServiceState.SOURCE_NOT_FOUND);
-        }
-        SourceEntity entity = optionalSource.get();
-        SourceBody configure = new SourceBody();
-        configure.setId(id);
-        configure.setName(entity.getType());
-        configure.setType(entity.getProtocol());
-        // Load default configure
-        IConfigure iConfigure = PluginUtils.loadYamlConfigure(configure.getType(), configure.getName(), configure.getName(), environment);
-        configure.setConfigure(ConfigureUtils.preparedConfigure(iConfigure, entity));
-        entity.setSchema(iConfigure);
-        return CommonResponse.success(entity);
     }
 
     @Override

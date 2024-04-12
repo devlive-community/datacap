@@ -13,7 +13,7 @@ class SourceService
 {
     constructor()
     {
-        super(DEFAULT_PATH_V1)
+        super(DEFAULT_PATH_V2)
     }
 
     getSources(page: number, size: number): Promise<ResponseModel>
