@@ -103,7 +103,7 @@ export default defineComponent({
             }
           })
     },
-    handlerTab(value: string)
+    handlerTab(value: any)
     {
       this.loading = true
       const userQuestion: UserQuestionModel = {

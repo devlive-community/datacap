@@ -285,11 +285,11 @@ export default defineComponent({
       }
       this.selectEditor.editorMaps.delete(targetKey)
     },
-    handlerChangeEditor(value: string | null)
+    handlerChangeEditor(value: any)
     {
       this.responseConfigure.message = null
       this.queryConfigure.queryType = [HelpType.ANALYSIS, HelpType.OPTIMIZE]
-      const instance = this.selectEditor.editorMaps.get(value as string)
+      const instance = this.selectEditor.editorMaps.get(value)
       if (instance) {
         this.selectEditor.editorInstance = instance
         this.selectEditor.activeKey = value
