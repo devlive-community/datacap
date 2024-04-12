@@ -16,7 +16,9 @@
             <NavigationMenuList>
               <div v-for="item in activeMenus" :key="item.id">
                 <NavigationMenuItem v-if="item.children">
-                  <NavigationMenuTrigger>{{ $t(item.i18nKey) }}</NavigationMenuTrigger>
+                  <NavigationMenuTrigger :class="`${item.children.map(i => i.url).includes($route.path) ? 'bg-muted hover:bg-muted' : ''}`">
+                    {{ $t(item.i18nKey) }}
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul class="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)]">
                       <NavigationMenuListItem v-for="children in item.children" :title="$t(children.i18nKey)" :href="children.url">
