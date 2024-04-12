@@ -6,7 +6,7 @@ import { AuthResponse } from '@/model/user/response/auth'
 import { useToast } from '@/components/ui/toast/use-toast'
 
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
-const {toast} = useToast()
+const { toast } = useToast()
 
 export class HttpUtils
 {
@@ -82,12 +82,12 @@ export class HttpUtils
                 this.configure.params = params
             }
             axios.get(url, this.configure)
-                .then(result => {
-                    resolve(this.handlerSuccessful(result))
-                }, error => {
-                    this.handlerMessage(error.message)
-                    resolve(this.handlerFailed(error))
-                })
+                 .then(result => {
+                     resolve(this.handlerSuccessful(result))
+                 }, error => {
+                     this.handlerMessage(error.message)
+                     resolve(this.handlerFailed(error))
+                 })
         })
     }
 
@@ -98,12 +98,29 @@ export class HttpUtils
                 this.configure.cancelToken = cancelToken
             }
             axios.post(url, data, this.configure)
-                .then(result => {
-                    resolve(this.handlerSuccessful(result))
-                }, error => {
-                    this.handlerMessage(error.message)
-                    resolve(this.handlerFailed(error))
-                })
+                 .then(result => {
+                     resolve(this.handlerSuccessful(result))
+                 }, error => {
+                     this.handlerMessage(error.message)
+                     resolve(this.handlerFailed(error))
+                 })
+        })
+    }
+
+    upload(url: string, data = {}, cancelToken?: any): Promise<ResponseModel>
+    {
+        return new Promise((resolve) => {
+            if (this.configure) {
+                this.configure.cancelToken = cancelToken
+                this.configure.headers['Content-Type'] = 'multipart/form-data'
+            }
+            axios.post(url, data, this.configure)
+                 .then(result => {
+                     resolve(this.handlerSuccessful(result))
+                 }, error => {
+                     this.handlerMessage(error.message)
+                     resolve(this.handlerFailed(error))
+                 })
         })
     }
 
@@ -111,12 +128,12 @@ export class HttpUtils
     {
         return new Promise((resolve) => {
             axios.put(url, data, this.configure)
-                .then(result => {
-                    resolve(this.handlerSuccessful(result))
-                }, error => {
-                    this.handlerMessage(error.message)
-                    resolve(this.handlerFailed(error))
-                })
+                 .then(result => {
+                     resolve(this.handlerSuccessful(result))
+                 }, error => {
+                     this.handlerMessage(error.message)
+                     resolve(this.handlerFailed(error))
+                 })
         })
     }
 
@@ -124,12 +141,12 @@ export class HttpUtils
     {
         return new Promise((resolve) => {
             axios.delete(url, this.configure)
-                .then(result => {
-                    resolve(this.handlerSuccessful(result))
-                }, error => {
-                    this.handlerMessage(error.message)
-                    resolve(this.handlerFailed(error))
-                })
+                 .then(result => {
+                     resolve(this.handlerSuccessful(result))
+                 }, error => {
+                     this.handlerMessage(error.message)
+                     resolve(this.handlerFailed(error))
+                 })
         })
     }
 

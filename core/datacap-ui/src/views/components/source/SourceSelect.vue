@@ -10,7 +10,7 @@
           <SelectItem v-for="item in items" :value="`${item.id}:${item.type}:${item.code}`" :disabled="!item.available">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>{{ `${item.name} (${item.protocol})` }}</TooltipTrigger>
+                <TooltipTrigger>{{ `${ item.name } (${ item.protocol })` }}</TooltipTrigger>
                 <TooltipContent>{{ item.type }}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -28,6 +28,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { SourceModel } from '@/model/source'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Loader2 } from 'lucide-vue-next'
+import { FilterModel } from '@/model/filter.ts'
 
 export default defineComponent({
   name: 'SourceSelect',
@@ -35,6 +36,13 @@ export default defineComponent({
     Loader2,
     TooltipContent, TooltipTrigger, Tooltip, TooltipProvider,
     Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue
+  },
+  setup()
+  {
+    const filter: FilterModel = new FilterModel()
+    return {
+      filter
+    }
   },
   data()
   {
@@ -46,24 +54,24 @@ export default defineComponent({
   },
   created()
   {
-    this.handlerInitialize(1, 100)
+    this.handlerInitialize()
   },
   methods: {
-    handlerInitialize(page: number, size: number)
+    handlerInitialize()
     {
       this.loading = true
-      SourceService.getSources(page, size)
-          .then((response) => {
-            if (response.status) {
-              this.items = response.data.content
-            }
-          })
-          .finally(() => this.loading = false)
+      SourceService.getAll(this.filter)
+                   .then((response) => {
+                     if (response.status) {
+                       this.items = response.data.content
+                     }
+                   })
+                   .finally(() => this.loading = false)
     },
     handlerChangeValue()
     {
       this.$emit('changeValue', this.applySource)
     }
   }
-});
+})
 </script>

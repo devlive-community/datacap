@@ -3,7 +3,6 @@ package io.edurt.datacap.server.controller.user;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.SharedSourceBody;
-import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.PluginEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
 import io.edurt.datacap.service.entity.UserEntity;
@@ -49,26 +48,6 @@ public class SourceController
         this.environment = environment;
     }
 
-    @Deprecated
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public CommonResponse<SourceEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceEntity configure)
-    {
-        return this.sourceService.saveOrUpdate(configure);
-    }
-
-    @Deprecated
-    @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public CommonResponse<SourceEntity> update(@RequestBody @Validated(ValidationGroup.Crud.Update.class) SourceEntity configure)
-    {
-        return this.sourceService.saveOrUpdate(configure);
-    }
-
-    @GetMapping
-    public CommonResponse<PageEntity<SourceEntity>> getAll(@RequestParam(value = "page", defaultValue = "1") int start, @RequestParam(value = "size", defaultValue = "10") int end)
-    {
-        return this.sourceService.getAll(start, end);
-    }
-
     @PreAuthorize(value = "@userAuthorize.validateSource(#id)")
     @DeleteMapping(value = "{id}")
     public CommonResponse<Long> delete(@PathVariable(value = "id") Long id)
@@ -80,12 +59,6 @@ public class SourceController
     public CommonResponse<Object> testConnection(@RequestBody @Validated(ValidationGroup.Crud.Create.class) SourceEntity configure)
     {
         return this.sourceService.testConnection(configure);
-    }
-
-    @GetMapping(value = "{id}")
-    public CommonResponse<SourceEntity> getInfo(@PathVariable(value = "id") Long id)
-    {
-        return this.sourceService.getById(id);
     }
 
     @GetMapping(value = "plugins")

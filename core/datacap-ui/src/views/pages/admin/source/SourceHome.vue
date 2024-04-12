@@ -155,7 +155,7 @@ export default defineComponent({
     handlerInitialize()
     {
       this.loading = true
-      SourceService.getSources(this.filter.page, this.filter.size)
+      SourceService.getAll(this.filter)
                    .then((response) => {
                      if (response.status) {
                        this.data = response.data.content
