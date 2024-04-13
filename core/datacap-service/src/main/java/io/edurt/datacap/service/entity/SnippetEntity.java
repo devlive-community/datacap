@@ -27,8 +27,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "snippet")
-@org.hibernate.annotations.Table(appliesTo = "snippet", comment = "Code snippet data table")
+@Table(name = "datacap_snippet")
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
         justification = "I prefer to suppress these FindBugs warnings")
 @EntityListeners(AuditingEntityListener.class)

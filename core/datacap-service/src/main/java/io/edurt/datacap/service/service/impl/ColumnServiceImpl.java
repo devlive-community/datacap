@@ -1,8 +1,8 @@
 package io.edurt.datacap.service.service.impl;
 
 import io.edurt.datacap.common.response.CommonResponse;
-import io.edurt.datacap.service.entity.metadata.ColumnEntity;
-import io.edurt.datacap.service.entity.metadata.TableEntity;
+import io.edurt.datacap.service.entity.ColumnEntity;
+import io.edurt.datacap.service.entity.TableEntity;
 import io.edurt.datacap.service.repository.metadata.ColumnRepository;
 import io.edurt.datacap.service.service.ColumnService;
 import org.springframework.stereotype.Service;

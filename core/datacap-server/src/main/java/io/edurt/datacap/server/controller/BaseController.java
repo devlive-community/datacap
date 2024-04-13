@@ -2,8 +2,9 @@ package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.FilterBody;
+import io.edurt.datacap.service.entity.BaseEntity;
+import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.service.BaseService;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
 
-public abstract class BaseController<T>
+public abstract class BaseController<T extends BaseEntity>
         implements Serializable
 {
-    private final PagingAndSortingRepository repository;
+    private final BaseRepository repository;
     private final BaseService<T> service;
 
-    protected BaseController(PagingAndSortingRepository repository, BaseService<T> service)
+    protected BaseController(BaseRepository repository, BaseService<T> service)
     {
         this.repository = repository;
         this.service = service;
@@ -68,5 +69,11 @@ public abstract class BaseController<T>
     public CommonResponse<T> getInfoForPath(@PathVariable(value = "id") Long id)
     {
         return service.getById(repository, id);
+    }
+
+    @GetMapping(value = "info/{code}")
+    public CommonResponse<T> getByCode(@PathVariable(value = "code") String code)
+    {
+        return service.findByCode(repository, code);
     }
 }

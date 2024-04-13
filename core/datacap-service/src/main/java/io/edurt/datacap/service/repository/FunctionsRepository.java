@@ -1,12 +1,11 @@
 package io.edurt.datacap.service.repository;
 
-import io.edurt.datacap.service.entity.FunctionsEntity;
+import io.edurt.datacap.service.entity.FunctionEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface FunctionsRepository
-        extends PagingAndSortingRepository<FunctionsEntity, Long>
+        extends BaseRepository<FunctionEntity, Long>
 {
-    Page<FunctionsEntity> findAllByPluginContaining(Pageable pageable, String plugin);
+    Page<FunctionEntity> findAllByPluginContaining(Pageable pageable, String plugin);
 }

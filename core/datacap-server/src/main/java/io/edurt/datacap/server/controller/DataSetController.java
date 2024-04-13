@@ -77,12 +77,6 @@ public class DataSetController
         return service.adhoc(code, configure);
     }
 
-    @GetMapping(value = "info/{code}")
-    public CommonResponse<DataSetEntity> info(@PathVariable String code)
-    {
-        return service.getInfo(code);
-    }
-
     @PostMapping(value = "history/{code}")
     public CommonResponse<Object> history(@PathVariable String code,
             @RequestBody FilterBody filter)

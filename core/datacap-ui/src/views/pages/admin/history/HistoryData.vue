@@ -19,7 +19,6 @@ import Button from '@/views/ui/button'
 import { HistoryModel } from '@/model/history'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import AuditService from '@/services/audit'
-import { toNumber } from 'lodash'
 import { Configuration, ConfigurationRequest } from '@/views/components/visual/Configuration'
 import VisualTable from '@/views/components/visual/components/VisualTable.vue'
 
@@ -69,7 +68,7 @@ export default defineComponent({
       if (this.info) {
         this.title = `${ this.$t('query.common.historyDataInfo').replace('$VALUE', this.info.id as unknown as string) }`
         this.loading = true
-        AuditService.getData(toNumber(this.info.id))
+        AuditService.getData(this.info.code as string)
                     .then(response => {
                       if (response.status) {
                         this.configuration = ConfigurationRequest.of(response)

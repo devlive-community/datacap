@@ -11,7 +11,7 @@ import io.edurt.datacap.service.body.TemplateSqlBody;
 import io.edurt.datacap.service.entity.ExecuteEntity;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.SourceEntity;
-import io.edurt.datacap.service.entity.TemplateSqlEntity;
+import io.edurt.datacap.service.entity.TemplateEntity;
 import io.edurt.datacap.service.itransient.SqlConfigure;
 import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.repository.TemplateSqlRepository;
@@ -49,14 +49,14 @@ public class TemplateSqlServiceImpl
     }
 
     @Override
-    public CommonResponse<TemplateSqlEntity> saveOrUpdate(TemplateSqlEntity configure)
+    public CommonResponse<TemplateEntity> saveOrUpdate(TemplateEntity configure)
     {
         if (ObjectUtils.isEmpty(configure.getId())) {
-            List<TemplateSqlEntity> templateSqlEntitys = this.templateSqlRepository.findByName(configure.getName());
+            List<TemplateEntity> templateEntities = this.templateSqlRepository.findByName(configure.getName());
             boolean skip = false;
-            if (!templateSqlEntitys.isEmpty()) {
-                for (TemplateSqlEntity templateSqlEntity : templateSqlEntitys) {
-                    for (String plugin : templateSqlEntity.getPlugin().split(",")) {
+            if (!templateEntities.isEmpty()) {
+                for (TemplateEntity templateEntity : templateEntities) {
+                    for (String plugin : templateEntity.getPlugin().split(",")) {
                         if (configure.getPlugin().contains(plugin)) {
                             skip = true;
                             break;
@@ -114,14 +114,14 @@ public class TemplateSqlServiceImpl
     }
 
     @Override
-    public CommonResponse<PageEntity<TemplateSqlEntity>> getAllByFilter(FilterBody filter)
+    public CommonResponse<PageEntity<TemplateEntity>> getAllByFilter(FilterBody filter)
     {
         Pageable pageable = PageRequestAdapter.of(filter);
         return CommonResponse.success(PageEntity.build(this.templateSqlRepository.findAll(pageable)));
     }
 
     @Override
-    public CommonResponse<TemplateSqlEntity> getById(Long id)
+    public CommonResponse<TemplateEntity> getById(Long id)
     {
         return CommonResponse.success(this.templateSqlRepository.findById(id));
     }
@@ -134,7 +134,7 @@ public class TemplateSqlServiceImpl
             return CommonResponse.failure(ServiceState.SOURCE_NOT_FOUND);
         }
 
-        TemplateSqlEntity sqlEntity = this.templateSqlRepository.findByNameAndPluginContaining(configure.getTemplateName(), sourceEntity.get().getType());
+        TemplateEntity sqlEntity = this.templateSqlRepository.findByNameAndPluginContaining(configure.getTemplateName(), sourceEntity.get().getType());
         if (ObjectUtils.isEmpty(sqlEntity)) {
             return CommonResponse.failure(ServiceState.SOURCE_NOT_SUPPORTED);
         }

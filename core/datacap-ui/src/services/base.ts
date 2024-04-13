@@ -4,11 +4,11 @@ import { FilterModel } from '@/model/filter'
 
 export abstract class BaseService
 {
-    private readonly baseUrl: string;
+    private readonly baseUrl: string
 
     protected constructor(baseUrl: string)
     {
-        this.baseUrl = baseUrl;
+        this.baseUrl = baseUrl
     }
 
     /**
@@ -26,7 +26,7 @@ export abstract class BaseService
      */
     getAll(filter: FilterModel): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${this.baseUrl}/list`, filter)
+        return new HttpUtils().post(`${ this.baseUrl }/list`, filter)
     }
 
     /**
@@ -35,7 +35,12 @@ export abstract class BaseService
      */
     getById(id: number): Promise<ResponseModel>
     {
-        return new HttpUtils().get(`${this.baseUrl}/${id}`)
+        return new HttpUtils().get(`${ this.baseUrl }/${ id }`)
+    }
+
+    getByCode(code: string): Promise<ResponseModel>
+    {
+        return new HttpUtils().get(`${ this.baseUrl }/info/${ code }`)
     }
 
     /**
@@ -54,6 +59,6 @@ export abstract class BaseService
 
     deleteById(id: number): Promise<ResponseModel>
     {
-        return new HttpUtils().delete(`${this.baseUrl}/${id}`)
+        return new HttpUtils().delete(`${ this.baseUrl }/${ id }`)
     }
 }

@@ -15,8 +15,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -36,6 +38,9 @@ public class BaseEntity
     @Column(name = "name")
     private String name;
 
+    @Column(name = "code")
+    private String code;
+
     @Column(name = "active")
     private boolean active = true;
 
@@ -48,4 +53,27 @@ public class BaseEntity
     @LastModifiedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
+    public void setCode(String code)
+    {
+        if (this.code == null) {
+            this.code = code;
+        }
+    }
+
+    public void setUpdateTime(Date updateTime)
+    {
+        this.updateTime = updateTime;
+    }
+
+    @PrePersist
+    public void prePersist()
+    {
+        if (this.code == null) {
+            this.code = UUID.randomUUID()
+                    .toString()
+                    .replace("-", "");
+        }
+        this.updateTime = new Date();
+    }
 }

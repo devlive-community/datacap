@@ -1,15 +1,15 @@
 package io.edurt.datacap.service.repository.metadata;
 
-import io.edurt.datacap.service.entity.metadata.ColumnEntity;
-import io.edurt.datacap.service.entity.metadata.TableEntity;
+import io.edurt.datacap.service.entity.ColumnEntity;
+import io.edurt.datacap.service.entity.TableEntity;
+import io.edurt.datacap.service.repository.BaseRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface ColumnRepository
-        extends PagingAndSortingRepository<ColumnEntity, Long>
+        extends BaseRepository<ColumnEntity, Long>
 {
     @Query("SELECT c " +
             "FROM ColumnEntity c " +

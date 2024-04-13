@@ -4,7 +4,7 @@
       <aside class="-mx-4 w-[200px]">
         <Card>
           <CardHeader class="p-0">
-            <SourceSelect @changeValue="handlerChangeValue($event)"/>
+            <SourceSelect :value="selectSource.full as string" @changeValue="handlerChangeValue($event)"/>
             <DataStructureLazyTree v-if="selectSource.id" :id="selectSource.id as string"/>
           </CardHeader>
         </Card>
@@ -88,7 +88,7 @@
                   </TabsList>
                   <VAceEditor lang="mysql" :value="selectEditor.editorInstance?.instance?.getValue() as string" :theme="selectEditor.editorInstance?.configure?.theme"
                               :style="{ height: '300px', fontSize: selectEditor.editorInstance?.configure?.fontSize + 'px' }"
-                              :key="selectEditor.editorInstance?.key" :options="{ enableSnippets: true, enableLiveAutocompletion: true }"
+                              :key="selectEditor.editorInstance?.key" :options="{ enableSnippets: true, enableLiveAutocompletion: true, readOnly: loading.froming }"
                               @init="handlerEditorDidMount($event, 'mysql', selectEditor.editorInstance?.key)"/>
                 </Tabs>
               </CardContent>
@@ -115,7 +115,6 @@ import { VAceEditor } from 'vue3-ace-editor'
 import { Ace } from 'ace-builds'
 import '@/ace-editor-theme'
 import { UserEditor } from '@/model/user'
-import { useRouter } from 'vue-router'
 import Common from '@/utils/common'
 import SnippetService from '@/services/snippet'
 import AuditService from '@/services/audit'
@@ -139,6 +138,7 @@ import QueryHelp from '@/views/pages/admin/query/QueryHelp.vue'
 import DataStructureLazyTree from '@/views/components/tree/DataStructureLazyTree.vue'
 import { SnippetModel, SnippetRequest } from '@/model/snippet'
 import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
+import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import Editor = Ace.Editor
 
 interface EditorInstance
@@ -152,6 +152,7 @@ interface EditorInstance
 export default defineComponent({
   name: 'QueryHome',
   components: {
+    CircularLoading,
     SnippetInfo,
     DataStructureLazyTree,
     QueryHelp,
@@ -169,7 +170,8 @@ export default defineComponent({
     return {
       loading: {
         running: false,
-        formatting: false
+        formatting: false,
+        froming: false
       },
       visibility: {
         queryHelp: false
@@ -178,7 +180,8 @@ export default defineComponent({
         id: null as string | null | undefined,
         type: null as string | null | undefined,
         engine: null as string | null | undefined,
-        code: null as string | null | undefined
+        code: null as string | null | undefined,
+        full: null as string | null
       },
       selectEditor: {
         editorMaps: new Map<string, EditorInstance>(),
@@ -210,14 +213,15 @@ export default defineComponent({
     {
       this.createEditor()
       this.queryConfigure.configure = { name: this.selectSource.id as string, content: '', mode: 'ADHOC', format: 'JSON' }
-      const router = useRouter()
-      if (router.currentRoute?.value?.query) {
-        const id = router.currentRoute.value.query.id as unknown as number
-        const from = router.currentRoute.value.query.from
-        if (id && from) {
-          if (from === 'snippet') {
+      const params = this.$route.params
+      if (params) {
+        const code = params.code
+        const type = params.type
+        if (code && type) {
+          if (type === 'snippet') {
+            this.loading.froming = true
             this.queryConfigure.configure.mode = 'SNIPPET'
-            SnippetService.getById(id)
+            SnippetService.getByCode(code as string)
                           .then((response) => {
                             if (response.status && response.data?.code) {
                               const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
@@ -226,19 +230,24 @@ export default defineComponent({
                               }
                             }
                           })
+                          .finally(() => this.loading.froming = false)
           }
-          else if (from === 'history') {
+          else if (type === 'history') {
+            this.loading.froming = true
             this.queryConfigure.configure.mode = 'HISTORY'
-            AuditService.getById(id)
+            AuditService.getByCode(code as string)
                         .then((response) => {
                           if (response.status && response.data?.content) {
                             const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
                             if (instance) {
                               instance.instance?.setValue(response.data.content)
-                              this.handlerChangeValue(`${ response.data.plugin.id }:${ response.data.plugin.type }`)
+                              const full = `${ response.data.source.id }:${ response.data.source.type }:${ response.data.source.code }`
+                              this.selectSource.full = full
+                              this.handlerChangeValue(full)
                             }
                           }
                         })
+                        .finally(() => this.loading.froming = false)
           }
         }
       }

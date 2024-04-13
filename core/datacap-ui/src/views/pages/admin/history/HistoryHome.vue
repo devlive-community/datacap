@@ -3,12 +3,12 @@
     <Card>
       <template #title>{{ $t('common.history') }}</template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
-        <template #plugin="{ row }">
-          <span>{{ row?.plugin?.name }}</span>
+        <template #source="{ row }">
+          <span>{{ row?.source?.name }}</span>
         </template>
         <template #type="{row}">
-          <Tooltip :content="row?.plugin?.type">
-            <Avatar :size="'sm'" :src="'/static/images/plugin/' + row?.plugin?.type + '.png'" :alt="row?.plugin?.type" class="cursor-pointer"/>
+          <Tooltip :content="row?.source?.type">
+            <Avatar :size="'sm'" :src="'/static/images/plugin/' + row?.source?.type + '.png'" :alt="row?.source?.type" class="cursor-pointer"/>
           </Tooltip>
         </template>
         <template #mode="{ row }">
@@ -38,7 +38,7 @@
               <DropdownMenuContent>
                 <DropdownMenuGroup>
                   <DropdownMenuItem class="cursor-pointer">
-                    <RouterLink :to="`/admin/query?id=${row?.id}&from=history`" target="_blank" class="flex items-center">
+                    <RouterLink :to="`/admin/query/history/${row?.code}`" target="_blank" class="flex items-center">
                       <Quote class="mr-2 h-4 w-4"/>
                       <span>{{ $t('query.common.quoteRecord') }}</span>
                     </RouterLink>
@@ -133,7 +133,7 @@ export default defineComponent({
     handlerInitialize()
     {
       this.loading = true
-      AuditService.getPluginAudits(this.filter)
+      AuditService.getAll(this.filter)
                   .then((response) => {
                     if (response.status) {
                       this.data = response.data.content

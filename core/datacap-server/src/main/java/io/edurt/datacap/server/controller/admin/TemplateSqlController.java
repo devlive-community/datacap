@@ -4,7 +4,7 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.TemplateSqlBody;
 import io.edurt.datacap.service.entity.PageEntity;
-import io.edurt.datacap.service.entity.TemplateSqlEntity;
+import io.edurt.datacap.service.entity.TemplateEntity;
 import io.edurt.datacap.service.service.TemplateSqlService;
 import io.edurt.datacap.service.validation.ValidationGroup;
 import org.springframework.http.MediaType;
@@ -29,25 +29,25 @@ public class TemplateSqlController
     }
 
     @PostMapping(value = "list")
-    public CommonResponse<PageEntity<TemplateSqlEntity>> getAllByFilter(@RequestBody FilterBody filter)
+    public CommonResponse<PageEntity<TemplateEntity>> getAllByFilter(@RequestBody FilterBody filter)
     {
         return this.templateSqlService.getAllByFilter(filter);
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public CommonResponse<TemplateSqlEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) TemplateSqlEntity configure)
+    public CommonResponse<TemplateEntity> save(@RequestBody @Validated(ValidationGroup.Crud.Create.class) TemplateEntity configure)
     {
         return this.templateSqlService.saveOrUpdate(configure);
     }
 
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public CommonResponse<TemplateSqlEntity> update(@RequestBody @Validated(ValidationGroup.Crud.Update.class) TemplateSqlEntity configure)
+    public CommonResponse<TemplateEntity> update(@RequestBody @Validated(ValidationGroup.Crud.Update.class) TemplateEntity configure)
     {
         return this.templateSqlService.saveOrUpdate(configure);
     }
 
     @GetMapping(value = "{id}")
-    public CommonResponse<TemplateSqlEntity> getInfo(@PathVariable(value = "id") Long id)
+    public CommonResponse<TemplateEntity> getInfo(@PathVariable(value = "id") Long id)
     {
         return this.templateSqlService.getById(id);
     }

@@ -6,14 +6,13 @@ import io.edurt.datacap.service.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Map;
 
 public interface PluginAuditRepository
-        extends PagingAndSortingRepository<PluginAuditEntity, Long>
+        extends BaseRepository<PluginAuditEntity, Long>
 {
     Page<PluginAuditEntity> findAllByUser(UserEntity user, Pageable pageable);
 
@@ -27,7 +26,7 @@ public interface PluginAuditRepository
     List<HeatmapActivity> countByCreateTimeAndFindByUser(@Param(value = "user") UserEntity user);
 
     @Query(value = "SELECT count(1) AS dataOfCount, s.name AS dataOfLabel\n" +
-            "FROM audit_plugin AS ap\n" +
+            "FROM datacap_source_query AS ap\n" +
             "LEFT JOIN datacap_source AS s ON ap.plugin_id = s.id\n" +
             "WHERE date_sub(curdate(), interval 7 day) <= date(ap.create_time) AND s.user_id = ?1\n" +
             "GROUP BY s.name", nativeQuery = true)

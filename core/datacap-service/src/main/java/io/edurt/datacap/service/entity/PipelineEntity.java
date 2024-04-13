@@ -1,6 +1,5 @@
 package io.edurt.datacap.service.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.executor.common.RunState;
@@ -10,22 +9,17 @@ import io.edurt.datacap.service.converter.PropertiesConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import java.sql.Timestamp;
 import java.util.Properties;
 
 @Data
@@ -33,17 +27,11 @@ import java.util.Properties;
 @NoArgsConstructor
 @Entity
 @Table(name = "datacap_pipeline")
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class PipelineEntity
+        extends BaseEntity
 {
-    @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "name", unique = true)
-    private String name;
-
     @Column(name = "content", unique = true)
     private String content;
 
@@ -56,14 +44,6 @@ public class PipelineEntity
 
     @Column(name = "work")
     private String work;
-
-    @Column(name = "start_time", columnDefinition = "datetime default CURRENT_TIMESTAMP()")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp startTime;
-
-    @Column(name = "end_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp endTime;
 
     @Column(name = "elapsed")
     private Long elapsed;
@@ -93,21 +73,10 @@ public class PipelineEntity
     private String flowConfigure;
 
     @ManyToOne
-    @JoinTable(name = "pipeline_user_relation",
+    @JoinTable(name = "datacap_pipeline_user_relation",
             joinColumns = @JoinColumn(name = "pipeline_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private UserEntity user;
-
-    public long getElapsed()
-    {
-        if (ObjectUtils.isNotEmpty(getEndTime())) {
-            elapsed = (getEndTime().getTime() - getStartTime().getTime()) / 1000;
-        }
-        else {
-            elapsed = 0L;
-        }
-        return elapsed;
-    }
 
     /**
      * Converts a PipelineEntity object to a PipelineBody object.

@@ -154,6 +154,15 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/query/QueryHome.vue')
             },
             {
+                name: 'queryHistory',
+                path: 'query/:type?/:code?',
+                meta: {
+                    title: 'common.query',
+                    isRoot: false
+                },
+                component: () => import('@/views/pages/admin/query/QueryHome.vue')
+            },
+            {
                 name: 'dataset',
                 path: 'dataset',
                 meta: {

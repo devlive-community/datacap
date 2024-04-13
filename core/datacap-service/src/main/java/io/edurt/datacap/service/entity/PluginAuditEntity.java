@@ -12,29 +12,20 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import java.sql.Timestamp;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "audit_plugin")
-@org.hibernate.annotations.Table(appliesTo = "audit_plugin", comment = "The user records the execution log and history of the plug-in")
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
+@Table(name = "datacap_source_query")
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC", "EQ_DOESNT_OVERRIDE_EQUALS"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class PluginAuditEntity
+        extends BaseEntity
 {
-    @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "state", unique = true)
     @Enumerated(EnumType.STRING)
     private State state;
@@ -44,12 +35,6 @@ public class PluginAuditEntity
 
     @Column(name = "message", unique = true)
     private String message;
-
-    @Column(name = "create_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
-    private Timestamp createTime;
-
-    @Column(name = "end_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
-    private Timestamp endTime;
 
     @Column(name = "elapsed")
     private Long elapsed;
@@ -61,20 +46,20 @@ public class PluginAuditEntity
     @Enumerated(EnumType.STRING)
     private QueryMode mode;
 
+    @Column(name = "code")
+    private String code;
+
+    @Column(name = "home")
+    private String home;
+
     @ManyToOne
     @JoinColumn(name = "plugin_id")
-    @JsonIncludeProperties(value = {"id", "name", "type"})
-    private SourceEntity plugin;
+    @JsonIncludeProperties(value = {"id", "name", "type", "code"})
+    private SourceEntity source;
 
     // Add from 1.1.0.20221115
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIncludeProperties(value = {"id", "username"})
     private UserEntity user;
-
-    public void setEndTime(Timestamp endTime)
-    {
-        this.endTime = endTime;
-        this.elapsed = this.endTime.getTime() - this.createTime.getTime();
-    }
 }

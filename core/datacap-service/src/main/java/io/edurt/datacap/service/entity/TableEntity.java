@@ -1,8 +1,7 @@
-package io.edurt.datacap.service.entity.metadata;
+package io.edurt.datacap.service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.edurt.datacap.service.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -91,7 +90,7 @@ public class TableEntity
 
     public TableEntity(Long id, String name, Date createTime)
     {
-        super(id, name, true, createTime, null);
+        super(id, name, null, true, createTime, null);
     }
 
     public String getRows()

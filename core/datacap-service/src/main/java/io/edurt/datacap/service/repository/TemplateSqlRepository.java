@@ -1,14 +1,14 @@
 package io.edurt.datacap.service.repository;
 
-import io.edurt.datacap.service.entity.TemplateSqlEntity;
+import io.edurt.datacap.service.entity.TemplateEntity;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
 public interface TemplateSqlRepository
-        extends PagingAndSortingRepository<TemplateSqlEntity, Long>
+        extends PagingAndSortingRepository<TemplateEntity, Long>
 {
-    List<TemplateSqlEntity> findByName(String name);
+    List<TemplateEntity> findByName(String name);
 
-    TemplateSqlEntity findByNameAndPluginContaining(String name, String word);
+    TemplateEntity findByNameAndPluginContaining(String name, String word);
 }

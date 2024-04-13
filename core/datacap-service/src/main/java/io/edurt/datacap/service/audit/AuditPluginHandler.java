@@ -29,6 +29,7 @@ import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -85,15 +86,18 @@ public class AuditPluginHandler
                 pluginAudit.setContent(executeEntity.getContent());
                 pluginAudit.setMode(executeEntity.getMode());
                 Optional<SourceEntity> sourceEntity = this.sourceRepository.findById(Long.valueOf(executeEntity.getName()));
-                pluginAudit.setPlugin(sourceEntity.get());
+                pluginAudit.setSource(sourceEntity.get());
             }
             UserEntity user = UserDetailsService.getUser();
             pluginAudit.setUser(user);
-            pluginAudit.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
+            pluginAudit.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
+            pluginAudit.setElapsed(pluginAudit.getUpdateTime().getTime() - pluginAudit.getCreateTime().getTime());
+            pluginAudit.setCode(UUID.randomUUID().toString().replace("-", ""));
             this.pluginAuditRepository.save(pluginAudit);
             ExecutorService service = Executors.newSingleThreadExecutor();
             service.submit(() -> {
-                String workHome = FolderUtils.getWorkHome(initializer.getDataHome(), user.getUsername(), String.join(File.separator, "adhoc", pluginAudit.getId().toString()));
+                String uniqueId = !pluginAudit.getCode().isEmpty() ? pluginAudit.getCode() : pluginAudit.getId().toString();
+                String workHome = FolderUtils.getWorkHome(initializer.getDataHome(), user.getUsername(), String.join(File.separator, "adhoc", uniqueId));
                 log.info("Writer file to folder [ {} ] on [ {} ]", workHome, pluginAudit.getId());
                 try {
                     File tempFile = CSVUtils.makeTempCSV(workHome, "result.csv", jsonResult.getData().getHeaders(), jsonResult.getData().getColumns());
@@ -109,12 +113,14 @@ public class AuditPluginHandler
                             .map(v -> v.writer(fsRequest));
                     log.info("Delete temp file [ {} ] on [ {} ] statue [ {} ]", tempFile, pluginAudit.getId(), tempFile.delete());
                     log.info("Writer file to folder [ {} ] on [ {} ] completed", workHome, pluginAudit.getId());
+                    pluginAudit.setHome(workHome);
                 }
                 catch (Exception ex) {
                     log.error("Writer file to folder [ {} ] on [ {} ] failed", workHome, pluginAudit.getId(), ex);
                 }
                 finally {
                     service.shutdownNow();
+                    pluginAuditRepository.save(pluginAudit);
                 }
             });
         }

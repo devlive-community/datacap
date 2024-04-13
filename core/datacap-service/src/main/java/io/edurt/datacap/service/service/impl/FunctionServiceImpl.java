@@ -6,10 +6,10 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.FunctionsImportBody;
-import io.edurt.datacap.service.entity.FunctionsEntity;
+import io.edurt.datacap.service.entity.FunctionEntity;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.repository.FunctionsRepository;
-import io.edurt.datacap.service.service.FunctionsService;
+import io.edurt.datacap.service.service.FunctionService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,31 +22,25 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class FunctionsServiceImpl
-        implements FunctionsService
+public class FunctionServiceImpl
+        implements FunctionService
 {
     private final FunctionsRepository functionsRepository;
 
-    public FunctionsServiceImpl(FunctionsRepository functionsRepository)
+    public FunctionServiceImpl(FunctionsRepository functionsRepository)
     {
         this.functionsRepository = functionsRepository;
     }
 
     @Override
-    public CommonResponse<FunctionsEntity> saveOrUpdate(FunctionsEntity configure)
-    {
-        return CommonResponse.success(this.functionsRepository.save(configure));
-    }
-
-    @Override
-    public CommonResponse<PageEntity<FunctionsEntity>> getAllByFilter(FilterBody filter)
+    public CommonResponse<PageEntity<FunctionEntity>> getAllByFilter(FilterBody filter)
     {
         Pageable pageable = PageRequestAdapter.of(filter);
         return CommonResponse.success(PageEntity.build(this.functionsRepository.findAll(pageable)));
     }
 
     @Override
-    public CommonResponse<FunctionsEntity> getById(Long id)
+    public CommonResponse<FunctionEntity> getById(Long id)
     {
         return CommonResponse.success(this.functionsRepository.findById(id));
     }
@@ -54,10 +48,10 @@ public class FunctionsServiceImpl
     @Override
     public CommonResponse<Object> batchImport(FunctionsImportBody configure)
     {
-        List<FunctionsEntity> functions = new ArrayList<>();
+        List<FunctionEntity> functions = new ArrayList<>();
         if (configure.getMode().equals(FunctionImportMode.txt)) {
             Arrays.stream(configure.getContent().split("\n")).forEach(value -> {
-                FunctionsEntity function = new FunctionsEntity();
+                FunctionEntity function = new FunctionEntity();
                 function.setContent(value);
                 function.setName(value);
                 function.setExample(value);
@@ -71,7 +65,7 @@ public class FunctionsServiceImpl
             try {
                 URI uri = new URI(configure.getContent());
                 Arrays.stream(IOUtils.toString(uri).split("\n")).forEach(value -> {
-                    FunctionsEntity function = new FunctionsEntity();
+                    FunctionEntity function = new FunctionEntity();
                     function.setContent(value);
                     function.setName(value);
                     function.setExample(value);
@@ -89,7 +83,7 @@ public class FunctionsServiceImpl
     }
 
     @Override
-    public CommonResponse<PageEntity<FunctionsEntity>> getAllByPlugin(String plugin)
+    public CommonResponse<PageEntity<FunctionEntity>> getAllByPlugin(String plugin)
     {
         FilterBody filter = new FilterBody();
         filter.setSize(Integer.MAX_VALUE);

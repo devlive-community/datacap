@@ -11,6 +11,7 @@ import io.edurt.datacap.service.entity.MessageEntity;
 import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.enums.MessageType;
 import io.edurt.datacap.service.model.AiModel;
+import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.repository.MessageRepository;
 import io.edurt.datacap.service.repository.UserRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
@@ -27,7 +28,6 @@ import org.devlive.sdk.openai.model.MessageModel;
 import org.devlive.sdk.openai.response.ChatResponse;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class MessageServiceImpl
     }
 
     @Override
-    public CommonResponse<MessageEntity> saveOrUpdate(PagingAndSortingRepository repository, MessageEntity configure)
+    public CommonResponse<MessageEntity> saveOrUpdate(BaseRepository repository, MessageEntity configure)
     {
         String openApiHost = environment.getProperty("datacap.openai.backend");
         String openApiToken = environment.getProperty("datacap.openai.token");

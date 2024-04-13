@@ -10,4 +10,5 @@ export interface HistoryModel
     count?: number
     mode?: string
     plugin?: any
+    code?: string
 }
