@@ -22,12 +22,12 @@
               <DropdownMenuContent>
                 <DropdownMenuGroup>
                   <DropdownMenuItem class="cursor-pointer">
-                    <RouterLink :to="`/admin/query?id=${row?.id}&from=snippet`" target="_blank" class="flex items-center">
+                    <RouterLink :to="`/admin/query/snippet/${row?.code}`" target="_blank" class="flex items-center">
                       <Quote class="mr-2 h-4 w-4"/>
                       <span>{{ $t('query.common.quoteRecord') }}</span>
                     </RouterLink>
                   </DropdownMenuItem>
-                  <DropdownMenuItem class="cursor-pointer" @click="handlerShowContent(true, row?.code)">
+                  <DropdownMenuItem class="cursor-pointer" @click="handlerShowContent(true, row?.context)">
                     <SquareChevronRight class="mr-2 h-4 w-4"/>
                     <span>{{ $t('query.common.showSql') }}</span>
                   </DropdownMenuItem>

@@ -42,7 +42,7 @@ public interface BaseService<T extends BaseEntity>
         return CommonResponse.success(id);
     }
 
-    default CommonResponse<T> findByCode(BaseRepository repository, String code)
+    default CommonResponse<T> getByCode(BaseRepository repository, String code)
     {
         return (CommonResponse<T>) repository.findByCode(code)
                 .map(CommonResponse::success)

@@ -6,21 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import java.util.Date;
 
 @Data
 @ToString
@@ -28,31 +21,17 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "datacap_snippet")
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
         justification = "I prefer to suppress these FindBugs warnings")
 @EntityListeners(AuditingEntityListener.class)
 public class SnippetEntity
+        extends BaseEntity
 {
-    @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "description")
     private String description;
 
-    @Column(name = "code")
-    private String code;
-
-    @CreatedDate
-    @Column(name = "create_time", columnDefinition = "timestamp not null default current_timestamp")
-    private Date createTime;
-
-    @LastModifiedDate
-    @Column(name = "update_time", columnDefinition = "timestamp not null default current_timestamp")
-    private Date updateTime;
+    @Column(name = "context")
+    private String context;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

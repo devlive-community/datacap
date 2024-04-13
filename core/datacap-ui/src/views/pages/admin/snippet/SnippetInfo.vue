@@ -22,7 +22,7 @@
         <FormItem>
           <FormLabel>{{ $t('common.content') }}</FormLabel>
           <FormControl>
-            <AceEditor :value="formState.code" v-bind="componentField" @update:value="formState.code = $event"/>
+            <AceEditor :value="formState.context" v-bind="componentField" @update:value="formState.context = $event"/>
           </FormControl>
         </FormItem>
       </FormField>

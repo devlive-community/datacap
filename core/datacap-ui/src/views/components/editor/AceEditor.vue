@@ -19,6 +19,7 @@ import FunctionService from '@/services/function'
 import SnippetService from '@/services/snippet'
 import Common from '@/utils/common'
 import { UserEditor } from '@/model/user'
+import { FilterModel } from '@/model/filter.ts'
 import Editor = Ace.Editor
 
 export default defineComponent({
@@ -80,7 +81,9 @@ export default defineComponent({
         editor.completers = []
         const that = this
         const client = new HttpUtils().getAxios()
-        client.all([FunctionService.getByPlugin(_language.toLowerCase()), SnippetService.getSnippets(0, 100000)])
+        const filter = new FilterModel()
+        filter.size = 1000000
+        client.all([FunctionService.getByPlugin(_language.toLowerCase()), SnippetService.getAll(filter)])
               .then(client.spread((keyword: any, snippet: any) => {
                 if (keyword.status) {
                   const keywordCompleter = {
@@ -106,9 +109,9 @@ export default defineComponent({
                   const snippetCompleter = {
                     // @ts-ignore
                     getCompletions: function (editor, session, pos, prefix, callback) {
-                      return callback(null, snippet.data.content.map(function (item: { code: any; name: string; description: string; }) {
+                      return callback(null, snippet.data.content.map(function (item: { context: any; name: string; description: string; }) {
                         return {
-                          value: item.code,
+                          value: item.context,
                           caption: item.name,
                           meta: that.$t('common.snippet'),
                           docHTML: '<div>' +
