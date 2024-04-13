@@ -10,7 +10,7 @@ const createHeaders = (i18n: any) => {
         {key: 'name', hidden: true, header: i18n.t('common.name'), width: 150},
         {key: 'description', hidden: true, header: i18n.t('common.description'), width: 250},
         {key: 'source', hidden: true, header: i18n.t('common.source'), slot: 'source', width: 100},
-        {key: 'syncMode', hidden: true, header: i18n.t('dataset.common.syncMode'), slot: 'syncMode', width: 80},
+        {key: 'syncMode', hidden: true, header: i18n.t('dataset.common.syncMode'), slot: 'syncMode', width: 90},
         {key: 'scheduler', hidden: true, header: i18n.t('common.scheduler'), width: 80},
         {key: 'executor', hidden: true, header: i18n.t('common.executor'), width: 80},
         {key: 'state', hidden: true, header: i18n.t('common.state'), slot: 'state', width: 80, class: 'text-center'},

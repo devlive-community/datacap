@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col space-y-1">
     <div class="flex justify-end">
-      <Button size="sm" @click="configureVisible = true">
+      <Button size="sm" :disabled="!data?.data.columns" @click="configureVisible = true">
         {{ $t('common.configure') }}
       </Button>
     </div>
@@ -480,10 +480,12 @@ export default defineComponent({
                     .then((response) => {
                       if (response.status) {
                         this.data = response
-                        response.data?.headers.forEach((header: any, index: number) => {
+                        response.data?.headers.forEach((header: any) => {
                           const columnDef: GridColumn = { headerName: header, field: header }
                           this.columnDefs.push(columnDef)
-                          if (this.formState.columns.length === 0) {
+                        })
+                        if (this.formState.columns.length === 0) {
+                          response.data?.headers.map((header: any, index: number) => {
                             const column = {
                               id: null,
                               name: `column_${ index + 1 }`,
@@ -504,8 +506,8 @@ export default defineComponent({
                               customColumn: false
                             }
                             this.formState.columns.push(column)
-                          }
-                        })
+                          })
+                        }
                       }
                       else {
                         ToastUtils.error(response.message)

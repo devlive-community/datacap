@@ -147,3 +147,21 @@ ALTER TABLE `datacap_function`
 ALTER TABLE `datacap_template`
     ADD COLUMN `active` BOOLEAN DEFAULT TRUE,
     ADD COLUMN `code` VARCHAR(100);
+
+UPDATE `datacap_dataset`
+SET `code` = REPLACE(UUID(), '-', '')
+WHERE `code` IS NULL;
+
+ALTER TABLE `datacap_dataset_column`
+    ADD COLUMN `code` VARCHAR(100);
+
+UPDATE `datacap_dataset_column`
+SET `code` = REPLACE(UUID(), '-', '')
+WHERE `code` IS NULL;
+
+ALTER TABLE `datacap_dataset_history`
+    ADD COLUMN `code` VARCHAR(100);
+
+UPDATE `datacap_dataset_history`
+SET `code` = REPLACE(UUID(), '-', '')
+WHERE `code` IS NULL;
