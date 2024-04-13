@@ -51,7 +51,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export default defineComponent({
-  name: 'DatasetVisualConfigureBar',
+  name: 'VisualBarConfigure',
   components: {
     SelectGroup, SelectTrigger, SelectContent, SelectItem, Select, SelectLabel, SelectValue,
     FormDescription, FormControl, FormLabel, FormField, FormItem
@@ -80,7 +80,7 @@ export default defineComponent({
   methods: {
     handlerCommit()
     {
-      this.$emit('commit', this.formState)
+      this.$emit('change', this.formState)
     }
   }
 })

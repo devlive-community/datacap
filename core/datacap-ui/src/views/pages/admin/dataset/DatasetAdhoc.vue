@@ -38,26 +38,12 @@
                 <template #item="{ element, index }">
                   <Badge variant="outline" class="cursor-pointer mr-1 mt-1">
                     <DatasetColumnMetric :element="element"/> &nbsp;
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger as-child>
-                          <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.METRIC)"/>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          {{ $t('common.configure') }}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger as-child>
-                          <Trash class="point ml-1" :size="15" @click="handlerRemove(index, metrics)"/>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          {{ $t('common.remove') }}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip :content="$t('common.configure')">
+                      <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.METRIC)"/>
+                    </Tooltip>
+                    <Tooltip :content="$t('common.remove')">
+                      <Trash class="point ml-1" :size="15" @click="handlerRemove(index, metrics)"/>
+                    </Tooltip>
                   </Badge>
                 </template>
               </Draggable>
@@ -71,26 +57,12 @@
                 <template #item="{ element, index}">
                   <Badge variant="outline" class="cursor-pointer mr-1 mt-1">
                     {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger as-child>
-                          <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.DIMENSION)"/>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          {{ $t('common.configure') }}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger as-child>
-                          <Trash class="point ml-1" :size="15" @click="handlerRemove(index, dimensions)"/>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          {{ $t('common.remove') }}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip :content="$t('common.configure')">
+                      <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.DIMENSION)"/>
+                    </Tooltip>
+                    <Tooltip :content="$t('common.remove')">
+                      <Trash class="point ml-1" :size="15" @click="handlerRemove(index, dimensions)"/>
+                    </Tooltip>
                   </Badge>
                 </template>
               </Draggable>
@@ -104,26 +76,12 @@
                 <template #item="{ element, index}">
                   <Badge variant="outline" class="cursor-pointer mr-1 mt-1">
                     {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger as-child>
-                          <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.FILTER)"/>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          {{ $t('common.configure') }}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger as-child>
-                          <Trash class="point ml-1" :size="15" @click="handlerRemove(index, filters)"/>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          {{ $t('common.remove') }}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip :content="$t('common.configure')">
+                      <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.FILTER)"/>
+                    </Tooltip>
+                    <Tooltip :content="$t('common.remove')">
+                      <Trash class="point ml-1" :size="15" @click="handlerRemove(index, filters)"/>
+                    </Tooltip>
                   </Badge>
                 </template>
               </Draggable>
@@ -151,72 +109,7 @@
           <Separator class="p-0" style="margin-top: 20px;"/>
         </div>
         <!-- Result -->
-        <div class="flex h-full space-x-1">
-          <div class="left flex-1 justify-center">
-            <CircularLoading v-if="loading" :show="loading"/>
-            <VisualEditor v-else :configuration="configuration" @commitOptions="handlerCommitOptions"/>
-          </div>
-          <div class="right w-[210px] space-y-2 mt-2">
-            <Card>
-              <template #title>{{ $t('dataset.common.visualType') }}</template>
-              <div v-if="configuration" class="pt-2">
-                <ToggleGroup v-model="configuration.type" type="single">
-                  <div class="toggle-group-row">
-                    <ToggleGroupItem class="mr-1" :value="Type.TABLE">
-                      <Tooltip :content="$t('dataset.common.visualTypeTable')">
-                        <Table/>
-                      </Tooltip>
-                    </ToggleGroupItem>
-                    <ToggleGroupItem class="mr-1" :value="Type.LINE">
-                      <Tooltip :content="$t('dataset.common.visualTypeLine')">
-                        <LineChart/>
-                      </Tooltip>
-                    </ToggleGroupItem>
-                    <ToggleGroupItem :value="Type.BAR">
-                      <Tooltip :content="$t('dataset.common.visualTypeBar')">
-                        <BarChart4/>
-                      </Tooltip>
-                    </ToggleGroupItem>
-                    <ToggleGroupItem class="mt-2" :value="Type.AREA">
-                      <Tooltip :content="$t('dataset.common.visualTypeArea')">
-                        <AreaChart/>
-                      </Tooltip>
-                    </ToggleGroupItem>
-                    <ToggleGroupItem class="mt-2 mr-1" :value="Type.PIE">
-                      <Tooltip :content="$t('dataset.common.visualTypePie')">
-                        <PieChart/>
-                      </Tooltip>
-                    </ToggleGroupItem>
-                    <ToggleGroupItem class="mt-2 mr-1" :value="Type.HISTOGRAM">
-                      <Tooltip :content="$t('dataset.common.visualTypeHistogram')">
-                        <BarChartHorizontal/>
-                      </Tooltip>
-                    </ToggleGroupItem>
-                    <ToggleGroupItem class="mt-2 mr-1" :value="Type.WORDCLOUD">
-                      <Tooltip :content="$t('dataset.common.visualTypeWordCloud')">
-                        <Baseline/>
-                      </Tooltip>
-                    </ToggleGroupItem>
-                  </div>
-                </ToggleGroup>
-              </div>
-            </Card>
-            <Card>
-              <template #title>{{ $t('dataset.common.visualConfigure') }}</template>
-              <div v-if="configuration" class="pt-2">
-                <DatasetVisualConfigureLine v-if="configuration.type === Type.LINE" :columns="configuration.headers" @commit="handlerCommit"/>
-                <DatasetVisualConfigureBar v-else-if="configuration.type === Type.BAR" :columns="configuration.headers" @commit="handlerCommit"/>
-                <DatasetVisualConfigureArea v-else-if="configuration.type === Type.AREA" :columns="configuration.headers" @commit="handlerCommit"/>
-                <DatasetVisualConfigurePie v-else-if="configuration.type === Type.PIE" :columns="configuration.headers" @commit="handlerCommit"/>
-                <DatasetVisualConfigureHistogram v-else-if="configuration.type === Type.HISTOGRAM" :columns="configuration.headers" @commit="handlerCommit"/>
-                <DatasetVisualConfigureWordCloud v-else-if="configuration.type === Type.WORDCLOUD" :columns="configuration.headers" @commit="handlerCommit"/>
-                <Alert v-else>
-                  <AlertTitle>{{ $t('dataset.common.visualConfigureNotSpecified') }}</AlertTitle>
-                </Alert>
-              </div>
-            </Card>
-          </div>
-        </div>
+        <VisualEditor :loading="loading" :configuration="configuration" @commitOptions="handlerCommitOptions"/>
       </div>
     </div>
   </div>
@@ -274,14 +167,8 @@ import router from '@/router'
 import { Configuration } from '@/views/components/visual/Configuration'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import VisualEditor from '@/views/components/visual/VisualEditor.vue'
-import DatasetVisualConfigureWordCloud from '@/views/pages/admin/dataset/components/adhoc/DatasetVisualConfigureWordCloud.vue'
-import DatasetVisualConfigureHistogram from '@/views/pages/admin/dataset/components/adhoc/DatasetVisualConfigureHistogram.vue'
-import DatasetVisualConfigurePie from '@/views/pages/admin/dataset/components/adhoc/DatasetVisualConfigurePie.vue'
-import DatasetVisualConfigureArea from '@/views/pages/admin/dataset/components/adhoc/DatasetVisualConfigureArea.vue'
 import DatasetColumnMetric from '@/views/pages/admin/dataset/components/adhoc/DatasetColumnMetric.vue'
 import DatasetColumnConfigure from '@/views/pages/admin/dataset/components/adhoc/DatasetColumnConfigure.vue'
-import DatasetVisualConfigureBar from '@/views/pages/admin/dataset/components/adhoc/DatasetVisualConfigureBar.vue'
-import DatasetVisualConfigureLine from '@/views/pages/admin/dataset/components/adhoc/DatasetVisualConfigureLine.vue'
 import { defineComponent } from 'vue'
 import { Badge } from '@/components/ui/badge'
 import Card from '@/views/ui/card'
@@ -290,8 +177,6 @@ import Tooltip from '@/views/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { ToastUtils } from '@/utils/toast'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
@@ -320,22 +205,14 @@ export default defineComponent({
     AlertDialogFooter, AlertDialogHeader, AlertDialog, AlertDialogContent,
     SqlInfo,
     AlertTitle, Alert,
-    ToggleGroupItem, ToggleGroup,
-    RadioGroupItem, RadioGroup,
     Button,
     Input,
     Tooltip,
     Separator,
     Card,
     Badge,
-    DatasetVisualConfigureWordCloud,
-    DatasetVisualConfigureHistogram,
-    DatasetVisualConfigurePie,
-    DatasetVisualConfigureArea,
     DatasetColumnMetric,
     DatasetColumnConfigure,
-    DatasetVisualConfigureBar,
-    DatasetVisualConfigureLine,
     CircularLoading,
     Draggable,
     VisualEditor,

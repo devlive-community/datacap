@@ -63,46 +63,16 @@
         </div>
       </FormItem>
     </FormField>
-    <FormField class="flex items-center" name="invalidType">
-      <FormItem class="flex-1">
-        <div class="flex items-center mt-2 text-right">
-          <FormLabel class="mr-1 w-2/3">
-            {{ $t('dataset.common.visualConfigureDataBreakpoint') }}
-          </FormLabel>
-          <FormControl>
-            <Select v-model="formState.invalidType">
-              <SelectTrigger class="w-full">
-                <SelectValue placeholder="Select"/>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="break">
-                  {{ $t('dataset.common.visualConfigureDataBreakpointBreak') }}
-                </SelectItem>
-                <SelectItem value="link">
-                  {{ $t('dataset.common.visualConfigureDataBreakpointContinuous') }}
-                </SelectItem>
-                <SelectItem value="zero">
-                  {{ $t('dataset.common.visualConfigureDataBreakpointZero') }}
-                </SelectItem>
-                <SelectItem value="ignore">
-                  {{ $t('dataset.common.visualConfigureDataBreakpointIgnore') }}
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </FormControl>
-        </div>
-      </FormItem>
-    </FormField>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form'
 
 export default defineComponent({
-  name: 'DatasetVisualConfigureLine',
+  name: 'VisualWordCloudConfigure',
   components: {
     SelectGroup, SelectTrigger, SelectContent, SelectItem, Select, SelectLabel, SelectValue,
     FormDescription, FormControl, FormLabel, FormField, FormItem
@@ -125,15 +95,14 @@ export default defineComponent({
       formState: {
         xAxis: undefined,
         yAxis: undefined,
-        series: undefined,
-        invalidType: undefined
+        series: undefined
       }
     }
   },
   methods: {
     handlerCommit()
     {
-      this.$emit('commit', this.formState)
+      this.$emit('change', this.formState)
     }
   }
 })

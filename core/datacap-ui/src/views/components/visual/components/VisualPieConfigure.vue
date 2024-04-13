@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="space-y-2">
     <FormField class="flex items-center" name="xAxis">
       <FormItem class="flex-1">
         <div class="flex items-center">
           <FormLabel class="mr-1 w-2/3 text-right">
-            {{ $t('dataset.common.visualConfigureXAxis') }}
+            {{ $t('dataset.common.visualConfigureCategoryField') }}
           </FormLabel>
           <FormControl>
             <Select v-model="formState.xAxis" :disabled="columns.length === 0">
@@ -25,7 +25,7 @@
       <FormItem class="flex-1">
         <div class="flex items-center mt-2 text-right">
           <FormLabel class="mr-1 w-2/3">
-            {{ $t('dataset.common.visualConfigureXAxis') }}
+            {{ $t('dataset.common.visualConfigureValueField') }}
           </FormLabel>
           <FormControl>
             <Select v-model="formState.yAxis" :disabled="columns.length === 0">
@@ -42,6 +42,18 @@
         </div>
       </FormItem>
     </FormField>
+    <FormField class="flex items-center" name="outerRadius">
+      <FormItem class="flex-1">
+        <div class="flex items-center mt-2 text-right">
+          <FormLabel class="mr-1 w-2/3">
+            {{ $t('dataset.common.visualConfigureOuterRadius') }}
+          </FormLabel>
+          <FormControl>
+            <Slider v-model="formState.outerRadius" :default-value="formState.outerRadius" :max="10" :step="0.1" :min="0.01"/>
+          </FormControl>
+        </div>
+      </FormItem>
+    </FormField>
   </div>
 </template>
 
@@ -49,10 +61,12 @@
 import { defineComponent } from 'vue'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Slider } from '@/components/ui/slider'
 
 export default defineComponent({
-  name: 'DatasetVisualConfigureArea',
+  name: 'VisualPieConfigure',
   components: {
+    Slider,
     SelectGroup, SelectTrigger, SelectContent, SelectItem, Select, SelectLabel, SelectValue,
     FormDescription, FormControl, FormLabel, FormField, FormItem
   },
@@ -73,14 +87,15 @@ export default defineComponent({
     return {
       formState: {
         xAxis: undefined,
-        yAxis: undefined
+        yAxis: undefined,
+        outerRadius: [0.8]
       }
     }
   },
   methods: {
     handlerCommit()
     {
-      this.$emit('commit', this.formState)
+      this.$emit('change', this.formState)
     }
   }
 })

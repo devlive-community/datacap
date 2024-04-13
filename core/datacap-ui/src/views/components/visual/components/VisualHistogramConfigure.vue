@@ -4,10 +4,31 @@
       <FormItem class="flex-1">
         <div class="flex items-center">
           <FormLabel class="mr-1 w-2/3 text-right">
-            {{ $t('dataset.common.visualConfigureCategoryField') }}
+            {{ $t('dataset.common.visualConfigureCategoryLeftField') }}
           </FormLabel>
           <FormControl>
             <Select v-model="formState.xAxis" :disabled="columns.length === 0">
+              <SelectTrigger class="w-full">
+                <SelectValue placeholder="Select"/>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem v-for="item in columns" :value="item as string">
+                  {{ item }}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </FormControl>
+        </div>
+      </FormItem>
+    </FormField>
+    <FormField class="flex items-center" name="x2Axis">
+      <FormItem class="flex-1">
+        <div class="flex items-center mt-2 text-right">
+          <FormLabel class="mr-1 w-2/3">
+            {{ $t('dataset.common.visualConfigureCategoryRightField') }}
+          </FormLabel>
+          <FormControl>
+            <Select v-model="formState.x2Axis" :disabled="columns.length === 0">
               <SelectTrigger class="w-full">
                 <SelectValue placeholder="Select"/>
               </SelectTrigger>
@@ -42,18 +63,6 @@
         </div>
       </FormItem>
     </FormField>
-    <FormField class="flex items-center" name="outerRadius">
-      <FormItem class="flex-1">
-        <div class="flex items-center mt-2 text-right">
-          <FormLabel class="mr-1 w-2/3">
-            {{ $t('dataset.common.visualConfigureOuterRadius') }}
-          </FormLabel>
-          <FormControl>
-            <Slider v-model="formState.outerRadius" :default-value="formState.outerRadius" :max="10" :step="0.1" :min="0.01"/>
-          </FormControl>
-        </div>
-      </FormItem>
-    </FormField>
   </div>
 </template>
 
@@ -61,12 +70,10 @@
 import { defineComponent } from 'vue'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Slider } from '@/components/ui/slider'
 
 export default defineComponent({
-  name: 'DatasetVisualConfigurePie',
+  name: 'VisualHistogramConfigure',
   components: {
-    Slider,
     SelectGroup, SelectTrigger, SelectContent, SelectItem, Select, SelectLabel, SelectValue,
     FormDescription, FormControl, FormLabel, FormField, FormItem
   },
@@ -87,15 +94,15 @@ export default defineComponent({
     return {
       formState: {
         xAxis: undefined,
-        yAxis: undefined,
-        outerRadius: [0.8]
+        x2Axis: undefined,
+        yAxis: undefined
       }
     }
   },
   methods: {
     handlerCommit()
     {
-      this.$emit('commit', this.formState)
+      this.$emit('change', this.formState)
     }
   }
 })

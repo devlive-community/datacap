@@ -48,14 +48,14 @@ export default defineComponent({
           if (this.configuration) {
             const options = {
               type: 'line',
-              data: {values: this.configuration.columns},
+              data: { values: this.configuration.columns },
               xField: this.configuration.chartConfigure?.xAxis,
               yField: this.configuration.chartConfigure?.yAxis,
               seriesField: this.configuration.chartConfigure?.series,
               invalidType: this.configuration.chartConfigure?.invalidType
             }
             if (!reset) {
-              instance = new VChart(options, {dom: this.$refs.content as HTMLElement})
+              instance = new VChart(options, { dom: this.$refs.content as HTMLElement })
               instance.renderAsync()
             }
             else {
@@ -65,7 +65,7 @@ export default defineComponent({
               const cloneOptions = cloneDeep(this.configuration)
               cloneOptions.headers = []
               cloneOptions.columns = []
-              this.$emit('commitOptions', cloneOptions)
+              this.$emit('change', cloneOptions)
             }
           }
         }

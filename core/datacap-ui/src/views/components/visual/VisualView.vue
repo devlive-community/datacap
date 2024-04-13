@@ -114,26 +114,26 @@ export default defineComponent({
       setTimeout(() => {
         this.loading = true
         DatasetService.adhoc(this.code!, this.query)
-            .then(response => {
-              if (response.status) {
-                if (this.localConfiguration) {
-                  if (response.data.isSuccessful) {
-                    this.localConfiguration.headers = response.data.headers
-                    this.localConfiguration.columns = response.data.columns
-                    this.localConfiguration.message = null
-                  }
-                  else {
-                    this.localConfiguration.headers = []
-                    this.localConfiguration.columns = []
-                    this.localConfiguration.message = response.data.message
-                  }
-                }
-              }
-              else {
-                ToastUtils.error(response.message)
-              }
-            })
-            .finally(() => this.loading = false)
+                      .then(response => {
+                        if (response.status) {
+                          if (this.localConfiguration) {
+                            if (response.data.isSuccessful) {
+                              this.localConfiguration.headers = response.data.headers
+                              this.localConfiguration.columns = response.data.columns
+                              this.localConfiguration.message = null
+                            }
+                            else {
+                              this.localConfiguration.headers = []
+                              this.localConfiguration.columns = []
+                              this.localConfiguration.message = response.data.message
+                            }
+                          }
+                        }
+                        else {
+                          ToastUtils.error(response.message)
+                        }
+                      })
+                      .finally(() => this.loading = false)
       })
     }
   }
