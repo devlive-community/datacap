@@ -18,5 +18,5 @@ public interface PluginAuditService
 
     CommonResponse<PluginAuditEntity> getById(Long id);
 
-    CommonResponse<Object> getData(Long id);
+    CommonResponse<Object> getData(String code);
 }

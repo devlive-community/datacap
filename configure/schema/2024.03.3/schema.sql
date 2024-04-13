@@ -165,3 +165,6 @@ ALTER TABLE `datacap_dataset_history`
 UPDATE `datacap_dataset_history`
 SET `code` = REPLACE(UUID(), '-', '')
 WHERE `code` IS NULL;
+
+ALTER TABLE `datacap_source_query`
+    ADD COLUMN `home` VARCHAR(500);

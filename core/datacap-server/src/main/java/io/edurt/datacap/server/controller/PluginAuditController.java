@@ -24,9 +24,9 @@ public class PluginAuditController
         this.service = service;
     }
 
-    @GetMapping(value = "data/{id}")
-    public CommonResponse<Object> getData(@PathVariable Long id)
+    @GetMapping(value = "data/{code}")
+    public CommonResponse<Object> getData(@PathVariable String code)
     {
-        return service.getData(id);
+        return service.getData(code);
     }
 }

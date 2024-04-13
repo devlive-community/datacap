@@ -18,9 +18,9 @@ class AuditService
         return new HttpUtils().post(`${ DEFAULT_PATH }`, filter)
     }
 
-    getData(id: number): Promise<ResponseModel>
+    getData(code: string): Promise<ResponseModel>
     {
-        return new HttpUtils().get(`${ DEFAULT_PATH }/data/${ id }`)
+        return new HttpUtils().get(`${ DEFAULT_PATH }/data/${ code }`)
     }
 }
 

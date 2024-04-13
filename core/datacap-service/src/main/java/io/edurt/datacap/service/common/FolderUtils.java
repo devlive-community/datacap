@@ -20,6 +20,6 @@ public class FolderUtils
      */
     public static String getWorkHome(String dataHome, String userName, String type)
     {
-        return String.join(File.separator, dataHome, DateUtils.formatYMD(), userName, type);
+        return String.join(File.separator, dataHome, userName, DateUtils.formatYMD(), type);
     }
 }

@@ -49,6 +49,9 @@ public class PluginAuditEntity
     @Column(name = "code")
     private String code;
 
+    @Column(name = "home")
+    private String home;
+
     @ManyToOne
     @JoinColumn(name = "plugin_id")
     @JsonIncludeProperties(value = {"id", "name", "type", "code"})

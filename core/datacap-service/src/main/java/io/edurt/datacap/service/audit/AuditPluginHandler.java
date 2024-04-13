@@ -96,7 +96,8 @@ public class AuditPluginHandler
             this.pluginAuditRepository.save(pluginAudit);
             ExecutorService service = Executors.newSingleThreadExecutor();
             service.submit(() -> {
-                String workHome = FolderUtils.getWorkHome(initializer.getDataHome(), user.getUsername(), String.join(File.separator, "adhoc", pluginAudit.getId().toString()));
+                String uniqueId = !pluginAudit.getCode().isEmpty() ? pluginAudit.getCode() : pluginAudit.getId().toString();
+                String workHome = FolderUtils.getWorkHome(initializer.getDataHome(), user.getUsername(), String.join(File.separator, "adhoc", uniqueId));
                 log.info("Writer file to folder [ {} ] on [ {} ]", workHome, pluginAudit.getId());
                 try {
                     File tempFile = CSVUtils.makeTempCSV(workHome, "result.csv", jsonResult.getData().getHeaders(), jsonResult.getData().getColumns());
@@ -112,12 +113,14 @@ public class AuditPluginHandler
                             .map(v -> v.writer(fsRequest));
                     log.info("Delete temp file [ {} ] on [ {} ] statue [ {} ]", tempFile, pluginAudit.getId(), tempFile.delete());
                     log.info("Writer file to folder [ {} ] on [ {} ] completed", workHome, pluginAudit.getId());
+                    pluginAudit.setHome(workHome);
                 }
                 catch (Exception ex) {
                     log.error("Writer file to folder [ {} ] on [ {} ] failed", workHome, pluginAudit.getId(), ex);
                 }
                 finally {
                     service.shutdownNow();
+                    pluginAuditRepository.save(pluginAudit);
                 }
             });
         }

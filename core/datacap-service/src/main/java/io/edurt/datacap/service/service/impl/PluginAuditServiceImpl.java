@@ -9,7 +9,6 @@ import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.activity.HeatmapActivity;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
-import io.edurt.datacap.service.common.FolderUtils;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.entity.PluginAuditEntity;
 import io.edurt.datacap.service.entity.UserEntity;
@@ -25,7 +24,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -97,16 +95,15 @@ public class PluginAuditServiceImpl
     }
 
     @Override
-    public CommonResponse<Object> getData(Long id)
+    public CommonResponse<Object> getData(String code)
     {
-        return this.pluginAuditRepository.findById(id)
+        return this.pluginAuditRepository.findByCode(code)
                 .map(value -> {
                     Response response = new Response();
-                    String workHome = FolderUtils.getWorkHome(initializer.getDataHome(), value.getUser().getUsername(), String.join(File.separator, "adhoc", id.toString()));
                     FsRequest fsRequest = FsRequest.builder()
                             .access(initializer.getFsConfigure().getAccess())
                             .secret(initializer.getFsConfigure().getSecret())
-                            .endpoint(workHome)
+                            .endpoint(value.getHome())
                             .bucket(initializer.getFsConfigure().getBucket())
                             .fileName("result.csv")
                             .build();
@@ -131,10 +128,10 @@ public class PluginAuditServiceImpl
                         response.setColumns(columns);
                     }
                     catch (Exception e) {
-                        log.warn("Reader cache failed on [ {} ]", id, e);
+                        log.warn("Reader cache failed on [ {} ]", code, e);
                     }
                     return CommonResponse.success(response);
                 })
-                .orElseGet(() -> CommonResponse.failure(String.format("Not found [ %s ] history", id)));
+                .orElseGet(() -> CommonResponse.failure(String.format("Not found [ %s ] history", code)));
     }
 }
