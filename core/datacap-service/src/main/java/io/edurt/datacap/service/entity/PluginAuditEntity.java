@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "datacap_source_query")
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class PluginAuditEntity
         extends BaseEntity

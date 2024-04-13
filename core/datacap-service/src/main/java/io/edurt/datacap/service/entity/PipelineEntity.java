@@ -27,7 +27,7 @@ import java.util.Properties;
 @NoArgsConstructor
 @Entity
 @Table(name = "datacap_pipeline")
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class PipelineEntity
         extends BaseEntity

@@ -29,7 +29,7 @@ import java.util.List;
 @Entity
 @Table(name = "datacap_scheduled")
 @EntityListeners(AuditingEntityListener.class)
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"})
 public class ScheduledEntity
         extends BaseEntity
 {

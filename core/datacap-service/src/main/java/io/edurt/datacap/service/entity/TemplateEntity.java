@@ -21,7 +21,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Table(name = "datacap_template")
 @EntityListeners(AuditingEntityListener.class)
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class TemplateEntity
         extends BaseEntity

@@ -42,7 +42,7 @@ import java.util.Optional;
 @Table(name = "datacap_source")
 @JsonIgnoreProperties(value = {"configure", "pluginAudits"})
 @EntityListeners(AuditingEntityListener.class)
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class SourceEntity
         extends BaseEntity

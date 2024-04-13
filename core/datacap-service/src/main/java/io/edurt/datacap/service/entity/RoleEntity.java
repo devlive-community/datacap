@@ -26,7 +26,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "datacap_role")
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"},
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class RoleEntity
         extends BaseEntity
