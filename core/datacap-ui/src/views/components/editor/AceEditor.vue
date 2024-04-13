@@ -93,11 +93,11 @@ export default defineComponent({
                         return {
                           value: item.example,
                           caption: item.name,
-                          meta: that.$t('common.' + item.type.toLowerCase()),
+                          meta: that.$t('function.common.' + item.type.toLowerCase()),
                           docHTML: '<div>' +
                               '<strong>' + item.name + '</strong><br/><hr/>'
                               + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
-                              + that.$t('common.example') + ':\n' + item.example + '<br/><hr/>'
+                              + that.$t('function.common.example') + ':\n' + item.example + '<br/><hr/>'
                               + '</div>'
                         }
                       }))

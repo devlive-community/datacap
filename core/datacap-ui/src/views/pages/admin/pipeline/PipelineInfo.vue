@@ -18,6 +18,7 @@ import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { Configuration } from '@/views/components/editor/flow/Configuration.ts'
 import { ToastUtils } from '@/utils/toast.ts'
 import router from '@/router'
+import { FilterModel } from '@/model/filter.ts'
 
 export default defineComponent({
   name: 'PipelineInfo',
@@ -42,7 +43,8 @@ export default defineComponent({
     {
       this.loading = true
       this.contextData = []
-      SourceService.getSources(1, 1000)
+      const filter = new FilterModel()
+      SourceService.getAll(filter)
                    .then((response) => {
                      if (response.status && response.data) {
                        response.data.content.filter((item: any) => item.pipelines)
