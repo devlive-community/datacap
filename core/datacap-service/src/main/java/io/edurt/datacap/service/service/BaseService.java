@@ -2,11 +2,13 @@ package io.edurt.datacap.service.service;
 
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.NullAwareBeanUtils;
+import io.edurt.datacap.common.utils.ReflectionUtils;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.BaseEntity;
 import io.edurt.datacap.service.entity.PageEntity;
 import io.edurt.datacap.service.repository.BaseRepository;
+import io.edurt.datacap.service.security.UserDetailsService;
 import org.springframework.data.domain.Pageable;
 
 public interface BaseService<T extends BaseEntity>
@@ -27,6 +29,9 @@ public interface BaseService<T extends BaseEntity>
         if (configure.getId() != null) {
             repository.findById(configure.getId())
                     .ifPresent(value -> NullAwareBeanUtils.copyNullProperties(value, configure));
+        }
+        if (ReflectionUtils.hasField(configure, "user")) {
+            ReflectionUtils.setFieldValue(configure, "user", UserDetailsService.getUser());
         }
         return CommonResponse.success(repository.save(configure));
     }

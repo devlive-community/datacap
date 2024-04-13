@@ -10,7 +10,6 @@ import io.edurt.datacap.common.response.JwtResponse;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.common.utils.NullAwareBeanUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
-import io.edurt.datacap.fs.Fs;
 import io.edurt.datacap.fs.FsRequest;
 import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
@@ -282,43 +281,42 @@ public class UserServiceImpl
     @Override
     public CommonResponse<FsResponse> uploadAvatar(MultipartFile file)
     {
-        Optional<Fs> optionalFs = SpiUtils.findFs(injector, initializerConfigure.getFsConfigure().getType());
-        if (!optionalFs.isPresent()) {
-            return CommonResponse.failure(String.format("Not found Fs [ %s ]", initializerConfigure.getFsConfigure().getType()));
-        }
+        return SpiUtils.findFs(injector, initializerConfigure.getFsConfigure().getType())
+                .map(fs -> {
+                    UserEntity user = UserDetailsService.getUser();
+                    try {
+                        String avatarPath = initializerConfigure.getAvatarPath().replace("{username}", user.getUsername());
+                        log.info("Upload avatar user [ {} ] home [ {} ]", user.getUsername(), avatarPath);
 
-        UserEntity user = UserDetailsService.getUser();
-        try {
-            String avatarPath = initializerConfigure.getAvatarPath().replace("{username}", user.getUsername());
-            log.info("Upload avatar user [ {} ] home [ {} ]", user.getUsername(), avatarPath);
-
-            FsRequest fsRequest = FsRequest.builder()
-                    .access(initializerConfigure.getFsConfigure().getAccess())
-                    .secret(initializerConfigure.getFsConfigure().getSecret())
-                    .endpoint(avatarPath)
-                    .bucket(initializerConfigure.getFsConfigure().getBucket())
-                    .stream(file.getInputStream())
-                    .fileName(file.getOriginalFilename())
-                    .build();
-            FsResponse response = optionalFs.get().writer(fsRequest);
-            UserEntity entity = userRepository.findById(user.getId()).get();
-            Map<String, String> avatar = Maps.newConcurrentMap();
-            avatar.put("fsType", initializerConfigure.getFsConfigure().getType());
-            avatar.put("local", response.getRemote());
-            if (initializerConfigure.getFsConfigure().getType().equals("Local")) {
-                avatar.put("path", encodeImageToBase64(file.getInputStream()));
-            }
-            else {
-                avatar.put("path", response.getRemote());
-            }
-            entity.setAvatarConfigure(avatar);
-            userRepository.save(entity);
-            return CommonResponse.success(response);
-        }
-        catch (IOException e) {
-            log.warn("File upload exception on user [ {} ]", user.getUsername(), e);
-            return CommonResponse.failure(e.getMessage());
-        }
+                        FsRequest fsRequest = FsRequest.builder()
+                                .access(initializerConfigure.getFsConfigure().getAccess())
+                                .secret(initializerConfigure.getFsConfigure().getSecret())
+                                .endpoint(avatarPath)
+                                .bucket(initializerConfigure.getFsConfigure().getBucket())
+                                .stream(file.getInputStream())
+                                .fileName(file.getOriginalFilename())
+                                .build();
+                        FsResponse response = fs.writer(fsRequest);
+                        UserEntity entity = userRepository.findById(user.getId()).get();
+                        Map<String, String> avatar = Maps.newConcurrentMap();
+                        avatar.put("fsType", initializerConfigure.getFsConfigure().getType());
+                        avatar.put("local", response.getRemote());
+                        if (initializerConfigure.getFsConfigure().getType().equals("Local")) {
+                            avatar.put("path", encodeImageToBase64(file.getInputStream()));
+                        }
+                        else {
+                            avatar.put("path", response.getRemote());
+                        }
+                        entity.setAvatarConfigure(avatar);
+                        userRepository.save(entity);
+                        return CommonResponse.success(response);
+                    }
+                    catch (IOException e) {
+                        log.warn("File upload exception on user [ {} ]", user.getUsername(), e);
+                        return CommonResponse.failure(e.getMessage());
+                    }
+                })
+                .orElseGet(() -> CommonResponse.failure(String.format("Not found Fs [ %s ]", initializerConfigure.getFsConfigure().getType())));
     }
 
     private String encodeImageToBase64(InputStream inputStream)
