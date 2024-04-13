@@ -136,14 +136,14 @@
               <Input type="number" class="w-20 ml-1" v-model="configure.limit" min="1"/>
             </div>
             <div class="flex items-center space-x-4 text-sm">
-              <Button :disabled="loading" class="pl-3 pr-3" @click="handlerApplyAdhoc">
+              <Button size="sm" :disabled="loading" class="pl-3 pr-3" @click="handlerApplyAdhoc">
                 <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
                 <CirclePlay v-else/>
               </Button>
-              <Button class="pl-3 pr-3" variant="outline" :disabled="!showSql.content || loading" @click="handlerShowSql(true)">
+              <Button size="sm" class="pl-3 pr-3" variant="outline" :disabled="!showSql.content || loading" @click="handlerShowSql(true)">
                 <Eye/>
               </Button>
-              <Button :disabled="!isPublish || loading" @click="formState.visible = true">
+              <Button size="sm" :disabled="!isPublish || loading" @click="formState.visible = true">
                 {{ $t('common.publish') }}
               </Button>
             </div>
@@ -151,110 +151,59 @@
           <Separator class="p-0" style="margin-top: 20px;"/>
         </div>
         <!-- Result -->
-        <div class="flex h-full">
+        <div class="flex h-full space-x-1">
           <div class="left flex-1 justify-center">
             <CircularLoading v-if="loading" :show="loading"/>
             <VisualEditor v-else :configuration="configuration" @commitOptions="handlerCommitOptions"/>
           </div>
-          <div class="right w-[210px]">
-            <Card class="mt-2 ml-1">
-              <CardHeader class="p-2 border-b text-center">
-                <CardTitle>{{ $t('dataset.common.visualType') }}</CardTitle>
-              </CardHeader>
-              <CardContent v-if="configuration" class="pt-2">
+          <div class="right w-[210px] space-y-2 mt-2">
+            <Card>
+              <template #title>{{ $t('dataset.common.visualType') }}</template>
+              <div v-if="configuration" class="pt-2">
                 <ToggleGroup v-model="configuration.type" type="single">
                   <div class="toggle-group-row">
                     <ToggleGroupItem class="mr-1" :value="Type.TABLE">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Table/>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {{ $t('dataset.common.visualTypeTable') }}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <Tooltip :content="$t('dataset.common.visualTypeTable')">
+                        <Table/>
+                      </Tooltip>
                     </ToggleGroupItem>
                     <ToggleGroupItem class="mr-1" :value="Type.LINE">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <LineChart/>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {{ $t('dataset.common.visualTypeLine') }}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <Tooltip :content="$t('dataset.common.visualTypeLine')">
+                        <LineChart/>
+                      </Tooltip>
                     </ToggleGroupItem>
                     <ToggleGroupItem :value="Type.BAR">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <BarChart4/>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {{ $t('dataset.common.visualTypeBar') }}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <Tooltip :content="$t('dataset.common.visualTypeBar')">
+                        <BarChart4/>
+                      </Tooltip>
                     </ToggleGroupItem>
                     <ToggleGroupItem class="mt-2" :value="Type.AREA">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <AreaChart/>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {{ $t('dataset.common.visualTypeArea') }}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <Tooltip :content="$t('dataset.common.visualTypeArea')">
+                        <AreaChart/>
+                      </Tooltip>
                     </ToggleGroupItem>
                     <ToggleGroupItem class="mt-2 mr-1" :value="Type.PIE">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <PieChart/>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {{ $t('dataset.common.visualTypePie') }}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <Tooltip :content="$t('dataset.common.visualTypePie')">
+                        <PieChart/>
+                      </Tooltip>
                     </ToggleGroupItem>
                     <ToggleGroupItem class="mt-2 mr-1" :value="Type.HISTOGRAM">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <BarChartHorizontal/>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {{ $t('dataset.common.visualTypeHistogram') }}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <Tooltip :content="$t('dataset.common.visualTypeHistogram')">
+                        <BarChartHorizontal/>
+                      </Tooltip>
                     </ToggleGroupItem>
                     <ToggleGroupItem class="mt-2 mr-1" :value="Type.WORDCLOUD">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Baseline/>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {{ $t('dataset.common.visualTypeWordCloud') }}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <Tooltip :content="$t('dataset.common.visualTypeWordCloud')">
+                        <Baseline/>
+                      </Tooltip>
                     </ToggleGroupItem>
                   </div>
                 </ToggleGroup>
-              </CardContent>
-              <CardHeader class="p-2 border-b text-center">
-                <CardTitle>{{ $t('dataset.common.visualConfigure') }}</CardTitle>
-              </CardHeader>
-              <CardContent v-if="configuration" class="pt-2">
+              </div>
+            </Card>
+            <Card>
+              <template #title>{{ $t('dataset.common.visualConfigure') }}</template>
+              <div v-if="configuration" class="pt-2">
                 <DatasetVisualConfigureLine v-if="configuration.type === Type.LINE" :columns="configuration.headers" @commit="handlerCommit"/>
                 <DatasetVisualConfigureBar v-else-if="configuration.type === Type.BAR" :columns="configuration.headers" @commit="handlerCommit"/>
                 <DatasetVisualConfigureArea v-else-if="configuration.type === Type.AREA" :columns="configuration.headers" @commit="handlerCommit"/>
@@ -264,7 +213,7 @@
                 <Alert v-else>
                   <AlertTitle>{{ $t('dataset.common.visualConfigureNotSpecified') }}</AlertTitle>
                 </Alert>
-              </CardContent>
+              </div>
             </Card>
           </div>
         </div>
@@ -337,7 +286,7 @@ import { defineComponent } from 'vue'
 import { Badge } from '@/components/ui/badge'
 import Card from '@/views/ui/card'
 import { AreaChart, BarChart4, BarChartHorizontal, Baseline, CirclePlay, Cog, Eye, LineChart, Loader2, PieChart, Table, Trash } from 'lucide-vue-next'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Tooltip from '@/views/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -375,7 +324,7 @@ export default defineComponent({
     RadioGroupItem, RadioGroup,
     Button,
     Input,
-    Tooltip, TooltipContent, TooltipTrigger, TooltipProvider,
+    Tooltip,
     Separator,
     Card,
     Badge,

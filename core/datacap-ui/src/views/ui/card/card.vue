@@ -14,7 +14,7 @@
     <CardContent :class="`${bodyClass}`">
       <slot/>
     </CardContent>
-    <CardFooter>
+    <CardFooter v-if="$slots.footer">
       <slot name="footer"/>
     </CardFooter>
   </Card>
