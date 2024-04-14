@@ -116,7 +116,7 @@
           </div>
         </div>
         <AlertDialogFooter class="-mb-4 border-t pt-2">
-          <Button @click="handlerCancel">{{ $t('common.cancel') }}</Button>
+          <Button variant="secondary" @click="handlerCancel">{{ $t('common.cancel') }}</Button>
           <Button @click="handlerCommit">{{ $t('common.save') }}</Button>
         </AlertDialogFooter>
       </AlertDialogContent>

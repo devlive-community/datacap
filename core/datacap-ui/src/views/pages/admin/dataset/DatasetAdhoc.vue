@@ -456,11 +456,11 @@ export default defineComponent({
     splitColumns(original: any[]): any[]
     {
       const array: any[] = []
-      original.forEach((item: { id: number; mode: ColumnType; aliasName: string; expression: string; name: string; function: string; value: string; order: string; }) => array.push(
+      original.forEach((item: { id: number; mode: ColumnType; alias: string; expression: string; name: string; function: string; value: string; order: string; }) => array.push(
           {
             id: item.id,
             mode: item.mode,
-            aliasName: item.aliasName,
+            alias: item.alias,
             expression: item.expression,
             name: item.name,
             function: item.function,
