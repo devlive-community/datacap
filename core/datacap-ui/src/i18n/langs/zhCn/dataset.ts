@@ -83,6 +83,7 @@ export default {
         visualConfigureDataBreakpointContinuous: '连续',
         visualConfigureDataBreakpointZero: '补 0',
         visualConfigureDataBreakpointIgnore: '忽略',
+        visualConfigureGeneralGroup: '通用配置',
         columnExpressionMax: '最大值',
         columnExpressionMin: '最小值',
         columnExpressionSum: '总和',

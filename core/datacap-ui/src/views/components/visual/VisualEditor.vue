@@ -169,13 +169,15 @@
       <Card body-class="p-2">
         <template #title>{{ $t('dataset.common.visualConfigure') }}</template>
         <CircularLoading v-if="loading" :show="loading"/>
-        <div v-else-if="configuration">
+        <div v-else-if="configuration" class="flex items-center justify-center">
           <Alert v-if="configuration.type === Type.TABLE" :title="$t('dataset.common.visualConfigureNotSpecified')"/>
-          <VisualConfigure v-else :configuration="configuration" :fields="forwardFiled(configuration.type)" @change="configuration.chartConfigure = $event"/>
+          <Button v-else size="sm" class="w-[80%]" @click="configureVisible = true">{{ $t('common.configure') }}</Button>
         </div>
       </Card>
     </div>
   </div>
+  <VisualConfigure v-if="configureVisible && configuration" :is-visible="configureVisible" :configuration="configuration" :field-group="forwardFiled(configuration.type)"
+                   @close="configureVisible = $event" @change="configuration.chartConfigure = $event"/>
 </template>
 <script lang="ts">
 import { Type } from '@/views/components/visual/Type'
@@ -183,7 +185,7 @@ import VisualWordCloud from '@/views/components/visual/components/VisualWordClou
 import VisualHistogram from '@/views/components/visual/components/VisualHistogram.vue'
 import VisualPie from '@/views/components/visual/components/VisualPie.vue'
 import VisualArea from '@/views/components/visual/components/VisualArea.vue'
-import { ChartField, Configuration } from './Configuration'
+import { ChartField, ChartFieldGroup, Configuration } from './Configuration'
 import VisualBar from '@/views/components/visual/components/VisualBar.vue'
 import VisualLine from '@/views/components/visual/components/VisualLine.vue'
 import VisualTable from '@/views/components/visual/components/VisualTable.vue'
@@ -200,6 +202,7 @@ import VisualConfigure from '@/views/components/visual/components/VisualConfigur
 import VisualRadar from '@/views/components/visual/components/VisualRadar.vue'
 import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
 import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
+import Button from '@/views/ui/button'
 
 export default defineComponent({
   name: 'VisualEditor',
@@ -210,11 +213,7 @@ export default defineComponent({
     }
   },
   components: {
-    VisualGauge,
-    VisualFunnel,
-    VisualRadar,
-    VisualConfigure,
-    VisualScatter,
+    VisualGauge, VisualFunnel, VisualRadar, VisualConfigure, VisualScatter,
     Card,
     Tooltip,
     RadioGroup, RadioGroupItem,
@@ -222,6 +221,7 @@ export default defineComponent({
     Table,
     CircularLoading,
     Alert,
+    Button,
     VisualWordCloud, VisualHistogram, VisualPie, VisualArea, VisualBar, VisualLine, VisualTable
   },
   props: {
@@ -233,14 +233,20 @@ export default defineComponent({
       type: Object as PropType<Configuration | null>
     }
   },
+  data()
+  {
+    return {
+      configureVisible: false
+    }
+  },
   methods: {
     handlerCommit(value: any)
     {
       this.$emit('commitOptions', value)
     },
-    forwardFiled(type: Type): ChartField[]
+    forwardFiled(type: Type): ChartFieldGroup[]
     {
-      const fields: Array<ChartField> = new Array<ChartField>()
+      const fieldGroups: Array<ChartFieldGroup> = new Array<ChartFieldGroup>()
       const categoryField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryField'), field: 'xAxis' }
       const valueField: ChartField = { label: this.$t('dataset.common.visualConfigureValueField'), field: 'yAxis' }
       const seriesField: ChartField = { label: this.$t('dataset.common.visualConfigureSeriesField'), field: 'series' }
@@ -261,33 +267,43 @@ export default defineComponent({
       }
       const leftField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryLeftField'), field: 'leftField' }
       const rightField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryRightField'), field: 'rightField' }
-      switch (type) {
-        case Type.RADAR:
-        case Type.BAR:
-        case Type.AREA:
-        case Type.SCATTER:
-          fields.push(categoryField, valueField)
-          break
-        case Type.FUNNEL:
-          fields.push(categoryField, valueField, showLegend)
-          break
-        case Type.GAUGE:
-          fields.push(categoryField, valueField, outerRadius, innerRadius, startAngle, endAngle)
-          break
-        case Type.PIE:
-          fields.push(categoryField, valueField, outerRadius)
-          break
-        case Type.LINE:
-          fields.push(categoryField, valueField, seriesField, dataBreakpoint)
-          break
-        case Type.HISTOGRAM:
-          fields.push(leftField, rightField, valueField)
-          break
-        case Type.WORDCLOUD:
-          fields.push(categoryField, valueField, seriesField)
-          break
+
+      if (type === Type.AREA || type === Type.BAR || type === Type.RADAR || type === Type.SCATTER) {
+        const fields: Array<ChartField> = [categoryField, valueField]
+        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
+        fieldGroups.push(generalField)
       }
-      return fields
+      else if (type === Type.FUNNEL) {
+        const fields: Array<ChartField> = [categoryField, valueField, showLegend]
+        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
+        fieldGroups.push(generalField)
+      }
+      else if (type === Type.GAUGE) {
+        const fields: Array<ChartField> = [categoryField, valueField, outerRadius, innerRadius, startAngle, endAngle]
+        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
+        fieldGroups.push(generalField)
+      }
+      else if (type === Type.PIE) {
+        const fields: Array<ChartField> = [categoryField, valueField, outerRadius]
+        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
+        fieldGroups.push(generalField)
+      }
+      else if (type === Type.LINE) {
+        const fields: Array<ChartField> = [categoryField, valueField, seriesField, dataBreakpoint]
+        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
+        fieldGroups.push(generalField)
+      }
+      else if (type === Type.HISTOGRAM) {
+        const fields: Array<ChartField> = [leftField, rightField, valueField]
+        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
+        fieldGroups.push(generalField)
+      }
+      else if (type === Type.WORDCLOUD) {
+        const fields: Array<ChartField> = [categoryField, valueField, seriesField]
+        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
+        fieldGroups.push(generalField)
+      }
+      return fieldGroups
     }
   }
 })

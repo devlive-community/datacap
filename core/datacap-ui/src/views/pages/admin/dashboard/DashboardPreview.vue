@@ -2,7 +2,7 @@
   <div class="w-full">
     <Loader2 v-if="loading" class="w-full justify-center animate-spin mt-10"/>
     <DashboardView v-else-if="data" :layouts="JSON.parse(data.configure as string)"/>
-    <Alert v-else type="error" :title="$t('dashboard.tip.notFound').replace('$VALUE', $router.currentRoute?.value?.params['code'])"/>
+    <Alert v-else type="error" :title="$t('dashboard.tip.notFound').replace('$VALUE', $router.currentRoute?.value?.params['code'] as string)"/>
   </div>
 </template>
 

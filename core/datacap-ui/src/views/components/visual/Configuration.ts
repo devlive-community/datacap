@@ -36,6 +36,12 @@ export interface IChart
     endAngle?: number[]
 }
 
+export interface ChartFieldGroup
+{
+    label?: string
+    fields?: ChartField[]
+}
+
 export interface ChartField
 {
     label?: string

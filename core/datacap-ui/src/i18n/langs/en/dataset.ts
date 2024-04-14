@@ -83,6 +83,7 @@ export default {
         visualConfigureDataBreakpointContinuous: 'Continuous',
         visualConfigureDataBreakpointZero: 'Zero',
         visualConfigureDataBreakpointIgnore: 'Ignore',
+        visualConfigureGeneralGroup: 'General Configure',
         columnExpressionMax: 'Maximum',
         columnExpressionMin: 'Minimum',
         columnExpressionSum: 'Sum',
