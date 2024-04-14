@@ -32,12 +32,19 @@
       </div>
     </Card>
     <Dialog :is-visible="configureVisible" :title="$t('common.configure')">
-      <div v-if="formState" class="p-6">
+      <div v-if="formState" class="pl-3 pr-4">
         <FormField name="name">
-          <FormItem class="space-y-1">
+          <FormItem class="space-y-2">
             <FormLabel>{{ $t('common.name') }}</FormLabel>
             <FormMessage/>
             <Input v-model="formState.name"/>
+          </FormItem>
+        </FormField>
+        <FormField name="description">
+          <FormItem class="space-y-2">
+            <FormLabel>{{ $t('common.description') }}</FormLabel>
+            <FormMessage/>
+            <Textarea v-model="formState.description"/>
           </FormItem>
         </FormField>
       </div>
@@ -46,7 +53,7 @@
           <Button variant="outline" size="sm" @click="configureVisible = false">
             {{ $t('common.cancel') }}
           </Button>
-          <Button :loading="loading" size="sm" @click="handlerSave">
+          <Button :loading="loading" :disabled="loading" size="sm" @click="handlerSave">
             {{ $t('common.save') }}
           </Button>
         </div>
@@ -72,10 +79,12 @@ import Button from '@/views/ui/button'
 import { Input } from '@/components/ui/input'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { cloneDeep } from 'lodash'
+import { Textarea } from '@/components/ui/textarea'
 
 export default defineComponent({
   name: 'DashboardEditor',
   components: {
+    Textarea,
     Input,
     ChartContainer,
     VisualView,
@@ -149,8 +158,8 @@ export default defineComponent({
                         .then(response => {
                           if (response.status) {
                             ToastUtils.success(this.$t('dashboard.tip.publishSuccess').replace('$VALUE', <string>this.formState?.name))
-                            if (response.data?.id) {
-                              this.$router.push(`/admin/dashboard/info/${ response.data.id }/preview`)
+                            if (response.data) {
+                              this.$router.push(`/admin/dashboard/preview/${ response.data?.code }`)
                             }
                             else {
                               this.$router.push('/console/dashboard')
