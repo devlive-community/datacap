@@ -24,10 +24,10 @@ export class ConfigurationRequest
 
 export interface IChart
 {
-    xAxis?: null | string
-    x2Axis?: null | string
-    yAxis?: null | string
-    series?: null | string
+    xAxis?: string
+    x2Axis?: string
+    yAxis?: string
+    series?: string
     outerRadius?: number[]
-    invalidType?: null | string
+    invalidType?: string
 }

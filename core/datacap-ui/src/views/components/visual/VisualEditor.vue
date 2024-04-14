@@ -19,7 +19,8 @@
     <div class="right w-[210px] space-y-2">
       <Card body-class="p-2">
         <template #title>{{ $t('dataset.common.visualType') }}</template>
-        <div v-if="configuration">
+        <CircularLoading v-if="loading" :show="loading"/>
+        <div v-else-if="configuration">
           <ToggleGroup v-model="configuration.type" type="single">
             <div class="grid grid-cols-4 items-center space-x-1 space-y-1">
               <ToggleGroupItem class="mt-1" :value="Type.TABLE">
@@ -63,13 +64,14 @@
       </Card>
       <Card body-class="p-2">
         <template #title>{{ $t('dataset.common.visualConfigure') }}</template>
-        <div v-if="configuration">
-          <VisualLineConfigure v-if="configuration.type === Type.LINE" :columns="configuration.headers" @change="configuration.chartConfigure = $event"/>
-          <VisualBarConfigure v-else-if="configuration.type === Type.BAR" :columns="configuration.headers" @change="configuration.chartConfigure = $event"/>
-          <VisualAreaConfigure v-else-if="configuration.type === Type.AREA" :columns="configuration.headers" @change="configuration.chartConfigure = $event"/>
-          <VisualPieConfigure v-else-if="configuration.type === Type.PIE" :columns="configuration.headers" @change="configuration.chartConfigure = $event"/>
-          <VisualHistogramConfigure v-else-if="configuration.type === Type.HISTOGRAM" :columns="configuration.headers" @change="configuration.chartConfigure = $event"/>
-          <VisualWordCloudConfigure v-else-if="configuration.type === Type.WORDCLOUD" :columns="configuration.headers" @change="configuration.chartConfigure = $event"/>
+        <CircularLoading v-if="loading" :show="loading"/>
+        <div v-else-if="configuration">
+          <VisualLineConfigure v-if="configuration.type === Type.LINE" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
+          <VisualBarConfigure v-else-if="configuration.type === Type.BAR" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
+          <VisualAreaConfigure v-else-if="configuration.type === Type.AREA" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
+          <VisualPieConfigure v-else-if="configuration.type === Type.PIE" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
+          <VisualHistogramConfigure v-else-if="configuration.type === Type.HISTOGRAM" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
+          <VisualWordCloudConfigure v-else-if="configuration.type === Type.WORDCLOUD" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <Alert v-else :title="$t('dataset.common.visualConfigureNotSpecified')"/>
         </div>
       </Card>
