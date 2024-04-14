@@ -13,7 +13,7 @@
           <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
             <Card title-class="p-2 pl-4 pr-4" v-for="item in data">
               <template #title>
-                <RouterLink :to="`/admin/dashboard/info/${item.id}/preview`" target="_blank">{{ item.name }}</RouterLink>
+                <RouterLink :to="`/admin/dashboard/preview/${item.code}`" target="_blank">{{ item.name }}</RouterLink>
               </template>
               <template #extra>
                 <DropdownMenu class="justify-items-end">
@@ -22,7 +22,7 @@
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem class="cursor-pointer">
-                      <RouterLink :to="`/admin/dashboard/info/${item.id}`" target="_blank" class="flex items-center">
+                      <RouterLink :to="`/admin/dashboard/info/${item.code}`" target="_blank" class="flex items-center">
                         <Pencil :size="15" class="mr-1"/>
                         {{ $t('dashboard.common.modify') }}
                       </RouterLink>
