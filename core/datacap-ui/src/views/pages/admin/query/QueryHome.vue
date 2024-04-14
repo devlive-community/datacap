@@ -459,7 +459,7 @@ export default defineComponent({
       if (editorInstance) {
         const content = this.selectEditor.isSelection ? editorInstance.instance?.getSelectedText() : editorInstance.instance?.getValue()
         this.dataInfo = SnippetRequest.of()
-        this.dataInfo.code = content as string
+        this.dataInfo.context = content as string
       }
     },
     createEditor()
