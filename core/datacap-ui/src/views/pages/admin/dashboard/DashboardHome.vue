@@ -43,6 +43,11 @@
                   </DropdownMenuContent>
                 </DropdownMenu>
               </template>
+              <div class="shadow-blackA7 w-full overflow-hidden rounded-md">
+                <AspectRatio :ratio="16 / 11">
+                  <img class="h-full w-full object-cover" src="/static/images/dashboard.png" :alt="item.name"/>
+                </AspectRatio>
+              </div>
               <template #footer>
                 <p class="text-xs text-muted-foreground text-right">{{ item.createTime }}</p>
               </template>
@@ -75,10 +80,12 @@ import Pagination from '@/views/ui/pagination'
 import Button from '@/views/ui/button'
 import { TableCaption } from '@/components/ui/table'
 import Tooltip from '@/views/ui/tooltip'
+import { AspectRatio } from 'radix-vue'
 
 export default defineComponent({
   name: 'DashboardHome',
   components: {
+    AspectRatio,
     Tooltip,
     TableCaption,
     Pagination,
