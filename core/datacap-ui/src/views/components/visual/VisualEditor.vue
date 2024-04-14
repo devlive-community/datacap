@@ -171,13 +171,6 @@
         <CircularLoading v-if="loading" :show="loading"/>
         <div v-else-if="configuration">
           <Alert v-if="configuration.type === Type.TABLE" :title="$t('dataset.common.visualConfigureNotSpecified')"/>
-          <VisualLineConfigure v-else-if="configuration.type === Type.LINE" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
-          <VisualBarConfigure v-else-if="configuration.type === Type.BAR" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
-          <VisualAreaConfigure v-else-if="configuration.type === Type.AREA" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
-          <VisualPieConfigure v-else-if="configuration.type === Type.PIE" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
-          <VisualHistogramConfigure v-else-if="configuration.type === Type.HISTOGRAM" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
-          <VisualWordCloudConfigure v-else-if="configuration.type === Type.WORDCLOUD" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
-          <VisualScatterConfigure v-else-if="configuration.type === Type.SCATTER" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualConfigure v-else :configuration="configuration" :fields="forwardFiled(configuration.type)" @change="configuration.chartConfigure = $event"/>
         </div>
       </Card>
@@ -202,14 +195,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import Card from '@/views/ui/card'
 import Tooltip from '@/views/ui/tooltip'
 import Alert from '@/views/ui/alert'
-import VisualLineConfigure from '@/views/components/visual/components/VisualLineConfigure.vue'
-import VisualBarConfigure from '@/views/components/visual/components/VisualBarConfigure.vue'
-import VisualAreaConfigure from '@/views/components/visual/components/VisualAreaConfigure.vue'
-import VisualPieConfigure from '@/views/components/visual/components/VisualPieConfigure.vue'
-import VisualHistogramConfigure from '@/views/components/visual/components/VisualHistogramConfigure.vue'
-import VisualWordCloudConfigure from '@/views/components/visual/components/VisualWordCloudConfigure.vue'
 import VisualScatter from '@/views/components/visual/components/VisualScatter.vue'
-import VisualScatterConfigure from '@/views/components/visual/components/VisualScatterConfigure.vue'
 import VisualConfigure from '@/views/components/visual/components/VisualConfigure.vue'
 import VisualRadar from '@/views/components/visual/components/VisualRadar.vue'
 import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
@@ -228,14 +214,7 @@ export default defineComponent({
     VisualFunnel,
     VisualRadar,
     VisualConfigure,
-    VisualScatterConfigure,
     VisualScatter,
-    VisualWordCloudConfigure,
-    VisualHistogramConfigure,
-    VisualPieConfigure,
-    VisualAreaConfigure,
-    VisualBarConfigure,
-    VisualLineConfigure,
     Card,
     Tooltip,
     RadioGroup, RadioGroupItem,
@@ -264,13 +243,29 @@ export default defineComponent({
       const fields: Array<ChartField> = new Array<ChartField>()
       const categoryField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryField'), field: 'xAxis' }
       const valueField: ChartField = { label: this.$t('dataset.common.visualConfigureValueField'), field: 'yAxis' }
+      const seriesField: ChartField = { label: this.$t('dataset.common.visualConfigureSeriesField'), field: 'series' }
       const showLegend: ChartField = { label: this.$t('dataset.common.visualConfigureShowLegend'), field: 'showLegend', type: 'SWITCH' }
       const outerRadius: ChartField = { label: this.$t('dataset.common.visualConfigureOuterRadius'), field: 'outerRadius', type: 'SLIDER', value: 0.8, min: 0.1, max: 1, step: 0.1 }
       const innerRadius: ChartField = { label: this.$t('dataset.common.visualConfigureInnerRadius'), field: 'innerRadius', type: 'SLIDER', value: 0.5, min: 0.1, max: 1, step: 0.1 }
       const startAngle: ChartField = { label: this.$t('dataset.common.visualConfigureStartAngle'), field: 'startAngle', type: 'SLIDER', value: -180, min: -360, max: 360, step: 1 }
       const endAngle: ChartField = { label: this.$t('dataset.common.visualConfigureEndAngle'), field: 'endAngle', type: 'SLIDER', value: 0, min: -360, max: 360, step: 1 }
+      const dataBreakpoint: ChartField = {
+        label: this.$t('dataset.common.visualConfigureDataBreakpoint'),
+        field: 'dataBreakpoint',
+        values: [
+          { label: this.$t('dataset.common.visualConfigureDataBreakpointBreak'), value: 'break' },
+          { label: this.$t('dataset.common.visualConfigureDataBreakpointContinuous'), value: 'link' },
+          { label: this.$t('dataset.common.visualConfigureDataBreakpointZero'), value: 'zero' },
+          { label: this.$t('dataset.common.visualConfigureDataBreakpointIgnore'), value: 'ignore' }
+        ]
+      }
+      const leftField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryLeftField'), field: 'leftField' }
+      const rightField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryRightField'), field: 'rightField' }
       switch (type) {
         case Type.RADAR:
+        case Type.BAR:
+        case Type.AREA:
+        case Type.SCATTER:
           fields.push(categoryField, valueField)
           break
         case Type.FUNNEL:
@@ -278,6 +273,18 @@ export default defineComponent({
           break
         case Type.GAUGE:
           fields.push(categoryField, valueField, outerRadius, innerRadius, startAngle, endAngle)
+          break
+        case Type.PIE:
+          fields.push(categoryField, valueField, outerRadius)
+          break
+        case Type.LINE:
+          fields.push(categoryField, valueField, seriesField, dataBreakpoint)
+          break
+        case Type.HISTOGRAM:
+          fields.push(leftField, rightField, valueField)
+          break
+        case Type.WORDCLOUD:
+          fields.push(categoryField, valueField, seriesField)
           break
       }
       return fields

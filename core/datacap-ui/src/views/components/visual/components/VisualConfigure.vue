@@ -15,8 +15,8 @@
               <SelectValue :placeholder="`Select ${item.label}`"/>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem v-if="item.values" v-for="data in item.values" :value="data as string">{{ data }}</SelectItem>
-              <SelectItem v-else v-for="item in configuration.headers" :value="item as string">{{ item }}</SelectItem>
+              <SelectItem v-if="item.values" class="cursor-pointer" v-for="data in item.values" :value="data.value as string">{{ data.label }}</SelectItem>
+              <SelectItem v-else v-for="item in configuration.headers" class="cursor-pointer" :value="item as string">{{ item }}</SelectItem>
             </SelectContent>
           </Select>
         </FormControl>
