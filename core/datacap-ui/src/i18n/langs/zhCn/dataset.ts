@@ -60,6 +60,7 @@ export default {
         visualTypePie: '饼图',
         visualTypeHistogram: '直方图',
         visualTypeWordCloud: '词云图',
+        visualTypeScatter: '散点图',
         visualConfigure: '可视化配置',
         visualConfigureNotSpecified: '暂无可用配置项',
         visualConfigureXAxis: 'X轴',

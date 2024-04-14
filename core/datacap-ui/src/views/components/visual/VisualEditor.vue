@@ -13,6 +13,7 @@
           <VisualPie v-else-if="configuration?.type === Type.PIE" :configuration="configuration" @change="handlerCommit"/>
           <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM" :configuration="configuration" @change="handlerCommit"/>
           <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD" :configuration="configuration" @change="handlerCommit"/>
+          <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="configuration" @change="handlerCommit"/>
         </div>
       </div>
     </div>
@@ -25,37 +26,103 @@
             <div class="grid grid-cols-4 items-center space-x-1 space-y-1">
               <ToggleGroupItem class="mt-1" :value="Type.TABLE">
                 <Tooltip :content="$t('dataset.common.visualTypeTable')">
-                  <Table/>
+                  <Table :size="20"/>
                 </Tooltip>
               </ToggleGroupItem>
               <ToggleGroupItem :value="Type.LINE">
                 <Tooltip :content="$t('dataset.common.visualTypeLine')">
-                  <LineChart/>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="lineChart"
+                       style="width: 24px;">
+                    <path d="M4 4.5V18.5C4 19.0523 4.44772 19.5 5 19.5H20" stroke="#21252C" stroke-width="1.8" stroke-linecap="round"></path>
+                    <path d="M8 14.5L12.4982 9.91029C12.5716 9.83537 12.6889 9.82567 12.7737 9.88752L15.812 12.1051C15.8933 12.1644 16.0051 12.1582 16.0793 12.0903L20 8.5"
+                          stroke="#21252C" stroke-width="1.8" stroke-linecap="round"></path>
+                  </svg>
                 </Tooltip>
               </ToggleGroupItem>
               <ToggleGroupItem :value="Type.BAR">
                 <Tooltip :content="$t('dataset.common.visualTypeBar')">
-                  <BarChart4/>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="barChart"
+                       style="width: 24px;">
+                    <path d="M4 4.5V18.5C4 19.0523 4.44772 19.5 5 19.5H20" stroke="#21252C" stroke-width="1.8" stroke-linecap="round"></path>
+                    <path d="M13 7V16" stroke="#21252C" stroke-width="1.8" stroke-linecap="round"></path>
+                    <path d="M8.5 10V16" stroke="#21252C" stroke-width="1.8" stroke-linecap="round"></path>
+                    <path d="M17.5 12V16" stroke="#21252C" stroke-width="1.8" stroke-linecap="round"></path>
+                  </svg>
                 </Tooltip>
               </ToggleGroupItem>
               <ToggleGroupItem :value="Type.AREA">
                 <Tooltip :content="$t('dataset.common.visualTypeArea')">
-                  <AreaChart/>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="areaChart"
+                       style="width: 24px;">
+                    <path
+                        d="M18 20H6C4.89543 20 4 19.1046 4 18V9L8.71327 5.70071C8.88543 5.5802 9.11457 5.5802 9.28673 5.70071L13.7201 8.8041C13.8889 8.92223 14.1128 8.92478 14.2842 8.81051L19.2226 5.51823C19.5549 5.29672 20 5.53491 20 5.93426V18C20 19.1046 19.1046 20 18 20Z"
+                        stroke="#21252C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M20 11L14 14.5L9 11L4 14.5" stroke="#21252C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
                 </Tooltip>
               </ToggleGroupItem>
               <ToggleGroupItem :value="Type.PIE">
                 <Tooltip :content="$t('dataset.common.visualTypePie')">
-                  <PieChart/>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" class="vchart-dropdown-content-item-icon" id="pieChart"
+                       style="width: 24px;">
+                    <path d="M6.26599 3.38867C3.46047 4.60563 1.5 7.38359 1.5 10.6159C1.5 14.97 5.0576 18.4998 9.44612 18.4998C12.6024 18.4998 15.3288 16.674 16.6111 14.0288"
+                          stroke="#21252C" stroke-opacity="0.9" stroke-width="1.8" stroke-linecap="round"></path>
+                    <path
+                        d="M18.4993 9.88932C18.4405 5.28275 14.7173 1.55949 10.1107 1.50071C10.0498 1.49993 10 1.54934 10 1.61021V9.44897C10 9.7533 10.2467 10 10.551 10H18.3898C18.4507 10 18.5001 9.95018 18.4993 9.88932Z"
+                        stroke="#21252C" stroke-opacity="0.9" stroke-width="1.8"></path>
+                  </svg>
                 </Tooltip>
               </ToggleGroupItem>
               <ToggleGroupItem :value="Type.HISTOGRAM">
                 <Tooltip :content="$t('dataset.common.visualTypeHistogram')">
-                  <BarChartHorizontal/>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+                    <g clip-path="url(#clip0_1700_69225)">
+                      <path
+                          d="M11.1663 3.33331H9.83301C9.28072 3.33331 8.83301 3.78103 8.83301 4.33331V15.6666C8.83301 16.2189 9.28072 16.6666 9.83301 16.6666H11.1663C11.7186 16.6666 12.1663 16.2189 12.1663 15.6666V4.33331C12.1663 3.78103 11.7186 3.33331 11.1663 3.33331Z"
+                          stroke="#21252C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path>
+                      <path
+                          d="M5.33333 7.5H4C3.44772 7.5 3 7.94772 3 8.5V15.6667C3 16.219 3.44771 16.6667 4 16.6667H5.33333C5.88562 16.6667 6.33333 16.2189 6.33333 15.6667V8.5C6.33333 7.94772 5.88562 7.5 5.33333 7.5Z"
+                          stroke="#21252C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path>
+                      <path
+                          d="M17.0003 9.16669H15.667C15.1147 9.16669 14.667 9.6144 14.667 10.1667V15.6667C14.667 16.219 15.1147 16.6667 15.667 16.6667H17.0003C17.5526 16.6667 18.0003 16.219 18.0003 15.6667V10.1667C18.0003 9.6144 17.5526 9.16669 17.0003 9.16669Z"
+                          stroke="#21252C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_1700_69225">
+                        <rect width="20" height="20" fill="white" transform="translate(0.5)"></rect>
+                      </clipPath>
+                    </defs>
+                  </svg>
                 </Tooltip>
               </ToggleGroupItem>
               <ToggleGroupItem :value="Type.WORDCLOUD">
                 <Tooltip :content="$t('dataset.common.visualTypeWordCloud')">
-                  <Baseline/>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="wordCloud"
+                       style="width: 24px;">
+                    <path d="M5.81563 7V8.77143H3.92339V15H2.39681V8.77143H0.5V7H5.81563Z" fill="#21252C"></path>
+                    <path d="M11.4096 13.28V15H6.50986V7H11.3913V8.72H8.03645V10.1029H11.1947V11.8171H8.03645V13.28H11.4096Z" fill="#21252C"></path>
+                    <path d="M17.972 7L15.9015 10.96L17.9948 15H16.2443L14.9645 12.4L13.6847 15H11.9525L14.0458 10.96L11.9799 7H13.7304L14.9828 9.54857L16.2351 7H17.972Z"
+                          fill="#21252C"></path>
+                    <path d="M23.5 7V8.77143H21.6078V15H20.0812V8.77143H18.1844V7H23.5Z" fill="#21252C"></path>
+                    <path
+                        d="M4.94095 17.8V18.73H3.69895V22H2.69695V18.73H1.45195V17.8H4.94095ZM8.61263 21.097V22H5.39663V17.8H8.60063V18.703H6.39863V19.429H8.47163V20.329H6.39863V21.097H8.61263ZM12.92 17.8L11.561 19.879L12.935 22H11.786L10.946 20.635L10.106 22H8.96897L10.343 19.879L8.98697 17.8H10.136L10.958 19.138L11.78 17.8H12.92ZM16.5484 17.8V18.73H15.3064V22H14.3044V18.73H13.0594V17.8H16.5484Z"
+                        fill="#21252C"></path>
+                    <path
+                        d="M13.6175 1.5V2.275H12.5825V5H11.7475V2.275H10.71V1.5H13.6175ZM16.6772 4.2475V5H13.9972V1.5H16.6672V2.2525H14.8322V2.8575H16.5597V3.6075H14.8322V4.2475H16.6772ZM20.2666 1.5L19.1341 3.2325L20.2791 5H19.3216L18.6216 3.8625L17.9216 5H16.9741L18.1191 3.2325L16.9891 1.5H17.9466L18.6316 2.615L19.3166 1.5H20.2666ZM23.2903 1.5V2.275H22.2553V5H21.4203V2.275H20.3828V1.5H23.2903Z"
+                        fill="#21252C"></path>
+                  </svg>
+                </Tooltip>
+              </ToggleGroupItem>
+              <ToggleGroupItem :value="Type.SCATTER">
+                <Tooltip :content="$t('dataset.common.visualTypeScatter')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="scatterChart"
+                       style="width: 24px;">
+                    <path d="M4 4.5V18.5C4 19.0523 4.44772 19.5 5 19.5H20" stroke="#21252C" stroke-width="1.8" stroke-linecap="round"></path>
+                    <circle cx="8.5" cy="15.5" r="1.5" fill="#21252C"></circle>
+                    <circle cx="16" cy="7" r="2" fill="#21252C"></circle>
+                    <circle cx="18" cy="15" r="2" fill="#21252C"></circle>
+                    <circle cx="12.75" cy="12.25" r="2.25" fill="#21252C"></circle>
+                  </svg>
                 </Tooltip>
               </ToggleGroupItem>
             </div>
@@ -72,6 +139,7 @@
           <VisualPieConfigure v-else-if="configuration.type === Type.PIE" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualHistogramConfigure v-else-if="configuration.type === Type.HISTOGRAM" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualWordCloudConfigure v-else-if="configuration.type === Type.WORDCLOUD" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
+          <VisualScatterConfigure v-else-if="configuration.type === Type.SCATTER" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <Alert v-else :title="$t('dataset.common.visualConfigureNotSpecified')"/>
         </div>
       </Card>
@@ -90,7 +158,7 @@ import VisualLine from '@/views/components/visual/components/VisualLine.vue'
 import VisualTable from '@/views/components/visual/components/VisualTable.vue'
 import { defineComponent, PropType } from 'vue'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
-import { AreaChart, BarChart4, BarChartHorizontal, Baseline, LineChart, PieChart, Table } from 'lucide-vue-next'
+import { Table } from 'lucide-vue-next'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import Card from '@/views/ui/card'
@@ -102,6 +170,8 @@ import VisualAreaConfigure from '@/views/components/visual/components/VisualArea
 import VisualPieConfigure from '@/views/components/visual/components/VisualPieConfigure.vue'
 import VisualHistogramConfigure from '@/views/components/visual/components/VisualHistogramConfigure.vue'
 import VisualWordCloudConfigure from '@/views/components/visual/components/VisualWordCloudConfigure.vue'
+import VisualScatter from '@/views/components/visual/components/VisualScatter.vue'
+import VisualScatterConfigure from '@/views/components/visual/components/VisualScatterConfigure.vue'
 
 export default defineComponent({
   name: 'VisualEditor',
@@ -112,6 +182,8 @@ export default defineComponent({
     }
   },
   components: {
+    VisualScatterConfigure,
+    VisualScatter,
     VisualWordCloudConfigure,
     VisualHistogramConfigure,
     VisualPieConfigure,
@@ -122,7 +194,7 @@ export default defineComponent({
     Tooltip,
     RadioGroup, RadioGroupItem,
     ToggleGroup, ToggleGroupItem,
-    Table, Baseline, BarChart4, LineChart, PieChart, AreaChart, BarChartHorizontal,
+    Table,
     CircularLoading,
     Alert,
     VisualWordCloud, VisualHistogram, VisualPie, VisualArea, VisualBar, VisualLine, VisualTable

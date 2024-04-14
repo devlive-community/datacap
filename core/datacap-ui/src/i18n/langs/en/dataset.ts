@@ -60,6 +60,7 @@ export default {
         visualTypePie: 'Pie',
         visualTypeHistogram: 'Histogram',
         visualTypeWordCloud: 'Word Cloud',
+        visualTypeScatter: 'Scatter',
         visualConfigure: 'Visual Configure',
         visualConfigureNotSpecified: 'No configuration items are available',
         visualConfigureXAxis: 'X Axis',
