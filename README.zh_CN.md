@@ -232,7 +232,7 @@ DataCap 可以从任何使用 SQL 的数据存储或数据引擎（ClickHouse、
 
 ---
 
-[DataCap 的扩展文档](https://datacap.edurt.io)
+[DataCap 的扩展文档](https://datacap.devlive.org)
 
 ## 贡献者
 

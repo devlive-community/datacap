@@ -232,7 +232,7 @@ Open the DingTalk (left) or WeChat(right) software and scan the following QR cod
 
 ---
 
-[Extended documentation for DataCap](https://datacap.edurt.io)
+[Extended documentation for DataCap](https://datacap.devlive.org)
 
 ## Contributors
 
