@@ -8,5 +8,6 @@ export enum Type
     HISTOGRAM = ('HISTOGRAM'),
     WORDCLOUD = ('WORDCLOUD'),
     SCATTER = ('SCATTER'),
-    RADAR = ('RADAR')
+    RADAR = ('RADAR'),
+    FUNNEL = ('FUNNEL')
 }

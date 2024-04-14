@@ -15,6 +15,7 @@
           <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD" :configuration="configuration" @change="handlerCommit"/>
           <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="configuration" @change="handlerCommit"/>
           <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="configuration" @change="handlerCommit"/>
+          <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL" :configuration="configuration" @change="handlerCommit"/>
         </div>
       </div>
     </div>
@@ -138,6 +139,18 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
+              <ToggleGroupItem :value="Type.FUNNEL">
+                <Tooltip :content="$t('dataset.common.visualTypeFunnel')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="funnelChart"
+                       style="width: 24px;">
+                    <path
+                        d="M10.7172 18.1334C11.3011 19.0968 12.6989 19.0968 13.2828 18.1334L20.6197 6.02745C21.2256 5.0278 20.5058 3.75 19.3369 3.75H4.66307C3.49415 3.75 2.77442 5.02779 3.38027 6.02745L10.7172 18.1334Z"
+                        stroke="#21252C" stroke-width="1.8"></path>
+                    <path d="M4.52637 8.25H19.5264" stroke="#21252C" stroke-width="1.8"></path>
+                    <path d="M7.52637 12.25H16.5264" stroke="#21252C" stroke-width="1.8"></path>
+                  </svg>
+                </Tooltip>
+              </ToggleGroupItem>
             </div>
           </ToggleGroup>
         </div>
@@ -146,16 +159,15 @@
         <template #title>{{ $t('dataset.common.visualConfigure') }}</template>
         <CircularLoading v-if="loading" :show="loading"/>
         <div v-else-if="configuration">
-          <VisualLineConfigure v-if="configuration.type === Type.LINE" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
+          <Alert v-if="!configuration.type" :title="$t('dataset.common.visualConfigureNotSpecified')"/>
+          <VisualLineConfigure v-else-if="configuration.type === Type.LINE" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualBarConfigure v-else-if="configuration.type === Type.BAR" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualAreaConfigure v-else-if="configuration.type === Type.AREA" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualPieConfigure v-else-if="configuration.type === Type.PIE" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualHistogramConfigure v-else-if="configuration.type === Type.HISTOGRAM" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualWordCloudConfigure v-else-if="configuration.type === Type.WORDCLOUD" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualScatterConfigure v-else-if="configuration.type === Type.SCATTER" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
-          <VisualConfigure v-else-if="configuration.type === Type.RADAR" :configuration="configuration" :fields="forwardFiled(configuration.type)"
-                           @change="configuration.chartConfigure = $event"/>
-          <Alert v-else :title="$t('dataset.common.visualConfigureNotSpecified')"/>
+          <VisualConfigure v-else :configuration="configuration" :fields="forwardFiled(configuration.type)" @change="configuration.chartConfigure = $event"/>
         </div>
       </Card>
     </div>
@@ -189,6 +201,7 @@ import VisualScatter from '@/views/components/visual/components/VisualScatter.vu
 import VisualScatterConfigure from '@/views/components/visual/components/VisualScatterConfigure.vue'
 import VisualConfigure from '@/views/components/visual/components/VisualConfigure.vue'
 import VisualRadar from '@/views/components/visual/components/VisualRadar.vue'
+import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
 
 export default defineComponent({
   name: 'VisualEditor',
@@ -199,6 +212,7 @@ export default defineComponent({
     }
   },
   components: {
+    VisualFunnel,
     VisualRadar,
     VisualConfigure,
     VisualScatterConfigure,
@@ -235,11 +249,15 @@ export default defineComponent({
     forwardFiled(type: Type): ChartField[]
     {
       const fields: Array<ChartField> = new Array<ChartField>()
-      const categoryField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryField'), field: 'xAxis', value: undefined }
-      const valueField: ChartField = { label: this.$t('dataset.common.visualConfigureValueField'), field: 'yAxis', value: undefined }
+      const categoryField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryField'), field: 'xAxis' }
+      const valueField: ChartField = { label: this.$t('dataset.common.visualConfigureValueField'), field: 'yAxis' }
+      const showLegend: ChartField = { label: this.$t('dataset.common.visualConfigureShowLegend'), field: 'showLegend', type: 'SWITCH' }
       switch (type) {
         case Type.RADAR:
           fields.push(categoryField, valueField)
+          break
+        case Type.FUNNEL:
+          fields.push(categoryField, valueField, showLegend)
           break
       }
       return fields

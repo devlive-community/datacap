@@ -5,12 +5,14 @@
         <div class="flex items-center">
           <FormLabel class="mr-1 w-2/3 text-right">{{ item.label }}</FormLabel>
           <FormControl>
-            <Select v-model="formState[item.field as keyof IChart] as string" :disabled="configuration.headers.length === 0">
+            <Switch v-if="item.type === 'SWITCH'" :default-checked="formState[item.field as keyof IChart] as any"
+                    @update:checked="formState[item.field as keyof IChart] = $event as any"/>
+            <Select v-else v-model="formState[item.field as keyof IChart] as string" :disabled="configuration.headers.length === 0">
               <SelectTrigger class="w-full">
                 <SelectValue :placeholder="`Select ${item.label}`"/>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem v-if="item.defaultValues" v-for="data in item.defaultValues" :value="data as string">{{ data }}</SelectItem>
+                <SelectItem v-if="item.values" v-for="data in item.values" :value="data as string">{{ data }}</SelectItem>
                 <SelectItem v-else v-for="item in configuration.headers" :value="item as string">{{ item }}</SelectItem>
               </SelectContent>
             </Select>
@@ -27,10 +29,12 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ChartField, Configuration, IChart } from '@/views/components/visual/Configuration.ts'
 import { cloneDeep, keys } from 'lodash'
+import { Switch } from '@/components/ui/switch'
 
 export default defineComponent({
   name: 'VisualConfigure',
   components: {
+    Switch,
     SelectGroup, SelectTrigger, SelectContent, SelectItem, Select, SelectLabel, SelectValue,
     FormDescription, FormControl, FormLabel, FormField, FormItem
   },

@@ -29,14 +29,14 @@ export interface IChart
     yAxis?: string
     series?: string
     outerRadius?: number[]
-    invalidType?: string
+    invalidType?: string,
+    showLegend?: boolean
 }
 
 export interface ChartField
 {
     label?: string
     field?: string
-    value?: any
     type?: string
-    defaultValues?: any[]
+    values?: any[]
 }
