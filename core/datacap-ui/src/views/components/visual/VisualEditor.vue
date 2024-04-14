@@ -16,6 +16,7 @@
           <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="configuration" @change="handlerCommit"/>
           <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="configuration" @change="handlerCommit"/>
           <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL" :configuration="configuration" @change="handlerCommit"/>
+          <VisualGauge v-else-if="configuration?.type === Type.GAUGE" :configuration="configuration" @change="handlerCommit"/>
         </div>
       </div>
     </div>
@@ -151,6 +152,16 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
+              <ToggleGroupItem :value="Type.GAUGE">
+                <Tooltip :content="$t('dataset.common.visualTypeGauge')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="gauge"
+                       style="width: 24px;">
+                    <circle cx="12" cy="12" r="9.5" stroke="#21252C" stroke-width="1.8"></circle>
+                    <circle cx="12" cy="16" r="2" stroke="#21252C" stroke-width="1.8"></circle>
+                    <path d="M12.9 7C12.9 6.50294 12.4971 6.1 12 6.1C11.5029 6.1 11.1 6.50294 11.1 7H12.9ZM11.1 7V14H12.9V7H11.1Z" fill="#21252C"></path>
+                  </svg>
+                </Tooltip>
+              </ToggleGroupItem>
             </div>
           </ToggleGroup>
         </div>
@@ -159,7 +170,7 @@
         <template #title>{{ $t('dataset.common.visualConfigure') }}</template>
         <CircularLoading v-if="loading" :show="loading"/>
         <div v-else-if="configuration">
-          <Alert v-if="!configuration.type" :title="$t('dataset.common.visualConfigureNotSpecified')"/>
+          <Alert v-if="configuration.type === Type.TABLE" :title="$t('dataset.common.visualConfigureNotSpecified')"/>
           <VisualLineConfigure v-else-if="configuration.type === Type.LINE" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualBarConfigure v-else-if="configuration.type === Type.BAR" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualAreaConfigure v-else-if="configuration.type === Type.AREA" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
@@ -202,6 +213,7 @@ import VisualScatterConfigure from '@/views/components/visual/components/VisualS
 import VisualConfigure from '@/views/components/visual/components/VisualConfigure.vue'
 import VisualRadar from '@/views/components/visual/components/VisualRadar.vue'
 import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
+import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
 
 export default defineComponent({
   name: 'VisualEditor',
@@ -212,6 +224,7 @@ export default defineComponent({
     }
   },
   components: {
+    VisualGauge,
     VisualFunnel,
     VisualRadar,
     VisualConfigure,
@@ -252,12 +265,19 @@ export default defineComponent({
       const categoryField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryField'), field: 'xAxis' }
       const valueField: ChartField = { label: this.$t('dataset.common.visualConfigureValueField'), field: 'yAxis' }
       const showLegend: ChartField = { label: this.$t('dataset.common.visualConfigureShowLegend'), field: 'showLegend', type: 'SWITCH' }
+      const outerRadius: ChartField = { label: this.$t('dataset.common.visualConfigureOuterRadius'), field: 'outerRadius', type: 'SLIDER', value: 0.8, min: 0.1, max: 1, step: 0.1 }
+      const innerRadius: ChartField = { label: this.$t('dataset.common.visualConfigureInnerRadius'), field: 'innerRadius', type: 'SLIDER', value: 0.5, min: 0.1, max: 1, step: 0.1 }
+      const startAngle: ChartField = { label: this.$t('dataset.common.visualConfigureStartAngle'), field: 'startAngle', type: 'SLIDER', value: -180, min: -360, max: 360, step: 1 }
+      const endAngle: ChartField = { label: this.$t('dataset.common.visualConfigureEndAngle'), field: 'endAngle', type: 'SLIDER', value: 0, min: -360, max: 360, step: 1 }
       switch (type) {
         case Type.RADAR:
           fields.push(categoryField, valueField)
           break
         case Type.FUNNEL:
           fields.push(categoryField, valueField, showLegend)
+          break
+        case Type.GAUGE:
+          fields.push(categoryField, valueField, outerRadius, innerRadius, startAngle, endAngle)
           break
       }
       return fields

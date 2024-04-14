@@ -29,8 +29,11 @@ export interface IChart
     yAxis?: string
     series?: string
     outerRadius?: number[]
-    invalidType?: string,
+    innerRadius?: number[]
+    invalidType?: string
     showLegend?: boolean
+    startAngle?: number[]
+    endAngle?: number[]
 }
 
 export interface ChartField
@@ -39,4 +42,8 @@ export interface ChartField
     field?: string
     type?: string
     values?: any[]
+    value?: any
+    min?: number
+    max?: number
+    step?: number
 }

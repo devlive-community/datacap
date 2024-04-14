@@ -1,23 +1,25 @@
 <template>
   <div v-if="configuration && formState" class="space-y-2">
-    <FormField v-for="item in fields" class="flex items-center" :name="item.field as string">
-      <FormItem class="flex-1">
-        <div class="flex items-center">
-          <FormLabel class="mr-1 w-2/3 text-right">{{ item.label }}</FormLabel>
-          <FormControl>
-            <Switch v-if="item.type === 'SWITCH'" :default-checked="formState[item.field as keyof IChart] as any"
-                    @update:checked="formState[item.field as keyof IChart] = $event as any"/>
-            <Select v-else v-model="formState[item.field as keyof IChart] as string" :disabled="configuration.headers.length === 0">
-              <SelectTrigger class="w-full">
-                <SelectValue :placeholder="`Select ${item.label}`"/>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem v-if="item.values" v-for="data in item.values" :value="data as string">{{ data }}</SelectItem>
-                <SelectItem v-else v-for="item in configuration.headers" :value="item as string">{{ item }}</SelectItem>
-              </SelectContent>
-            </Select>
-          </FormControl>
-        </div>
+    <FormField v-for="item in fields" :name="item.field as string">
+      <FormItem>
+        <FormLabel>{{ item.label }}</FormLabel>
+        <FormControl>
+          <Switch v-if="item.type === 'SWITCH'" class="ml-2" :default-checked="formState[item.field as keyof IChart] as any"
+                  @update:checked="formState[item.field as keyof IChart] = $event as any"/>
+          <Tooltip v-else-if="item.type === 'SLIDER'" :content="formState[item.field as keyof IChart] ? formState[item.field as keyof IChart] : [item.value] as any">
+            <Slider v-model="formState[item.field as keyof IChart] as any" class="ml-2 w-[95%]" :default-value="[item.value]" :min="item.min" :max="item.max" :step="item.step"
+                    @update:modelValue="formState[item.field as keyof IChart] = $event as any"/>
+          </Tooltip>
+          <Select v-else v-model="formState[item.field as keyof IChart] as string" :disabled="configuration.headers.length === 0">
+            <SelectTrigger class="w-full">
+              <SelectValue :placeholder="`Select ${item.label}`"/>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem v-if="item.values" v-for="data in item.values" :value="data as string">{{ data }}</SelectItem>
+              <SelectItem v-else v-for="item in configuration.headers" :value="item as string">{{ item }}</SelectItem>
+            </SelectContent>
+          </Select>
+        </FormControl>
       </FormItem>
     </FormField>
   </div>
@@ -30,13 +32,17 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { ChartField, Configuration, IChart } from '@/views/components/visual/Configuration.ts'
 import { cloneDeep, keys } from 'lodash'
 import { Switch } from '@/components/ui/switch'
+import { Slider } from '@/components/ui/slider'
+import Tooltip from '@/views/ui/tooltip'
 
 export default defineComponent({
   name: 'VisualConfigure',
   components: {
+    Slider,
     Switch,
     SelectGroup, SelectTrigger, SelectContent, SelectItem, Select, SelectLabel, SelectValue,
-    FormDescription, FormControl, FormLabel, FormField, FormItem
+    FormDescription, FormControl, FormLabel, FormField, FormItem,
+    Tooltip
   },
   props: {
     configuration: {

@@ -9,5 +9,6 @@ export enum Type
     WORDCLOUD = ('WORDCLOUD'),
     SCATTER = ('SCATTER'),
     RADAR = ('RADAR'),
-    FUNNEL = ('FUNNEL')
+    FUNNEL = ('FUNNEL'),
+    GAUGE = ('GAUGE'),
 }

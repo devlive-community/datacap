@@ -14,6 +14,7 @@
       <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
       <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
       <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualGauge v-else-if="configuration?.type === Type.GAUGE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
     </div>
   </div>
 </template>
@@ -35,6 +36,7 @@ import { defineComponent } from 'vue'
 import VisualRadar from '@/views/components/visual/components/VisualRadar.vue'
 import VisualScatter from '@/views/components/visual/components/VisualScatter.vue'
 import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
+import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
 
 export default defineComponent({
   name: 'VisualView',
@@ -45,6 +47,7 @@ export default defineComponent({
     }
   },
   components: {
+    VisualGauge,
     VisualFunnel,
     VisualScatter,
     VisualRadar,
