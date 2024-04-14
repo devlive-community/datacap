@@ -3,49 +3,18 @@
     <CircularLoading v-if="loading"
                      :show="loading">
     </CircularLoading>
-    <div v-else>
-      <VisualTable v-if="localConfiguration && configuration?.type === Type.TABLE"
-                   :configuration="localConfiguration"
-                   :submitted="false"
-                   :width="width"
-                   :height="height">
-      </VisualTable>
-      <VisualLine v-else-if="localConfiguration && configuration?.type === Type.LINE"
-                  :configuration="localConfiguration"
-                  :submitted="false"
-                  :width="width"
-                  :height="height">
-      </VisualLine>
-      <VisualBar v-else-if="localConfiguration && configuration?.type === Type.BAR"
-                 :configuration="localConfiguration"
-                 :submitted="false"
-                 :width="width"
-                 :height="height">
-      </VisualBar>
-      <VisualArea v-else-if="localConfiguration && configuration?.type === Type.AREA"
-                  :configuration="localConfiguration"
-                  :submitted="false"
-                  :width="width"
-                  :height="height">
-      </VisualArea>
-      <VisualPie v-else-if="localConfiguration && configuration?.type === Type.PIE"
-                 :configuration="localConfiguration"
-                 :submitted="false"
-                 :width="width"
-                 :height="height">
-      </VisualPie>
-      <VisualHistogram v-else-if="localConfiguration && configuration?.type === Type.HISTOGRAM"
-                       :configuration="localConfiguration"
-                       :submitted="false"
-                       :width="width"
-                       :height="height">
-      </VisualHistogram>
-      <VisualWordCloud v-else-if="localConfiguration && configuration?.type === Type.WORDCLOUD"
-                       :configuration="localConfiguration"
-                       :submitted="false"
-                       :width="width"
-                       :height="height">
-      </VisualWordCloud>
+    <div v-else-if="localConfiguration">
+      <VisualTable v-if="configuration?.type === Type.TABLE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualLine v-else-if="configuration?.type === Type.LINE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualBar v-else-if="configuration?.type === Type.BAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualArea v-else-if="configuration?.type === Type.AREA" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualPie v-else-if="configuration?.type === Type.PIE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <VisualGauge v-else-if="configuration?.type === Type.GAUGE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
     </div>
   </div>
 </template>
@@ -64,6 +33,10 @@ import { ToastUtils } from '@/utils/toast'
 import DatasetService from '@/services/dataset'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { defineComponent } from 'vue'
+import VisualRadar from '@/views/components/visual/components/VisualRadar.vue'
+import VisualScatter from '@/views/components/visual/components/VisualScatter.vue'
+import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
+import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
 
 export default defineComponent({
   name: 'VisualView',
@@ -74,6 +47,10 @@ export default defineComponent({
     }
   },
   components: {
+    VisualGauge,
+    VisualFunnel,
+    VisualScatter,
+    VisualRadar,
     CircularLoading,
     VisualWordCloud, VisualHistogram, VisualPie, VisualArea, VisualBar, VisualLine, VisualTable
   },
