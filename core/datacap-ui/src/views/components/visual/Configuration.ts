@@ -31,3 +31,12 @@ export interface IChart
     outerRadius?: number[]
     invalidType?: string
 }
+
+export interface ChartField
+{
+    label?: string
+    field?: string
+    value?: any
+    type?: string
+    defaultValues?: any[]
+}

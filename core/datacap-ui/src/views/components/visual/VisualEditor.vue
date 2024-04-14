@@ -14,6 +14,7 @@
           <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM" :configuration="configuration" @change="handlerCommit"/>
           <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD" :configuration="configuration" @change="handlerCommit"/>
           <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="configuration" @change="handlerCommit"/>
+          <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="configuration" @change="handlerCommit"/>
         </div>
       </div>
     </div>
@@ -125,6 +126,18 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
+              <ToggleGroupItem :value="Type.RADAR">
+                <Tooltip :content="$t('dataset.common.visualTypeRadar')">
+                  <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M1.57045 8.16646L10.3949 1.45986C10.7525 1.18808 11.2475 1.18808 11.6051 1.45986L20.4296 8.16646C20.7706 8.42565 20.9087 8.87328 20.7729 9.27956L17.4187 19.3169C17.2824 19.7249 16.9004 20 16.4703 20H5.52971C5.09956 20 4.7176 19.7249 4.58127 19.3169L1.22709 9.27956C1.09132 8.87328 1.2294 8.42565 1.57045 8.16646Z"
+                        stroke="#21252C" stroke-width="1.7" stroke-linecap="round"></path>
+                    <path
+                        d="M6.11243 9.82863L10.8826 6.2478C10.951 6.19642 11.0446 6.19428 11.1153 6.24249L16.3379 9.80252C16.4279 9.8639 16.4522 9.98606 16.3926 10.0773L13.5468 14.4281C13.5169 14.4739 13.4696 14.5054 13.4158 14.5153L7.91428 15.5328C7.81444 15.5513 7.71661 15.492 7.68675 15.395L6.04134 10.0474C6.01654 9.96678 6.04498 9.87927 6.11243 9.82863Z"
+                        stroke="#21252C" stroke-width="1.7" stroke-linecap="round"></path>
+                  </svg>
+                </Tooltip>
+              </ToggleGroupItem>
             </div>
           </ToggleGroup>
         </div>
@@ -140,6 +153,8 @@
           <VisualHistogramConfigure v-else-if="configuration.type === Type.HISTOGRAM" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualWordCloudConfigure v-else-if="configuration.type === Type.WORDCLOUD" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
           <VisualScatterConfigure v-else-if="configuration.type === Type.SCATTER" :configuration="configuration" @change="configuration.chartConfigure = $event"/>
+          <VisualConfigure v-else-if="configuration.type === Type.RADAR" :configuration="configuration" :fields="forwardFiled(configuration.type)"
+                           @change="configuration.chartConfigure = $event"/>
           <Alert v-else :title="$t('dataset.common.visualConfigureNotSpecified')"/>
         </div>
       </Card>
@@ -152,7 +167,7 @@ import VisualWordCloud from '@/views/components/visual/components/VisualWordClou
 import VisualHistogram from '@/views/components/visual/components/VisualHistogram.vue'
 import VisualPie from '@/views/components/visual/components/VisualPie.vue'
 import VisualArea from '@/views/components/visual/components/VisualArea.vue'
-import { Configuration } from './Configuration'
+import { ChartField, Configuration } from './Configuration'
 import VisualBar from '@/views/components/visual/components/VisualBar.vue'
 import VisualLine from '@/views/components/visual/components/VisualLine.vue'
 import VisualTable from '@/views/components/visual/components/VisualTable.vue'
@@ -172,6 +187,8 @@ import VisualHistogramConfigure from '@/views/components/visual/components/Visua
 import VisualWordCloudConfigure from '@/views/components/visual/components/VisualWordCloudConfigure.vue'
 import VisualScatter from '@/views/components/visual/components/VisualScatter.vue'
 import VisualScatterConfigure from '@/views/components/visual/components/VisualScatterConfigure.vue'
+import VisualConfigure from '@/views/components/visual/components/VisualConfigure.vue'
+import VisualRadar from '@/views/components/visual/components/VisualRadar.vue'
 
 export default defineComponent({
   name: 'VisualEditor',
@@ -182,6 +199,8 @@ export default defineComponent({
     }
   },
   components: {
+    VisualRadar,
+    VisualConfigure,
     VisualScatterConfigure,
     VisualScatter,
     VisualWordCloudConfigure,
@@ -212,6 +231,18 @@ export default defineComponent({
     handlerCommit(value: any)
     {
       this.$emit('commitOptions', value)
+    },
+    forwardFiled(type: Type): ChartField[]
+    {
+      const fields: Array<ChartField> = new Array<ChartField>()
+      const categoryField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryField'), field: 'xAxis', value: undefined }
+      const valueField: ChartField = { label: this.$t('dataset.common.visualConfigureValueField'), field: 'yAxis', value: undefined }
+      switch (type) {
+        case Type.RADAR:
+          fields.push(categoryField, valueField)
+          break
+      }
+      return fields
     }
   }
 })

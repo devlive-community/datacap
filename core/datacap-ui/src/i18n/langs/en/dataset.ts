@@ -61,6 +61,7 @@ export default {
         visualTypeHistogram: 'Histogram',
         visualTypeWordCloud: 'Word Cloud',
         visualTypeScatter: 'Scatter',
+        visualTypeRadar: 'Radar',
         visualConfigure: 'Visual Configure',
         visualConfigureNotSpecified: 'No configuration items are available',
         visualConfigureXAxis: 'X Axis',
