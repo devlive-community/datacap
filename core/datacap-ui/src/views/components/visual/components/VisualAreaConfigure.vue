@@ -1,18 +1,18 @@
 <template>
-  <div>
+  <div v-if="configuration && formState" class="space-y-2">
     <FormField class="flex items-center" name="xAxis">
       <FormItem class="flex-1">
         <div class="flex items-center">
           <FormLabel class="mr-1 w-2/3 text-right">
-            {{ $t('dataset.common.visualConfigureCategoryField') }}
+            {{ $t('dataset.common.visualConfigureXAxis') }}
           </FormLabel>
           <FormControl>
-            <Select v-model="formState.xAxis" :disabled="columns.length === 0">
+            <Select v-model="formState.xAxis" :disabled="configuration.headers.length === 0">
               <SelectTrigger class="w-full">
                 <SelectValue placeholder="Select"/>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem v-for="item in columns" :value="item as string">
+                <SelectItem v-for="item in configuration.headers" :value="item as string">
                   {{ item }}
                 </SelectItem>
               </SelectContent>
@@ -25,36 +25,15 @@
       <FormItem class="flex-1">
         <div class="flex items-center mt-2 text-right">
           <FormLabel class="mr-1 w-2/3">
-            {{ $t('dataset.common.visualConfigureValueField') }}
+            {{ $t('dataset.common.visualConfigureYAxis') }}
           </FormLabel>
           <FormControl>
-            <Select v-model="formState.yAxis" :disabled="columns.length === 0">
+            <Select v-model="formState.yAxis" :disabled="configuration.headers.length === 0">
               <SelectTrigger class="w-full">
                 <SelectValue placeholder="Select"/>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem v-for="item in columns" :value="item as string">
-                  {{ item }}
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </FormControl>
-        </div>
-      </FormItem>
-    </FormField>
-    <FormField class="flex items-center" name="series">
-      <FormItem class="flex-1">
-        <div class="flex items-center mt-2 text-right">
-          <FormLabel class="mr-1 w-2/3">
-            {{ $t('dataset.common.visualConfigureSeriesField') }}
-          </FormLabel>
-          <FormControl>
-            <Select v-model="formState.series" :disabled="columns.length === 0">
-              <SelectTrigger class="w-full">
-                <SelectValue placeholder="Select"/>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem v-for="item in columns" :value="item as string">
+                <SelectItem v-for="item in configuration.headers" :value="item as string">
                   {{ item }}
                 </SelectItem>
               </SelectContent>
@@ -70,17 +49,18 @@
 import { defineComponent } from 'vue'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Configuration, IChart } from '@/views/components/visual/Configuration.ts'
+import { cloneDeep, keys } from 'lodash'
 
 export default defineComponent({
-  name: 'DatasetVisualConfigureWordCloud',
+  name: 'VisualAreaConfigure',
   components: {
     SelectGroup, SelectTrigger, SelectContent, SelectItem, Select, SelectLabel, SelectValue,
     FormDescription, FormControl, FormLabel, FormField, FormItem
   },
   props: {
-    columns: {
-      type: Array,
-      default: () => []
+    configuration: {
+      type: Object as () => Configuration
     }
   },
   watch: {
@@ -92,17 +72,25 @@ export default defineComponent({
   data()
   {
     return {
-      formState: {
+      formState: null as IChart | null
+    }
+  },
+  created()
+  {
+    if (this.configuration && keys(this.configuration.chartConfigure).length > 0) {
+      this.formState = cloneDeep(this.configuration.chartConfigure) as IChart
+    }
+    else {
+      this.formState = {
         xAxis: undefined,
-        yAxis: undefined,
-        series: undefined
+        yAxis: undefined
       }
     }
   },
   methods: {
     handlerCommit()
     {
-      this.$emit('commit', this.formState)
+      this.$emit('change', this.formState)
     }
   }
 })
