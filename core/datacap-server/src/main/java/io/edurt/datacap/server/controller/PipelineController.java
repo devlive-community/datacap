@@ -1,7 +1,6 @@
-package io.edurt.datacap.server.controller.user;
+package io.edurt.datacap.server.controller;
 
 import io.edurt.datacap.common.response.CommonResponse;
-import io.edurt.datacap.server.controller.BaseController;
 import io.edurt.datacap.service.body.PipelineBody;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.repository.PipelineRepository;

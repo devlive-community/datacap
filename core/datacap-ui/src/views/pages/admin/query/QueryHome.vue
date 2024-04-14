@@ -139,6 +139,7 @@ import DataStructureLazyTree from '@/views/components/tree/DataStructureLazyTree
 import { SnippetModel, SnippetRequest } from '@/model/snippet'
 import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
+import { FilterModel } from '@/model/filter.ts'
 import Editor = Ace.Editor
 
 interface EditorInstance
@@ -226,7 +227,7 @@ export default defineComponent({
                             if (response.status && response.data?.code) {
                               const instance = this.selectEditor.editorMaps.get(this.selectEditor.activeKey as string)
                               if (instance) {
-                                instance.instance?.setValue(response.data.code)
+                                instance.instance?.setValue(response.data.context)
                               }
                             }
                           })
@@ -330,7 +331,8 @@ export default defineComponent({
         editor.completers = []
         const that = this
         const client = new HttpUtils().getAxios()
-        client.all([FunctionService.getByPlugin(language.toLowerCase()), SnippetService.getSnippets(0, 100000)])
+        const filter = new FilterModel()
+        client.all([FunctionService.getByPlugin(language.toLowerCase()), SnippetService.getAll(filter)])
               .then(client.spread((keyword: any, snippet: any) => {
                 if (keyword.status) {
                   const keywordCompleter = {
@@ -340,11 +342,11 @@ export default defineComponent({
                         return {
                           value: item.example,
                           caption: item.name,
-                          meta: that.$t('common.' + item.type.toLowerCase()),
+                          meta: that.$t('function.common.' + item.type.toLowerCase()),
                           docHTML: '<div>' +
                               '<strong>' + item.name + '</strong><br/><hr/>'
                               + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
-                              + that.$t('common.example') + ':\n' + item.example + '<br/><hr/>'
+                              + that.$t('function.common.example') + ':\n' + item.example + '<br/><hr/>'
                               + '</div>'
                         }
                       }))
@@ -356,9 +358,9 @@ export default defineComponent({
                   const snippetCompleter = {
                     // @ts-ignore
                     getCompletions: function (editor, session, pos, prefix, callback) {
-                      return callback(null, snippet.data.content.map(function (item: { code: any; name: string; description: string; }) {
+                      return callback(null, snippet.data.content.map(function (item: { context: any; name: string; description: string; }) {
                         return {
-                          value: item.code,
+                          value: item.context,
                           caption: item.name,
                           meta: that.$t('common.snippet'),
                           docHTML: '<div>' +

@@ -71,6 +71,13 @@ WHERE `code` IS NULL;
 RENAME
 TABLE `snippet` TO `datacap_snippet`;
 
+ALTER TABLE `datacap_snippet`
+    CHANGE `code` `context` TEXT;
+
+ALTER TABLE `datacap_snippet`
+    ADD COLUMN `code` VARCHAR(100),
+    ADD COLUMN `active` BOOLEAN DEFAULT TRUE;
+
 UPDATE `datacap_snippet`
 SET `code` = REPLACE(UUID(), '-', '')
 WHERE `code` IS NULL;

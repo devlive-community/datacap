@@ -163,6 +163,7 @@
         <redis.version>3.8.0</redis.version>
         <testcontainers.version>1.19.5</testcontainers.version>
         <assembly-plugin.version>3.6.0</assembly-plugin.version>
+        <dep.reflections.version>0.10.2</dep.reflections.version>
         <!-- datacap plugin dependency -->
         <datacap.pgsql.version>42.7.3</datacap.pgsql.version>
         <datacap.qiniu.version>7.15.0</datacap.qiniu.version>
@@ -326,6 +327,11 @@
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-runtime</artifactId>
                 <version>${dep.antlr4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${dep.reflections.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

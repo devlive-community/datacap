@@ -38,6 +38,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -74,7 +75,8 @@ public class PipelineServiceImpl
     @Override
     public CommonResponse<PageEntity> getAll(BaseRepository repository1, FilterBody filter)
     {
-        return CommonResponse.success(repository.findAllByUser(UserDetailsService.getUser(), PageRequestAdapter.of(filter)));
+        Pageable pageable = PageRequestAdapter.of(filter);
+        return CommonResponse.success(PageEntity.build(repository.findAllByUser(UserDetailsService.getUser(), pageable)));
     }
 
     @Override

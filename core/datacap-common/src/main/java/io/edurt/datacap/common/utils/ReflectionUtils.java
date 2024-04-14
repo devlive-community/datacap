@@ -1,0 +1,47 @@
+package io.edurt.datacap.common.utils;
+
+import lombok.extern.slf4j.Slf4j;
+
+import java.lang.reflect.Field;
+
+@Slf4j
+public class ReflectionUtils
+{
+    /**
+     * Checks if the given object has a field with the specified name.
+     *
+     * @param obj the object to inspect
+     * @param fieldName the name of the field to check for
+     * @return true if the field exists, false otherwise
+     */
+    public static boolean hasField(Object obj, String fieldName)
+    {
+        try {
+            obj.getClass().getDeclaredField(fieldName);
+            return true;
+        }
+        catch (NoSuchFieldException e) {
+            log.warn("Has field exception", e);
+            return false;
+        }
+    }
+
+    /**
+     * Sets the value of a field in an object using reflection.
+     *
+     * @param obj the object whose field value will be set
+     * @param fieldName the name of the field to set
+     * @param value the value to set in the field
+     */
+    public static void setFieldValue(Object obj, String fieldName, Object value)
+    {
+        try {
+            Field field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(obj, value);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e) {
+            log.warn("Set field value exception", e);
+        }
+    }
+}

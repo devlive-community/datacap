@@ -6,6 +6,7 @@ export interface SnippetModel
     code?: string
     createTime?: string
     updateTime?: string
+    context?: string
 }
 
 export class SnippetRequest
@@ -15,7 +16,7 @@ export class SnippetRequest
         return {
             name: undefined,
             description: undefined,
-            code: ''
+            context: ''
         }
     }
 }

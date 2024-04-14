@@ -74,6 +74,6 @@ public abstract class BaseController<T extends BaseEntity>
     @GetMapping(value = "info/{code}")
     public CommonResponse<T> getByCode(@PathVariable(value = "code") String code)
     {
-        return service.findByCode(repository, code);
+        return service.getByCode(repository, code);
     }
 }
