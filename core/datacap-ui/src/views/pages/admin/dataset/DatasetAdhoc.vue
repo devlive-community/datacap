@@ -121,33 +121,42 @@
       <AlertDialogHeader>
         <AlertDialogTitle class="border-b -mt-4 pb-2">{{ $t('common.configure') }}</AlertDialogTitle>
       </AlertDialogHeader>
-      <FormField class="flex items-center" name="name">
-        <FormItem class="flex-1">
-          <div class="flex items-center">
+      <div class="space-y-2">
+        <FormField name="name">
+          <FormItem>
             <FormLabel class="mr-1 w-20 text-right">
               {{ $t('common.name') }}
             </FormLabel>
             <FormControl>
               <Input v-model="formState.name"/>
             </FormControl>
-          </div>
-        </FormItem>
-      </FormField>
-      <FormField class="flex items-center" name="build">
-        <FormItem class="flex-1">
-          <div class="flex items-center">
+          </FormItem>
+        </FormField>
+        <FormField name="description">
+          <FormItem>
             <FormLabel class="mr-1 w-20 text-right">
+              {{ $t('common.description') }}
+            </FormLabel>
+            <FormControl>
+              <Textarea v-model="formState.description"/>
+            </FormControl>
+          </FormItem>
+        </FormField>
+        <FormField name="build">
+          <FormItem>
+            <FormLabel>
               {{ $t('dataset.common.continuousBuild') }}
+              <br/>
             </FormLabel>
             <FormControl>
               <Switch :value="formState.build" @changeValue="formState.build = $event"/>
             </FormControl>
-          </div>
-        </FormItem>
-      </FormField>
+          </FormItem>
+        </FormField>
+      </div>
       <AlertDialogFooter class="-mb-4 border-t pt-2">
-        <Button @click="formState.visible = false">{{ $t('common.cancel') }}</Button>
-        <Button :disabled="!formState.name" @click="handlerPublish">
+        <Button variant="destructive" @click="formState.visible = false">{{ $t('common.cancel') }}</Button>
+        <Button :disabled="!formState.name || published" @click="handlerPublish">
           <Loader2 v-if="published" class="w-full justify-center animate-spin"/>
           {{ $t('common.publish') }}
         </Button>
@@ -184,6 +193,7 @@ import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader }
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Select } from '@/components/ui/select'
 import Switch from '@/views/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 
 export default defineComponent({
   name: 'DatasetAdhoc',
@@ -198,6 +208,7 @@ export default defineComponent({
     }
   },
   components: {
+    Textarea,
     Switch,
     FormField,
     FormControl,
@@ -231,7 +242,7 @@ export default defineComponent({
       dimensions: [],
       filters: [],
       configure: {
-        columns: [],
+        columns: [] as any[],
         limit: 1000
       },
       configuration: null as Configuration | null,
@@ -250,6 +261,7 @@ export default defineComponent({
       formState: {
         visible: false,
         name: '',
+        description: '',
         build: false
       },
       published: false,
@@ -304,7 +316,7 @@ export default defineComponent({
     {
       // Set the mode to: FILTER
       this.filters.forEach((item: { mode: ColumnType; }) => item.mode = ColumnType.FILTER)
-      this.configure.columns = [...this.metrics, ...this.dimensions, ...this.filters]
+      this.configure.columns = [...this.splitColumns(this.metrics), ...this.splitColumns(this.dimensions), ...this.splitColumns(this.filters)]
       this.handlerAdhoc()
     },
     handlerAdhoc()
@@ -399,7 +411,8 @@ export default defineComponent({
         dataset: {
           id: obj.dataset.id
         },
-        query: JSON.stringify(this.configure)
+        query: JSON.stringify(this.configure),
+        description: this.formState.description
       }
       if (this.id) {
         configure.id = this.id
@@ -439,6 +452,22 @@ export default defineComponent({
         const cloneValue = cloneDeep(originalValue)
         originalColumns[index] = Object.assign(originalValue, originalColumns[index], cloneValue)
       }
+    },
+    splitColumns(original: any[]): any[]
+    {
+      const array: any[] = []
+      original.forEach((item: { id: number; mode: ColumnType; aliasName: string; expression: string; name: string; function: string; value: string; order: string; }) => array.push(
+          {
+            id: item.id,
+            mode: item.mode,
+            aliasName: item.aliasName,
+            expression: item.expression,
+            name: item.name,
+            function: item.function,
+            value: item.value,
+            order: item.order
+          }))
+      return array
     }
   }
 })

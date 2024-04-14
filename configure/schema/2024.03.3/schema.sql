@@ -175,3 +175,6 @@ WHERE `code` IS NULL;
 
 ALTER TABLE `datacap_source_query`
     ADD COLUMN `home` VARCHAR(500);
+
+ALTER TABLE `datacap_report`
+    ADD COLUMN `description` VARCHAR(2000);
