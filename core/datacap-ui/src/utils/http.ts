@@ -10,7 +10,7 @@ const { toast } = useToast()
 
 export class HttpUtils
 {
-    private configure
+    private readonly configure
 
     constructor()
     {
@@ -53,8 +53,7 @@ export class HttpUtils
 
         // If the authorization key does not match, clear the local token reload page
         if (response.code === 4003) {
-            this.handlerMessage(response.message)
-            router.push('/common/403')
+            router.push(`/common/403?redirect=${ router.currentRoute.value.fullPath }`)
         }
         if (response.code === 5000) {
             this.handlerMessage(response.message)
