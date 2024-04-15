@@ -6,9 +6,10 @@
           <template #title>{{ $t('dataset.common.columnModeMetric') }}</template>
           <CircularLoading v-if="initialize" :show="initialize"/>
           <div v-else>
-            <Draggable item-key="id" :clone="handlerClone" :group="{ name: 'metrics', pull: 'clone', put: false }" :list="originalMetrics">
+            <Draggable item-key="id" :group="{ name: 'metrics', pull: 'clone', put: false }" :list="originalMetrics" :clone="handlerClone"
+                       @start="handlerHighlight(true, ColumnType.METRIC)" @end="handlerHighlight(false, ColumnType.METRIC)">
               <template #item="{ element }">
-                <Badge variant="outline" class="cursor-pointer mr-1">
+                <Badge variant="outline" class="cursor-pointer mr-1" @dblclick="handlerClone(element)">
                   {{ element.aliasName ? element.aliasName : element.name }}
                 </Badge>
               </template>
@@ -19,7 +20,8 @@
           <template #title>{{ $t('dataset.common.columnModeDimension') }}</template>
           <CircularLoading v-if="initialize" :show="initialize"/>
           <div v-else>
-            <Draggable item-key="id" :clone="handlerClone" :group="{ name: 'dimensions', pull: 'clone', put: false }" :list="originalDimensions">
+            <Draggable item-key="id" :group="{ name: 'dimensions', pull: 'clone', put: false }" :list="originalDimensions" :clone="handlerClone"
+                       @start="handlerHighlight(true, ColumnType.DIMENSION)" @end="handlerHighlight(false, ColumnType.DIMENSION)">
               <template #item="{ element }">
                 <Badge variant="outline" class="cursor-pointer mr-1 mt-1">
                   {{ element.aliasName ? element.aliasName : element.name }}
@@ -31,9 +33,9 @@
       </aside>
       <div class="flex-1">
         <div class="space-y-6">
-          <div class="flex h-5 items-center space-x-4 text-sm">
-            <div>{{ $t('dataset.common.columnModeMetric') }}:</div>
-            <div>
+          <div class="flex items-center space-x-4 text-sm">
+            <div class="min-w-12">{{ $t('dataset.common.columnModeMetric') }}:</div>
+            <div :class="cn(`w-full`, (highlight.active && highlight.type === ColumnType.METRIC) && 'border-2 border-primary rounded-sm min-h-8')">
               <Draggable group="metrics" item-key="id" :list="metrics">
                 <template #item="{ element, index }">
                   <Badge variant="outline" class="cursor-pointer mr-1 mt-1">
@@ -51,11 +53,11 @@
           </div>
           <Separator class="p-0" style="margin-top: 8px;"/>
           <div class="flex h-5 items-center space-x-4 text-sm" style="margin-top: 8px;">
-            <div>{{ $t('dataset.common.columnModeDimension') }}:</div>
-            <div>
-              <Draggable group="dimensions" item-key="id" :list="dimensions">
+            <div class="min-w-12">{{ $t('dataset.common.columnModeDimension') }}:</div>
+            <div :class="cn(`w-full`, (highlight.active && highlight.type === ColumnType.DIMENSION) && 'border-2 border-primary rounded-sm min-h-8')">
+              <Draggable group="dimensions" item-key="id" :list="dimensions" class="space-x-1">
                 <template #item="{ element, index}">
-                  <Badge variant="outline" class="cursor-pointer mr-1 mt-1">
+                  <Badge variant="outline" class="cursor-pointer">
                     {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
                     <Tooltip :content="$t('common.configure')">
                       <Cog class="pointer" :size="15" @click="handlerColumnConfigure(true, element, ColumnType.DIMENSION)"/>
@@ -70,9 +72,9 @@
           </div>
           <Separator class="p-0" style="margin-top: 8px;"/>
           <div class="flex h-5 items-center space-x-4 text-sm" style="margin-top: 8px;">
-            <div>{{ $t('dataset.common.columnModeFilter') }}:</div>
-            <div>
-              <Draggable group="dimensions" item-key="id" :list="filters">
+            <div class="min-w-12">{{ $t('dataset.common.columnModeFilter') }}:</div>
+            <div :class="cn(`w-full`, (highlight.active && highlight.type === ColumnType.DIMENSION) && 'border-2 border-primary rounded-sm min-h-8')">
+              <Draggable group="dimensions" item-key="id" :list="filters" class="space-x-1">
                 <template #item="{ element, index}">
                   <Badge variant="outline" class="cursor-pointer mr-1 mt-1">
                     {{ element.aliasName ? element.aliasName : element.name }} &nbsp;
@@ -194,6 +196,7 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/for
 import { Select } from '@/components/ui/select'
 import Switch from '@/views/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { cn } from '@/lib/utils.ts'
 
 export default defineComponent({
   name: 'DatasetAdhoc',
@@ -228,6 +231,12 @@ export default defineComponent({
     Draggable,
     VisualEditor,
     Loader2, Trash, Cog, CirclePlay, Eye, Table, LineChart, BarChart4, AreaChart, PieChart, BarChartHorizontal, Baseline
+  },
+  setup()
+  {
+    return {
+      cn
+    }
   },
   data()
   {
@@ -265,7 +274,11 @@ export default defineComponent({
         build: false
       },
       published: false,
-      initialize: false
+      initialize: false,
+      highlight: {
+        active: false,
+        type: 'METRIC'
+      }
     }
   },
   created()
@@ -429,6 +442,11 @@ export default defineComponent({
                      }
                    })
                    .finally(() => this.published = false)
+    },
+    handlerHighlight(opened: boolean, type: any)
+    {
+      this.highlight.active = opened
+      this.highlight.type = type
     },
     mergeColumns(originalColumns: any[], array: any[], type?: ColumnType)
     {
