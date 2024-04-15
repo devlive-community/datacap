@@ -53,7 +53,18 @@ export default defineComponent({
               yField: this.configuration.chartConfigure?.yAxis,
               seriesField: this.configuration.chartConfigure?.series,
               invalidType: this.configuration.chartConfigure?.invalidType
+            } as any
+
+            if (this.configuration.chartConfigure) {
+              options.title = {
+                visible: this.configuration.chartConfigure?.titleVisible,
+                text: this.configuration.chartConfigure?.titleText,
+                subtext: this.configuration.chartConfigure?.titleSubText,
+                orient: this.configuration.chartConfigure?.titlePosition,
+                align: this.configuration.chartConfigure?.titleAlign
+              }
             }
+
             if (!reset) {
               instance = new VChart(options, { dom: this.$refs.content as HTMLElement })
               instance.renderAsync()

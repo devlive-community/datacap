@@ -4,8 +4,7 @@
       <AlertDialogHeader>
         <AlertDialogTitle class="border-b -mt-4 pb-2">SQL</AlertDialogTitle>
       </AlertDialogHeader>
-      <VAceEditor v-if="configure" lang="mysql" :theme="configure.theme" :style="{height: '200px', fontSize: configure.fontSize + 'px'}" :value="localContent"
-                  :options="editorOptions"/>
+      <AceEditor :value="content as string" read-only/>
       <AlertDialogFooter class="-mb-4 border-t pt-2">
         <Button @click="handlerCancel">{{ $t('common.cancel') }}</Button>
       </AlertDialogFooter>
@@ -26,18 +25,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
-import CommonUtils from '@/views/components/echarts/utils/CommonUtils'
-import { UserEditor } from '@/model/user'
 import { Button } from '@/components/ui/button'
-import { VAceEditor } from 'vue3-ace-editor'
-import '@/ace-editor-theme'
+import AceEditor from '@/views/components/editor/AceEditor.vue'
 
 export default defineComponent({
   name: 'SqlInfo',
   components: {
+    AceEditor,
     Button,
-    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
-    VAceEditor
+    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
   },
   props: {
     isVisible: {
@@ -48,25 +44,7 @@ export default defineComponent({
       type: String as PropType<string | null>
     }
   },
-  data()
-  {
-    return {
-      localContent: this.content as string,
-      configure: null as UserEditor | null,
-      editorOptions: {readOnly: true}
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
   methods: {
-    handlerInitialize()
-    {
-      const localEditorConfigure = localStorage.getItem(CommonUtils.userEditorConfigure)
-      const defaultEditorConfigure: UserEditor = {fontSize: 12, theme: 'chrome'}
-      this.configure = localEditorConfigure ? JSON.parse(localEditorConfigure) : defaultEditorConfigure
-    },
     handlerCancel()
     {
       this.visible = false

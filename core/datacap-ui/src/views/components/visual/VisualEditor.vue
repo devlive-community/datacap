@@ -27,12 +27,12 @@
         <div v-else-if="configuration">
           <ToggleGroup v-model="configuration.type" type="single">
             <div class="grid grid-cols-4 items-center space-x-1 space-y-1">
-              <ToggleGroupItem class="mt-1" :value="Type.TABLE">
+              <ToggleGroupItem class="mt-1" :disabled="configuration.headers.length === 0" :value="Type.TABLE">
                 <Tooltip :content="$t('dataset.common.visualTypeTable')">
                   <Table :size="20"/>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.LINE">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.LINE">
                 <Tooltip :content="$t('dataset.common.visualTypeLine')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="lineChart"
                        style="width: 24px;">
@@ -42,7 +42,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.BAR">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.BAR">
                 <Tooltip :content="$t('dataset.common.visualTypeBar')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="barChart"
                        style="width: 24px;">
@@ -53,7 +53,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.AREA">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.AREA">
                 <Tooltip :content="$t('dataset.common.visualTypeArea')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="areaChart"
                        style="width: 24px;">
@@ -64,7 +64,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.PIE">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.PIE">
                 <Tooltip :content="$t('dataset.common.visualTypePie')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" class="vchart-dropdown-content-item-icon" id="pieChart"
                        style="width: 24px;">
@@ -76,7 +76,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.HISTOGRAM">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.HISTOGRAM">
                 <Tooltip :content="$t('dataset.common.visualTypeHistogram')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
                     <g clip-path="url(#clip0_1700_69225)">
@@ -98,7 +98,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.WORDCLOUD">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.WORDCLOUD">
                 <Tooltip :content="$t('dataset.common.visualTypeWordCloud')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="wordCloud"
                        style="width: 24px;">
@@ -116,7 +116,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.SCATTER">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.SCATTER">
                 <Tooltip :content="$t('dataset.common.visualTypeScatter')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="scatterChart"
                        style="width: 24px;">
@@ -128,7 +128,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.RADAR">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.RADAR">
                 <Tooltip :content="$t('dataset.common.visualTypeRadar')">
                   <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -140,7 +140,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.FUNNEL">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.FUNNEL">
                 <Tooltip :content="$t('dataset.common.visualTypeFunnel')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="funnelChart"
                        style="width: 24px;">
@@ -152,7 +152,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.GAUGE">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.GAUGE">
                 <Tooltip :content="$t('dataset.common.visualTypeGauge')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="gauge"
                        style="width: 24px;">
@@ -169,13 +169,15 @@
       <Card body-class="p-2">
         <template #title>{{ $t('dataset.common.visualConfigure') }}</template>
         <CircularLoading v-if="loading" :show="loading"/>
-        <div v-else-if="configuration">
+        <div v-else-if="configuration" class="flex items-center justify-center">
           <Alert v-if="configuration.type === Type.TABLE" :title="$t('dataset.common.visualConfigureNotSpecified')"/>
-          <VisualConfigure v-else :configuration="configuration" :fields="forwardFiled(configuration.type)" @change="configuration.chartConfigure = $event"/>
+          <Button v-else size="sm" class="w-[80%]" @click="configureVisible = true">{{ $t('common.configure') }}</Button>
         </div>
       </Card>
     </div>
   </div>
+  <VisualConfigure v-if="configureVisible && configuration" :is-visible="configureVisible" :configuration="configuration" :field-group="forwardFiled(configuration.type)"
+                   @close="configureVisible = $event" @change="configuration.chartConfigure = $event"/>
 </template>
 <script lang="ts">
 import { Type } from '@/views/components/visual/Type'
@@ -183,7 +185,7 @@ import VisualWordCloud from '@/views/components/visual/components/VisualWordClou
 import VisualHistogram from '@/views/components/visual/components/VisualHistogram.vue'
 import VisualPie from '@/views/components/visual/components/VisualPie.vue'
 import VisualArea from '@/views/components/visual/components/VisualArea.vue'
-import { ChartField, Configuration } from './Configuration'
+import { ChartFieldGroup, Configuration } from './Configuration'
 import VisualBar from '@/views/components/visual/components/VisualBar.vue'
 import VisualLine from '@/views/components/visual/components/VisualLine.vue'
 import VisualTable from '@/views/components/visual/components/VisualTable.vue'
@@ -200,21 +202,14 @@ import VisualConfigure from '@/views/components/visual/components/VisualConfigur
 import VisualRadar from '@/views/components/visual/components/VisualRadar.vue'
 import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
 import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
+import Button from '@/views/ui/button'
+import { createdConfigure } from '@/views/components/visual/Utils.ts'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'VisualEditor',
-  computed: {
-    Type()
-    {
-      return Type
-    }
-  },
   components: {
-    VisualGauge,
-    VisualFunnel,
-    VisualRadar,
-    VisualConfigure,
-    VisualScatter,
+    VisualGauge, VisualFunnel, VisualRadar, VisualConfigure, VisualScatter,
     Card,
     Tooltip,
     RadioGroup, RadioGroupItem,
@@ -222,7 +217,14 @@ export default defineComponent({
     Table,
     CircularLoading,
     Alert,
+    Button,
     VisualWordCloud, VisualHistogram, VisualPie, VisualArea, VisualBar, VisualLine, VisualTable
+  },
+  computed: {
+    Type()
+    {
+      return Type
+    }
   },
   props: {
     loading: {
@@ -233,61 +235,28 @@ export default defineComponent({
       type: Object as PropType<Configuration | null>
     }
   },
+  setup()
+  {
+    const i18n = useI18n()
+
+    return {
+      i18n
+    }
+  },
+  data()
+  {
+    return {
+      configureVisible: false
+    }
+  },
   methods: {
     handlerCommit(value: any)
     {
       this.$emit('commitOptions', value)
     },
-    forwardFiled(type: Type): ChartField[]
+    forwardFiled(type: Type): ChartFieldGroup[]
     {
-      const fields: Array<ChartField> = new Array<ChartField>()
-      const categoryField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryField'), field: 'xAxis' }
-      const valueField: ChartField = { label: this.$t('dataset.common.visualConfigureValueField'), field: 'yAxis' }
-      const seriesField: ChartField = { label: this.$t('dataset.common.visualConfigureSeriesField'), field: 'series' }
-      const showLegend: ChartField = { label: this.$t('dataset.common.visualConfigureShowLegend'), field: 'showLegend', type: 'SWITCH' }
-      const outerRadius: ChartField = { label: this.$t('dataset.common.visualConfigureOuterRadius'), field: 'outerRadius', type: 'SLIDER', value: 0.8, min: 0.1, max: 1, step: 0.1 }
-      const innerRadius: ChartField = { label: this.$t('dataset.common.visualConfigureInnerRadius'), field: 'innerRadius', type: 'SLIDER', value: 0.5, min: 0.1, max: 1, step: 0.1 }
-      const startAngle: ChartField = { label: this.$t('dataset.common.visualConfigureStartAngle'), field: 'startAngle', type: 'SLIDER', value: -180, min: -360, max: 360, step: 1 }
-      const endAngle: ChartField = { label: this.$t('dataset.common.visualConfigureEndAngle'), field: 'endAngle', type: 'SLIDER', value: 0, min: -360, max: 360, step: 1 }
-      const dataBreakpoint: ChartField = {
-        label: this.$t('dataset.common.visualConfigureDataBreakpoint'),
-        field: 'dataBreakpoint',
-        values: [
-          { label: this.$t('dataset.common.visualConfigureDataBreakpointBreak'), value: 'break' },
-          { label: this.$t('dataset.common.visualConfigureDataBreakpointContinuous'), value: 'link' },
-          { label: this.$t('dataset.common.visualConfigureDataBreakpointZero'), value: 'zero' },
-          { label: this.$t('dataset.common.visualConfigureDataBreakpointIgnore'), value: 'ignore' }
-        ]
-      }
-      const leftField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryLeftField'), field: 'leftField' }
-      const rightField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryRightField'), field: 'rightField' }
-      switch (type) {
-        case Type.RADAR:
-        case Type.BAR:
-        case Type.AREA:
-        case Type.SCATTER:
-          fields.push(categoryField, valueField)
-          break
-        case Type.FUNNEL:
-          fields.push(categoryField, valueField, showLegend)
-          break
-        case Type.GAUGE:
-          fields.push(categoryField, valueField, outerRadius, innerRadius, startAngle, endAngle)
-          break
-        case Type.PIE:
-          fields.push(categoryField, valueField, outerRadius)
-          break
-        case Type.LINE:
-          fields.push(categoryField, valueField, seriesField, dataBreakpoint)
-          break
-        case Type.HISTOGRAM:
-          fields.push(leftField, rightField, valueField)
-          break
-        case Type.WORDCLOUD:
-          fields.push(categoryField, valueField, seriesField)
-          break
-      }
-      return fields
+      return createdConfigure(type, this.i18n)
     }
   }
 })

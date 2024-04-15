@@ -12,5 +12,6 @@ export default {
         deleteTip2: 'Warning: This cannot be undone. ',
         deleteTip3: 'To confirm, type [ $NAME ] in the box below',
         publishSuccess: 'Dashboard [ $VALUE ] published successfully',
+        notFound: 'Dashboard [ $VALUE ] not found',
     }
 } 

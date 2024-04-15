@@ -83,6 +83,20 @@ export default {
         visualConfigureDataBreakpointContinuous: '连续',
         visualConfigureDataBreakpointZero: '补 0',
         visualConfigureDataBreakpointIgnore: '忽略',
+        visualConfigureGeneralGroup: '通用配置',
+        visualConfigureTitleGroup: '标题配置',
+        visualConfigureTitleGroupVisible: '是否展示',
+        visualConfigureTitleGroupText: '标题',
+        visualConfigureTitleGroupSubText: '子标题',
+        visualConfigureTitleGroupPosition: '位置',
+        visualConfigureTitleGroupPositionLeft: '左',
+        visualConfigureTitleGroupPositionRight: '右',
+        visualConfigureTitleGroupPositionTop: '顶部',
+        visualConfigureTitleGroupPositionBottom: '底部',
+        visualConfigureTitleGroupAlign: '对齐方式',
+        visualConfigureTitleGroupAlignLeft: '左对齐',
+        visualConfigureTitleGroupAlignCenter: '居中对齐',
+        visualConfigureTitleGroupAlignRight: '右对齐',
         columnExpressionMax: '最大值',
         columnExpressionMin: '最小值',
         columnExpressionSum: '总和',
@@ -114,12 +128,12 @@ export default {
         info: '查看详情',
         lifeCycleColumn: '生命周期列',
         lifeCycleNumber: '生命周期数',
-        continuousBuild: '连续构建',
+        continuousBuild: '连续构建'
     },
     validator: {
         duplicateColumn: '列名 [ $VALUE ] 已存在',
         specifiedColumn: '排序键或主键必须指定',
-        specifiedName: '数据集名必须指定',
+        specifiedName: '数据集名必须指定'
     },
     tip: {
         selectExpression: '请选择表达式',
@@ -131,6 +145,6 @@ export default {
         rebuildProgress: '重建只会进行未完成进度',
         lifeCycleMustDateColumn: '生命周期必须包含一个日期列',
         modifyNotSupportDataPreview: '修改暂不支持数据预览',
-        publishSuccess: '数据集 [ $VALUE ] 发布成功',
+        publishSuccess: '数据集 [ $VALUE ] 发布成功'
     }
 }

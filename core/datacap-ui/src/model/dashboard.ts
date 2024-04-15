@@ -12,6 +12,7 @@ export interface DashboardModel
     updateTime?: string
     user?: UserModel
     reports?: ReportModel[]
+    code?: string
 }
 
 export class DashboardRequest

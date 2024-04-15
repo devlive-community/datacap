@@ -33,7 +33,18 @@ export interface IChart
     invalidType?: string
     showLegend?: boolean
     startAngle?: number[]
-    endAngle?: number[]
+    endAngle?: number[],
+    titleVisible?: boolean
+    titleText?: string
+    titleSubText?: string
+    titlePosition?: string
+    titleAlign?: string
+}
+
+export interface ChartFieldGroup
+{
+    label?: string
+    fields?: ChartField[]
 }
 
 export interface ChartField
@@ -46,4 +57,12 @@ export interface ChartField
     min?: number
     max?: number
     step?: number
+    disabled?: ChartFieldItem
 }
+
+export interface ChartFieldItem
+{
+    field?: string
+    value?: any
+}
+

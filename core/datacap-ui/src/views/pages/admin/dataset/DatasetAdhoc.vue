@@ -293,6 +293,7 @@ export default defineComponent({
                                          .then(response => {
                                            if (response.status) {
                                              this.formState.name = response.data.name
+                                             this.formState.description = response.data.description
                                              const query = JSON.parse(response.data.query)
                                              this.mergeColumns(query.columns, this.metrics, ColumnType.METRIC)
                                              this.mergeColumns(query.columns, this.dimensions, ColumnType.DIMENSION)

@@ -12,5 +12,6 @@ export default {
         deleteTip2: '警告：此操作无法撤消。 ',
         deleteTip3: '要确认，请在下面的框中键入 [ $NAME ]',
         publishSuccess: '仪表板 [ $VALUE ] 发布成功',
+        notFound: '仪表板 [ $VALUE ] 不存在',
     }
 }

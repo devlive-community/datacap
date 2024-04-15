@@ -15,7 +15,6 @@ import { ToastUtils } from '@/utils/toast'
 import { useRouter } from 'vue-router'
 import { DashboardModel } from '@/model/dashboard'
 import DashboardEditor from '@/views/pages/admin/dashboard/components/DashboardEditor.vue'
-import { toNumber } from 'lodash'
 
 export default defineComponent({
   name: 'DashboardInfo',
@@ -37,10 +36,10 @@ export default defineComponent({
     {
       const router = useRouter()
       const params = router.currentRoute.value.params
-      const id = params['id']
-      if (id) {
+      const code = params['code'] as string
+      if (code) {
         this.loading = true
-        DashboardService.getById(toNumber(id))
+        DashboardService.getByCode(code)
                         .then(response => {
                           if (response.status) {
                             this.dataInfo = response.data
