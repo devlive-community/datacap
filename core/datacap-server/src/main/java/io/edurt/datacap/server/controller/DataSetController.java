@@ -45,13 +45,6 @@ public class DataSetController
         return service.rebuild(id);
     }
 
-    @Deprecated
-    @GetMapping(value = "getColumns/{id}")
-    public CommonResponse<Set<DataSetColumnEntity>> getColumns(@PathVariable Long id)
-    {
-        return service.getColumns(id);
-    }
-
     @GetMapping(value = "columns/{code}")
     public CommonResponse<Set<DataSetColumnEntity>> getColumnsByCode(@PathVariable String code)
     {

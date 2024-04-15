@@ -140,18 +140,13 @@ public class DataSetServiceImpl
     }
 
     @Override
-    public CommonResponse<Set<DataSetColumnEntity>> getColumns(Long id)
-    {
-        Optional<DataSetEntity> entity = repository.findById(id);
-        return entity.map(dataSet -> CommonResponse.success(columnRepository.findAllByDatasetOrderByPositionAsc(dataSet)))
-                .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", id)));
-    }
-
-    @Override
     public CommonResponse<Set<DataSetColumnEntity>> getColumnsByCode(String code)
     {
         Optional<DataSetEntity> entity = repository.findByCode(code);
-        return entity.map(item -> CommonResponse.success(columnRepository.findAllByDatasetOrderByPositionAsc(item)))
+        return entity.map(item -> {
+                    isSelf(item);
+                    return CommonResponse.success(columnRepository.findAllByDatasetOrderByPositionAsc(item));
+                })
                 .orElseGet(() -> CommonResponse.failure(String.format("DataSet [ %s ] not found", code)));
     }
 
