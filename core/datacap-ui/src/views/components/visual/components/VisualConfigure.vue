@@ -5,19 +5,24 @@
         <TabsList class="grid w-full grid-cols-2">
           <TabsTrigger v-for="group in fieldGroup" :key="group.label" :value="group.label as string">{{ group.label }}</TabsTrigger>
         </TabsList>
-        <TabsContent :value="activeGroup as any" class="grid grid-cols-3 gap-4">
+        <TabsContent :value="activeGroup as any" class="grid grid-cols-4 gap-4">
           <FormField v-for="item in fieldGroup.find(value => value.label === activeGroup)?.fields" :name="item.field as string">
             <FormItem>
               <FormLabel>{{ item.label }}</FormLabel>
               <FormControl>
-                <Switch v-if="item.type === 'SWITCH'" class="ml-2" :default-checked="formState[item.field as keyof IChart] as any"
-                        @update:checked="formState[item.field as keyof IChart] = $event as any"/>
+                <div v-if="item.type === 'SWITCH'">
+                  <Switch class="mt-2" :value="item.value" :default-checked="formState[item.field as keyof IChart] ? formState[item.field as keyof IChart] as boolean : item.value"
+                          @update:checked="formState[item.field as keyof IChart] = $event as any"/>
+                </div>
                 <Tooltip v-else-if="item.type === 'SLIDER'" :content="formState[item.field as keyof IChart] ? formState[item.field as keyof IChart] : [item.value] as any">
-                  <Slider v-model="formState[item.field as keyof IChart] as any" class="ml-2 w-[95%]" :default-value="[item.value]" :min="item.min" :max="item.max"
+                  <Slider v-model="formState[item.field as keyof IChart] as any" class="pt-3" :default-value="[item.value]" :min="item.min" :max="item.max"
                           :step="item.step"
                           @update:modelValue="formState[item.field as keyof IChart] = $event as any"/>
                 </Tooltip>
-                <Select v-else v-model="formState[item.field as keyof IChart] as string" :disabled="configuration.headers.length === 0">
+                <Input v-else-if="item.type === 'TEXT'" v-model="formState[item.field as keyof IChart] as string" :placeholder="item.label"
+                       :disabled="item.disabled?.field ? formState[item.disabled?.field as keyof IChart] === item.disabled?.value : false"/>
+                <Select v-else v-model="formState[item.field as keyof IChart] as string" :default-value="item.value"
+                        :disabled="item.disabled?.field ? formState[item.disabled?.field as keyof IChart] === item.disabled?.value : false">
                   <SelectTrigger class="w-full">
                     <SelectValue :placeholder="`Select ${item.label}`"/>
                   </SelectTrigger>
@@ -57,10 +62,12 @@ import Tooltip from '@/views/ui/tooltip'
 import Dialog from '@/views/ui/dialog'
 import Button from '@/views/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Input } from '@/components/ui/input'
 
 export default defineComponent({
   name: 'VisualConfigure',
   components: {
+    Input,
     Tabs, TabsTrigger, TabsList, TabsContent,
     Button,
     Dialog,

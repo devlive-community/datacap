@@ -185,7 +185,7 @@ import VisualWordCloud from '@/views/components/visual/components/VisualWordClou
 import VisualHistogram from '@/views/components/visual/components/VisualHistogram.vue'
 import VisualPie from '@/views/components/visual/components/VisualPie.vue'
 import VisualArea from '@/views/components/visual/components/VisualArea.vue'
-import { ChartField, ChartFieldGroup, Configuration } from './Configuration'
+import { ChartFieldGroup, Configuration } from './Configuration'
 import VisualBar from '@/views/components/visual/components/VisualBar.vue'
 import VisualLine from '@/views/components/visual/components/VisualLine.vue'
 import VisualTable from '@/views/components/visual/components/VisualTable.vue'
@@ -203,15 +203,11 @@ import VisualRadar from '@/views/components/visual/components/VisualRadar.vue'
 import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
 import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
 import Button from '@/views/ui/button'
+import { createdConfigure } from '@/views/components/visual/Utils.ts'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   name: 'VisualEditor',
-  computed: {
-    Type()
-    {
-      return Type
-    }
-  },
   components: {
     VisualGauge, VisualFunnel, VisualRadar, VisualConfigure, VisualScatter,
     Card,
@@ -224,6 +220,12 @@ export default defineComponent({
     Button,
     VisualWordCloud, VisualHistogram, VisualPie, VisualArea, VisualBar, VisualLine, VisualTable
   },
+  computed: {
+    Type()
+    {
+      return Type
+    }
+  },
   props: {
     loading: {
       type: Boolean,
@@ -231,6 +233,14 @@ export default defineComponent({
     },
     configuration: {
       type: Object as PropType<Configuration | null>
+    }
+  },
+  setup()
+  {
+    const i18n = useI18n()
+
+    return {
+      i18n
     }
   },
   data()
@@ -246,64 +256,7 @@ export default defineComponent({
     },
     forwardFiled(type: Type): ChartFieldGroup[]
     {
-      const fieldGroups: Array<ChartFieldGroup> = new Array<ChartFieldGroup>()
-      const categoryField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryField'), field: 'xAxis' }
-      const valueField: ChartField = { label: this.$t('dataset.common.visualConfigureValueField'), field: 'yAxis' }
-      const seriesField: ChartField = { label: this.$t('dataset.common.visualConfigureSeriesField'), field: 'series' }
-      const showLegend: ChartField = { label: this.$t('dataset.common.visualConfigureShowLegend'), field: 'showLegend', type: 'SWITCH' }
-      const outerRadius: ChartField = { label: this.$t('dataset.common.visualConfigureOuterRadius'), field: 'outerRadius', type: 'SLIDER', value: 0.8, min: 0.1, max: 1, step: 0.1 }
-      const innerRadius: ChartField = { label: this.$t('dataset.common.visualConfigureInnerRadius'), field: 'innerRadius', type: 'SLIDER', value: 0.5, min: 0.1, max: 1, step: 0.1 }
-      const startAngle: ChartField = { label: this.$t('dataset.common.visualConfigureStartAngle'), field: 'startAngle', type: 'SLIDER', value: -180, min: -360, max: 360, step: 1 }
-      const endAngle: ChartField = { label: this.$t('dataset.common.visualConfigureEndAngle'), field: 'endAngle', type: 'SLIDER', value: 0, min: -360, max: 360, step: 1 }
-      const dataBreakpoint: ChartField = {
-        label: this.$t('dataset.common.visualConfigureDataBreakpoint'),
-        field: 'dataBreakpoint',
-        values: [
-          { label: this.$t('dataset.common.visualConfigureDataBreakpointBreak'), value: 'break' },
-          { label: this.$t('dataset.common.visualConfigureDataBreakpointContinuous'), value: 'link' },
-          { label: this.$t('dataset.common.visualConfigureDataBreakpointZero'), value: 'zero' },
-          { label: this.$t('dataset.common.visualConfigureDataBreakpointIgnore'), value: 'ignore' }
-        ]
-      }
-      const leftField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryLeftField'), field: 'leftField' }
-      const rightField: ChartField = { label: this.$t('dataset.common.visualConfigureCategoryRightField'), field: 'rightField' }
-
-      if (type === Type.AREA || type === Type.BAR || type === Type.RADAR || type === Type.SCATTER) {
-        const fields: Array<ChartField> = [categoryField, valueField]
-        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
-        fieldGroups.push(generalField)
-      }
-      else if (type === Type.FUNNEL) {
-        const fields: Array<ChartField> = [categoryField, valueField, showLegend]
-        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
-        fieldGroups.push(generalField)
-      }
-      else if (type === Type.GAUGE) {
-        const fields: Array<ChartField> = [categoryField, valueField, outerRadius, innerRadius, startAngle, endAngle]
-        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
-        fieldGroups.push(generalField)
-      }
-      else if (type === Type.PIE) {
-        const fields: Array<ChartField> = [categoryField, valueField, outerRadius]
-        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
-        fieldGroups.push(generalField)
-      }
-      else if (type === Type.LINE) {
-        const fields: Array<ChartField> = [categoryField, valueField, seriesField, dataBreakpoint]
-        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
-        fieldGroups.push(generalField)
-      }
-      else if (type === Type.HISTOGRAM) {
-        const fields: Array<ChartField> = [leftField, rightField, valueField]
-        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
-        fieldGroups.push(generalField)
-      }
-      else if (type === Type.WORDCLOUD) {
-        const fields: Array<ChartField> = [categoryField, valueField, seriesField]
-        const generalField: ChartFieldGroup = { label: this.$t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
-        fieldGroups.push(generalField)
-      }
-      return fieldGroups
+      return createdConfigure(type, this.i18n)
     }
   }
 })
