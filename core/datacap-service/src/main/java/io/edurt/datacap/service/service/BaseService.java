@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.service;
 
+import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.NullAwareBeanUtils;
 import io.edurt.datacap.common.utils.ReflectionUtils;
@@ -7,6 +8,7 @@ import io.edurt.datacap.service.adapter.PageRequestAdapter;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.BaseEntity;
 import io.edurt.datacap.service.entity.PageEntity;
+import io.edurt.datacap.service.entity.UserEntity;
 import io.edurt.datacap.service.repository.BaseRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +47,16 @@ public interface BaseService<T extends BaseEntity>
     default CommonResponse<T> getByCode(BaseRepository repository, String code)
     {
         return (CommonResponse<T>) repository.findByCode(code)
-                .map(CommonResponse::success)
+                .map(value -> {
+                    if (ReflectionUtils.hasField(value, "user")) {
+                        UserEntity originalUser = (UserEntity) ReflectionUtils.getFieldValue(value, "user");
+                        UserEntity loginUser = UserDetailsService.getUser();
+                        if (!originalUser.getId().equals(loginUser.getId())) {
+                            return CommonResponse.failure(ServiceState.USER_UNAUTHORIZED);
+                        }
+                    }
+                    return CommonResponse.success(value);
+                })
                 .orElseGet(() -> CommonResponse.failure(String.format("Resource [ %s ] not found", code)));
     }
 }
