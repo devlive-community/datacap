@@ -27,12 +27,12 @@
         <div v-else-if="configuration">
           <ToggleGroup v-model="configuration.type" type="single">
             <div class="grid grid-cols-4 items-center space-x-1 space-y-1">
-              <ToggleGroupItem class="mt-1" :value="Type.TABLE">
+              <ToggleGroupItem class="mt-1" :disabled="configuration.headers.length === 0" :value="Type.TABLE">
                 <Tooltip :content="$t('dataset.common.visualTypeTable')">
                   <Table :size="20"/>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.LINE">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.LINE">
                 <Tooltip :content="$t('dataset.common.visualTypeLine')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="lineChart"
                        style="width: 24px;">
@@ -42,7 +42,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.BAR">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.BAR">
                 <Tooltip :content="$t('dataset.common.visualTypeBar')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="barChart"
                        style="width: 24px;">
@@ -53,7 +53,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.AREA">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.AREA">
                 <Tooltip :content="$t('dataset.common.visualTypeArea')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="areaChart"
                        style="width: 24px;">
@@ -64,7 +64,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.PIE">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.PIE">
                 <Tooltip :content="$t('dataset.common.visualTypePie')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" class="vchart-dropdown-content-item-icon" id="pieChart"
                        style="width: 24px;">
@@ -76,7 +76,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.HISTOGRAM">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.HISTOGRAM">
                 <Tooltip :content="$t('dataset.common.visualTypeHistogram')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
                     <g clip-path="url(#clip0_1700_69225)">
@@ -98,7 +98,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.WORDCLOUD">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.WORDCLOUD">
                 <Tooltip :content="$t('dataset.common.visualTypeWordCloud')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="wordCloud"
                        style="width: 24px;">
@@ -116,7 +116,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.SCATTER">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.SCATTER">
                 <Tooltip :content="$t('dataset.common.visualTypeScatter')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="scatterChart"
                        style="width: 24px;">
@@ -128,7 +128,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.RADAR">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.RADAR">
                 <Tooltip :content="$t('dataset.common.visualTypeRadar')">
                   <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -140,7 +140,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.FUNNEL">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.FUNNEL">
                 <Tooltip :content="$t('dataset.common.visualTypeFunnel')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="funnelChart"
                        style="width: 24px;">
@@ -152,7 +152,7 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
-              <ToggleGroupItem :value="Type.GAUGE">
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.GAUGE">
                 <Tooltip :content="$t('dataset.common.visualTypeGauge')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="vchart-dropdown-content-item-icon" id="gauge"
                        style="width: 24px;">
