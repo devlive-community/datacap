@@ -69,7 +69,7 @@ export class HttpUtils
             status: false
         }
         if (error.code === 'ERR_NETWORK') {
-            router.push('/common/not_network')
+            router.push('/common/not_network?redirect=' + router.currentRoute.value.fullPath)
         }
         return response
     }
