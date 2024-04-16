@@ -5,7 +5,6 @@ import source from '@/i18n/langs/zhCn/source'
 import grid from '@/i18n/langs/zhCn/grid'
 import heatmap from '@/i18n/langs/zhCn/heatmap'
 import region from '@/i18n/langs/zhCn/region'
-import function1 from '@/i18n/langs/zhCn/function'
 import template from '@/i18n/langs/zhCn/template'
 import menu from '@/i18n/langs/zhCn/menu'
 import snippet from '@/i18n/langs/zhCn/snippet'
@@ -20,7 +19,6 @@ export default {
     grid: grid,
     heatmap: heatmap,
     region: region,
-    function: function1,
     template: template,
     menu: menu,
     snippet: snippet,
@@ -249,6 +247,23 @@ export default {
             deleteTip3: '要确认，请在下面的框中键入 [ $NAME ]',
             publishSuccess: '仪表板 [ $VALUE ] 发布成功',
             notFound: '仪表板 [ $VALUE ] 不存在'
+        }
+    },
+    function:{
+        common: {
+            list: '函数列表',
+            keyword: '关键字',
+            operator: '运算符',
+            function: '函数',
+            example: '示例',
+            import: '导入数据',
+            importFromUrl: '从 URL 导入',
+            create: '创建函数',
+            modify: '修改函数 [ $NAME ]',
+        },
+        tip: {
+            selectPluginHolder: '请选择插件',
+            selectTypeHolder: '请选择类型'
         }
     }
 }

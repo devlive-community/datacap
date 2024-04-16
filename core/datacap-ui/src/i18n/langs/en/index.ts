@@ -5,7 +5,6 @@ import source from '@/i18n/langs/en/source'
 import grid from '@/i18n/langs/en/grid'
 import heatmap from '@/i18n/langs/en/heatmap'
 import region from '@/i18n/langs/en/region'
-import function1 from '@/i18n/langs/en/function'
 import template from '@/i18n/langs/en/template'
 import menu from '@/i18n/langs/en/menu'
 import snippet from '@/i18n/langs/en/snippet'
@@ -20,7 +19,6 @@ export default {
     grid: grid,
     heatmap: heatmap,
     region: region,
-    function: function1,
     template: template,
     menu: menu,
     snippet: snippet,
@@ -236,6 +234,23 @@ export default {
     },
     dashboard: {
         common: {
+            list: 'Dashboard List',
+            delete: 'Delete Dashboard',
+            create: 'Create Dashboard',
+            modify: 'Modify Dashboard',
+            modifyInfo: 'Modify Dashboard [ $VALUE ]',
+            addReport: 'Add Report',
+        },
+        tip: {
+            deleteTip1: 'You are deleting a dashboard. This action permanently deletes the dashboard. Please be sure to confirm your actions before proceeding. ',
+            deleteTip2: 'Warning: This cannot be undone. ',
+            deleteTip3: 'To confirm, type [ $NAME ] in the box below',
+            publishSuccess: 'Dashboard [ $VALUE ] published successfully',
+            notFound: 'Dashboard [ $VALUE ] not found',
+        }
+    } ,
+    function:{
+        common: {
             list: 'Function List',
             keyword: 'Keyword',
             operator: 'Operator',
@@ -244,7 +259,7 @@ export default {
             import: 'Import Data',
             importFromUrl: 'Import from URL',
             create: 'Create Function',
-            modify: 'Modify Function [ $NAME ]'
+            modify: 'Modify Function [ $NAME ]',
         },
         tip: {
             selectPluginHolder: 'Please select a plugin',
