@@ -1,7 +1,15 @@
-import state from '@/i18n/langs/en/state'
-
 export default {
-    state: state,
+    state: {
+        common: {
+            create: 'Created',
+            running: 'Running',
+            success: 'Success',
+            failure: 'Failure',
+            stop: 'Stopped',
+            timeout: 'Timeout',
+            queue: 'Queue'
+        }
+    },
     query: {
         common: {
             execute: 'Execute',
