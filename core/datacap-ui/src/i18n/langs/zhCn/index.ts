@@ -7,7 +7,6 @@ import region from '@/i18n/langs/zhCn/region'
 import template from '@/i18n/langs/zhCn/template'
 import menu from '@/i18n/langs/zhCn/menu'
 import snippet from '@/i18n/langs/zhCn/snippet'
-import report from '@/i18n/langs/zhCn/report'
 
 export default {
     state: state,
@@ -19,7 +18,22 @@ export default {
     template: template,
     menu: menu,
     snippet: snippet,
-    report: report,
+    report: {
+        common: {
+            list: '报表列表',
+            view: '查看报表 [ $VALUE ]',
+            modify: '修改报表',
+            delete: '删除报表',
+            deleteInfo: '删除报表 [ $VALUE ]'
+        },
+        tip: {
+            deleteSuccess: '删除报表 [ $VALUE ] 成功',
+            deleteAlert1: '您正在删除报表。此操作将永久删除报表。在继续操作之前，请务必确认您的操作。',
+            deleteAlert2: '警告：此操作无法撤销。',
+            deleteAlert3: '要确认，请在下面的框中键入 [ $VALUE ]',
+            publishSuccess: '报表 [ $VALUE ] 发布成功',
+        }
+    },
     pipeline: {
         common: {
             list: '流水线列表',

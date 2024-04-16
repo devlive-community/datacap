@@ -7,7 +7,6 @@ import region from '@/i18n/langs/en/region'
 import template from '@/i18n/langs/en/template'
 import menu from '@/i18n/langs/en/menu'
 import snippet from '@/i18n/langs/en/snippet'
-import report from '@/i18n/langs/en/report'
 
 export default {
     state: state,
@@ -19,7 +18,22 @@ export default {
     template: template,
     menu: menu,
     snippet: snippet,
-    report: report,
+    report: {
+        common: {
+            list: 'Report List',
+            view: 'View Report [ $VALUE ]',
+            modify: 'Modify Report',
+            delete: 'Delete Report',
+            deleteInfo: 'Delete Report [ $VALUE ]'
+        },
+        tip: {
+            deleteSuccess: 'Delete report [ $VALUE ] successfully',
+            deleteAlert1: 'You are deleting a report. This action permanently deletes the report. Please be sure to confirm your actions before proceeding.',
+            deleteAlert2: 'Warning: This cannot be undone.',
+            deleteAlert3: 'To confirm, type [ $VALUE ] in the box below',
+            publishSuccess: 'Report [ $VALUE ] published successfully',
+        }
+    },
     pipeline: {
         common: {
             list: 'Pipeline List',
