@@ -1,6 +1,5 @@
 <code_scheme name="DataCapStyleScheme" version="173">
   <option name="RIGHT_MARGIN" value="180" />
-  <option name="ENABLE_SECOND_REFORMAT" value="true" />
   <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
   <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
   <option name="CLASS_BRACE_STYLE" value="2" />
