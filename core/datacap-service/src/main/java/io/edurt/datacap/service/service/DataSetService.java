@@ -15,8 +15,6 @@ public interface DataSetService
 
     CommonResponse<DataSetEntity> rebuild(Long id);
 
-    CommonResponse<Set<DataSetColumnEntity>> getColumns(Long id);
-
     CommonResponse<Set<DataSetColumnEntity>> getColumnsByCode(String code);
 
     CommonResponse<Boolean> syncData(Long id);

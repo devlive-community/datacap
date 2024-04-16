@@ -44,4 +44,24 @@ public class ReflectionUtils
             log.warn("Set field value exception", e);
         }
     }
+
+    /**
+     * Retrieves the value of a specified field from an object using reflection.
+     *
+     * @param obj the object from which to retrieve the field value
+     * @param fieldName the name of the field to retrieve
+     * @return the value of the specified field
+     */
+    public static Object getFieldValue(Object obj, String fieldName)
+    {
+        try {
+            Field field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(obj);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e) {
+            log.warn("Get field value exception", e);
+            return null;
+        }
+    }
 }
