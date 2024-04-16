@@ -15,7 +15,6 @@ import report from '@/i18n/langs/zhCn/report'
 import pipeline from '@/i18n/langs/zhCn/pipeline.ts'
 
 export default {
-    schedule: schedule,
     dashboard: dashboard,
     dataset: dataset,
     state: state,
@@ -230,6 +229,12 @@ export default {
         validate: {
             nameSize: '路由名称必须在3-20个字符之间',
             descriptionSize: '路由描述必须在3-50个字符之间'
+        }
+    },
+    schedule:{
+        common: {
+            list: '调度列表',
+            history: '调度历史'
         }
     }
 }

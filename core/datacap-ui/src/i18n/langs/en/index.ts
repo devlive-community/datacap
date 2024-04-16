@@ -1,4 +1,3 @@
-import schedule from '@/i18n/langs/en/schedule'
 import dashboard from '@/i18n/langs/en/dashboard'
 import dataset from '@/i18n/langs/en/dataset'
 import state from '@/i18n/langs/en/state'
@@ -15,7 +14,6 @@ import report from '@/i18n/langs/en/report'
 import pipeline from '@/i18n/langs/en/pipeline'
 
 export default {
-    schedule: schedule,
     dashboard: dashboard,
     dataset: dataset,
     state: state,
@@ -230,6 +228,12 @@ export default {
         validate: {
             nameSize: 'The role name must be between 3 and 20 characters',
             descriptionSize: 'The role description must be between 3 and 50 characters'
+        }
+    },
+    schedule:{
+        common: {
+            list: 'Schedule List',
+            history: 'Schedule History'
         }
     }
 }
