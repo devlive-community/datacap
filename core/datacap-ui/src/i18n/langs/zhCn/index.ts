@@ -3,7 +3,6 @@ import query from '@/i18n/langs/zhCn/query'
 import source from '@/i18n/langs/zhCn/source'
 import grid from '@/i18n/langs/zhCn/grid'
 import heatmap from '@/i18n/langs/zhCn/heatmap'
-import region from '@/i18n/langs/zhCn/region'
 
 export default {
     state: state,
@@ -11,7 +10,19 @@ export default {
     source: source,
     grid: grid,
     heatmap: heatmap,
-    region: region,
+    region: {
+        common: {
+            selectLanguage: '选择语言',
+            asia: {
+                default: '亚洲',
+                chineseSimple: '简体中文'
+            },
+            northAmerica: {
+                default: '北美洲',
+                english: '英语'
+            }
+        }
+    },
     template: {
         common: {
             list: '模板列表',

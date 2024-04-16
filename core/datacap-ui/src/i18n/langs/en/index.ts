@@ -3,7 +3,6 @@ import query from '@/i18n/langs/en/query'
 import source from '@/i18n/langs/en/source'
 import grid from '@/i18n/langs/en/grid'
 import heatmap from '@/i18n/langs/en/heatmap'
-import region from '@/i18n/langs/en/region'
 
 export default {
     state: state,
@@ -11,7 +10,19 @@ export default {
     source: source,
     grid: grid,
     heatmap: heatmap,
-    region: region,
+    region: {
+        common: {
+            selectLanguage: 'Select Language',
+            asia: {
+                default: 'Asia',
+                chineseSimple: 'Simple Chinese'
+            },
+            northAmerica: {
+                default: 'North America',
+                english: 'English'
+            }
+        }
+    },
     template: {
         common: {
             list: 'Template List',
