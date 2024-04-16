@@ -2,14 +2,39 @@ import state from '@/i18n/langs/en/state'
 import query from '@/i18n/langs/en/query'
 import source from '@/i18n/langs/en/source'
 import grid from '@/i18n/langs/en/grid'
-import heatmap from '@/i18n/langs/en/heatmap'
 
 export default {
     state: state,
     query: query,
     source: source,
     grid: grid,
-    heatmap: heatmap,
+    heatmap: {
+        common: {
+            jan: 'Jan',
+            feb: 'Feb',
+            mar: 'Mär',
+            apr: 'Apr',
+            mai: 'Mai',
+            jun: 'Jun',
+            jul: 'Jul',
+            aug: 'Aug',
+            sep: 'Sep',
+            okt: 'Okt',
+            nov: 'Nov',
+            dez: 'Dez',
+            so: 'So',
+            mo: 'Mo',
+            di: 'Di',
+            mi: 'Mi',
+            do: 'Do',
+            fr: 'Fr',
+            sa: 'Sa',
+            am: 'am',
+            less: 'Less',
+            more: 'More',
+            query: 'Query'
+        }
+    },
     region: {
         common: {
             selectLanguage: 'Select Language',
