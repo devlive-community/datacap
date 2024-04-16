@@ -6,7 +6,6 @@ import heatmap from '@/i18n/langs/en/heatmap'
 import region from '@/i18n/langs/en/region'
 import template from '@/i18n/langs/en/template'
 import menu from '@/i18n/langs/en/menu'
-import snippet from '@/i18n/langs/en/snippet'
 
 export default {
     state: state,
@@ -17,7 +16,23 @@ export default {
     region: region,
     template: template,
     menu: menu,
-    snippet: snippet,
+    snippet: {
+        common: {
+            list: 'Snippet List',
+            create: 'Create Snippet',
+            modify: 'Modify Snippet [ $VALUE ]',
+            delete: 'Delete Snippet',
+            deleteInfo: 'Delete Snippet [ $VALUE ]'
+        },
+        tip: {
+            createSuccess: 'Snippet [ $VALUE ] created successfully',
+            deleteSuccess: 'Snippet [ $VALUE ] deleted successfully',
+            deleteAlert1: 'Are you sure you want to delete this code snippet? This action cannot be undone. ',
+            deleteAlert2: 'After deleting the code fragment, the data related to it will be permanently deleted. ',
+            deleteAlert3: 'After a code fragment is deleted, it cannot be restored. ',
+            deleteAlert4: 'To confirm, type [ $VALUE ] in the box below'
+        }
+    },
     report: {
         common: {
             list: 'Report List',
