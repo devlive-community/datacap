@@ -4,7 +4,6 @@ import source from '@/i18n/langs/en/source'
 import grid from '@/i18n/langs/en/grid'
 import heatmap from '@/i18n/langs/en/heatmap'
 import region from '@/i18n/langs/en/region'
-import template from '@/i18n/langs/en/template'
 
 export default {
     state: state,
@@ -13,7 +12,13 @@ export default {
     grid: grid,
     heatmap: heatmap,
     region: region,
-    template: template,
+    template: {
+        common: {
+            list: 'Template List',
+            create: 'Create Template',
+            modify: 'Modify Template [ $NAME ]',
+        }
+    },
     menu: {
         common: {
             list: 'Menu List',

@@ -4,7 +4,6 @@ import source from '@/i18n/langs/zhCn/source'
 import grid from '@/i18n/langs/zhCn/grid'
 import heatmap from '@/i18n/langs/zhCn/heatmap'
 import region from '@/i18n/langs/zhCn/region'
-import template from '@/i18n/langs/zhCn/template'
 
 export default {
     state: state,
@@ -13,7 +12,13 @@ export default {
     grid: grid,
     heatmap: heatmap,
     region: region,
-    template: template,
+    template: {
+        common: {
+            list: '模板列表',
+            create: '创建模板',
+            modify: '修改模板 [ $NAME ]',
+        }
+    },
     menu: {
         common: {
             list: '菜单列表',
