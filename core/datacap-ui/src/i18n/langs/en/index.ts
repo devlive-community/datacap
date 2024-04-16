@@ -5,7 +5,6 @@ import grid from '@/i18n/langs/en/grid'
 import heatmap from '@/i18n/langs/en/heatmap'
 import region from '@/i18n/langs/en/region'
 import template from '@/i18n/langs/en/template'
-import menu from '@/i18n/langs/en/menu'
 
 export default {
     state: state,
@@ -15,7 +14,23 @@ export default {
     heatmap: heatmap,
     region: region,
     template: template,
-    menu: menu,
+    menu: {
+        common: {
+            list: 'Menu List',
+            create: 'Create Menu',
+            modify: 'Modify Menu [ $NAME ]',
+            parent: 'Parent Menu',
+            redirect: 'Redirect Menu',
+            new: 'New Menu',
+            i18nKey: 'I18N Key',
+            icon: 'Icon',
+        },
+        tip: {
+            selectType: 'Please select a type',
+            selectParent: 'Please select a parent',
+            selectRedirect: 'Please select a redirect'
+        }
+    },
     snippet: {
         common: {
             list: 'Snippet List',

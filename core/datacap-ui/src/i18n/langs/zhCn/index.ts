@@ -5,7 +5,6 @@ import grid from '@/i18n/langs/zhCn/grid'
 import heatmap from '@/i18n/langs/zhCn/heatmap'
 import region from '@/i18n/langs/zhCn/region'
 import template from '@/i18n/langs/zhCn/template'
-import menu from '@/i18n/langs/zhCn/menu'
 
 export default {
     state: state,
@@ -15,7 +14,23 @@ export default {
     heatmap: heatmap,
     region: region,
     template: template,
-    menu: menu,
+    menu: {
+        common: {
+            list: '菜单列表',
+            create: '创建菜单',
+            modify: '修改菜单 [ $NAME ]',
+            parent: '父菜单',
+            redirect: '重定向菜单',
+            new: '新菜单',
+            i18nKey: '国际化标识',
+            icon: '图标'
+        },
+        tip: {
+            selectType: '请选择类型',
+            selectParent: '请选择父菜单',
+            selectRedirect: '请选择重定向菜单'
+        }
+    },
     snippet: {
         common: {
             list: '片段列表',
