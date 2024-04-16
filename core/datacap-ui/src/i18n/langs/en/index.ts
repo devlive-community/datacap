@@ -1,4 +1,3 @@
-import role from '@/i18n/langs/zhCn/role'
 import schedule from '@/i18n/langs/en/schedule'
 import dashboard from '@/i18n/langs/en/dashboard'
 import dataset from '@/i18n/langs/en/dataset'
@@ -16,7 +15,6 @@ import report from '@/i18n/langs/en/report'
 import pipeline from '@/i18n/langs/en/pipeline'
 
 export default {
-    role: role,
     schedule: schedule,
     dashboard: dashboard,
     dataset: dataset,
@@ -213,6 +211,25 @@ export default {
             oldPassword: 'This is mainly used to modify the old password of the user',
             newPassword: 'This is mainly used to modify the new password of the user',
             confirmPassword: 'This is mainly used to confirm the new password of the user'
+        }
+    },
+    role: {
+        common: {
+            list: 'Role List',
+            create: 'Create Role',
+            edit: 'Edit Role [ $NAME ]',
+            name: 'Role Name',
+            description: 'Role Description',
+            assignRole: 'Assign Role [ $NAME ]',
+            assignMenu: 'Assign Menu [ $NAME ]'
+        },
+        tip: {
+            name: 'Please enter the role name',
+            description: 'Please enter the role description'
+        },
+        validate: {
+            nameSize: 'The role name must be between 3 and 20 characters',
+            descriptionSize: 'The role description must be between 3 and 50 characters'
         }
     }
 }

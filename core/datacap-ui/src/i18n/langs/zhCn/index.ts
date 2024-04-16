@@ -1,4 +1,3 @@
-import role from '@/i18n/langs/zhCn/role'
 import schedule from '@/i18n/langs/zhCn/schedule'
 import dashboard from '@/i18n/langs/zhCn/dashboard'
 import dataset from '@/i18n/langs/zhCn/dataset'
@@ -16,7 +15,6 @@ import report from '@/i18n/langs/zhCn/report'
 import pipeline from '@/i18n/langs/zhCn/pipeline.ts'
 
 export default {
-    role: role,
     schedule: schedule,
     dashboard: dashboard,
     dataset: dataset,
@@ -213,6 +211,25 @@ export default {
             oldPassword: '这里主要用于修改用户的旧密码',
             newPassword: '这里主要用于修改用户的新密码',
             confirmPassword: '这里主要用于确认用户的新密码',
+        }
+    },
+    role:{
+        common: {
+            list: '权限列表',
+            create: '创建路由',
+            edit: '编辑路由 [ $NAME ]',
+            name: '路由名称',
+            description: '路由描述',
+            assignRole: '分配路由 [ $NAME ]',
+            assignMenu: '分配菜单 [ $NAME ]'
+        },
+        tip: {
+            name: '请输入路由名称',
+            description: '请输入路由描述'
+        },
+        validate: {
+            nameSize: '路由名称必须在3-20个字符之间',
+            descriptionSize: '路由描述必须在3-50个字符之间'
         }
     }
 }
