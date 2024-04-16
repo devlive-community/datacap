@@ -262,8 +262,8 @@ export default defineComponent({
     {
       this.loading = true
       const router = useRouter()
-      const id = router.currentRoute?.value?.params['id']
-      DatabaseService.getAllBySource(id as unknown as string)
+      const code = router.currentRoute?.value?.params['code'] as string
+      DatabaseService.getAllBySource(code)
                      .then(response => {
                        if (response.status) {
                          response.data.forEach((item: { name: null; catalog: null; id: null }) => {
