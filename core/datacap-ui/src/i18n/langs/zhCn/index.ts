@@ -1,5 +1,3 @@
-import schedule from '@/i18n/langs/zhCn/schedule'
-import dashboard from '@/i18n/langs/zhCn/dashboard'
 import dataset from '@/i18n/langs/zhCn/dataset'
 import state from '@/i18n/langs/zhCn/state'
 import query from '@/i18n/langs/zhCn/query'
@@ -15,7 +13,6 @@ import report from '@/i18n/langs/zhCn/report'
 import pipeline from '@/i18n/langs/zhCn/pipeline.ts'
 
 export default {
-    dashboard: dashboard,
     dataset: dataset,
     state: state,
     query: query,
@@ -209,10 +206,10 @@ export default {
             changePasswordSuccessfully: '修改密码成功，请重新登录',
             oldPassword: '这里主要用于修改用户的旧密码',
             newPassword: '这里主要用于修改用户的新密码',
-            confirmPassword: '这里主要用于确认用户的新密码',
+            confirmPassword: '这里主要用于确认用户的新密码'
         }
     },
-    role:{
+    role: {
         common: {
             list: '权限列表',
             create: '创建路由',
@@ -231,10 +228,27 @@ export default {
             descriptionSize: '路由描述必须在3-50个字符之间'
         }
     },
-    schedule:{
+    schedule: {
         common: {
             list: '调度列表',
             history: '调度历史'
+        }
+    },
+    dashboard: {
+        common: {
+            list: '仪表盘列表',
+            delete: '删除仪表盘',
+            create: '创建仪表盘',
+            modify: '修改仪表盘',
+            modifyInfo: '修改仪表盘 [ $VALUE ]',
+            addReport: '添加图表'
+        },
+        tip: {
+            deleteTip1: '您正在删除仪表板。此操作将永久删除仪表板。在继续操作之前，请务必确认您的操作。',
+            deleteTip2: '警告：此操作无法撤消。 ',
+            deleteTip3: '要确认，请在下面的框中键入 [ $NAME ]',
+            publishSuccess: '仪表板 [ $VALUE ] 发布成功',
+            notFound: '仪表板 [ $VALUE ] 不存在'
         }
     }
 }

@@ -1,4 +1,3 @@
-import dashboard from '@/i18n/langs/en/dashboard'
 import dataset from '@/i18n/langs/en/dataset'
 import state from '@/i18n/langs/en/state'
 import query from '@/i18n/langs/en/query'
@@ -14,7 +13,6 @@ import report from '@/i18n/langs/en/report'
 import pipeline from '@/i18n/langs/en/pipeline'
 
 export default {
-    dashboard: dashboard,
     dataset: dataset,
     state: state,
     query: query,
@@ -230,10 +228,27 @@ export default {
             descriptionSize: 'The role description must be between 3 and 50 characters'
         }
     },
-    schedule:{
+    schedule: {
         common: {
             list: 'Schedule List',
             history: 'Schedule History'
+        }
+    },
+    dashboard: {
+        common: {
+            list: 'Function List',
+            keyword: 'Keyword',
+            operator: 'Operator',
+            function: 'Function',
+            example: 'Example',
+            import: 'Import Data',
+            importFromUrl: 'Import from URL',
+            create: 'Create Function',
+            modify: 'Modify Function [ $NAME ]'
+        },
+        tip: {
+            selectPluginHolder: 'Please select a plugin',
+            selectTypeHolder: 'Please select a type'
         }
     }
 }
