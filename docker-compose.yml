@@ -9,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./core/datacap-server/src/main/schema/datacap.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./configure/schema/datacap.sql:/docker-entrypoint-initdb.d/schema.sql
 
   datacap:
     image: qianmoq/datacap:latest
