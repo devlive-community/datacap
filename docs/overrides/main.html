@@ -5,18 +5,13 @@ This file was automatically generated - do not edit
 {% block extrahead %}
 <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 
-<script>
-    !function (p) {
-        "use strict";
-        !function (t) {
-            var s = window, e = document, i = p, c = "".concat("https:" === e.location.protocol ? "https://" : "http://", "sdk.51.la/js-sdk-pro.min.js"),
-                n = e.createElement("script"), r = e.getElementsByTagName("script")[0];
-            n.type = "text/javascript", n.setAttribute("charset", "UTF-8"), n.async = !0, n.src = c, n.id = "LA_COLLECT", i.d = n;
-            var o = function () {s.LA.ids.push(i)};
-            s.LA ? s.LA.ids && o() : (s.LA = p, s.LA.ids = [], o()), r.parentNode.insertBefore(n, r)
-        }()
-    }({id: "JxKUXhE7gGiOPZNN", ck: "JxKUXhE7gGiOPZNN", autoTrack: true, hashMode: true});
-</script>
+<!-- 51la 数据分析 -->
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id:"JxKUXhE7gGiOPZNN",ck:"JxKUXhE7gGiOPZNN",autoTrack:true,hashMode:true,screenRecord:true})</script>
+
+<!-- Google 广告 -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2331057374732209"
+        crossorigin="anonymous"></script>
 {% endblock %}
 {% block announce %}
 <div class="announce-wrapper">
