@@ -5,7 +5,7 @@ export interface StructureModel
     database?: null | any
     databaseId?: string
     table?: null
-    tableId?: null
+    tableId?: string
     applyId?: null | number
     type?: null
     dataType?: null

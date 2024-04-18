@@ -294,7 +294,7 @@ export default defineComponent({
       }
       this.selectNode = currentNode
       const type = this.$route.meta.type as string
-      this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.selectDatabase }/t/${ type }/${ currentNode.code }`)
+      this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.selectDatabase }/t/${ type ? type : 'info' }/${ currentNode.code }`)
     },
     handlerLoadChildData(item: StructureModel, callback: any)
     {
@@ -317,14 +317,14 @@ export default defineComponent({
                          engine: null;
                          isKey: null;
                          defaultValue: null;
-                         table: { name: null, id: null, database: { name: null, id: string } };
+                         table: { name: null, code: undefined, database: { name: null, id: string } };
                        }) => {
                          const structure: StructureModel = {
                            title: item.name,
                            database: item.table.database.name,
                            databaseId: item.table.database.id,
                            table: item.table.name,
-                           tableId: item.table.id,
+                           tableId: item.table.code,
                            catalog: item.catalog,
                            code: item.code,
                            level: StructureEnum.COLUMN,
@@ -365,6 +365,7 @@ export default defineComponent({
     },
     handlerContextMenu(node: StructureModel)
     {
+      console.log(node)
       this.dataInfo = node
       // Simulate right-click to trigger right-click menu
       const element = document.getElementById('contextMenu') as HTMLElement

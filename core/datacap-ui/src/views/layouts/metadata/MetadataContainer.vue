@@ -17,22 +17,12 @@
 import { defineComponent } from 'vue'
 import MetadataSidebar from '@/views/layouts/metadata/components/MetadataSidebar.vue'
 import MetadataContent from '@/views/layouts/metadata/components/MetadataContent.vue'
-import { StructureModel } from '@/model/structure.ts'
-import router from '@/router'
 
 export default defineComponent({
   name: 'MetadataContainer',
   components: {
     MetadataContent,
     MetadataSidebar
-  },
-  methods: {
-    handlerChange(node: StructureModel)
-    {
-      this.dataInfo = node
-      console.log(node)
-      router.push(`/admin/source/manager/${ this.code }/d/${ node.code }`)
-    }
   }
 })
 </script>

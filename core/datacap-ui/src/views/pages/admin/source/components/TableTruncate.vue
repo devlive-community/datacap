@@ -35,7 +35,6 @@ import { SqlType, TableFilter, TableFilterRequest } from '@/model/table'
 import Button from '@/views/ui/button'
 import Alert from '@/views/ui/alert'
 import Divider from '@/views/ui/divider'
-import { toNumber } from 'lodash'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import AceEditor from '@/views/components/editor/AceEditor.vue'
 
@@ -98,7 +97,7 @@ export default defineComponent({
           this.submitting = true
         }
         this.formState.preview = preview
-        TableService.getData(toNumber(this.info.applyId), this.formState)
+        TableService.getData(this.info.code as string, this.formState)
                     .then(response => {
                       if (response.status) {
                         if (preview) {

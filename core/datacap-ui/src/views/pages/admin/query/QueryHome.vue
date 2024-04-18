@@ -5,7 +5,7 @@
         <Card>
           <CardHeader class="p-0">
             <SourceSelect :value="selectSource.full as string" @changeValue="handlerChangeValue($event)"/>
-            <DataStructureLazyTree v-if="selectSource.id" :id="selectSource.id as string"/>
+            <DataStructureLazyTree v-if="selectSource.code" :code="selectSource.code as string"/>
           </CardHeader>
         </Card>
       </aside>

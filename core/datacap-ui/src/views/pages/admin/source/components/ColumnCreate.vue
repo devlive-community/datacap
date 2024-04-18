@@ -110,7 +110,6 @@ import { Minus, Plus } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import Switch from '@/views/ui/switch'
 import { ToastUtils } from '@/utils/toast'
-import { toNumber } from 'lodash'
 import TableService from '@/services/table'
 
 export default defineComponent({
@@ -163,7 +162,7 @@ export default defineComponent({
     {
       if (this.info) {
         this.loading = true
-        TableService.manageColumn(this.info.code, this.formState)
+        TableService.manageColumn(this.info.code as string, this.formState)
                     .then(response => {
                       if (response.data) {
                         if (response.data.isSuccessful) {
