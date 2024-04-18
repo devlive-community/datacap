@@ -103,7 +103,6 @@ import { Minus, Plus } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import Switch from '@/views/ui/switch'
 import { ToastUtils } from '@/utils/toast'
-import { toNumber } from 'lodash'
 import TableService from '@/services/table'
 import ColumnService from '@/services/column'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
@@ -160,7 +159,7 @@ export default defineComponent({
     {
       if (this.info) {
         this.loading = true
-        ColumnService.getById(toNumber(this.info.applyId))
+        ColumnService.getByCode(this.info.code as string)
                      .then(response => {
                        if (response.status) {
                          const data = response.data
@@ -187,11 +186,14 @@ export default defineComponent({
     {
       if (this.info) {
         this.submitting = true
-        TableService.manageColumn(toNumber(this.info.tableId), this.formState)
+        TableService.manageColumn(this.info.code as string, this.formState)
                     .then(response => {
                       if (response.data) {
                         if (response.data.isSuccessful) {
-                          const columns = this.formState?.columns?.map(item => item.name).join(', ') as string
+                          const columns = this.formState
+                                              ?.columns
+                                              ?.map(item => item.name)
+                                              .join(', ') as string
                           ToastUtils.success(this.$t('source.tip.changeColumnSuccess').replace('$VALUE', columns))
                           this.handlerCancel()
                         }

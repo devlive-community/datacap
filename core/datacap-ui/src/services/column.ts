@@ -15,12 +15,12 @@ class ColumnService
     /**
      * Fetches all items from a table based on the provided ID.
      *
-     * @param {number} id - The ID of the table.
+     * @param {number} code - The code of the table.
      * @return {Promise<ResponseModel>} A Promise that resolves with the response from the API.
      */
-    getAllByTable(id: number): Promise<ResponseModel>
+    getAllByTable(code: string): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH}/table/${id}`)
+        return new HttpUtils().post(`${DEFAULT_PATH}/table/${code}`)
     }
 }
 

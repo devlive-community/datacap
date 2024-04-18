@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pl-3 pr-3">
     <CircularLoading v-if="loading" :show="loading"/>
     <div v-else-if="dataInfo">
       <div class="grid w-full grid-cols-3 gap-6 pt-2">
@@ -93,7 +93,7 @@
                     <div class="grid grid-cols-3 items-center gap-4">
                       <Label for="autoIncrement">{{ $t('source.common.resetTo') }}</Label>
                       <Input v-model="dataInfo.autoIncrement" id="autoIncrement" type="number" :default-value="dataInfo.autoIncrement"/>
-                      <Button :loading="loading" @click="handlerApply">
+                      <Button size="sm" :loading="submitting" :disabled="submitting" @click="handlerApply">
                         {{ $t('common.apply') }}
                       </Button>
                     </div>
@@ -127,11 +127,9 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { ToastUtils } from '@/utils/toast'
 import { Textarea } from '@/components/ui/textarea'
-import { StructureModel } from '@/model/structure'
-import { cloneDeep, toNumber } from 'lodash'
 
 export default defineComponent({
-  name: 'TableInfo',
+  name: 'SourceTableInfo',
   components: {
     Textarea,
     Input,
@@ -144,39 +142,46 @@ export default defineComponent({
     Database, Table, Clock, CalendarHeart, ArrowUpDown, TableCellsMerge, RemoveFormatting, ArrowUp10, Search, Cog,
     Popover, PopoverContent, PopoverTrigger
   },
-  props: {
-    info: {
-      type: Object as () => StructureModel | null
-    }
-  },
   created()
   {
     this.handlerInitialize()
-    this.watchId()
+    this.watchChange()
   },
   data()
   {
     return {
       loading: false,
+      submitting: false,
       dataInfo: null as TableModel | null
     }
   },
   methods: {
     handlerInitialize()
     {
-      if (this.info) {
-        this.dataInfo = cloneDeep(this.info.origin)
+      const code = this.$route?.params.table as string
+      if (code) {
+        this.loading = true
+        TableService.getByCode(code)
+                    .then(response => {
+                      if (response.status) {
+                        this.dataInfo = response.data
+                      }
+                      else {
+                        ToastUtils.error(response.message)
+                      }
+                    })
+                    .finally(() => this.loading = false)
       }
     },
     handlerApply()
     {
       if (this.dataInfo) {
-        this.loading = true
+        this.submitting = true
         const configure: TableFilter = {
           type: SqlType.ALTER,
           value: this.dataInfo.autoIncrement
         }
-        TableService.getData(toNumber(this.dataInfo.id), configure)
+        TableService.getData(this.dataInfo.code as string, configure)
                     .then(response => {
                       if (response.status) {
                         ToastUtils.success(this.$t('source.tip.resetAutoIncrementSuccess').replace('$VALUE', this.dataInfo?.autoIncrement as string))
@@ -186,16 +191,14 @@ export default defineComponent({
                         ToastUtils.error(response.message)
                       }
                     })
-                    .finally(() => this.loading = false)
+                    .finally(() => this.submitting = false)
       }
     },
-    watchId()
+    watchChange()
     {
       watch(
-          () => this.info,
-          () => {
-            this.handlerInitialize()
-          }
+          () => this.$route?.params.table,
+          () => this.handlerInitialize()
       )
     }
   }

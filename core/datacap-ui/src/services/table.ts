@@ -16,39 +16,39 @@ class TableService
     /**
      * Retrieves all data from the database by the specified ID.
      *
-     * @param {number} id - The ID of the database.
+     * @param {number} code - The code of the database.
      * @return {Promise<ResponseModel>} A promise that resolves to a ResponseModel object.
      */
-    getAllByDatabase(id: number): Promise<ResponseModel>
+    getAllByDatabase(code: string): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${ DEFAULT_PATH }/database/${ id }`)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/database/${ code }`)
     }
 
     /**
      * Retrieves data for a specific ID using the provided table filter configuration.
      *
-     * @param {number} id - The ID of the data to retrieve.
+     * @param {number} code - The code of the data to retrieve.
      * @param {TableFilter} configure - The table filter configuration.
      * @return {Promise<ResponseModel>} - A promise that resolves to the response model.
      */
-    getData(id: number, configure: TableFilter): Promise<ResponseModel>
+    getData(code: string, configure: TableFilter): Promise<ResponseModel>
     {
         if (!configure) {
             configure = <TableFilter>{}
         }
-        return new HttpUtils().post(`${ DEFAULT_PATH }/${ id }`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/${ code }`, configure)
     }
 
     /**
      * A description of the entire function.
      *
-     * @param {number} id - The identifier of the data.
+     * @param {string} code - The identifier of the data.
      * @param {any} configure - The configuration object.
      * @return {Promise<ResponseModel>} A promise that resolves to the response model.
      */
-    putData(id: number, configure: TableFilter): Promise<ResponseModel>
+    putData(code: string, configure: TableFilter): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${ DEFAULT_PATH }/${ id }`, configure)
+        return new HttpUtils().put(`${ DEFAULT_PATH }/${ code }`, configure)
     }
 
     /**
@@ -68,9 +68,9 @@ class TableService
         return new HttpUtils().post(`${ DEFAULT_PATH }/createTable/${ databaseId }`, configure)
     }
 
-    manageColumn(tableId: number, configure: any): Promise<ResponseModel>
+    manageColumn(code: string, configure: any): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${ DEFAULT_PATH }/manageColumn/${ tableId }`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/manageColumn/${ code }`, configure)
     }
 }
 

@@ -11,8 +11,8 @@ public interface ColumnService
     /**
      * Retrieves all the column entities associated with a specific table.
      *
-     * @param id the ID of the table
+     * @param code the code of the table
      * @return a common response containing a list of column entities
      */
-    CommonResponse<List<ColumnEntity>> getAllByTable(Long id);
+    CommonResponse<List<ColumnEntity>> getAllByTable(String code);
 }

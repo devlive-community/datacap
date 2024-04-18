@@ -99,7 +99,7 @@ export default defineComponent({
           this.submitting = true
         }
         this.formState.preview = preview
-        TableService.getData(toNumber(this.info.tableId), this.formState)
+        TableService.getData(this.info.tableId as string, this.formState)
                     .then(response => {
                       if (response.status) {
                         if (preview) {

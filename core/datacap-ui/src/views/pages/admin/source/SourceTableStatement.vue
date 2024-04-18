@@ -5,23 +5,16 @@
 
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
-import { StructureModel } from '@/model/structure'
-import { toNumber } from 'lodash'
-import { SqlType, TableFilter, TableFilterRequest } from '@/model/table'
+import { SqlType, TableFilter, TableFilterRequest } from '@/model/table.ts'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import AceEditor from '@/views/components/editor/AceEditor.vue'
-import TableService from '@/services/table'
+import TableService from '@/services/table.ts'
 
 export default defineComponent({
-  name: 'TableStatement',
+  name: 'SourceTableStatement',
   components: {
     AceEditor,
     CircularLoading
-  },
-  props: {
-    info: {
-      type: Object as () => StructureModel | null
-    }
   },
   data()
   {
@@ -34,16 +27,17 @@ export default defineComponent({
   created()
   {
     this.handlerInitialize()
-    this.watchId()
+    this.watchChange()
   },
   methods: {
     handlerInitialize()
     {
-      if (this.info) {
+      const code = this.$route?.params.table as string
+      if (code) {
         this.formState = TableFilterRequest.of()
         this.formState.type = SqlType.SHOW
         this.loading = true
-        TableService.getData(toNumber(this.info.applyId), this.formState)
+        TableService.getData(code, this.formState)
                     .then(response => {
                       if (response.status) {
                         const content = response.data?.columns[0]
@@ -58,13 +52,11 @@ export default defineComponent({
                     .finally(() => this.loading = false)
       }
     },
-    watchId()
+    watchChange()
     {
       watch(
-          () => this.info,
-          () => {
-            this.handlerInitialize()
-          }
+          () => this.$route?.params.table,
+          () => this.handlerInitialize()
       )
     }
   }

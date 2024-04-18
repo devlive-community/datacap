@@ -109,14 +109,14 @@
         </div>
       </template>
       <CircularLoading v-if="refererLoading" :show="refererLoading"/>
-      <AgGridVue class="ag-theme-datacap" style="width: 100%; min-height: 460px; height: 460px;" :gridOptions="gridOptions" :columnDefs="configure.headers"
+      <AgGridVue class="ag-theme-datacap h-[650px]" :gridOptions="gridOptions" :columnDefs="configure.headers"
                  :rowData="configure.datasets" :tooltipShowDelay="100" :sortingOrder="['desc', 'asc', null]" :rowSelection="'multiple'" @grid-ready="handlerGridReady"
                  @sortChanged="handlerSortChanged" @cellValueChanged="handlerCellValueChanged" @selectionChanged="handlerSelectionChanged" @columnVisible="handlerColumnVisible"
                  @columnMoved="handlerColumnMoved"/>
     </Card>
-    <TableCellInfo v-if="dataCellChanged.pending && info" :isVisible="dataCellChanged.pending" :columns="dataCellChanged.columns" :tableId="info.applyId as number"
-                   :type="dataCellChanged.type" @close="handlerCellChangedPreview(false)"/>
-    <TableRowDelete v-if="dataSelectedChanged.pending && info" :isVisible="dataSelectedChanged.pending" :tableId="info.applyId as number" :columns="dataSelectedChanged.columns"
+    <TableCellInfo v-if="dataCellChanged.pending" :isVisible="dataCellChanged.pending" :columns="dataCellChanged.columns" :type="dataCellChanged.type"
+                   @close="handlerCellChangedPreview(false)"/>
+    <TableRowDelete v-if="dataSelectedChanged.pending" :isVisible="dataSelectedChanged.pending" :columns="dataSelectedChanged.columns"
                     @close="handlerSelectedChangedPreview(false)"/>
     <TableColumn v-if="visibleColumn.show" :isVisible="visibleColumn.show" :columns="visibleColumn.columns" @close="handlerVisibleColumn($event, false)"
                  @change="handlerVisibleColumn($event, false)"/>
@@ -128,7 +128,6 @@
 
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
-import { StructureModel } from '@/model/structure'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { useI18n } from 'vue-i18n'
 import { AgGridVue } from 'ag-grid-vue3'
@@ -136,12 +135,12 @@ import 'ag-grid-community/styles/ag-grid.css'
 import '@/views/components/grid/ag-theme-datacap.css'
 import { ColumnApi, ColumnState, GridApi } from 'ag-grid-community'
 import Card from '@/views/ui/card'
-import { PaginationEnum, PaginationModel } from '@/model/pagination'
+import { PaginationEnum, PaginationModel } from '@/model/pagination.ts'
 import { createColumnDefs, createDataEditorOptions } from '@/views/pages/admin/source/components/TableUtils.ts'
-import { OrderFilter, SqlColumn, SqlType, TableFilter } from '@/model/table'
-import TableService from '@/services/table'
-import { cloneDeep, toNumber } from 'lodash'
-import { ToastUtils } from '@/utils/toast'
+import { OrderFilter, SqlColumn, SqlType, TableFilter } from '@/model/table.ts'
+import TableService from '@/services/table.ts'
+import { cloneDeep } from 'lodash'
+import { ToastUtils } from '@/utils/toast.ts'
 import Button from '@/views/ui/button'
 import Tooltip from '@/views/ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -154,7 +153,7 @@ import TableColumn from '@/views/pages/admin/source/components/TableColumn.vue'
 import TableRowFilter from '@/views/pages/admin/source/components/TableRowFilter.vue'
 
 export default defineComponent({
-  name: 'TableData',
+  name: 'SourceTableData',
   components: {
     TableRowFilter,
     TableColumn,
@@ -170,16 +169,11 @@ export default defineComponent({
     Popover, PopoverContent, PopoverTrigger,
     ArrowLeftToLine, ArrowLeft, ArrowRight, ArrowRightToLine, Cog, Plus, RectangleEllipsis, Copy, Minus, Eye, RefreshCw, Columns, Filter
   },
-  props: {
-    info: {
-      type: Object as () => StructureModel | null
-    }
-  },
   created()
   {
     this.i18n = useI18n()
     this.handlerInitialize()
-    this.watchId()
+    this.watchChange()
   },
   data()
   {
@@ -242,9 +236,10 @@ export default defineComponent({
         }
         this.configure.pagination = pagination
       }
-      if (this.info) {
+      const code = this.$route?.params.table as string
+      if (code) {
         this.loading = true
-        TableService.getData(toNumber(this.info.applyId), this.configure)
+        TableService.getData(code, this.configure)
                     .then(response => {
                       if (response.status && response.data) {
                         this.configure.headers = createColumnDefs(response.data.headers, response.data.types)
@@ -272,9 +267,10 @@ export default defineComponent({
     {
       this.configure.datasets = []
       this.gridOptions.overlayNoRowsTemplate = '<span></span>'
-      if (this.info) {
+      const code = this.$route?.params.table as string
+      if (code) {
         this.refererLoading = true
-        TableService.getData(toNumber(this.info.applyId), configure)
+        TableService.getData(code, configure)
                     .then(response => {
                       if (response.status && response.data) {
                         this.configure.headers = createColumnDefs(response.data.headers, response.data.types)
@@ -466,10 +462,10 @@ export default defineComponent({
     {
       this.newRows = []
     },
-    watchId()
+    watchChange()
     {
       watch(
-          () => this.info,
+          () => this.$route?.params.table,
           () => {
             this.configure.pagination = null as unknown as PaginationModel
             this.handlerInitialize()

@@ -23,8 +23,8 @@ export default defineComponent({
     Tree
   },
   props: {
-    id: {
-      type: String,
+    code: {
+      type: String
     }
   },
   data()
@@ -37,109 +37,120 @@ export default defineComponent({
   created()
   {
     this.handlerInitialize()
-    watch(() => this.id, () => this.handlerInitialize())
+    watch(() => this.code, () => this.handlerInitialize())
   },
   methods: {
     handlerInitialize()
     {
       this.dataTreeArray = []
       this.loading = true
-      DatabaseService.getAllBySource(this.id as string)
-          .then(response => {
-            if (response.status) {
-              response.data.forEach((item: { name: null; catalog: null; id: null }) => {
-                const structure: StructureModel = {
-                  title: item.name,
-                  catalog: item.catalog,
-                  applyId: item.id,
-                  level: StructureEnum.DATABASE,
-                  loading: false,
-                  children: [] as StructureModel[],
-                  render: (h: any, {data}: { data: StructureModel }) => {
-                    return h('div', [
-                      h('span', [
-                        h(resolveComponent('FontAwesomeIcon'), {
-                          icon: 'database',
-                          style: {marginRight: '6px'}
-                        }),
-                        h('span', data.title)
-                      ])
-                    ])
-                  }
-                }
-                this.dataTreeArray.push(structure)
-              })
-            }
-          })
-          .finally(() => this.loading = false)
+      DatabaseService.getAllBySource(this.code as string)
+                     .then(response => {
+                       if (response.status) {
+                         response.data
+                                 .forEach((item: { name: null; catalog: null; code: undefined }) => {
+                                   const structure: StructureModel = {
+                                     title: item.name,
+                                     catalog: item.catalog,
+                                     code: item.code,
+                                     level: StructureEnum.DATABASE,
+                                     loading: false,
+                                     children: [] as StructureModel[],
+                                     render: (h: any, { data }: { data: StructureModel }) => {
+                                       return h('div', [
+                                         h('span', [
+                                           h(resolveComponent('FontAwesomeIcon'), {
+                                             icon: 'database',
+                                             style: { marginRight: '6px' }
+                                           }),
+                                           h('span', data.title)
+                                         ])
+                                       ])
+                                     }
+                                   }
+                                   this.dataTreeArray.push(structure)
+                                 })
+                       }
+                     })
+                     .finally(() => this.loading = false)
     },
     handlerLoadChildData(item: StructureModel, callback: any)
     {
       const dataChildArray = [] as StructureModel[]
       if (item.level === StructureEnum.DATABASE) {
-        TableService.getAllByDatabase(item.applyId as number)
-            .then(response => {
-              if (response.status) {
-                response.data.forEach((item: { name: null; title: null; catalog: null; id: null; type: null; engine: null; database: { name: null }; }) => {
-                  const structure: StructureModel = {
-                    title: item.name,
-                    database: item.database.name,
-                    catalog: item.catalog,
-                    applyId: item.id,
-                    level: StructureEnum.TABLE,
-                    type: item.type,
-                    engine: item.engine,
-                    loading: false,
-                    children: [] as StructureModel[],
-                    render: (h: any, {data}: { data: StructureModel }) => {
-                      return h('div', [
-                        h('span', [
-                          h(resolveComponent('FontAwesomeIcon'), {
-                            icon: 'table',
-                            style: {marginRight: '6px'}
-                          }),
-                          h('span', data.title)
-                        ])
-                      ])
-                    }
-                  }
-                  dataChildArray.push(structure)
-                })
-              }
-            })
-            .finally(() => callback(dataChildArray))
+        TableService.getAllByDatabase(item.code as string)
+                    .then(response => {
+                      if (response.status) {
+                        response.data
+                                .forEach((item: { name: null; title: null; catalog: null; code: undefined; type: null; engine: null; database: { name: null }; }) => {
+                                  const structure: StructureModel = {
+                                    title: item.name,
+                                    database: item.database.name,
+                                    catalog: item.catalog,
+                                    code: item.code,
+                                    level: StructureEnum.TABLE,
+                                    type: item.type,
+                                    engine: item.engine,
+                                    loading: false,
+                                    children: [] as StructureModel[],
+                                    render: (h: any, { data }: { data: StructureModel }) => {
+                                      return h('div', [
+                                        h('span', [
+                                          h(resolveComponent('FontAwesomeIcon'), {
+                                            icon: 'table',
+                                            style: { marginRight: '6px' }
+                                          }),
+                                          h('span', data.title)
+                                        ])
+                                      ])
+                                    }
+                                  }
+                                  dataChildArray.push(structure)
+                                })
+                      }
+                    })
+                    .finally(() => callback(dataChildArray))
       }
       else if (item.level === StructureEnum.TABLE) {
-        ColumnService.getAllByTable(item.applyId as number)
-            .then(response => {
-              if (response.status) {
-                response.data.forEach((item: { name: null; title: null; catalog: null; id: null; type: null; engine: null; table: { name: null, database: { name: null } }; }) => {
-                  const structure: StructureModel = {
-                    title: item.name,
-                    database: item.table.database.name,
-                    table: item.table.name,
-                    catalog: item.catalog,
-                    applyId: item.id,
-                    level: StructureEnum.COLUMN,
-                    type: item.type,
-                    engine: item.engine,
-                    render: (h: any, {data}: { data: StructureModel }) => {
-                      return h('div', [
-                        h('span', [
-                          h(resolveComponent('FontAwesomeIcon'), {
-                            icon: 'columns',
-                            style: {marginRight: '6px'}
-                          }),
-                          h('span', data.title)
-                        ])
-                      ])
-                    }
-                  }
-                  dataChildArray.push(structure)
-                })
-              }
-            })
-            .finally(() => callback(dataChildArray))
+        ColumnService.getAllByTable(item.code as string)
+                     .then(response => {
+                       if (response.status) {
+                         response.data
+                                 .forEach((item: {
+                                   name: null;
+                                   title: null;
+                                   catalog: null;
+                                   code: undefined;
+                                   type: null;
+                                   engine: null;
+                                   table: { name: null, database: { name: null } };
+                                 }) => {
+                                   const structure: StructureModel = {
+                                     title: item.name,
+                                     database: item.table.database.name,
+                                     table: item.table.name,
+                                     catalog: item.catalog,
+                                     code: item.code,
+                                     level: StructureEnum.COLUMN,
+                                     type: item.type,
+                                     engine: item.engine,
+                                     render: (h: any, { data }: { data: StructureModel }) => {
+                                       return h('div', [
+                                         h('span', [
+                                           h(resolveComponent('FontAwesomeIcon'), {
+                                             icon: 'columns',
+                                             style: { marginRight: '6px' }
+                                           }),
+                                           h('span', data.title)
+                                         ])
+                                       ])
+                                     }
+                                   }
+                                   dataChildArray.push(structure)
+                                 })
+                       }
+                     })
+                     .finally(() => callback(dataChildArray))
       }
       else {
         callback(dataChildArray)
@@ -151,7 +162,7 @@ export default defineComponent({
       let text: string = target.title as string
       switch (target.level) {
         case StructureEnum.TABLE:
-          text = target.database + '.' + text;
+          text = target.database + '.' + text
           break
         case StructureEnum.COLUMN:
           text = target.database + '.' + target.table + '.' + text
@@ -160,5 +171,5 @@ export default defineComponent({
       ObjectUtils.copy(text)
     }
   }
-});
+})
 </script>

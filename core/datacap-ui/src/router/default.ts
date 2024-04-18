@@ -1,6 +1,7 @@
 import LayoutContainer from '@/views/layouts/common/LayoutContainer.vue'
 import ProfileContainer from '@/views/layouts/profile/LayoutContainer.vue'
 import { TokenUtils } from '@/utils/token'
+import MetadataContainer from '@/views/layouts/metadata/MetadataContainer.vue'
 
 /**
  * Create a default router
@@ -215,12 +216,67 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/source/SourceHome.vue')
             },
             {
-                path: 'source/manager/:code',
+                path: 'source/:source',
+                component: MetadataContainer,
                 meta: {
                     title: 'common.source',
                     isRoot: false
                 },
-                component: () => import('@/views/pages/admin/source/SourceManager.vue')
+                children: [
+                    {
+                        path: 'd/:database/',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceDatabase.vue')
+                    },
+                    {
+                        path: 'd/:database/t/info/:table',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false,
+                            type: 'info'
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceTableInfo.vue')
+                    },
+                    {
+                        path: 'd/:database/t/structure/:table',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false,
+                            type: 'structure'
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceTableStructure.vue')
+                    },
+                    {
+                        path: 'd/:database/t/data/:table',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false,
+                            type: 'data'
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceTableData.vue')
+                    },
+                    {
+                        path: 'd/:database/t/statement/:table',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false,
+                            type: 'statement'
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceTableStatement.vue')
+                    },
+                    {
+                        path: 'd/:database/t/erDiagram/:table',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false,
+                            type: 'erDiagram'
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceTableErDiagram.vue')
+                    }
+                ]
             },
             {
                 path: 'history',

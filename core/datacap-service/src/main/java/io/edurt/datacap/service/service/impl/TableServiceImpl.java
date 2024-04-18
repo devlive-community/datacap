@@ -86,54 +86,51 @@ public class TableServiceImpl
     }
 
     @Override
-    public CommonResponse<List<TableEntity>> getAllByDatabase(Long id)
+    public CommonResponse<List<TableEntity>> getAllByDatabase(String code)
     {
-        DatabaseEntity database = DatabaseEntity.builder()
-                .id(id)
-                .build();
-        return CommonResponse.success(this.repository.findAllByDatabase(database));
+        return databaseRepository.findByCode(code)
+                .map(value -> CommonResponse.success(this.repository.findAllByDatabase(value)))
+                .orElseGet(() -> CommonResponse.failure(String.format("Database [ %s ] not found", code)));
     }
 
     @Override
-    public CommonResponse<Object> fetchDataById(Long id, TableFilter configure)
+    public CommonResponse<Object> fetchData(String code, TableFilter configure)
     {
-        TableEntity table = this.repository.findById(id)
-                .orElse(null);
-        if (table == null) {
-            return CommonResponse.failure(String.format("Table [ %s ] not found", id));
-        }
-
-        SourceEntity source = table.getDatabase().getSource();
-        Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol());
-        if (!pluginOptional.isPresent()) {
-            return CommonResponse.failure(ServiceState.PLUGIN_NOT_FOUND);
-        }
-        Plugin plugin = pluginOptional.get();
-        if (configure.getType().equals(SqlType.SELECT)) {
-            return this.fetchSelect(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.INSERT)) {
-            return this.fetchInsert(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.UPDATE)) {
-            return this.fetchUpdate(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.DELETE)) {
-            return this.fetchDelete(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.ALTER)) {
-            return this.fetchAlter(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.SHOW)) {
-            return this.fetchShowCreateTable(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.TRUNCATE)) {
-            return this.fetchTruncateTable(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.DROP)) {
-            return this.fetchDropTable(plugin, table, source, configure);
-        }
-        return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
+        return repository.findByCode(code)
+                .map(table -> {
+                    SourceEntity source = table.getDatabase().getSource();
+                    Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol());
+                    if (!pluginOptional.isPresent()) {
+                        return CommonResponse.failure(ServiceState.PLUGIN_NOT_FOUND);
+                    }
+                    Plugin plugin = pluginOptional.get();
+                    if (configure.getType().equals(SqlType.SELECT)) {
+                        return this.fetchSelect(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.INSERT)) {
+                        return this.fetchInsert(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.UPDATE)) {
+                        return this.fetchUpdate(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.DELETE)) {
+                        return this.fetchDelete(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.ALTER)) {
+                        return this.fetchAlter(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.SHOW)) {
+                        return this.fetchShowCreateTable(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.TRUNCATE)) {
+                        return this.fetchTruncateTable(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.DROP)) {
+                        return this.fetchDropTable(plugin, table, source, configure);
+                    }
+                    return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
+                })
+                .orElse(CommonResponse.failure(String.format("Table [ %s ] not found", code)));
     }
 
     @Override
@@ -259,59 +256,57 @@ public class TableServiceImpl
     }
 
     @Override
-    public CommonResponse<Object> manageColumn(Long tableId, TableBody configure)
+    public CommonResponse<Object> manageColumn(String code, TableBody configure)
     {
-        Optional<TableEntity> optionalTable = this.repository.findById(tableId);
-        if (!optionalTable.isPresent()) {
-            return CommonResponse.failure(String.format("Table [ %s ] not found", tableId));
-        }
-
-        TableEntity table = optionalTable.get();
-        SourceEntity source = table.getDatabase().getSource();
-        Plugin plugin = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol()).get();
-        AtomicReference<String> atomicReference = new AtomicReference<>(null);
-        if (configure.getType().equals(SqlType.CREATE)) {
-            ColumnBuilder.Companion.BEGIN();
-            ColumnBuilder.Companion.CREATE_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
-            ColumnBuilder.Companion.COLUMNS(configure.getColumns().stream().map(Column::toColumnVar).collect(Collectors.toList()));
-            atomicReference.set(ColumnBuilder.Companion.SQL());
-            log.info("Create column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
-        }
-        else if (configure.getType().equals(SqlType.DROP)) {
-            columnRepository.findById(configure.getColumnId())
-                    .ifPresent(column -> {
+        return repository.findByCode(code)
+                .map(table -> {
+                    SourceEntity source = table.getDatabase().getSource();
+                    Plugin plugin = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol()).get();
+                    AtomicReference<String> atomicReference = new AtomicReference<>(null);
+                    if (configure.getType().equals(SqlType.CREATE)) {
                         ColumnBuilder.Companion.BEGIN();
-                        ColumnBuilder.Companion.DROP_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
-                        ColumnBuilder.Companion.COLUMNS(Lists.newArrayList(column.getName()));
+                        ColumnBuilder.Companion.CREATE_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
+                        ColumnBuilder.Companion.COLUMNS(configure.getColumns().stream().map(Column::toColumnVar).collect(Collectors.toList()));
                         atomicReference.set(ColumnBuilder.Companion.SQL());
-                    });
-            log.info("Drop column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
-        }
-        else if (configure.getType().equals(SqlType.MODIFY)) {
-            ColumnBuilder.Companion.BEGIN();
-            ColumnBuilder.Companion.MODIFY_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
-            ColumnBuilder.Companion.COLUMNS(configure.getColumns().stream().map(Column::toColumnVar).collect(Collectors.toList()));
-            atomicReference.set(ColumnBuilder.Companion.SQL());
-            log.info("Modify column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
-        }
-        Response response;
-        if (configure.isPreview()) {
-            response = Response.builder()
-                    .isSuccessful(true)
-                    .isConnected(true)
-                    .headers(Lists.newArrayList())
-                    .columns(Lists.newArrayList())
-                    .types(Lists.newArrayList())
-                    .content(atomicReference.get())
-                    .build();
-        }
-        else {
-            plugin.connect(source.toConfigure());
-            response = plugin.execute(atomicReference.get());
-            response.setContent(atomicReference.get());
-            plugin.destroy();
-        }
-        return CommonResponse.success(response);
+                        log.info("Create column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
+                    }
+                    else if (configure.getType().equals(SqlType.DROP)) {
+                        columnRepository.findById(configure.getColumnId())
+                                .ifPresent(column -> {
+                                    ColumnBuilder.Companion.BEGIN();
+                                    ColumnBuilder.Companion.DROP_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
+                                    ColumnBuilder.Companion.COLUMNS(Lists.newArrayList(column.getName()));
+                                    atomicReference.set(ColumnBuilder.Companion.SQL());
+                                });
+                        log.info("Drop column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
+                    }
+                    else if (configure.getType().equals(SqlType.MODIFY)) {
+                        ColumnBuilder.Companion.BEGIN();
+                        ColumnBuilder.Companion.MODIFY_COLUMN(String.format("`%s`.`%s`", table.getDatabase().getName(), table.getName()));
+                        ColumnBuilder.Companion.COLUMNS(configure.getColumns().stream().map(Column::toColumnVar).collect(Collectors.toList()));
+                        atomicReference.set(ColumnBuilder.Companion.SQL());
+                        log.info("Modify column sql \n {} \n on table [ {} ]", atomicReference.get(), table.getName());
+                    }
+                    Response response;
+                    if (configure.isPreview()) {
+                        response = Response.builder()
+                                .isSuccessful(true)
+                                .isConnected(true)
+                                .headers(Lists.newArrayList())
+                                .columns(Lists.newArrayList())
+                                .types(Lists.newArrayList())
+                                .content(atomicReference.get())
+                                .build();
+                    }
+                    else {
+                        plugin.connect(source.toConfigure());
+                        response = plugin.execute(atomicReference.get());
+                        response.setContent(atomicReference.get());
+                        plugin.destroy();
+                    }
+                    return CommonResponse.success(response);
+                })
+                .orElse(CommonResponse.failure(String.format("Table [ %s ] not found", code)));
     }
 
     /**

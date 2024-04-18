@@ -12,6 +12,7 @@ import io.edurt.datacap.common.enums.NodeType;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.enums.Type;
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.common.utils.CodeUtils;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.service.adapter.PageRequestAdapter;
@@ -378,10 +379,13 @@ public class SourceServiceImpl
     @Override
     public CommonResponse<SourceEntity> syncMetadata(Long id)
     {
-        return this.sourceRepository.findById(id).map(entity -> {
-            Executors.newSingleThreadExecutor().submit(() -> startSyncMetadata(entity, null));
-            return CommonResponse.success(entity);
-        }).orElseGet(() -> CommonResponse.failure(String.format("Source [ %s ] not found", id)));
+        return this.sourceRepository.findById(id)
+                .map(entity -> {
+                    Executors.newSingleThreadExecutor()
+                            .submit(() -> startSyncMetadata(entity, null));
+                    return CommonResponse.success(entity);
+                })
+                .orElseGet(() -> CommonResponse.failure(String.format("Source [ %s ] not found", id)));
     }
 
     private void startSyncMetadata(SourceEntity entity, ScheduledEntity scheduled)
@@ -544,19 +548,25 @@ public class SourceServiceImpl
             }
             else {
                 List<DatabaseEntity> origin = databaseHandler.findAllBySource(entity);
-                List<DatabaseEntity> entities = response.getColumns().stream().map(item -> {
-                    DatabaseEntity database = DatabaseEntity.builder().name(getNodeText(item, NodeType.SCHEMA)).catalog(getNodeText(item, NodeType.CATALOG)).description(String.format("[ %s ] of [ %s ]", getNodeText(item, NodeType.SCHEMA), getNodeText(item, NodeType.CATALOG))).source(entity).build();
-                    Optional<DatabaseEntity> optionalDatabase = origin.stream().filter(node -> node.getName().equals(database.getName())).findAny();
-                    if (optionalDatabase.isPresent()) {
-                        database.setId(optionalDatabase.get().getId());
-                        database.setCreateTime(optionalDatabase.get().getCreateTime());
-                        databaseUpdatedCount.addAndGet(1);
-                    }
-                    else {
-                        databaseAddedCount.addAndGet(1);
-                    }
-                    return database;
-                }).collect(Collectors.toList());
+                List<DatabaseEntity> entities = response.getColumns()
+                        .stream()
+                        .map(item -> {
+                            DatabaseEntity database = DatabaseEntity.builder().name(getNodeText(item, NodeType.SCHEMA)).catalog(getNodeText(item, NodeType.CATALOG)).description(String.format("[ %s ] of [ %s ]", getNodeText(item, NodeType.SCHEMA), getNodeText(item, NodeType.CATALOG))).source(entity).build();
+                            Optional<DatabaseEntity> optionalDatabase = origin.stream().filter(node -> node.getName().equals(database.getName())).findAny();
+                            if (optionalDatabase.isPresent()) {
+                                database.setId(optionalDatabase.get().getId());
+                                database.setCreateTime(optionalDatabase.get().getCreateTime());
+                                if (StringUtils.isEmpty(database.getCode())) {
+                                    database.setCode(CodeUtils.generateCode(false));
+                                }
+                                databaseUpdatedCount.addAndGet(1);
+                            }
+                            else {
+                                databaseAddedCount.addAndGet(1);
+                            }
+                            return database;
+                        })
+                        .collect(Collectors.toList());
                 // Write the new data retrieved to the database
                 log.info("Added database size [ {} ] to source [ {} ]", entities.size(), entity.getName());
                 databaseHandler.saveAll(entities);
@@ -566,7 +576,9 @@ public class SourceServiceImpl
                     databaseTableCache.put(key, this.tableHandler.findSimpleAllByDatabase(item));
                 });
                 // Delete invalid data that no longer exists
-                List<DatabaseEntity> deleteEntities = origin.stream().filter(node -> entities.stream().noneMatch(item -> node.getName().equals(item.getName()))).collect(Collectors.toList());
+                List<DatabaseEntity> deleteEntities = origin.stream()
+                        .filter(node -> entities.stream().noneMatch(item -> node.getName().equals(item.getName())))
+                        .collect(Collectors.toList());
                 log.info("Removed database size [ {} ] from source [ {} ]", deleteEntities.size(), entity.getName());
                 databaseHandler.deleteAll(deleteEntities);
                 databaseRemovedCount.addAndGet(deleteEntities.size());
@@ -605,12 +617,34 @@ public class SourceServiceImpl
                 log.error("The source [ {} ] protocol [ {} ] sync metadata tables  [ {} ] failed", entity.getName(), entity.getProtocol(), response.getMessage());
             }
             else {
-                List<TableEntity> entities = response.getColumns().stream().map(item -> {
-                    String key = String.format("%s_%s", getNodeText(item, NodeType.CATALOG), getNodeText(item, NodeType.SCHEMA));
-                    DatabaseEntity database = databaseCache.get(key);
-                    String name = getNodeText(item, NodeType.TABLE);
-                    return TableEntity.builder().name(name).description(String.format("Table [ %s ] of database [ %s ] ", name, getNodeText(item, NodeType.SCHEMA))).type(getNodeText(item, NodeType.TYPE)).engine(getNodeText(item, NodeType.ENGINE)).format(getNodeText(item, NodeType.FORMAT)).inCreateTime(getNodeText(item, NodeType.CREATE_TIME)).inUpdateTime(getNodeText(item, NodeType.UPDATE_TIME)).collation(getNodeText(item, NodeType.COLLATION)).rows(getNodeText(item, NodeType.ROWS)).comment(getNodeText(item, NodeType.COMMENT)).avgRowLength(getNodeText(item, NodeType.AVG_ROW)).dataLength(getNodeText(item, NodeType.DATA)).indexLength(getNodeText(item, NodeType.INDEX)).autoIncrement(getNodeText(item, NodeType.AUTO_INCREMENT)).database(database).build();
-                }).collect(Collectors.toList());
+                List<TableEntity> entities = response.getColumns()
+                        .stream()
+                        .map(item -> {
+                            String key = String.format("%s_%s", getNodeText(item, NodeType.CATALOG), getNodeText(item, NodeType.SCHEMA));
+                            DatabaseEntity database = databaseCache.get(key);
+                            String name = getNodeText(item, NodeType.TABLE);
+                            TableEntity configure = TableEntity.builder()
+                                    .name(name)
+                                    .description(String.format("Table [ %s ] of database [ %s ] ", name, getNodeText(item, NodeType.SCHEMA)))
+                                    .type(getNodeText(item, NodeType.TYPE)).engine(getNodeText(item, NodeType.ENGINE))
+                                    .format(getNodeText(item, NodeType.FORMAT))
+                                    .inCreateTime(getNodeText(item, NodeType.CREATE_TIME))
+                                    .inUpdateTime(getNodeText(item, NodeType.UPDATE_TIME))
+                                    .collation(getNodeText(item, NodeType.COLLATION))
+                                    .rows(getNodeText(item, NodeType.ROWS))
+                                    .comment(getNodeText(item, NodeType.COMMENT))
+                                    .avgRowLength(getNodeText(item, NodeType.AVG_ROW))
+                                    .dataLength(getNodeText(item, NodeType.DATA))
+                                    .indexLength(getNodeText(item, NodeType.INDEX))
+                                    .autoIncrement(getNodeText(item, NodeType.AUTO_INCREMENT))
+                                    .database(database)
+                                    .build();
+                            if (StringUtils.isEmpty(configure.getCode())) {
+                                configure.setCode(CodeUtils.generateCode(false));
+                            }
+                            return configure;
+                        })
+                        .collect(Collectors.toList());
 
                 Map<String, List<TableEntity>> groupEntities = entities.stream().collect(Collectors.groupingBy(item -> String.format("%s_%s", item.getDatabase().getCatalog(), item.getDatabase().getName())));
 
@@ -674,13 +708,34 @@ public class SourceServiceImpl
                 log.error("The source [ {} ] protocol [ {} ] sync metadata columns  [ {} ] failed", entity.getName(), entity.getProtocol(), response.getMessage());
             }
             else {
-                List<ColumnEntity> entities = response.getColumns().stream().map(item -> {
-                    String key = String.format("%s_%s", getNodeText(item, NodeType.CATALOG), getNodeText(item, NodeType.SCHEMA));
-                    TableEntity table = tableCache.get(key);
-                    String name = getNodeText(item, NodeType.COLUMN);
-                    ColumnEntity column = ColumnEntity.builder().name(name).description(String.format("Table [ %s ] of column [ %s ] ", table.getName(), name)).type(getNodeText(item, NodeType.COLUMN_TYPE)).comment(getNodeText(item, NodeType.COMMENT)).defaultValue(getNodeText(item, NodeType.DEFAULT)).position(getNodeText(item, NodeType.POSITION)).maximumLength(getNodeText(item, NodeType.MAXIMUM_LENGTH)).collation(getNodeText(item, NodeType.COLLATION)).isKey(getNodeText(item, NodeType.KEY)).privileges(getNodeText(item, NodeType.FORMAT)).dataType(getNodeText(item, NodeType.DATA_TYPE)).extra(getNodeText(item, NodeType.EXTRA)).isNullable(getNodeText(item, NodeType.NULLABLE)).table(table).build();
-                    return column;
-                }).collect(Collectors.toList());
+                List<ColumnEntity> entities = response.getColumns()
+                        .stream()
+                        .map(item -> {
+                            String key = String.format("%s_%s", getNodeText(item, NodeType.CATALOG), getNodeText(item, NodeType.SCHEMA));
+                            TableEntity table = tableCache.get(key);
+                            String name = getNodeText(item, NodeType.COLUMN);
+                            ColumnEntity configure = ColumnEntity.builder()
+                                    .name(name)
+                                    .description(String.format("Table [ %s ] of column [ %s ] ", table.getName(), name))
+                                    .type(getNodeText(item, NodeType.COLUMN_TYPE))
+                                    .comment(getNodeText(item, NodeType.COMMENT))
+                                    .defaultValue(getNodeText(item, NodeType.DEFAULT))
+                                    .position(getNodeText(item, NodeType.POSITION))
+                                    .maximumLength(getNodeText(item, NodeType.MAXIMUM_LENGTH))
+                                    .collation(getNodeText(item, NodeType.COLLATION))
+                                    .isKey(getNodeText(item, NodeType.KEY))
+                                    .privileges(getNodeText(item, NodeType.FORMAT))
+                                    .dataType(getNodeText(item, NodeType.DATA_TYPE))
+                                    .extra(getNodeText(item, NodeType.EXTRA))
+                                    .isNullable(getNodeText(item, NodeType.NULLABLE))
+                                    .table(table)
+                                    .build();
+                            if (StringUtils.isEmpty(configure.getCode())) {
+                                configure.setCode(CodeUtils.generateCode(false));
+                            }
+                            return configure;
+                        })
+                        .collect(Collectors.toList());
 
                 Map<String, List<ColumnEntity>> groupEntities = entities.stream().collect(Collectors.groupingBy(item -> String.format("%s_%s", item.getTable().getDatabase().getName(), item.getTable().getName())));
 

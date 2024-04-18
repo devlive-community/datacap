@@ -14,7 +14,7 @@
     <CardContent :class="`${bodyClass}`">
       <slot/>
     </CardContent>
-    <CardFooter v-if="$slots.footer" :class="`border-t ${footerClass}`">
+    <CardFooter v-if="$slots.footer">
       <slot name="footer"/>
     </CardFooter>
   </Card>
@@ -37,9 +37,6 @@ export default defineComponent({
       type: String
     },
     bodyClass: {
-      type: String
-    },
-    footerClass: {
       type: String
     },
     hiddenTitle: {
