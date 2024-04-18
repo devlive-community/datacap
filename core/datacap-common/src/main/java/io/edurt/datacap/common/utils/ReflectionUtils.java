@@ -21,7 +21,7 @@ public class ReflectionUtils
             return true;
         }
         catch (NoSuchFieldException e) {
-            log.warn("Has field exception", e);
+            log.debug("Has field exception", e);
             return false;
         }
     }

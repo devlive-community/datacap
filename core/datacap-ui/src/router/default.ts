@@ -216,7 +216,7 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/source/SourceHome.vue')
             },
             {
-                path: 'source/manager/:code',
+                path: 'source/manager/:source',
                 component: MetadataContainer,
                 meta: {
                     title: 'common.source',
@@ -224,7 +224,7 @@ const createAdminRouter = (router: any) => {
                 },
                 children: [
                     {
-                        path: '',
+                        path: 'info/:table',
                         meta: {
                             title: 'common.source',
                             isRoot: false

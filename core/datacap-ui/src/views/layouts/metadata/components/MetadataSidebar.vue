@@ -265,6 +265,7 @@ export default defineComponent({
         return
       }
       this.selectNode = currentNode
+      this.$emit('change', this.selectNode)
     },
     handlerLoadChildData(item: StructureModel, callback: any)
     {
