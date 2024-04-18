@@ -15,12 +15,12 @@ class DatabaseService
     /**
      * Retrieves all items by source ID.
      *
-     * @param {number} id - The ID of the source.
+     * @param {number} code - The ID of the source.
      * @return {Promise<ResponseModel>} A promise that resolves to the response model.
      */
-    getAllBySource(id: string): Promise<ResponseModel>
+    getAllBySource(code: string): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH}/source/${id}`)
+        return new HttpUtils().post(`${DEFAULT_PATH}/source/${code}`)
     }
 }
 

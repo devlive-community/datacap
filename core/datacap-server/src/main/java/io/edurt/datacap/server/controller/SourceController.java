@@ -11,7 +11,6 @@ import io.edurt.datacap.service.service.SourceService;
 import io.edurt.datacap.service.validation.ValidationGroup;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,12 +49,6 @@ public class SourceController
     public CommonResponse<SourceEntity> update(@RequestBody @Validated(ValidationGroup.Crud.Update.class) SourceBody configure)
     {
         return this.service.saveOrUpdateV2(configure);
-    }
-
-    @GetMapping(value = "code/{code}")
-    public CommonResponse<SourceEntity> getByCode(@PathVariable(value = "code") String code)
-    {
-        return this.service.getByCode(code);
     }
 
     @PostMapping(value = "getHistory/{id}")

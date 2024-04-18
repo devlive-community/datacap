@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.server.authorize.UserNotEqualsException;
+import io.edurt.datacap.service.SelfException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -77,6 +78,14 @@ public class HandlerRestful
     {
         log.error("", ex);
         return CommonResponse.failure(ServiceState.REQUEST_EXCEPTION, ex.getMessage());
+    }
+
+    @ExceptionHandler({SelfException.class})
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public CommonResponse<Object> handlerSelfException(SelfException ex)
+    {
+        return CommonResponse.failure(ServiceState.USER_UNAUTHORIZED);
     }
 
     @ExceptionHandler({Exception.class})

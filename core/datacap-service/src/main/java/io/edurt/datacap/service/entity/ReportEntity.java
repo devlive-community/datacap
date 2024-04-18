@@ -47,6 +47,9 @@ public class ReportEntity
     @Column(name = "query")
     private String query;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
     @JoinTable(name = "datacap_report_user_relation",
             joinColumns = @JoinColumn(name = "report_id"),
@@ -65,6 +68,6 @@ public class ReportEntity
     @JoinTable(name = "datacap_report_dataset_relation",
             joinColumns = @JoinColumn(name = "report_id"),
             inverseJoinColumns = @JoinColumn(name = "dataset_id"))
-    @JsonIgnoreProperties(value = {"user"})
+    @JsonIgnoreProperties(value = {"user", "columns"})
     private DataSetEntity dataset;
 }

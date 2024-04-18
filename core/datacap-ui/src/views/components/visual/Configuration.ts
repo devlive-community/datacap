@@ -24,10 +24,45 @@ export class ConfigurationRequest
 
 export interface IChart
 {
-    xAxis?: null | string
-    x2Axis?: null | string
-    yAxis?: null | string
-    series?: null | string
+    xAxis?: string
+    x2Axis?: string
+    yAxis?: string
+    series?: string
     outerRadius?: number[]
-    invalidType?: null | string
+    innerRadius?: number[]
+    invalidType?: string
+    showLegend?: boolean
+    startAngle?: number[]
+    endAngle?: number[],
+    titleVisible?: boolean
+    titleText?: string
+    titleSubText?: string
+    titlePosition?: string
+    titleAlign?: string
 }
+
+export interface ChartFieldGroup
+{
+    label?: string
+    fields?: ChartField[]
+}
+
+export interface ChartField
+{
+    label?: string
+    field?: string
+    type?: string
+    values?: any[]
+    value?: any
+    min?: number
+    max?: number
+    step?: number
+    disabled?: ChartFieldItem
+}
+
+export interface ChartFieldItem
+{
+    field?: string
+    value?: any
+}
+

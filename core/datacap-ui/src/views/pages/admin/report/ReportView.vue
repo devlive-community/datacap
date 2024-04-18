@@ -3,8 +3,7 @@
     <template #title>{{ title }}</template>
     <CircularLoading v-if="loading" :show="loading"/>
     <div v-else-if="info">
-      <EchartsPreview v-if="info.type === 'QUERY'" :width="'100%'" :height="'300px'" :id="info.id" :configure="JSON.parse(info.configure as string)"/>
-      <VisualView v-else-if="info.type === 'DATASET'" :code="info.dataset?.code" :configuration="JSON.parse(info.configure as string)" :query="JSON.parse(info.query as string)"/>
+      <VisualView :code="info.dataset?.code" :configuration="JSON.parse(info.configure as string)" :query="JSON.parse(info.query as string)"/>
     </div>
     <template #footer>
       <Button variant="outline" size="sm" @click="handlerCancel">
@@ -20,14 +19,12 @@ import { ReportModel } from '@/model/report'
 import Dialog from '@/views/ui/dialog'
 import Button from '@/views/ui/button'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
-import EchartsPreview from '@/views/components/echarts/EchartsPreview.vue'
 import VisualView from '@/views/components/visual/VisualView.vue'
 
 export default defineComponent({
   name: 'ReportView',
   components: {
     VisualView,
-    EchartsPreview,
     CircularLoading,
     Dialog,
     Button

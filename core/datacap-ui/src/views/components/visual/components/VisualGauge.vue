@@ -1,21 +1,19 @@
 <template>
-  <div>
-    <div ref="content" :style="{width: width, height: height}"/>
-  </div>
+  <div ref="content" :style="{width: width, height: height}"/>
 </template>
 <script lang="ts">
 import VChart from '@visactor/vchart'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, head } from 'lodash'
 import { Configuration } from '../Configuration'
 import { defineComponent } from 'vue'
 
 let instance: VChart
 
 export default defineComponent({
-  name: 'VisualArea',
+  name: 'VisualGauge',
   props: {
     configuration: {
-      type: Object as () => Configuration | null
+      type: Object as () => Configuration
     },
     submitted: {
       type: Boolean,
@@ -47,11 +45,15 @@ export default defineComponent({
         try {
           if (this.configuration) {
             const options = {
-              type: 'area',
-              data: { values: this.configuration.columns },
-              xField: this.configuration.chartConfigure?.xAxis!,
-              yField: this.configuration.chartConfigure?.yAxis!
-            }
+              type: 'gauge',
+              data: [{ values: this.configuration.columns }],
+              categoryField: this.configuration.chartConfigure?.xAxis,
+              valueField: this.configuration.chartConfigure?.yAxis,
+              outerRadius: head(this.configuration.chartConfigure?.outerRadius),
+              innerRadius: head(this.configuration.chartConfigure?.innerRadius),
+              startAngle: head(this.configuration.chartConfigure?.startAngle),
+              endAngle: head(this.configuration.chartConfigure?.endAngle)
+            } as any
             if (!reset) {
               instance = new VChart(options, { dom: this.$refs.content as HTMLElement })
               instance.renderAsync()

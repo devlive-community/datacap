@@ -42,7 +42,7 @@
               <DropdownMenuContent>
                 <DropdownMenuGroup>
                   <DropdownMenuItem :disabled="(loginUserId !== row.user.id) || !row.available" class="cursor-pointer">
-                    <RouterLink :to="`/admin/source/${row?.id}/manager`" target="_blank" class="flex items-center">
+                    <RouterLink :to="`/admin/source/manager/${row?.code}`" target="_blank" class="flex items-center">
                       <Cog class="mr-2 h-4 w-4"/>
                       <span>{{ $t('source.common.manager') }}</span>
                     </RouterLink>

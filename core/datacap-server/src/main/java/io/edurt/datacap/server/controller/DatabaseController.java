@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController()
 @RequestMapping(value = "/api/v1/database")
 public class DatabaseController
@@ -26,9 +24,9 @@ public class DatabaseController
         this.service = service;
     }
 
-    @PostMapping(value = "source/{id}")
-    public CommonResponse<List<DatabaseEntity>> fetchBySource(@PathVariable Long id)
+    @PostMapping(value = "source/{code}")
+    public CommonResponse<Object> fetchBySource(@PathVariable String code)
     {
-        return this.service.getAllBySource(id);
+        return this.service.getAllBySource(code);
     }
 }

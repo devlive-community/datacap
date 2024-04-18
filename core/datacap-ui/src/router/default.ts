@@ -129,7 +129,7 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/dashboard/DashboardHome.vue')
             },
             {
-                path: 'dashboard/info/:id/preview',
+                path: 'dashboard/preview/:code',
                 meta: {
                     title: 'common.dashboard',
                     isRoot: false
@@ -137,7 +137,7 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/dashboard/DashboardPreview.vue')
             },
             {
-                path: 'dashboard/info/:id?',
+                path: 'dashboard/info/:code?',
                 meta: {
                     title: 'common.dashboard',
                     isRoot: false
@@ -215,7 +215,7 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/source/SourceHome.vue')
             },
             {
-                path: 'source/:id/manager',
+                path: 'source/manager/:code',
                 meta: {
                     title: 'common.source',
                     isRoot: false

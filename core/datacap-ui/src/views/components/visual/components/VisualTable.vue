@@ -47,20 +47,20 @@ export default defineComponent({
           const tableInstance = new VTable.ListTable(this.$refs.content as HTMLElement, options as any)
           // Add cell tooltip
           tableInstance.on('mouseenter_cell', (args) => {
-            const {col, row} = args
-            const rect = tableInstance.getVisibleCellRangeRelativeRect({col, row});
+            const { col, row } = args
+            const rect = tableInstance.getVisibleCellRangeRelativeRect({ col, row })
             tableInstance.showTooltip(col, row, {
-              content: `${tableInstance.getHeaderField(col, row)} : ${tableInstance.getCellValue(col, row)}`,
-              referencePosition: {rect, placement: VTable.TYPES.Placement.right},
+              content: `${ tableInstance.getHeaderField(col, row) } : ${ tableInstance.getCellValue(col, row) }`,
+              referencePosition: { rect, placement: VTable.TYPES.Placement.right },
               className: 'defineTooltip',
-              style: {bgColor: 'black', color: 'white', arrowMark: true}
+              style: { bgColor: 'black', color: 'white', arrowMark: true }
             })
           })
           if (this.submitted) {
             const cloneOptions = cloneDeep(this.configuration)
             cloneOptions.headers = []
             cloneOptions.columns = []
-            this.$emit('commitOptions', cloneOptions)
+            this.$emit('change', cloneOptions)
           }
         }
       }

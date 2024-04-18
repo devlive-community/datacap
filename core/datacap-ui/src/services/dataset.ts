@@ -16,7 +16,7 @@ export class DatasetService
 
     saveOrUpdate(configure: DatasetModel): Promise<ResponseModel>
     {
-        const url = `${DEFAULT_PATH}/create`
+        const url = `${ DEFAULT_PATH }/create`
         // @ts-ignore
         if (configure['id'] > 0) {
             return new HttpUtils().put(url, configure)
@@ -35,7 +35,7 @@ export class DatasetService
      */
     adhoc(code: string, configure: any): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH}/adhoc/${code}`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/adhoc/${ code }`, configure)
     }
 
     /**
@@ -46,7 +46,7 @@ export class DatasetService
      */
     getColumnsByCode(code: string): Promise<ResponseModel>
     {
-        return new HttpUtils().get(`${DEFAULT_PATH}/columns/${code}`)
+        return new HttpUtils().get(`${ DEFAULT_PATH }/columns/${ code }`)
     }
 
     /**
@@ -57,7 +57,7 @@ export class DatasetService
      */
     rebuild(id: number): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${DEFAULT_PATH}/rebuild/${id}`)
+        return new HttpUtils().put(`${ DEFAULT_PATH }/rebuild/${ id }`)
     }
 
     /**
@@ -69,7 +69,7 @@ export class DatasetService
      */
     getHistory(code: string, configure: FilterModel): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${DEFAULT_PATH}/history/${code}`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/history/${ code }`, configure)
     }
 
     /**
@@ -80,7 +80,7 @@ export class DatasetService
      */
     syncData(id: number): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${DEFAULT_PATH}/syncData/${id}`)
+        return new HttpUtils().put(`${ DEFAULT_PATH }/syncData/${ id }`)
     }
 
     /**
@@ -91,12 +91,7 @@ export class DatasetService
      */
     clearData(code: string): Promise<ResponseModel>
     {
-        return new HttpUtils().put(`${DEFAULT_PATH}/clearData/${code}`)
-    }
-
-    getByCode(code: string): Promise<ResponseModel>
-    {
-        return new HttpUtils().get(`${DEFAULT_PATH}/info/${code}`)
+        return new HttpUtils().put(`${ DEFAULT_PATH }/clearData/${ code }`)
     }
 }
 

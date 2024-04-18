@@ -11,9 +11,18 @@
       <div v-else class="hidden flex-col md:flex">
         <div class="flex-1 space-y-4 pt-6">
           <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-            <Card title-class="p-2 pl-4 pr-4" v-for="item in data">
+            <Card title-class="p-2 pl-4 pr-4" footer-class="p-2 pl-2 pr-4" body-class="p-4" v-for="item in data">
               <template #title>
-                <RouterLink :to="`/admin/dashboard/info/${item.id}/preview`" target="_blank">{{ item.name }}</RouterLink>
+                <div class="flex space-x-1">
+                  <div>
+                    <RouterLink :to="`/admin/dashboard/preview/${item.code}`" target="_blank">{{ item.name }}</RouterLink>
+                  </div>
+                  <div>
+                    <Tooltip :content="item.description">
+                      <Info :size="18" class="cursor-pointer"/>
+                    </Tooltip>
+                  </div>
+                </div>
               </template>
               <template #extra>
                 <DropdownMenu class="justify-items-end">
@@ -22,7 +31,7 @@
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem class="cursor-pointer">
-                      <RouterLink :to="`/admin/dashboard/info/${item.id}`" target="_blank" class="flex items-center">
+                      <RouterLink :to="`/admin/dashboard/info/${item.code}`" target="_blank" class="flex items-center">
                         <Pencil :size="15" class="mr-1"/>
                         {{ $t('dashboard.common.modify') }}
                       </RouterLink>
@@ -34,8 +43,14 @@
                   </DropdownMenuContent>
                 </DropdownMenu>
               </template>
-              <div class="text-2xl font-bold"></div>
-              <p class="text-xs text-muted-foreground mt-2">{{ item.createTime }}</p>
+              <div class="shadow-blackA7 w-full overflow-hidden rounded-md">
+                <AspectRatio :ratio="16 / 11">
+                  <img class="h-full w-full object-cover" src="/static/images/dashboard.png" :alt="item.name"/>
+                </AspectRatio>
+              </div>
+              <template #footer>
+                <p class="text-xs text-muted-foreground text-right">{{ item.createTime }}</p>
+              </template>
             </Card>
           </div>
           <div v-if="data.length === 0" class="text-center">
@@ -53,7 +68,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Cog, Loader2, Pencil, Trash } from 'lucide-vue-next'
+import { Cog, Info, Loader2, Pencil, Trash } from 'lucide-vue-next'
 import DashboardService from '@/services/dashboard'
 import { FilterModel } from '@/model/filter'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
@@ -64,15 +79,19 @@ import Card from '@/views/ui/card'
 import Pagination from '@/views/ui/pagination'
 import Button from '@/views/ui/button'
 import { TableCaption } from '@/components/ui/table'
+import Tooltip from '@/views/ui/tooltip'
+import { AspectRatio } from 'radix-vue'
 
 export default defineComponent({
   name: 'DashboardHome',
   components: {
+    AspectRatio,
+    Tooltip,
     TableCaption,
     Pagination,
     DashboardDelete,
     DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
-    Loader2, Cog, Trash, Pencil,
+    Loader2, Cog, Trash, Pencil, Info,
     Card,
     Button
   },
