@@ -16,12 +16,12 @@ class TableService
     /**
      * Retrieves all data from the database by the specified ID.
      *
-     * @param {number} id - The ID of the database.
+     * @param {number} code - The code of the database.
      * @return {Promise<ResponseModel>} A promise that resolves to a ResponseModel object.
      */
-    getAllByDatabase(id: number): Promise<ResponseModel>
+    getAllByDatabase(code: string): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${ DEFAULT_PATH }/database/${ id }`)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/database/${ code }`)
     }
 
     /**

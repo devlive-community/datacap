@@ -1,15 +1,19 @@
 <template>
-  <Tabs v-model="selectTab" :default-value="selectTab" class="w-full">
+  <Tabs v-model="selectTab as string" :default-value="selectTab as string" class="w-full">
     <Card :title-class="'p-0'" :body-class="'p-0'">
       <template #title>
         <TabsList>
-          <TabsTrigger value="info" class="cursor-pointer">
-            <Info :size="18" class="mr-2"/>
-            {{ $t('source.common.info') }}
+          <TabsTrigger value="info" class="cursor-pointer" @click="handlerChange">
+            <div class="flex space-x-2">
+              <Info :size="18"/>
+              <span>{{ $t('source.common.info') }}</span>
+            </div>
           </TabsTrigger>
-          <TabsTrigger value="structure" class="cursor-pointer">
-            <LayoutPanelTop :size="18" class="mr-2"/>
-            {{ $t('source.common.structure') }}
+          <TabsTrigger value="structure" class="cursor-pointer" @click="handlerChange">
+            <div class="flex space-x-2">
+              <LayoutPanelTop :size="18"/>
+              <span>{{ $t('source.common.structure') }}</span>
+            </div>
           </TabsTrigger>
           <TabsTrigger value="data" class="cursor-pointer">
             <Table :size="18" class="mr-2"/>
@@ -25,7 +29,7 @@
           </TabsTrigger>
         </TabsList>
       </template>
-      <TabsContent :value="selectTab">
+      <TabsContent :value="selectTab as string">
         <div class="h-[695px]">
           <RouterView/>
         </div>
@@ -35,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, watch } from 'vue'
 import Card from '@/views/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Info, LayoutPanelTop, SatelliteDish, Table, Wind } from 'lucide-vue-next'
@@ -50,7 +54,44 @@ export default defineComponent({
   data()
   {
     return {
-      selectTab: 'info'
+      selectTab: null as string | null,
+      originalSource: null as string | null,
+      originalDatabase: null as string | null,
+      originalTable: null as string | null
+    }
+  },
+  created()
+  {
+    this.handlerInitialize()
+    this.watchChange()
+  },
+  methods: {
+    handlerInitialize()
+    {
+      const source = this.$route.params?.source as string
+      const database = this.$route.params?.database as string
+      const table = this.$route.params?.table as string
+      const type = this.$route.meta.type as string
+      this.originalSource = source
+      this.originalDatabase = database
+      this.originalTable = table
+      this.selectTab = type
+    },
+    handlerChange()
+    {
+      if (this.selectTab === 'info') {
+        this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.originalDatabase }/t/info/${ this.originalTable }`)
+      }
+      if (this.selectTab === 'structure') {
+        this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.originalDatabase }/t/structure/${ this.originalTable }`)
+      }
+    },
+    watchChange()
+    {
+      watch(
+          () => this.$route?.params.table,
+          () => this.handlerInitialize()
+      )
     }
   }
 })

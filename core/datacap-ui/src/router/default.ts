@@ -216,7 +216,7 @@ const createAdminRouter = (router: any) => {
                 component: () => import('@/views/pages/admin/source/SourceHome.vue')
             },
             {
-                path: 'source/manager/:source',
+                path: 'source/:source',
                 component: MetadataContainer,
                 meta: {
                     title: 'common.source',
@@ -224,12 +224,30 @@ const createAdminRouter = (router: any) => {
                 },
                 children: [
                     {
-                        path: 'info/:table',
+                        path: 'd/:database/',
                         meta: {
                             title: 'common.source',
                             isRoot: false
                         },
-                        component: () => import('@/views/pages/admin/source/SourceManagerInfo.vue')
+                        component: () => import('@/views/pages/admin/source/SourceDatabase.vue')
+                    },
+                    {
+                        path: 'd/:database/t/info/:table',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false,
+                            type: 'info'
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceTableInfo.vue')
+                    },
+                    {
+                        path: 'd/:database/t/structure/:table',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false,
+                            type: 'structure'
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceTableStructure.vue')
                     }
                 ]
             },

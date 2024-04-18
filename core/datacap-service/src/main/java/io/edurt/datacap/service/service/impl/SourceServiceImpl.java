@@ -576,7 +576,9 @@ public class SourceServiceImpl
                     databaseTableCache.put(key, this.tableHandler.findSimpleAllByDatabase(item));
                 });
                 // Delete invalid data that no longer exists
-                List<DatabaseEntity> deleteEntities = origin.stream().filter(node -> entities.stream().noneMatch(item -> node.getName().equals(item.getName()))).collect(Collectors.toList());
+                List<DatabaseEntity> deleteEntities = origin.stream()
+                        .filter(node -> entities.stream().noneMatch(item -> node.getName().equals(item.getName())))
+                        .collect(Collectors.toList());
                 log.info("Removed database size [ {} ] from source [ {} ]", deleteEntities.size(), entity.getName());
                 databaseHandler.deleteAll(deleteEntities);
                 databaseRemovedCount.addAndGet(deleteEntities.size());

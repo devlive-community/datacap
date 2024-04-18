@@ -1,7 +1,7 @@
 <template>
   <Card :title-class="'p-0'" :body-class="'p-0'">
     <template #title>
-      <Select v-model="selectDatabase" @update:modelValue="handlerChangeDatabase">
+      <Select v-model="selectDatabase" :default-value="originalDatabase ? originalDatabase : selectDatabase" @update:modelValue="handlerChangeDatabase">
         <SelectTrigger class="border-0 w-[200px]">
           <SelectValue :placeholder="$t('source.tip.selectDatabase')"/>
         </SelectTrigger>
@@ -123,6 +123,7 @@ import ColumnChange from '@/views/pages/admin/source/components/ColumnChange.vue
 import TableTruncate from '@/views/pages/admin/source/components/TableTruncate.vue'
 import TableDrop from '@/views/pages/admin/source/components/TableDrop.vue'
 import TableCreate from '@/views/pages/admin/source/components/TableCreate.vue'
+import { ToastUtils } from '@/utils/toast.ts'
 
 export default defineComponent({
   name: 'MetadataSidebar',
@@ -146,11 +147,6 @@ export default defineComponent({
     DropdownMenuSubTrigger,
     DropdownMenuTrigger
   },
-  props: {
-    code: {
-      type: String
-    }
-  },
   computed: {
     StructureEnum()
     {
@@ -162,6 +158,9 @@ export default defineComponent({
     return {
       loading: false,
       selectDatabase: undefined,
+      originalSource: null as string | null,
+      originalDatabase: null as string | null,
+      originalTable: null as string | null,
       selectNode: null as StructureModel | null,
       databaseArray: Array<StructureModel>(),
       dataTreeArray: Array<StructureModel>(),
@@ -182,19 +181,31 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      if (this.code) {
+      const source = this.$route.params?.source as string
+      const database = this.$route.params?.database as string
+      if (source) {
+        this.originalSource = source
         this.loading = true
-        DatabaseService.getAllBySource(this.code as string)
+        DatabaseService.getAllBySource(source)
                        .then(response => {
                          if (response.status) {
-                           response.data.forEach((item: { name: null; catalog: null; code: null }) => {
-                             const structure: StructureModel = {
-                               title: item.name,
-                               catalog: item.catalog,
-                               code: item.code
-                             }
-                             this.databaseArray.push(structure)
-                           })
+                           response.data
+                                   .forEach((item: { name: null; catalog: null; code: undefined }) => {
+                                     const structure: StructureModel = {
+                                       title: item.name,
+                                       catalog: item.catalog,
+                                       code: item.code
+                                     }
+                                     this.databaseArray.push(structure)
+                                   })
+                           if (database) {
+                             this.originalDatabase = database
+                             this.selectDatabase = database as any
+                             this.handlerChangeDatabase()
+                           }
+                         }
+                         else {
+                           ToastUtils.error(response.message)
                          }
                        })
                        .finally(() => this.loading = false)
@@ -204,50 +215,67 @@ export default defineComponent({
     {
       this.loading = true
       this.dataTreeArray = []
-      TableService.getAllByDatabase(this.selectDatabase as string)
+      TableService.getAllByDatabase(this.selectDatabase as any)
                   .then(response => {
                     if (response.status) {
-                      response.data.forEach((item: {
-                        name: null;
-                        title: null;
-                        catalog: null;
-                        code: null;
-                        type: null;
-                        engine: null;
-                        comment: null;
-                        database: { name: null, id: string };
-                      }) => {
-                        const structure: StructureModel = {
-                          title: item.name,
-                          database: item.database.name,
-                          databaseId: item.database.id,
-                          catalog: item.catalog,
-                          code: item.code,
-                          type: item.type,
-                          level: StructureEnum.TABLE,
-                          engine: item.engine,
-                          comment: item.comment,
-                          origin: item,
-                          loading: false,
-                          contextmenu: true,
-                          children: [] as StructureModel[],
-                          render: (h: any, { data }: { data: StructureModel }) => {
-                            return h('div', [
-                              h('span', [
-                                h(resolveComponent('FontAwesomeIcon'), {
-                                  icon: 'table',
-                                  style: { marginRight: '6px' }
-                                }),
-                                this.resolveTableComponent(h, data)
-                              ])
-                            ])
-                          }
-                        }
-                        this.dataTreeArray.push(structure)
-                      })
+                      response.data
+                              .forEach((item: {
+                                name: null;
+                                title: null;
+                                catalog: null;
+                                code: undefined;
+                                type: null;
+                                engine: null;
+                                comment: null;
+                                database: { name: null, id: string };
+                              }) => {
+                                const structure: StructureModel = {
+                                  title: item.name,
+                                  database: item.database.name,
+                                  databaseId: item.database.id,
+                                  catalog: item.catalog,
+                                  code: item.code,
+                                  type: item.type,
+                                  level: StructureEnum.TABLE,
+                                  engine: item.engine,
+                                  comment: item.comment,
+                                  origin: item,
+                                  loading: false,
+                                  contextmenu: true,
+                                  children: [] as StructureModel[],
+                                  render: (h: any, { data }: { data: StructureModel }) => {
+                                    return h('div', [
+                                      h('span', [
+                                        h(resolveComponent('FontAwesomeIcon'), {
+                                          icon: 'table',
+                                          style: { marginRight: '6px' }
+                                        }),
+                                        this.resolveTableComponent(h, data)
+                                      ])
+                                    ])
+                                  }
+                                }
+                                this.dataTreeArray.push(structure)
+                              })
+                    }
+                    else {
+                      ToastUtils.error(response.message)
                     }
                   })
-                  .finally(() => this.loading = false)
+                  .finally(() => {
+                    this.loading = false
+                    const table = this.$route.params?.table as string
+                    if (table) {
+                      const node = this.dataTreeArray.find(item => item.code === table)
+                      if (node) {
+                        node.selected = true
+                        this.handlerSelectNode([node])
+                      }
+                    }
+                    else {
+                      this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.selectDatabase }`)
+                    }
+                  })
     },
     handlerSelectNode(node: Array<StructureModel>)
     {
@@ -265,7 +293,7 @@ export default defineComponent({
         return
       }
       this.selectNode = currentNode
-      this.$emit('change', this.selectNode)
+      this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.selectDatabase }/t/info/${ currentNode.code }`)
     },
     handlerLoadChildData(item: StructureModel, callback: any)
     {
@@ -274,14 +302,14 @@ export default defineComponent({
         callback(dataChildArray)
         return
       }
-      ColumnService.getAllByTable(item.code)
+      ColumnService.getAllByTable(item.code as string)
                    .then(response => {
                      if (response.status) {
                        response.data.forEach((item: {
                          name: null;
                          title: null;
                          catalog: null;
-                         code: null;
+                         code: undefined;
                          type: null;
                          dataType: null;
                          extra: null;

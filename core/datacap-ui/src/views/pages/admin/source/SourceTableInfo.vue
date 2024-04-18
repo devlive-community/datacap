@@ -130,7 +130,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { toNumber } from 'lodash'
 
 export default defineComponent({
-  name: 'SourceManagerInfo',
+  name: 'SourceTableInfo',
   components: {
     Textarea,
     Input,
@@ -146,6 +146,7 @@ export default defineComponent({
   created()
   {
     this.handlerInitialize()
+    this.watchChange()
   },
   data()
   {
@@ -158,22 +159,20 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
-      watch(
-          () => this.$route?.params.table,
-          () => {
-            const code = this.$route?.params.table as string
-            if (code) {
-              this.loading = true
-              TableService.getByCode(code)
-                          .then(response => {
-                            if (response.status) {
-                              this.dataInfo = response.data
-                            }
-                          })
-                          .finally(() => this.loading = false)
-            }
-          }
-      )
+      const code = this.$route?.params.table as string
+      if (code) {
+        this.loading = true
+        TableService.getByCode(code)
+                    .then(response => {
+                      if (response.status) {
+                        this.dataInfo = response.data
+                      }
+                      else {
+                        ToastUtils.error(response.message)
+                      }
+                    })
+                    .finally(() => this.loading = false)
+      }
     },
     handlerApply()
     {
@@ -195,6 +194,13 @@ export default defineComponent({
                     })
                     .finally(() => this.submitting = false)
       }
+    },
+    watchChange()
+    {
+      watch(
+          () => this.$route?.params.table,
+          () => this.handlerInitialize()
+      )
     }
   }
 })

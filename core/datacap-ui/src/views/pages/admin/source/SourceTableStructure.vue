@@ -8,26 +8,18 @@
 
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
-import { StructureModel } from '@/model/structure'
 import { useI18n } from 'vue-i18n'
-import { createHeaders } from '@/views/pages/admin/source/components/TableUtils'
+import { createHeaders } from '@/views/pages/admin/source/components/TableUtils.ts'
 import TableCommon from '@/views/components/table/TableCommon.vue'
-import ColumnService from '@/services/column'
-import { cloneDeep, toNumber } from 'lodash'
-import { TableModel } from '@/model/table'
-import { ColumnModel } from '@/model/column'
+import ColumnService from '@/services/column.ts'
+import { ColumnModel } from '@/model/column.ts'
 import Switch from '@/views/ui/switch'
 
 export default defineComponent({
-  name: 'TableStructure',
+  name: 'SourceTableStructure',
   components: {
     TableCommon,
     Switch
-  },
-  props: {
-    info: {
-      type: Object as () => StructureModel | null
-    }
   },
   setup()
   {
@@ -41,22 +33,21 @@ export default defineComponent({
   {
     return {
       loading: false,
-      dataInfo: null as TableModel | null,
       data: Array<ColumnModel>
     }
   },
   created()
   {
     this.handlerInitialize()
-    this.watchId()
+    this.watchChange()
   },
   methods: {
     handlerInitialize()
     {
-      if (this.info) {
-        this.dataInfo = cloneDeep(this.info.origin)
+      const code = this.$route?.params.table as string
+      if (code) {
         this.loading = true
-        ColumnService.getAllByTable(toNumber(this.dataInfo?.id))
+        ColumnService.getAllByTable(code)
                      .then(response => {
                        if (response.status) {
                          this.data = response.data
@@ -65,10 +56,10 @@ export default defineComponent({
                      .finally(() => this.loading = false)
       }
     },
-    watchId()
+    watchChange()
     {
       watch(
-          () => this.info,
+          () => this.$route?.params.table,
           () => {
             this.handlerInitialize()
           }
