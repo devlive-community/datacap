@@ -26,9 +26,9 @@ public class ColumnController
         this.service = service;
     }
 
-    @PostMapping(value = "table/{id}")
-    public CommonResponse<List<ColumnEntity>> fetchByTable(@PathVariable Long id)
+    @PostMapping(value = "table/{code}")
+    public CommonResponse<List<ColumnEntity>> fetchByTable(@PathVariable String code)
     {
-        return this.service.getAllByTable(id);
+        return this.service.getAllByTable(code);
     }
 }

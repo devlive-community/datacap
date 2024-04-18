@@ -163,7 +163,7 @@ export default defineComponent({
     {
       if (this.info) {
         this.loading = true
-        TableService.manageColumn(toNumber(this.info.applyId), this.formState)
+        TableService.manageColumn(this.info.code, this.formState)
                     .then(response => {
                       if (response.data) {
                         if (response.data.isSuccessful) {

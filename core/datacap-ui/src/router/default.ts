@@ -1,6 +1,7 @@
 import LayoutContainer from '@/views/layouts/common/LayoutContainer.vue'
 import ProfileContainer from '@/views/layouts/profile/LayoutContainer.vue'
 import { TokenUtils } from '@/utils/token'
+import MetadataContainer from '@/views/layouts/metadata/MetadataContainer.vue'
 
 /**
  * Create a default router
@@ -216,11 +217,21 @@ const createAdminRouter = (router: any) => {
             },
             {
                 path: 'source/manager/:code',
+                component: MetadataContainer,
                 meta: {
                     title: 'common.source',
                     isRoot: false
                 },
-                component: () => import('@/views/pages/admin/source/SourceManager.vue')
+                children: [
+                    {
+                        path: '',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceManagerInfo.vue')
+                    }
+                ]
             },
             {
                 path: 'history',

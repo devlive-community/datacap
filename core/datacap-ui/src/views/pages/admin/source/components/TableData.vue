@@ -109,7 +109,7 @@
         </div>
       </template>
       <CircularLoading v-if="refererLoading" :show="refererLoading"/>
-      <AgGridVue class="ag-theme-datacap" style="width: 100%; min-height: 460px; height: 460px;" :gridOptions="gridOptions" :columnDefs="configure.headers"
+      <AgGridVue class="ag-theme-datacap h-[650px]" :gridOptions="gridOptions" :columnDefs="configure.headers"
                  :rowData="configure.datasets" :tooltipShowDelay="100" :sortingOrder="['desc', 'asc', null]" :rowSelection="'multiple'" @grid-ready="handlerGridReady"
                  @sortChanged="handlerSortChanged" @cellValueChanged="handlerCellValueChanged" @selectionChanged="handlerSelectionChanged" @columnVisible="handlerColumnVisible"
                  @columnMoved="handlerColumnMoved"/>

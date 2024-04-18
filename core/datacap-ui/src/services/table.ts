@@ -68,9 +68,9 @@ class TableService
         return new HttpUtils().post(`${ DEFAULT_PATH }/createTable/${ databaseId }`, configure)
     }
 
-    manageColumn(tableId: number, configure: any): Promise<ResponseModel>
+    manageColumn(code: string, configure: any): Promise<ResponseModel>
     {
-        return new HttpUtils().post(`${ DEFAULT_PATH }/manageColumn/${ tableId }`, configure)
+        return new HttpUtils().post(`${ DEFAULT_PATH }/manageColumn/${ code }`, configure)
     }
 }
 

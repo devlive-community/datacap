@@ -20,6 +20,7 @@ export interface StructureModel
     origin?: any
     selected?: boolean
     contextmenu?: true
+    code?: string
     children?: StructureModel[]
 }
 

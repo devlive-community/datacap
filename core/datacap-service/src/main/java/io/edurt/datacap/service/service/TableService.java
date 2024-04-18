@@ -14,10 +14,10 @@ public interface TableService
     /**
      * Retrieves all records from the specified database.
      *
-     * @param id the ID of the database
+     * @param code the code of the database
      * @return a common response containing a list of table entities
      */
-    CommonResponse<List<TableEntity>> getAllByDatabase(Long id);
+    CommonResponse<List<TableEntity>> getAllByDatabase(String code);
 
     /**
      * Retrieves data from the database based on the provided ID and table filter.
@@ -41,5 +41,5 @@ public interface TableService
 
     CommonResponse<Object> createTable(Long databaseId, TableBody configure);
 
-    CommonResponse<Object> manageColumn(Long tableId, TableBody configure);
+    CommonResponse<Object> manageColumn(String code, TableBody configure);
 }

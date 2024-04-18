@@ -32,10 +32,10 @@ public class TableController
         this.service = service;
     }
 
-    @PostMapping(value = "database/{id}")
-    public CommonResponse<List<TableEntity>> fetchByDatabase(@PathVariable Long id)
+    @PostMapping(value = "database/{code}")
+    public CommonResponse<List<TableEntity>> fetchByDatabase(@PathVariable String code)
     {
-        return this.service.getAllByDatabase(id);
+        return this.service.getAllByDatabase(code);
     }
 
     @RequestMapping(value = "{id}", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
@@ -62,9 +62,9 @@ public class TableController
         return this.service.createTable(id, configure);
     }
 
-    @PostMapping(value = "manageColumn/{id}")
-    public CommonResponse<Object> manageColumn(@PathVariable Long id, @RequestBody TableBody configure)
+    @PostMapping(value = "manageColumn/{code}")
+    public CommonResponse<Object> manageColumn(@PathVariable String code, @RequestBody TableBody configure)
     {
-        return this.service.manageColumn(id, configure);
+        return this.service.manageColumn(code, configure);
     }
 }
