@@ -16,12 +16,16 @@
             </div>
           </TabsTrigger>
           <TabsTrigger value="data" class="cursor-pointer" @click="handlerChange">
-            <Table :size="18" class="mr-2"/>
-            {{ $t('source.common.tableData') }}
+            <div class="flex space-x-2">
+              <Table :size="18"/>
+              <span>{{ $t('source.common.tableData') }}</span>
+            </div>
           </TabsTrigger>
-          <TabsTrigger value="statement" class="cursor-pointer">
-            <SatelliteDish :size="18" class="mr-2"/>
-            {{ $t('source.common.statement') }}
+          <TabsTrigger value="statement" class="cursor-pointer" @click="handlerChange">
+            <div class="flex space-x-2">
+              <SatelliteDish :size="18"/>
+              <span>{{ $t('source.common.statement') }}</span>
+            </div>
           </TabsTrigger>
           <TabsTrigger value="erDiagram" class="cursor-pointer">
             <Wind :size="18" class="mr-2"/>

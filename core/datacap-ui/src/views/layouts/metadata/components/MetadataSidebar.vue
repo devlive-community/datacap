@@ -293,7 +293,8 @@ export default defineComponent({
         return
       }
       this.selectNode = currentNode
-      this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.selectDatabase }/t/info/${ currentNode.code }`)
+      const type = this.$route.meta.type as string
+      this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.selectDatabase }/t/${ type }/${ currentNode.code }`)
     },
     handlerLoadChildData(item: StructureModel, callback: any)
     {
