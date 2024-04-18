@@ -22,11 +22,11 @@ public interface TableService
     /**
      * Retrieves data from the database based on the provided ID and table filter.
      *
-     * @param id the ID of the data to retrieve
+     * @param code the code of the data to retrieve
      * @param configure the table filter to apply to the data retrieval
      * @return a common response object containing the retrieved data
      */
-    CommonResponse<Object> fetchDataById(Long id, TableFilter configure);
+    CommonResponse<Object> fetchData(String code, TableFilter configure);
 
     /**
      * Generates a function comment for the given function body in a markdown code block with the correct language syntax.

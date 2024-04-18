@@ -94,45 +94,43 @@ public class TableServiceImpl
     }
 
     @Override
-    public CommonResponse<Object> fetchDataById(Long id, TableFilter configure)
+    public CommonResponse<Object> fetchData(String code, TableFilter configure)
     {
-        TableEntity table = this.repository.findById(id)
-                .orElse(null);
-        if (table == null) {
-            return CommonResponse.failure(String.format("Table [ %s ] not found", id));
-        }
-
-        SourceEntity source = table.getDatabase().getSource();
-        Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol());
-        if (!pluginOptional.isPresent()) {
-            return CommonResponse.failure(ServiceState.PLUGIN_NOT_FOUND);
-        }
-        Plugin plugin = pluginOptional.get();
-        if (configure.getType().equals(SqlType.SELECT)) {
-            return this.fetchSelect(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.INSERT)) {
-            return this.fetchInsert(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.UPDATE)) {
-            return this.fetchUpdate(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.DELETE)) {
-            return this.fetchDelete(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.ALTER)) {
-            return this.fetchAlter(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.SHOW)) {
-            return this.fetchShowCreateTable(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.TRUNCATE)) {
-            return this.fetchTruncateTable(plugin, table, source, configure);
-        }
-        else if (configure.getType().equals(SqlType.DROP)) {
-            return this.fetchDropTable(plugin, table, source, configure);
-        }
-        return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
+        return repository.findByCode(code)
+                .map(table -> {
+                    SourceEntity source = table.getDatabase().getSource();
+                    Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(this.injector, source.getType(), source.getProtocol());
+                    if (!pluginOptional.isPresent()) {
+                        return CommonResponse.failure(ServiceState.PLUGIN_NOT_FOUND);
+                    }
+                    Plugin plugin = pluginOptional.get();
+                    if (configure.getType().equals(SqlType.SELECT)) {
+                        return this.fetchSelect(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.INSERT)) {
+                        return this.fetchInsert(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.UPDATE)) {
+                        return this.fetchUpdate(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.DELETE)) {
+                        return this.fetchDelete(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.ALTER)) {
+                        return this.fetchAlter(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.SHOW)) {
+                        return this.fetchShowCreateTable(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.TRUNCATE)) {
+                        return this.fetchTruncateTable(plugin, table, source, configure);
+                    }
+                    else if (configure.getType().equals(SqlType.DROP)) {
+                        return this.fetchDropTable(plugin, table, source, configure);
+                    }
+                    return CommonResponse.failure(String.format("Not implemented yet [ %s ]", configure.getType()));
+                })
+                .orElse(CommonResponse.failure(String.format("Table [ %s ] not found", code)));
     }
 
     @Override

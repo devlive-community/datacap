@@ -248,6 +248,15 @@ const createAdminRouter = (router: any) => {
                             type: 'structure'
                         },
                         component: () => import('@/views/pages/admin/source/SourceTableStructure.vue')
+                    },
+                    {
+                        path: 'd/:database/t/data/:table',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false,
+                            type: 'data'
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceTableData.vue')
                     }
                 ]
             },

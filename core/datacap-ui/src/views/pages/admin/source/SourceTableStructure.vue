@@ -1,9 +1,11 @@
 <template>
-  <TableCommon :loading="loading" :columns="headers" :data="data">
-    <template #isNullable="{row}">
-      <Switch :value="row.isNullable" disabled="disabled"/>
-    </template>
-  </TableCommon>
+  <div class="h-full">
+    <TableCommon :loading="loading" :columns="headers" :data="data">
+      <template #isNullable="{row}">
+        <Switch :value="row.isNullable" disabled="disabled"/>
+      </template>
+    </TableCommon>
+  </div>
 </template>
 
 <script lang="ts">

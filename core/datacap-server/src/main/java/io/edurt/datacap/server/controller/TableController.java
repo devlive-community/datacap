@@ -38,10 +38,10 @@ public class TableController
         return this.service.getAllByDatabase(code);
     }
 
-    @RequestMapping(value = "{id}", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
-    public CommonResponse<Object> fetchDataById(@PathVariable Long id, @RequestBody TableFilter configure)
+    @RequestMapping(value = "{code}", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+    public CommonResponse<Object> fetchDataById(@PathVariable String code, @RequestBody TableFilter configure)
     {
-        return this.service.fetchDataById(id, configure);
+        return this.service.fetchData(code, configure);
     }
 
     @PostMapping(value = "export/{id}")

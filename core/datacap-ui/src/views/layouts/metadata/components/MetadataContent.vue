@@ -15,7 +15,7 @@
               <span>{{ $t('source.common.structure') }}</span>
             </div>
           </TabsTrigger>
-          <TabsTrigger value="data" class="cursor-pointer">
+          <TabsTrigger value="data" class="cursor-pointer" @click="handlerChange">
             <Table :size="18" class="mr-2"/>
             {{ $t('source.common.tableData') }}
           </TabsTrigger>
@@ -30,7 +30,7 @@
         </TabsList>
       </template>
       <TabsContent :value="selectTab as string">
-        <div class="h-[695px]">
+        <div class="h-[695px] overflow-x-auto overflow-y-auto">
           <RouterView/>
         </div>
       </TabsContent>
@@ -79,12 +79,7 @@ export default defineComponent({
     },
     handlerChange()
     {
-      if (this.selectTab === 'info') {
-        this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.originalDatabase }/t/info/${ this.originalTable }`)
-      }
-      if (this.selectTab === 'structure') {
-        this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.originalDatabase }/t/structure/${ this.originalTable }`)
-      }
+      this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.originalDatabase }/t/${ this.selectTab }/${ this.originalTable }`)
     },
     watchChange()
     {

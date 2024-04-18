@@ -23,7 +23,6 @@ import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import TableService from '@/services/table'
 import { SqlColumn, SqlType, TableFilter, TableFilterRequest } from '@/model/table'
 import { ToastUtils } from '@/utils/toast'
-import { toNumber } from 'lodash'
 import Button from '@/views/ui/button'
 
 export default defineComponent({
@@ -37,9 +36,6 @@ export default defineComponent({
   props: {
     isVisible: {
       type: Boolean
-    },
-    tableId: {
-      type: Number
     },
     columns: {
       type: Array<SqlColumn>
@@ -57,18 +53,23 @@ export default defineComponent({
       }
     }
   },
-  created()
-  {
-    this.handlerInitialize()
-  },
   data()
   {
     return {
       loading: false,
       submitting: false,
       contentDML: null as string | null,
-      configure: null as unknown as TableFilter
+      configure: null as unknown as TableFilter,
+      code: null as string | null
     }
+  },
+  created()
+  {
+    const code = this.$route?.params.table as string
+    if (code) {
+      this.code = code
+    }
+    this.handlerInitialize()
   },
   methods: {
     handlerInitialize()
@@ -80,7 +81,7 @@ export default defineComponent({
       this.configure.columns = originalColumns
       this.configure.type = SqlType.DELETE
       this.configure.preview = true
-      TableService.putData(toNumber(this.tableId), this.configure)
+      TableService.putData(this.code as string, this.configure)
                   .then(response => {
                     if (response.status && response.data && response.data.isSuccessful) {
                       this.contentDML = response.data.content
@@ -95,7 +96,7 @@ export default defineComponent({
     {
       this.submitting = false
       this.configure.preview = false
-      TableService.putData(toNumber(this.tableId), this.configure)
+      TableService.putData(this.code as string, this.configure)
                   .then(response => {
                     if (response.status && response.data && response.data.isSuccessful) {
                       ToastUtils.success(this.$t('source.tip.deleteSuccess'))
