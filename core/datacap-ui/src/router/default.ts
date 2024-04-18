@@ -266,6 +266,15 @@ const createAdminRouter = (router: any) => {
                             type: 'statement'
                         },
                         component: () => import('@/views/pages/admin/source/SourceTableStatement.vue')
+                    },
+                    {
+                        path: 'd/:database/t/erDiagram/:table',
+                        meta: {
+                            title: 'common.source',
+                            isRoot: false,
+                            type: 'erDiagram'
+                        },
+                        component: () => import('@/views/pages/admin/source/SourceTableErDiagram.vue')
                     }
                 ]
             },

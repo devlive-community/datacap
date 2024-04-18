@@ -21,6 +21,7 @@ export interface TableModel
     autoIncrement?: string
     database?: DatabaseModel
     columns?: Array<ColumnModel>
+    code?: string
 }
 
 export class TableRequest

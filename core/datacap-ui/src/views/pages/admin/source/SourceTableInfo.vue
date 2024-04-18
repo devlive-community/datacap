@@ -127,7 +127,6 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { ToastUtils } from '@/utils/toast'
 import { Textarea } from '@/components/ui/textarea'
-import { toNumber } from 'lodash'
 
 export default defineComponent({
   name: 'SourceTableInfo',
@@ -182,7 +181,7 @@ export default defineComponent({
           type: SqlType.ALTER,
           value: this.dataInfo.autoIncrement
         }
-        TableService.getData(toNumber(this.dataInfo.id), configure)
+        TableService.getData(this.dataInfo.code as string, configure)
                     .then(response => {
                       if (response.status) {
                         ToastUtils.success(this.$t('source.tip.resetAutoIncrementSuccess').replace('$VALUE', this.dataInfo?.autoIncrement as string))

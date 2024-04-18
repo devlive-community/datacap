@@ -27,9 +27,11 @@
               <span>{{ $t('source.common.statement') }}</span>
             </div>
           </TabsTrigger>
-          <TabsTrigger value="erDiagram" class="cursor-pointer">
-            <Wind :size="18" class="mr-2"/>
-            {{ $t('source.common.erDiagram') }}
+          <TabsTrigger value="erDiagram" class="cursor-pointer" @click="handlerChange">
+            <div class="flex space-x-2">
+              <Wind :size="18"/>
+              <span>{{ $t('source.common.erDiagram') }}</span>
+            </div>
           </TabsTrigger>
         </TabsList>
       </template>

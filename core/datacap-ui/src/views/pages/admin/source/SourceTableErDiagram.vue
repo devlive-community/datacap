@@ -8,26 +8,14 @@
 </template>
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
-import ColumnService from '@/services/column'
-import { StructureModel } from '@/model/structure.ts'
-import { toNumber } from 'lodash'
+import ColumnService from '@/services/column.ts'
 import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import ErDiagram from '@/views/components/diagram/ErDiagram.vue'
-import { ErDiagramOptions } from '@/views/components/diagram/ErDiagramOptions'
+import { ErDiagramOptions } from '@/views/components/diagram/ErDiagramOptions.ts'
 
 export default defineComponent({
-  name: 'TableErDiagram',
+  name: 'SourceTableErDiagram',
   components: { ErDiagram, CircularLoading },
-  props: {
-    info: {
-      type: Object as () => StructureModel | null
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-    this.watchId()
-  },
   data()
   {
     return {
@@ -35,29 +23,34 @@ export default defineComponent({
       options: null as unknown as ErDiagramOptions
     }
   },
+  created()
+  {
+    this.handlerInitialize()
+    this.watchChange()
+  },
   methods: {
     handlerInitialize()
     {
-      this.loading = true
-      if (this.info) {
-        ColumnService.getAllByTable(toNumber(this.info.applyId))
+      const code = this.$route?.params.table as string
+      if (code) {
+        this.loading = true
+        ColumnService.getAllByTable(code)
                      .then(response => {
-                       if (response.status) {
+                       if (response.status && response.data?.length > 0) {
+                         const table = response.data[0]
                          this.options = new ErDiagramOptions()
-                         this.options.table = { id: toNumber(this.info?.applyId), name: this.info?.title as string }
+                         this.options.table = { id: table.id, name: table.name }
                          this.options.columns = response.data
                        }
                      })
                      .finally(() => this.loading = false)
       }
     },
-    watchId()
+    watchChange()
     {
       watch(
-          () => this.info,
-          () => {
-            this.handlerInitialize()
-          }
+          () => this.$route?.params.table,
+          () => this.handlerInitialize()
       )
     }
   }
