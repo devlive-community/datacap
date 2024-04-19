@@ -2,24 +2,72 @@
 
 | Release version | Release time |
 |:---------------:|:------------:|
-|   `2024.03.2`   | `2024-04-12` |
+|   `2024.03.3`   | `2024-04-19` |
 
-> Emergency release version: Due to an error in calling the API during pre-release testing, the data set building function cannot be used. This version is mainly used to modify the data set building function.
-
-#### Env
+#### Core
 
 ---
 
-- Fixed logo path reference error problem
+- [User] Support upload avatar
+- [Source] Remove v1 `saveAndUpdate`, `getInfo` fc
+- [Source] Replace `getSource` fc
+- [Source] Add code and name column
+- [Source] Refactor metadata layout
+- [Source] Add database info to metadata
+- [Function] Fix error when converting undefined attribute in info
+- [Query] Remove old api
+- [Query] Fixed history data is null
+- [Snippet] Adapter base module
+- [Pipeline] Adapter base module
+- [Dashboard] Optimize the way to obtain the dashboard
+- [Dashboard] Add description
+- [Dashboard] Add default image
+- Remove schema to configure
+- Enable unified BaseEntity, BaseRepository, BaseController, BaseService
+- Support `saveOrUpdate` method to set related values based on attributes
+- Add info by code permission
+
+#### UI
+
+---
+
+- [Layout] Optimize menu selection and highlight display
+- [Layout] Support parent menu selection highlighting display
+- [Layout] Add callback to 404 page
+- [Layout] Add redirect to 403 page
+- [Layout] Add redirect to network page
+- [User] Fix loading status
+- Add page loading progress
+- Remove echarts
+- Merge i18n
 
 #### Dataset
 
 ---
 
-- Fixed the problem that the data set cannot be constructed
+- Fix the problem of missing columns in data set construction
+- Fixed info path
+- Optimize query column transmission data problem that is too large
+- Add permission to get columns
+- Highlight indicator dimension container
+- Replace id to code
+
+#### Visual
+
+- [Line] Add title to line
+- Remove unused component
+- Merge configuration into editor
+- Fix the problem that the configuration is not echoed
+- Remove unused configure component
+- Disable visualization without querying
+- Add scatter chart
+- Add radar chart
+- Add funnel chart
+- Add gauge chart
 
 #### Docker
 
 ---
 
-- Fixed the problem of missing fields in initialization script
+- Replace schema path
+- Repair docker compose image and change example address
