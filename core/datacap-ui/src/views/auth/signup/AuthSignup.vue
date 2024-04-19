@@ -56,8 +56,8 @@
                   <FormControl>
                     <div class="flex w-full items-center gap-2">
                       <Input v-model="formState.captcha" v-bind="componentField" type="text" :placeholder="$t('user.auth.captchaTip')"/>
-                      <Button variant="secondary" style="padding: 0" @click="refererCaptcha">
-                        <img style="min-width: 120px; height: 100%;" :src="'data:image/png;base64,' + captchaImage"/>
+                      <Button variant="secondary" :loading="captchaLoading" :disabled="captchaLoading" style="padding: 0" @click="refererCaptcha">
+                        <img v-if="!captchaLoading" style="min-width: 120px; height: 100%;" :src="'data:image/png;base64,' + captchaImage"/>
                       </Button>
                     </div>
                   </FormControl>
@@ -88,7 +88,7 @@
 import { defineComponent, inject, ref } from 'vue'
 import { Loader2 } from 'lucide-vue-next'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import Button from '@/views/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -99,9 +99,9 @@ import { useForm } from 'vee-validate'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import CaptchaService from '@/services/captcha'
 import UserService from '@/services/user'
-import router from '@/router';
+import router from '@/router'
 import { ToastUtils } from '@/utils/toast'
-import CircularLoading from '@/views/components/loading/CircularLoading.vue';
+import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 
 export default defineComponent({
   name: 'AuthSignup',
@@ -119,22 +119,23 @@ export default defineComponent({
     let submitting = ref(false)
     let showCaptcha = ref(false)
     let captchaImage = ref(null)
+    const captchaLoading = ref(false)
     const $t: any = inject('$t')
-    const formState = ref<UserRequest>({username: null, password: null})
+    const formState = ref<UserRequest>({ username: null, password: null })
     const validator = z
         .object({
-          username: z.string({required_error: $t('user.auth.usernameTip')})
-              .min(2, $t('user.auth.usernameSizeTip'))
-              .max(20, $t('user.auth.usernameSizeTip')),
-          password: z.string({required_error: $t('user.auth.passwordTip')})
-              .min(6, $t('user.auth.passwordSizeTip'))
-              .max(20, $t('user.auth.passwordSizeTip')),
-          confirmPassword: z.string({required_error: $t('user.auth.confirmPasswordTip')})
-              .min(6, $t('user.auth.passwordSizeTip'))
-              .max(50, $t('user.auth.passwordSizeTip')),
-          captcha: z.string({required_error: $t('user.auth.captchaTip')})
-              .min(1, $t('user.auth.captchaSizeTip'))
-              .max(6, $t('user.auth.captchaSizeTip'))
+          username: z.string({ required_error: $t('user.auth.usernameTip') })
+                     .min(2, $t('user.auth.usernameSizeTip'))
+                     .max(20, $t('user.auth.usernameSizeTip')),
+          password: z.string({ required_error: $t('user.auth.passwordTip') })
+                     .min(6, $t('user.auth.passwordSizeTip'))
+                     .max(20, $t('user.auth.passwordSizeTip')),
+          confirmPassword: z.string({ required_error: $t('user.auth.confirmPasswordTip') })
+                            .min(6, $t('user.auth.passwordSizeTip'))
+                            .max(50, $t('user.auth.passwordSizeTip')),
+          captcha: z.string({ required_error: $t('user.auth.captchaTip') })
+                    .min(1, $t('user.auth.captchaSizeTip'))
+                    .max(6, $t('user.auth.captchaSizeTip'))
         })
         .refine((data) => data.password === data.confirmPassword, {
           message: $t('user.auth.confirmPasswordTip'),
@@ -142,36 +143,36 @@ export default defineComponent({
         })
     const formSchema = toTypedSchema(validator)
 
-    const {handleSubmit} = useForm({
+    const { handleSubmit } = useForm({
       validationSchema: formSchema
     })
 
     const refererCaptcha = () => {
-      loading.value = true
-      formState.value.timestamp = Date.parse(new Date().toString());
+      captchaLoading.value = true
+      formState.value.timestamp = Date.parse(new Date().toString())
       CaptchaService.getCaptcha(formState.value.timestamp)
-          .then(response => {
-            if (response.data !== false) {
-              showCaptcha.value = true
-              captchaImage.value = response.data.image
-            }
-          })
-          .finally(() => loading.value = false)
+                    .then(response => {
+                      if (response.data !== false) {
+                        showCaptcha.value = true
+                        captchaImage.value = response.data.image
+                      }
+                    })
+                    .finally(() => captchaLoading.value = false)
     }
 
     const onSubmit = handleSubmit(() => {
       submitting.value = true
       UserService.signup(formState.value)
-          .then(response => {
-            if (response.status) {
-              router.push('/auth/signin')
-            }
-            else {
-              ToastUtils.error(response.message)
-              refererCaptcha()
-            }
-          })
-          .finally(() => submitting.value = false)
+                 .then(response => {
+                   if (response.status) {
+                     router.push('/auth/signin')
+                   }
+                   else {
+                     ToastUtils.error(response.message)
+                     refererCaptcha()
+                   }
+                 })
+                 .finally(() => submitting.value = false)
     })
 
     return {
@@ -181,7 +182,8 @@ export default defineComponent({
       formState,
       captchaImage,
       onSubmit,
-      refererCaptcha
+      refererCaptcha,
+      captchaLoading
     }
   },
   created()
