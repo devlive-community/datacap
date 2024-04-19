@@ -1,6 +1,6 @@
 USE `datacap`;
 
-TRUNCATE TABLE `audit_plugin`;
+TRUNCATE TABLE `datacap_source_query`;
 
 TRUNCATE TABLE `datacap_chat`;
 TRUNCATE TABLE `datacap_chat_user_relation`;
@@ -31,7 +31,7 @@ TRUNCATE TABLE `datacap_metadata_table`;
 TRUNCATE TABLE `datacap_metadata_table_database_relation`;
 
 TRUNCATE TABLE `datacap_pipeline`;
-TRUNCATE TABLE `pipeline_user_relation`;
+TRUNCATE TABLE `datacap_pipeline_user_relation`;
 
 TRUNCATE TABLE `datacap_report`;
 TRUNCATE TABLE `datacap_report_source_relation`;
@@ -42,10 +42,10 @@ TRUNCATE TABLE `datacap_scheduled_history`;
 TRUNCATE TABLE `datacap_scheduled_history_relation`;
 TRUNCATE TABLE `datacap_scheduled_history_source_relation`;
 
-TRUNCATE TABLE `user_log`;
+TRUNCATE TABLE `datacap_user_log`;
 
 TRUNCATE TABLE `datacap_source`;
 
-TRUNCATE TABLE `snippet`;
+TRUNCATE TABLE `datacap_snippet`;
 
-mysqldump -u root -p datacap > $(pwd)/core/datacap-server/src/main/schema/datacap.sql
+mysqldump -u root -p datacap > $(pwd)/configure/schema/datacap.sql
