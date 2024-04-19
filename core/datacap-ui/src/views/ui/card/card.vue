@@ -1,6 +1,6 @@
 <template>
   <Card class="rounded-sm">
-    <CardHeader v-if="!hiddenTitle" :class="`flex flex-row items-center justify-between border-b p-4 ${titleClass}`">
+    <CardHeader v-if="$slots.title" :class="`flex flex-row items-center justify-between border-b p-4 ${titleClass}`">
       <div class="grid gap-2">
         <CardTitle>
           <span v-if="title">{{ title }}</span>

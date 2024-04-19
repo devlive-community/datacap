@@ -37,6 +37,7 @@
     "lodash": "^4.17.21",
     "lucide-vue-next": "^0.356.0",
     "md-editor-v3": "^4.12.1",
+    "nprogress": "^0.2.0",
     "radix-vue": "^1.5.2",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
@@ -58,6 +59,7 @@
   "devDependencies": {
     "@types/lodash": "^4.17.0",
     "@types/node": "^20.11.26",
+    "@types/nprogress": "^0.2.3",
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.18",

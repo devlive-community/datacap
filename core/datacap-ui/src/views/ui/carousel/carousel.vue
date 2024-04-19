@@ -4,7 +4,7 @@
       <CarouselItem v-for="item in items">
         <div v-if="item.isAlert">
           <DcLink :external="item.external" :link="item.link">
-            <Alert :title="item.title"/>
+            <Alert :title="item.title" class="rounded-none"/>
           </DcLink>
         </div>
         <div v-else>

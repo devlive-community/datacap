@@ -11,6 +11,14 @@ services:
     volumes:
       - ./configure/schema/datacap.sql:/docker-entrypoint-initdb.d/schema.sql
 
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    restart: always
+    ports:
+      - "8123:8123"
+    environment:
+      - CLICKHOUSE_DB=datacap
+
   datacap:
     image: qianmoq/datacap:latest
     restart: always

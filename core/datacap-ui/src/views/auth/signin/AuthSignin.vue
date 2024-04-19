@@ -45,8 +45,8 @@
                   <FormControl>
                     <div class="flex w-full items-center gap-2">
                       <Input v-model="formState.captcha" v-bind="componentField" type="text" :placeholder="$t('user.auth.captchaTip')"/>
-                      <Button variant="secondary" style="padding: 0" @click="refererCaptcha">
-                        <img style="min-width: 120px; height: 100%;" :src="'data:image/png;base64,' + captchaImage"/>
+                      <Button variant="secondary" :loading="captchaLoading" :disabled="captchaLoading" style="padding: 0" @click="refererCaptcha">
+                        <img v-if="!captchaLoading" style="min-width: 120px; height: 100%;" :src="'data:image/png;base64,' + captchaImage"/>
                       </Button>
                     </div>
                   </FormControl>
@@ -76,7 +76,7 @@
 <script lang="ts">
 import { defineComponent, inject, ref } from 'vue'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import Button from '@/views/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -113,70 +113,71 @@ export default defineComponent({
     let captchaImage = ref(null)
     const $t: any = inject('$t')
     let submitting = ref(false)
-    const formState = ref<UserRequest>({username: null, password: null})
+    const captchaLoading = ref(false)
+    const formState = ref<UserRequest>({ username: null, password: null })
     const validator = z
         .object({
-          username: z.string({required_error: $t('user.auth.usernameTip')})
-              .min(2, $t('user.auth.usernameSizeTip'))
-              .max(20, $t('user.auth.usernameSizeTip')),
-          password: z.string({required_error: $t('user.auth.passwordTip')})
-              .min(6, $t('user.auth.passwordSizeTip'))
-              .max(20, $t('user.auth.passwordSizeTip')),
-          captcha: z.string({required_error: $t('user.auth.captchaTip')})
-              .min(1, $t('user.auth.captchaSizeTip'))
-              .max(6, $t('user.auth.captchaSizeTip'))
+          username: z.string({ required_error: $t('user.auth.usernameTip') })
+                     .min(2, $t('user.auth.usernameSizeTip'))
+                     .max(20, $t('user.auth.usernameSizeTip')),
+          password: z.string({ required_error: $t('user.auth.passwordTip') })
+                     .min(6, $t('user.auth.passwordSizeTip'))
+                     .max(20, $t('user.auth.passwordSizeTip')),
+          captcha: z.string({ required_error: $t('user.auth.captchaTip') })
+                    .min(1, $t('user.auth.captchaSizeTip'))
+                    .max(6, $t('user.auth.captchaSizeTip'))
         })
     const formSchema = toTypedSchema(validator)
 
-    const {handleSubmit} = useForm({
+    const { handleSubmit } = useForm({
       validationSchema: formSchema
     })
 
     const refererCaptcha = () => {
-      loading.value = true
-      formState.value.timestamp = Date.parse(new Date().toString());
+      captchaLoading.value = true
+      formState.value.timestamp = Date.parse(new Date().toString())
       CaptchaService.getCaptcha(formState.value.timestamp)
-          .then(response => {
-            if (response.data !== false) {
-              showCaptcha.value = true
-              captchaImage.value = response.data.image
-            }
-          })
-          .finally(() => loading.value = false)
+                    .then(response => {
+                      if (response.data !== false) {
+                        showCaptcha.value = true
+                        captchaImage.value = response.data.image
+                      }
+                    })
+                    .finally(() => captchaLoading.value = false)
     }
 
     const onSubmit = handleSubmit(() => {
       submitting.value = true
       UserService.signin(formState.value)
-          .then(response => {
-            if (response.status) {
-              localStorage.setItem(CommonUtils.token, JSON.stringify(response.data))
-              // Get user information and user menus
-              const client = new HttpUtils().getAxios()
-              client.all([UserService.getMenus(), UserService.getInfo()])
-                  .then(client.spread((fetchMenu, fetchInfo) => {
-                    if (fetchMenu.status && fetchInfo.status) {
-                      localStorage.setItem(CommonUtils.menu, JSON.stringify(fetchMenu.data))
-                      createDefaultRouter(router)
-                      localStorage.setItem(CommonUtils.userEditorConfigure, JSON.stringify(fetchInfo.data.editorConfigure))
-                      router.push('/home')
-                    }
-                    else {
-                      if (!fetchMenu.status) {
-                        ToastUtils.error(fetchMenu.message)
-                      }
-                      if (!fetchInfo.status) {
-                        ToastUtils.error(fetchInfo.message)
-                      }
-                    }
-                  }))
-            }
-            else {
-              ToastUtils.error(response.message)
-              refererCaptcha()
-            }
-          })
-          .finally(() => submitting.value = false)
+                 .then(response => {
+                   if (response.status) {
+                     localStorage.setItem(CommonUtils.token, JSON.stringify(response.data))
+                     // Get user information and user menus
+                     const client = new HttpUtils().getAxios()
+                     client.all([UserService.getMenus(), UserService.getInfo()])
+                           .then(client.spread((fetchMenu, fetchInfo) => {
+                             if (fetchMenu.status && fetchInfo.status) {
+                               localStorage.setItem(CommonUtils.menu, JSON.stringify(fetchMenu.data))
+                               createDefaultRouter(router)
+                               localStorage.setItem(CommonUtils.userEditorConfigure, JSON.stringify(fetchInfo.data.editorConfigure))
+                               router.push('/home')
+                             }
+                             else {
+                               if (!fetchMenu.status) {
+                                 ToastUtils.error(fetchMenu.message)
+                               }
+                               if (!fetchInfo.status) {
+                                 ToastUtils.error(fetchInfo.message)
+                               }
+                             }
+                           }))
+                   }
+                   else {
+                     ToastUtils.error(response.message)
+                     refererCaptcha()
+                   }
+                 })
+                 .finally(() => submitting.value = false)
     })
 
     return {
@@ -186,7 +187,8 @@ export default defineComponent({
       formState,
       captchaImage,
       onSubmit,
-      refererCaptcha
+      refererCaptcha,
+      captchaLoading
     }
   },
   created()
