@@ -2,32 +2,32 @@
   <Tabs v-model="selectTab as string" :default-value="selectTab as string" class="w-full">
     <Card :title-class="'p-0'" :body-class="'p-0'">
       <template #title>
-        <TabsList>
-          <TabsTrigger value="info" class="cursor-pointer" @click="handlerChange">
+        <TabsList class="rounded-none">
+          <TabsTrigger value="info" class="cursor-pointer" :disabled="!originalTable" @click="handlerChange">
             <div class="flex space-x-2">
               <Info :size="18"/>
               <span>{{ $t('source.common.info') }}</span>
             </div>
           </TabsTrigger>
-          <TabsTrigger value="structure" class="cursor-pointer" @click="handlerChange">
+          <TabsTrigger value="structure" class="cursor-pointer" :disabled="!originalTable" @click="handlerChange">
             <div class="flex space-x-2">
               <LayoutPanelTop :size="18"/>
               <span>{{ $t('source.common.structure') }}</span>
             </div>
           </TabsTrigger>
-          <TabsTrigger value="data" class="cursor-pointer" @click="handlerChange">
+          <TabsTrigger value="data" class="cursor-pointer" :disabled="!originalTable" @click="handlerChange">
             <div class="flex space-x-2">
               <Table :size="18"/>
               <span>{{ $t('source.common.tableData') }}</span>
             </div>
           </TabsTrigger>
-          <TabsTrigger value="statement" class="cursor-pointer" @click="handlerChange">
+          <TabsTrigger value="statement" class="cursor-pointer" :disabled="!originalTable" @click="handlerChange">
             <div class="flex space-x-2">
               <SatelliteDish :size="18"/>
               <span>{{ $t('source.common.statement') }}</span>
             </div>
           </TabsTrigger>
-          <TabsTrigger value="erDiagram" class="cursor-pointer" @click="handlerChange">
+          <TabsTrigger value="erDiagram" class="cursor-pointer" :disabled="!originalTable" @click="handlerChange">
             <div class="flex space-x-2">
               <Wind :size="18"/>
               <span>{{ $t('source.common.erDiagram') }}</span>

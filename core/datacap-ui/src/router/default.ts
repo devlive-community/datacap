@@ -226,7 +226,7 @@ const createAdminRouter = (router: any) => {
                     {
                         path: 'd/:database/',
                         meta: {
-                            title: 'common.source',
+                            title: 'common.database',
                             isRoot: false
                         },
                         component: () => import('@/views/pages/admin/source/SourceDatabase.vue')
