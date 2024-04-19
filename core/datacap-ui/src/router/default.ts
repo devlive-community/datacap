@@ -234,7 +234,7 @@ const createAdminRouter = (router: any) => {
                     {
                         path: 'd/:database/t/info/:table',
                         meta: {
-                            title: 'common.source',
+                            title: 'source.common.info',
                             isRoot: false,
                             type: 'info'
                         },
@@ -243,7 +243,7 @@ const createAdminRouter = (router: any) => {
                     {
                         path: 'd/:database/t/structure/:table',
                         meta: {
-                            title: 'common.source',
+                            title: 'source.common.structure',
                             isRoot: false,
                             type: 'structure'
                         },
@@ -252,7 +252,7 @@ const createAdminRouter = (router: any) => {
                     {
                         path: 'd/:database/t/data/:table',
                         meta: {
-                            title: 'common.source',
+                            title: 'source.common.tableData',
                             isRoot: false,
                             type: 'data'
                         },
@@ -261,7 +261,7 @@ const createAdminRouter = (router: any) => {
                     {
                         path: 'd/:database/t/statement/:table',
                         meta: {
-                            title: 'common.source',
+                            title: 'source.common.statement',
                             isRoot: false,
                             type: 'statement'
                         },
@@ -270,7 +270,7 @@ const createAdminRouter = (router: any) => {
                     {
                         path: 'd/:database/t/erDiagram/:table',
                         meta: {
-                            title: 'common.source',
+                            title: 'source.common.erDiagram',
                             isRoot: false,
                             type: 'erDiagram'
                         },
