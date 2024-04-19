@@ -1,5 +1,4 @@
-#
-If you are upgrading to 2024.03.3 from a different version, execute the following SQL statement
+# If you are upgrading to 2024.03.3 from a different version, execute the following SQL statement
 # Если вы обновляетесь до версии 2024.03.3 с другой версии, выполните следующую инструкцию SQL
 # 如果您是通过其他版本升级到 2024.03.3, 请执行以下 SQL 语句
 
@@ -181,3 +180,9 @@ ALTER TABLE `datacap_report`
 
 ALTER TABLE `datacap_dashboard`
     CHANGE `version` `description` VARCHAR(1000) DEFAULT NULL COMMENT 'Description';
+
+ALTER TABLE `datacap_chat`
+    ADD COLUMN `code` VARCHAR(100);
+
+ALTER TABLE `datacap_message`
+    ADD COLUMN `code` VARCHAR(100);
