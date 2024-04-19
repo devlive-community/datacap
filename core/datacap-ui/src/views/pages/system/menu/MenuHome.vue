@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card>
+    <Card title-class="p-2">
       <template #title>{{ $t('menu.common.list') }}</template>
       <template #extra>
         <Tooltip :content="$t('menu.common.create')">
