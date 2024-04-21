@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card>
+    <Card title-class="p-3">
       <template #title>{{ $t('pipeline.common.list') }}</template>
       <template #extra>
         <Tooltip :content="$t('pipeline.common.create')">

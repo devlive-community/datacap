@@ -30,6 +30,7 @@ CREATE TABLE `datacap_chat` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `avatar` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `code` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -432,6 +433,7 @@ CREATE TABLE `datacap_message` (
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `content` text,
+  `code` varchar(100) DEFAULT NULL,
   `model` varchar(255) DEFAULT NULL,
   `type` varchar(100) DEFAULT NULL,
   `prompt_tokens` bigint DEFAULT '0',

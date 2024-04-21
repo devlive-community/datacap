@@ -1,9 +1,9 @@
 <template>
   <div class="w-full">
-    <Card>
+    <Card title-class="p-2">
       <template #title>{{ $t('dashboard.common.list') }}</template>
       <template #extra>
-        <Button class="w-24" size="sm" to="/admin/dashboard/info">
+        <Button size="sm" to="/admin/dashboard/info">
           {{ $t('dashboard.common.create') }}
         </Button>
       </template>
