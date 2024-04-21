@@ -1,14 +1,14 @@
 ---
-title: Docker Compose 部署
+title: Deploying in Docker Compose
 ---
 
-DataCap 项目提供 Docker Compose 方式部署，通过下载 [docker-compose.yml](https://github.com/devlive-community/datacap/blob/dev/docker-compose.yml) 文件，或者使用以下代码进行服务部署。
+The DataCap project provides Docker Compose deployment by downloading the [docker-compose.yml](https://github.com/devlive-community/datacap/blob/dev/docker-compose.yml) file, or using the following code for service deploy.
 
-#### 简化版
+#### Simplified version
 
 ---
 
-> 只有基础的一些功能
+> Only some basic functions
 
 ```yaml
 version: '3.8'
@@ -35,11 +35,11 @@ services:
       - ./configure/docker/application.properties:/opt/app/datacap/configure/application.properties
 ```
 
-#### 进阶版
+#### Advanced version
 
 ---
 
-> 该方式包含了 `数据集` 功能
+> This method includes the `dataset` function
 
 ```yaml
 version: '3.8'
@@ -76,36 +76,35 @@ services:
 
 !!! warning
 
-    需要同时下载一下多个文件：
+    You need to download multiple files at the same time:
 
     - [datacap.sql](https://github.com/devlive-community/datacap/blob/dev/configure/schema/datacap.sql)
     - [application.properties](https://github.com/devlive-community/datacap/blob/dev/configure/docker/application.properties)
 
-    下载完成后将他们放置到指定目录，也就是 `./configure/docker/` 和 `./configure/schema/` 如果需要自定义目录，可以修改 `docker-compose.yml` 文件中挂载的 `volumes` 配置即可。
+    After the download is completed, place them in the specified directory, that is, `./configure/docker/` and `./configure/schema/`. If you need to customize the directory, you can modify the ` mounted in the `docker-compose.yml` file. volumes` can be configured.
 
-## 启动服务
+## Start service
 
 ---
 
-以上工作完成后，使用以下命令进行启动服务。**必须在包含 docker-compose.yml 文件的目录下执行**
+After the above work is completed, use the following command to start the service. **Must be executed in the directory containing the docker-compose.yml file**
 
 ```bash
 docker-compose up
 ```
 
-如果需要后台启动使用以下命令
+If you need to start in the background, use the following command
 
 ```bash
 docker-compose up -d
 ```
+After successful startup, open http://localhost:9096/ in the browser to see the website.
 
-启动成功后，浏览器打开 http://localhost:9096/ 即可看到网站。
-
-## 停止服务
+## Out of service
 
 ---
 
-停止服务需要使用以下命令
+To stop the service you need to use the following command
 
 ```bash
 docker-compose down

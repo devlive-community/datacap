@@ -125,6 +125,7 @@ plugins:
             NavDeveloperPlugin: 插件
             NavReleaseNote: 更新日志
             NavDataset: 数据集
+            NavDeploy: 安装部署
         - locale: en
           name: English
           build: true
@@ -140,6 +141,7 @@ plugins:
             NavDeveloperPlugin: Plugin
             NavReleaseNote: Release Note
             NavDataset: Dataset
+            NavDeploy: Install Deploy
   - search
   - git-revision-date-localized:
       enable_creation_date: true
@@ -154,32 +156,33 @@ nav:
   - NavHome:
     - index.md
   - NavDocumentation:
+    - NavDeploy:
       - reference/getStarted/install.md
       - reference/getStarted/installContainers.md
       - reference/getStarted/installFromDockerCompose.md
       - reference/getStarted/installRainbond.md
-      - reference/getStarted/query/home.md
-      - reference/getStarted/dashboard/home.md
-      - NavDataset:
-        - reference/getStarted/dataset/create/home.md
-        - reference/getStarted/dataset/adhoc/home.md
-        - reference/getStarted/dataset/sync/home.md
-        - reference/getStarted/dataset/history/home.md
-        - reference/getStarted/dataset/clear/home.md
-      - NavClient:
-        - reference/clients/cli.md
-      - NavManager:
-          - reference/manager/profile/home.md
-          - reference/manager/datasource/home.md
-          - reference/manager/snippet/home.md
-          - reference/manager/history/query/home.md
-          - reference/manager/pipeline/home.md
-          - reference/manager/report/home.md
-      - NavSystem:
-          - reference/system/functions/home.md
-          - reference/system/sql/home.md
-          - reference/system/menu/home.md
-      - NavConnectors:
+    - reference/getStarted/query/home.md
+    - reference/getStarted/dashboard/home.md
+    - NavDataset:
+      - reference/getStarted/dataset/create/home.md
+      - reference/getStarted/dataset/adhoc/home.md
+      - reference/getStarted/dataset/sync/home.md
+      - reference/getStarted/dataset/history/home.md
+      - reference/getStarted/dataset/clear/home.md
+    - NavClient:
+      - reference/clients/cli.md
+    - NavManager:
+        - reference/manager/profile/home.md
+        - reference/manager/datasource/home.md
+        - reference/manager/snippet/home.md
+        - reference/manager/history/query/home.md
+        - reference/manager/pipeline/home.md
+        - reference/manager/report/home.md
+    - NavSystem:
+        - reference/system/functions/home.md
+        - reference/system/sql/home.md
+        - reference/system/menu/home.md
+    - NavConnectors:
         - reference/connectors/timescale/home.md
         - reference/connectors/paradedb/home.md
         - reference/connectors/scylladb/home.md
