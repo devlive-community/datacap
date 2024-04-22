@@ -14,7 +14,7 @@
     <description>DataCap - Apache Hadoop HDFS</description>
 
     <properties>
-        <hadoop.version>3.3.4</hadoop.version>
+        <hadoop.version>3.4.0</hadoop.version>
         <plugin.name>native-hdfs</plugin.name>
     </properties>
 
