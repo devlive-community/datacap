@@ -413,16 +413,18 @@ public class DataSetServiceImpl
 
             List<Column> columns = Lists.newArrayList();
             List<DataSetColumnEntity> columnEntities = columnRepository.findAllByDataset(entity);
-            columnEntities.forEach(item -> {
-                Column column = new Column();
-                column.setName(item.getName());
-                column.setType(getColumnType(item.getType()));
-                column.setComment(item.getComment());
-                column.setLength(item.getLength());
-                column.setNullable(item.isNullable());
-                column.setDefaultValue(item.getDefaultValue());
-                columns.add(column);
-            });
+            columnEntities.stream()
+                    .filter(item -> !item.isVirtualColumn())
+                    .forEach(item -> {
+                        Column column = new Column();
+                        column.setName(item.getName());
+                        column.setType(getColumnType(item.getType()));
+                        column.setComment(item.getComment());
+                        column.setLength(item.getLength());
+                        column.setNullable(item.isNullable());
+                        column.setDefaultValue(item.getDefaultValue());
+                        columns.add(column);
+                    });
 
             TableBuilder.Companion.BEGIN();
             TableBuilder.Companion.CREATE_TABLE(String.format("`%s`.`%s`", database, originTableName));
@@ -565,6 +567,7 @@ public class DataSetServiceImpl
             Plugin inputPlugin = pluginOptional.get();
             Set<OriginColumn> originColumns = columnRepository.findAllByDataset(entity)
                     .stream()
+                    .filter(item -> !item.isVirtualColumn())
                     .map(item -> new OriginColumn(item.getName(), item.getOriginal()))
                     .collect(Collectors.toSet());
             String database = initializerConfigure.getDataSetConfigure().getDatabase();
