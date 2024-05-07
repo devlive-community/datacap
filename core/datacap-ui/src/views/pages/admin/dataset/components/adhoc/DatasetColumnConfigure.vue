@@ -210,14 +210,14 @@ export default defineComponent({
     {
       this.formState = {} as Model
       if (this.formState) {
-        let prefix = `${this.$t('dataset.common.columnModeMetric')}`
+        let prefix = `${ this.$t('dataset.common.columnModeMetric') }`
         if (this.columnType === Type.DIMENSION) {
-          prefix = `${this.$t('dataset.common.columnModeDimension')}`
+          prefix = `${ this.$t('dataset.common.columnModeDimension') }`
         }
         else if (this.columnType === Type.FILTER) {
-          prefix = `${this.$t('dataset.common.columnModeFilter')}`
+          prefix = `${ this.$t('dataset.common.columnModeFilter') }`
         }
-        this.title = `${prefix} [ ${this.content.aliasName ? this.content.aliasName : this.content.name} ] ${this.$t('common.configure')}`
+        this.title = `${ prefix } [ ${ this.content.aliasName ? this.content.aliasName : this.content.name } ] ${ this.$t('common.configure') }`
         if (this.configure) {
           const cloneValue = cloneDeep(this.configure) as Model
           this.formState = cloneValue
