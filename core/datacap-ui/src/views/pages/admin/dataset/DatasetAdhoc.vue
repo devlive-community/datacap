@@ -387,7 +387,12 @@ export default defineComponent({
         this.columnContent.content = this.originalData.find((item: { id: number }) => item.id === record.id) as unknown as never[]
         const foundIndex = this.configure.columns.findIndex((item: { id: unknown; }) => item.id === record.id)
         if (foundIndex !== -1) {
-          this.columnContent.configure = this.configure.columns[foundIndex]
+          const column = this.configure.columns[foundIndex]
+          column.type = record.type
+          this.columnContent.configure = column
+        }
+        else {
+          this.columnContent.configure = { id: record.id, type: record.type }
         }
       }
       else {

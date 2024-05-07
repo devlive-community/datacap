@@ -57,7 +57,7 @@
                     {{ $t('common.expression') }}
                   </FormLabel>
                   <FormControl>
-                    <Select v-model="formState.expression">
+                    <Select v-model="formState.expression" @update:modelValue="handlerUpdateAlias">
                       <SelectTrigger class="w-full">
                         <SelectValue :placeholder="$t('dataset.tip.selectExpression')"/>
                       </SelectTrigger>
@@ -210,20 +210,51 @@ export default defineComponent({
     {
       this.formState = {} as Model
       if (this.formState) {
-        let prefix = `${this.$t('dataset.common.columnModeMetric')}`
+        let prefix = `${ this.$t('dataset.common.columnModeMetric') }`
         if (this.columnType === Type.DIMENSION) {
-          prefix = `${this.$t('dataset.common.columnModeDimension')}`
+          prefix = `${ this.$t('dataset.common.columnModeDimension') }`
         }
         else if (this.columnType === Type.FILTER) {
-          prefix = `${this.$t('dataset.common.columnModeFilter')}`
+          prefix = `${ this.$t('dataset.common.columnModeFilter') }`
         }
-        this.title = `${prefix} [ ${this.content.aliasName ? this.content.aliasName : this.content.name} ] ${this.$t('common.configure')}`
+        this.title = `${ prefix } [ ${ this.content.aliasName ? this.content.aliasName : this.content.name } ] ${ this.$t('common.configure') }`
         if (this.configure) {
           const cloneValue = cloneDeep(this.configure) as Model
           this.formState = cloneValue
         }
         else {
           this.formState.id = this.content.id
+        }
+      }
+    },
+    handlerUpdateAlias()
+    {
+      let prefix = `${ this.$t('dataset.common.columnModeMetric') }`
+      if (this.columnType === Type.DIMENSION) {
+        prefix = `${ this.$t('dataset.common.columnModeDimension') }`
+      }
+      else if (this.columnType === Type.FILTER) {
+        prefix = `${ this.$t('dataset.common.columnModeFilter') }`
+      }
+      const startWith = `${ prefix } [ ${ this.content.aliasName ? this.content.aliasName : this.content.name } ]`
+      if (this.formState) {
+        if (this.formState.expression === Expression.SUM) {
+          this.formState.alias = `${ startWith } ${ this.$t('dataset.common.columnExpressionSum') }`
+        }
+        else if (this.formState.expression === Expression.COUNT) {
+          this.formState.alias = `${ startWith } ${ this.$t('dataset.common.columnExpressionCount') }`
+        }
+        else if (this.formState.expression === Expression.MAX) {
+          this.formState.alias = `${ startWith } ${ this.$t('dataset.common.columnExpressionMax') }`
+        }
+        else if (this.formState.expression === Expression.MIN) {
+          this.formState.alias = `${ startWith } ${ this.$t('dataset.common.columnExpressionMin') }`
+        }
+        else if (this.formState.expression === Expression.AVG) {
+          this.formState.alias = `${ startWith } ${ this.$t('dataset.common.columnExpressionAvg') }`
+        }
+        else {
+          this.formState.alias = startWith
         }
       }
     },
