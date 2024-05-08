@@ -328,6 +328,8 @@ public class SourceServiceImpl
         }
         if (ObjectUtils.isNotEmpty(configure.getId()) && configure.getId() > 0) {
             source.setId(configure.getId());
+            sourceRepository.findById(configure.getId())
+                    .ifPresent(item -> source.setCode(item.getCode()));
         }
         if (StringUtils.isNotEmpty(configure.getVersion())) {
             source.setVersion(configure.getVersion());
