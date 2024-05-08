@@ -4,6 +4,7 @@ import com.google.inject.Injector;
 import io.edurt.datacap.common.enums.State;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.CSVUtils;
+import io.edurt.datacap.common.utils.DateUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.fs.FsRequest;
 import io.edurt.datacap.service.common.FolderUtils;
@@ -109,6 +110,11 @@ public class AuditPluginHandler
                             .stream(Files.newInputStream(tempFile.toPath()))
                             .fileName("result.csv")
                             .build();
+                    // If it is OSS third-party storage, rebuild the default directory
+                    if (!initializer.getFsConfigure().getType().equals("Local")) {
+                        fsRequest.setEndpoint(initializer.getFsConfigure().getEndpoint());
+                        fsRequest.setFileName(String.join(File.separator, user.getUsername(), DateUtils.formatYMD(), String.join(File.separator, "adhoc", uniqueId), "result.csv"));
+                    }
                     SpiUtils.findFs(injector, initializer.getFsConfigure().getType())
                             .map(v -> v.writer(fsRequest));
                     log.info("Delete temp file [ {} ] on [ {} ] statue [ {} ]", tempFile, pluginAudit.getId(), tempFile.delete());

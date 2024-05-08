@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "datacap.experimental.fs")
+@ConfigurationProperties(prefix = "datacap.fs")
 public class FsConfigure
 {
     private String type;
