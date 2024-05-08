@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import io.edurt.datacap.captcha.entity.ResultEntity;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.loader.CaptchaCacheLoader;
+import io.edurt.datacap.service.security.UserDetailsService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -161,6 +162,14 @@ public class InitializerConfigure
             return true;
         }
         return false;
+    }
+
+    public String getAvatarPath()
+    {
+        if (fsConfigure.getEndpoint() != null) {
+            return fsConfigure.getEndpoint();
+        }
+        return avatarPath.replace("{username}", UserDetailsService.getUser().getUsername());
     }
 
     /**

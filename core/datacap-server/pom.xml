@@ -399,6 +399,11 @@
             <artifactId>datacap-fs-qiniu</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-fs-alioss</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

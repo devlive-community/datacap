@@ -3,6 +3,7 @@ package io.edurt.datacap.service.service.impl;
 import com.google.common.collect.Maps;
 import com.google.inject.Injector;
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.common.utils.DateUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.fs.FsRequest;
 import io.edurt.datacap.fs.FsResponse;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -107,6 +109,11 @@ public class PluginAuditServiceImpl
                             .bucket(initializer.getFsConfigure().getBucket())
                             .fileName("result.csv")
                             .build();
+                    // If it is OSS third-party storage, rebuild the default directory
+                    if (!initializer.getFsConfigure().getType().equals("Local")) {
+                        fsRequest.setEndpoint(initializer.getFsConfigure().getEndpoint());
+                        fsRequest.setFileName(String.join(File.separator, value.getUser().getUsername(), DateUtils.formatYMD(), String.join(File.separator, "adhoc", code), "result.csv"));
+                    }
                     FsResponse fsResponse = SpiUtils.findFs(injector, initializer.getFsConfigure().getType())
                             .map(v -> v.reader(fsRequest))
                             .get();

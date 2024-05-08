@@ -285,7 +285,7 @@ public class UserServiceImpl
                 .map(fs -> {
                     UserEntity user = UserDetailsService.getUser();
                     try {
-                        String avatarPath = initializerConfigure.getAvatarPath().replace("{username}", user.getUsername());
+                        String avatarPath = initializerConfigure.getAvatarPath();
                         log.info("Upload avatar user [ {} ] home [ {} ]", user.getUsername(), avatarPath);
 
                         FsRequest fsRequest = FsRequest.builder()
