@@ -254,7 +254,7 @@ export default defineComponent({
                        ToastUtils.success('Test successful')
                        this.testInfo.connected = true
                        this.testInfo.successful = true
-                       this.formState.version = response.data?.columns[0]?.version
+                       this.formState.version = response.data?.columns[0]?.version ? response.data?.columns[0]?.version : response.data?.columns[0]?.result
                      }
                      else {
                        ToastUtils.error(response.message)

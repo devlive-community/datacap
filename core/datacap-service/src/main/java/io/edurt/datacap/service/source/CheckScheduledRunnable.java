@@ -45,7 +45,7 @@ public class CheckScheduledRunnable
                         Response response = plugin.execute(plugin.validator());
                         if (response.getIsSuccessful()) {
                             entity.setAvailable(true);
-                            if (response.getColumns().size() == 0) {
+                            if (response.getColumns().isEmpty()) {
                                 entity.setVersion("-");
                             }
                             else {

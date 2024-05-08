@@ -19,11 +19,11 @@ class MongoPlugin : Plugin {
     private var jdbcResponse: Response? = null
 
     override fun name(): String {
-        return "MongoDB Community"
+        return "MongoDB"
     }
 
     override fun validator(): String {
-        return "select * from system.version"
+        return "db.version()"
     }
 
     override fun connect(configure: Configure?) {
@@ -32,8 +32,8 @@ class MongoPlugin : Plugin {
             jdbcResponse = Response()
             jdbcConfigure = JdbcConfigure()
             BeanUtils.copyProperties(jdbcConfigure, configure)
-            jdbcConfigure!!.jdbcDriver = "mongodb.jdbc.MongoDriver"
-            jdbcConfigure!!.jdbcType = "mongo"
+            jdbcConfigure!!.jdbcDriver = "com.dbschema.MongoJdbcDriver"
+            jdbcConfigure!!.jdbcType = "mongodb"
             jdbcConnection = object : JdbcConnection(jdbcConfigure, jdbcResponse) {}
         } catch (ex: Exception) {
             jdbcResponse!!.isConnected = false
