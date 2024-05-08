@@ -7,6 +7,7 @@
         <groupId>io.edurt.datacap</groupId>
         <artifactId>datacap</artifactId>
         <version>2024.03.4-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>datacap-fs-alioss</artifactId>
