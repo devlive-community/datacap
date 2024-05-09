@@ -4,7 +4,7 @@ title: Deploying in Self Host
 
 DataCap enables users to deploy services to their own machines. This document allows users to learn how to deploy DataCap in an autonomous machine.
 
-#### System Requirements
+### System Requirements
 
 ---
 
@@ -19,7 +19,7 @@ DataCap enables users to deploy services to their own machines. This document al
 | JDK    | `>=11` (We recommend it for: `1.8` \| `11`) |
 | MySQL  | `>=5.6.x`                                   |
 
-#### Prepare the installation package
+### Prepare the installation package
 
 ---
 
@@ -38,7 +38,7 @@ tar -xvzf datacap-release.tar.gz
 cd datacap
 ```
 
-#### Software configuration
+### Software configuration
 
 ---
 
@@ -50,7 +50,7 @@ For the first installation of the software, you need to import the sql script fr
 
 All configurations in the DataCap software are in the `configure/application.properties` file.
 
-##### Basic configuration
+#### Basic configuration
 
 After importing the `SQL` script, modify the `configure/application.properties` configuration file to modify the configuration information of the MySQL server
 
@@ -75,7 +75,7 @@ datacap.editor.sugs.maxSize=1000
 - `datacap.security.expiration`: The expiration time for configuring data security management
 - `datacap.editor.sugs.maxSize`: Lets you configure the maximum number of rows in the data editor
 
-##### Web service configuration
+#### Web service configuration
 
 ```properties
 spring.mvc.throw-exception-if-no-handler-found=true
@@ -87,7 +87,7 @@ spring.web.resources.add-mappings=true
 - `spring.resources.add-mappings`: Lets you configure whether to enable static resource mapping
 - `spring.web.resources.add-mappings`: Lets you configure whether to enable static resource mapping
 
-##### Database configuration
+#### Database configuration
 
 !!! danger
 
@@ -107,7 +107,7 @@ spring.datasource.password=12345678
 
     All Spring Data configuration parameters are supported
 
-##### Actuator configuration
+#### Actuator configuration
 
 ```properties
 datacap.executor.data=
@@ -121,7 +121,7 @@ datacap.executor.seatunnel.home=/opt/lib/seatunnel
 - `datacap.executor.mode`: It is used to configure the execution mode of the actuator, different actuators have different execution modes
 - `datacap.executor.seatunnel.home`: The Apache Seatunnel home directory used to configure the executor
 
-##### Upload the configuration
+#### Upload the configuration
 
 ```properties
 datacap.config.data=
@@ -131,7 +131,7 @@ datacap.cache.data=
 - `datacap.config.data`: The path used to configure the upload profile
 - `datacap.cache.data`: Lets you configure the path to upload the cache file
 
-##### OpenAi configuration
+#### OpenAi configuration
 
 ```properties
 datacap.openai.backend=https://api.openai.com
@@ -145,7 +145,7 @@ datacap.openai.timeout=30
 - `datacap.openai.model`: The model used to configure OpenAI
 - `datacap.openai.timeout`: Used to configure the timeout period for OpenAI
 
-##### Primary system configuration
+#### Primary system configuration
 
 ```properties
 datacap.registration.enable=
@@ -161,7 +161,7 @@ datacap.audit.sql.print=false
 - `datacap.cache.expiration`: Lets you configure the cache expiration time
 - `datacap.audit.sql.print`: This parameter is used to configure whether to print SQL statements
 
-##### Pipeline configuration
+#### Pipeline configuration
 
 ```properties
 datacap.pipeline.maxRunning=100
@@ -173,45 +173,85 @@ datacap.pipeline.reset=STOPPED
 - `datacap.pipeline.maxQueue`: Used to configure the maximum queue
 - `datacap.pipeline.reset`: Lets you configure a reset policy
 
-##### Experimental features
+#### Storage configuration
+
+---
+
+Storage currently supports
+
+- `Local`: local storage
+- `AliOss`: Alibaba Cloud OSS
+- `Qiniu`: Qiniu Cloud
+
+##### Local storage configuration
+
+```properties
+datacap.fs.type=Local
+datacap.fs.access=
+datacap.fs.secret=
+datacap.fs.endpoint=
+datacap.fs.bucket=
+```
+
+- `datacap.fs.type`: used to configure the file system type
+- `datacap.fs.access`: used to configure file system access, this type can be empty
+- `datacap.fs.secret`: used to configure the file system key, this type can be empty
+- `datacap.fs.endpoint`: used to configure the file system endpoint. If filled in, it will be appended as a directory **This type can be empty**
+- `datacap.fs.bucket`: used to configure the file system bucket, this type can be empty
+
+##### Alibaba Cloud OSS configuration
+
+```properties
+datacap.fs.type=AliOss
+datacap.fs.access=
+datacap.fs.secret=
+datacap.fs.endpoint=
+datacap.fs.bucket=
+```
+
+- `datacap.fs.type`: AliOss
+
+##### Qiniu Cloud Configuration
+
+```properties
+datacap.fs.type=Qiniu
+datacap.fs.access=
+datacap.fs.secret=
+datacap.fs.endpoint=
+datacap.fs.bucket=
+```
+
+- `datacap.fs.type`: Qiniu
+
+#### Experimental features
 
 ```properties
 datacap.experimental.autoLimit=true
 datacap.experimental.data={user.dir}/data
 datacap.experimental.avatarPath={username}/avatar/
-datacap.experimental.fs.type=Local
-datacap.experimental.fs.access=
-datacap.experimental.fs.secret=
-datacap.experimental.fs.endpoint=
-datacap.experimental.fs.bucket=
 ```
 
 - `datacap.experimental.autoLimit`: This parameter specifies whether to automatically increase the LIMIT
 - `datacap.experimental.data`: The data path used to configure the experimental feature
 - `datacap.experimental.avatarPath`: Avatar path to configure experimental features
-- `datacap.experimental.fs.type`: The type of file system used to configure experimental features
-- `datacap.experimental.fs.access`: File system access for configuring experimental features
-- `datacap.experimental.fs.secret`: The file system key used to configure the experimental feature
-- `datacap.experimental.fs.endpoint`: A file system endpoint for configuring experimental functionality
-- `datacap.experimental.fs.bucket`: A file system bucket to configure experimental features
 
-##### Log configuration
+#### Log configuration
 
 !!! warning
 
     If you need to modify the log configuration, you can simply modify the `configure/logback.xml` configuration file
 
-##### JVM configuration
+#### JVM configuration
 
 !!! warning
 
     If you need to customize the JVM configuration, you can simply modify the `configure/jvm.conf` configuration file
 
-#### Software startup
+### Software startup
 
 ---
 
-##### Start the service
+#### Start the service
 
 DataCap service startup is very simple, execute the following script
 
@@ -219,7 +259,7 @@ DataCap service startup is very simple, execute the following script
 ./bin/startup.sh
 ```
 
-##### Discontinuation of service
+#### Discontinuation of service
 
 Stop the service and execute the following script
 
@@ -227,7 +267,7 @@ Stop the service and execute the following script
 ./bin/shutdown.sh
 ```
 
-##### Debug the service
+#### Debug the service
 
 !!! note
 

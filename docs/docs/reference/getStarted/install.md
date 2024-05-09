@@ -4,7 +4,7 @@ title: 自主机部署
 
 DataCap 是支持用户将服务部署到自主机中。通过本文档用户可以了解如何在自主机中部署 DataCap。
 
-#### 系统要求
+### 系统要求
 
 ---
 
@@ -19,7 +19,7 @@ DataCap 是支持用户将服务部署到自主机中。通过本文档用户可
 | JDK   | `>=11` (我们建议为 `1.8` \| `11`) |
 | MySQL | `>=5.6.x`                    |
 
-#### 准备安装包
+### 准备安装包
 
 ---
 
@@ -38,7 +38,7 @@ tar -xvzf datacap-release.tar.gz
 cd datacap
 ```
 
-#### 软件配置
+### 软件配置
 
 ---
 
@@ -50,7 +50,7 @@ cd datacap
 
 datacap 软件中的所有配置均在 `configure/application.properties` 文件中。
 
-##### 基本配置
+#### 基本配置
 
 导入 `SQL` 脚本后，修改 `configure/application.properties` 配置文件以修改MySQL服务器的配置信息
 
@@ -75,7 +75,7 @@ datacap.editor.sugs.maxSize=1000
 - `datacap.security.expiration`: 用于配置数据安全管理的过期时间
 - `datacap.editor.sugs.maxSize`: 用于配置数据编辑器的最大行数
 
-##### Web 服务配置
+#### Web 服务配置
 
 ```properties
 spring.mvc.throw-exception-if-no-handler-found=true
@@ -87,7 +87,7 @@ spring.web.resources.add-mappings=true
 - `spring.resources.add-mappings`: 用于配置是否启用静态资源映射
 - `spring.web.resources.add-mappings`: 用于配置是否启用静态资源映射
 
-##### 数据库配置
+#### 数据库配置
 
 !!! danger
 
@@ -107,7 +107,7 @@ spring.datasource.password=12345678
 
     支持所有 Spring Data 的配置参数
 
-##### 执行器配置
+#### 执行器配置
 
 ```properties
 datacap.executor.data=
@@ -121,7 +121,7 @@ datacap.executor.seatunnel.home=/opt/lib/seatunnel
 - `datacap.executor.mode`: 用于配置执行器的执行模式，不同的执行器拥有不同的执行模式
 - `datacap.executor.seatunnel.home`: 用于配置执行器的 Apache Seatunnel 主目录
 
-##### 上传配置
+#### 上传配置
 
 ```properties
 datacap.config.data=
@@ -131,7 +131,7 @@ datacap.cache.data=
 - `datacap.config.data`: 用于配置上传配置文件的路径
 - `datacap.cache.data`: 用于配置上传缓存文件的路径
 
-##### OpenAi 配置
+#### OpenAi 配置
 
 ```properties
 datacap.openai.backend=https://api.openai.com
@@ -145,7 +145,7 @@ datacap.openai.timeout=30
 - `datacap.openai.model`: 用于配置 OpenAI 的模型
 - `datacap.openai.timeout`: 用于配置 OpenAI 的超时时间
 
-##### 主系统配置
+#### 主系统配置
 
 ```properties
 datacap.registration.enable=
@@ -161,7 +161,7 @@ datacap.audit.sql.print=false
 - `datacap.cache.expiration`: 用于配置缓存过期时间
 - `datacap.audit.sql.print`: 用于配置是否打印 SQL
 
-##### 流水线配置
+#### 流水线配置
 
 ```properties
 datacap.pipeline.maxRunning=100
@@ -173,45 +173,85 @@ datacap.pipeline.reset=STOPPED
 - `datacap.pipeline.maxQueue`: 用于配置最大队列
 - `datacap.pipeline.reset`: 用于配置重置策略
 
-##### 实验性功能
+#### 存储配置
+
+---
+
+存储目前支持
+
+- `Local`: 本地存储
+- `AliOss`: 阿里云 OSS
+- `Qiniu`: 七牛云
+
+##### 本地存储配置
+
+```properties
+datacap.fs.type=Local
+datacap.fs.access=
+datacap.fs.secret=
+datacap.fs.endpoint=
+datacap.fs.bucket=
+```
+
+- `datacap.fs.type`: 用于配置文件系统类型
+- `datacap.fs.access`: 用于配置文件系统访问，该类型可以为空
+- `datacap.fs.secret`: 用于配置文件系统密钥，该类型可以为空
+- `datacap.fs.endpoint`: 用于配置文件系统端点，如果填写后将追加为目录 **该类型可以为空**
+- `datacap.fs.bucket`: 用于配置文件系统存储桶，该类型可以为空
+
+##### 阿里云 OSS 配置
+
+```properties
+datacap.fs.type=AliOss
+datacap.fs.access=
+datacap.fs.secret=
+datacap.fs.endpoint=
+datacap.fs.bucket=
+```
+
+- `datacap.fs.type`: AliOss
+
+##### 七牛云配置
+
+```properties
+datacap.fs.type=Qiniu
+datacap.fs.access=
+datacap.fs.secret=
+datacap.fs.endpoint=
+datacap.fs.bucket=
+```
+
+- `datacap.fs.type`: Qiniu
+
+#### 实验性功能
 
 ```properties
 datacap.experimental.autoLimit=true
 datacap.experimental.data={user.dir}/data
 datacap.experimental.avatarPath={username}/avatar/
-datacap.experimental.fs.type=Local
-datacap.experimental.fs.access=
-datacap.experimental.fs.secret=
-datacap.experimental.fs.endpoint=
-datacap.experimental.fs.bucket=
 ```
 
 - `datacap.experimental.autoLimit`: 用于配置是否自动增加 LIMIT
 - `datacap.experimental.data`: 用于配置实验性功能的数据路径
 - `datacap.experimental.avatarPath`: 用于配置实验性功能的头像路径
-- `datacap.experimental.fs.type`: 用于配置实验性功能的文件系统类型
-- `datacap.experimental.fs.access`: 用于配置实验性功能的文件系统访问
-- `datacap.experimental.fs.secret`: 用于配置实验性功能的文件系统密钥
-- `datacap.experimental.fs.endpoint`: 用于配置实验性功能的文件系统端点
-- `datacap.experimental.fs.bucket`: 用于配置实验性功能的文件系统存储桶
 
-##### 日志配置
+#### 日志配置
 
 !!! warning
 
     如果需要修改日志配置，只需修改 `configure/logback.xml` 配置文件即可
 
-##### JVM 配置
+#### JVM 配置
 
 !!! warning
 
     如果您需要定制化 JVM 配置，只需修改 `configure/jvm.conf` 配置文件即可
 
-#### 软件启动
+### 软件启动
 
 ---
 
-##### 启动服务
+#### 启动服务
 
 DataCap服务启动非常简单，执行以下脚本
 
@@ -219,7 +259,7 @@ DataCap服务启动非常简单，执行以下脚本
 ./bin/startup.sh
 ```
 
-##### 停止服务
+#### 停止服务
 
 停止服务并执行以下脚本
 
@@ -227,7 +267,7 @@ DataCap服务启动非常简单，执行以下脚本
 ./bin/shutdown.sh
 ```
 
-##### 调试服务
+#### 调试服务
 
 !!! note
 
