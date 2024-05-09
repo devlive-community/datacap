@@ -67,29 +67,34 @@
               </div>
             </template>
             <CircularLoading v-if="loadingMessages" :show="loadingMessages"/>
-            <div ref="scrollDiv" class="space-y-4 h-[500px] overflow-y-auto">
-              <div v-for="(item, index) in messages" :key="index">
-                <div
-                    :class="cn( 'flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm', item.type === 'question' ? 'ml-auto bg-primary text-primary-foreground' : 'bg-muted')">
-                  {{ item.content }}
-                </div>
-                <div v-if="item.type === 'answer'" class="flex text-sm text-muted-foreground mt-0.5 space-x-2">
-                  <div>Model: {{ item.model }}</div>
-                  <Separator orientation="vertical"/>
-                  <div>Prompt Tokens: {{ item.promptTokens }}</div>
-                  <Separator orientation="vertical"/>
-                  <div>Completion Tokens: {{ item.completionTokens }}</div>
-                  <Separator orientation="vertical"/>
-                  <div>Total Tokens: {{ item.totalTokens }}</div>
-                </div>
+            <div class="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col">
+              <div ref="messagesContainer" class="w-full overflow-y-auto overflow-x-hidden h-[550px] flex flex-col">
+                <template v-for="item in messages">
+                  <div :class="cn('flex flex-col gap-2 p-4 whitespace-pre-wrap',
+                                  item.type === 'question' ? 'items-end' : 'items-start'
+                                )">
+                    <div class="flex gap-3 items-center">
+                      <span class="bg-accent p-3 rounded-md max-w-lg">{{ item.content }}</span>
+                    </div>
+                    <div v-if="item.type === 'answer'" class="flex text-sm text-muted-foreground mt-0.5 space-x-2">
+                      <div>Model: {{ item.model }}</div>
+                      <Separator orientation="vertical"/>
+                      <div>Prompt Tokens: {{ item.promptTokens }}</div>
+                      <Separator orientation="vertical"/>
+                      <div>Completion Tokens: {{ item.completionTokens }}</div>
+                      <Separator orientation="vertical"/>
+                      <div>Total Tokens: {{ item.totalTokens }}</div>
+                    </div>
+                  </div>
+                </template>
               </div>
             </div>
             <template #footer>
-              <div class="flex w-full items-center space-x-2">
-                <Input v-model="inputValue" :disabled="submitting" placeholder="Type a message ..." class="flex-1"/>
-                <Button class="p-2.5 flex items-center justify-center" :loading="submitting" :disabled="!inputValue || submitting" @click="handlerSubmit">
-                  <Send v-if="!submitting" class="w-4 h-4"/>
-                  <span class="sr-only"></span>
+              <div class="p-2 flex justify-between w-full items-center gap-2">
+                <Textarea v-model="inputValue" placeholder="Type a message ..."/>
+                <Button class="dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white" :loading="submitting" :disabled="!inputValue || submitting"
+                        @click="handlerSubmit">
+                  <Send v-if="!submitting" :size="18"/>
                 </Button>
               </div>
             </template>
@@ -121,10 +126,12 @@ import { MessageModel } from '@/model/message.ts'
 import { Input } from '@/components/ui/input'
 import MessageService from '@/services/message.ts'
 import { Separator } from '@/components/ui/separator'
+import { Textarea } from '@/components/ui/textarea'
 
 export default defineComponent({
   name: 'ChatHome',
   components: {
+    Textarea,
     Separator,
     Input,
     Avatar,
@@ -217,7 +224,7 @@ export default defineComponent({
                         this.inputValue = ''
                       }
                       else {
-                        this.$Message.error(response.message)
+                        ToastUtils.error(response.message)
                       }
                     })
                     .finally(() => {
@@ -228,7 +235,7 @@ export default defineComponent({
     },
     handlerGoBottom()
     {
-      const scrollElem = this.$refs.scrollDiv as any
+      const scrollElem = this.$refs.messagesContainer as any
       setTimeout(() => {
         scrollElem.scrollTo({ top: scrollElem.scrollHeight, behavior: 'smooth' })
       }, 0)

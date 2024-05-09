@@ -4,17 +4,9 @@
       <template #title>{{ $t('dataset.common.list') }}</template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #source="{row}">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger as-child>
-                <Avatar size="sm">
-                  <AvatarImage :src="'/static/images/plugin/' + row?.source.type + '.png'" :alt="row?.source.type"/>
-                  <AvatarFallback>{{ row?.source.type }}</AvatarFallback>
-                </Avatar>
-              </TooltipTrigger>
-              <TooltipContent align="center">{{ row?.source.type }}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip :content="row?.source.type">
+            <Avatar :size="'sm'" :src="'/static/images/plugin/' + row?.source.type + '.png'" :alt="row?.source.type" class="cursor-pointer"/>
+          </Tooltip>
         </template>
         <template #syncMode="{ row }">
           <Badge v-if="row?.syncMode === 'MANUAL'">{{ $t('dataset.common.syncModeManual') }}</Badge>
@@ -96,8 +88,8 @@ import { useI18n } from 'vue-i18n'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import { createHeaders } from './DatasetUtils'
 import DatasetService from '@/services/dataset'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import Tooltip from '@/views/ui/tooltip'
+import Avatar from '@/views/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import DatasetState from '@/views/pages/admin/dataset/components/DatasetState.vue'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
@@ -130,8 +122,8 @@ export default defineComponent({
     HoverCardContent, HoverCardTrigger, HoverCard,
     DatasetState,
     Badge,
-    AvatarFallback, AvatarImage, Avatar,
-    TooltipTrigger, TooltipProvider, TooltipContent, Tooltip,
+    Avatar,
+    Tooltip,
     TableCommon,
     Card,
     Cog, BarChart2, CirclePlay, CircleStop, History, RefreshCcw, SquareX, TriangleAlert, Info
