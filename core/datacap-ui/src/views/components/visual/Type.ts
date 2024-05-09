@@ -11,4 +11,5 @@ export enum Type
     RADAR = ('RADAR'),
     FUNNEL = ('FUNNEL'),
     GAUGE = ('GAUGE'),
+    ROSE = ('ROSE')
 }

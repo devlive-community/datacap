@@ -33,12 +33,13 @@ export interface IChart
     invalidType?: string
     showLegend?: boolean
     startAngle?: number[]
-    endAngle?: number[],
+    endAngle?: number[]
     titleVisible?: boolean
     titleText?: string
     titleSubText?: string
     titlePosition?: string
     titleAlign?: string
+    labelVisible?: boolean
 }
 
 export interface ChartFieldGroup

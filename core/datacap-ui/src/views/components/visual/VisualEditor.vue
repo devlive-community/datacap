@@ -17,6 +17,7 @@
           <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="configuration" @change="handlerCommit"/>
           <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL" :configuration="configuration" @change="handlerCommit"/>
           <VisualGauge v-else-if="configuration?.type === Type.GAUGE" :configuration="configuration" @change="handlerCommit"/>
+          <VisualRose v-else-if="configuration?.type === Type.ROSE" :configuration="configuration" @change="handlerCommit"/>
         </div>
       </div>
     </div>
@@ -162,6 +163,24 @@
                   </svg>
                 </Tooltip>
               </ToggleGroupItem>
+              <ToggleGroupItem :disabled="configuration.headers.length === 0" :value="Type.ROSE">
+                <Tooltip :content="$t('dataset.common.visualTypeRose')">
+                  <svg width="23" height="19" viewBox="0 0 23 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M14.2891 4.34061C12.6163 4.34061 11.1033 5.02518 10.0152 6.12945M9.28906 13.6584C10.364 15.2751 12.2021 16.3406 14.2891 16.3406C14.623 16.3406 14.9507 16.3133 15.2698 16.2608M19.9477 12.3406C20.1688 11.715 20.2891 11.0419 20.2891 10.3406C20.2891 9.29406 20.0211 8.3101 19.5501 7.45357"
+                        stroke="#21252C" stroke-width="1.6"></path>
+                    <path
+                        d="M21.1403 5.56187C20.0934 2.84561 17.0299 1.28508 14.2419 2.112C14.1199 2.1482 14.0412 2.265 14.0476 2.39211L14.4231 9.83589C14.4343 10.0576 14.6835 10.182 14.8674 10.0576L21.0342 5.8887C21.1407 5.81671 21.1865 5.68182 21.1403 5.56187Z"
+                        stroke="#21252C" stroke-width="1.6"></path>
+                    <path
+                        d="M15.5303 18.0445C18.321 18.3698 20.8099 16.1368 21.3718 13.3596C21.3983 13.2288 21.3249 13.0997 21.2012 13.0499L14.9075 10.5185C14.7075 10.4381 14.4941 10.6001 14.5179 10.8143L15.2918 17.7994C15.3059 17.9266 15.4033 18.0297 15.5303 18.0445Z"
+                        stroke="#21252C" stroke-width="1.6"></path>
+                    <path
+                        d="M6.11156 3.00092C2.12443 6.01236 1.38079 11.9577 4.17682 16.11C4.25866 16.2316 4.42097 16.267 4.54805 16.194L14.0167 10.759C14.1817 10.6643 14.2094 10.4377 14.072 10.3061L6.47293 3.02416C6.37404 2.92939 6.22086 2.91837 6.11156 3.00092Z"
+                        stroke="#21252C" stroke-width="1.6"></path>
+                  </svg>
+                </Tooltip>
+              </ToggleGroupItem>
             </div>
           </ToggleGroup>
         </div>
@@ -205,10 +224,12 @@ import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
 import Button from '@/views/ui/button'
 import { createdConfigure } from '@/views/components/visual/Utils.ts'
 import { useI18n } from 'vue-i18n'
+import VisualRose from '@/views/components/visual/components/VisualRose.vue'
 
 export default defineComponent({
   name: 'VisualEditor',
   components: {
+    VisualRose,
     VisualGauge, VisualFunnel, VisualRadar, VisualConfigure, VisualScatter,
     Card,
     Tooltip,

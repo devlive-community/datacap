@@ -75,6 +75,8 @@ const createdConfigure = (type: Type, i18n: any): Array<ChartFieldGroup> => {
         disabled: { field: 'titleVisible', value: false }
     }
 
+    const labelVisible: ChartField = { label: i18n.t('dataset.common.visualConfigureLabelGroupVisible'), field: 'labelVisible', type: 'SWITCH', value: false }
+
     if (type === Type.LINE) {
         const fields: Array<ChartField> = [categoryField, valueField, seriesField, dataBreakpoint]
         const generalField: ChartFieldGroup = { label: i18n.t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
@@ -114,6 +116,16 @@ const createdConfigure = (type: Type, i18n: any): Array<ChartFieldGroup> => {
         const fields: Array<ChartField> = [categoryField, valueField, seriesField]
         const generalField: ChartFieldGroup = { label: i18n.t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
         fieldGroups.push(generalField)
+    }
+    else if (type === Type.ROSE) {
+        const fields: Array<ChartField> = [outerRadius, innerRadius, categoryField, valueField, seriesField]
+        const generalField: ChartFieldGroup = { label: i18n.t('dataset.common.visualConfigureGeneralGroup'), fields: fields }
+
+        const labelGroup: ChartFieldGroup = {
+            label: i18n.t('dataset.common.visualConfigureLabelGroup'),
+            fields: [labelVisible]
+        }
+        fieldGroups.push(generalField, labelGroup)
     }
     return fieldGroups
 }
