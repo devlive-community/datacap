@@ -126,6 +126,9 @@ import langTools from 'ace-builds/src-noconflict/ext-language_tools'
 import { HttpUtils } from '@/utils/http'
 import FunctionService from '@/services/function'
 import ExecuteService from '@/services/execute'
+import DatabaseService from '@/services/database'
+import TableService from '@/services/table'
+import ColumnService from '@/services/column'
 import axios from 'axios'
 import { ToastUtils } from '@/utils/toast'
 import GridTable from '@/views/components/grid/GridTable.vue'
@@ -332,8 +335,10 @@ export default defineComponent({
         const that = this
         const client = new HttpUtils().getAxios()
         const filter = new FilterModel()
-        client.all([FunctionService.getByPlugin(language.toLowerCase()), SnippetService.getAll(filter)])
-              .then(client.spread((keyword: any, snippet: any) => {
+        filter.size = 1000000
+        client.all([FunctionService.getByPlugin(language.toLowerCase()), SnippetService.getAll(filter), DatabaseService.getAll(filter), TableService.getAll(filter),
+                    ColumnService.getAll(filter)])
+              .then(client.spread((keyword: any, snippet: any, database: any, table: any, column: any) => {
                 if (keyword.status) {
                   const keywordCompleter = {
                     // @ts-ignore
@@ -363,6 +368,63 @@ export default defineComponent({
                           value: item.context,
                           caption: item.name,
                           meta: that.$t('common.snippet'),
+                          docHTML: '<div>' +
+                              '<strong>' + item.name + '</strong><br/><hr/>'
+                              + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
+                              + '</div>'
+                        }
+                      }))
+                    }
+                  }
+                  editor.completers.push(snippetCompleter)
+                }
+                if (database.status) {
+                  const snippetCompleter = {
+                    // @ts-ignore
+                    getCompletions: function (editor, session, pos, prefix, callback) {
+                      return callback(null, database.data.content.map(function (item: { context: any; name: string; description: string; }) {
+                        return {
+                          value: item.name,
+                          caption: item.name,
+                          meta: that.$t('common.database'),
+                          docHTML: '<div>' +
+                              '<strong>' + item.name + '</strong><br/><hr/>'
+                              + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
+                              + '</div>'
+                        }
+                      }))
+                    }
+                  }
+                  editor.completers.push(snippetCompleter)
+                }
+                if (table.status) {
+                  const snippetCompleter = {
+                    // @ts-ignore
+                    getCompletions: function (editor, session, pos, prefix, callback) {
+                      return callback(null, table.data.content.map(function (item: { context: any; name: string; description: string; }) {
+                        return {
+                          value: item.name,
+                          caption: item.name,
+                          meta: that.$t('common.table'),
+                          docHTML: '<div>' +
+                              '<strong>' + item.name + '</strong><br/><hr/>'
+                              + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
+                              + '</div>'
+                        }
+                      }))
+                    }
+                  }
+                  editor.completers.push(snippetCompleter)
+                }
+                if (column.status) {
+                  const snippetCompleter = {
+                    // @ts-ignore
+                    getCompletions: function (editor, session, pos, prefix, callback) {
+                      return callback(null, column.data.content.map(function (item: { context: any; name: string; description: string; }) {
+                        return {
+                          value: item.name,
+                          caption: item.name,
+                          meta: that.$t('common.column'),
                           docHTML: '<div>' +
                               '<strong>' + item.name + '</strong><br/><hr/>'
                               + that.$t('common.description') + ':\n' + item.description + '<br/><hr/>'
