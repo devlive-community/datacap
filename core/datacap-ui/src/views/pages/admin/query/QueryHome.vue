@@ -384,7 +384,7 @@ export default defineComponent({
                     getCompletions: function (editor, session, pos, prefix, callback) {
                       return callback(null, database.data.content.map(function (item: { context: any; name: string; description: string; }) {
                         return {
-                          value: item.context,
+                          value: item.name,
                           caption: item.name,
                           meta: that.$t('common.database'),
                           docHTML: '<div>' +
@@ -403,7 +403,7 @@ export default defineComponent({
                     getCompletions: function (editor, session, pos, prefix, callback) {
                       return callback(null, table.data.content.map(function (item: { context: any; name: string; description: string; }) {
                         return {
-                          value: item.context,
+                          value: item.name,
                           caption: item.name,
                           meta: that.$t('common.table'),
                           docHTML: '<div>' +
@@ -422,7 +422,7 @@ export default defineComponent({
                     getCompletions: function (editor, session, pos, prefix, callback) {
                       return callback(null, column.data.content.map(function (item: { context: any; name: string; description: string; }) {
                         return {
-                          value: item.context,
+                          value: item.name,
                           caption: item.name,
                           meta: that.$t('common.column'),
                           docHTML: '<div>' +
