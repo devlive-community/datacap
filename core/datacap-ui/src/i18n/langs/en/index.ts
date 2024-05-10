@@ -26,7 +26,7 @@ export default {
         tip: {
             pageShow: 'Open / Close the page',
             smallTips: 'Tip: hold down the keyboard Shift and select the number of data rows with the mouse to automatically copy the contents of the selected row',
-            notPresetToken: 'There is no token available, please go to your personal center to configure a token',
+            notPresetToken: 'There is no token available, please go to your personal center to configure a token'
         }
     },
     source: {
@@ -120,7 +120,7 @@ export default {
             filterCondition: 'Filter Condition',
             addFilter: 'Add Filter',
             statement: 'Statement',
-            erDiagram: 'ER Diagram',
+            erDiagram: 'ER Diagram'
         },
         tip: {
             selectSource: 'Please select a source',
@@ -479,7 +479,7 @@ export default {
         common: {
             list: 'Template List',
             create: 'Create Template',
-            modify: 'Modify Template [ $NAME ]',
+            modify: 'Modify Template [ $NAME ]'
         }
     },
     menu: {
@@ -491,7 +491,7 @@ export default {
             redirect: 'Redirect Menu',
             new: 'New Menu',
             i18nKey: 'I18N Key',
-            icon: 'Icon',
+            icon: 'Icon'
         },
         tip: {
             selectType: 'Please select a type',
@@ -529,7 +529,7 @@ export default {
             deleteAlert1: 'You are deleting a report. This action permanently deletes the report. Please be sure to confirm your actions before proceeding.',
             deleteAlert2: 'Warning: This cannot be undone.',
             deleteAlert3: 'To confirm, type [ $VALUE ] in the box below',
-            publishSuccess: 'Report [ $VALUE ] published successfully',
+            publishSuccess: 'Report [ $VALUE ] published successfully'
         }
     },
     pipeline: {
@@ -546,7 +546,7 @@ export default {
             create: 'Create Pipeline',
             input: 'Input Source',
             output: 'Output Source',
-            resetTransform: 'Reset Transform',
+            resetTransform: 'Reset Transform'
         },
         validator: {
             from: 'Please configure the input source information',
@@ -562,7 +562,7 @@ export default {
             stopAlert2: 'Warning: This cannot be undone.',
             stopAlert3: 'To confirm, type [ $VALUE ] in the box below',
             stopSuccess: 'Pipeline [ $VALUE ] stopped successfully',
-            publishSuccess: 'Pipeline [ $VALUE ] published successfully',
+            publishSuccess: 'Pipeline [ $VALUE ] published successfully'
         }
     },
     common: {
@@ -662,6 +662,7 @@ export default {
         file: 'File',
         backTo: 'Back',
         database: 'Database',
+        table: 'Table',
         tip: {
             pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
         }

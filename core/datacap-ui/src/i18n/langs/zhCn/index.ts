@@ -21,12 +21,12 @@ export default {
             showSql: '显示 SQL',
             quoteRecord: '引用记录',
             historyData: '历史数据',
-            historyDataInfo: '[ $VALUE ] 历史数据',
+            historyDataInfo: '[ $VALUE ] 历史数据'
         },
         tip: {
             pageShow: '打开 / 关闭分页',
             smallTips: '小技巧：按住键盘 Shift 鼠标选择数据行数会自动复制选中行内容',
-            notPresetToken: '暂无可用的 Token，请到个人中心配置 Token',
+            notPresetToken: '暂无可用的 Token，请到个人中心配置 Token'
         }
     },
     source: {
@@ -120,7 +120,7 @@ export default {
             filterCondition: '筛选条件',
             addFilter: '添加筛选条件',
             statement: 'SQL 语句',
-            erDiagram: 'ER 图形',
+            erDiagram: 'ER 图形'
         },
         tip: {
             selectSource: '请选择数据源',
@@ -479,7 +479,7 @@ export default {
         common: {
             list: '模板列表',
             create: '创建模板',
-            modify: '修改模板 [ $NAME ]',
+            modify: '修改模板 [ $NAME ]'
         }
     },
     menu: {
@@ -529,7 +529,7 @@ export default {
             deleteAlert1: '您正在删除报表。此操作将永久删除报表。在继续操作之前，请务必确认您的操作。',
             deleteAlert2: '警告：此操作无法撤销。',
             deleteAlert3: '要确认，请在下面的框中键入 [ $VALUE ]',
-            publishSuccess: '报表 [ $VALUE ] 发布成功',
+            publishSuccess: '报表 [ $VALUE ] 发布成功'
         }
     },
     pipeline: {
@@ -546,7 +546,7 @@ export default {
             create: '创建流水线',
             input: '输入源',
             output: '输出源',
-            resetTransform: '重置变换',
+            resetTransform: '重置变换'
         },
         validator: {
             from: '请配置输入源信息',
@@ -562,7 +562,7 @@ export default {
             stopAlert2: '警告：此操作无法撤销。',
             stopAlert3: '要确认，请在下面的框中键入 [ $VALUE ]',
             stopSuccess: '流水线 [ $VALUE ] 停止成功',
-            publishSuccess: '流水线 [ $VALUE ] 发布成功',
+            publishSuccess: '流水线 [ $VALUE ] 发布成功'
         }
     },
     common: {
@@ -662,6 +662,7 @@ export default {
         file: '文件',
         backTo: '返回',
         database: '数据库',
+        table: '表',
         tip: {
             pageNotNetwork: '哎呀！无法连接到网络，请检查网络是否正常！'
         }
