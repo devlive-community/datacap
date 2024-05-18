@@ -1,5 +1,5 @@
 <template>
-  <AlertDialog :default-open="visible">
+  <AlertDialog :default-open="visible" @update:open="handlerCancel">
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle class="border-b -mt-4 pb-2">SQL</AlertDialogTitle>
