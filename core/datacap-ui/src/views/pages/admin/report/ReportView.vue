@@ -3,7 +3,7 @@
     <template #title>{{ title }}</template>
     <CircularLoading v-if="loading" :show="loading"/>
     <div v-else-if="info">
-      <VisualView :code="info.dataset?.code" :configuration="JSON.parse(info.configure as string)" :query="JSON.parse(info.query as string)"/>
+      <VisualView :code="info.dataset?.code" :type="info.type" :configuration="JSON.parse(info.configure as string)" :query="JSON.parse(info.query as string)"/>
     </div>
     <template #footer>
       <Button variant="outline" size="sm" @click="handlerCancel">

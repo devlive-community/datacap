@@ -29,7 +29,7 @@
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
-                  <DropdownMenuItem class="cursor-pointer">
+                  <DropdownMenuItem :disabled="row.type === 'QUERY'" class="cursor-pointer">
                     <RouterLink :to="`/admin/dataset/adhoc/${row.dataset?.code}/${row.id}`" target="_blank" class="flex items-center">
                       <Pencil class="mr-2 h-4 w-4"/>
                       <span>{{ $t('report.common.modify') }}</span>

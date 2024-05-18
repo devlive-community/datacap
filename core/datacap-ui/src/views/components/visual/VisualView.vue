@@ -1,8 +1,6 @@
 <template>
   <div>
-    <CircularLoading v-if="loading"
-                     :show="loading">
-    </CircularLoading>
+    <CircularLoading v-if="loading" :show="loading"/>
     <div v-else-if="localConfiguration">
       <div v-if="localConfiguration.message" class="p-4">
         <Alert :type="'error' as any" class="overflow-x-auto" :title="localConfiguration.message"/>
@@ -73,6 +71,9 @@ export default defineComponent({
       type: Object
     },
     code: {
+      type: String
+    },
+    type: {
       type: String
     },
     width: {
