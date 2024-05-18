@@ -4,18 +4,23 @@
                      :show="loading">
     </CircularLoading>
     <div v-else-if="localConfiguration">
-      <VisualTable v-if="configuration?.type === Type.TABLE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualLine v-else-if="configuration?.type === Type.LINE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualBar v-else-if="configuration?.type === Type.BAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualArea v-else-if="configuration?.type === Type.AREA" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualPie v-else-if="configuration?.type === Type.PIE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualGauge v-else-if="configuration?.type === Type.GAUGE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualRose v-else-if="configuration?.type === Type.ROSE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <div v-if="localConfiguration.message" class="p-4">
+        <Alert :type="'error' as any" class="overflow-x-auto" :title="localConfiguration.message"/>
+      </div>
+      <div v-else>
+        <VisualTable v-if="configuration?.type === Type.TABLE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualLine v-else-if="configuration?.type === Type.LINE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualBar v-else-if="configuration?.type === Type.BAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualArea v-else-if="configuration?.type === Type.AREA" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualPie v-else-if="configuration?.type === Type.PIE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualGauge v-else-if="configuration?.type === Type.GAUGE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualRose v-else-if="configuration?.type === Type.ROSE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      </div>
     </div>
   </div>
 </template>
@@ -40,6 +45,7 @@ import VisualScatter from '@/views/components/visual/components/VisualScatter.vu
 import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
 import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
 import VisualRose from '@/views/components/visual/components/VisualRose.vue'
+import Alert from '@/views/ui/alert'
 
 export default defineComponent({
   name: 'VisualView',
@@ -50,6 +56,7 @@ export default defineComponent({
     }
   },
   components: {
+    Alert,
     VisualRose,
     VisualGauge,
     VisualFunnel,
