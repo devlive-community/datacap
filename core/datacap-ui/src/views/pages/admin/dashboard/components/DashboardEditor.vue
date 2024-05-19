@@ -24,7 +24,10 @@
                   <Trash :size="15"/>
                 </Button>
               </template>
-              <VisualView class="-ml-3" :width="item.width.replace('px', '') - 20 + 'px'" :height="item.height.replace('px', '') - 48 + 'px'"
+              <VisualView v-if="item.original" class="-ml-3" :width="item.width.replace('px', '') - 20 + 'px'" :height="item.height.replace('px', '') - 48 + 'px'"
+                          :code="item.node.code" :configuration="JSON.parse(item.node.configure)" :type="item.original?.type"
+                          :query="item.original.type === 'DATASET' ? JSON.parse(item.original.query as string) : item.original.query" :original="item?.original?.source?.id"/>
+              <VisualView v-else class="-ml-3" :width="item.width.replace('px', '') - 20 + 'px'" :height="item.height.replace('px', '') - 48 + 'px'"
                           :code="item.node.code" :configuration="JSON.parse(item.node.configure)" :query="JSON.parse(item.node.query)"/>
             </Card>
           </GridItem>
@@ -192,7 +195,8 @@ export default defineComponent({
           configure: node.configure,
           code: node.dataset?.code,
           query: node?.query
-        }
+        },
+        original: node
       }
       this.layouts.push(newItem)
     },

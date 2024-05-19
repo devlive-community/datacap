@@ -13,7 +13,7 @@
                 </FormControl>
                 <div class="items-center rounded-md border-4 border-muted p-1 hover:border-accent cursor-pointer text-center">
                   <VisualView width="200px" height="100px" :code="item.dataset?.code as string" :configuration="JSON.parse(item.configure as string)"
-                              :query="JSON.parse(item.query as string)"/>
+                              :type="item.type" :query="item.type === 'DATASET' ? JSON.parse(item.query as string) : item.query" :original="item?.source?.id"/>
                 </div>
                 <span class="block w-full p-2 text-center font-normal">{{ item.name }}</span>
               </FormLabel>

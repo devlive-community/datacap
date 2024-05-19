@@ -530,6 +530,9 @@ export default {
             deleteAlert2: 'Warning: This cannot be undone.',
             deleteAlert3: 'To confirm, type [ $VALUE ] in the box below',
             publishSuccess: 'Report [ $VALUE ] published successfully'
+        },
+        validator: {
+            name: 'Please enter the report name'
         }
     },
     pipeline: {
@@ -863,6 +866,7 @@ export default {
             stateOfMetadataStarted: 'Metadata Started',
             stateOfCreateTable: 'Create Table State',
             syncData: 'Sync Data',
+            visual: 'Visual',
             visualType: 'Visual Type',
             visualTypeTable: 'Table',
             visualTypeLine: 'Line',

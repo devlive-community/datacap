@@ -1,21 +1,24 @@
 <template>
   <div>
-    <CircularLoading v-if="loading"
-                     :show="loading">
-    </CircularLoading>
+    <CircularLoading v-if="loading" :show="loading"/>
     <div v-else-if="localConfiguration">
-      <VisualTable v-if="configuration?.type === Type.TABLE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualLine v-else-if="configuration?.type === Type.LINE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualBar v-else-if="configuration?.type === Type.BAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualArea v-else-if="configuration?.type === Type.AREA" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualPie v-else-if="configuration?.type === Type.PIE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualGauge v-else-if="configuration?.type === Type.GAUGE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
-      <VisualRose v-else-if="configuration?.type === Type.ROSE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      <div v-if="localConfiguration.message" class="p-4">
+        <Alert :type="'error' as any" class="overflow-x-auto" :title="localConfiguration.message"/>
+      </div>
+      <div v-else>
+        <VisualTable v-if="configuration?.type === Type.TABLE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualLine v-else-if="configuration?.type === Type.LINE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualBar v-else-if="configuration?.type === Type.BAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualArea v-else-if="configuration?.type === Type.AREA" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualPie v-else-if="configuration?.type === Type.PIE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualScatter v-else-if="configuration?.type === Type.SCATTER" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualRadar v-else-if="configuration?.type === Type.RADAR" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualGauge v-else-if="configuration?.type === Type.GAUGE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+        <VisualRose v-else-if="configuration?.type === Type.ROSE" :configuration="localConfiguration" :submitted="false" :width="width" :height="height"/>
+      </div>
     </div>
   </div>
 </template>
@@ -40,6 +43,9 @@ import VisualScatter from '@/views/components/visual/components/VisualScatter.vu
 import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
 import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
 import VisualRose from '@/views/components/visual/components/VisualRose.vue'
+import Alert from '@/views/ui/alert'
+import ExecuteService from '@/services/execute.ts'
+import { ExecuteModel } from '@/model/execute.ts'
 
 export default defineComponent({
   name: 'VisualView',
@@ -50,6 +56,7 @@ export default defineComponent({
     }
   },
   components: {
+    Alert,
     VisualRose,
     VisualGauge,
     VisualFunnel,
@@ -68,6 +75,9 @@ export default defineComponent({
     code: {
       type: String
     },
+    type: {
+      type: String
+    },
     width: {
       type: String,
       default: () => '100%'
@@ -75,6 +85,9 @@ export default defineComponent({
     height: {
       type: String,
       default: () => '400px'
+    },
+    original: {
+      type: Number
     }
   },
   data()
@@ -94,28 +107,47 @@ export default defineComponent({
       this.localConfiguration = cloneDeep(this.configuration) as Configuration
       setTimeout(() => {
         this.loading = true
-        DatasetService.adhoc(this.code!, this.query)
-                      .then(response => {
-                        if (response.status) {
-                          if (this.localConfiguration) {
-                            if (response.data.isSuccessful) {
-                              this.localConfiguration.headers = response.data.headers
-                              this.localConfiguration.columns = response.data.columns
-                              this.localConfiguration.message = null
-                            }
-                            else {
-                              this.localConfiguration.headers = []
-                              this.localConfiguration.columns = []
-                              this.localConfiguration.message = response.data.message
-                            }
+        if (this.type === 'QUERY') {
+          const configure: ExecuteModel = { name: this.original as any, content: this.query as any, mode: 'REPORT', format: 'JSON' }
+          ExecuteService.execute(configure, null)
+                        .then(response => {
+                          if (response.data.isSuccessful) {
+                            this.formatRaw(response)
                           }
-                        }
-                        else {
-                          ToastUtils.error(response.message)
-                        }
-                      })
-                      .finally(() => this.loading = false)
+                          else {
+                            ToastUtils.error(response.data.message)
+                          }
+                        })
+                        .finally(() => this.loading = false)
+        }
+        else {
+          DatasetService.adhoc(this.code!, this.query)
+                        .then(response => {
+                          if (response.status) {
+                            this.formatRaw(response)
+                          }
+                          else {
+                            ToastUtils.error(response.message)
+                          }
+                        })
+                        .finally(() => this.loading = false)
+        }
       })
+    },
+    formatRaw(response: any)
+    {
+      if (this.localConfiguration) {
+        if (response.data.isSuccessful) {
+          this.localConfiguration.headers = response.data.headers
+          this.localConfiguration.columns = response.data.columns
+          this.localConfiguration.message = null
+        }
+        else {
+          this.localConfiguration.headers = []
+          this.localConfiguration.columns = []
+          this.localConfiguration.message = response.data.message
+        }
+      }
     }
   }
 })

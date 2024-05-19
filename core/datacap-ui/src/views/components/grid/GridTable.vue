@@ -2,26 +2,30 @@
   <div>
     <Card class="p-0" style="border-radius: 0;">
       <CardHeader class="p-0">
-        <CardTitle class="pt-1">
-          <Button size="sm" class="ml-2">
+        <CardTitle class="pt-1 pl-3 space-x-2">
+          <Button size="sm" class="h-7 space-x-1">
             <RouterLink :to="`/admin/dataset/info/source/${configure.code}`" target="_blank">
               <span class="flex items-center">
-                <Plus :size="20"/> {{ $t('common.dataset') }}
+                <Plus :size="18"/> {{ $t('common.dataset') }}
               </span>
             </RouterLink>
+          </Button>
+          <Button size="sm" variant="outline" class="h-7 space-x-1" @click="visualVisible = true">
+            <BarChart :size="18"/>
+            <span>{{ $t('dataset.common.visual') }}</span>
           </Button>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Switch :default-checked="isPage" class="ml-2" @update:checked="handlerChange"/>
+                <Switch :default-checked="isPage" @update:checked="handlerChange"/>
               </TooltipTrigger>
               <TooltipContent>{{ $t('query.tip.pageShow') }}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
           <HoverCard>
             <HoverCardTrigger as-child>
-              <Button size="sm" class="ml-2" variant="outline">
-                <CircleHelp :size="20"/>
+              <Button size="icon" class="h-7 w-7" variant="outline">
+                <CircleHelp :size="18"/>
               </Button>
             </HoverCardTrigger>
             <HoverCardContent class="w-80">{{ $t('query.tip.smallTips') }}</HoverCardContent>
@@ -34,6 +38,7 @@
       </CardHeader>
     </Card>
   </div>
+  <GridVisual :is-visible="visualVisible" :configure="configure" @close="visualVisible = $event"/>
 </template>
 
 <script lang="ts">
@@ -53,10 +58,12 @@ import { BarChart, CircleHelp, Plus } from 'lucide-vue-next'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Switch } from '@/components/ui/switch'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import GridVisual from '@/views/components/grid/GridVisual.vue'
 
 export default defineComponent({
   name: 'GridTable',
   components: {
+    GridVisual,
     HoverCardContent, HoverCardTrigger, HoverCard,
     CardContent, TooltipTrigger, Tooltip, TooltipProvider, TooltipContent,
     BarChart, Plus, CircleHelp,
@@ -91,7 +98,8 @@ export default defineComponent({
       visibleColumns: [],
       columnDefs: [] as GridColumn[],
       isPage: true,
-      type: 'table'
+      type: 'table',
+      visualVisible: false
     }
   },
   methods: {

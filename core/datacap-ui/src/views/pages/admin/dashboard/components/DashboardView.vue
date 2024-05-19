@@ -10,8 +10,11 @@
               <Info class="cursor-pointer"/>
             </Tooltip>
           </template>
-          <VisualView :width="item.width.replace('px', '') - 3 + 'px'" :height="item.height.replace('px', '') - 55 + 'px'" :code="item.node.code"
-                      :configuration="JSON.parse(item.node.configure)" :query="JSON.parse(item.node.query)"/>
+          <VisualView v-if="item.original" :width="item.width.replace('px', '') - 20 + 'px'" :height="item.height.replace('px', '') - 55 + 'px'"
+                      :code="item.node.code" :configuration="JSON.parse(item.node.configure)" :type="item.original?.type"
+                      :query="item.original.type === 'DATASET' ? JSON.parse(item.original.query as string) : item.original.query" :original="item?.original?.source?.id"/>
+          <VisualView v-else class="-ml-3" :width="item.width.replace('px', '') - 20 + 'px'" :height="item.height.replace('px', '') - 48 + 'px'"
+                      :code="item.node.code" :configuration="JSON.parse(item.node.configure)" :query="JSON.parse(item.node.query)"/>
         </Card>
       </GridItem>
     </GridLayout>

@@ -530,6 +530,9 @@ export default {
             deleteAlert2: '警告：此操作无法撤销。',
             deleteAlert3: '要确认，请在下面的框中键入 [ $VALUE ]',
             publishSuccess: '报表 [ $VALUE ] 发布成功'
+        },
+        validator: {
+            name: '请输入报表名称'
         }
     },
     pipeline: {
@@ -863,6 +866,7 @@ export default {
             stateOfMetadataStarted: '元数据已启动',
             stateOfCreateTable: '创建表状态',
             syncData: '同步数据',
+            visual: '可视化',
             visualType: '可视化类型',
             visualTypeTable: '表格',
             visualTypeLine: '折线图',
