@@ -1,5 +1,5 @@
-FROM eclipse-temurin:8-jdk-focal
-MAINTAINER qianmoQ "shicheng@ttxit.com"
+FROM eclipse-temurin:11-jdk-focal
+MAINTAINER qianmoQ "shicheng@devlive.org"
 
 LABEL org.opencontainers.image.description DESCRIPTION
 
