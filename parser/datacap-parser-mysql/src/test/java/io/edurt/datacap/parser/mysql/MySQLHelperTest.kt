@@ -6,10 +6,12 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.slf4j.LoggerFactory.getLogger
 
-class MySQLHelperTest {
+class MySQLHelperTest
+{
     private val log = getLogger(MySQLHelperTest::class.java)
 
-    private fun printLog(response: ParserResponse) {
+    private fun printLog(response: ParserResponse)
+    {
         log.info("engine: [ {} ]", response.engine)
         log.info("type: [ {} ]", response.type)
         log.info("isParser: [ {} ]", response.isParser)
@@ -23,23 +25,36 @@ class MySQLHelperTest {
     }
 
     @Test
-    fun test() {
+    fun test()
+    {
         val response = MySQLHelper.parse("SELECT 1")
         printLog(response)
         assertTrue(response.type == StatementType.SELECT)
     }
 
     @Test
-    fun testFromTable() {
+    fun testFromTable()
+    {
         val response = MySQLHelper.parse("SELECT \"name\", \"age\" FROM \"a_table_name\"")
         printLog(response)
         assertTrue(response.isParser)
     }
 
     @Test
-    fun testLimit() {
+    fun testLimit()
+    {
         val response = MySQLHelper.parse("SELECT * FROM \"a_table_name\" LIMIT 10")
         printLog(response)
         assertTrue(response.table.limit == 10L)
+    }
+
+    @Test
+    fun testFull001()
+    {
+        val response = MySQLHelper.parse("select count(1), query_mode\n" +
+                "from datacap.datacap_source_query\n" +
+                "group by query_mode\n" +
+                "LIMIT 10000")
+        printLog(response)
     }
 }

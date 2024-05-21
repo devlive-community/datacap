@@ -23,13 +23,16 @@ import java.util.*
 import java.util.stream.Collectors
 
 class ErrorHandler
-private constructor(specialRules: Map<Int, String>, private val specialTokens: Map<Int, String>, ignoredRules: Set<Int>) : BaseErrorListener() {
+private constructor(specialRules: Map<Int, String>, private val specialTokens: Map<Int, String>, ignoredRules: Set<Int>) : BaseErrorListener()
+{
     private val specialRules: Map<Int, String> = HashMap(specialRules)
     private val ignoredRules: Set<Int> = HashSet(ignoredRules)
 
-    override fun syntaxError(recognizer: Recognizer<*, *>, offendingSymbol: Any, line: Int, charPositionInLine: Int, message: String, e: RecognitionException) {
+    override fun syntaxError(recognizer: Recognizer<*, *>, offendingSymbol: Any, line: Int, charPositionInLine: Int, message: String, e: RecognitionException)
+    {
         var message: String? = message
-        try {
+        try
+        {
             val parser = recognizer as Parser
 
             val atn = parser.atn
@@ -38,16 +41,19 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
             var currentToken: Token
             val context: RuleContext
 
-            if (e != null) {
+            if (e != null)
+            {
                 currentState = atn.states[e.offendingState]
                 currentToken = e.offendingToken
                 context = e.ctx
 
-                if (e is NoViableAltException) {
+                if (e is NoViableAltException)
+                {
                     currentToken = e.startToken
                 }
             }
-            else {
+            else
+            {
                 currentState = atn.states[parser.state]
                 currentToken = parser.currentToken
                 context = parser.context
@@ -58,61 +64,70 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
 
             // pick the candidate tokens associated largest token index processed (i.e., the path that consumed the most input)
             val expected: String = result.expected.stream()
-                    .sorted()
-                    .collect(Collectors.joining(", "))
+                .sorted()
+                .collect(Collectors.joining(", "))
 
             message = String.format("mismatched input '%s'. Expecting: %s", parser.tokenStream[result.errorTokenIndex].text, expected)
         }
-        catch (exception: Exception) {
-//            log.error(exception, "Unexpected failure when handling parsing error. This is likely a bug in the implementation");
+        catch (exception: Exception)
+        {
+            //            log.error(exception, "Unexpected failure when handling parsing error. This is likely a bug in the implementation");
         }
         throw ParserException(message !!, e, line, charPositionInLine)
     }
 
     private class ParsingState
-    (val state: ATNState, val tokenIndex: Int, val suppressed: Boolean, val parser: Parser) {
-        override fun equals(o: Any?): Boolean {
-            if (this === o) {
+        (val state: ATNState, val tokenIndex: Int, val suppressed: Boolean, val parser: Parser)
+    {
+        override fun equals(o: Any?): Boolean
+        {
+            if (this === o)
+            {
                 return true
             }
-            if (o == null || javaClass != o.javaClass) {
+            if (o == null || javaClass != o.javaClass)
+            {
                 return false
             }
             val that = o as ParsingState
             return tokenIndex == that.tokenIndex && state == that.state
         }
 
-        override fun hashCode(): Int {
+        override fun hashCode(): Int
+        {
             return Objects.hash(state, tokenIndex)
         }
 
-        override fun toString(): String {
+        override fun toString(): String
+        {
             val token = parser.tokenStream[tokenIndex]
 
             var text = MoreObjects.firstNonNull(token.text, "?")
-            if (text != null) {
-                text = text.replace("\\", "\\\\")
-                text = text.replace("\n", "\\n")
-                text = text.replace("\r", "\\r")
-                text = text.replace("\t", "\\t")
-            }
+            text = text.replace("\\", "\\\\")
+            text = text.replace("\n", "\\n")
+            text = text.replace("\r", "\\r")
+            text = text.replace("\t", "\\t")
 
             return String.format(
-                    "%s%s:%s @ %s:<%s>:%s",
-                    if (suppressed) "-" else "+",
-                    parser.ruleNames[state.ruleIndex],
-                    state.stateNumber,
-                    tokenIndex,
-                    parser.vocabulary.getSymbolicName(token.type),
-                    text)
+                "%s%s:%s @ %s:<%s>:%s",
+                if (suppressed) "-" else "+",
+                parser.ruleNames[state.ruleIndex],
+                state.stateNumber,
+                tokenIndex,
+                parser.vocabulary.getSymbolicName(token.type),
+                text
+            )
         }
     }
 
     private class Analyzer
-    (private val parser: Parser,
-     private val specialRules: Map<Int, String>,
-     private val specialTokens: Map<Int, String>,
-     private val ignoredRules: Set<Int>) {
+        (
+        private val parser: Parser,
+        private val specialRules: Map<Int, String>,
+        private val specialTokens: Map<Int, String>,
+        private val ignoredRules: Set<Int>
+    )
+    {
         private val atn: ATN = parser.atn
         private val vocabulary: Vocabulary = parser.vocabulary
         private val stream: TokenStream = parser.tokenStream
@@ -120,12 +135,14 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
         private val memo: MutableMap<ParsingState, Set<Int>?> = HashMap()
         private var furthestTokenIndex = - 1
 
-        fun process(currentState: ATNState, tokenIndex: Int, context: RuleContext): Result {
+        fun process(currentState: ATNState, tokenIndex: Int, context: RuleContext): Result
+        {
             var currentState = currentState
             var context = context
             val startState = atn.ruleToStartState[currentState.ruleIndex]
 
-            if (isReachable(currentState, startState)) {
+            if (isReachable(currentState, startState))
+            {
                 // We've been dropped inside a rule in a state that's reachable via epsilon transitions. This is,
                 // effectively, equivalent to starting at the beginning (or immediately outside) the rule.
                 // In that case, backtrack to the beginning to be able to take advantage of logic that remaps
@@ -135,8 +152,10 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
 
             var endTokens = process(ParsingState(currentState, tokenIndex, false, parser), 0)
             val nextTokens: MutableSet<Int> = HashSet()
-            while (! endTokens !!.isEmpty() && context.invokingState != - 1) {
-                for (endToken in endTokens) {
+            while (endTokens !!.isNotEmpty() && context.invokingState != - 1)
+            {
+                for (endToken in endTokens)
+                {
                     val nextState = (atn.states[context.invokingState].transition(0) as RuleTransition).followState
                     nextTokens.addAll(process(ParsingState(nextState, endToken, false, parser), 0) !!)
                 }
@@ -147,21 +166,26 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
             return Result(furthestTokenIndex, candidates)
         }
 
-        private fun isReachable(target: ATNState, from: RuleStartState): Boolean {
+        private fun isReachable(target: ATNState, from: RuleStartState): Boolean
+        {
             val activeStates: Deque<ATNState> = ArrayDeque()
             activeStates.add(from)
 
-            while (! activeStates.isEmpty()) {
+            while (! activeStates.isEmpty())
+            {
                 val current = activeStates.pop()
 
-                if (current.stateNumber == target.stateNumber) {
+                if (current.stateNumber == target.stateNumber)
+                {
                     return true
                 }
 
-                for (i in 0 until current.numberOfTransitions) {
+                for (i in 0 until current.numberOfTransitions)
+                {
                     val transition = current.transition(i)
 
-                    if (transition.isEpsilon) {
+                    if (transition.isEpsilon)
+                    {
                         activeStates.push(transition.target)
                     }
                 }
@@ -170,9 +194,11 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
             return false
         }
 
-        private fun process(start: ParsingState, precedence: Int): Set<Int>? {
+        private fun process(start: ParsingState, precedence: Int): Set<Int>?
+        {
             var result = memo[start]
-            if (result != null) {
+            if (result != null)
+            {
                 return result
             }
 
@@ -183,62 +209,78 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
             val activeStates: Deque<ParsingState> = ArrayDeque()
             activeStates.add(start)
 
-            while (! activeStates.isEmpty()) {
+            while (! activeStates.isEmpty())
+            {
                 val current = activeStates.pop()
 
                 val state = current.state
                 var tokenIndex = current.tokenIndex
                 var suppressed = current.suppressed
 
-                while (stream[tokenIndex].channel == Token.HIDDEN_CHANNEL) {
+                while (stream[tokenIndex].channel == Token.HIDDEN_CHANNEL)
+                {
                     // Ignore whitespace
                     tokenIndex ++
                 }
                 val currentToken = stream[tokenIndex].type
 
-                if (state.stateType == ATNState.RULE_START) {
+                if (state.stateType == ATNState.RULE_START)
+                {
                     val rule = state.ruleIndex
 
-                    if (specialRules.containsKey(rule)) {
-                        if (! suppressed) {
+                    if (specialRules.containsKey(rule))
+                    {
+                        if (! suppressed)
+                        {
                             record(tokenIndex, specialRules[rule])
                         }
                         suppressed = true
                     }
-                    else if (ignoredRules.contains(rule)) {
+                    else if (ignoredRules.contains(rule))
+                    {
                         // TODO expand ignored rules like we expand special rules
                         continue
                     }
                 }
 
-                if (state is RuleStopState) {
+                if (state is RuleStopState)
+                {
                     endTokens.add(tokenIndex)
                     continue
                 }
 
-                for (i in 0 until state.numberOfTransitions) {
+                for (i in 0 until state.numberOfTransitions)
+                {
                     val transition = state.transition(i)
 
-                    if (transition is RuleTransition) {
-                        for (endToken in process(ParsingState(transition.target, tokenIndex, suppressed, parser), transition.precedence) !!) {
+                    if (transition is RuleTransition)
+                    {
+                        for (endToken in process(ParsingState(transition.target, tokenIndex, suppressed, parser), transition.precedence) !!)
+                        {
                             activeStates.push(ParsingState(transition.followState, endToken, suppressed, parser))
                         }
                     }
-                    else if (transition is PrecedencePredicateTransition) {
-                        if (precedence < transition.precedence) {
+                    else if (transition is PrecedencePredicateTransition)
+                    {
+                        if (precedence < transition.precedence)
+                        {
                             activeStates.push(ParsingState(transition.target, tokenIndex, suppressed, parser))
                         }
                     }
-                    else if (transition.isEpsilon) {
+                    else if (transition.isEpsilon)
+                    {
                         activeStates.push(ParsingState(transition.target, tokenIndex, suppressed, parser))
                     }
-                    else if (transition is WildcardTransition) {
+                    else if (transition is WildcardTransition)
+                    {
                         throw UnsupportedOperationException("not yet implemented: wildcard transition")
                     }
-                    else {
+                    else
+                    {
                         var labels = transition.label()
 
-                        if (transition is NotSetTransition) {
+                        if (transition is NotSetTransition)
+                        {
                             labels = labels.complement(IntervalSet.of(Token.MIN_USER_TOKEN_TYPE, atn.maxTokenType))
                         }
 
@@ -246,11 +288,14 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
                         // underlying stream. TokenStream.get() does not force tokens to be buffered -- it just returns what's
                         // in the current buffer, or fail with an IndexOutOfBoundsError. Since Antlr decided the error occurred
                         // within the current set of buffered tokens, stop when we reach the end of the buffer.
-                        if (labels.contains(currentToken) && tokenIndex < stream.size() - 1) {
+                        if (labels.contains(currentToken) && tokenIndex < stream.size() - 1)
+                        {
                             activeStates.push(ParsingState(transition.target, tokenIndex + 1, false, parser))
                         }
-                        else {
-                            if (! suppressed) {
+                        else
+                        {
+                            if (! suppressed)
+                            {
                                 record(tokenIndex, getTokenNames(labels))
                             }
                         }
@@ -263,13 +308,17 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
             return result
         }
 
-        private fun record(tokenIndex: Int, label: String?) {
+        private fun record(tokenIndex: Int, label: String?)
+        {
             record(tokenIndex, ImmutableSet.of(label))
         }
 
-        private fun record(tokenIndex: Int, labels: Set<String?>) {
-            if (tokenIndex >= furthestTokenIndex) {
-                if (tokenIndex > furthestTokenIndex) {
+        private fun record(tokenIndex: Int, labels: Set<String?>)
+        {
+            if (tokenIndex >= furthestTokenIndex)
+            {
+                if (tokenIndex > furthestTokenIndex)
+                {
                     candidates.clear()
                     furthestTokenIndex = tokenIndex
                 }
@@ -278,14 +327,18 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
             }
         }
 
-        private fun getTokenNames(tokens: IntervalSet): Set<String?> {
+        private fun getTokenNames(tokens: IntervalSet): Set<String?>
+        {
             val names: MutableSet<String?> = HashSet()
-            for (i in 0 until tokens.size()) {
+            for (i in 0 until tokens.size())
+            {
                 val token = tokens[i]
-                if (token == Token.EOF) {
+                if (token == Token.EOF)
+                {
                     names.add("<EOF>")
                 }
-                else {
+                else
+                {
                     names.add(specialTokens.getOrDefault(token, vocabulary.getDisplayName(token)))
                 }
             }
@@ -294,36 +347,43 @@ private constructor(specialRules: Map<Int, String>, private val specialTokens: M
         }
     }
 
-    class Builder {
+    class Builder
+    {
         private val specialRules: MutableMap<Int, String> = HashMap()
         private val specialTokens: MutableMap<Int, String> = HashMap()
         private val ignoredRules: MutableSet<Int> = HashSet()
 
-        fun specialRule(ruleId: Int, name: String): Builder {
+        fun specialRule(ruleId: Int, name: String): Builder
+        {
             specialRules[ruleId] = name
             return this
         }
 
-        fun specialToken(tokenId: Int, name: String): Builder {
+        fun specialToken(tokenId: Int, name: String): Builder
+        {
             specialTokens[tokenId] = name
             return this
         }
 
-        fun ignoredRule(ruleId: Int): Builder {
+        fun ignoredRule(ruleId: Int): Builder
+        {
             ignoredRules.add(ruleId)
             return this
         }
 
-        fun build(): ErrorHandler {
+        fun build(): ErrorHandler
+        {
             return ErrorHandler(specialRules, specialTokens, ignoredRules)
         }
     }
 
     private class Result
-    (val errorTokenIndex: Int, val expected: Set<String?>)
+        (val errorTokenIndex: Int, val expected: Set<String?>)
 
-    companion object {
-        fun builder(): Builder {
+    companion object
+    {
+        fun builder(): Builder
+        {
             return Builder()
         }
     }
