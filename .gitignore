@@ -58,3 +58,8 @@ pnpm-lock.yaml
 package-lock.json
 
 !configure/schema/*/data/
+
+# Skip sql parser #
+parser/datacap-parser-mysql/src/main/java
+parser/datacap-parser-trino/src/main/java/*.tokens
+parser/datacap-parser-trino/src/main/java/io/edurt/datacap/parser/antlr
