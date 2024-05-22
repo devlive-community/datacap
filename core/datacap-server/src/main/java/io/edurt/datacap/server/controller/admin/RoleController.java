@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.controller.admin;
 
+import com.google.common.collect.Sets;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.entity.MenuEntity;
@@ -19,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -64,31 +63,38 @@ public class RoleController
             return roleService.getMenusByRoleId(id);
         }
         else {
-            Optional<RoleEntity> optionalRole = this.roleRepository.findById(id);
-            RoleEntity role = optionalRole.get();
-            Set<MenuEntity> menus = new HashSet<>();
-            extractIds(nodes).forEach(nodeId -> {
-                MenuEntity entity = new MenuEntity();
-                entity.setId(nodeId);
-                menus.add(entity);
-            });
-            role.setMenus(menus);
-            return roleService.saveOrUpdate(roleRepository, role);
+            return this.roleRepository.findById(id)
+                    .map(item -> {
+                        Set<MenuEntity> menus = extractIds(nodes, Sets.newHashSet()).stream()
+                                .map(value -> {
+                                    MenuEntity entity = new MenuEntity();
+                                    entity.setId(value);
+                                    return entity;
+                                })
+                                .collect(Collectors.toSet());
+                        item.setMenus(menus);
+                        return roleService.saveOrUpdate(roleRepository, item);
+                    })
+                    .orElse(CommonResponse.failure(String.format("Role [ %s ] not found", id)));
         }
     }
 
-    private static Set<Long> extractIds(List<TreeRecord> nodes)
+    /**
+     * Extracts the IDs from a list of TreeRecord objects and adds them to a set.
+     *
+     * @param nodes the list of TreeRecord objects to extract IDs from
+     * @param idSet the set to add the extracted IDs to
+     * @return the set of extracted IDs
+     */
+    private static Set<Long> extractIds(List<TreeRecord> nodes, Set<Long> idSet)
     {
-        return nodes.stream()
-                .flatMap(node -> {
-                    Set<Long> idSet = new HashSet<>();
-                    idSet.add(node.getId());
-                    List<TreeRecord> childrenList = node.getChildren();
-                    if (ObjectUtils.isNotEmpty(childrenList)) {
-                        idSet.addAll(extractIds(childrenList));
-                    }
-                    return idSet.stream();
-                })
-                .collect(Collectors.toSet());
+        for (TreeRecord node : nodes) {
+            idSet.add(node.getId());
+            List<TreeRecord> childrenList = node.getChildren();
+            if (ObjectUtils.isNotEmpty(childrenList)) {
+                extractIds(childrenList, idSet);
+            }
+        }
+        return idSet;
     }
 }
