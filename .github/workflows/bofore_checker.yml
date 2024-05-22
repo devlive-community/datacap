@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - run: cd core/datacap-ui && npm install && npm run build
+      - run: cd core/datacap-ui && npm install yarn -g && yarn install && yarn run build
 
   before_checker_style:
     runs-on: ubuntu-latest
