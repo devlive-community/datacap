@@ -1,5 +1,6 @@
 import { UserModel } from '@/model/user.ts'
 import { ReportModel } from '@/model/report.ts'
+import { AvatarModel } from '@/model/avatar.ts'
 
 export interface DashboardModel
 {
@@ -13,6 +14,7 @@ export interface DashboardModel
     user?: UserModel
     reports?: ReportModel[]
     code?: string
+    avatar?: AvatarModel
 }
 
 export class DashboardRequest

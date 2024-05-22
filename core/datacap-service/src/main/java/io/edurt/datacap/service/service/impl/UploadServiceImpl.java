@@ -3,6 +3,7 @@ package io.edurt.datacap.service.service.impl;
 import com.google.inject.Injector;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.SpiUtils;
+import io.edurt.datacap.common.utils.UrlUtils;
 import io.edurt.datacap.fs.FsRequest;
 import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.body.UploadBody;
@@ -16,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 
 @Slf4j
@@ -24,12 +27,14 @@ public class UploadServiceImpl
         implements UploadService
 {
     private final Injector injector;
+    private final HttpServletRequest request;
     private final DashboardRepository dashboard;
     private final InitializerConfigure initializer;
 
-    public UploadServiceImpl(Injector injector, DashboardRepository dashboard, InitializerConfigure initializer)
+    public UploadServiceImpl(Injector injector, HttpServletRequest request, DashboardRepository dashboard, InitializerConfigure initializer)
     {
         this.injector = injector;
+        this.request = request;
         this.dashboard = dashboard;
         this.initializer = initializer;
     }
@@ -49,6 +54,9 @@ public class UploadServiceImpl
                                                 .path(response.getRemote())
                                                 .type(initializer.getFsConfigure().getType())
                                                 .build();
+                                        if (initializer.getFsConfigure().getType().equals("Local")) {
+                                            entity.setPath(getAccess(entity));
+                                        }
                                         value.setAvatar(entity);
                                         dashboard.save(value);
                                     });
@@ -108,5 +116,19 @@ public class UploadServiceImpl
                 UserDetailsService.getUser().getUsername(),
                 configure.getMode().toString().toLowerCase(),
                 configure.getCode());
+    }
+
+    /**
+     * Returns the access URL for the given AvatarEntity.
+     *
+     * @param configure the AvatarEntity containing the path
+     * @return the access URL
+     */
+    private String getAccess(AvatarEntity configure)
+    {
+        String protocol = request.getScheme();
+        String host = request.getServerName();
+        int port = request.getServerPort();
+        return protocol + "://" + host + ":" + port + UrlUtils.fixUrl("/upload" + configure.getPath().replaceFirst(initializer.getDataHome(), ""));
     }
 }

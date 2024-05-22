@@ -45,7 +45,7 @@
               </template>
               <div class="shadow-blackA7 w-full overflow-hidden rounded-md">
                 <AspectRatio :ratio="16 / 11">
-                  <img class="h-full w-full object-cover" src="/static/images/dashboard.png" :alt="item.name"/>
+                  <img class="h-full w-full object-cover" :src="`${item.avatar?.path ? item.avatar.path : '/static/images/dashboard.png'}`" :alt="item.name"/>
                 </AspectRatio>
               </div>
               <template #footer>
