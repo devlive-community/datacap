@@ -10,6 +10,7 @@ import io.edurt.datacap.service.security.UserDetailsService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -166,7 +167,7 @@ public class InitializerConfigure
 
     public String getAvatarPath()
     {
-        if (fsConfigure.getEndpoint() != null) {
+        if (StringUtils.isNotEmpty(fsConfigure.getEndpoint())) {
             return fsConfigure.getEndpoint();
         }
         return avatarPath.replace("{username}", UserDetailsService.getUser().getUsername());

@@ -1,5 +1,6 @@
 package io.edurt.datacap.fs;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,6 +47,7 @@ public class IOUtils
      * @return true if the contents were successfully copied, false otherwise
      */
     public static boolean copy(InputStream stream, String target, boolean createdDir)
+            throws IOException
     {
         try {
             Path targetPath = Paths.get(target);
@@ -58,6 +60,11 @@ public class IOUtils
         }
         catch (Exception e) {
             throw new RuntimeException(e);
+        }
+        finally {
+            if (stream != null) {
+                stream.close();
+            }
         }
     }
 
