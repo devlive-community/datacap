@@ -51,7 +51,7 @@ class MySQLHelperTest
     @Test
     fun testFull001()
     {
-        val response = MySQLHelper.parse("select count(1), query_mode\n" +
+        val response = MySQLHelper.parse("select count(`id`), query_mode\n" +
                 "from datacap.datacap_source_query\n" +
                 "group by query_mode\n" +
                 "LIMIT 10000")

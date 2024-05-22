@@ -61,3 +61,5 @@ package-lock.json
 
 # Skip sql parser #
 parser/datacap-parser-mysql/src/main/java
+parser/datacap-parser-trino/src/main/java/*.tokens
+parser/datacap-parser-trino/src/main/java/io/edurt/datacap/parser/antlr

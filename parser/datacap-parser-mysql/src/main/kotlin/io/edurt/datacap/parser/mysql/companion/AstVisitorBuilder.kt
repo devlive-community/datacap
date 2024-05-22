@@ -20,7 +20,8 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
 {
     private fun <T> visitSelectElements(context: SelectElementsContext, clazz: Class<T>): List<T>
     {
-        return context.selectElement().stream()
+        return context.selectElement()
+            .stream()
             .map<Any>(this::visitChildren)
             .map { o: Any? -> clazz.cast(o) }
             .collect(toList())
@@ -54,6 +55,7 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
         return when (p0)
         {
             is SelectExpressionElementContext -> visitSelectExpressionElement(p0)
+            is SelectFunctionElementContext -> visitSelectFunctionElement(p0)
             is SelectColumnElementContext -> visitSelectColumnElement(p0)
             else -> throw UnsupportedOperationException("Unsupported RuleNode type: ${p0?.javaClass?.simpleName}")
         }
@@ -1422,13 +1424,16 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
     override fun visitQuerySpecification(ctx: QuerySpecificationContext): Node
     {
         val selectItems: List<SelectItem> = visitSelectElements(ctx.selectElements(), SelectItem::class.java)
-        println(ctx.fromClause())
         val fromClause: Relation = visitFromClause(ctx.fromClause())
 
         var limitClause: Limit = Limit(Optional.empty(), emptySet())
         if (ctx.limitClause() != null)
         {
             limitClause = visitLimitClause(ctx.limitClause())
+        }
+
+        if (ctx.groupByClause() != null) {
+            visitGroupByClause(ctx.groupByClause())
         }
 
         return QuerySpecification(
@@ -1501,11 +1506,20 @@ class AstVisitorBuilder(options: ParserOptions.DecimalLiteralTreatment) : MySqlP
 
     override fun visitSelectColumnElement(ctx: SelectColumnElementContext): Node
     {
-        return SelectItem(getLocation(ctx), ctx.fullColumnName().text)
+        var columnName = ctx.fullColumnName().text
+        return SelectItem(getLocation(ctx), columnName)
     }
 
     override fun visitSelectFunctionElement(ctx: MySqlParser.SelectFunctionElementContext?): Node
     {
+//        val functionName = ctx.functionCall().functionName().text
+//        val arguments = ctx.functionCall().expressionList()?.let { visitExpressions(it) } ?: emptyList()
+//        return when (functionName.toUpperCase()) {
+//            "COUNT" -> AggregateFunction(getLocation(ctx), functionName, arguments)
+//            // 添加其他聚合函数的支持,如 SUM, AVG, MIN, MAX 等
+//            else -> throw UnsupportedOperationException("Unsupported function: $functionName")
+//        }
+
         throw UnsupportedOperationException("Unsupported type: ${ctx?.javaClass?.simpleName}")
     }
 
