@@ -32,9 +32,7 @@ target/
 
 # node #
 node/
-#package-lock.json
 node_modules
-yarn.lock
 tmp/
 
 # vscode #
@@ -55,7 +53,6 @@ docs/site/
 data/
 !parser/datacap-parser-trino/src/main/java/io/edurt/datacap/parser/node/
 pnpm-lock.yaml
-package-lock.json
 
 !configure/schema/*/data/
 
