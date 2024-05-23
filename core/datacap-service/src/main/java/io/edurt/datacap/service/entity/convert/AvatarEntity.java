@@ -15,4 +15,5 @@ public class AvatarEntity
 {
     private String type;
     private String path;
+    private String local;
 }
