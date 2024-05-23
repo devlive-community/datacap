@@ -88,6 +88,7 @@
         <module>scheduler/datacap-scheduler-spi</module>
         <module>scheduler/datacap-scheduler-local</module>
         <module>notify/datacap-notify-spi</module>
+        <module>notify/datacap-notify-dingtalk</module>
     </modules>
 
     <name>datacap</name>
@@ -217,6 +218,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.edurt.datacap</groupId>
+                <artifactId>datacap-http</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${springboot.version}</version>
@@ -304,6 +310,11 @@
             <dependency>
                 <groupId>io.edurt.datacap</groupId>
                 <artifactId>datacap-parser-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.edurt.datacap</groupId>
+                <artifactId>datacap-notify-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
