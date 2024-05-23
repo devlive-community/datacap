@@ -54,7 +54,7 @@
           <FormItem class="space-y-2">
             <FormLabel>{{ $t('common.avatar') }}</FormLabel>
             <FormMessage/>
-            <CropperHome @update:value="handlerCropper"/>
+            <CropperHome :pic="formState?.avatar?.path" @update:value="handlerCropper"/>
           </FormItem>
         </FormField>
       </div>

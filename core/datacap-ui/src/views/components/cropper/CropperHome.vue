@@ -5,9 +5,9 @@
     </Button>
   </div>
 
-  <div v-if="result.blobURL" class="pt-2 grid place-items-center">
+  <div v-if="result.blobURL || pic" class="pt-2 grid place-items-center">
     <div>
-      <img class="max-h-[180px]" :src="result.blobURL" alt=""/>
+      <img class="max-h-[180px]" :src="result.blobURL ? result.blobURL : pic" alt=""/>
     </div>
   </div>
 
@@ -49,13 +49,16 @@ export default defineComponent({
     VuePictureCropper,
     Button
   },
+  props: {
+    pic: {
+      type: String
+    }
+  },
   setup(props, { emit })
   {
-    console.debug(props)
-
     const isShowModal = ref<boolean>(false)
     const uploadInput = ref<HTMLInputElement | null>(null)
-    const pic = ref<string>('')
+    const pic = ref<string>(props.pic as string)
     const result = reactive({
       blobURL: ''
     })
