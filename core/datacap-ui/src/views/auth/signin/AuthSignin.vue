@@ -143,7 +143,10 @@ export default defineComponent({
                         captchaImage.value = response.data.image
                       }
                     })
-                    .finally(() => captchaLoading.value = false)
+                    .finally(() => {
+                      captchaLoading.value = false
+                      loading.value = false
+                    })
     }
 
     const onSubmit = handleSubmit(() => {
@@ -198,6 +201,7 @@ export default defineComponent({
   methods: {
     handlerInitialize()
     {
+      this.loading = true
       this.refererCaptcha()
     }
   }

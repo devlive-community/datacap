@@ -1,6 +1,7 @@
 package io.edurt.datacap.lib.http;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.ConnectionPool;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -13,7 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"},
+@Slf4j
+@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class HttpClient
 {
@@ -66,25 +68,31 @@ public class HttpClient
                 builder.addQueryParameter(key, configure.getParams().get(key));
             }
         }
+        log.info("Request url {}", builder.build());
         Request request = new Request.Builder()
                 .addHeader("Accept-Encoding", "identity")
-                .url(builder.build().toString()).build();
+                .url(builder.build().toString())
+                .build();
         return execute(request);
     }
 
     private String post()
     {
         RequestBody requestBody = RequestBody.create(configure.getMediaType(), configure.getBody());
-        HttpUrl.Builder builder = HttpUrl.parse(this.formatJdbcUrl()).newBuilder();
+        HttpUrl.Builder builder = HttpUrl.parse(this.formatJdbcUrl())
+                .newBuilder();
 
         // Adding Path Parameters
         if (ObjectUtils.isNotEmpty(configure.getParams())) {
             for (String key : configure.getParams().keySet()) {
-                builder.addQueryParameter(key, configure.getParams().get(key));
+                builder.addEncodedQueryParameter(key, configure.getParams()
+                        .get(key));
             }
         }
 
-        Request request = new Request.Builder().post(requestBody)
+        log.info("Request url {}", builder.build());
+        Request request = new Request.Builder()
+                .post(requestBody)
                 .addHeader("Accept-Encoding", "identity")
                 .url(builder.build().toString()).build();
         return execute(request);
@@ -93,12 +101,13 @@ public class HttpClient
     private String execute(Request request)
     {
         String responseBody = null;
-        try {
-            Response response = okHttpClient.newCall(request).execute();
-            responseBody = response.body().string();
+        try (Response response = okHttpClient.newCall(request)
+                .execute()) {
+            responseBody = response.body()
+                    .string();
         }
         catch (IOException | NullPointerException e) {
-            e.printStackTrace();
+            log.warn("Request error", e);
         }
         return responseBody;
     }

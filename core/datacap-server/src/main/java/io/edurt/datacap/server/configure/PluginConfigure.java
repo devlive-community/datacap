@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.edurt.datacap.executor.ExecutorManager;
 import io.edurt.datacap.fs.FsManager;
+import io.edurt.datacap.notify.NotifyManager;
 import io.edurt.datacap.parser.ParserManager;
 import io.edurt.datacap.scheduler.ScheduleManager;
 import io.edurt.datacap.spi.PluginLoader;
@@ -20,6 +21,7 @@ public class PluginConfigure
                 new FsManager(),
                 new ParserManager(),
                 new ScheduleManager(),
-                new ExecutorManager());
+                new ExecutorManager(),
+                new NotifyManager());
     }
 }
