@@ -666,6 +666,9 @@ export default {
         backTo: 'Back',
         database: 'Database',
         table: 'Table',
+        clear: 'Clear',
+        reset: 'Reset',
+        cropper: 'Cropper',
         tip: {
             pageNotNetwork: 'Oops! Unable to connect to the network, please check if the network is normal!'
         }

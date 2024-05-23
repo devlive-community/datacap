@@ -666,6 +666,9 @@ export default {
         backTo: '返回',
         database: '数据库',
         table: '表',
+        clear: '清空',
+        reset: '重置',
+        cropper: '裁剪',
         tip: {
             pageNotNetwork: '哎呀！无法连接到网络，请检查网络是否正常！'
         }

@@ -50,6 +50,13 @@
             <Textarea v-model="formState.description"/>
           </FormItem>
         </FormField>
+        <FormField name="avatar">
+          <FormItem class="space-y-2">
+            <FormLabel>{{ $t('common.avatar') }}</FormLabel>
+            <FormMessage/>
+            <CropperHome @update:value="handlerCropper"/>
+          </FormItem>
+        </FormField>
       </div>
       <template #footer>
         <div class="space-x-5">
@@ -83,10 +90,13 @@ import { Input } from '@/components/ui/input'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { cloneDeep } from 'lodash'
 import { Textarea } from '@/components/ui/textarea'
+import CropperHome from '@/views/components/cropper/CropperHome.vue'
+import UploadService from '@/services/upload'
 
 export default defineComponent({
   name: 'DashboardEditor',
   components: {
+    CropperHome,
     Textarea,
     Input,
     ChartContainer,
@@ -150,6 +160,26 @@ export default defineComponent({
     handlerSaveVisible(opened: boolean)
     {
       this.configureVisible = opened
+    },
+    handlerCropper(value: any)
+    {
+      const configure = {
+        code: this.formState?.code,
+        mode: 'DASHBOARD',
+        file: value
+      }
+      UploadService.upload(configure)
+                   .then(response => {
+                     if (response.status) {
+                       if (this.formState) {
+                         this.formState.avatar = response.data
+                       }
+                       ToastUtils.success(this.$t('common.successfully'))
+                     }
+                     else {
+                       ToastUtils.error(response.message)
+                     }
+                   })
     },
     handlerSave()
     {
