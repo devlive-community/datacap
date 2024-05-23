@@ -39,11 +39,12 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class AuditPluginHandler
 {
+    private final ThreadLocal<PluginAuditEntity> threadLocalPluginAudit = new ThreadLocal<>();
+
     private final PluginAuditRepository pluginAuditRepository;
     private final SourceRepository sourceRepository;
     private final InitializerConfigure initializer;
     private final Injector injector;
-    private PluginAuditEntity pluginAudit;
 
     public AuditPluginHandler(PluginAuditRepository pluginAuditRepository, SourceRepository sourceRepository, InitializerConfigure initializer, Injector injector)
     {
@@ -61,13 +62,15 @@ public class AuditPluginHandler
     @Before("cut(auditPlugin)")
     public void doBefore(AuditPlugin auditPlugin)
     {
-        this.pluginAudit = new PluginAuditEntity();
+        PluginAuditEntity pluginAudit = new PluginAuditEntity();
         pluginAudit.setCreateTime(Timestamp.valueOf(LocalDateTime.now()));
+        threadLocalPluginAudit.set(pluginAudit);
     }
 
     @AfterReturning(pointcut = "@annotation(auditPlugin)", returning = "jsonResult")
     public void doAfterReturning(JoinPoint joinPoint, AuditPlugin auditPlugin, CommonResponse jsonResult)
     {
+        PluginAuditEntity pluginAudit = threadLocalPluginAudit.get();
         handlerPlugin(joinPoint, pluginAudit, jsonResult);
     }
 
@@ -127,6 +130,7 @@ public class AuditPluginHandler
                 finally {
                     service.shutdownNow();
                     pluginAuditRepository.save(pluginAudit);
+                    threadLocalPluginAudit.remove();
                 }
             });
         }

@@ -294,7 +294,7 @@ public class UserServiceImpl
                                 .endpoint(avatarPath)
                                 .bucket(initializerConfigure.getFsConfigure().getBucket())
                                 .stream(file.getInputStream())
-                                .fileName(file.getOriginalFilename())
+                                .fileName(String.format("%s.png", user.getId()))
                                 .build();
                         FsResponse response = fs.writer(fsRequest);
                         UserEntity entity = userRepository.findById(user.getId()).get();
@@ -320,6 +320,7 @@ public class UserServiceImpl
     }
 
     private String encodeImageToBase64(InputStream inputStream)
+            throws IOException
     {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[1024];
@@ -332,6 +333,11 @@ public class UserServiceImpl
         catch (IOException e) {
             log.warn("Encode image to base64 exception", e);
             return null;
+        }
+        finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
     }
 }

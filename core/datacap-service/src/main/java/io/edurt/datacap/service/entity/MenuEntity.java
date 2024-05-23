@@ -3,6 +3,7 @@ package io.edurt.datacap.service.entity;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.MenuEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table(name = "datacap_menu")
+@EqualsAndHashCode(callSuper = true)
 @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class MenuEntity

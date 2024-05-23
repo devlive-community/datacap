@@ -2,6 +2,8 @@ package io.edurt.datacap.service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.edurt.datacap.service.converter.AvatarConverter;
+import io.edurt.datacap.service.entity.convert.AvatarEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
@@ -39,6 +42,10 @@ public class DashboardEntity
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "avatar")
+    @Convert(converter = AvatarConverter.class)
+    private AvatarEntity avatar;
 
     @ManyToOne
     @JoinTable(name = "datacap_dashboard_user_relation",
