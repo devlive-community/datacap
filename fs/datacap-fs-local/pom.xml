@@ -17,5 +17,9 @@
             <artifactId>datacap-fs-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-common</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -1,5 +1,7 @@
 package io.edurt.datacap.common.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class UrlUtils
 {
     private UrlUtils()
@@ -14,6 +16,9 @@ public class UrlUtils
      */
     public static String fixUrl(String url)
     {
-        return url.replaceAll("/+", "/");
+        if (StringUtils.isNotEmpty(url)) {
+            return url.replaceAll("/+", "/");
+        }
+        return null;
     }
 }

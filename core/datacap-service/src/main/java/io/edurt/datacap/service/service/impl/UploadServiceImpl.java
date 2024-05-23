@@ -51,6 +51,7 @@ public class UploadServiceImpl
                         .ifPresent(fs -> {
                             FsResponse response = fs.writer(fsRequest);
                             entity.setPath(response.getRemote());
+                            entity.setLocal(response.getRemote());
                             if (initializer.getFsConfigure().getType().equals("Local")) {
                                 entity.setPath(getAccess(entity));
                             }

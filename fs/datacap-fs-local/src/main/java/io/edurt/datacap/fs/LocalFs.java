@@ -1,5 +1,6 @@
 package io.edurt.datacap.fs;
 
+import io.edurt.datacap.common.utils.UrlUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -12,7 +13,7 @@ public class LocalFs
     public FsResponse writer(FsRequest request)
     {
         log.info("LocalFs writer origin path [ {} ]", request.getLocalPath());
-        String targetPath = String.join(File.separator, request.getEndpoint(), request.getBucket(), request.getFileName());
+        String targetPath = UrlUtils.fixUrl(String.join(File.separator, request.getEndpoint(), request.getBucket(), request.getFileName()));
         FsResponse response = FsResponse.builder()
                 .origin(request.getLocalPath())
                 .remote(targetPath)
