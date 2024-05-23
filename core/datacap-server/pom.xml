@@ -404,6 +404,12 @@
             <artifactId>datacap-fs-alioss</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- Notify -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-notify-dingtalk</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
