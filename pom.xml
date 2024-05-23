@@ -87,6 +87,7 @@
         <module>parser/datacap-parser-mysql</module>
         <module>scheduler/datacap-scheduler-spi</module>
         <module>scheduler/datacap-scheduler-local</module>
+        <module>notify/datacap-notify-spi</module>
     </modules>
 
     <name>datacap</name>
