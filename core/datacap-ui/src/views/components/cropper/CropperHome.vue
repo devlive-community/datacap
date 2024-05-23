@@ -88,6 +88,11 @@ export default defineComponent({
       if (!cropper) {
         return
       }
+      const blob: Blob | null = await cropper.getBlob()
+      if (!blob) {
+        return
+      }
+      result.blobURL = URL.createObjectURL(blob)
       isShowModal.value = false
       const file = await cropper.getFile()
       emit('update:value', file)
