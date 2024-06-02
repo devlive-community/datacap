@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface UserService
+        extends BaseService<UserEntity>
 {
     CommonResponse<UserEntity> saveOrUpdate(UserEntity configure);
 

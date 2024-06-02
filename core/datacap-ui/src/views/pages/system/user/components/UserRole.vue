@@ -86,7 +86,7 @@ export default defineComponent({
   },
   setup(props)
   {
-    const {validate, values} = useForm({
+    const { validate, values } = useForm({
       initialValues: {
         items: props.info?.roles?.map(role => role.id)
       }
@@ -114,18 +114,18 @@ export default defineComponent({
     handlerInitialize()
     {
       if (this.info) {
-        this.title = `${StringUtils.replace(this.$t('role.common.assignRole'), '$NAME', this.info.username)}`
+        this.title = `${ StringUtils.replace(this.$t('role.common.assignRole'), '$NAME', this.info.username as string) }`
       }
       this.loading = true
       const filter: FilterModel = new FilterModel()
       filter.size = 1000
       RoleService.getAll(filter)
-          .then((response) => {
-            if (response.status) {
-              this.data = response.data.content
-            }
-          })
-          .finally(() => this.loading = false)
+                 .then((response) => {
+                   if (response.status) {
+                     this.data = response.data.content
+                   }
+                 })
+                 .finally(() => this.loading = false)
     },
     handlerCancel()
     {
@@ -139,19 +139,19 @@ export default defineComponent({
           this.submitted = true
           const configure: UserRoleModel = {
             roles: this.values.items as number[],
-            userId: this.info.id
+            userId: this.info.id as number
           }
           UserService.assignRole(configure)
-              .then((response) => {
-                if (response.status) {
-                  ToastUtils.success(this.$t('user.tip.assignRoleSuccess'))
-                  this.handlerCancel()
-                }
-                else {
-                  ToastUtils.error(response.message)
-                }
-              })
-              .finally(() => this.submitted = false)
+                     .then((response) => {
+                       if (response.status) {
+                         ToastUtils.success(this.$t('user.tip.assignRoleSuccess'))
+                         this.handlerCancel()
+                       }
+                       else {
+                         ToastUtils.error(response.message)
+                       }
+                     })
+                     .finally(() => this.submitted = false)
         }
         else {
           ToastUtils.error(this.$t('common.invalidParam'))

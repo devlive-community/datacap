@@ -708,7 +708,9 @@ export default {
             newUsername: '新用户名',
             modifyPassword: '修改密码',
             oldPassword: '旧密码',
-            newPassword: '新密码'
+            newPassword: '新密码',
+            create: '创建用户',
+            edit: '编辑用户 [ $VALUE ]'
         },
         auth: {
             signinTip: '请输入用户名和密码登录',
@@ -754,6 +756,14 @@ export default {
             oldPassword: '这里主要用于修改用户的旧密码',
             newPassword: '这里主要用于修改用户的新密码',
             confirmPassword: '这里主要用于确认用户的新密码'
+        },
+        validate: {
+            newPassword: '请输入新密码',
+            confirmPassword: '请输入确认密码',
+            passwordSize: '密码必须在6-20个字符之间',
+            passwordNotMatch: '新密码与确认密码不匹配',
+            username: '请输入用户名',
+            usernameSize: '用户名必须在3-20个字符之间'
         }
     },
     role: {

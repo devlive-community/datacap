@@ -8,7 +8,7 @@
         </SheetTitle>
       </SheetHeader>
       <slot/>
-      <SheetFooter class="absolute bottom-0 left-0 right-0 mb-3 mr-3 pt-3 border-t">
+      <SheetFooter v-if="$slots.footer" class="absolute bottom-0 left-0 right-0 mb-3 mr-3 pt-3 border-t">
         <SheetClose as-child>
           <slot name="footer"/>
         </SheetClose>

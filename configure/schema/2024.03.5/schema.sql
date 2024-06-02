@@ -7,3 +7,18 @@ USE `datacap`;
 
 ALTER TABLE `datacap_dashboard`
     ADD COLUMN `avatar` TEXT DEFAULT NULL;
+
+ALTER TABLE `datacap_user`
+    ADD COLUMN `active` BOOLEAN DEFAULT TRUE;
+
+ALTER TABLE `datacap_user`
+    ADD COLUMN `code` VARCHAR(200);
+
+ALTER TABLE `datacap_user`
+    ADD COLUMN `name` VARCHAR(100) DEFAULT NULL;
+
+ALTER TABLE `datacap_user`
+    ADD COLUMN `avatar` TEXT DEFAULT NULL;
+
+ALTER TABLE `datacap_user`
+    ADD COLUMN `update_time` DATETIME DEFAULT NULL;

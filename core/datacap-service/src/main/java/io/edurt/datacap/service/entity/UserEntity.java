@@ -8,57 +8,45 @@ import io.edurt.datacap.service.converter.UserEditorConverter;
 import io.edurt.datacap.service.entity.itransient.user.UserEditorEntity;
 import io.edurt.datacap.service.validation.ValidationGroup;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Entity
-@Builder
 @Data
-@Getter
-@Setter
+@SuperBuilder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "datacap_user",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username")
-        })
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
-        justification = "I prefer to suppress these FindBugs warnings")
-@JsonIgnoreProperties(value = {"password"})
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "datacap_user")
+@EntityListeners(AuditingEntityListener.class)
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"})
 public class UserEntity
+        extends BaseEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotBlank(groups = {
             ValidationGroup.Crud.Create.class,
             ValidationGroup.Crud.Update.class,
@@ -87,9 +75,6 @@ public class UserEntity
     @Convert(converter = UserEditorConverter.class)
     private UserEditorEntity editorConfigure;
 
-    @Column(name = "create_time", columnDefinition = "datetime(5) default CURRENT_TIMESTAMP()")
-    private Timestamp createTime;
-
     @Column(name = "avatar_configure")
     @Convert(converter = MapConverter.class)
     @JsonIgnoreProperties(value = {"fsType", "local"})
@@ -104,10 +89,4 @@ public class UserEntity
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<SourceEntity> sources;
-
-    @PrePersist
-    void prePersist()
-    {
-        createTime = Timestamp.valueOf(LocalDateTime.now());
-    }
 }
