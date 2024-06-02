@@ -7,6 +7,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.response.JwtResponse;
+import io.edurt.datacap.common.utils.CodeUtils;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.common.utils.NullAwareBeanUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
@@ -34,6 +35,7 @@ import io.edurt.datacap.service.service.JwtService;
 import io.edurt.datacap.service.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -100,6 +102,7 @@ public class UserServiceImpl
             if (userOptional.isPresent()) {
                 return CommonResponse.failure(ServiceState.USER_EXISTS);
             }
+            configure.setCode(CodeUtils.generateCode(false));
             configure.setUsername(configure.getUsername());
             configure.setPassword(encoder.encode(configure.getPassword()));
             Set<RoleEntity> userRoles = configure.getRoles();
@@ -115,7 +118,12 @@ public class UserServiceImpl
         }
         else {
             userRepository.findById(configure.getId())
-                    .ifPresent(value -> NullAwareBeanUtils.copyNullProperties(value, configure));
+                    .ifPresent(value -> {
+                        NullAwareBeanUtils.copyNullProperties(value, configure);
+                        if (StringUtils.isEmpty(value.getCode())) {
+                            value.setCode(CodeUtils.generateCode(false));
+                        }
+                    });
             configure.setRoles(configure.getRoles());
         }
         return CommonResponse.success(userRepository.save(configure));
