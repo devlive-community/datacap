@@ -10,22 +10,22 @@ import io.edurt.datacap.service.validation.ValidationGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -34,21 +34,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
-@Entity
-@SuperBuilder
 @Data
-@Getter
-@Setter
+@SuperBuilder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "datacap_user",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username")
-        })
-@SuppressFBWarnings(value = {"EI_EXPOSE_REP"},
-        justification = "I prefer to suppress these FindBugs warnings")
-@JsonIgnoreProperties(value = {"password"})
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "datacap_user")
+@EntityListeners(AuditingEntityListener.class)
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"})
 public class UserEntity
         extends BaseEntity
 {

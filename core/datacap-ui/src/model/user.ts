@@ -2,8 +2,8 @@ import { RoleModel } from '@/model/role'
 
 export interface UserModel
 {
-    id: number
-    username: string
+    id?: number
+    username?: string
     chatConfigure?: UserChatModel
     system?: boolean
     editorConfigure?: string
@@ -11,6 +11,8 @@ export interface UserModel
     updateTime?: string
     roles?: RoleModel[] | []
     avatarConfigure?: UserAvatarModel
+    password?: string
+    confirmPassword?: string
 }
 
 export interface UsernameModel

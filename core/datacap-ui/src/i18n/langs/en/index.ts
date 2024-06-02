@@ -708,7 +708,9 @@ export default {
             newUsername: 'New Username',
             modifyPassword: 'Modify Password',
             oldPassword: 'Old Password',
-            newPassword: 'New Password'
+            newPassword: 'New Password',
+            create: 'Create User',
+            edit: 'Edit User [ $VALUE ]'
         },
         auth: {
             signinTip: 'Enter your username and password to login',
@@ -754,6 +756,14 @@ export default {
             oldPassword: 'This is mainly used to modify the old password of the user',
             newPassword: 'This is mainly used to modify the new password of the user',
             confirmPassword: 'This is mainly used to confirm the new password of the user'
+        },
+        validate: {
+            newPassword: 'Please enter the new password',
+            confirmPassword: 'Please confirm the new password',
+            passwordSize: 'The password must be between 6 and 20 characters',
+            passwordNotMatch: 'The new password does not match the confirm password',
+            username: 'Please enter the username',
+            usernameSize: 'The username must be between 3 and 20 characters'
         }
     },
     role: {

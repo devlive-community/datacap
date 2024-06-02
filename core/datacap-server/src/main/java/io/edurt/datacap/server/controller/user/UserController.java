@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -105,15 +104,16 @@ public class UserController
         user.setId(configure.getUserId());
         Set<RoleEntity> roles = Sets.newHashSet();
         configure.getRoles()
-                .stream()
-                .forEach(id -> {
-                    Optional<RoleEntity> optionalRole = roleRepository.findById(id);
-                    if (optionalRole.isPresent()) {
-                        roles.add(optionalRole.get());
-                    }
-                });
+                .forEach(id -> roleRepository.findById(id)
+                        .ifPresent(roles::add));
         user.setRoles(roles);
         return this.userService.saveOrUpdate(user);
+    }
+
+    @PostMapping
+    public CommonResponse<UserEntity> saveAndUpdate(@RequestBody UserEntity configure)
+    {
+        return this.userService.saveOrUpdate(configure);
     }
 
     @PutMapping(value = "changeEditorConfigure")

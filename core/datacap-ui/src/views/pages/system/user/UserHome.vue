@@ -2,6 +2,11 @@
   <div class="w-full">
     <Card>
       <template #title>{{ $t('user.common.list') }}</template>
+      <template #extra>
+        <DcButton size="icon" class="h-7 w-7" @click="handlerChangeInfo(true, null)">
+          <Plus :size="20"/>
+        </DcButton>
+      </template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #role="{row}">
           <Badge v-for="role in row.roles" class="mt-1">
@@ -24,8 +29,9 @@
         </template>
       </TableCommon>
     </Card>
-    <UserRole v-if="dataRoleVisible" :is-visible="dataRoleVisible" :info="dataInfo" @close="handlerChangeRole(false, null)"></UserRole>
+    <UserRole v-if="dataRoleVisible" :is-visible="dataRoleVisible" :info="dataInfo" @close="handlerChangeRole(false, null)"/>
   </div>
+  <UserInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"/>
 </template>
 
 <script lang="ts">
@@ -35,7 +41,7 @@ import UserService from '@/services/user'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { useI18n } from 'vue-i18n'
 import { createHeaders } from './UserUtils'
-import { ArrowUpFromLine, Loader2 } from 'lucide-vue-next'
+import { ArrowUpFromLine, Loader2, Plus } from 'lucide-vue-next'
 import Card from '@/views/ui/card'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import { Button } from '@/components/ui/button'
@@ -43,17 +49,21 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import UserRole from '@/views/pages/system/user/components/UserRole.vue'
 import { UserModel } from '@/model/user'
 import { Badge } from '@/components/ui/badge'
+import DcButton from '@/views/ui/button/button.vue'
+import UserInfo from '@/views/pages/system/user/UserInfo.vue'
 
 export default defineComponent({
   name: 'UserHome',
   components: {
+    UserInfo,
+    DcButton,
     Badge,
     UserRole,
     TooltipContent, TooltipTrigger, Tooltip, TooltipProvider,
     Card,
     Button,
     TableCommon,
-    Loader2, ArrowUpFromLine
+    Loader2, ArrowUpFromLine, Plus
   },
   setup()
   {
@@ -73,7 +83,8 @@ export default defineComponent({
       dataRoleVisible: false,
       data: [],
       pagination: {} as PaginationModel,
-      dataInfo: null as UserModel | null
+      dataInfo: null as UserModel | null,
+      dataInfoVisible: false
     }
   },
   created()
@@ -104,6 +115,14 @@ export default defineComponent({
       this.dataRoleVisible = isOpen
       this.dataInfo = dataInfo
       if (!isOpen) {
+        this.handlerInitialize()
+      }
+    },
+    handlerChangeInfo(opened: boolean, dataInfo: UserModel | null)
+    {
+      this.dataInfoVisible = opened
+      this.dataInfo = dataInfo
+      if (!opened) {
         this.handlerInitialize()
       }
     }
