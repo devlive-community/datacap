@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card>
+    <Card title-class="p-3.5">
       <template #title>{{ $t('snippet.common.list') }}</template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #username="{ row }">

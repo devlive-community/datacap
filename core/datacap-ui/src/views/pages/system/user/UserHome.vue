@@ -1,9 +1,9 @@
 <template>
   <div class="w-full">
-    <Card>
+    <Card title-class="p-2 pl-4">
       <template #title>{{ $t('user.common.list') }}</template>
       <template #extra>
-        <DcButton size="icon" class="h-7 w-7" @click="handlerChangeInfo(true, null)">
+        <DcButton size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerChangeInfo(true, null)">
           <Plus :size="20"/>
         </DcButton>
       </template>
