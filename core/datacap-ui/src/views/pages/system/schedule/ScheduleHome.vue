@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card>
+    <Card title-class="p-4">
       <template #title>{{ $t('schedule.common.list') }}</template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #active="{row}">

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-2">
+    <Card title-class="p-2 pl-4">
       <template #title>{{ $t('template.common.list') }}</template>
       <template #extra>
         <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true, null)">

@@ -8,7 +8,7 @@ repo_url: https://github.com/devlive-community/datacap
 edit_uri: "https://github.com/devlive-community/datacap/blob/dev/docs/docs"
 
 banners:
-  - title: DataCap 2024.03.4 is released
+  - title: DataCap 2024.03.5 is released
     link: /release-latest.html
     description: <a href="https://github.com/devlive-community/datacap" class="text-white"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
 
@@ -212,7 +212,8 @@ nav:
         - reference/connectors/pinot/home.md
         - reference/connectors/cassandra/home.md
   - NavReleaseNote:
-      - 2024.03.4 (latest): release/latest.md
+      - 2024.03.5 (latest): release/latest.md
+      - 2024.03.4: release/2024.03.4.md
       - 2024.03.3: release/2024.03.3.md
       - 2024.03.2: release/2024.03.2.md
       - 2024.03.1: release/2024.03.1.md
