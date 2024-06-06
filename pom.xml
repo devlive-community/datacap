@@ -4,7 +4,7 @@
     <groupId>io.edurt.datacap</groupId>
     <artifactId>datacap</artifactId>
     <packaging>pom</packaging>
-    <version>2024.03.5</version>
+    <version>2024.03.6-SNAPSHOT</version>
 
     <modules>
         <module>client/datacap-cli</module>
@@ -89,6 +89,7 @@
         <module>scheduler/datacap-scheduler-local</module>
         <module>notify/datacap-notify-spi</module>
         <module>notify/datacap-notify-dingtalk</module>
+        <module>file/datacap-file-spi</module>
     </modules>
 
     <name>datacap</name>
