@@ -7,11 +7,13 @@ import io.edurt.datacap.file.FileManager
 import io.edurt.datacap.file.model.FileRequest
 import org.junit.Before
 import org.junit.Test
+import org.slf4j.LoggerFactory.getLogger
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class TxtFileTest
 {
+    private val log = getLogger(TxtFileTest::class.java)
     private val name = "Txt"
     private var injector: Injector? = null
     private val request: FileRequest = FileRequest()
@@ -45,6 +47,33 @@ class TxtFileTest
                     assertTrue {
                         file.writer(request)
                             .successful == true
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun testReader()
+    {
+        injector?.let { injector ->
+            FileFilter.findNotify(injector, name)
+                .ifPresent { file ->
+                    assertFalse {
+                        file.reader(request)
+                            .successful == true
+                    }
+
+                    request.delimiter = "[&&&]"
+                    val response = file.reader(request)
+                    log.info("headers: ${response.headers}")
+                    response.columns
+                        ?.let { columns ->
+                            columns.forEach {
+                                log.info("columns: $it")
+                            }
+                        }
+                    assertTrue {
+                        response.successful == true
                     }
                 }
         }
