@@ -185,7 +185,7 @@
         <plugin.maven.gpg.version>1.6</plugin.maven.gpg.version>
         <plugin.maven.nexus.version>1.6.13</plugin.maven.nexus.version>
         <plugin.maven.dokka.version>1.9.10</plugin.maven.dokka.version>
-        <environment.compile.java.version>1.8</environment.compile.java.version>
+        <environment.compile.java.version>11</environment.compile.java.version>
     </properties>
 
     <dependencies>
@@ -400,7 +400,7 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <version>${kotlin.version}</version>
                 <configuration>
-                    <jvmTarget>1.8</jvmTarget>
+                    <jvmTarget>11</jvmTarget>
                 </configuration>
                 <executions>
                     <execution>
