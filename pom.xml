@@ -173,6 +173,7 @@
         <datacap.pgsql.version>42.7.3</datacap.pgsql.version>
         <datacap.qiniu.version>7.15.0</datacap.qiniu.version>
         <datacap.alioss.version>3.16.1</datacap.alioss.version>
+        <datacap.commons-io.version>2.16.1</datacap.commons-io.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
@@ -353,6 +354,11 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${dep.reflections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${datacap.commons-io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

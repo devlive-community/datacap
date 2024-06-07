@@ -4,5 +4,6 @@ class FileRequest
 {
     var name: String? = null
     var path: String? = null
-    var content: String? = null
+    var headers: List<Any>? = null
+    var columns: List<Any>? = null
 }
