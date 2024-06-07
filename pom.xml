@@ -90,6 +90,7 @@
         <module>notify/datacap-notify-spi</module>
         <module>notify/datacap-notify-dingtalk</module>
         <module>file/datacap-file-spi</module>
+        <module>file/datacap-file-txt</module>
     </modules>
 
     <name>datacap</name>
@@ -316,6 +317,11 @@
             <dependency>
                 <groupId>io.edurt.datacap</groupId>
                 <artifactId>datacap-notify-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.edurt.datacap</groupId>
+                <artifactId>datacap-file-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
