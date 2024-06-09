@@ -17,7 +17,6 @@ import io.edurt.datacap.service.repository.SourceRepository;
 import io.edurt.datacap.service.repository.TemplateSqlRepository;
 import io.edurt.datacap.service.service.ExecuteService;
 import io.edurt.datacap.service.service.TemplateSqlService;
-import io.edurt.datacap.spi.FormatType;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -164,7 +163,7 @@ public class TemplateSqlServiceImpl
                 });
             }
             executeConfigure.setContent(content[0]);
-            executeConfigure.setFormat(FormatType.JSON);
+            executeConfigure.setFormat("Json");
             executeConfigure.setName(String.valueOf(configure.getSourceId()));
         }
         catch (JsonProcessingException e) {

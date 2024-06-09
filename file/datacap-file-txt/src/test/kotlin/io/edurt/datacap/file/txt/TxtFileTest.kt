@@ -32,6 +32,30 @@ class TxtFileTest
         request.columns = listOf(l1, l2)
     }
 
+
+    @Test
+    fun testFormat()
+    {
+        injector?.let { injector ->
+            FileFilter.findNotify(injector, name)
+                .ifPresent { file ->
+                    request.delimiter = "[&&&]"
+                    val response = file.format(request)
+                    log.info("headers: [ ${response.headers} ]")
+                    response.columns
+                        .let { columns ->
+                            columns.forEachIndexed { index, line ->
+                                log.info("index: [ $index ], line: [ $line ]")
+                            }
+                        }
+
+                    assertTrue {
+                        response.successful == true
+                    }
+                }
+        }
+    }
+
     @Test
     fun testWriter()
     {

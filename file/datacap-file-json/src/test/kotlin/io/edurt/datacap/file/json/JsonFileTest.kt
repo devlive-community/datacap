@@ -32,6 +32,28 @@ class JsonFileTest
     }
 
     @Test
+    fun testFormat()
+    {
+        injector?.let { injector ->
+            FileFilter.findNotify(injector, name)
+                .ifPresent { file ->
+                    val response = file.format(request)
+                    log.info("headers: [ ${response.headers} ]")
+                    response.columns
+                        .let { columns ->
+                            columns.forEachIndexed { index, line ->
+                                log.info("index: [ $index ], line: [ $line ]")
+                            }
+                        }
+
+                    assertTrue {
+                        response.successful == true
+                    }
+                }
+        }
+    }
+
+    @Test
     fun testWriter()
     {
         injector?.let { injector ->

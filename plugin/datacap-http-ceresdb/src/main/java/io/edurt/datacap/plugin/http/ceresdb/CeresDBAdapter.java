@@ -1,5 +1,6 @@
 package io.edurt.datacap.plugin.http.ceresdb;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.adapter.HttpAdapter;
 import io.edurt.datacap.spi.connection.HttpConfigure;
 import io.edurt.datacap.spi.connection.HttpConnection;
@@ -21,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Slf4j
+@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION"})
 public class CeresDBAdapter
         extends HttpAdapter
 {
@@ -66,7 +68,7 @@ public class CeresDBAdapter
                                 .stream()
                                 .map(Map.Entry::getValue)
                                 .collect(Collectors.toList());
-                        columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
+                        columns.add(_columns);
                     }
                 }
                 else {
@@ -82,7 +84,7 @@ public class CeresDBAdapter
             finally {
                 response.setHeaders(headers);
                 response.setTypes(types);
-                response.setColumns(columns);
+                response.setColumns(handlerFormatter(configure.getInjector(), configure.getFormat(), headers, columns));
             }
         }
         processorTime.setEnd(new Date().getTime());

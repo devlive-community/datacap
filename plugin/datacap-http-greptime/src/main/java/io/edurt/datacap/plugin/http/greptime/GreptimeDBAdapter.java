@@ -66,7 +66,7 @@ public class GreptimeDBAdapter
                                 });
                     }
                     records.getRows()
-                            .forEach(record -> columns.add(handlerFormatter(configure.getFormat(), headers, record)));
+                            .forEach(record -> columns.add(record));
                 }
                 else {
                     response.setIsSuccessful(Boolean.FALSE);
@@ -81,7 +81,7 @@ public class GreptimeDBAdapter
             finally {
                 response.setHeaders(headers);
                 response.setTypes(types);
-                response.setColumns(columns);
+                response.setColumns(handlerFormatter(configure.getInjector(), configure.getFormat(), headers, columns));
             }
         }
         processorTime.setEnd(new Date().getTime());

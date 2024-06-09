@@ -57,11 +57,11 @@ public class RedisAdapter
                         _columns.add(jdbcColumn.mappingColumnData(metaData.getColumnTypeName(i), i));
                     }
                     isPresent = false;
-                    columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
+                    columns.add(_columns);
                 }
                 response.setHeaders(headers);
                 response.setTypes(types);
-                response.setColumns(columns);
+                response.setColumns(handlerFormatter(configure.getInjector(), configure.getFormat(), headers, columns));
                 response.setIsSuccessful(Boolean.TRUE);
             }
             catch (SQLException ex) {

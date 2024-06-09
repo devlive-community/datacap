@@ -16,6 +16,47 @@ class JsonFile : File
 {
     private val log = getLogger(this::class.java)
 
+    override fun format(request: FileRequest): FileResponse
+    {
+        val response = FileResponse()
+        try
+        {
+            log.info("${name()} format start time [ ${DateUtils.now()} ]")
+            log.info("${name()} format headers start")
+            response.headers = request.headers
+            log.info("${name()} format headers end")
+
+            log.info("${name()} format columns start")
+            val mapper = ObjectMapper()
+            val columns = mutableListOf<Any>()
+            request.columns
+                .forEach { column ->
+                    val jsonNode = mapper.createObjectNode()
+                    for (headerIndex in request.headers.indices)
+                    {
+                        val header = request.headers[headerIndex] as String
+                        when (column)
+                        {
+                            is List<*> -> jsonNode.putPOJO(header, column[headerIndex])
+                            else -> jsonNode.putPOJO(header, column)
+                        }
+                    }
+                    columns.add(jsonNode)
+                }
+            response.columns = columns
+            log.info("${name()} format columns end")
+
+            log.info("${name()} format end time [ ${DateUtils.now()} ]")
+            response.successful = true
+        }
+        catch (e: IOException)
+        {
+            response.successful = false
+            response.message = e.message
+        }
+        return response
+    }
+
     override fun writer(request: FileRequest): FileResponse
     {
         val response = FileResponse()

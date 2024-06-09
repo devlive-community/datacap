@@ -44,7 +44,6 @@ import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.SourceService;
-import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
@@ -168,7 +167,6 @@ public class SourceServiceImpl
         _configure.setDatabase(_database);
         _configure.setEnv(Optional.ofNullable(configure.getConfigures()));
         _configure.setSsl(Optional.ofNullable(configure.getSsl()));
-        _configure.setFormat(FormatType.JSON);
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(plugin.validator());
         plugin.destroy();
@@ -409,13 +407,15 @@ public class SourceServiceImpl
         scheduledHistoryHandler.save(scheduledHistory);
         log.info("==================== Sync metadata  [ {} ] started =================", entity.getName());
         Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(this.injector, entity.getType(), entity.getProtocol());
-        if (!pluginOptional.isPresent()) {
+        if (pluginOptional.isEmpty()) {
             log.warn("The source [ {} ] protocol [ {} ] is not available", entity.getName(), entity.getProtocol());
         }
         else {
             try {
                 Plugin plugin = pluginOptional.get();
-                plugin.connect(entity.toConfigure());
+                Configure pConfigure = entity.toConfigure();
+                pConfigure.setInjector(injector);
+                plugin.connect(pConfigure);
                 Response response = plugin.execute(plugin.validator());
                 if (!response.getIsSuccessful()) {
                     log.error("The source [ {} ] not available", entity.getName());
@@ -543,7 +543,9 @@ public class SourceServiceImpl
             log.warn("The source [ {} ] protocol [ {} ] template [ {} ] is not available, skip sync database", entity.getName(), entity.getProtocol(), templateName);
         }
         else {
-            plugin.connect(entity.toConfigure());
+            Configure pConfigure = entity.toConfigure();
+            pConfigure.setInjector(injector);
+            plugin.connect(pConfigure);
             Response response = plugin.execute(getSqlContext(template, null));
             if (!response.getIsSuccessful()) {
                 log.error("The source [ {} ] protocol [ {} ] sync metadata  [ {} ] failed", entity.getName(), entity.getProtocol(), response.getMessage());
@@ -613,7 +615,9 @@ public class SourceServiceImpl
             log.warn("The source [ {} ] protocol [ {} ] template [ {} ] is not available, skip sync table", entity.getName(), entity.getProtocol(), templateName);
         }
         else {
-            plugin.connect(entity.toConfigure());
+            Configure pConfigure = entity.toConfigure();
+            pConfigure.setInjector(injector);
+            plugin.connect(pConfigure);
             Response response = plugin.execute(getSqlContext(template, null));
             if (!response.getIsSuccessful()) {
                 log.error("The source [ {} ] protocol [ {} ] sync metadata tables  [ {} ] failed", entity.getName(), entity.getProtocol(), response.getMessage());
@@ -704,7 +708,9 @@ public class SourceServiceImpl
             log.warn("The source [ {} ] protocol [ {} ] template [ {} ] is not available, skip sync column", entity.getName(), entity.getProtocol(), templateName);
         }
         else {
-            plugin.connect(entity.toConfigure());
+            Configure pConfigure = entity.toConfigure();
+            pConfigure.setInjector(injector);
+            plugin.connect(pConfigure);
             Response response = plugin.execute(getSqlContext(template, null));
             if (!response.getIsSuccessful()) {
                 log.error("The source [ {} ] protocol [ {} ] sync metadata columns  [ {} ] failed", entity.getName(), entity.getProtocol(), response.getMessage());

@@ -59,7 +59,7 @@ public class CrateDBAdapter
                     types.addAll(applyResponse.getTypes());
                     for (Object column : applyResponse.getColumns()) {
                         List<Object> _columns = (List<Object>) column;
-                        columns.add(handlerFormatter(httpConfigure.getFormat(), headers, _columns));
+                        columns.add(_columns);
                     }
                 }
                 response.setIsSuccessful(Boolean.TRUE);
@@ -72,7 +72,7 @@ public class CrateDBAdapter
             finally {
                 response.setHeaders(headers);
                 response.setTypes(types);
-                response.setColumns(columns);
+                response.setColumns(handlerFormatter(httpConfigure.getInjector(), httpConfigure.getFormat(), headers, columns));
             }
         }
         processorTime.setEnd(new Date().getTime());

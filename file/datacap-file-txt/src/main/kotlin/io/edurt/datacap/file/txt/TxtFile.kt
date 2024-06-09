@@ -15,6 +15,50 @@ class TxtFile : File
 {
     private val log = getLogger(this::class.java)
 
+    override fun format(request: FileRequest): FileResponse
+    {
+        val response = FileResponse()
+        try
+        {
+            checkArgument(isNotEmpty(request.delimiter), "Delimiter must not be empty")
+
+            log.info("${name()} format start time [ ${DateUtils.now()} ]")
+            request.delimiter
+                ?.let { delimiter ->
+                    log.info("${name()} format headers start")
+                    val headers = mutableListOf<Any>()
+                    request.headers
+                        .let { line ->
+                            headers.add(line.joinToString(separator = delimiter))
+                        }
+                    response.headers = headers
+                    log.info("${name()} format headers end")
+
+                    log.info("${name()} format columns start")
+                    val columns = mutableListOf<Any>()
+                    request.columns
+                        .forEach { line ->
+                            when (line)
+                            {
+                                is List<*> -> columns.add(line.joinToString(separator = delimiter))
+                                else -> columns.add(line)
+                            }
+                        }
+                    response.columns = columns
+                    log.info("${name()} format columns end")
+                }
+
+            log.info("${name()} format end time [ ${DateUtils.now()} ]")
+            response.successful = true
+        }
+        catch (e: Exception)
+        {
+            response.successful = false
+            response.message = e.message
+        }
+        return response
+    }
+
     override fun writer(request: FileRequest): FileResponse
     {
         val response = FileResponse()
@@ -75,8 +119,9 @@ class TxtFile : File
             request.delimiter
                 ?.let { delimiter ->
                     val lines = FileUtils.readLines(file, Charsets.UTF_8)
-
                     checkState(lines.isNotEmpty(), "The file is empty")
+                    log.info("${name()} reader file line count [ ${lines.size} ]")
+
                     log.info("${name()} reader file headers start")
                     response.headers = lines.first()
                         .split(delimiter)

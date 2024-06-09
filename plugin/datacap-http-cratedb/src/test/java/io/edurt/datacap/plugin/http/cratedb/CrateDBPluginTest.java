@@ -4,7 +4,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
-import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import org.junit.Assert;
@@ -28,7 +27,6 @@ public class CrateDBPluginTest
         configure.setPort(4200);
         configure.setUsername(Optional.of("crate"));
         configure.setPassword(Optional.of(""));
-        configure.setFormat(FormatType.JSON);
     }
 
     @Test

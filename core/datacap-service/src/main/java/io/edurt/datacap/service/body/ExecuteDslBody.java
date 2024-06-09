@@ -2,7 +2,6 @@ package io.edurt.datacap.service.body;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.sql.configure.SqlBody;
-import io.edurt.datacap.spi.FormatType;
 import lombok.Data;
 import lombok.ToString;
 
@@ -16,5 +15,5 @@ public class ExecuteDslBody
     private String name;
     private SqlBody configure;
     private Map<String, Object> env;
-    private FormatType format = FormatType.NONE;
+    private String format = "";
 }

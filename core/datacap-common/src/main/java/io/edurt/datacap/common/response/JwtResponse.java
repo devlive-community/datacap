@@ -1,15 +1,18 @@
 package io.edurt.datacap.common.response;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 @ToString
 @NoArgsConstructor
 public class JwtResponse
 {
+    private String type = "Bearer";
     private String token;
     private Long id;
     private String username;

@@ -69,6 +69,17 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Support file convert -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-file-txt</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-file-json</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

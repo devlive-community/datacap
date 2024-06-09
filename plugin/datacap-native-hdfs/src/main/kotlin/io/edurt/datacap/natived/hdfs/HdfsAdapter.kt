@@ -64,7 +64,7 @@ class HdfsAdapter : NativeAdapter
                         }
                         types.add("String")
                         this.adapter(configuration, sqlBase)
-                            .forEach { column -> columns.add(handlerFormatter(configure.format, headers, Collections.singletonList(column) as List<Any>?)) }
+                            .forEach { column -> columns.add(Collections.singletonList(column)) }
                         response.isSuccessful = Boolean.TRUE
                     }
                     else
@@ -89,7 +89,7 @@ class HdfsAdapter : NativeAdapter
             {
                 response.headers = headers
                 response.types = types
-                response.columns = columns
+                response.columns = handlerFormatter(configure.injector, configure.format, headers, columns)
             }
         }
         processorTime.end = Date().time

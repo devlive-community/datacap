@@ -2,7 +2,6 @@ package io.edurt.datacap.service.entity;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.service.enums.QueryMode;
-import io.edurt.datacap.spi.FormatType;
 import lombok.Data;
 import lombok.ToString;
 
@@ -16,7 +15,7 @@ public class ExecuteEntity
     private String name;
     private String content;
     private Map<String, Object> env;
-    private FormatType format = FormatType.NONE;
+    private String format = "Json";
     private int limit;
     private QueryMode mode;
 }

@@ -18,7 +18,6 @@ import io.edurt.datacap.service.configure.IConfigureFieldName;
 import io.edurt.datacap.service.configure.IConfigureFieldType;
 import io.edurt.datacap.service.configure.IConfigurePipelineType;
 import io.edurt.datacap.service.entity.SourceEntity;
-import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.model.Configure;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -86,7 +85,7 @@ public class ConfigureUtils
                     break;
             }
         });
-        configure.setFormat(FormatType.JSON);
+        configure.setFormat("Json");
         return configure;
     }
 
@@ -241,8 +240,6 @@ public class ConfigureUtils
      * Converts the given properties based on the source entity, fields, configure, environment, pipeline type, executor, query, and field body.
      *
      * @param entity the source entity
-     * @param fields the list of fields
-     * @param configure the properties to configure
      * @param environment the environment
      * @param pipelineType the pipeline type
      * @param executor the executor

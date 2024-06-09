@@ -410,6 +410,10 @@
             <artifactId>datacap-notify-dingtalk</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-file-spi</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
