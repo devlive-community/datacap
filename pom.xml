@@ -91,6 +91,7 @@
         <module>notify/datacap-notify-dingtalk</module>
         <module>file/datacap-file-spi</module>
         <module>file/datacap-file-txt</module>
+        <module>file/datacap-file-json</module>
     </modules>
 
     <name>datacap</name>
