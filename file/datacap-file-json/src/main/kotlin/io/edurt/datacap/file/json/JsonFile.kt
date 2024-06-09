@@ -38,7 +38,7 @@ class JsonFile : File
                         when (column)
                         {
                             is List<*> -> jsonNode.putPOJO(header, column[headerIndex])
-                            else -> jsonNode.putPOJO(header, column.toString())
+                            else -> jsonNode.putPOJO(header, column)
                         }
                     }
                     columns.add(jsonNode)

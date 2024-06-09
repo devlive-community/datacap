@@ -44,7 +44,6 @@ import io.edurt.datacap.service.repository.metadata.DatabaseRepository;
 import io.edurt.datacap.service.repository.metadata.TableRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.SourceService;
-import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
@@ -168,7 +167,6 @@ public class SourceServiceImpl
         _configure.setDatabase(_database);
         _configure.setEnv(Optional.ofNullable(configure.getConfigures()));
         _configure.setSsl(Optional.ofNullable(configure.getSsl()));
-        _configure.setFormat(FormatType.JSON);
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(plugin.validator());
         plugin.destroy();

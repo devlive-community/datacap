@@ -76,6 +76,7 @@ public class ExecuteServiceImpl
         _configure.setEnv(Optional.ofNullable(entity.getConfigures()));
         _configure.setFormat(configure.getFormat());
         _configure.setUsedConfig(entity.isUsedConfig());
+        _configure.setInjector(injector);
         if (entity.isUsedConfig()) {
             _configure.setUsername(Optional.of(entity.getUser().getUsername()));
             String configHome = environment.getProperty("datacap.config.data");

@@ -58,7 +58,7 @@ public class ClickHouseAdapter
                         types.addAll(Arrays.asList(data[i].split("\t")));
                     }
                     else {
-                        columns.add(handlerFormatter(httpConfigure.getFormat(), headers, Arrays.asList(data[i].split("\t"))));
+                        columns.add(Arrays.asList(data[i].split("\t")));
                     }
                 }
                 response.setIsSuccessful(Boolean.TRUE);
@@ -71,7 +71,7 @@ public class ClickHouseAdapter
             finally {
                 response.setHeaders(headers);
                 response.setTypes(types);
-                response.setColumns(columns);
+                response.setColumns(handlerFormatter(httpConfigure.getInjector(), httpConfigure.getFormat(), headers, columns));
             }
         }
         processorTime.setEnd(new Date().getTime());

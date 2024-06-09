@@ -57,7 +57,6 @@ import io.edurt.datacap.service.repository.DataSetRepository;
 import io.edurt.datacap.service.repository.DatasetHistoryRepository;
 import io.edurt.datacap.service.security.UserDetailsService;
 import io.edurt.datacap.service.service.DataSetService;
-import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
 import io.edurt.datacap.spi.model.Configure;
@@ -258,7 +257,6 @@ public class DataSetServiceImpl
                     targetConfigure.setUsername(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getUsername()));
                     targetConfigure.setPassword(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getPassword()));
                     targetConfigure.setDatabase(Optional.ofNullable(database));
-                    targetConfigure.setFormat(FormatType.JSON);
                     plugin.connect(targetConfigure);
                     Response response = plugin.execute(sql);
                     response.setContent(sql);
@@ -730,7 +728,7 @@ public class DataSetServiceImpl
                         SqlColumn.builder().column("active").operator(SqlOperator.EQ).value("1").build()))
                 .condition(" AND ")
                 .build());
-        configure.setFormat(FormatType.NONE);
+        configure.setFormat("");
         plugin.connect(configure);
         Response outputResponse = plugin.execute(builder.getSql());
         if (outputResponse.getIsSuccessful()) {

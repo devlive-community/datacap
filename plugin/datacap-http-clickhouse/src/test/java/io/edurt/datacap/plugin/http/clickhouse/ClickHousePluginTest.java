@@ -4,7 +4,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
-import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.model.Configure;
 import org.junit.Assert;
@@ -26,7 +25,6 @@ public class ClickHousePluginTest
         configure = new Configure();
         configure.setHost("127.0.0.1");
         configure.setPort(8123);
-        configure.setFormat(FormatType.JSON);
     }
 
     @Test

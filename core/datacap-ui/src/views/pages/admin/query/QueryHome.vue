@@ -216,7 +216,7 @@ export default defineComponent({
     handlerInitialize()
     {
       this.createEditor()
-      this.queryConfigure.configure = { name: this.selectSource.id as string, content: '', mode: 'ADHOC', format: 'JSON' }
+      this.queryConfigure.configure = { name: this.selectSource.id as string, content: '', mode: 'ADHOC', format: 'Json' }
       const params = this.$route.params
       if (params) {
         const code = params.code

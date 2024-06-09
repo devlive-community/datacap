@@ -8,7 +8,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.utils.JsonUtils;
 import io.edurt.datacap.service.configure.IConfigure;
 import io.edurt.datacap.service.configure.IConfigureExecutor;
-import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.model.Configure;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -160,7 +159,7 @@ public class SourceEntity
         configure.setDatabase(database);
         configure.setSsl(Optional.ofNullable(this.getSsl()));
         configure.setEnv(Optional.ofNullable(this.getConfigures()));
-        configure.setFormat(FormatType.JSON);
+        configure.setFormat("Json");
         return configure;
     }
 }

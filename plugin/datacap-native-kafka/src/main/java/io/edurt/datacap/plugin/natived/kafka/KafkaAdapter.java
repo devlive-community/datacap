@@ -60,7 +60,7 @@ public class KafkaAdapter
                     }
                     types.add("String");
                     this.adapter(client, sqlBase)
-                            .forEach(column -> columns.add(handlerFormatter(configure.getFormat(), headers, Collections.singletonList(column))));
+                            .forEach(column -> columns.add(Collections.singletonList(column)));
                     response.setIsSuccessful(Boolean.TRUE);
                 }
                 else {
@@ -76,7 +76,7 @@ public class KafkaAdapter
             finally {
                 response.setHeaders(headers);
                 response.setTypes(types);
-                response.setColumns(columns);
+                response.setColumns(handlerFormatter(configure.getInjector(), configure.getFormat(), headers, columns));
             }
         }
         processorTime.setEnd(new Date().getTime());

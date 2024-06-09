@@ -1,12 +1,10 @@
 package io.edurt.datacap.spi.adapter;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.edurt.datacap.spi.FormatType;
 import io.edurt.datacap.spi.column.Column;
 import io.edurt.datacap.spi.column.JdbcColumn;
 import io.edurt.datacap.spi.connection.JdbcConfigure;
 import io.edurt.datacap.spi.connection.JdbcConnection;
-import io.edurt.datacap.spi.formatter.FormatterFactory;
 import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.spi.model.Time;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
-@SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"},
-        justification = "I prefer to suppress these FindBugs warnings")
+@SuppressFBWarnings(value = {"RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"})
 public class JdbcAdapter
         implements Adapter
 {
@@ -32,11 +29,6 @@ public class JdbcAdapter
     public JdbcAdapter(io.edurt.datacap.spi.connection.Connection connection)
     {
         this.connection = connection;
-    }
-
-    public Object handlerFormatter(FormatType format, List<String> headers, List<Object> columns)
-    {
-        return FormatterFactory.createFormatter(format, headers, columns).formatter();
     }
 
     @Override
@@ -66,7 +58,7 @@ public class JdbcAdapter
                         for (int i = 1; i <= columnCount; i++) {
                             _columns.add(jdbcColumn.mappingColumnData(metaData.getColumnTypeName(i), i));
                         }
-                        columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
+                        columns.add(_columns);
                     }
                 }
                 catch (SQLException tryUpdateEx) {
@@ -86,7 +78,7 @@ public class JdbcAdapter
                             }
                             _columns.add(count);
                             connection.commit();
-                            columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
+                            columns.add(_columns);
                         }
                         catch (SQLException updateEx) {
                             try {
@@ -106,7 +98,7 @@ public class JdbcAdapter
                 finally {
                     response.setHeaders(headers);
                     response.setTypes(types);
-                    response.setColumns(columns);
+                    response.setColumns(handlerFormatter(configure.getInjector(), configure.getFormat(), headers, columns));
                     response.setIsSuccessful(Boolean.TRUE);
                 }
             }

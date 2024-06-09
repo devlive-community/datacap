@@ -11,9 +11,8 @@ import redis.clients.jedis.Connection;
 import redis.clients.jedis.Protocol;
 
 import java.lang.reflect.Method;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class RedisAdapter
                     }
                     cmdParam.add(commands[i]);
                 }
-                String[] cmdParamArr = cmdParam.toArray(new String[]{});
+                String[] cmdParamArr = cmdParam.toArray(new String[] {});
                 method.invoke(client, cmd, cmdParamArr);
                 Object body = client.getOne();
                 headers.add(commands[1]);
@@ -63,11 +62,11 @@ public class RedisAdapter
                 if (body instanceof List) {
                     List<Object> bodySplit = ((List) body);
                     for (Object obj : bodySplit) {
-                        columns.add(handlerFormatter(configure.getFormat(), headers, Arrays.asList(new String((byte[]) obj, Charset.forName("UTF-8")))));
+                        columns.add(List.of(new String((byte[]) obj, StandardCharsets.UTF_8)));
                     }
                 }
                 else {
-                    columns.add(handlerFormatter(configure.getFormat(), headers, Arrays.asList(new String((byte[]) body, Charset.forName("UTF-8")))));
+                    columns.add(List.of(new String((byte[]) body, StandardCharsets.UTF_8)));
                 }
                 response.setIsSuccessful(Boolean.TRUE);
             }
@@ -79,7 +78,7 @@ public class RedisAdapter
             finally {
                 response.setHeaders(headers);
                 response.setTypes(types);
-                response.setColumns(columns);
+                response.setColumns(handlerFormatter(configure.getInjector(), configure.getFormat(), headers, columns));
             }
         }
         processorTime.setEnd(new Date().getTime());

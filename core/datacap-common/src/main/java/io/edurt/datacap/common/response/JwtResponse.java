@@ -7,21 +7,16 @@ import lombok.ToString;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 @ToString
 @NoArgsConstructor
 public class JwtResponse
 {
-    @Getter
     private String type = "Bearer";
-    @Getter
     private String token;
-    @Getter
     private Long id;
-    @Getter
     private String username;
-    @Getter
     private List<String> roles;
-    @Getter
     private String avatar;
 
     public JwtResponse(String accessToken, Long id, String username, List<String> roles, String avatar)

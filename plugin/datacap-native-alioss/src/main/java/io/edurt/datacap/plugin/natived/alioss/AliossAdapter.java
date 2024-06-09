@@ -57,11 +57,11 @@ public class AliossAdapter
                     types.add("String");
                     ObjectListing objectListing = client.listObjects(configure.getDatabase().get(), sqlBase.getTable());
                     objectListing.getObjectSummaries()
-                            .forEach(column -> columns.add(handlerFormatter(configure.getFormat(), headers, Collections.singletonList(column.getKey()))));
+                            .forEach(column -> columns.add(Collections.singletonList(column.getKey())));
                     response.setIsSuccessful(Boolean.TRUE);
                 }
                 else {
-                    Preconditions.checkArgument(!sqlBase.isSuccessful(), sqlBase.getMessage());
+                    Preconditions.checkArgument(true, sqlBase.getMessage());
                 }
             }
             catch (Exception ex) {
@@ -72,7 +72,7 @@ public class AliossAdapter
             finally {
                 response.setHeaders(headers);
                 response.setTypes(types);
-                response.setColumns(columns);
+                response.setColumns(handlerFormatter(configure.getInjector(), configure.getFormat(), headers, columns));
             }
         }
         processorTime.setEnd(new Date().getTime());

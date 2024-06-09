@@ -16,31 +16,37 @@ import kotlin.String
 import kotlin.toString
 
 @SuppressFBWarnings(
-        value = ["RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"], justification = "I prefer to suppress these FindBugs warnings"
+    value = ["RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"], justification = "I prefer to suppress these FindBugs warnings"
 )
-class ScyllaDBAdapter : Adapter {
+class ScyllaDBAdapter : Adapter
+{
     private val log: Logger = getLogger(this.javaClass)
 
     private var connection: ScyllaDBConnection? = null
 
-    constructor(connection: ScyllaDBConnection?) : super() {
+    constructor(connection: ScyllaDBConnection?) : super()
+    {
         this.connection = connection
     }
 
-    override fun handlerExecute(content: String?): Response {
+    override fun handlerExecute(content: String?): Response
+    {
         val processorTime = Time()
         processorTime.start = Date().time
         val response: Response = this.connection !!.response
         val configure: Configure = this.connection !!.configure
-        if (response.isConnected) {
+        if (response.isConnected)
+        {
             val headers: MutableList<String> = ArrayList()
             val types: MutableList<String> = ArrayList()
             val columns: MutableList<Any> = ArrayList()
-            try {
+            try
+            {
                 val resultSet: ResultSet = connection?.getSession() !!.execute(content !!)
                 var isPresent = true
                 resultSet.forEach { row ->
-                    if (isPresent) {
+                    if (isPresent)
+                    {
                         row.columnDefinitions.forEach {
                             types.add(it.type.asCql(true, true))
                             headers.add(it.name.asCql(true))
@@ -51,19 +57,21 @@ class ScyllaDBAdapter : Adapter {
                     headers.forEach {
                         _columns.add(row.getObject(it).toString())
                     }
-                    columns.add(handlerFormatter(configure.format, headers, _columns))
+                    columns.add(_columns)
                 }
                 response.isSuccessful = Boolean.TRUE
             }
-            catch (ex: Exception) {
+            catch (ex: Exception)
+            {
                 log.error("Execute content failed content {} exception ", content, ex)
                 response.isSuccessful = Boolean.FALSE
                 response.message = ex.message
             }
-            finally {
+            finally
+            {
                 response.headers = headers
                 response.types = types
-                response.columns = columns
+                response.columns = handlerFormatter(configure.injector, configure.format, headers, columns)
             }
         }
         processorTime.end = Date().time

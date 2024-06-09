@@ -78,7 +78,7 @@ public class KyuubiAdapter
                             _columns.add(jdbcColumn.mappingColumnData(metaData.getColumnTypeName(i), i));
                         }
                         isPresent = false;
-                        columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
+                        columns.add(_columns);
                     }
                 }
                 catch (SQLException tryUpdateEx) {
@@ -88,7 +88,7 @@ public class KyuubiAdapter
                             types.add(Integer.class.getSimpleName());
                             List<Object> _columns = new ArrayList<>();
                             _columns.add(statement.executeUpdate());
-                            columns.add(handlerFormatter(configure.getFormat(), headers, _columns));
+                            columns.add(_columns);
                         }
                         catch (SQLException updateEx) {
                             throw new SQLException(updateEx);
@@ -101,7 +101,7 @@ public class KyuubiAdapter
                 finally {
                     response.setHeaders(headers);
                     response.setTypes(types);
-                    response.setColumns(columns);
+                    response.setColumns(handlerFormatter(configure.getInjector(), configure.getFormat(), headers, columns));
                     response.setIsSuccessful(Boolean.TRUE);
                 }
             }
