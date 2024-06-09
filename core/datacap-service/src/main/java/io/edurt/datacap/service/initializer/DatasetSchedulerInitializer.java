@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.initializer;
 
 import com.google.inject.Injector;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.scheduler.SchedulerRequest;
 import io.edurt.datacap.service.enums.SyncMode;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public class DatasetSchedulerInitializer
         implements CommandLineRunner
 {

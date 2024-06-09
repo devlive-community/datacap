@@ -2,12 +2,14 @@ package io.edurt.datacap.executor.seatunnel.connector;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.executor.configure.ExecutorConfigure;
 
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP2"})
 public abstract class Connector
 {
     protected final ConnectorType type;

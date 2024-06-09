@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.body;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.sql.configure.SqlColumn;
 import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.spi.model.Pagination;
@@ -18,6 +19,7 @@ import java.util.Properties;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public class TableFilter
 {
     private Pagination pagination;

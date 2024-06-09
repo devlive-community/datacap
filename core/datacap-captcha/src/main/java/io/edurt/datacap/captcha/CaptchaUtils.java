@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class CaptchaUtils
 {
+    private static final Random RANDOM = new Random();
+
     private CaptchaUtils()
     {}
 
@@ -20,10 +22,9 @@ public class CaptchaUtils
      */
     public static Color getBackgroundColor()
     {
-        Random random = new Random();
-        int rColor = random.nextInt(256);
-        int gColor = random.nextInt(256);
-        int bColor = random.nextInt(256);
+        int rColor = RANDOM.nextInt(256);
+        int gColor = RANDOM.nextInt(256);
+        int bColor = RANDOM.nextInt(256);
         return new Color(rColor, gColor, bColor);
     }
 
@@ -35,28 +36,27 @@ public class CaptchaUtils
      */
     private static CaptchaEntity generateCalcNumber()
     {
-        Random random = new Random();
         int firstNumber;
         int lastNumber;
         int calc;
         int number;
-        number = random.nextInt(2);
-        firstNumber = random.nextInt(10);
-        lastNumber = random.nextInt(10);
-        calc = random.nextInt(4);
+        number = RANDOM.nextInt(2);
+        firstNumber = RANDOM.nextInt(10);
+        lastNumber = RANDOM.nextInt(10);
+        calc = RANDOM.nextInt(4);
         /**
          * When the calculation method is subtraction by 1
          * The minuend cannot be less than the subtrahend, when it is less than, the calculation data will be regenerated 1 - 9
          */
         while (calc == 1 && firstNumber - lastNumber < 0) {
-            lastNumber = random.nextInt(10);
+            lastNumber = RANDOM.nextInt(10);
         }
         /**
          * When the calculation method is division by 3
          * > The dividend cannot be 0, when it is 0, the calculation data will be regenerated
          */
         while (calc == 3 && lastNumber == 0) {
-            lastNumber = random.nextInt(10);
+            lastNumber = RANDOM.nextInt(10);
         }
         /**
          * When the calculation method is division by 3 and the dividend is greater than 0
@@ -64,7 +64,7 @@ public class CaptchaUtils
          * > When the divisor is equal to 0, add 1 to the divisor
          */
         while (calc == 3 && (firstNumber % lastNumber) > 0) {
-            lastNumber = random.nextInt(10);
+            lastNumber = RANDOM.nextInt(10);
             if (lastNumber == 0) {
                 lastNumber = 1;
             }
@@ -192,7 +192,7 @@ public class CaptchaUtils
      */
     private static String getCalculateZh(int calc, int number)
     {
-        String result = null;
+        String result;
         switch (calc) {
             case 0:
                 result = CalculateEnum.ADD.getValueZh();

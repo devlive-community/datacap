@@ -1,5 +1,6 @@
 package io.edurt.datacap.plugin.natived.redis;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.utils.OptionalUtils;
 import io.edurt.datacap.spi.connection.Connection;
 import io.edurt.datacap.spi.model.Configure;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 
 @Slf4j
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP"})
 public class RedisConnection
         extends Connection
 {

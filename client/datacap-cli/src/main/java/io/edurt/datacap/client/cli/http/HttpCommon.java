@@ -14,8 +14,7 @@ import okhttp3.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "DM_DEFAULT_ENCODING"},
-        justification = "I prefer to suppress these FindBugs warnings")
+@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "DM_DEFAULT_ENCODING"})
 public class HttpCommon
 {
     private final HttpConfigure configure;
@@ -23,8 +22,11 @@ public class HttpCommon
 
     public HttpCommon(HttpConfigure configure)
     {
-        this.configure = configure;
-        this.client = new OkHttpClient().newBuilder().build();
+        this.configure = new HttpConfigure(configure.getHost(), configure.getPort(), configure.getUsername(), configure.getPassword(), configure.getToken(), configure.getMethod(),
+                configure.getProtocol(), configure.getUrl(), configure.getSourceId());
+        this.client = new OkHttpClient()
+                .newBuilder()
+                .build();
     }
 
     private String getUrl()

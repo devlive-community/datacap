@@ -15,8 +15,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"},
-        justification = "I prefer to suppress these FindBugs warnings")
+@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE", "EI_EXPOSE_REP2"})
 public class HttpClient
 {
     private static final int CONNECTION_TIME_OUT = 200000;
@@ -106,7 +105,7 @@ public class HttpClient
             responseBody = response.body()
                     .string();
         }
-        catch (IOException | NullPointerException e) {
+        catch (IOException e) {
             log.warn("Request error", e);
         }
         return responseBody;

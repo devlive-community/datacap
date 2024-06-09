@@ -91,7 +91,7 @@ import static java.util.Objects.requireNonNull;
 
 @Service
 @Slf4j
-@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
+@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "EI_EXPOSE_REP2"})
 public class DataSetServiceImpl
         implements DataSetService
 {

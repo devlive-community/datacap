@@ -85,14 +85,16 @@ public class ProcessBuilderCommander
             shellResponse.setCode(process.exitValue());
             if (process.exitValue() > 0) {
                 List<String> errors = new ArrayList<>();
-                new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8))
-                        .lines()
-                        .forEach(line -> {
-                            logger.error(line);
-                            errors.add(line);
-                        });
-                shellResponse.setErrors(errors);
-                shellResponse.setSuccessful(Boolean.FALSE);
+                try (InputStreamReader streamReader = new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8);
+                        BufferedReader reader = new BufferedReader(streamReader)) {
+                    reader.lines()
+                            .forEach(line -> {
+                                logger.error(line);
+                                errors.add(line);
+                            });
+                    shellResponse.setErrors(errors);
+                    shellResponse.setSuccessful(Boolean.FALSE);
+                }
             }
 
             logger.info("Execute task exit code [ {} ]", process.exitValue());

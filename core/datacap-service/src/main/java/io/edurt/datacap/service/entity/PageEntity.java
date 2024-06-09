@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.entity;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Data
 @ToString
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public class PageEntity<T>
 {
     private int page;

@@ -16,8 +16,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"},
-        justification = "I prefer to suppress these FindBugs warnings")
+@SuppressFBWarnings(value = {"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "EI_EXPOSE_REP2"})
 public class HttpClient
 {
     private static final int CONNECTION_TIME_OUT = 200000;
@@ -120,7 +119,7 @@ public class HttpClient
             Response response = okHttpClient.newCall(request).execute();
             responseBody = response.body().string();
         }
-        catch (IOException | NullPointerException e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
         return responseBody;

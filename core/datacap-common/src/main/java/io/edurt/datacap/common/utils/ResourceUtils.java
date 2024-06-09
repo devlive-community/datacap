@@ -7,6 +7,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 
 @Slf4j
@@ -19,15 +20,15 @@ public class ResourceUtils
     {
         try {
             if (absolute) {
-                return IOUtils.toString(Files.newInputStream(new File(resource).toPath()));
+                return IOUtils.toString(Files.newInputStream(new File(resource).toPath()), Charset.defaultCharset());
             }
             else {
                 ClassLoader loader = Thread.currentThread().getContextClassLoader();
                 InputStream inputStream = loader.getResourceAsStream(resource);
-                return IOUtils.toString(inputStream);
+                return IOUtils.toString(inputStream, Charset.defaultCharset());
             }
         }
-        catch (IOException | NullPointerException e) {
+        catch (IOException e) {
             log.error("Loading file error {}", resource);
         }
         return null;

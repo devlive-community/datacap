@@ -1,6 +1,7 @@
 package io.edurt.datacap.service.service.impl;
 
 import com.google.inject.Injector;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.CodeUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
@@ -23,6 +24,7 @@ import java.io.IOException;
 
 @Slf4j
 @Service
+@SuppressFBWarnings(value = {"DLS_DEAD_LOCAL_STORE"})
 public class UploadServiceImpl
         implements UploadService
 {

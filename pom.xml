@@ -90,6 +90,7 @@
         <module>notify/datacap-notify-spi</module>
         <module>notify/datacap-notify-dingtalk</module>
         <module>file/datacap-file-spi</module>
+        <module>file/datacap-file-txt</module>
     </modules>
 
     <name>datacap</name>
@@ -172,9 +173,10 @@
         <datacap.pgsql.version>42.7.3</datacap.pgsql.version>
         <datacap.qiniu.version>7.15.0</datacap.qiniu.version>
         <datacap.alioss.version>3.16.1</datacap.alioss.version>
+        <datacap.commons-io.version>2.16.1</datacap.commons-io.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
-        <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
+        <plugin.maven.findbugs.version>4.8.5.0</plugin.maven.findbugs.version>
         <plugin.maven.compiler.version>3.12.1</plugin.maven.compiler.version>
         <plugin.maven.cobertura.version>2.7</plugin.maven.cobertura.version>
         <plugin.maven.dependency.version>3.0.1</plugin.maven.dependency.version>
@@ -183,7 +185,7 @@
         <plugin.maven.gpg.version>1.6</plugin.maven.gpg.version>
         <plugin.maven.nexus.version>1.6.13</plugin.maven.nexus.version>
         <plugin.maven.dokka.version>1.9.10</plugin.maven.dokka.version>
-        <environment.compile.java.version>1.8</environment.compile.java.version>
+        <environment.compile.java.version>11</environment.compile.java.version>
     </properties>
 
     <dependencies>
@@ -208,6 +210,11 @@
             <artifactId>kotlin-test</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>findbugs</artifactId>
+            <version>${findbugs.version}</version>
         </dependency>
     </dependencies>
 
@@ -247,11 +254,6 @@
                 <groupId>io.edurt.datacap</groupId>
                 <artifactId>datacap-spi</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>findbugs</artifactId>
-                <version>${findbugs.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -319,6 +321,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.edurt.datacap</groupId>
+                <artifactId>datacap-file-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${dep.mysql.version}</version>
@@ -347,6 +354,11 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${dep.reflections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${datacap.commons-io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -388,7 +400,7 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <version>${kotlin.version}</version>
                 <configuration>
-                    <jvmTarget>1.8</jvmTarget>
+                    <jvmTarget>11</jvmTarget>
                 </configuration>
                 <executions>
                     <execution>
@@ -430,8 +442,8 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${plugin.maven.findbugs.version}</version>
                 <configuration>
                     <effort>Low</effort>
@@ -442,7 +454,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>run-findbugs</id>
+                        <id>run-spotbugs</id>
                         <phase>package</phase>
                         <goals>
                             <goal>check</goal>

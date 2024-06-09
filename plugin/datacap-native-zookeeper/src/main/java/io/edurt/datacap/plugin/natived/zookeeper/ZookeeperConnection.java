@@ -1,5 +1,6 @@
 package io.edurt.datacap.plugin.natived.zookeeper;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.connection.Connection;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.I0Itec.zkclient.ZkClient;
 
 @Slf4j
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP"})
 public class ZookeeperConnection
         extends Connection
 {

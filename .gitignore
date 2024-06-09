@@ -60,3 +60,6 @@ pnpm-lock.yaml
 parser/datacap-parser-mysql/src/main/java
 parser/datacap-parser-trino/src/main/java/*.tokens
 parser/datacap-parser-trino/src/main/java/io/edurt/datacap/parser/antlr
+
+# Skip file #
+file/datacap-file-txt/*.txt

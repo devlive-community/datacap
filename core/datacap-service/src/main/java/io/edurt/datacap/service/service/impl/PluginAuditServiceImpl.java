@@ -2,6 +2,7 @@ package io.edurt.datacap.service.service.impl;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Injector;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.DateUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
@@ -36,6 +37,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@SuppressFBWarnings(value = {"DM_BOXED_PRIMITIVE_FOR_PARSING", "DM_DEFAULT_ENCODING"})
 public class PluginAuditServiceImpl
         implements PluginAuditService
 {

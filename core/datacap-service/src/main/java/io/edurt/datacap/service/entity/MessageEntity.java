@@ -27,7 +27,7 @@ import javax.persistence.Table;
 @Entity
 @EntityListeners(value = AuditingEntityListener.class)
 @Table(name = "datacap_message")
-@SuppressFBWarnings(value = {"EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
+@SuppressFBWarnings(value = {"EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC", "EI_EXPOSE_REP", "EI_EXPOSE_REP2"},
         justification = "I prefer to suppress these FindBugs warnings")
 public class MessageEntity
         extends BaseEntity

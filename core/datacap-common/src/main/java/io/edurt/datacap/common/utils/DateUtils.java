@@ -1,5 +1,6 @@
 package io.edurt.datacap.common.utils;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -7,6 +8,12 @@ public class DateUtils
 {
     private DateUtils()
     {}
+
+    public static Long now()
+    {
+        return Instant.now()
+                .toEpochMilli();
+    }
 
     public static String formatYMD()
     {

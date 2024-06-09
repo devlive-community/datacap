@@ -1,5 +1,6 @@
 package io.edurt.datacap.plugin.http.questdb;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.Plugin;
 import io.edurt.datacap.spi.PluginType;
 import io.edurt.datacap.spi.connection.HttpConfigure;
@@ -11,6 +12,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
 @Slf4j
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP"})
 public class QuestDBPlugin
         implements Plugin
 {

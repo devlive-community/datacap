@@ -1,5 +1,6 @@
 package io.edurt.datacap.plugin.jdbc.doris
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import io.edurt.datacap.spi.Plugin
 import io.edurt.datacap.spi.PluginType
 import io.edurt.datacap.spi.adapter.JdbcAdapter
@@ -14,54 +15,67 @@ import java.lang.Boolean
 import kotlin.Exception
 import kotlin.String
 
-class DorisPlugin : Plugin {
-
+@SuppressFBWarnings(value = ["EI_EXPOSE_REP"])
+class DorisPlugin : Plugin
+{
     private val log = getLogger(this.javaClass)
 
     private var jdbcConfigure: JdbcConfigure? = null
     private var connection: JdbcConnection? = null
     private var response: Response? = null
 
-    override fun name(): String {
+    override fun name(): String
+    {
         return "Doris"
     }
 
-    override fun description(): String {
+    override fun description(): String
+    {
         return "Integrate apache doris data sources"
     }
 
-    override fun type(): PluginType {
+    override fun type(): PluginType
+    {
         return PluginType.JDBC
     }
 
-    override fun connect(configure: Configure?) {
-        try {
+    override fun connect(configure: Configure?)
+    {
+        try
+        {
             response = Response()
             jdbcConfigure = JdbcConfigure()
             BeanUtils.copyProperties(jdbcConfigure, configure)
-            jdbcConfigure!!.jdbcDriver = "com.mysql.cj.jdbc.Driver"
-            jdbcConfigure!!.jdbcType = "mysql"
-            connection = object : JdbcConnection(jdbcConfigure, response) {}
-        } catch (ex: Exception) {
-            response!!.isConnected = Boolean.FALSE
-            response!!.message = ex.message
+            jdbcConfigure !!.jdbcDriver = "com.mysql.cj.jdbc.Driver"
+            jdbcConfigure !!.jdbcType = "mysql"
+            connection = object : JdbcConnection(jdbcConfigure, response)
+            {}
+        }
+        catch (ex: Exception)
+        {
+            response !!.isConnected = Boolean.FALSE
+            response !!.message = ex.message
         }
     }
 
-    override fun execute(content: String?): Response {
-        if (ObjectUtils.isNotEmpty(connection)) {
+    override fun execute(content: String?): Response
+    {
+        if (ObjectUtils.isNotEmpty(connection))
+        {
             log.info("Execute doris plugin logic started")
-            response = connection!!.response
+            response = connection !!.response
             val processor = JdbcAdapter(connection)
             response = processor.handlerExecute(content)
             log.info("Execute doris plugin logic end")
         }
         destroy()
-        return response!!
+        return response !!
     }
 
-    override fun destroy() {
-        if (ObjectUtils.isNotEmpty(this.connection)) {
+    override fun destroy()
+    {
+        if (ObjectUtils.isNotEmpty(this.connection))
+        {
             this.connection?.destroy();
             this.connection = null;
         }
