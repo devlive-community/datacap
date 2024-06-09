@@ -329,7 +329,7 @@ public class TableServiceImpl
             List<SqlColumn> columns = Lists.newArrayList();
             int totalRows = Integer.parseInt(table.getRows());
             Configure countConfigure = source.toConfigure();
-            countConfigure.setFormat("");
+            countConfigure.setFormat("None");
             countConfigure.setInjector(injector);
             plugin.connect(countConfigure);
             SqlBody countBody = SqlBody.builder()
@@ -430,7 +430,7 @@ public class TableServiceImpl
     {
         try {
             Configure updateConfigure = source.toConfigure();
-            updateConfigure.setFormat("");
+            updateConfigure.setFormat("None");
             updateConfigure.setInjector(injector);
             plugin.connect(updateConfigure);
             List<String> allSql = Lists.newArrayList();
@@ -488,7 +488,7 @@ public class TableServiceImpl
     {
         try {
             Configure updateConfigure = source.toConfigure();
-            updateConfigure.setFormat("");
+            updateConfigure.setFormat("None");
             updateConfigure.setInjector(injector);
             plugin.connect(updateConfigure);
             List<String> allSql = Lists.newArrayList();
@@ -526,7 +526,7 @@ public class TableServiceImpl
     {
         try {
             Configure updateConfigure = source.toConfigure();
-            updateConfigure.setFormat("");
+            updateConfigure.setFormat("None");
             updateConfigure.setInjector(injector);
             plugin.connect(updateConfigure);
             List<String> allSql = Lists.newArrayList();
@@ -560,7 +560,7 @@ public class TableServiceImpl
     {
         try {
             Configure alterConfigure = source.toConfigure();
-            alterConfigure.setFormat("");
+            alterConfigure.setFormat("None");
             alterConfigure.setInjector(injector);
             plugin.connect(alterConfigure);
             SqlBody body = SqlBody.builder()
@@ -589,7 +589,7 @@ public class TableServiceImpl
     {
         try {
             Configure alterConfigure = source.toConfigure();
-            alterConfigure.setFormat("");
+            alterConfigure.setFormat("None");
             alterConfigure.setInjector(injector);
             plugin.connect(alterConfigure);
             SqlBody body = SqlBody.builder()
@@ -617,7 +617,7 @@ public class TableServiceImpl
     {
         try {
             Configure alterConfigure = source.toConfigure();
-            alterConfigure.setFormat("");
+            alterConfigure.setFormat("None");
             alterConfigure.setInjector(injector);
             plugin.connect(alterConfigure);
             SqlBody body = SqlBody.builder()
@@ -645,7 +645,7 @@ public class TableServiceImpl
     {
         try {
             Configure alterConfigure = source.toConfigure();
-            alterConfigure.setFormat("");
+            alterConfigure.setFormat("None");
             alterConfigure.setInjector(injector);
             plugin.connect(alterConfigure);
             SqlBody body = SqlBody.builder()

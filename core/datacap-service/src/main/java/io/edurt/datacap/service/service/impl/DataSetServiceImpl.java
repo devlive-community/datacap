@@ -728,7 +728,8 @@ public class DataSetServiceImpl
                         SqlColumn.builder().column("active").operator(SqlOperator.EQ).value("1").build()))
                 .condition(" AND ")
                 .build());
-        configure.setFormat("");
+        configure.setFormat("None");
+        configure.setInjector(injector);
         plugin.connect(configure);
         Response outputResponse = plugin.execute(builder.getSql());
         if (outputResponse.getIsSuccessful()) {
