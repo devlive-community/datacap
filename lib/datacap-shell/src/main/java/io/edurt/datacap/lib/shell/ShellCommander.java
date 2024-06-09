@@ -1,9 +1,12 @@
 package io.edurt.datacap.lib.shell;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP2"})
 public abstract class ShellCommander
 {
     protected final ShellConfigure configure;

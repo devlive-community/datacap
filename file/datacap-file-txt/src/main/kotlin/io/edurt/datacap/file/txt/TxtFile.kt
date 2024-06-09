@@ -31,14 +31,14 @@ class TxtFile : File
                 ?.let { delimiter ->
                     log.info("${name()} writer file headers start")
                     request.headers
-                        ?.let { headers ->
+                        .let { headers ->
                             FileUtils.writeStringToFile(file, headers.joinToString(separator = delimiter), Charsets.UTF_8)
                         }
                     log.info("${name()} writer file headers end")
 
                     log.info("${name()} writer file columns start")
                     request.columns
-                        ?.forEach {
+                        .forEach {
                             FileUtils.writeStringToFile(file, "\n", Charsets.UTF_8, true)
                             when (it)
                             {

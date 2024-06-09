@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.body;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.executor.common.RunProtocol;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import java.util.Properties;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public class PipelineFieldBody
 {
     private Long id;

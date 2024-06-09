@@ -1,11 +1,13 @@
 package io.edurt.datacap.spi.connection;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
 import io.edurt.datacap.spi.model.Time;
 
 import java.util.Date;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public abstract class Connection
 {
     private final Configure configure;

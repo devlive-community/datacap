@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.body;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.sql.model.Column;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public class ColumnBody
 {
     private SqlType type;

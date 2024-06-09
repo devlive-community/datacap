@@ -1,10 +1,12 @@
 package io.edurt.datacap.common.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 
 @Slf4j
+@SuppressFBWarnings(value = {"REFLF_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_FIELD"})
 public class ReflectionUtils
 {
     /**

@@ -87,7 +87,7 @@ public class SeatunnelExecutor
     @Override
     public ExecutorResponse stop(ExecutorRequest request)
     {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**

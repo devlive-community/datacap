@@ -1,6 +1,7 @@
 package io.edurt.datacap.sql;
 
 import com.google.common.base.Preconditions;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.sql.parser.SqlBaseLexer;
 import io.edurt.datacap.sql.parser.SqlBaseParser;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.commons.lang3.ObjectUtils;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP"})
 public class SqlBaseFormatter
 {
     private final String sql;
@@ -37,7 +39,7 @@ public class SqlBaseFormatter
         parser.addErrorListener(new UnderLineListener());
         parser.getInterpreter().setPredictionMode(PredictionMode.SLL);
 
-        ParseTree tree = null;
+        ParseTree tree;
         try {
             tree = parser.singleStatement();
         }

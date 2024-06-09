@@ -55,7 +55,7 @@ public class DataSourceServiceImpl
         list.forEach(value -> {
             DataSource dataSource = new DataSource();
             // Double
-            dataSource.setId(Integer.valueOf(String.valueOf(value.get("id")).split("\\.")[0]));
+            dataSource.setId(Integer.parseInt(String.valueOf(value.get("id")).split("\\.")[0]));
             dataSource.setName(String.valueOf(value.get("name")));
             dataSource.setType(String.valueOf(value.get("type")));
             dataSource.setDescription(String.valueOf(value.get("description")));

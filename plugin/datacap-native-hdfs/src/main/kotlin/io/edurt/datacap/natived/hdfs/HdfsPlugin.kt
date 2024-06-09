@@ -1,5 +1,6 @@
 package io.edurt.datacap.natived.hdfs
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import io.edurt.datacap.spi.Plugin
 import io.edurt.datacap.spi.PluginType
 import io.edurt.datacap.spi.adapter.Adapter
@@ -11,51 +12,64 @@ import org.apache.commons.lang3.ObjectUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
 
-class HdfsPlugin : Plugin {
+@SuppressFBWarnings(value = ["EI_EXPOSE_REP"])
+class HdfsPlugin : Plugin
+{
     private val log: Logger = getLogger(HdfsPlugin::class.java)
 
     private var configure: Configure? = null
     private var connection: HdfsConnection? = null
     private var response: Response? = null
 
-    override fun type(): PluginType {
+    override fun type(): PluginType
+    {
         return PluginType.NATIVE
     }
 
-    override fun validator(): String {
+    override fun validator(): String
+    {
         return "SHOW DATABASES"
     }
 
-    override fun description(): String {
+    override fun description(): String
+    {
         return String.format("Integrate %s data sources", this.name())
     }
 
-    override fun connect(configure: Configure?) {
-        try {
+    override fun connect(configure: Configure?)
+    {
+        try
+        {
             this.response = Response()
             this.configure = Configure()
             BeanUtils.copyProperties(this.configure, configure)
-            this.connection = HdfsConnection(this.configure!!, this.response!!)
-        } catch (ex: Exception) {
+            this.connection = HdfsConnection(this.configure !!, this.response !!)
+        }
+        catch (ex: Exception)
+        {
             this.response?.isConnected = false
             this.response?.message = ex.message
         }
     }
 
-    override fun execute(content: String?): Response {
-        if (ObjectUtils.isNotEmpty(connection)) {
+    override fun execute(content: String?): Response
+    {
+        if (ObjectUtils.isNotEmpty(connection))
+        {
             log.info("Execute hdfs plugin logic started")
-            response = connection!!.response
+            response = connection !!.response
             val processor: Adapter = HdfsAdapter(connection, SqlParser(content))
             response = processor.handlerExecute(content)
             log.info("Execute hdfs plugin logic end")
         }
         destroy()
-        return response!!
+        return response !!
     }
 
-    override fun destroy() {
-        if (ObjectUtils.isNotEmpty(this.connection)) {
+    override fun destroy()
+    {
+        if (ObjectUtils.isNotEmpty(this.connection))
+        {
             this.connection?.destroy()
             this.connection = null
         }

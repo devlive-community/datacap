@@ -2,7 +2,6 @@ package io.edurt.datacap.common.sql;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.sql.builder.AlterBuilder;
 import io.edurt.datacap.common.sql.builder.DeleteBuilder;
 import io.edurt.datacap.common.sql.builder.DropBuilder;
@@ -22,20 +21,19 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressFBWarnings(value = {"DM_STRING_VOID_CTOR"},
-        justification = "I prefer to suppress these FindBugs warnings")
 public class SqlBuilder
 {
     private final SqlBody configure;
 
-    public SqlBuilder(SqlBody configure)
+    public SqlBuilder(final SqlBody configure)
     {
-        this.configure = configure;
+        this.configure = new SqlBody(configure.getDatabase(), configure.getTable(), configure.getColumns(), configure.getGroups(), configure.getOrders(), configure.getLimit(),
+                configure.getOffset(), configure.getWhere(), configure.getType(), configure.getValue(), configure.getCondition());
     }
 
     public String getSql()
     {
-        String sql = new String();
+        String sql = "";
         switch (configure.getType()) {
             case SELECT:
                 sql = getSelect();

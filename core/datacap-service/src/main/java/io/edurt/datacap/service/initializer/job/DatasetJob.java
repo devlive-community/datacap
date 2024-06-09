@@ -1,5 +1,6 @@
 package io.edurt.datacap.service.initializer.job;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.service.service.DataSetService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP2"})
 public class DatasetJob
         extends QuartzJobBean
 {

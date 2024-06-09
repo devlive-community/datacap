@@ -3,6 +3,7 @@ package io.edurt.datacap.service.initializer;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Maps;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.captcha.entity.ResultEntity;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.loader.CaptchaCacheLoader;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public class InitializerConfigure
 {
     @Getter

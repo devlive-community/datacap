@@ -176,7 +176,7 @@
         <datacap.commons-io.version>2.16.1</datacap.commons-io.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
-        <plugin.maven.findbugs.version>3.0.5</plugin.maven.findbugs.version>
+        <plugin.maven.findbugs.version>4.8.5.0</plugin.maven.findbugs.version>
         <plugin.maven.compiler.version>3.12.1</plugin.maven.compiler.version>
         <plugin.maven.cobertura.version>2.7</plugin.maven.cobertura.version>
         <plugin.maven.dependency.version>3.0.1</plugin.maven.dependency.version>
@@ -210,6 +210,11 @@
             <artifactId>kotlin-test</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>findbugs</artifactId>
+            <version>${findbugs.version}</version>
         </dependency>
     </dependencies>
 
@@ -249,11 +254,6 @@
                 <groupId>io.edurt.datacap</groupId>
                 <artifactId>datacap-spi</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>findbugs</artifactId>
-                <version>${findbugs.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -442,8 +442,8 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${plugin.maven.findbugs.version}</version>
                 <configuration>
                     <effort>Low</effort>
@@ -454,7 +454,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>run-findbugs</id>
+                        <id>run-spotbugs</id>
                         <phase>package</phase>
                         <goals>
                             <goal>check</goal>

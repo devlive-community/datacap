@@ -1,6 +1,7 @@
 package io.edurt.datacap.server.configure;
 
 import com.google.inject.Injector;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.schedule.ScheduledCronRegistrar;
 import io.edurt.datacap.service.repository.ScheduledRepository;
 import io.edurt.datacap.service.repository.SourceRepository;
@@ -16,6 +17,7 @@ import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP2"})
 public class ScheduleRunnerConfigure
         implements CommandLineRunner
 {

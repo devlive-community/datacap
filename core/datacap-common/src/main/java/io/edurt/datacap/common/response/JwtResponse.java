@@ -1,20 +1,16 @@
 package io.edurt.datacap.common.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Collections;
 import java.util.List;
 
-@Data
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class JwtResponse
 {
     private String token;
-    private String type = "Bearer";
     private Long id;
     private String username;
     private List<String> roles;
@@ -25,7 +21,8 @@ public class JwtResponse
         this.token = accessToken;
         this.id = id;
         this.username = username;
-        this.roles = roles;
+        // Use an immutable list to ensure that the roles property cannot be modified externally
+        this.roles = Collections.unmodifiableList(roles);
         this.avatar = avatar;
     }
 }

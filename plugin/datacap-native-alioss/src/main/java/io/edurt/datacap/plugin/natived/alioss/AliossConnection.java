@@ -2,6 +2,7 @@ package io.edurt.datacap.plugin.natived.alioss;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.connection.Connection;
 import io.edurt.datacap.spi.model.Configure;
 import io.edurt.datacap.spi.model.Response;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP"})
 public class AliossConnection
         extends Connection
 {

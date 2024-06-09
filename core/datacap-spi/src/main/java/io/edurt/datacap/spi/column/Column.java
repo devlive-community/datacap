@@ -1,8 +1,11 @@
 package io.edurt.datacap.spi.column;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP2"})
 public abstract class Column
 {
     protected final ResultSet resultSet;

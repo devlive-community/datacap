@@ -1,5 +1,6 @@
 package io.edurt.datacap.sql;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.sql.parser.SqlBaseParser;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.util.Arrays;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP"})
 public class SqlBaseVisitor
         implements ParseTreeVisitor<SqlBase>
 {

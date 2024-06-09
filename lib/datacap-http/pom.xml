@@ -24,10 +24,6 @@
             <version>${okhttp.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>findbugs</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-common</artifactId>
         </dependency>

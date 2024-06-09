@@ -1,6 +1,7 @@
 package io.edurt.datacap.server.runner;
 
 import com.google.common.collect.Lists;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.executor.common.RunState;
 import io.edurt.datacap.service.entity.PipelineEntity;
 import io.edurt.datacap.service.repository.PipelineRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP2"})
 public class PipelineResetRunner
         implements ApplicationRunner
 {

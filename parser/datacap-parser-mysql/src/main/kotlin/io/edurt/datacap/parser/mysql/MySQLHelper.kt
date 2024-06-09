@@ -47,7 +47,7 @@ object MySQLHelper {
                 statement.select.children.forEach {
                     val column = Column()
                     column.name = it.name
-                    table.columns.add(column)
+                    table.columns.plus(column)
                 }
 
                 statement.limit.children.forEach {

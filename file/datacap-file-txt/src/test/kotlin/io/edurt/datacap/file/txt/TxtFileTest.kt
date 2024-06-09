@@ -67,7 +67,7 @@ class TxtFileTest
                     val response = file.reader(request)
                     log.info("headers: ${response.headers}")
                     response.columns
-                        ?.let { columns ->
+                        .let { columns ->
                             columns.forEach {
                                 log.info("columns: $it")
                             }

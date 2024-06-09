@@ -3,6 +3,7 @@ package io.edurt.datacap.service.common;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.enums.ServiceState;
 import io.edurt.datacap.common.utils.BeanToPropertiesUtils;
 import io.edurt.datacap.common.utils.JsonUtils;
@@ -35,6 +36,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@SuppressFBWarnings(value = {"SF_SWITCH_NO_DEFAULT", "SF_SWITCH_FALLTHROUGH"})
 public class ConfigureUtils
 {
     private ConfigureUtils()

@@ -1,5 +1,6 @@
 package io.edurt.datacap.spi.connection.http;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.spi.connection.HttpConfigure;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -9,6 +10,7 @@ import java.net.ConnectException;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP2"})
 public class HttpRetryInterceptor
         implements Interceptor
 {

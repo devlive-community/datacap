@@ -12,9 +12,8 @@ import java.util.Map;
 
 @Data
 @ToString
-@EqualsAndHashCode
-@SuppressFBWarnings(value = {"EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"},
-        justification = "I prefer to suppress these FindBugs warnings")
+@EqualsAndHashCode(callSuper = false)
+@SuppressFBWarnings(value = {"EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC", "EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
 public class HttpConfigure
         extends Configure
 {

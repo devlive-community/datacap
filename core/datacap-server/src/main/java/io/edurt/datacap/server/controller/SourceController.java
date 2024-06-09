@@ -1,5 +1,6 @@
 package io.edurt.datacap.server.controller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.service.body.FilterBody;
 import io.edurt.datacap.service.body.SourceBody;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController(value = "sourceControllerV2")
 @RequestMapping(value = "/api/v2/source")
+@SuppressFBWarnings(value = {"EI_EXPOSE_REP2"})
 public class SourceController
         extends BaseController<SourceEntity>
 {

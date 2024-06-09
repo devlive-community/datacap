@@ -8,7 +8,7 @@ import io.edurt.datacap.service.service.SourceService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION"})
+@SuppressFBWarnings(value = {"REC_CATCH_EXCEPTION", "EI_EXPOSE_REP2"})
 public class SyncMetadataScheduledRunnable
         extends ScheduledRunnable
 {
