@@ -22,23 +22,19 @@ class TxtFile : File
         {
             checkArgument(isNotEmpty(request.delimiter), "Delimiter must not be empty")
 
-            log.info("${name()} format origin path [ ${request.path} ]")
             log.info("${name()} format start time [ ${DateUtils.now()} ]")
-            val file = FileConvert.formatFile(request, name())
-            log.info("${name()} format file absolute path [ ${file.absolutePath} ]")
-
             request.delimiter
                 ?.let { delimiter ->
-                    log.info("${name()} format file headers start")
+                    log.info("${name()} format headers start")
                     val headers = mutableListOf<Any>()
                     request.headers
                         .let { line ->
                             headers.add(line.joinToString(separator = delimiter))
                         }
                     response.headers = headers
-                    log.info("${name()} format file headers end")
+                    log.info("${name()} format headers end")
 
-                    log.info("${name()} format file columns start")
+                    log.info("${name()} format columns start")
                     val columns = mutableListOf<Any>()
                     request.columns
                         .forEach { line ->
@@ -49,7 +45,7 @@ class TxtFile : File
                             }
                         }
                     response.columns = columns
-                    log.info("${name()} format file columns end")
+                    log.info("${name()} format columns end")
                 }
 
             log.info("${name()} format end time [ ${DateUtils.now()} ]")
