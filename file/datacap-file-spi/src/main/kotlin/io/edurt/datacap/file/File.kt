@@ -17,6 +17,8 @@ interface File
         return "Integrate ${name()} file"
     }
 
+    fun format(request: FileRequest): FileResponse
+
     fun writer(request: FileRequest): FileResponse
 
     fun reader(request: FileRequest): FileResponse
