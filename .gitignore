@@ -63,3 +63,4 @@ parser/datacap-parser-trino/src/main/java/io/edurt/datacap/parser/antlr
 
 # Skip file #
 file/datacap-file-txt/*.txt
+file/datacap-file-json/*.json
