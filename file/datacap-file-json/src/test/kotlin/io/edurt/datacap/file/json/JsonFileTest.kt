@@ -10,14 +10,16 @@ import org.junit.Test
 import org.slf4j.LoggerFactory.getLogger
 import kotlin.test.assertTrue
 
-class JsonFileTest {
+class JsonFileTest
+{
     private val log = getLogger(this::class.java)
     private val name = "Json"
     private var injector: Injector? = null
     private val request: FileRequest = FileRequest()
 
     @Before
-    fun before() {
+    fun before()
+    {
         injector = createInjector(FileManager())
 
         request.name = "test"
@@ -30,13 +32,33 @@ class JsonFileTest {
     }
 
     @Test
-    fun testWriter() {
+    fun testWriter()
+    {
         injector?.let { injector ->
             FileFilter.findNotify(injector, name)
                 .ifPresent { file ->
                     assertTrue {
                         file.writer(request)
                             .successful == true
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun testReader()
+    {
+        injector?.let { injector ->
+            FileFilter.findNotify(injector, name)
+                .ifPresent { file ->
+                    val response = file.reader(request)
+                    log.info("headers: ${response.headers}")
+                    response.columns
+                        .forEach {
+                            log.info("columns: $it")
+                        }
+                    assertTrue {
+                        response.successful == true
                     }
                 }
         }
