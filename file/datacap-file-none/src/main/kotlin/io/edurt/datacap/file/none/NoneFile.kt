@@ -1,6 +1,7 @@
 package io.edurt.datacap.file.none
 
 import com.google.common.base.Preconditions.checkState
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import io.edurt.datacap.common.utils.DateUtils
 import io.edurt.datacap.file.File
 import io.edurt.datacap.file.FileConvert
@@ -10,6 +11,7 @@ import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory.getLogger
 import java.io.IOException
 
+@SuppressFBWarnings(value = ["BC_BAD_CAST_TO_ABSTRACT_COLLECTION"])
 class NoneFile : File
 {
     private val log = getLogger(this::class.java)
@@ -48,18 +50,13 @@ class NoneFile : File
             val file = FileConvert.formatFile(request, name())
             log.info("${name()} writer file absolute path [ ${file.absolutePath} ]")
 
-            request.headers
-                .let { FileUtils.writeStringToFile(file, it.toString(), Charsets.UTF_8) }
-
+            val content = StringBuilder(request.headers.toString())
             request.columns
                 .forEach {
-                    FileUtils.writeStringToFile(file, "\n", Charsets.UTF_8, true)
-                    when (it)
-                    {
-                        is List<*> -> FileUtils.writeStringToFile(file, it.toString(), Charsets.UTF_8, true)
-                        else -> FileUtils.writeStringToFile(file, it.toString(), Charsets.UTF_8, true)
-                    }
+                    content.append("\n")
+                    content.append(it.toString())
                 }
+            FileUtils.writeStringToFile(file, content.toString(), Charsets.UTF_8)
 
             log.info("${name()} writer end time [ ${DateUtils.now()} ]")
             response.successful = true
@@ -90,7 +87,7 @@ class NoneFile : File
 
             val columns = lines.drop(1)
                 .map { parseLine(it) }
-            response.columns = columns
+            response.columns = columns.toList()
 
             log.info("${name()} reader end time [ ${DateUtils.now()} ]")
             response.successful = true
