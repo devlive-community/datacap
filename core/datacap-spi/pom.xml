@@ -80,6 +80,11 @@
             <artifactId>datacap-file-json</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-file-none</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
