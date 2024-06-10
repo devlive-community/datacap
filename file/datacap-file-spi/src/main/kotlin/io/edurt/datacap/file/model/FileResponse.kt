@@ -7,6 +7,7 @@ class FileResponse
 
     var successful: Boolean? = true
     var message: String? = null
+    var path: String? = null
 
     var headers: List<Any>
         get() = _headers.toList()

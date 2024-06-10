@@ -10,7 +10,10 @@ import io.edurt.datacap.file.FileConvert.formatFile
 import io.edurt.datacap.file.model.FileRequest
 import io.edurt.datacap.file.model.FileResponse
 import org.slf4j.LoggerFactory.getLogger
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStreamReader
+import java.util.Objects.requireNonNull
 
 class JsonFile : File
 {
@@ -57,6 +60,57 @@ class JsonFile : File
         return response
     }
 
+    override fun formatStream(request: FileRequest): FileResponse
+    {
+        val response = FileResponse()
+        try
+        {
+            requireNonNull("Stream must not be null")
+
+            log.info("${name()} format stream start time [ ${DateUtils.now()} ]")
+            val mapper = ObjectMapper()
+            request.stream
+                ?.let {
+                    BufferedReader(InputStreamReader(it, Charsets.UTF_8)).use { reader ->
+                        val jsonNode: JsonNode = mapper.readTree(reader)
+                        log.info("${name()} format stream json node count [ ${jsonNode.size()} ]")
+
+                        val headers = mutableListOf<Any>()
+                        if (jsonNode.isArray && jsonNode.size() > 0)
+                        {
+                            jsonNode[0].fieldNames()
+                                .forEachRemaining { headers.add(it) }
+                        }
+                        response.headers = headers
+
+                        val columns = mutableListOf<Any>()
+                        if (jsonNode.isArray)
+                        {
+                            jsonNode.elements()
+                                .forEachRemaining { node ->
+                                    val column = mutableMapOf<String, Any?>()
+                                    node.fields()
+                                        .forEachRemaining { field ->
+                                            column[field.key] = field.value
+                                        }
+                                    columns.add(column)
+                                }
+                        }
+                        response.columns = columns
+                        it.close()
+                    }
+                }
+            log.info("${name()} format stream end time [ ${DateUtils.now()} ]")
+            response.successful = true
+        }
+        catch (e: IOException)
+        {
+            response.successful = false
+            response.message = e.message
+        }
+        return response
+    }
+
     override fun writer(request: FileRequest): FileResponse
     {
         val response = FileResponse()
@@ -88,6 +142,7 @@ class JsonFile : File
                 }
 
             log.info("${name()} writer end time [ ${DateUtils.now()} ]")
+            response.path = file.absolutePath
             response.successful = true
         }
         catch (e: IOException)

@@ -10,6 +10,10 @@ import io.edurt.datacap.file.model.FileResponse
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.ObjectUtils.isNotEmpty
 import org.slf4j.LoggerFactory.getLogger
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.util.Objects.requireNonNull
 
 class TxtFile : File
 {
@@ -59,6 +63,41 @@ class TxtFile : File
         return response
     }
 
+    override fun formatStream(request: FileRequest): FileResponse
+    {
+        val response = FileResponse()
+        try
+        {
+            requireNonNull("Stream must not be null")
+
+            log.info("${name()} format stream start time [ ${DateUtils.now()} ]")
+            request.delimiter
+                ?.let { delimiter ->
+                    request.stream
+                        ?.let {
+                            BufferedReader(InputStreamReader(it, Charsets.UTF_8)).use { reader ->
+                                response.headers = reader.readLine()
+                                    .split(delimiter)
+
+                                val columns = mutableListOf<Any>()
+                                reader.readLines()
+                                    .forEach { line -> columns.add(line.split(delimiter)) }
+                                response.columns = columns
+                                it.close()
+                            }
+                        }
+                }
+            log.info("${name()} format stream end time [ ${DateUtils.now()} ]")
+            response.successful = true
+        }
+        catch (e: IOException)
+        {
+            response.successful = false
+            response.message = e.message
+        }
+        return response
+    }
+
     override fun writer(request: FileRequest): FileResponse
     {
         val response = FileResponse()
@@ -94,6 +133,7 @@ class TxtFile : File
                 }
 
             log.info("${name()} writer end time [ ${DateUtils.now()} ]")
+            response.path = file.absolutePath
             response.successful = true
         }
         catch (e: Exception)

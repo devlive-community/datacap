@@ -10,6 +10,11 @@ class TestFile : File
         TODO("Not yet implemented")
     }
 
+    override fun formatStream(request: FileRequest): FileResponse
+    {
+        TODO("Not yet implemented")
+    }
+
     override fun writer(request: FileRequest): FileResponse
     {
         TODO("Not yet implemented")
