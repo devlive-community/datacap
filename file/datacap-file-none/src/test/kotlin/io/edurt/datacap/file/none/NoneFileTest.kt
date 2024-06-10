@@ -52,4 +52,18 @@ class NoneFileTest
                 }
         }
     }
+
+    @Test
+    fun testWriter()
+    {
+        injector?.let { injector ->
+            FileFilter.findNotify(injector, name)
+                .ifPresent { file ->
+                    assertTrue {
+                        file.writer(request)
+                            .successful == true
+                    }
+                }
+        }
+    }
 }
