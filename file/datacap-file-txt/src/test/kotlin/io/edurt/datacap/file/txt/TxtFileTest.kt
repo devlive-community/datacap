@@ -8,6 +8,8 @@ import io.edurt.datacap.file.model.FileRequest
 import org.junit.Before
 import org.junit.Test
 import org.slf4j.LoggerFactory.getLogger
+import java.io.File
+import java.io.FileInputStream
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -32,7 +34,6 @@ class TxtFileTest
         request.columns = listOf(l1, l2)
     }
 
-
     @Test
     fun testFormat()
     {
@@ -49,6 +50,29 @@ class TxtFileTest
                             }
                         }
 
+                    assertTrue {
+                        response.successful == true
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun testFormatStream()
+    {
+        injector?.let { injector ->
+            FileFilter.filter(injector, name)
+                .ifPresent { file ->
+                    request.delimiter = "[&&&]"
+                    request.stream = FileInputStream(File("${System.getProperty("user.dir")}/${request.name}.txt"))
+                    val response = file.formatStream(request)
+                    log.info("headers: [ ${response.headers} ]")
+                    response.columns
+                        .let { columns ->
+                            columns.forEachIndexed { index, line ->
+                                log.info("index: [ $index ], line: [ $line ]")
+                            }
+                        }
                     assertTrue {
                         response.successful == true
                     }

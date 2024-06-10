@@ -1,9 +1,12 @@
 package io.edurt.datacap.file.model
 
+import java.io.InputStream
+
 class FileRequest
 {
     private var _headers: List<Any> = listOf()
     private var _columns: List<Any> = listOf()
+    private var _stream: InputStream? = null
 
     var name: String? = null
     var path: String? = null
@@ -26,5 +29,12 @@ class FileRequest
         set(value)
         {
             _columns = value.toMutableList()
+        }
+
+    var stream: InputStream?
+        get() = _stream
+        set(value)
+        {
+            _stream = value
         }
 }

@@ -19,6 +19,8 @@ interface File
 
     fun format(request: FileRequest): FileResponse
 
+    fun formatStream(request: FileRequest): FileResponse
+
     fun writer(request: FileRequest): FileResponse
 
     fun reader(request: FileRequest): FileResponse

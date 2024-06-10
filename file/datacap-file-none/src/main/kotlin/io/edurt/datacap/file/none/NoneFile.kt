@@ -10,6 +10,7 @@ import io.edurt.datacap.file.model.FileResponse
 import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory.getLogger
 import java.io.IOException
+import java.util.*
 
 @SuppressFBWarnings(value = ["BC_BAD_CAST_TO_ABSTRACT_COLLECTION"])
 class NoneFile : File
@@ -30,6 +31,30 @@ class NoneFile : File
             response.columns = columns
 
             log.info("${name()} format end time [ ${DateUtils.now()} ]")
+            response.successful = true
+        }
+        catch (e: IOException)
+        {
+            response.successful = false
+            response.message = e.message
+        }
+        return response
+    }
+
+    override fun formatStream(request: FileRequest): FileResponse
+    {
+        val response = FileResponse()
+        try
+        {
+            Objects.requireNonNull("Stream must not be null")
+
+            log.info("${name()} format stream start time [ ${DateUtils.now()} ]")
+            response.headers = request.headers
+            val columns = mutableListOf<Any>()
+            request.columns
+                .forEach { columns.add(it) }
+            response.columns = columns
+            log.info("${name()} format stream end time [ ${DateUtils.now()} ]")
             response.successful = true
         }
         catch (e: IOException)
