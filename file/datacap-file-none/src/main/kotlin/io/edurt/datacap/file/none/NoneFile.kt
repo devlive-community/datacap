@@ -1,5 +1,6 @@
 package io.edurt.datacap.file.none
 
+import com.google.common.base.Preconditions.checkState
 import io.edurt.datacap.common.utils.DateUtils
 import io.edurt.datacap.file.File
 import io.edurt.datacap.file.FileConvert
@@ -73,6 +74,40 @@ class NoneFile : File
 
     override fun reader(request: FileRequest): FileResponse
     {
-        TODO("Not yet implemented")
+        val response = FileResponse()
+        try
+        {
+            log.info("${name()} reader origin path [ ${request.path} ]")
+            log.info("${name()} reader start time [ ${DateUtils.now()} ]")
+            val file = FileConvert.formatFile(request, name())
+            log.info("${name()} reader file absolute path [ ${file.absolutePath} ]")
+
+            val lines = FileUtils.readLines(file, Charsets.UTF_8)
+            checkState(lines.isNotEmpty(), "The file is empty")
+            log.info("${name()} reader file line count [ ${lines.size} ]")
+
+            response.headers = parseLine(lines.first())
+
+            val columns = lines.drop(1)
+                .map { parseLine(it) }
+            response.columns = columns
+
+            log.info("${name()} reader end time [ ${DateUtils.now()} ]")
+            response.successful = true
+        }
+        catch (e: Exception)
+        {
+            response.successful = false
+            response.message = e.message
+        }
+        return response
+    }
+
+    private fun parseLine(line: String): List<String>
+    {
+        return line.trim()
+            .removeSurrounding("[", "]")
+            .split(", ")
+            .map { it.trim() }
     }
 }
