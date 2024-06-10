@@ -9,10 +9,10 @@ class FileFilterTest
     private val injector = Guice.createInjector(FileManager())
 
     @Test
-    fun testFindNotify()
+    fun testFilter()
     {
         Assert.assertNotNull(
-            FileFilter.findNotify(injector, "Test")
+            FileFilter.filter(injector, "Test")
                 .get()
         )
     }

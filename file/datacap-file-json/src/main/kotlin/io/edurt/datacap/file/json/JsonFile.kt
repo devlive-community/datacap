@@ -88,6 +88,7 @@ class JsonFile : File
                 }
 
             log.info("${name()} writer end time [ ${DateUtils.now()} ]")
+            response.path = file.absolutePath
             response.successful = true
         }
         catch (e: IOException)

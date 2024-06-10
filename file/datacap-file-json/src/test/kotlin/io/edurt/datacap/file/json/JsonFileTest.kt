@@ -35,7 +35,7 @@ class JsonFileTest
     fun testFormat()
     {
         injector?.let { injector ->
-            FileFilter.findNotify(injector, name)
+            FileFilter.filter(injector, name)
                 .ifPresent { file ->
                     val response = file.format(request)
                     log.info("headers: [ ${response.headers} ]")
@@ -57,7 +57,7 @@ class JsonFileTest
     fun testWriter()
     {
         injector?.let { injector ->
-            FileFilter.findNotify(injector, name)
+            FileFilter.filter(injector, name)
                 .ifPresent { file ->
                     assertTrue {
                         file.writer(request)
@@ -71,7 +71,7 @@ class JsonFileTest
     fun testReader()
     {
         injector?.let { injector ->
-            FileFilter.findNotify(injector, name)
+            FileFilter.filter(injector, name)
                 .ifPresent { file ->
                     val response = file.reader(request)
                     log.info("headers: ${response.headers}")

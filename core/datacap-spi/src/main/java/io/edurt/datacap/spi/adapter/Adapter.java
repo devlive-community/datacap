@@ -15,7 +15,7 @@ public interface Adapter
 
     default List<Object> handlerFormatter(Injector injector, String format, List<String> headers, List<Object> columns)
     {
-        return FileFilter.findNotify(injector, format)
+        return FileFilter.filter(injector, format)
                 .map(file -> {
                     FileRequest request = new FileRequest();
                     request.setHeaders(headers);

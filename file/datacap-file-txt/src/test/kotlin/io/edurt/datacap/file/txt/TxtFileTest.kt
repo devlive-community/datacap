@@ -37,7 +37,7 @@ class TxtFileTest
     fun testFormat()
     {
         injector?.let { injector ->
-            FileFilter.findNotify(injector, name)
+            FileFilter.filter(injector, name)
                 .ifPresent { file ->
                     request.delimiter = "[&&&]"
                     val response = file.format(request)
@@ -60,7 +60,7 @@ class TxtFileTest
     fun testWriter()
     {
         injector?.let { injector ->
-            FileFilter.findNotify(injector, name)
+            FileFilter.filter(injector, name)
                 .ifPresent { file ->
                     assertFalse {
                         file.writer(request)
@@ -80,7 +80,7 @@ class TxtFileTest
     fun testReader()
     {
         injector?.let { injector ->
-            FileFilter.findNotify(injector, name)
+            FileFilter.filter(injector, name)
                 .ifPresent { file ->
                     assertFalse {
                         file.reader(request)

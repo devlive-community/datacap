@@ -59,6 +59,7 @@ class NoneFile : File
             FileUtils.writeStringToFile(file, content.toString(), Charsets.UTF_8)
 
             log.info("${name()} writer end time [ ${DateUtils.now()} ]")
+            response.path = file.absolutePath
             response.successful = true
         }
         catch (e: Exception)

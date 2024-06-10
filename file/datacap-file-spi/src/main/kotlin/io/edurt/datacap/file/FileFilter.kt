@@ -15,7 +15,7 @@ object FileFilter
      * @return an Optional containing the found File, or an empty Optional if not found
      */
     @JvmStatic
-    fun findNotify(injector: Injector, name: String): Optional<File>
+    fun filter(injector: Injector, name: String): Optional<File>
     {
         return injector.getInstance(Key.get(object : TypeLiteral<Set<File>>()
         {}))
