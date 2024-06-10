@@ -92,6 +92,7 @@
         <module>file/datacap-file-spi</module>
         <module>file/datacap-file-txt</module>
         <module>file/datacap-file-json</module>
+        <module>file/datacap-file-none</module>
     </modules>
 
     <name>datacap</name>
