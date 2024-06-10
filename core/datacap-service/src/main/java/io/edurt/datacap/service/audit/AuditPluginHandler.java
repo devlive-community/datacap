@@ -33,10 +33,11 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static java.util.Objects.requireNonNull;
 
 @Aspect
 @Component
@@ -121,7 +122,7 @@ public class AuditPluginHandler
                                     FileResponse response = it.writer(request);
                                     log.info("Writer file absolute path [ {} ]", response.getPath());
 
-                                    File tempFile = new File(Objects.requireNonNull(response.getPath()));
+                                    File tempFile = new File(requireNonNull(response.getPath()));
                                     try (InputStream inputStream = Files.newInputStream(tempFile.toPath())) {
                                         FsRequest fsRequest = FsRequest.builder()
                                                 .access(initializer.getFsConfigure().getAccess())

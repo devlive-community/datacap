@@ -11,8 +11,9 @@ import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.ObjectUtils.isNotEmpty
 import org.slf4j.LoggerFactory.getLogger
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
-import java.util.*
+import java.util.Objects.requireNonNull
 
 class TxtFile : File
 {
@@ -67,7 +68,7 @@ class TxtFile : File
         val response = FileResponse()
         try
         {
-            Objects.requireNonNull("Stream must not be null")
+            requireNonNull("Stream must not be null")
 
             log.info("${name()} format stream start time [ ${DateUtils.now()} ]")
             request.delimiter
@@ -89,7 +90,7 @@ class TxtFile : File
             log.info("${name()} format stream end time [ ${DateUtils.now()} ]")
             response.successful = true
         }
-        catch (e: Exception)
+        catch (e: IOException)
         {
             response.successful = false
             response.message = e.message

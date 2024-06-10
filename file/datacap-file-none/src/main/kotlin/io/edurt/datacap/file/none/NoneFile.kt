@@ -10,7 +10,7 @@ import io.edurt.datacap.file.model.FileResponse
 import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory.getLogger
 import java.io.IOException
-import java.util.*
+import java.util.Objects.requireNonNull
 
 @SuppressFBWarnings(value = ["BC_BAD_CAST_TO_ABSTRACT_COLLECTION"])
 class NoneFile : File
@@ -46,7 +46,7 @@ class NoneFile : File
         val response = FileResponse()
         try
         {
-            Objects.requireNonNull("Stream must not be null")
+            requireNonNull("Stream must not be null")
 
             log.info("${name()} format stream start time [ ${DateUtils.now()} ]")
             response.headers = request.headers

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory.getLogger
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-import java.util.*
+import java.util.Objects.requireNonNull
 
 class JsonFile : File
 {
@@ -65,7 +65,7 @@ class JsonFile : File
         val response = FileResponse()
         try
         {
-            Objects.requireNonNull("Stream must not be null")
+            requireNonNull("Stream must not be null")
 
             log.info("${name()} format stream start time [ ${DateUtils.now()} ]")
             val mapper = ObjectMapper()
@@ -103,7 +103,7 @@ class JsonFile : File
             log.info("${name()} format stream end time [ ${DateUtils.now()} ]")
             response.successful = true
         }
-        catch (e: Exception)
+        catch (e: IOException)
         {
             response.successful = false
             response.message = e.message
