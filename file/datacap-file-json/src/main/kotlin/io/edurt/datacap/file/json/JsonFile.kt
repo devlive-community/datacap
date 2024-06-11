@@ -2,8 +2,10 @@ package io.edurt.datacap.file.json
 
 import com.fasterxml.jackson.core.JsonEncoding
 import com.fasterxml.jackson.core.JsonFactory
+import com.fasterxml.jackson.core.JsonGenerationException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.edurt.datacap.common.utils.DateUtils
 import io.edurt.datacap.file.File
 import io.edurt.datacap.file.FileConvert.formatFile
@@ -133,7 +135,14 @@ class JsonFile : File
                                 when (column)
                                 {
                                     is List<*> -> generator.writeObjectField(request.headers[headerIndex] as String, column[headerIndex])
-                                    else -> generator.writeObjectField(request.headers[headerIndex] as String, column.toString())
+                                    is ObjectNode ->
+                                    {
+                                        generator.codec = ObjectMapper()
+                                        val header = request.headers[headerIndex] as String
+                                        generator.writeObjectField(header, column.get(header))
+                                    }
+
+                                    else -> generator.writeObjectField(request.headers[headerIndex] as String, column)
                                 }
                             }
                             generator.writeEndObject()
@@ -146,6 +155,11 @@ class JsonFile : File
             response.successful = true
         }
         catch (e: IOException)
+        {
+            response.successful = false
+            response.message = e.message
+        }
+        catch (e: JsonGenerationException)
         {
             response.successful = false
             response.message = e.message
