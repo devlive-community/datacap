@@ -1,11 +1,13 @@
 package io.edurt.datacap.service.service.impl;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Injector;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.DateUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
+import io.edurt.datacap.file.FileFilter;
+import io.edurt.datacap.file.model.FileRequest;
+import io.edurt.datacap.file.model.FileResponse;
 import io.edurt.datacap.fs.FsRequest;
 import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.activity.HeatmapActivity;
@@ -25,15 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -119,26 +119,20 @@ public class PluginAuditServiceImpl
                     FsResponse fsResponse = SpiUtils.findFs(injector, initializer.getFsConfigure().getType())
                             .map(v -> v.reader(fsRequest))
                             .get();
-                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(fsResponse.getContext()))) {
-                        String headersLine = reader.readLine();
-                        List<String> headers = Arrays.asList(headersLine.split(","));
-                        response.setHeaders(headers);
+                    FileFilter.filter(injector, "Json")
+                            .ifPresent(it -> {
+                                FileRequest request = new FileRequest();
+                                request.setStream(fsResponse.getContext());
 
-                        List<Object> columns = new ArrayList<>();
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            String[] columnData = line.split(",");
-                            Map<String, String> row = Maps.newHashMap();
-                            for (int i = 0; i < headers.size(); i++) {
-                                row.put(headers.get(i), columnData[i]);
-                            }
-                            columns.add(row);
-                        }
-                        response.setColumns(columns);
-                    }
-                    catch (Exception e) {
-                        log.warn("Reader cache failed on [ {} ]", code, e);
-                    }
+                                FileResponse _response = it.formatStream(request);
+                                if (_response.getSuccessful()) {
+                                    response.setHeaders(_response.getHeaders()
+                                            .stream()
+                                            .map(String::valueOf)
+                                            .collect(Collectors.toList()));
+                                    response.setColumns(_response.getColumns());
+                                }
+                            });
                     return CommonResponse.success(response);
                 })
                 .orElseGet(() -> CommonResponse.failure(String.format("Not found [ %s ] history", code)));

@@ -122,26 +122,28 @@ public class AuditPluginHandler
                                     FileResponse response = it.writer(request);
                                     log.info("Writer file absolute path [ {} ]", response.getPath());
 
-                                    File tempFile = new File(requireNonNull(response.getPath()));
-                                    try (InputStream inputStream = Files.newInputStream(tempFile.toPath())) {
-                                        FsRequest fsRequest = FsRequest.builder()
-                                                .access(initializer.getFsConfigure().getAccess())
-                                                .secret(initializer.getFsConfigure().getSecret())
-                                                .endpoint(workHome)
-                                                .bucket(initializer.getFsConfigure().getBucket())
-                                                .stream(inputStream)
-                                                .fileName("result.csv")
-                                                .build();
-                                        // If it is OSS third-party storage, rebuild the default directory
-                                        if (!initializer.getFsConfigure().getType().equals("Local")) {
-                                            fsRequest.setEndpoint(initializer.getFsConfigure().getEndpoint());
-                                            fsRequest.setFileName(String.join(File.separator, user.getUsername(), DateUtils.formatYMD(), String.join(File.separator, "adhoc", uniqueId), "result.csv"));
+                                    if (Boolean.TRUE.equals(response.getSuccessful())) {
+                                        File tempFile = new File(requireNonNull(response.getPath()));
+                                        try (InputStream inputStream = Files.newInputStream(tempFile.toPath())) {
+                                            FsRequest fsRequest = FsRequest.builder()
+                                                    .access(initializer.getFsConfigure().getAccess())
+                                                    .secret(initializer.getFsConfigure().getSecret())
+                                                    .endpoint(workHome)
+                                                    .bucket(initializer.getFsConfigure().getBucket())
+                                                    .stream(inputStream)
+                                                    .fileName("result.csv")
+                                                    .build();
+                                            // If it is OSS third-party storage, rebuild the default directory
+                                            if (!initializer.getFsConfigure().getType().equals("Local")) {
+                                                fsRequest.setEndpoint(initializer.getFsConfigure().getEndpoint());
+                                                fsRequest.setFileName(String.join(File.separator, user.getUsername(), DateUtils.formatYMD(), String.join(File.separator, "adhoc", uniqueId), "result.csv"));
+                                            }
+                                            SpiUtils.findFs(injector, initializer.getFsConfigure().getType())
+                                                    .map(v -> v.writer(fsRequest));
+                                            log.info("Delete temp file [ {} ] on [ {} ] state [ {} ]", tempFile, pluginAudit.getId(), Files.deleteIfExists(tempFile.toPath()));
+                                            log.info("Writer file to folder [ {} ] on [ {} ] completed", workHome, pluginAudit.getId());
+                                            pluginAudit.setHome(workHome);
                                         }
-                                        SpiUtils.findFs(injector, initializer.getFsConfigure().getType())
-                                                .map(v -> v.writer(fsRequest));
-                                        log.info("Delete temp file [ {} ] on [ {} ] state [ {} ]", tempFile, pluginAudit.getId(), Files.deleteIfExists(tempFile.toPath()));
-                                        log.info("Writer file to folder [ {} ] on [ {} ] completed", workHome, pluginAudit.getId());
-                                        pluginAudit.setHome(workHome);
                                     }
                                 }
                                 catch (IOException e) {
