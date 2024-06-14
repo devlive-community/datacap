@@ -1,5 +1,5 @@
 ---
-title: Kotlin 实现
+title: 自定义 Plugin 连接器
 ---
 
 DataCap 支持自定义插件，使用者可以编写自己的插件集成到系统中。该文档主要讲解如何快速集成一个插件到 DataCap 系统中。
