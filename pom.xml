@@ -93,6 +93,7 @@
         <module>file/datacap-file-txt</module>
         <module>file/datacap-file-json</module>
         <module>file/datacap-file-none</module>
+        <module>file/datacap-file-csv</module>
     </modules>
 
     <name>datacap</name>
