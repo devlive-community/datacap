@@ -75,9 +75,13 @@ git clone https://github.com/devlive-community/datacap.git
 - `docs`: datacap 文档源码
 - `driver`: datacap 数据源驱动源码
 - `executor`: datacap 执行器源码
+- `file`: datacap 文件格式化转换器源码
 - `fs`: datacap 文件系统源码
 - `lib`: datacap 依赖包源码
+- `notify`: datacap 通知器源码
+- `parser`: datacap sql 解析器源码
 - `plugin`: datacap 插件源码
+- `scheduler`: datacap 调度器源码
 - `shaded`: datacap 重制依赖源码
 
 ### 启动服务
