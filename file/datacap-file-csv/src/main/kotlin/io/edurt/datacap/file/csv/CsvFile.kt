@@ -1,5 +1,6 @@
 package io.edurt.datacap.file.csv
 
+import com.google.common.base.Preconditions.checkState
 import io.edurt.datacap.common.utils.DateUtils
 import io.edurt.datacap.file.File
 import io.edurt.datacap.file.FileConvert
@@ -108,6 +109,34 @@ class CsvFile : File
 
     override fun reader(request: FileRequest): FileResponse
     {
-        TODO("Not yet implemented")
+        val response = FileResponse()
+        val delimiter = ","
+        try
+        {
+            log.info("${name()} reader origin path [ ${request.path} ]")
+            val file = FileConvert.formatFile(request, name())
+
+            val lines = FileUtils.readLines(file, Charsets.UTF_8)
+            checkState(lines.isNotEmpty(), "The file is empty")
+            log.info("${name()} reader file line count [ ${lines.size} ]")
+            response.headers = lines.first()
+                .split(delimiter)
+
+            val columns = mutableListOf<Any>()
+            lines.drop(1)
+                .forEach {
+                    columns.add(it.split(delimiter))
+                }
+            response.columns = columns
+
+            log.info("${name()} reader end time [ ${DateUtils.now()} ]")
+            response.successful = true
+        }
+        catch (e: Exception)
+        {
+            response.successful = false
+            response.message = e.message
+        }
+        return response
     }
 }
