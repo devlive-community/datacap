@@ -123,6 +123,7 @@ plugins:
             NavConnectors: 连接器
             NavDeveloper: 开发
             NavDeveloperPlugin: 插件
+            NavDeveloperPluginKotlin: 插件 (Kotlin)
             NavReleaseNote: 更新日志
             NavDataset: 数据集
             NavDeploy: 安装部署
@@ -139,6 +140,7 @@ plugins:
             NavConnectors: Connectors
             NavDeveloper: Developer
             NavDeveloperPlugin: Plugin
+            NavDeveloperPluginKotlin: Plugin (Kotlin)
             NavReleaseNote: Release Note
             NavDataset: Dataset
             NavDeploy: Install Deploy
@@ -246,8 +248,10 @@ nav:
       - developer/feature/home.md
       - NavDeveloperPlugin:
           - developer/plugin/java/home.md
+      - NavDeveloperPluginKotlin:
           - developer/plugin/kotlin/home.md
           - developer/filesystem/home.md
+          - developer/file/kotlin/home.md
       - Other:
           - developer/pipeline/home.md
   - useCases.md
