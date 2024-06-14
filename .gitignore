@@ -65,3 +65,4 @@ parser/datacap-parser-trino/src/main/java/io/edurt/datacap/parser/antlr
 file/datacap-file-txt/*.txt
 file/datacap-file-json/*.json
 file/datacap-file-none/*.none
+file/datacap-file-csv/*.csv
