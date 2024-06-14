@@ -9,6 +9,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.slf4j.LoggerFactory.getLogger
+import java.io.File
+import java.io.FileInputStream
 
 class CsvFileTest
 {
@@ -61,6 +63,26 @@ class CsvFileTest
                         file.writer(request)
                             .successful == true
                     )
+                }
+        }
+    }
+
+    @Test
+    fun testFormatStream()
+    {
+        injector?.let { injector ->
+            FileFilter.filter(injector, name)
+                .ifPresent { file ->
+                    request.stream = FileInputStream(File("${System.getProperty("user.dir")}/${request.name}.csv"))
+                    val response = file.formatStream(request)
+                    log.info("headers: [ ${response.headers} ]")
+                    response.columns
+                        .let { columns ->
+                            columns.forEachIndexed { index, line ->
+                                log.info("index: [ $index ], line: [ $line ]")
+                            }
+                        }
+                    assertTrue(response.successful == true)
                 }
         }
     }
