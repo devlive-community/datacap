@@ -22,7 +22,7 @@ public interface Adapter
                     request.setColumns(columns);
 
                     FileResponse response = file.format(request);
-                    Preconditions.checkArgument(Boolean.TRUE.equals(response.getSuccessful()), "Not support format: %s", format);
+                    Preconditions.checkArgument(Boolean.TRUE.equals(response.getSuccessful()), response.getMessage(), format);
                     return response.getColumns();
                 })
                 .orElseThrow(() -> new IllegalArgumentException("Unsupported format: " + format));
