@@ -214,7 +214,8 @@ nav:
         - reference/connectors/pinot/home.md
         - reference/connectors/cassandra/home.md
   - NavReleaseNote:
-      - 2024.03.5 (latest): release/latest.md
+      - 2024.03.6 (latest): release/latest.md
+      - 2024.03.5: release/2024.03.5.md
       - 2024.03.4: release/2024.03.4.md
       - 2024.03.3: release/2024.03.3.md
       - 2024.03.2: release/2024.03.2.md
