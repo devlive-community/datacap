@@ -1087,6 +1087,7 @@ CREATE TABLE `datacap_source_query` (
   `code` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `home` varchar(500) DEFAULT NULL,
+  `format` varchar(100) DEFAULT 'Json',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `full_text_index_for_content` (`content`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -1230,4 +1231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-05  8:50:14
+-- Dump completed on 2024-06-19 20:03:24
