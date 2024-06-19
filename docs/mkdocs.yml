@@ -252,6 +252,7 @@ nav:
           - developer/plugin/kotlin/home.md
           - developer/filesystem/home.md
           - developer/file/kotlin/home.md
+          - developer/notify/kotlin/home.md
       - Other:
           - developer/pipeline/home.md
   - useCases.md

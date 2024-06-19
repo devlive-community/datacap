@@ -3,6 +3,7 @@ package io.edurt.datacap.service.audit;
 import com.google.inject.Injector;
 import io.edurt.datacap.common.enums.State;
 import io.edurt.datacap.common.response.CommonResponse;
+import io.edurt.datacap.common.utils.CodeUtils;
 import io.edurt.datacap.common.utils.DateUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
 import io.edurt.datacap.file.FileFilter;
@@ -33,7 +34,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -94,6 +94,7 @@ public class AuditPluginHandler
                 ExecuteEntity executeEntity = (ExecuteEntity) joinPoint.getArgs()[0];
                 pluginAudit.setContent(executeEntity.getContent());
                 pluginAudit.setMode(executeEntity.getMode());
+                pluginAudit.setFormat(executeEntity.getFormat());
                 this.sourceRepository.findById(Long.valueOf(executeEntity.getName()))
                         .ifPresent(pluginAudit::setSource);
             }
@@ -101,7 +102,7 @@ public class AuditPluginHandler
             pluginAudit.setUser(user);
             pluginAudit.setUpdateTime(Timestamp.valueOf(LocalDateTime.now()));
             pluginAudit.setElapsed(pluginAudit.getUpdateTime().getTime() - pluginAudit.getCreateTime().getTime());
-            pluginAudit.setCode(UUID.randomUUID().toString().replace("-", ""));
+            pluginAudit.setCode(CodeUtils.generateCode(false));
             this.pluginAuditRepository.save(pluginAudit);
 
             ExecutorService service = Executors.newSingleThreadExecutor();
