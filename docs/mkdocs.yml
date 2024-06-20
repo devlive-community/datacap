@@ -8,7 +8,7 @@ repo_url: https://github.com/devlive-community/datacap
 edit_uri: "https://github.com/devlive-community/datacap/blob/dev/docs/docs"
 
 banners:
-  - title: DataCap 2024.03.5 is released
+  - title: DataCap 2024.03.6 is released
     link: /release-latest.html
     description: <a href="https://github.com/devlive-community/datacap" class="text-white"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
 
