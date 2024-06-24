@@ -1,4 +1,4 @@
-package io.edurt.datacap.scylladb
+package io.edurt.datacap.plugin.scylladb
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import io.edurt.datacap.spi.Plugin

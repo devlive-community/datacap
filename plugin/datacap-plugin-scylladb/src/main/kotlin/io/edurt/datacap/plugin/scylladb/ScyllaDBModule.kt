@@ -1,4 +1,4 @@
-package io.edurt.datacap.scylladb
+package io.edurt.datacap.plugin.scylladb
 
 import com.google.inject.multibindings.Multibinder
 import io.edurt.datacap.spi.AbstractPluginModule

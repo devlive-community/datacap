@@ -1,4 +1,4 @@
-package io.edurt.datacap.scylladb
+package io.edurt.datacap.plugin.scylladb
 
 import com.datastax.oss.driver.api.core.CqlSession
 import io.edurt.datacap.spi.connection.Connection

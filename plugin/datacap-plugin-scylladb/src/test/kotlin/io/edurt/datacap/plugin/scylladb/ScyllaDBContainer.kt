@@ -1,4 +1,4 @@
-package io.edurt.datacap.scylladb
+package io.edurt.datacap.plugin.scylladb
 
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
