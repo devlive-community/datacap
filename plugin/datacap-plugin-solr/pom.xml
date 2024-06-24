@@ -37,6 +37,11 @@
             <artifactId>testcontainers</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>${datacap.solr.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
