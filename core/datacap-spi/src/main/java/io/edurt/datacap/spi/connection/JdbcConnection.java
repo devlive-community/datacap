@@ -88,7 +88,7 @@ public class JdbcConnection
             }
             response.setIsConnected(Boolean.TRUE);
         }
-        catch (SQLException | ClassNotFoundException | NoClassDefFoundError ex) {
+        catch (Exception ex) {
             log.error("Connection failed ", ex);
             response.setIsConnected(Boolean.FALSE);
             response.setMessage(ex.getMessage());
