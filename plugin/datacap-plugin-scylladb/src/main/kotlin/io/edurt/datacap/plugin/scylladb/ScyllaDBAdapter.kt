@@ -1,4 +1,4 @@
-package io.edurt.datacap.scylladb
+package io.edurt.datacap.plugin.scylladb
 
 import com.datastax.oss.driver.api.core.cql.ResultSet
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings

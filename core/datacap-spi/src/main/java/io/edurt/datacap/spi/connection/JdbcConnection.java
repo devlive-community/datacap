@@ -35,7 +35,12 @@ public class JdbcConnection
         buffer.append(":");
         buffer.append(this.jdbcConfigure.getPort());
         if (this.jdbcConfigure.getDatabase().isPresent()) {
-            buffer.append("/");
+            if (jdbcConfigure.getJdbcType().equals("solr")) {
+                buffer.append("/?collection=");
+            }
+            else {
+                buffer.append("/");
+            }
             buffer.append(this.jdbcConfigure.getDatabase().get());
         }
         if (this.jdbcConfigure.getSsl().isPresent()) {
@@ -83,7 +88,7 @@ public class JdbcConnection
             }
             response.setIsConnected(Boolean.TRUE);
         }
-        catch (SQLException | ClassNotFoundException | NoClassDefFoundError ex) {
+        catch (Exception ex) {
             log.error("Connection failed ", ex);
             response.setIsConnected(Boolean.FALSE);
             response.setMessage(ex.getMessage());
