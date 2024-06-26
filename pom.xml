@@ -74,6 +74,7 @@
         <module>plugin/datacap-plugin-paradedb</module>
         <module>plugin/datacap-plugin-timescale</module>
         <module>plugin/datacap-plugin-solr</module>
+        <module>plugin/datacap-plugin-influxdb</module>
         <module>executor/datacap-executor-spi</module>
         <module>executor/datacap-executor-local</module>
         <module>executor/datacap-executor-seatunnel</module>
@@ -179,6 +180,7 @@
         <datacap.alioss.version>3.16.1</datacap.alioss.version>
         <datacap.commons-io.version>2.16.1</datacap.commons-io.version>
         <datacap.solr.version>6.0.0</datacap.solr.version>
+        <datacap.influxdb.version>0.2.6</datacap.influxdb.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>4.8.5.0</plugin.maven.findbugs.version>

@@ -281,6 +281,7 @@ public class SourceServiceImpl
             _configure.setHome(cacheHome);
             _configure.setUsername(Optional.of(UserDetailsService.getUser().getUsername()));
         }
+        _configure.setInjector(injector);
         plugin.connect(_configure);
         io.edurt.datacap.spi.model.Response response = plugin.execute(plugin.validator());
         if (response.getIsSuccessful()) {

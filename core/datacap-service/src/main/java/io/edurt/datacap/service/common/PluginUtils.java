@@ -74,6 +74,7 @@ public class PluginUtils
             resource = resource + ".yaml";
         }
         String path = root + String.format("plugins/%s/%s", type.toLowerCase(), resource.toLowerCase());
+        log.info("Load plugin {} type {} resource {} configure file path {}", plugin, type, resource, path);
         File file = new File(path);
         if (!file.exists()) {
             log.warn("Plugin {} type {} configuration file {} not found, load default configuration file", plugin, type, resource);
