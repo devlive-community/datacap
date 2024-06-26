@@ -185,6 +185,7 @@ nav:
         - reference/system/sql/home.md
         - reference/system/menu/home.md
     - NavConnectors:
+        - reference/connectors/influxdb/home.md
         - reference/connectors/solr/home.md
         - reference/connectors/timescale/home.md
         - reference/connectors/paradedb/home.md
