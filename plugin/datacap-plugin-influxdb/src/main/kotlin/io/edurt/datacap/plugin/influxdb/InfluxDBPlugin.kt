@@ -6,16 +6,16 @@ class InfluxDBPlugin : Plugin
 {
     override fun validator(): String
     {
-        return "SELECT '-' AS version"
+        return "SELECT 1"
     }
 
     override fun driver(): String
     {
-        return "org.apache.arrow.driver.jdbc.ArrowFlightJdbcDriver"
+        return "net.suteren.jdbc.influxdb.InfluxDbDriver"
     }
 
     override fun connectType(): String
     {
-        return "arrow-flight-sql"
+        return "influxdb"
     }
 }

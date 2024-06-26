@@ -385,6 +385,12 @@
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-plugin-influxdb</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-captcha</artifactId>
             <version>${project.version}</version>
         </dependency>

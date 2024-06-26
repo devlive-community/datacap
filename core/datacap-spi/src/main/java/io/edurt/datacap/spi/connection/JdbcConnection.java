@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -30,7 +32,12 @@ public class JdbcConnection
         StringBuffer buffer = new StringBuffer();
         buffer.append("jdbc:");
         buffer.append(this.jdbcConfigure.getJdbcType());
-        buffer.append("://");
+        if (jdbcConfigure.getJdbcType().equals("influxdb")) {
+            buffer.append(":");
+        }
+        else {
+            buffer.append("://");
+        }
         buffer.append(this.jdbcConfigure.getHost());
         buffer.append(":");
         buffer.append(this.jdbcConfigure.getPort());
@@ -70,7 +77,24 @@ public class JdbcConnection
         try {
             this.jdbcConfigure = (JdbcConfigure) getConfigure();
             this.response = getResponse();
-            Class.forName(this.jdbcConfigure.getJdbcDriver());
+
+            // Remove org.apache.pinot.client.PinotDriver and net.suteren.jdbc.influxdb.InfluxDbDriver
+            Enumeration<Driver> drivers = DriverManager.getDrivers();
+            while (drivers.hasMoreElements()) {
+                Driver driver = drivers.nextElement();
+                if (driver instanceof org.apache.pinot.client.PinotDriver
+                        || driver instanceof net.suteren.jdbc.influxdb.InfluxDbDriver) {
+                    DriverManager.deregisterDriver(driver);
+                    log.info("Deregistered driver {}", driver);
+                }
+            }
+
+            // Manually loading and registering the driver
+            Driver driver = (Driver) Class.forName(this.jdbcConfigure.getJdbcDriver())
+                    .getDeclaredConstructor()
+                    .newInstance();
+            DriverManager.registerDriver(driver);
+
             String url = formatJdbcUrl();
             log.info("Connection driver {}", this.jdbcConfigure.getJdbcDriver());
             log.info("Connection url {}", url);

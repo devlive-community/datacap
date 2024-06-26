@@ -38,9 +38,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.arrow</groupId>
-            <artifactId>flight-sql-jdbc-driver</artifactId>
-            <version>${datacap.arrow.version}</version>
+            <groupId>net.suteren.jdbc.influxdb</groupId>
+            <artifactId>influxdb-jdbc</artifactId>
+            <version>${datacap.influxdb.version}</version>
         </dependency>
     </dependencies>
 
