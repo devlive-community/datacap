@@ -9,7 +9,10 @@ public interface PluginModule
                 .replace("Module", "");
     }
 
-    PluginType getType();
+    default PluginType getType()
+    {
+        return PluginType.JDBC;
+    }
 
     AbstractPluginModule get();
 }
