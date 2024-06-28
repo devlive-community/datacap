@@ -2,9 +2,9 @@ package io.edurt.datacap.spi.adapter;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Injector;
-import io.edurt.datacap.file.FileFilter;
-import io.edurt.datacap.file.model.FileRequest;
-import io.edurt.datacap.file.model.FileResponse;
+import io.edurt.datacap.convert.ConvertFilter;
+import io.edurt.datacap.convert.model.ConvertRequest;
+import io.edurt.datacap.convert.model.ConvertResponse;
 import io.edurt.datacap.spi.model.Response;
 
 import java.util.List;
@@ -15,13 +15,13 @@ public interface Adapter
 
     default List<Object> handlerFormatter(Injector injector, String format, List<String> headers, List<Object> columns)
     {
-        return FileFilter.filter(injector, format)
+        return ConvertFilter.filter(injector, format)
                 .map(file -> {
-                    FileRequest request = new FileRequest();
+                    ConvertRequest request = new ConvertRequest();
                     request.setHeaders(headers);
                     request.setColumns(columns);
 
-                    FileResponse response = file.format(request);
+                    ConvertResponse response = file.format(request);
                     Preconditions.checkArgument(Boolean.TRUE.equals(response.getSuccessful()), response.getMessage(), format);
                     return response.getColumns();
                 })

@@ -5,9 +5,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.DateUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
-import io.edurt.datacap.file.FileFilter;
-import io.edurt.datacap.file.model.FileRequest;
-import io.edurt.datacap.file.model.FileResponse;
+import io.edurt.datacap.convert.ConvertFilter;
+import io.edurt.datacap.convert.model.ConvertRequest;
+import io.edurt.datacap.convert.model.ConvertResponse;
 import io.edurt.datacap.fs.FsRequest;
 import io.edurt.datacap.fs.FsResponse;
 import io.edurt.datacap.service.activity.HeatmapActivity;
@@ -119,12 +119,12 @@ public class PluginAuditServiceImpl
                     FsResponse fsResponse = SpiUtils.findFs(injector, initializer.getFsConfigure().getType())
                             .map(v -> v.reader(fsRequest))
                             .get();
-                    FileFilter.filter(injector, "Json")
+                    ConvertFilter.filter(injector, "Json")
                             .ifPresent(it -> {
-                                FileRequest request = new FileRequest();
+                                ConvertRequest request = new ConvertRequest();
                                 request.setStream(fsResponse.getContext());
 
-                                FileResponse _response = it.formatStream(request);
+                                ConvertResponse _response = it.formatStream(request);
                                 if (_response.getSuccessful()) {
                                     response.setHeaders(_response.getHeaders()
                                             .stream()

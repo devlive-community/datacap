@@ -61,8 +61,8 @@ parser/datacap-parser-mysql/src/main/java
 parser/datacap-parser-trino/src/main/java/*.tokens
 parser/datacap-parser-trino/src/main/java/io/edurt/datacap/parser/antlr
 
-# Skip file #
-file/datacap-file-txt/*.txt
-file/datacap-file-json/*.json
-file/datacap-file-none/*.none
-file/datacap-file-csv/*.csv
+# Skip convert #
+convert/datacap-convert-txt/*.txt
+convert/datacap-convert-json/*.json
+convert/datacap-convert-none/*.none
+convert/datacap-convert-csv/*.csv

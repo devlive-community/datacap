@@ -81,25 +81,25 @@
             <version>${datacap.influxdb.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Support file convert -->
+        <!-- Support convert -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-file-txt</artifactId>
+            <artifactId>datacap-convert-txt</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-file-json</artifactId>
+            <artifactId>datacap-convert-json</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-file-none</artifactId>
+            <artifactId>datacap-convert-none</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-file-csv</artifactId>
+            <artifactId>datacap-convert-csv</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
