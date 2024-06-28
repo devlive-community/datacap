@@ -2,8 +2,8 @@ package io.edurt.datacap.server.configure;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import io.edurt.datacap.convert.ConvertManager;
 import io.edurt.datacap.executor.ExecutorManager;
-import io.edurt.datacap.file.FileManager;
 import io.edurt.datacap.fs.FsManager;
 import io.edurt.datacap.notify.NotifyManager;
 import io.edurt.datacap.parser.ParserManager;
@@ -24,6 +24,6 @@ public class PluginConfigure
                 new ScheduleManager(),
                 new ExecutorManager(),
                 new NotifyManager(),
-                new FileManager());
+                new ConvertManager());
     }
 }

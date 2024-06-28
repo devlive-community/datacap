@@ -424,7 +424,7 @@
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-file-spi</artifactId>
+            <artifactId>datacap-convert-spi</artifactId>
         </dependency>
     </dependencies>
 

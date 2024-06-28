@@ -6,9 +6,9 @@ import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.CodeUtils;
 import io.edurt.datacap.common.utils.DateUtils;
 import io.edurt.datacap.common.utils.SpiUtils;
-import io.edurt.datacap.file.FileFilter;
-import io.edurt.datacap.file.model.FileRequest;
-import io.edurt.datacap.file.model.FileResponse;
+import io.edurt.datacap.convert.ConvertFilter;
+import io.edurt.datacap.convert.model.ConvertRequest;
+import io.edurt.datacap.convert.model.ConvertResponse;
 import io.edurt.datacap.fs.FsRequest;
 import io.edurt.datacap.service.common.FolderUtils;
 import io.edurt.datacap.service.entity.ExecuteEntity;
@@ -111,16 +111,16 @@ public class AuditPluginHandler
                 String workHome = FolderUtils.getWorkHome(initializer.getDataHome(), user.getUsername(), String.join(File.separator, "adhoc", uniqueId));
                 log.info("Writer file to folder [ {} ] on [ {} ]", workHome, pluginAudit.getId());
                 try {
-                    FileFilter.filter(injector, "Json")
+                    ConvertFilter.filter(injector, "Json")
                             .ifPresent(it -> {
                                 try {
                                     FileUtils.forceMkdir(new File(workHome));
-                                    FileRequest request = new FileRequest();
+                                    ConvertRequest request = new ConvertRequest();
                                     request.setHeaders(jsonResult.getData().getHeaders());
                                     request.setColumns(jsonResult.getData().getColumns());
                                     request.setName("result-tmp");
                                     request.setPath(workHome);
-                                    FileResponse response = it.writer(request);
+                                    ConvertResponse response = it.writer(request);
                                     log.info("Writer file absolute path [ {} ]", response.getPath());
 
                                     if (Boolean.TRUE.equals(response.getSuccessful())) {

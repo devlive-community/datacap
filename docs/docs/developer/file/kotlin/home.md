@@ -53,11 +53,11 @@ DataCap 支持自定义 File 转换器，使用者可以编写自己的文件转
 ---
 
 ```kotlin
-package io.edurt.datacap.file.json
+package io.edurt.datacap.convert.json
 
 import com.google.inject.multibindings.Multibinder
-import io.edurt.datacap.file.File
-import io.edurt.datacap.file.FileModule
+import io.edurt.datacap.convert.File
+import io.edurt.datacap.convert.FileModule
 
 class JsonModule : FileModule()
 {
@@ -75,7 +75,7 @@ class JsonModule : FileModule()
 ---
 
 ```kotlin
-package io.edurt.datacap.file.json
+package io.edurt.datacap.convert.json
 
 import com.fasterxml.jackson.core.JsonEncoding
 import com.fasterxml.jackson.core.JsonFactory
@@ -84,10 +84,10 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.edurt.datacap.common.utils.DateUtils
-import io.edurt.datacap.file.File
-import io.edurt.datacap.file.FileConvert.formatFile
-import io.edurt.datacap.file.model.FileRequest
-import io.edurt.datacap.file.model.FileResponse
+import io.edurt.datacap.convert.File
+import io.edurt.datacap.convert.FileConvert.formatFile
+import io.edurt.datacap.convert.model.FileRequest
+import io.edurt.datacap.convert.model.FileResponse
 import org.slf4j.LoggerFactory.getLogger
 import java.io.BufferedReader
 import java.io.IOException
@@ -300,10 +300,10 @@ class JsonFile : File
 
 ---
 
-在 `resources` 源目录下添加 `META-INF` 和 `services` 目录，格式为 `resources/META-INF/services`，创建 `io.edurt.datacap.file.FileModule` 文件，内容如下
+在 `resources` 源目录下添加 `META-INF` 和 `services` 目录，格式为 `resources/META-INF/services`，创建 `io.edurt.datacap.convert.FileModule` 文件，内容如下
 
 ```kotlin
-io.edurt.datacap.file.json.JsonModule
+io.edurt.datacap.convert.json.JsonModule
 ```
 
 > 通过以上内容我们实现了 Json 文件转换器的支持。我们只需要在要使用 Json 文件转换器的地方引用该模块即可。比如我们在 `server` 模块中使用到该模块，则在 `server/pom.xml` 文件中增加以下内容
@@ -321,14 +321,14 @@ io.edurt.datacap.file.json.JsonModule
 ---
 
 ```kotlin
-package io.edurt.datacap.file.json
+package io.edurt.datacap.convert.json
 
 import com.google.inject.Guice.createInjector
 import com.google.inject.Injector
 import com.google.inject.Key
 import com.google.inject.TypeLiteral
-import io.edurt.datacap.file.File
-import io.edurt.datacap.file.FileManager
+import io.edurt.datacap.convert.File
+import io.edurt.datacap.convert.FileManager
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -355,13 +355,13 @@ class JsonModuleTest
 ---
 
 ```kotlin
-package io.edurt.datacap.file.json
+package io.edurt.datacap.convert.json
 
 import com.google.inject.Guice.createInjector
 import com.google.inject.Injector
-import io.edurt.datacap.file.FileFilter
-import io.edurt.datacap.file.FileManager
-import io.edurt.datacap.file.model.FileRequest
+import io.edurt.datacap.convert.FileFilter
+import io.edurt.datacap.convert.FileManager
+import io.edurt.datacap.convert.model.FileRequest
 import org.junit.Before
 import org.junit.Test
 import org.slf4j.LoggerFactory.getLogger
