@@ -96,6 +96,7 @@
         <module>convert/datacap-convert-json</module>
         <module>convert/datacap-convert-none</module>
         <module>convert/datacap-convert-csv</module>
+        <module>convert/datacap-convert-xml</module>
     </modules>
 
     <name>datacap</name>
