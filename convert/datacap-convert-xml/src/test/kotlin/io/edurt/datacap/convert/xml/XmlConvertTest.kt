@@ -5,6 +5,7 @@ import com.google.inject.Injector
 import io.edurt.datacap.convert.ConvertFilter
 import io.edurt.datacap.convert.ConvertManager
 import io.edurt.datacap.convert.model.ConvertRequest
+import io.edurt.datacap.convert.model.ConvertResponse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -51,16 +52,33 @@ class XmlConvertTest
             ConvertFilter.filter(injector, name)
                 .ifPresent { file ->
                     val response = file.reader(request)
-                    log.info("headers: { ${response.headers} }")
-                    response.columns
-                        .let { columns ->
-                            columns.forEachIndexed { index, line ->
-                                log.info("index: ( $index ) line: { $line }")
-                            }
-                        }
-
+                    print(response)
                     assertTrue(response.successful == true)
                 }
         }
+    }
+
+    @Test
+    fun testFormat()
+    {
+        injector?.let { injector ->
+            ConvertFilter.filter(injector, name)
+                .ifPresent { file ->
+                    val response = file.format(request)
+                    print(response)
+                    assertTrue(response.successful == true)
+                }
+        }
+    }
+
+    private fun print(response: ConvertResponse)
+    {
+        log.info("headers: { ${response.headers} }")
+        response.columns
+            .let { columns ->
+                columns.forEachIndexed { index, line ->
+                    log.info("index: [ $index ], line: [ $line ]")
+                }
+            }
     }
 }

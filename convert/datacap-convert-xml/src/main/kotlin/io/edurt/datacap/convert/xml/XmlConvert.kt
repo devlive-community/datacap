@@ -9,17 +9,56 @@ import io.edurt.datacap.convert.FileConvert.formatFile
 import io.edurt.datacap.convert.model.ConvertRequest
 import io.edurt.datacap.convert.model.ConvertResponse
 import org.slf4j.LoggerFactory.getLogger
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 class XmlConvert : Convert
 {
     private val log = getLogger(this::class.java)
-    val root = "Root"
-    val node = "Node"
+    private val root = "Root"
+    private val node = "Node"
 
     override fun format(request: ConvertRequest): ConvertResponse
     {
-        TODO("Not yet implemented")
+        val response = ConvertResponse()
+        try
+        {
+            log.info("${name()} format start time [ ${DateUtils.now()} ]")
+            response.headers = request.headers
+            val factory = XmlFactory()
+            val outputStream = ByteArrayOutputStream()
+            factory.createGenerator(outputStream, JsonEncoding.UTF8)
+                .use { generator ->
+                    generator.codec = XmlMapper()
+                    val staxWriter = generator.staxWriter
+                    staxWriter.writeStartElement(root)
+                    request.columns
+                        .forEach { column ->
+                            staxWriter.writeStartElement(node)
+                            for (headerIndex in request.headers.indices)
+                            {
+                                when (column)
+                                {
+                                    is List<*> -> staxWriter.writeAttribute(request.headers[headerIndex].toString(), column[headerIndex].toString())
+                                    else -> throw UnsupportedOperationException("Unsupported column type")
+                                }
+                            }
+                            staxWriter.writeEndElement()
+                        }
+                    staxWriter.writeEndElement()
+                }
+            val xmlString = outputStream.toString(Charsets.UTF_8)
+            response.columns = listOf(xmlString)
+            log.info("${name()} format end time [ ${DateUtils.now()} ]")
+            response.successful = true
+        }
+        catch (e: IOException)
+        {
+            e.printStackTrace()
+            response.successful = false
+            response.message = e.message
+        }
+        return response
     }
 
     override fun formatStream(request: ConvertRequest): ConvertResponse
