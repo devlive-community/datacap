@@ -3,3 +3,8 @@
  8I  Yb   dPYb     88     dPYb   dP   `"   dPYb   88__dP 
  8I  dY  dP__Yb    88    dP__Yb  Yb       dP__Yb  88"""  
 8888Y"  dP""""Yb   88   dP""""Yb  YboodP dP""""Yb 88     
+
+::Spring Boot Version:: ${AnsiColor.RED}(${spring-boot.version})${AnsiColor.DEFAULT}
+
+::Application Version:: ${AnsiColor.RED}(${app.version})${AnsiColor.DEFAULT}
+::Application Address:: ${AnsiColor.RED}http://${server.address}:${server.port}${AnsiColor.DEFAULT}

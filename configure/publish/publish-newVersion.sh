@@ -33,6 +33,9 @@ job_runner_apply() {
         printf "\nApply new version for server successful\n\n"
     fi
 
+    echo "Apply new version for application ..."
+    perl -pi -e 's/app\.version=.*/app.version='"$VERSION"'/g' configure/etc/conf/application.properties
+
     printf "Apply new version for web ...\n"
     # shellcheck disable=SC2164
     cd "$HOME"/core/datacap-ui
