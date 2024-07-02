@@ -9,6 +9,7 @@ import io.edurt.datacap.convert.FileConvert.formatFile
 import io.edurt.datacap.convert.model.ConvertRequest
 import io.edurt.datacap.convert.model.ConvertResponse
 import org.slf4j.LoggerFactory.getLogger
+import java.io.IOException
 
 class XmlConvert : Convert
 {
@@ -31,7 +32,7 @@ class XmlConvert : Convert
         val response = ConvertResponse()
         try
         {
-            log.info("${name()} format start time [ ${DateUtils.now()} ]")
+            log.info("${name()} writer start time [ ${DateUtils.now()} ]")
             val file = formatFile(request, name())
             log.info("${name()} writer file absolute path [ ${file.absolutePath} ]")
 
@@ -56,13 +57,12 @@ class XmlConvert : Convert
                         }
                     staxWriter.writeEndElement()
                 }
-            log.info("${name()} format end time [ ${DateUtils.now()} ]")
+            log.info("${name()} writer end time [ ${DateUtils.now()} ]")
             response.path = file.absolutePath
             response.successful = true
         }
-        catch (e: Exception)
+        catch (e: IOException)
         {
-            e.printStackTrace()
             response.successful = false
             response.message = e.message
         }
@@ -71,6 +71,42 @@ class XmlConvert : Convert
 
     override fun reader(request: ConvertRequest): ConvertResponse
     {
-        TODO("Not yet implemented")
+        val response = ConvertResponse()
+        try
+        {
+            log.info("${name()} reader start time [ ${DateUtils.now()} ]")
+            val file = formatFile(request, name())
+            log.info("${name()} reader file absolute path [ ${file.absolutePath} ]")
+
+            val mapper = XmlMapper()
+            val rootNode: Map<String, List<Map<String, Any>>> = mapper.readValue(file, Map::class.java) as Map<String, List<Map<String, Any>>>
+            if (rootNode.isNotEmpty() && rootNode.containsKey(node))
+            {
+                val headers = mutableListOf<Any>()
+                val columns = mutableListOf<Any>()
+                when (val xmlElement = rootNode[node])
+                {
+                    is List<*> ->
+                    {
+                        xmlElement[0].keys
+                            .forEach { headers.add(it) }
+
+                        xmlElement.forEach { columns.add(it.values) }
+                    }
+
+                    else -> throw UnsupportedOperationException("Unsupported column type")
+                }
+                response.headers = headers
+                response.columns = columns
+            }
+            log.info("${name()} reader end time [ ${DateUtils.now()} ]")
+            response.successful = true
+        }
+        catch (e: IOException)
+        {
+            response.successful = false
+            response.message = e.message
+        }
+        return response
     }
 }

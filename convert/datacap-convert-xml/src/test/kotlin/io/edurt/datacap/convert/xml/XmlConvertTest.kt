@@ -43,4 +43,24 @@ class XmlConvertTest
                 }
         }
     }
+
+    @Test
+    fun testReader()
+    {
+        injector?.let { injector ->
+            ConvertFilter.filter(injector, name)
+                .ifPresent { file ->
+                    val response = file.reader(request)
+                    log.info("headers: { ${response.headers} }")
+                    response.columns
+                        .let { columns ->
+                            columns.forEachIndexed { index, line ->
+                                log.info("index: ( $index ) line: { $line }")
+                            }
+                        }
+
+                    assertTrue(response.successful == true)
+                }
+        }
+    }
 }
