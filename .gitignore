@@ -66,3 +66,4 @@ convert/datacap-convert-txt/*.txt
 convert/datacap-convert-json/*.json
 convert/datacap-convert-none/*.none
 convert/datacap-convert-csv/*.csv
+convert/datacap-convert-xml/*.xml
