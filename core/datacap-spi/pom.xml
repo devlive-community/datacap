@@ -102,6 +102,11 @@
             <artifactId>datacap-convert-csv</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-convert-xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
