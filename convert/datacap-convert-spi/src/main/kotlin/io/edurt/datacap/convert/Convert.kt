@@ -9,12 +9,12 @@ interface Convert
     {
         return this.javaClass
             .simpleName
-            .removeSuffix("File")
+            .removeSuffix("Convert")
     }
 
     fun description(): String
     {
-        return "Integrate ${name()} file"
+        return "Integrate ${name()} format convert"
     }
 
     fun format(request: ConvertRequest): ConvertResponse
