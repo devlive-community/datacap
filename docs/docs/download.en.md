@@ -27,7 +27,7 @@ The current datacap release is version <img src="https://img.shields.io/github/v
 
     <br />
 
-    [datacap-server-2024.03.6.tar.gz](https://cdn.north.devlive.org/applications/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
+    [datacap-server-2024.03.7.tar.gz](https://cdn.north.devlive.org/applications/datacap/latest/datacap-release.tar.gz){ .md-button .md-button-primary }
 
 - __Command line client__
 
@@ -37,7 +37,7 @@ The current datacap release is version <img src="https://img.shields.io/github/v
      
      <br />
   
-     [datacap-client-cli-2024.03.6.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/2024.03.6/datacap-client-cli-2024.03.6.jar){ .md-button .md-button-primary }
+     [datacap-client-cli-2024.03.7.jar](https://repo1.maven.org/maven2/io/edurt/datacap/datacap-client-cli/2024.03.7/datacap-client-cli-2024.03.7.jar){ .md-button .md-button-primary }
   
 - __More package__
 

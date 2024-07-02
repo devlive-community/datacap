@@ -89,7 +89,7 @@ Datacap 是快速、轻量级、直观的系统。它可以用来管理多数据
 
     ---
 
-    <img src="/assets/dingtalk.png" alt="钉钉" style="height: 180px;" /><img src="/assets/wechat.png" alt="微信" style="height: 180px;" />
+    <img src="/assets/dingtalk.png" alt="钉钉" style="height: 160px;" /><img src="/assets/wechat.png" alt="微信" style="height: 160px;" />
 
 </div>
 
@@ -234,6 +234,12 @@ Datacap 是快速、轻量级、直观的系统。它可以用来管理多数据
   </a>
 - <a href="https://www.timescale.com/" target="_blank" class="connector-logo-index">
       <img src="/assets/plugin/timescale.png" alt="Timescale" height=60" />
+  </a>
+- <a href="https://www.timescale.com/" target="_blank" class="connector-logo-index">
+      <img src="/assets/plugin/solr.png" alt="Solr" height=60" />
+  </a>
+- <a href="https://www.timescale.com/" target="_blank" class="connector-logo-index">
+      <img src="/assets/plugin/influxdb.png" alt="InfluxDB" height=80" />
   </a>
 
 </div>
