@@ -89,7 +89,7 @@ Datacap is a fast, lightweight, and intuitive system. It can be used to manage m
 
     ---
 
-    <img src="/assets/dingtalk.png" alt="DingTalk" style="height: 180px;" /><img src="/assets/wechat.png" alt="Wechat" style="height: 180px;" />
+    <img src="/assets/dingtalk.png" alt="DingTalk" style="height: 160px;" /><img src="/assets/wechat.png" alt="Wechat" style="height: 160px;" />
 
 </div>
 
@@ -234,6 +234,12 @@ Datacap is a fast, lightweight, and intuitive system. It can be used to manage m
   </a>
 - <a href="https://www.timescale.com/" target="_blank" class="connector-logo-index">
       <img src="/assets/plugin/timescale.png" alt="Timescale" height=60" />
+  </a>
+- <a href="https://www.timescale.com/" target="_blank" class="connector-logo-index">
+      <img src="/assets/plugin/solr.png" alt="Solr" height=60" />
+  </a>
+- <a href="https://www.timescale.com/" target="_blank" class="connector-logo-index">
+      <img src="/assets/plugin/influxdb.png" alt="InfluxDB" height=80" />
   </a>
 
 </div>
