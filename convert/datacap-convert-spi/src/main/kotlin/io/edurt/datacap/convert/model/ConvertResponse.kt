@@ -22,4 +22,9 @@ class ConvertResponse
         {
             _columns = value.toMutableList()
         }
+
+    override fun toString(): String
+    {
+        return "ConvertResponse(path=$path, message=$message, successful=$successful)"
+    }
 }
