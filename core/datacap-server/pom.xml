@@ -405,22 +405,26 @@
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-fs-local</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-fs-qiniu</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-fs-alioss</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- Notify -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-notify-dingtalk</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>

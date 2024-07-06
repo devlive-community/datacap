@@ -113,17 +113,20 @@
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-parser-trino</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-parser-mysql</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- Scheduler -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-scheduler-local</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- Executor -->
         <dependency>

@@ -2,7 +2,7 @@
 
 HOME=$(pwd)
 VERSION=2024.03.8-SNAPSHOT
-#$HOME/parser/*:$HOME/fs/*:$HOME/convert/*:$HOME/executor/*"
+#$HOME/convert/*:$HOME/executor/*"
 
 common_install_handler() {
     TYPE=$1
@@ -47,7 +47,14 @@ job_install_parser() {
   printf "========== Job install parser end ========== \n"
 }
 
+job_install_fs() {
+  printf "========== Job install fs start ========== \n"
+  common_install_handler "fs"
+  printf "========== Job install fs end ========== \n"
+}
+
 job_install_plugin
 job_install_notify
 job_install_scheduler
 job_install_parser
+job_install_fs
