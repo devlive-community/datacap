@@ -2,7 +2,7 @@
 
 HOME=$(pwd)
 VERSION=2024.03.8-SNAPSHOT
-#"$HOME/lib/*:$HOME/plugin/*:$HOME/notify/*:$HOME/scheduler/*:$HOME/parser/*:$HOME/fs/*:$HOME/convert/*:$HOME/executor/*"
+#:$HOME/notify/*:$HOME/scheduler/*:$HOME/parser/*:$HOME/fs/*:$HOME/convert/*:$HOME/executor/*"
 
 common_install_handler() {
     TYPE=$1
@@ -29,4 +29,11 @@ job_install_plugin() {
   printf "========== Job install plugin end ========== \n"
 }
 
+job_install_notify() {
+  printf "========== Job install notify start ========== \n"
+  common_install_handler "notify"
+  printf "========== Job install notify end ========== \n"
+}
+
 job_install_plugin
+job_install_notify
