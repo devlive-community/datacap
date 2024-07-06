@@ -2,7 +2,7 @@
 
 HOME=$(pwd)
 VERSION=2024.03.8-SNAPSHOT
-#$HOME/convert/*:$HOME/executor/*"
+#$HOME/executor/*"
 
 common_install_handler() {
     TYPE=$1
@@ -53,8 +53,15 @@ job_install_fs() {
   printf "========== Job install fs end ========== \n"
 }
 
+job_install_convert() {
+  printf "========== Job install convert start ========== \n"
+  common_install_handler "convert"
+  printf "========== Job install convert end ========== \n"
+}
+
 job_install_plugin
 job_install_notify
 job_install_scheduler
 job_install_parser
 job_install_fs
+job_install_convert
