@@ -2,7 +2,7 @@
 
 HOME=$(pwd)
 VERSION=2024.03.8-SNAPSHOT
-#:$HOME/notify/*:$HOME/scheduler/*:$HOME/parser/*:$HOME/fs/*:$HOME/convert/*:$HOME/executor/*"
+#$HOME/scheduler/*:$HOME/parser/*:$HOME/fs/*:$HOME/convert/*:$HOME/executor/*"
 
 common_install_handler() {
     TYPE=$1
@@ -35,5 +35,12 @@ job_install_notify() {
   printf "========== Job install notify end ========== \n"
 }
 
+job_install_scheduler() {
+  printf "========== Job install scheduler start ========== \n"
+  common_install_handler "scheduler"
+  printf "========== Job install scheduler end ========== \n"
+}
+
 job_install_plugin
 job_install_notify
+job_install_scheduler
