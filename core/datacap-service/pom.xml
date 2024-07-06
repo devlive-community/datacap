@@ -133,6 +133,13 @@
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-executor-local</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-executor-seatunnel</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

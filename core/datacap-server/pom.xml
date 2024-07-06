@@ -394,12 +394,6 @@
             <artifactId>datacap-captcha</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- Executor -->
-        <dependency>
-            <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-executor-seatunnel</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <!-- Fs -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
