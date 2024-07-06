@@ -4,7 +4,7 @@
     <groupId>io.edurt.datacap</groupId>
     <artifactId>datacap</artifactId>
     <packaging>pom</packaging>
-    <version>2024.03.7</version>
+    <version>2024.03.8-SNAPSHOT</version>
 
     <modules>
         <module>client/datacap-cli</module>
@@ -652,6 +652,50 @@
                             <goals>
                                 <goal>javadocJar</goal>
                             </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <configuration>
+                        <shadedArtifactAttached>false</shadedArtifactAttached>
+                        <createDependencyReducedPom>true</createDependencyReducedPom>
+                        <!-- Make sure the transitive dependencies are written to the generated pom under <dependencies> -->
+                        <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+                        <artifactSet>
+                            <excludes>
+                                <exclude>org.slf4j:*</exclude>
+                                <exclude>ch.qos.logback:*</exclude>
+                                <exclude>log4j:*</exclude>
+                                <exclude>org.apache.logging.log4j:*</exclude>
+                                <exclude>commons-logging:*</exclude>
+                            </excludes>
+                        </artifactSet>
+                        <filters>
+                            <filter>
+                                <artifact>*:*</artifact>
+                                <excludes>
+                                    <exclude>META-INF/*.SF</exclude>
+                                    <exclude>META-INF/*.DSA</exclude>
+                                    <exclude>META-INF/*.RSA</exclude>
+                                </excludes>
+                            </filter>
+                        </filters>
+                    </configuration>
+
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <phase>package</phase>
+                            <configuration>
+                                <transformers combine.children="append">
+                                    <!-- The service transformer is needed to merge META-INF/services files -->
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                                </transformers>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>

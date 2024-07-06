@@ -22,6 +22,13 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>**/*-javadoc.jar</exclude>
+                <exclude>**/*-sources.jar</exclude>
+                <exclude>**/kotlin-*.jar</exclude>
+                <exclude>**/lombok-*.jar</exclude>
+                <exclude>**/*-test.jar</exclude>
+            </excludes>
         </fileSet>
     </fileSets>
 </assembly>

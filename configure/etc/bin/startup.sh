@@ -52,8 +52,7 @@ job_runner_start_server() {
     printf "Server starting                        | %s\n" "$APPLICATION_NAME"
     cd "$HOME"
     get_jvm_conf
-    PLUGIN_DIR=`find plugins/* -type d | sed 's/\(.*\)/\1\/\*/' | xargs | tr ' ' ':'`
-    nohup "$JAVA_HOME"/bin/java -cp "$HOME/lib/*:$PLUGIN_DIR" ${JVM_CONF} "$APPLICATION_NAME" \
+    nohup "$JAVA_HOME"/bin/java -cp "$HOME/lib/*:$HOME/plugins/*:$HOME/notifys/*:$HOME/schedulers/*:$HOME/parsers/*:$HOME/fss/*:$HOME/converts/*:$HOME/executors/*" ${JVM_CONF} "$APPLICATION_NAME" \
                   --spring.config.location="$HOME/configure/" > /dev/null 2>&1 &
     sleep 5
     job_before_apply_server

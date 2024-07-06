@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.edurt.datacap</groupId>
         <artifactId>datacap</artifactId>
-        <version>2024.03.7</version>
+        <version>2024.03.8-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -52,24 +52,14 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${assembly-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <finalName>${plugin.name}</finalName>
-                    <descriptors>
-                        <descriptor>../../configure/assembly/plugin.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>../../dist/plugins</outputDirectory>
+                    <appendOutput>true</appendOutput>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>

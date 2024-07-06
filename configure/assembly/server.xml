@@ -98,5 +98,13 @@
                 <include>**/datacap*.jar</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>mvnw</include>
+                <include>mvnw.cmd</include>
+            </includes>
+        </fileSet>
     </fileSets>
 </assembly>
