@@ -2,6 +2,7 @@
   <Dialog :is-visible="visible" :title="title as string" :width="'60%'">
     <CircularLoading v-if="loading" :show="loading"/>
     <div v-else class="pl-3 pr-3">
+      <Alert v-if="testInfo.message" type="error" :title="testInfo.message" class="mb-3"/>
       <Tabs v-model="activeTab" :default-value="activeTab" class="w-full" @update:modelValue="handlerChangeConfigure($event)">
         <TabsList>
           <TabsTrigger v-for="tab in configureTabs" :value="tab">{{ $t(`source.common.${ tab }`) }}</TabsTrigger>
@@ -107,12 +108,14 @@ import { TokenUtils } from '@/utils/token'
 import '@/views/pages/admin/source/style.css'
 import { ResponseModel } from '@/model/response'
 import { Minus, Plus } from 'lucide-vue-next'
+import Alert from '@/views/ui/alert'
 
 interface TestInfo
 {
   connected: boolean,
   percent: number,
-  successful: boolean
+  successful: boolean,
+  message?: null | string
 }
 
 export default defineComponent({
@@ -129,7 +132,8 @@ export default defineComponent({
     Tabs, TabsContent, TabsList, TabsTrigger,
     FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,
     RadioGroup, RadioGroupItem,
-    Plus, Minus
+    Plus, Minus,
+    Alert
   },
   setup()
   {
@@ -254,10 +258,11 @@ export default defineComponent({
                        ToastUtils.success('Test successful')
                        this.testInfo.connected = true
                        this.testInfo.successful = true
+                       this.testInfo.message = null
                        this.formState.version = response.data?.columns[0]?.version ? response.data?.columns[0]?.version : response.data?.columns[0]?.result
                      }
                      else {
-                       ToastUtils.error(response.message)
+                       this.testInfo.message = response.message
                        this.testInfo.connected = false
                        this.testInfo.successful = false
                      }
