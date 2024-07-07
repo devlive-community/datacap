@@ -43,7 +43,7 @@ list
 mongo_*.xml
 
 # shaded #
-/dependency-reduced-pom.xml
+**/dependency-reduced-pom.xml
 shaded/*/dependency-reduced-pom.xml
 
 # datacap #

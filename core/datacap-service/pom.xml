@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.edurt.datacap</groupId>
         <artifactId>datacap</artifactId>
-        <version>2024.03.7</version>
+        <version>2024.03.8-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -108,28 +108,42 @@
             <artifactId>datacap-schedule</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-convert-spi</artifactId>
+        </dependency>
         <!-- Sql Parser -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-parser-trino</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-parser-mysql</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- Scheduler -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-scheduler-local</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- Executor -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-executor-local</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-executor-seatunnel</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

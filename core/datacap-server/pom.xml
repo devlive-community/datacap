@@ -5,7 +5,7 @@
     <parent>
         <artifactId>datacap</artifactId>
         <groupId>io.edurt.datacap</groupId>
-        <version>2024.03.7</version>
+        <version>2024.03.8-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -394,37 +394,95 @@
             <artifactId>datacap-captcha</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- Executor -->
-        <dependency>
-            <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-executor-seatunnel</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <!-- Fs -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-fs-local</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-fs-qiniu</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-fs-alioss</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- Notify -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-notify-dingtalk</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Parser -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-parser-mysql</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
-            <artifactId>datacap-convert-spi</artifactId>
+            <artifactId>datacap-parser-trino</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Executor -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-executor-local</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-executor-seatunnel</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Scheduler -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-scheduler-local</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Convert -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-convert-csv</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-convert-json</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-convert-xml</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-convert-txt</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-convert-none</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

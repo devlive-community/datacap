@@ -5,7 +5,7 @@
     <parent>
         <artifactId>datacap</artifactId>
         <groupId>io.edurt.datacap</groupId>
-        <version>2024.03.7</version>
+        <version>2024.03.8-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -65,24 +65,15 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${assembly-plugin.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <finalName>${plugin.name}</finalName>
-                    <descriptors>
-                        <descriptor>../../configure/assembly/plugin.xml</descriptor>
-                    </descriptors>
-                    <outputDirectory>../../dist/plugins</outputDirectory>
+                    <appendOutput>true</appendOutput>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

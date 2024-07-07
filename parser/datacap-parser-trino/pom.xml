@@ -4,7 +4,7 @@
     <parent>
         <groupId>io.edurt.datacap</groupId>
         <artifactId>datacap</artifactId>
-        <version>2024.03.7</version>
+        <version>2024.03.8-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -42,6 +42,17 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <appendOutput>true</appendOutput>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
