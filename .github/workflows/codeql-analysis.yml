@@ -38,7 +38,7 @@ jobs:
           distribution: 'temurin'
 
       - run: |
-          ./mvnw -T 1C clean install package -Dfindbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -Dskip.npm -q
+          ./mvnw -T 1C clean install package -Dspotbugs.skip -Dgpg.skip -Dcheckstyle.skip -DskipTests=true -Dskip.npm -q
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2

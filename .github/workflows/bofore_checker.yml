@@ -44,8 +44,6 @@ jobs:
 
   before_checker_bugs:
     runs-on: ubuntu-latest
-    needs:
-      - before_checker_ui
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -54,8 +52,14 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - run: chmod 755 ./mvnw
-      - run: ./mvnw clean install spotbugs:spotbugs -Dcheckstyle.skip -Dgpg.skip -Dskip.yarn -DskipTests=true
+      - name: Grant execute permission for mvnw
+        run: chmod +x mvnw
+      - name: Run SpotBugs skip server
+        env:
+          MAVEN_OPTS: -Xmx1024m
+        run: ./mvnw clean install spotbugs:spotbugs -pl '!core/datacap-server' -Dcheckstyle.skip -Dgpg.skip -Dskip.yarn -DskipTests=true
+      - name: Run SpotBugs for server
+        run: ./mvnw clean install spotbugs:spotbugs -Dcheckstyle.skip -Dgpg.skip -Dskip.yarn -DskipTests=true -f core/datacap-server/pom.xml
 
   before_checker_package:
     runs-on: ubuntu-latest
