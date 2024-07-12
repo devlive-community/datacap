@@ -1632,10 +1632,22 @@ ace-builds@^1.32.7:
   resolved "https://registry.npmjs.org/ace-builds/-/ace-builds-1.32.9.tgz"
   integrity sha512-dqBLPj//Gq0b92YUtRIsdWsORf4J+4xW3r8/4Wr2Vqid7O1j7YBV/ZsVvWBjZFy+EnvMCRFCFOEIM1cbt4BQ/g==
 
-ag-grid-community@31.2.1, ag-grid-community@^31.2.0:
+ag-charts-types@10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/ag-charts-types/-/ag-charts-types-10.0.1.tgz#8b65ec22dc8d2e4d7f4dba5f8aba0a788215652d"
+  integrity sha512-o8aXJfO5lsLGu4jE/2MiTogLCfdJ8UCmrWNPb+AWU0YutCrBHO0uWbSuqzabZxZ4WHxwwRtTllZMT6WqTdz+qg==
+
+ag-grid-community@31.2.1:
   version "31.2.1"
   resolved "https://registry.npmjs.org/ag-grid-community/-/ag-grid-community-31.2.1.tgz"
   integrity sha512-D+gnUQ4dHZ/EQJmupQnDqcEKiCEeuK5ZxlsIpdPKgHg/23dmW+aEdivtB9nLpSc2IEK0RUpchcSxeUT37Boo5A==
+
+ag-grid-community@^32.0.1:
+  version "32.0.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-32.0.1.tgz#3cec7cb49eb7d0fb15ab3f1586475228e1a5bd34"
+  integrity sha512-/eimCgJqMeyFxpJMTQuCtedKzk+BIInqhRdKdoQG8MD3yjrs/AWQFAcT6MP0T64CuNd85mxwB2t+3Ggb+S8hdA==
+  dependencies:
+    ag-charts-types "10.0.1"
 
 ag-grid-vue3@^31.2.0:
   version "31.2.1"
@@ -3066,8 +3078,16 @@ stream-source@0.3:
   resolved "https://registry.npmjs.org/stream-source/-/stream-source-0.3.5.tgz"
   integrity sha512-ZuEDP9sgjiAwUVoDModftG0JtYiLUV8K4ljYD1VyUMRWtbVf92474o4kuuul43iZ8t/hRuiDAx1dIJSvirrK/g==
 
-"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
-  name string-width-cjs
+"string-width-cjs@npm:string-width@^4.2.0":
+  version "4.2.3"
+  resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
+
+string-width@^4.1.0:
   version "4.2.3"
   resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -3097,8 +3117,14 @@ string_decoder@~0.10.x:
   resolved "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
   integrity sha512-ev2QzSzWPYmy9GuqfIVildA4OdcGLeFZQrq5ys6RtiuF+RQQiZWr8TZNyAcuVXyQRYfEO+MsoB/1BuQVhOJuoQ==
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
-  name strip-ansi-cjs
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
+
+strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
