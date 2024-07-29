@@ -22,7 +22,7 @@ jobs:
         with:
           maven_profiles: 'deploy'
           maven_goals_phases: 'clean deploy'
-          maven_args: '-DskipTests'
+          maven_args: '-DskipTests -Dspotbugs.skip'
           gpg_private_key: ${{ secrets.GPG_SECRET }}
           gpg_passphrase: ${{ secrets.GPG_PASSWORD }}
           nexus_username: ${{ secrets.OSSRH_USERNAME }}
