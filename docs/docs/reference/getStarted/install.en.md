@@ -251,6 +251,8 @@ datacap.experimental.avatarPath={username}/avatar/
 
 ---
 
+> Before starting the service, please install various plug-ins required by the system and execute the command `./bin/install-plugin.sh`
+
 #### Start the service
 
 DataCap service startup is very simple, execute the following script

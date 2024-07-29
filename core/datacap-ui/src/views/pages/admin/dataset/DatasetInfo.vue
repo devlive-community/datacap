@@ -117,8 +117,8 @@
                         <div class="space-x-1 ml-4">
                           <Popover>
                             <PopoverTrigger as-child>
-                              <Button class="rounded-full w-8 h-8" variant="outline" size="icon">
-                                <Pencil :size="15"/>
+                              <Button class="rounded-full w-6 h-6" variant="outline" size="icon">
+                                <Pencil :size="10"/>
                               </Button>
                             </PopoverTrigger>
                             <PopoverContent class="w-80">
@@ -130,11 +130,11 @@
                               </div>
                             </PopoverContent>
                           </Popover>
-                          <Button class="rounded-full w-8 h-8" variant="destructive" size="icon" :disabled="!item.customColumn" @click="handlerRemoveColumn(index)">
-                            <Trash :size="15"/>
+                          <Button class="rounded-full w-6 h-6" variant="destructive" size="icon" :disabled="!item.customColumn" @click="handlerRemoveColumn(index)">
+                            <Trash :size="10"/>
                           </Button>
-                          <Button class="rounded-full w-8 h-8" size="icon" @click="handlerAddColumn(index)">
-                            <Plus :size="15"/>
+                          <Button class="rounded-full w-6 h-6" size="icon" @click="handlerAddColumn(index)">
+                            <Plus :size="10"/>
                           </Button>
                         </div>
                       </template>
@@ -144,7 +144,7 @@
               </TabsContent>
               <TabsContent value="configure">
                 <Card class="border-0 mt-5 shadow-transparent">
-                  <CardContent class="grid gap-6 justify-center pt-2 pb-2">
+                  <CardContent class="grid gap-6 pt-2 pb-2 w-[60%] mx-auto">
                     <div class="grid grid-cols-2 gap-4">
                       <div class="grid gap-2">
                         <Label for="name">{{ $t('common.name') }}</Label>
@@ -473,7 +473,7 @@ export default defineComponent({
         content: this.value,
         name: this.sourceInfo?.id as unknown as string,
         mode: 'DATASET',
-        format: 'JSON'
+        format: 'Json'
       }
       this.running = true
       ExecuteService.execute(configure, null)

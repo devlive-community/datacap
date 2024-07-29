@@ -251,6 +251,8 @@ datacap.experimental.avatarPath={username}/avatar/
 
 ---
 
+> 启动服务前请安装系统需要的各种插件，执行命令 `./bin/install-plugin.sh`
+
 #### 启动服务
 
 DataCap服务启动非常简单，执行以下脚本
