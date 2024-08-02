@@ -185,7 +185,7 @@
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>4.8.5.0</plugin.maven.findbugs.version>
-        <plugin.maven.compiler.version>3.12.1</plugin.maven.compiler.version>
+        <plugin.maven.compiler.version>3.13.0</plugin.maven.compiler.version>
         <plugin.maven.cobertura.version>2.7</plugin.maven.cobertura.version>
         <plugin.maven.dependency.version>3.0.1</plugin.maven.dependency.version>
         <plugin.maven.source.version>2.2.1</plugin.maven.source.version>
