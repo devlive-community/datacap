@@ -172,7 +172,7 @@
         <kotlin.version>1.9.10</kotlin.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <redis.version>3.8.0</redis.version>
-        <testcontainers.version>1.19.5</testcontainers.version>
+        <testcontainers.version>1.20.1</testcontainers.version>
         <assembly-plugin.version>3.6.0</assembly-plugin.version>
         <dep.reflections.version>0.10.2</dep.reflections.version>
         <!-- datacap plugin dependency -->
