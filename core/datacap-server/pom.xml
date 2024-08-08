@@ -397,6 +397,11 @@
         <!-- Fs -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-fs-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-fs-local</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
@@ -416,11 +421,19 @@
         <!-- Notify -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-notify-spi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-notify-dingtalk</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- Parser -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-parser-spi</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-parser-mysql</artifactId>
@@ -436,6 +449,11 @@
         <!-- Executor -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-executor-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-executor-local</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
@@ -449,11 +467,20 @@
         <!-- Scheduler -->
         <dependency>
             <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-scheduler-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-scheduler-local</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- Convert -->
+        <dependency>
+            <groupId>io.edurt.datacap</groupId>
+            <artifactId>datacap-convert-spi</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.edurt.datacap</groupId>
             <artifactId>datacap-convert-csv</artifactId>
@@ -531,7 +558,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>${assembly-plugin.version}</version>
                 <configuration>
-                    <finalName>datacap</finalName>
+                    <finalName>datacap-${project.version}</finalName>
                     <outputDirectory>../../dist</outputDirectory>
                     <descriptors>
                         <descriptor>../../configure/assembly/server.xml</descriptor>
