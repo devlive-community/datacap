@@ -14,7 +14,7 @@
     <description>DataCap - MonetDB</description>
 
     <properties>
-        <monetdb.version>3.2</monetdb.version>
+        <monetdb.version>11.19.15</monetdb.version>
         <plugin.name>jdbc-monetdb</plugin.name>
     </properties>
 
