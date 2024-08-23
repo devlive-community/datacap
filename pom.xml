@@ -84,6 +84,7 @@
         <module>fs/datacap-fs-local</module>
         <module>fs/datacap-fs-qiniu</module>
         <module>fs/datacap-fs-alioss</module>
+        <module>fs/datacap-fs-tencent-cos</module>
         <module>parser/datacap-parser-spi</module>
         <module>parser/datacap-parser-trino</module>
         <module>parser/datacap-parser-mysql</module>
@@ -182,6 +183,7 @@
         <datacap.commons-io.version>2.16.1</datacap.commons-io.version>
         <datacap.solr.version>6.0.0</datacap.solr.version>
         <datacap.influxdb.version>0.2.6</datacap.influxdb.version>
+        <datacap.cos.version>5.6.227</datacap.cos.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>4.8.5.0</plugin.maven.findbugs.version>
