@@ -1632,17 +1632,24 @@ ace-builds@^1.32.7:
   resolved "https://registry.npmjs.org/ace-builds/-/ace-builds-1.32.9.tgz"
   integrity sha512-dqBLPj//Gq0b92YUtRIsdWsORf4J+4xW3r8/4Wr2Vqid7O1j7YBV/ZsVvWBjZFy+EnvMCRFCFOEIM1cbt4BQ/g==
 
-ag-grid-community@31.2.1, ag-grid-community@^31.2.0:
-  version "31.2.1"
-  resolved "https://registry.npmjs.org/ag-grid-community/-/ag-grid-community-31.2.1.tgz"
-  integrity sha512-D+gnUQ4dHZ/EQJmupQnDqcEKiCEeuK5ZxlsIpdPKgHg/23dmW+aEdivtB9nLpSc2IEK0RUpchcSxeUT37Boo5A==
+ag-charts-types@10.1.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/ag-charts-types/-/ag-charts-types-10.1.0.tgz#f265665f6b92742bb0bc2dcfab319b21e6d78749"
+  integrity sha512-pk9ft8hbgTXJ/thI/SEUR1BoauNplYExpcHh7tMOqVikoDsta1O15TB1ZL4XWnl4TPIzROBmONKsz7d8a2HBuQ==
 
-ag-grid-vue3@^31.2.0:
-  version "31.2.1"
-  resolved "https://registry.npmjs.org/ag-grid-vue3/-/ag-grid-vue3-31.2.1.tgz"
-  integrity sha512-Ox+tKh7Fe0mluB0k8ojpci4yMleWNx3LVZ616JqXkZXEbHfeEl2TNF3SaoCfD0k3agDv6H92eaAKT5aQXC9X+A==
+ag-grid-community@32.1.0, ag-grid-community@^32.1.0:
+  version "32.1.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-32.1.0.tgz#69d5b0af1b4d5cd5262705ecd87a3bd16c9c4155"
+  integrity sha512-RVvkjRH61nuCXwIqTKQPqNbKR+8cGBKw7S1qmmMXsy0pCBAJaQn4kL3v31hKHxDtV4bPscBXLFKGnKzHuss0GQ==
   dependencies:
-    ag-grid-community "31.2.1"
+    ag-charts-types "10.1.0"
+
+ag-grid-vue3@^32.1.0:
+  version "32.1.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-vue3/-/ag-grid-vue3-32.1.0.tgz#205094d6b51077b1fa337e7c9593cb94aa145aae"
+  integrity sha512-hT6vJeI7zD4XyM9d9sa6MP1U6kAlTbtmo25LYR3cAEK1OqqenZqtddgAefSLF6bmsvotcSmkJWAalEGP8A5GwQ==
+  dependencies:
+    ag-grid-community "32.1.0"
     vue "^3.0.0"
 
 ansi-regex@^5.0.1:
