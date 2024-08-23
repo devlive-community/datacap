@@ -68,5 +68,25 @@ class TencentCosUtils
                 client.shutdown()
             }
         }
+
+        @JvmStatic
+        fun delete(request: FsRequest): Boolean
+        {
+            val client = getClient(request)
+
+            try
+            {
+                client.deleteObject(request.bucket, request.fileName)
+                return true
+            }
+            catch (e: Exception)
+            {
+                throw RuntimeException(e)
+            }
+            finally
+            {
+                client.shutdown()
+            }
+        }
     }
 }

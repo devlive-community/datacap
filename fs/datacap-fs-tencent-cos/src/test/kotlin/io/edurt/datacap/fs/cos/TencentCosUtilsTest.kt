@@ -34,4 +34,10 @@ class TencentCosUtilsTest
     {
         assertNotNull(TencentCosUtils.reader(request))
     }
+
+    @Test
+    fun delete()
+    {
+        assertTrue(TencentCosUtils.delete(request))
+    }
 }
