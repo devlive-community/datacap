@@ -3,11 +3,13 @@ package io.edurt.datacap.fs.cos
 import com.qcloud.cos.COSClient
 import com.qcloud.cos.ClientConfig
 import com.qcloud.cos.auth.BasicCOSCredentials
+import com.qcloud.cos.model.GetObjectRequest
 import com.qcloud.cos.model.ObjectMetadata
 import com.qcloud.cos.model.PutObjectRequest
 import com.qcloud.cos.region.Region
 import io.edurt.datacap.fs.FsRequest
 import java.io.InputStream
+
 
 class TencentCosUtils
 {
@@ -24,10 +26,10 @@ class TencentCosUtils
         @JvmStatic
         fun copy(request: FsRequest, stream: InputStream, fileName: String): String?
         {
+            val client = getClient(request)
+
             try
             {
-                val client = getClient(request)
-
                 val objectMetadata = ObjectMetadata()
                 objectMetadata.contentLength = stream.available().toLong()
                 objectMetadata.cacheControl = "no-cache"
@@ -39,6 +41,31 @@ class TencentCosUtils
             catch (e: Exception)
             {
                 throw RuntimeException(e)
+            }
+            finally
+            {
+                client.shutdown()
+            }
+        }
+
+        @JvmStatic
+        fun reader(request: FsRequest): InputStream
+        {
+            val client = getClient(request)
+
+            try
+            {
+                val getObjectRequest = GetObjectRequest(request.bucket, request.fileName)
+                val cosObject = client.getObject(getObjectRequest)
+                return cosObject.objectContent
+            }
+            catch (e: Exception)
+            {
+                throw RuntimeException(e)
+            }
+            finally
+            {
+                client.shutdown()
             }
         }
     }

@@ -75,7 +75,7 @@ class TencentCosFsTest
     }
 
     @Test
-    fun testDelete()
+    fun delete()
     {
         val plugins: Set<Fs?>? = injector?.getInstance(Key.get(object : TypeLiteral<Set<Fs?>?>()
         {}))

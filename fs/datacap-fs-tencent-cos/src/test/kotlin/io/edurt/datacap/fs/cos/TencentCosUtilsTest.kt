@@ -1,6 +1,7 @@
 package io.edurt.datacap.fs.cos
 
 import io.edurt.datacap.fs.FsRequest
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -26,5 +27,11 @@ class TencentCosUtilsTest
         val stream = FileInputStream("src/test/kotlin/io/edurt/datacap/fs/cos/TencentCosFsTest.kt")
         val result = TencentCosUtils.copy(request, stream, "TencentCosFsTest.kt")
         assertTrue(result != null)
+    }
+
+    @Test
+    fun reader()
+    {
+        assertNotNull(TencentCosUtils.reader(request))
     }
 }

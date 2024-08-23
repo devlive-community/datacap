@@ -41,6 +41,24 @@ class TencentCosFs : Fs
 
     override fun reader(request: FsRequest?): FsResponse
     {
-        TODO("Not yet implemented")
+        requireNotNull(request) { "request must not be null" }
+
+        log.info("TencentCos reader origin path [ {} ]", request.fileName)
+        val response = FsResponse.builder()
+            .remote(request.fileName)
+            .successful(true)
+            .build()
+        try
+        {
+            response.context = TencentCosUtils.reader(request)
+            log.info("TencentCos reader [ {} ] successfully", request.fileName)
+        }
+        catch (e: java.lang.Exception)
+        {
+            log.error("TencentCos reader error", e)
+            response.isSuccessful = false
+            response.message = e.message
+        }
+        return response
     }
 }
