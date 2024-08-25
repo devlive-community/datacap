@@ -222,6 +222,7 @@ nav:
         - reference/filesystem/aliyun/home.md
         - reference/filesystem/qiniu/home.md
         - reference/filesystem/cos/home.md
+        - reference/filesystem/s3/home.md
   - NavReleaseNote:
       - 2024.03.8 (latest): release/latest.md
       - 2024.03.7: release/2024.03.7.md
