@@ -2,10 +2,16 @@ package io.edurt.datacap.fs.s3
 
 import com.google.inject.Guice
 import com.google.inject.Injector
+import com.google.inject.Key
+import com.google.inject.TypeLiteral
+import io.edurt.datacap.fs.Fs
 import io.edurt.datacap.fs.FsManager
 import io.edurt.datacap.fs.FsRequest
+import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Test
 import org.slf4j.LoggerFactory
+import java.io.FileInputStream
 
 class AmazonS3FsTest
 {
@@ -24,5 +30,18 @@ class AmazonS3FsTest
         request.endpoint = System.getProperty("endpoint")
 
         injector = Guice.createInjector(FsManager())
+    }
+
+    @Test
+    fun writer()
+    {
+        val plugins: Set<Fs?>? = injector?.getInstance(Key.get(object : TypeLiteral<Set<Fs?>?>()
+        {}))
+        val plugin: Fs? = plugins?.first { v -> v?.name().equals(name) }
+
+        val stream = FileInputStream("src/test/kotlin/io/edurt/datacap/fs/s3/AmazonS3FsTest.kt")
+        request.stream = stream
+        val response = plugin !!.writer(request)
+        assertTrue(response.isSuccessful)
     }
 }
