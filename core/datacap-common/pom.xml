@@ -10,7 +10,6 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <groupId>io.edurt.datacap</groupId>
     <artifactId>datacap-common</artifactId>
     <description>DataCap - common</description>
 
