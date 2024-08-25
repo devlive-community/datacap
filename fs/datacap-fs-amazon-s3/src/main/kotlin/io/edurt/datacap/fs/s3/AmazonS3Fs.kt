@@ -41,6 +41,24 @@ class AmazonS3Fs : Fs
 
     override fun reader(request: FsRequest?): FsResponse
     {
-        TODO("Not yet implemented")
+        requireNotNull(request) { "request must not be null" }
+
+        log.info("{} reader origin path [ {} ]", this.name(), request.fileName)
+        val response = FsResponse.builder()
+            .remote(request.fileName)
+            .successful(true)
+            .build()
+        try
+        {
+            response.context = AmazonS3Utils.reader(request)
+            log.info("{} reader [ {} ] successfully", this.name(), request.fileName)
+        }
+        catch (e: java.lang.Exception)
+        {
+            log.error("{} reader error", this.name(), e)
+            response.isSuccessful = false
+            response.message = e.message
+        }
+        return response
     }
 }

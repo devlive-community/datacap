@@ -9,11 +9,11 @@ import com.amazonaws.client.builder.AwsClientBuilder
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import io.edurt.datacap.fs.FsRequest
 import java.io.InputStream
-
 
 class AmazonS3Utils
 {
@@ -73,6 +73,53 @@ class AmazonS3Utils
             finally
             {
                 client.shutdown()
+            }
+        }
+
+        @JvmStatic
+        fun reader(request: FsRequest): InputStream
+        {
+            val client = getClient(request)
+            try
+            {
+                val getObjectRequest = GetObjectRequest(request.bucket, request.fileName)
+                val s3Object = client.getObject(getObjectRequest)
+                val originalStream = s3Object.objectContent
+
+                return object : InputStream()
+                {
+                    override fun read(): Int
+                    {
+                        return originalStream.read()
+                    }
+
+                    override fun read(b: ByteArray): Int
+                    {
+                        return originalStream.read(b)
+                    }
+
+                    override fun read(b: ByteArray, off: Int, len: Int): Int
+                    {
+                        return originalStream.read(b, off, len)
+                    }
+
+                    override fun close()
+                    {
+                        try
+                        {
+                            originalStream.close()
+                        }
+                        finally
+                        {
+                            client.shutdown()
+                        }
+                    }
+                }
+            }
+            catch (e: Exception)
+            {
+                client.shutdown()
+                throw RuntimeException(e)
             }
         }
     }

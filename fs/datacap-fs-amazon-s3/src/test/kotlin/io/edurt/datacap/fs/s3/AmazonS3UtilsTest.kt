@@ -1,6 +1,7 @@
 package io.edurt.datacap.fs.s3
 
 import io.edurt.datacap.fs.FsRequest
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -26,5 +27,11 @@ class AmazonS3UtilsTest
         val stream = FileInputStream("src/test/kotlin/io/edurt/datacap/fs/s3/AmazonS3FsTest.kt")
         val result = AmazonS3Utils.copy(request, stream, "AmazonS3FsTest.kt")
         assertTrue(result != null)
+    }
+
+    @Test
+    fun reader()
+    {
+        assertNotNull(AmazonS3Utils.reader(request))
     }
 }
