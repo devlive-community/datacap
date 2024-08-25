@@ -34,4 +34,10 @@ class AmazonS3UtilsTest
     {
         assertNotNull(AmazonS3Utils.reader(request))
     }
+
+    @Test
+    fun delete()
+    {
+        assertTrue(AmazonS3Utils.delete(request))
+    }
 }

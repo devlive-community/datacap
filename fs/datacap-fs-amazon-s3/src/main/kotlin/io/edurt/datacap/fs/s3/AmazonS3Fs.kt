@@ -61,4 +61,26 @@ class AmazonS3Fs : Fs
         }
         return response
     }
+
+    override fun delete(request: FsRequest?): FsResponse
+    {
+        requireNotNull(request) { "request must not be null" }
+
+        try
+        {
+            val status = AmazonS3Utils.delete(request)
+            log.info("{} delete [ {} ] successfully", this.name(), request.fileName)
+            return FsResponse.builder()
+                .successful(status)
+                .build()
+        }
+        catch (e: java.lang.Exception)
+        {
+            log.error("{} delete error", this.name(), e)
+            return FsResponse.builder()
+                .successful(false)
+                .message(e.message)
+                .build()
+        }
+    }
 }
