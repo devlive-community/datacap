@@ -59,7 +59,8 @@
                       <div>{{ $t('dataset.common.columnLength') }}</div>
                       <div>{{ $t('common.action') }}</div>
                     </div>
-                    <div class="grid gap-3 md:grid-cols-2 md:gap-3 lg:grid-cols-12 h-[480px] overflow-y-auto pt-2 pb-2">
+                    <div class="grid gap-3 md:grid-cols-2 md:gap-3 lg:grid-cols-12 overflow-y-auto pt-2 pb-2"
+                        :style="{ height: 'calc(100vh - 360px)' }">
                       <template v-for="(item, index) in formState.columns" :key="index">
                         <div>
                           <Input v-model="item.name" type="text"/>

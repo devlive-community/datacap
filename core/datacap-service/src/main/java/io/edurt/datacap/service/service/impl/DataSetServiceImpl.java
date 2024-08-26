@@ -257,6 +257,7 @@ public class DataSetServiceImpl
                     targetConfigure.setUsername(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getUsername()));
                     targetConfigure.setPassword(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getPassword()));
                     targetConfigure.setDatabase(Optional.ofNullable(database));
+                    targetConfigure.setInjector(injector);
                     plugin.connect(targetConfigure);
                     Response response = plugin.execute(sql);
                     response.setContent(sql);
@@ -337,6 +338,7 @@ public class DataSetServiceImpl
         targetConfigure.setUsername(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getUsername()));
         targetConfigure.setPassword(Optional.ofNullable(initializerConfigure.getDataSetConfigure().getPassword()));
         targetConfigure.setDatabase(Optional.ofNullable(database));
+        targetConfigure.setInjector(injector);
         return targetConfigure;
     }
 
@@ -551,7 +553,7 @@ public class DataSetServiceImpl
         try {
             SourceEntity source = entity.getSource();
             Optional<Plugin> pluginOptional = PluginUtils.getPluginByNameAndType(injector, source.getType(), source.getProtocol());
-            if (!pluginOptional.isPresent()) {
+            if (pluginOptional.isEmpty()) {
                 throw new IllegalArgumentException(String.format("Plugin [ %s ] not found", initializerConfigure.getDataSetConfigure().getType()));
             }
 
@@ -575,8 +577,10 @@ public class DataSetServiceImpl
             Properties inputProperties = ConfigureUtils.convertProperties(source, environment,
                     IConfigurePipelineType.INPUT, entity.getExecutor(), entity.getQuery(), inputFieldBody);
             Set<String> inputOptions = ConfigureUtils.convertOptions(source, environment, entity.getExecutor(), IConfigurePipelineType.INPUT);
+            Configure inputConfigure = source.toConfigure();
+            inputConfigure.setInjector(injector);
             ExecutorConfigure input = new ExecutorConfigure(source.getType(), inputProperties, inputOptions, RunProtocol.valueOf(source.getProtocol()),
-                    inputPlugin, entity.getQuery(), database, entity.getTableName(), source.toConfigure(), originColumns);
+                    inputPlugin, entity.getQuery(), database, entity.getTableName(), inputConfigure, originColumns);
 
             Plugin outputPlugin = PluginUtils.getPluginByNameAndType(injector, initializerConfigure.getDataSetConfigure().getType(), PluginType.JDBC.name()).orElseGet(null);
             SourceEntity outputSource = new SourceEntity();
@@ -776,7 +780,7 @@ public class DataSetServiceImpl
                 Optional<DataSetColumnEntity> filterColumn = targetColumns.stream()
                         .filter(item -> item.getId().equals(sourceColumn.getId()))
                         .findFirst();
-                if (!filterColumn.isPresent()) {
+                if (filterColumn.isEmpty()) {
                     models.add(new CreatedModel(sourceColumn, CreatedMode.CREATE_COLUMN));
                 }
                 else {
@@ -816,7 +820,9 @@ public class DataSetServiceImpl
         try {
             Plugin plugin = getOutputPlugin();
             SourceEntity source = getOutputSource();
-            plugin.connect(source.toConfigure());
+            Configure configure = source.toConfigure();
+            configure.setInjector(injector);
+            plugin.connect(configure);
             String sql = String.format("SHOW CREATE TABLE `%s`.`%s`", initializerConfigure.getDataSetConfigure().getDatabase(), entity.getTableName());
             log.info("Check table exists for dataset [ {} ] id [ {} ] sql \n {}", entity.getName(), entity.getId(), sql);
             Response response = plugin.execute(sql);
