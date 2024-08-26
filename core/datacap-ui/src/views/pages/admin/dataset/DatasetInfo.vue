@@ -60,7 +60,7 @@
                       <div>{{ $t('common.action') }}</div>
                     </div>
                     <div class="grid gap-3 md:grid-cols-2 md:gap-3 lg:grid-cols-12 overflow-y-auto pt-2 pb-2"
-                        :style="{ height: 'calc(100vh - 360px)' }">
+                         :style="{ height: 'calc(100vh - 360px)' }">
                       <template v-for="(item, index) in formState.columns" :key="index">
                         <div>
                           <Input v-model="item.name" type="text"/>
@@ -277,7 +277,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import Button from '@/views/ui/button'
 import { useI18n } from 'vue-i18n'
 import GridOptions from '@/views/components/grid/GridOptions'
@@ -313,7 +313,6 @@ import { ExecuteModel } from '@/model/execute.ts'
 import { FormControl, FormField, FormItem } from '@/components/ui/form'
 import { ArrayUtils } from '@/utils/array.ts'
 import { join } from 'lodash'
-import store from '@/utils/store.ts'
 
 export default defineComponent({
   name: 'DatasetInfo',
@@ -341,7 +340,6 @@ export default defineComponent({
   {
     const i18n = useI18n()
     const gridOptions = GridOptions.createDefaultOptions(i18n)
-    const data = computed(() => store.getters.getData)
 
     return {
       i18n,
@@ -419,7 +417,7 @@ export default defineComponent({
                .finally(() => this.loading = false)
         }
         else if (sourceCode) {
-          this.value = localStorage.getItem('QueryContent')
+          this.value = localStorage.getItem('QueryContent') as string
           this.loading = true
           SourceService.getByCode(sourceCode as string)
                        .then(response => {
