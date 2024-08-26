@@ -276,7 +276,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import Button from '@/views/ui/button'
 import { useI18n } from 'vue-i18n'
 import GridOptions from '@/views/components/grid/GridOptions'
@@ -312,6 +312,7 @@ import { ExecuteModel } from '@/model/execute.ts'
 import { FormControl, FormField, FormItem } from '@/components/ui/form'
 import { ArrayUtils } from '@/utils/array.ts'
 import { join } from 'lodash'
+import store from '@/utils/store.ts'
 
 export default defineComponent({
   name: 'DatasetInfo',
@@ -339,6 +340,8 @@ export default defineComponent({
   {
     const i18n = useI18n()
     const gridOptions = GridOptions.createDefaultOptions(i18n)
+    const data = computed(() => store.getters.getData)
+
     return {
       i18n,
       gridOptions
@@ -394,6 +397,7 @@ export default defineComponent({
                      })
         const code = this.$route.params.code
         const sourceCode = this.$route.params.sourceCode
+
         if (code) {
           this.loading = true
           this.code = code as string
@@ -414,6 +418,7 @@ export default defineComponent({
                .finally(() => this.loading = false)
         }
         else if (sourceCode) {
+          this.value = localStorage.getItem('QueryContent')
           this.loading = true
           SourceService.getByCode(sourceCode as string)
                        .then(response => {

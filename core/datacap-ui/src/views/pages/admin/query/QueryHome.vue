@@ -315,12 +315,7 @@ export default defineComponent({
         // The configuration editor selects content events
         editor.selection.on('changeSelection', () => {
           const selection = editor.getSelection()
-          if (selection.isEmpty()) {
-            this.selectEditor.isSelection = false
-          }
-          else {
-            this.selectEditor.isSelection = true
-          }
+          this.selectEditor.isSelection = !selection.isEmpty()
         })
 
         langTools.addCompleter({
@@ -476,6 +471,7 @@ export default defineComponent({
                           }
                           this.responseConfigure.gridConfigure = tConfigure
                           editorInstance.instance?.setValue(response.data.content)
+                          localStorage.setItem('QueryContent', content as string)
                         }
                       }
                       else {
