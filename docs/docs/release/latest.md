@@ -2,39 +2,34 @@
 
 |    发布版本     |     发布时间     |
 |:-----------:|:------------:|
-| `2024.03.8` | `2024-07-29` |
+| `2024.03.9` | `2024-08-27` |
 
 #### 主要功能
 
 ---
 
-- 优化核心打包方式
+- 修复 maven 发布 CI
+- 修复包缺少文件导致启动失败的问题
+- 修复构建数据集不携带查询 SQL 的问题
+- 修复数据集未携带 injector 导致构建失败的问题
 
-#### 执行器
-
----
-
-- 优化打包方式为按需加载
-
-#### 插件
+#### 文件系统
 
 ---
 
-- 优化打包方式为按需加载
-
-#### 转换器
-
----
-
-- 优化打包方式为按需加载
+- 支持腾讯 COS
+- 支持 Amazon S3
 
 #### 依赖
 
 ---
 
-- 升级 `net.snowflake:snowflake-jdbc` **3.14.4** 到 **3.17.0**
-- 升级 `com.dameng:DmJdbcDriver18` **8.1.3.62** 到 **8.1.3.140**
-- 升级 `hadoop.version` **3.3.4** 到 **3.4.0**
-- 升级 `org.apache.pinot:pinot-jdbc-client` **0.8.0** 到 **1.1.0**
-- 升级 `org.apache.phoenix:phoenix-core` **4.16.0** 到 **5.2.0**
-- 升级 `jackson.version` **2.16.1** 到 **2.17.0**
+- 升级 UI `braces` **3.0.2** 到 **3.0.3**
+- 升级 `org.apache.kyuubi:kyuubi-hive-jdbc-shaded` **1.7.1** 到 **1.9.2**
+- 升级 `org.apache.maven.plugins:maven-compiler-plugin` **3.12.1** 到 **3.13.0**
+- 升级 `testcontainers.version` **1.19.5** 到 **1.20.1**
+- 升级 `org.apache.maven.plugins:maven-javadoc-plugin` **3.6.3** 到 **3.8.0**
+- 升级 `jackson.version` **2.17.0** 到 **2.17.2**
+- 升级 `org.elasticsearch.plugin:x-pack-sql-jdbc` **8.12.0** 到 **8.15.0**
+- 升级 `org.apache.commons:commons-csv` **1.10.0** 到 **1.11.0**
+- 升级 `monetdb:monetdb-jdbc` **3.2** 到 **11.19.15**
