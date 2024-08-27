@@ -8,7 +8,7 @@
           </AlertDialogTitle>
         </AlertDialogHeader>
         <Alert>
-          <AlertTitle>{{ $t('dataset.common.rebuildProgress') }}</AlertTitle>
+          <AlertTitle>{{ $t('dataset.tip.rebuildProgress') }}</AlertTitle>
         </Alert>
         <AlertDialogFooter class="-mb-4 border-t pt-2">
           <Button :disabled="loading" @click="handlerRebuild">

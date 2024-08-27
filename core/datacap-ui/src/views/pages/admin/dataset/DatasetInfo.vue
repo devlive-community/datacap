@@ -59,7 +59,8 @@
                       <div>{{ $t('dataset.common.columnLength') }}</div>
                       <div>{{ $t('common.action') }}</div>
                     </div>
-                    <div class="grid gap-3 md:grid-cols-2 md:gap-3 lg:grid-cols-12 h-[480px] overflow-y-auto pt-2 pb-2">
+                    <div class="grid gap-3 md:grid-cols-2 md:gap-3 lg:grid-cols-12 overflow-y-auto pt-2 pb-2"
+                         :style="{ height: 'calc(100vh - 360px)' }">
                       <template v-for="(item, index) in formState.columns" :key="index">
                         <div>
                           <Input v-model="item.name" type="text"/>
@@ -339,6 +340,7 @@ export default defineComponent({
   {
     const i18n = useI18n()
     const gridOptions = GridOptions.createDefaultOptions(i18n)
+
     return {
       i18n,
       gridOptions
@@ -394,6 +396,7 @@ export default defineComponent({
                      })
         const code = this.$route.params.code
         const sourceCode = this.$route.params.sourceCode
+
         if (code) {
           this.loading = true
           this.code = code as string
@@ -414,6 +417,7 @@ export default defineComponent({
                .finally(() => this.loading = false)
         }
         else if (sourceCode) {
+          this.value = localStorage.getItem('QueryContent') as string
           this.loading = true
           SourceService.getByCode(sourceCode as string)
                        .then(response => {
