@@ -1,7 +1,7 @@
 #!/bin/sh0
 
 HOME=$(pwd)
-VERSION=2024.03.9
+VERSION=2024.3.10-SNAPSHOT
 
 common_install_handler() {
     TYPE=$1
