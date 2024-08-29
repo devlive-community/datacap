@@ -86,6 +86,7 @@
         <module>fs/datacap-fs-alioss</module>
         <module>fs/datacap-fs-tencent-cos</module>
         <module>fs/datacap-fs-amazon-s3</module>
+        <module>fs/datacap-fs-minio</module>
         <module>parser/datacap-parser-spi</module>
         <module>parser/datacap-parser-trino</module>
         <module>parser/datacap-parser-mysql</module>
@@ -186,6 +187,7 @@
         <datacap.influxdb.version>0.2.6</datacap.influxdb.version>
         <datacap.cos.version>5.6.227</datacap.cos.version>
         <datacap.s3.version>1.12.770</datacap.s3.version>
+        <datacap.minio.version>8.5.12</datacap.minio.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
         <plugin.maven.findbugs.version>4.8.5.0</plugin.maven.findbugs.version>
