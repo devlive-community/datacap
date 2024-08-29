@@ -24,7 +24,7 @@
                 <Select v-else v-model="formState[item.field as keyof IChart] as string" :default-value="item.value"
                         :disabled="item.disabled?.field ? formState[item.disabled?.field as keyof IChart] === item.disabled?.value : false">
                   <SelectTrigger class="w-full">
-                    <SelectValue :placeholder="`Select ${item.label}`"/>
+                    <SelectValue :placeholder="item.label"/>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem v-if="item.values" class="cursor-pointer" v-for="data in item.values" :value="data.value as string">{{ data.label }}</SelectItem>

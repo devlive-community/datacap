@@ -14,10 +14,10 @@ DataCap enables users to deploy services to their own machines. This document al
 
     If you have an unsupported system, use the source code compilation method to actively compile the binary file.
 
-| System | Version                                     |
-|--------|---------------------------------------------|
-| JDK    | `>=11` (We recommend it for: `1.8` \| `11`) |
-| MySQL  | `>=5.6.x`                                   |
+| System | Version   |
+|--------|-----------|
+| JDK    | `>=11`    |
+| MySQL  | `>=5.6.x` |
 
 ### Prepare the installation package
 
