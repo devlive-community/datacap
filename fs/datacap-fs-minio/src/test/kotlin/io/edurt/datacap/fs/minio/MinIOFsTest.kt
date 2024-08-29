@@ -11,7 +11,11 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.slf4j.LoggerFactory.getLogger
+import java.io.BufferedReader
 import java.io.FileInputStream
+import java.io.IOException
+import java.io.InputStreamReader
+import java.nio.charset.StandardCharsets
 
 class MinIOFsTest
 {
@@ -44,5 +48,30 @@ class MinIOFsTest
         request.stream = stream
         val response = plugin !!.writer(request)
         assertTrue(response.isSuccessful)
+    }
+
+    @Test
+    fun reader()
+    {
+        val plugins: Set<Fs?>? = injector?.getInstance(Key.get(object : TypeLiteral<Set<Fs?>?>()
+        {}))
+        val plugin: Fs? = plugins?.first { v -> v?.name().equals(name) }
+        val response = plugin !!.reader(request)
+        assertTrue(response.isSuccessful)
+
+        try
+        {
+            BufferedReader(InputStreamReader(response.context, StandardCharsets.UTF_8)).use { reader ->
+                var line: String?
+                while ((reader.readLine().also { line = it }) != null)
+                {
+                    log.info(line)
+                }
+            }
+        }
+        catch (e: IOException)
+        {
+            log.error("Reader error", e)
+        }
     }
 }
