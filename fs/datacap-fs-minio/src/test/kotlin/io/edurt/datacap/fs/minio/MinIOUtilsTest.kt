@@ -35,4 +35,10 @@ class MinIOUtilsTest
     {
         assertNotNull(MinIOUtils.reader(request))
     }
+
+    @Test
+    fun delete()
+    {
+        assertTrue(MinIOUtils.delete(request))
+    }
 }

@@ -4,6 +4,7 @@ import io.edurt.datacap.fs.FsRequest
 import io.minio.GetObjectArgs
 import io.minio.MinioClient
 import io.minio.PutObjectArgs
+import io.minio.RemoveObjectArgs
 import java.io.InputStream
 
 class MinIOUtils
@@ -81,6 +82,26 @@ class MinIOUtils
                         }
                     }
                 }
+            }
+            catch (e: Exception)
+            {
+                throw RuntimeException(e)
+            }
+        }
+
+        @JvmStatic
+        fun delete(request: FsRequest): Boolean
+        {
+            try
+            {
+                val client = getClient(request)
+                client.removeObject(
+                    RemoveObjectArgs.builder()
+                        .bucket(request.bucket)
+                        .`object`(request.fileName)
+                        .build()
+                )
+                return true
             }
             catch (e: Exception)
             {

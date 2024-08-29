@@ -74,4 +74,14 @@ class MinIOFsTest
             log.error("Reader error", e)
         }
     }
+
+    @Test
+    fun delete()
+    {
+        val plugins: Set<Fs?>? = injector?.getInstance(Key.get(object : TypeLiteral<Set<Fs?>?>()
+        {}))
+        val plugin: Fs? = plugins?.first { v -> v?.name().equals(name) }
+        val response = plugin !!.delete(request)
+        assertTrue(response.isSuccessful)
+    }
 }
