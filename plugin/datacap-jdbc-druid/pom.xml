@@ -14,7 +14,7 @@
     <description>DataCap - Apache Druid</description>
 
     <properties>
-        <avatica.version>1.22.0</avatica.version>
+        <avatica.version>1.25.0</avatica.version>
         <plugin.name>jdbc-druid</plugin.name>
     </properties>
 
