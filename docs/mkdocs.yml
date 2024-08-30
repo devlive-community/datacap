@@ -223,6 +223,7 @@ nav:
         - reference/filesystem/qiniu/home.md
         - reference/filesystem/cos/home.md
         - reference/filesystem/s3/home.md
+        - reference/filesystem/minio/home.md
   - NavReleaseNote:
       - 2024.03.9 (latest): release/latest.md
       - 2024.03.8: release/2024.03.8.md
