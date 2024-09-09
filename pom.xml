@@ -186,7 +186,7 @@
         <datacap.solr.version>6.0.0</datacap.solr.version>
         <datacap.influxdb.version>0.2.6</datacap.influxdb.version>
         <datacap.cos.version>5.6.227</datacap.cos.version>
-        <datacap.s3.version>1.12.770</datacap.s3.version>
+        <datacap.s3.version>1.12.771</datacap.s3.version>
         <datacap.minio.version>8.5.12</datacap.minio.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
