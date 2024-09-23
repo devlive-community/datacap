@@ -122,7 +122,8 @@ export default defineComponent({
     const captchaLoading = ref(false)
     const $t: any = inject('$t')
     const formState = ref<UserRequest>({ username: null, password: null })
-    const validator = z
+
+    const validationSchema = z
         .object({
           username: z.string({ required_error: $t('user.auth.usernameTip') })
                      .min(2, $t('user.auth.usernameSizeTip'))
@@ -132,22 +133,16 @@ export default defineComponent({
                      .max(20, $t('user.auth.passwordSizeTip')),
           confirmPassword: z.string({ required_error: $t('user.auth.confirmPasswordTip') })
                             .min(6, $t('user.auth.passwordSizeTip'))
-                            .max(50, $t('user.auth.passwordSizeTip'))
+                            .max(50, $t('user.auth.passwordSizeTip')),
+          captcha: z.coerce.number({ required_error: $t('user.auth.captchaTip'), invalid_type_error: $t('user.auth.captchaIsNumberTip') })
+                    .optional()
         })
         .refine((data) => data.password === data.confirmPassword, {
           message: $t('user.auth.confirmPasswordTip'),
           path: ['confirmPassword']
         })
 
-    if (showCaptcha.value) {
-      validator.extend({
-        captcha: z.string({ required_error: $t('user.auth.captchaTip') })
-                  .min(1, $t('user.auth.captchaSizeTip'))
-                  .max(6, $t('user.auth.captchaSizeTip'))
-      })
-    }
-
-    const formSchema = toTypedSchema(validator)
+    const formSchema = toTypedSchema(validationSchema)
 
     const { handleSubmit } = useForm({
       validationSchema: formSchema
