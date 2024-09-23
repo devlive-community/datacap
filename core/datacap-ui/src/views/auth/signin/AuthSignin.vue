@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from 'vue'
+import { defineComponent, inject, ref, watch } from 'vue'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import Button from '@/views/ui/button'
 import { Input } from '@/components/ui/input'
@@ -116,27 +116,34 @@ export default defineComponent({
     const captchaLoading = ref(false)
     const formState = ref<UserRequest>({ username: null, password: null })
 
-    const validator = z.object({
-      username: z.string({ required_error: $t('user.auth.usernameTip') })
-                 .min(2, $t('user.auth.usernameSizeTip'))
-                 .max(20, $t('user.auth.usernameSizeTip')),
-      password: z.string({ required_error: $t('user.auth.passwordTip') })
-                 .min(6, $t('user.auth.passwordSizeTip'))
-                 .max(20, $t('user.auth.passwordSizeTip'))
-    })
+    const validationSchema = ref(
+        z.object({
+          username: z.string({ required_error: $t('user.auth.usernameTip') })
+                     .min(2, $t('user.auth.usernameSizeTip'))
+                     .max(20, $t('user.auth.usernameSizeTip')),
+          password: z.string({ required_error: $t('user.auth.passwordTip') })
+                     .min(6, $t('user.auth.passwordSizeTip'))
+                     .max(20, $t('user.auth.passwordSizeTip'))
+        })
+    )
 
-    if (showCaptcha.value) {
-      validator.extend({
-        captcha: z.string({ required_error: $t('user.auth.captchaTip') })
-                  .min(1, $t('user.auth.captchaSizeTip'))
-                  .max(6, $t('user.auth.captchaSizeTip'))
-      })
+    const initializeForm = () => {
+      const formSchema = toTypedSchema(validationSchema.value)
+      return useForm({ validationSchema: formSchema })
     }
 
-    const formSchema = toTypedSchema(validator)
+    let { handleSubmit } = initializeForm()
 
-    const { handleSubmit } = useForm({
-      validationSchema: formSchema
+    watch(showCaptcha, (newValue) => {
+      if (newValue) {
+        validationSchema.value = validationSchema.value.extend({
+          captcha: z.string({ required_error: $t('user.auth.captchaTip') })
+                    .min(1, $t('user.auth.captchaSizeTip'))
+                    .max(6, $t('user.auth.captchaSizeTip'))
+        })
+        const { handleSubmit: newHandleSubmit } = initializeForm()
+        handleSubmit = newHandleSubmit
+      }
     })
 
     const refererCaptcha = () => {

@@ -132,15 +132,21 @@ export default defineComponent({
                      .max(20, $t('user.auth.passwordSizeTip')),
           confirmPassword: z.string({ required_error: $t('user.auth.confirmPasswordTip') })
                             .min(6, $t('user.auth.passwordSizeTip'))
-                            .max(50, $t('user.auth.passwordSizeTip')),
-          captcha: z.string({ required_error: $t('user.auth.captchaTip') })
-                    .min(1, $t('user.auth.captchaSizeTip'))
-                    .max(6, $t('user.auth.captchaSizeTip'))
+                            .max(50, $t('user.auth.passwordSizeTip'))
         })
         .refine((data) => data.password === data.confirmPassword, {
           message: $t('user.auth.confirmPasswordTip'),
           path: ['confirmPassword']
         })
+
+    if (showCaptcha.value) {
+      validator.extend({
+        captcha: z.string({ required_error: $t('user.auth.captchaTip') })
+                  .min(1, $t('user.auth.captchaSizeTip'))
+                  .max(6, $t('user.auth.captchaSizeTip'))
+      })
+    }
+
     const formSchema = toTypedSchema(validator)
 
     const { handleSubmit } = useForm({
