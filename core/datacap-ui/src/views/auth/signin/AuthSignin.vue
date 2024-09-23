@@ -115,7 +115,8 @@ export default defineComponent({
     let submitting = ref(false)
     const captchaLoading = ref(false)
     const formState = ref<UserRequest>({ username: null, password: null })
-    const validator = z
+
+    const validationSchema = z
         .object({
           username: z.string({ required_error: $t('user.auth.usernameTip') })
                      .min(2, $t('user.auth.usernameSizeTip'))
@@ -123,11 +124,11 @@ export default defineComponent({
           password: z.string({ required_error: $t('user.auth.passwordTip') })
                      .min(6, $t('user.auth.passwordSizeTip'))
                      .max(20, $t('user.auth.passwordSizeTip')),
-          captcha: z.string({ required_error: $t('user.auth.captchaTip') })
-                    .min(1, $t('user.auth.captchaSizeTip'))
-                    .max(6, $t('user.auth.captchaSizeTip'))
+          captcha: z.coerce.number({ required_error: $t('user.auth.captchaTip'), invalid_type_error: $t('user.auth.captchaIsNumberTip') })
+                    .optional()
         })
-    const formSchema = toTypedSchema(validator)
+
+    const formSchema = toTypedSchema(validationSchema)
 
     const { handleSubmit } = useForm({
       validationSchema: formSchema

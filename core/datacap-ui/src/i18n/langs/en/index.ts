@@ -719,6 +719,7 @@ export default {
             passwordTip: 'Please enter your password',
             confirmPasswordTip: 'Please confirm your password',
             captchaTip: 'Please enter the captcha',
+            captchaIsNumberTip: 'Captcha must be a number',
             notUserTip: 'Don\'t have an account?',
             hasUserTip: 'Already have an account?',
             passwordNotMatchTip: 'Password does not match',
