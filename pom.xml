@@ -133,6 +133,15 @@
         </developer>
         <developer>
             <id>002</id>
+            <name>Devlive Community</name>
+            <email>community@devlive.org</email>
+            <roles>
+                <role>Owner</role>
+            </roles>
+            <organization>Devlive Community</organization>
+        </developer>
+        <developer>
+            <id>003</id>
             <name>mlboy</name>
             <email>mlboy@126.com</email>
             <roles>
@@ -140,7 +149,7 @@
             </roles>
         </developer>
         <developer>
-            <id>003</id>
+            <id>004</id>
             <name>Stacey1018</name>
             <email>2506465056@qq.com</email>
             <roles>
