@@ -179,9 +179,9 @@
         <jackson.version>2.17.2</jackson.version>
         <logback.version>1.2.13</logback.version>
         <slf4j.version>2.0.10</slf4j.version>
-        <sql-formatter.version>2.0.3</sql-formatter.version>
+        <sql-formatter.version>2.0.5</sql-formatter.version>
         <guava.version>33.1.0-jre</guava.version>
-        <kotlin.version>1.9.10</kotlin.version>
+        <kotlin.version>2.0.20</kotlin.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <redis.version>3.8.0</redis.version>
         <testcontainers.version>1.20.1</testcontainers.version>
@@ -195,7 +195,7 @@
         <datacap.solr.version>6.0.0</datacap.solr.version>
         <datacap.influxdb.version>0.2.6</datacap.influxdb.version>
         <datacap.cos.version>5.6.227</datacap.cos.version>
-        <datacap.s3.version>1.12.770</datacap.s3.version>
+        <datacap.s3.version>1.12.771</datacap.s3.version>
         <datacap.minio.version>8.5.12</datacap.minio.version>
         <!-- maven plugin -->
         <plugin.maven.checkstyle.version>3.0.0</plugin.maven.checkstyle.version>
@@ -204,7 +204,7 @@
         <plugin.maven.cobertura.version>2.7</plugin.maven.cobertura.version>
         <plugin.maven.dependency.version>3.0.1</plugin.maven.dependency.version>
         <plugin.maven.source.version>2.2.1</plugin.maven.source.version>
-        <plugin.maven.javadoc.version>3.8.0</plugin.maven.javadoc.version>
+        <plugin.maven.javadoc.version>3.10.0</plugin.maven.javadoc.version>
         <plugin.maven.gpg.version>1.6</plugin.maven.gpg.version>
         <plugin.maven.nexus.version>1.6.13</plugin.maven.nexus.version>
         <plugin.maven.dokka.version>1.9.10</plugin.maven.dokka.version>
