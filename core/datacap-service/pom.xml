@@ -14,7 +14,7 @@
     <description>DataCap - server</description>
 
     <properties>
-        <snakeyaml.version>2.2</snakeyaml.version>
+        <snakeyaml.version>2.3</snakeyaml.version>
         <useragent.version>1.21</useragent.version>
         <openai.version>2024.01.3</openai.version>
     </properties>
