@@ -27,7 +27,7 @@
     "ag-grid-community": "^31.2.0",
     "ag-grid-vue3": "^31.2.0",
     "ansi_up": "^6.0.2",
-    "axios": "^1.6.7",
+    "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "embla-carousel": "^8.0.2",
