@@ -207,7 +207,7 @@
         <plugin.maven.javadoc.version>3.10.0</plugin.maven.javadoc.version>
         <plugin.maven.gpg.version>1.6</plugin.maven.gpg.version>
         <plugin.maven.nexus.version>1.6.13</plugin.maven.nexus.version>
-        <plugin.maven.dokka.version>1.9.10</plugin.maven.dokka.version>
+        <plugin.maven.dokka.version>1.9.20</plugin.maven.dokka.version>
         <environment.compile.java.version>11</environment.compile.java.version>
     </properties>
 
