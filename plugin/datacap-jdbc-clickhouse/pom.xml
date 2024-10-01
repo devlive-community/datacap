@@ -14,7 +14,7 @@
     <description>DataCap - ClickHouse</description>
 
     <properties>
-        <clickhouse-jdbc.version>0.4.6</clickhouse-jdbc.version>
+        <clickhouse-jdbc.version>0.6.5</clickhouse-jdbc.version>
         <plugin.name>jdbc-clickhouse</plugin.name>
     </properties>
 
