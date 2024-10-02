@@ -27,7 +27,7 @@
     "ag-grid-community": "^31.2.0",
     "ag-grid-vue3": "^31.2.0",
     "ansi_up": "^6.0.2",
-    "axios": "^1.6.7",
+    "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "embla-carousel": "^8.0.2",
@@ -68,7 +68,7 @@
     "tailwindcss": "^3.4.1",
     "tippy.js": "^6.3.7",
     "typescript": "^5.2.2",
-    "vite": "^5.1.6",
+    "vite": "^5.4.8",
     "vue-tsc": "^1.8.27"
   }
 }
