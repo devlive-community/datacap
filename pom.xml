@@ -191,7 +191,7 @@
         <datacap.pgsql.version>42.7.3</datacap.pgsql.version>
         <datacap.qiniu.version>7.15.0</datacap.qiniu.version>
         <datacap.alioss.version>3.16.1</datacap.alioss.version>
-        <datacap.commons-io.version>2.16.1</datacap.commons-io.version>
+        <datacap.commons-io.version>2.14.0</datacap.commons-io.version>
         <datacap.solr.version>6.0.0</datacap.solr.version>
         <datacap.influxdb.version>0.2.6</datacap.influxdb.version>
         <datacap.cos.version>5.6.227</datacap.cos.version>
