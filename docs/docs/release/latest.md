@@ -2,34 +2,45 @@
 
 |    发布版本     |     发布时间     |
 |:-----------:|:------------:|
-| `2024.03.9` | `2024-08-27` |
+| `2024.3.10` | `2024-10-09` |
 
 #### 主要功能
 
 ---
 
-- 修复 maven 发布 CI
-- 修复包缺少文件导致启动失败的问题
-- 修复构建数据集不携带查询 SQL 的问题
-- 修复数据集未携带 injector 导致构建失败的问题
+- 移除示例地址
+- 修复登录页面上的验证码问题
+- 修复注册页面上的验证码问题
+- 修复验证码验证规则
+- 修复文档指定 Java 版本
 
 #### 文件系统
 
 ---
 
-- 支持腾讯 COS
-- 支持 Amazon S3
+- 支持 MinIO
 
-#### 依赖
+#### 依赖更新
 
 ---
 
-- 升级 UI `braces` **3.0.2** 到 **3.0.3**
-- 升级 `org.apache.kyuubi:kyuubi-hive-jdbc-shaded` **1.7.1** 到 **1.9.2**
-- 升级 `org.apache.maven.plugins:maven-compiler-plugin` **3.12.1** 到 **3.13.0**
-- 升级 `testcontainers.version` **1.19.5** 到 **1.20.1**
-- 升级 `org.apache.maven.plugins:maven-javadoc-plugin` **3.6.3** 到 **3.8.0**
-- 升级 `jackson.version` **2.17.0** 到 **2.17.2**
-- 升级 `org.elasticsearch.plugin:x-pack-sql-jdbc` **8.12.0** 到 **8.15.0**
-- 升级 `org.apache.commons:commons-csv` **1.10.0** 到 **1.11.0**
-- 升级 `monetdb:monetdb-jdbc` **3.2** 到 **11.19.15**
+- Bump dep.antlr4.version from 4.13.1 to 4.13.2
+- Bump ag-grid-community and ag-grid-vue3
+- Bump commons-io:commons-io from 2.11.0 to 2.14.0
+- Bump com.clickhouse:clickhouse-jdbc from 0.4.6 to 0.6.5
+- Bump vite from 5.2.8 to 5.4.8
+- Bump rollup from 4.14.2 to 4.22.4
+- Bump micromatch from 4.0.5 to 4.0.8
+- Bump axios from 1.6.8 to 1.7.4
+- Bump org.yaml:snakeyaml from 2.2 to 2.3
+- Bump com.github.vertical-blank:sql-formatter from 2.0.3 to 2.0.5
+- Bump org.apache.maven.plugins:maven-javadoc-plugin from 3.8.0 to 3.10.0
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.770 to 1.12.771
+- Bump org.testcontainers:oracle-xe from 1.18.1 to 1.20.1 
+- Bump com.github.eirslett:frontend-maven-plugin from 1.13.4 to 1.15.0
+- Bump kotlin.version from 1.9.10 to 2.0.20
+- Bump org.duckdb:duckdb_jdbc from 0.9.2 to 1.0.0
+- Bump com.taosdata.jdbc:taos-jdbcdriver from 3.2.7 to 3.3.0
+- Bump com.microsoft.sqlserver:mssql-jdbc from 12.6.0.jre8 to 12.8.1.jre8
+- Bump avatica.version from 1.22.0 to 1.25.0
+- Bump org.apache.iotdb:iotdb-jdbc from 1.1.0 to 1.3.2
