@@ -29,7 +29,7 @@ public class JdbcConnection
 
     protected String formatJdbcUrl()
     {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append("jdbc:");
         buffer.append(this.jdbcConfigure.getJdbcType());
         if (jdbcConfigure.getJdbcType().equals("influxdb")) {
@@ -59,7 +59,7 @@ public class JdbcConnection
                     .stream()
                     .map(value -> String.format("%s=%s", value.getKey(), value.getValue()))
                     .collect(Collectors.toList());
-            if (!this.jdbcConfigure.getSsl().isPresent()) {
+            if (this.jdbcConfigure.getSsl().isEmpty()) {
                 buffer.append("?");
             }
             else {

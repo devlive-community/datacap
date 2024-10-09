@@ -8,7 +8,7 @@ repo_url: https://github.com/devlive-community/datacap
 edit_uri: "https://github.com/devlive-community/datacap/blob/dev/docs/docs"
 
 banners:
-  - title: DataCap 2024.03.9 is released
+  - title: DataCap 2024.3.10 is released
     link: /release-latest.html
     description: <a href="https://github.com/devlive-community/datacap" class="text-white"> Do you ❤️ DataCap? Give us a 🌟 on GitHub </a>
 
@@ -225,7 +225,8 @@ nav:
         - reference/filesystem/s3/home.md
         - reference/filesystem/minio/home.md
   - NavReleaseNote:
-      - 2024.03.9 (latest): release/latest.md
+      - 2024.3.10 (latest): release/latest.md
+      - 2024.03.9: release/2024.03.9.md
       - 2024.03.8: release/2024.03.8.md
       - 2024.03.7: release/2024.03.7.md
       - 2024.03.6: release/2024.03.6.md

@@ -4,7 +4,7 @@
     <groupId>io.edurt.datacap</groupId>
     <artifactId>datacap</artifactId>
     <packaging>pom</packaging>
-    <version>2024.3.10-SNAPSHOT</version>
+    <version>2024.3.10</version>
 
     <modules>
         <module>client/datacap-cli</module>
@@ -176,7 +176,7 @@
         <jjwt.version>0.9.1</jjwt.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <findbugs.version>3.0.1</findbugs.version>
-        <jackson.version>2.18.0</jackson.version>
+        <jackson.version>2.17.2</jackson.version>
         <logback.version>1.2.13</logback.version>
         <slf4j.version>2.0.10</slf4j.version>
         <sql-formatter.version>2.0.5</sql-formatter.version>
