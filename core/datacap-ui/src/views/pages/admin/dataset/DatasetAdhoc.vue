@@ -2,7 +2,7 @@
   <div class="hidden space-y-6 pb-16 w-full h-full md:block">
     <div class="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
       <aside class="-mx-4 w-[200px] space-y-5">
-        <Card body-class="p-3" title-class="p-2">
+        <DataCapCard>
           <template #title>{{ $t('dataset.common.columnModeMetric') }}</template>
           <CircularLoading v-if="initialize" :show="initialize"/>
           <div v-else>
@@ -15,8 +15,8 @@
               </template>
             </Draggable>
           </div>
-        </Card>
-        <Card body-class="p-3" title-class="p-2">
+        </DataCapCard>
+        <DataCapCard>
           <template #title>{{ $t('dataset.common.columnModeDimension') }}</template>
           <CircularLoading v-if="initialize" :show="initialize"/>
           <div v-else>
@@ -29,7 +29,7 @@
               </template>
             </Draggable>
           </div>
-        </Card>
+        </DataCapCard>
       </aside>
       <div class="flex-1">
         <div class="space-y-6">
@@ -182,7 +182,7 @@ import DatasetColumnMetric from '@/views/pages/admin/dataset/components/adhoc/Da
 import DatasetColumnConfigure from '@/views/pages/admin/dataset/components/adhoc/DatasetColumnConfigure.vue'
 import { defineComponent } from 'vue'
 import { Badge } from '@/components/ui/badge'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import { AreaChart, BarChart4, BarChartHorizontal, Baseline, CirclePlay, Cog, Eye, LineChart, Loader2, PieChart, Table, Trash } from 'lucide-vue-next'
 import Tooltip from '@/views/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
@@ -211,6 +211,7 @@ export default defineComponent({
     }
   },
   components: {
+    DataCapCard,
     Textarea,
     Switch,
     FormField,
@@ -223,7 +224,6 @@ export default defineComponent({
     Input,
     Tooltip,
     Separator,
-    Card,
     Badge,
     DatasetColumnMetric,
     DatasetColumnConfigure,

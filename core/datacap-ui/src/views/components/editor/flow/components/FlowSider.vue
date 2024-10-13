@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-2">
-    <Card :title-class="'p-2'" :body-class="'p-2'">
+    <DataCapCard>
       <template #title>{{ $t('pipeline.common.input') }}</template>
       <div v-for="node in inputs" :key="node.id" class="dndflow">
         <div class="nodes">
@@ -10,8 +10,8 @@
           </div>
         </div>
       </div>
-    </Card>
-    <Card :title-class="'p-2'" :body-class="'p-2'">
+    </DataCapCard>
+    <DataCapCard>
       <template #title>{{ $t('pipeline.common.output') }}</template>
       <div v-for="node in outputs" :key="node.id" class="dndflow">
         <div class="nodes">
@@ -21,20 +21,20 @@
           </div>
         </div>
       </div>
-    </Card>
+    </DataCapCard>
   </div>
 </template>
 <script lang="ts">
 import '../style.css'
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import Avatar from '@/views/ui/avatar'
 import { Configuration } from '@/views/components/editor/flow/Configuration.ts'
 
 export default defineComponent({
   name: 'FlowSider',
   components: {
-    Card,
+    DataCapCard,
     Avatar
   },
   props: {

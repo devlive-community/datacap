@@ -1,6 +1,6 @@
 <template>
   <Tabs v-model="selectTab as string" :default-value="selectTab as string" class="w-full">
-    <Card :title-class="'p-0'" :body-class="'p-0'">
+    <DataCapCard>
       <template #title>
         <TabsList class="rounded-none">
           <TabsTrigger value="info" class="cursor-pointer" :disabled="!originalTable" @click="handlerChange">
@@ -35,26 +35,28 @@
           </TabsTrigger>
         </TabsList>
       </template>
-      <TabsContent :value="selectTab as string">
-        <div class="h-[695px] overflow-x-auto overflow-y-auto">
-          <RouterView/>
-        </div>
-      </TabsContent>
-    </Card>
+      <template #content>
+        <TabsContent :value="selectTab as string">
+          <div class="h-[695px] overflow-x-auto overflow-y-auto">
+            <RouterView/>
+          </div>
+        </TabsContent>
+      </template>
+    </DataCapCard>
   </Tabs>
 </template>
 
 <script lang="ts">
 import { defineComponent, watch } from 'vue'
-import Card from '@/views/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Info, LayoutPanelTop, SatelliteDish, Table, Wind } from 'lucide-vue-next'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'MetadataContent',
   components: {
+    DataCapCard,
     Tabs, TabsContent, TabsList, TabsTrigger,
-    Card,
     Info, LayoutPanelTop, Table, SatelliteDish, Wind
   },
   data()

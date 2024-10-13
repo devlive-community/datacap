@@ -1,12 +1,12 @@
 <template>
-  <div class="w-full">
-    <Card title-class="p-2 pl-4">
-      <template #title>{{ $t('source.common.list') }}</template>
-      <template #extra>
-        <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true, null)">
-          <Plus :size="15"/>
-        </Button>
-      </template>
+  <DataCapCard>
+    <template #title>{{ $t('source.common.list') }}</template>
+    <template #extra>
+      <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true, null)">
+        <Plus :size="15"/>
+      </Button>
+    </template>
+    <template #content>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #type="{row}">
           <Tooltip :content="row.type">
@@ -65,7 +65,9 @@
           </div>
         </template>
       </TableCommon>
-    </Card>
+    </template>
+  </DataCapCard>
+  <div class="w-full">
     <SourceInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
     <SourceDelete v-if="dataDeleteVisible" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
     <SourceMetadata v-if="dataSyncMetadataVisible" :is-visible="dataSyncMetadataVisible" :info="dataInfo" @close="handlerSyncMetadata(false, null)"/>
@@ -75,7 +77,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
 import Button from '@/views/ui/button'
 import { CirclePlay, CircleX, Cog, History, Info, Pencil, Plus, RefreshCcwDot, Trash } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
@@ -103,10 +104,12 @@ import {
 import SourceDelete from '@/views/pages/admin/source/SourceDelete.vue'
 import SourceMetadata from '@/views/pages/admin/source/SourceMetadata.vue'
 import SourceHistory from '@/views/pages/admin/source/SourceHistory.vue'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'SourceHome',
   components: {
+    DataCapCard,
     Info,
     SourceHistory,
     SourceMetadata,
@@ -119,8 +122,7 @@ export default defineComponent({
     Avatar,
     TableCommon,
     Pencil, CircleX, CirclePlay, Cog, Trash, Plus, RefreshCcwDot, History,
-    Button,
-    Card
+    Button
   },
   setup()
   {

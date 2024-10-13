@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <div class="rounded-md mt-4">
+  <div class="mb-3">
+    <div class="rounded-md">
       <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
       <div v-else>
         <Table>
-          <TableHeader>
+          <TableHeader :style="{ backgroundColor: '#f8f8f9' }">
             <TableRow>
               <TableHead v-for="item in columns" :key="item.key" :class="item.class ? item.class : ''" :style="{width: item.width ? item.width + 'px' : 'auto'}">
                 {{ item.header }}
@@ -12,8 +12,12 @@
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="row in data" :key="row.id">
-              <TableCell v-for="column in columns" :key="column.key" :class="column.class ? column.class : ''" :style="{width: column.width ? column.width + 'px' : 'auto'}">
+            <TableRow v-for="(row, index) in data"
+                      :key="row.id"
+                      :class="cn('hover:bg-blue-50', (stripe && index % 2 !== 0) && 'bg-gray-100')">
+              <TableCell v-for="column in columns"
+                         :key="column.key"
+                         :class="column.class ? column.class : ''" :style="{width: column.width ? column.width + 'px' : 'auto'}">
                 <template v-if="column.slot">
                   <slot :name="column.slot" :row="row"/>
                 </template>
@@ -96,6 +100,7 @@ import { cloneDeep, toNumber } from 'lodash'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Tooltip from '@/views/ui/tooltip'
 import { BreadcrumbEllipsis } from '@/components/ui/breadcrumb'
+import { cn } from '@/lib/utils.ts'
 
 export default defineComponent({
   name: 'TableCommon',
@@ -124,9 +129,13 @@ export default defineComponent({
     },
     loading: {
       type: Boolean
+    },
+    stripe: {
+      type: Boolean
     }
   },
   methods: {
+    cn,
     handlerChangePage(value: number)
     {
       const pagination: PaginationModel = cloneDeep(this.pagination) as PaginationModel

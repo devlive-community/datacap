@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-2 pl-4">
+    <DataCapCard>
       <template #title>{{ $t('menu.common.list') }}</template>
       <template #extra>
         <Tooltip :content="$t('menu.common.create')">
@@ -23,14 +23,14 @@
           </div>
         </template>
       </TableCommon>
-    </Card>
+    </DataCapCard>
     <MenuInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"/>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Pencil, Plus } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
@@ -53,7 +53,7 @@ export default defineComponent({
     Button,
     Pencil, Plus,
     TableCommon,
-    Card
+    DataCapCard
   },
   setup()
   {

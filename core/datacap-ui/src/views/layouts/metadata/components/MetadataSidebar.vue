@@ -1,5 +1,5 @@
 <template>
-  <Card :title-class="'p-0'" :body-class="'p-0'">
+  <DataCapCard>
     <template #title>
       <Select v-model="selectDatabase" :default-value="originalDatabase ? originalDatabase : selectDatabase" @update:modelValue="handlerChangeDatabase">
         <SelectTrigger class="border-0 w-[200px]">
@@ -14,73 +14,75 @@
         </SelectContent>
       </Select>
     </template>
-    <div class="h-[700px] overflow-x-auto overflow-y-auto">
-      <CircularLoading v-if="loading" :show="loading"/>
-      <div v-else>
-        <Tree :data="dataTreeArray" :empty-text="$t('source.tip.selectDatabase')" :load-data="handlerLoadChildData" @on-select-change="handlerSelectNode"
-              @on-contextmenu="handlerContextMenu">
-          <template #contextMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <span id="contextMenu"></span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent class="-mt-3">
-                <DropdownMenuLabel>{{ $t('common.action') }}</DropdownMenuLabel>
-                <DropdownMenuSeparator/>
-                <DropdownMenuGroup>
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger class="cursor-pointer">{{ $t('source.common.menuNew') }}</DropdownMenuSubTrigger>
-                    <DropdownMenuPortal>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerCreateTable(true)">
-                          <Table :size="18" class="mr-2"/>
-                          {{ $t('source.common.menuNewTable') }}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem class="cursor-pointer" @click="handlerCreateColumn(true)">
-                          <Columns :size="18" class="mr-2"/>
-                          {{ $t('source.common.newColumn') }}
-                        </DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuPortal>
-                  </DropdownMenuSub>
-                </DropdownMenuGroup>
-                <DropdownMenuGroup v-if="dataInfo?.level === StructureEnum.TABLE">
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger class="cursor-pointer">{{ $t('source.common.menuExport') }}</DropdownMenuSubTrigger>
-                    <DropdownMenuPortal>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerExportData(true)">
-                          <ArrowUpFromLine :size="18" class="mr-2"/>
-                          {{ $t('source.common.exportData') }}
-                        </DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuPortal>
-                  </DropdownMenuSub>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator/>
-                <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerTruncateTable(true)">
-                  <Trash :size="18" class="mr-2"/>
-                  {{ $t('source.common.truncateTable') }}
-                </DropdownMenuItem>
-                <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerDropTable(true)">
-                  <Delete :size="18" class="mr-2"/>
-                  {{ $t('source.common.dropTable') }}
-                </DropdownMenuItem>
-                <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.COLUMN" class="cursor-pointer" @click="handlerChangeColumn(true)">
-                  <Pencil :size="18" class="mr-2"/>
-                  {{ $t('source.common.changeColumn') }}
-                </DropdownMenuItem>
-                <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.COLUMN" class="cursor-pointer" @click="handlerDropColumn(true)">
-                  <Delete :size="18" class="mr-2"/>
-                  {{ $t('source.common.dropColumn') }}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </template>
-        </Tree>
+    <template #content>
+      <div class="h-[700px] overflow-x-auto overflow-y-auto">
+        <CircularLoading v-if="loading" :show="loading"/>
+        <div v-else>
+          <Tree :data="dataTreeArray" :empty-text="$t('source.tip.selectDatabase')" :load-data="handlerLoadChildData" @on-select-change="handlerSelectNode"
+                @on-contextmenu="handlerContextMenu">
+            <template #contextMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                  <span id="contextMenu"></span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent class="-mt-3">
+                  <DropdownMenuLabel>{{ $t('common.action') }}</DropdownMenuLabel>
+                  <DropdownMenuSeparator/>
+                  <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger class="cursor-pointer">{{ $t('source.common.menuNew') }}</DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerCreateTable(true)">
+                            <Table :size="18" class="mr-2"/>
+                            {{ $t('source.common.menuNewTable') }}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem class="cursor-pointer" @click="handlerCreateColumn(true)">
+                            <Columns :size="18" class="mr-2"/>
+                            {{ $t('source.common.newColumn') }}
+                          </DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                  </DropdownMenuGroup>
+                  <DropdownMenuGroup v-if="dataInfo?.level === StructureEnum.TABLE">
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger class="cursor-pointer">{{ $t('source.common.menuExport') }}</DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerExportData(true)">
+                            <ArrowUpFromLine :size="18" class="mr-2"/>
+                            {{ $t('source.common.exportData') }}
+                          </DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator/>
+                  <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerTruncateTable(true)">
+                    <Trash :size="18" class="mr-2"/>
+                    {{ $t('source.common.truncateTable') }}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.TABLE" class="cursor-pointer" @click="handlerDropTable(true)">
+                    <Delete :size="18" class="mr-2"/>
+                    {{ $t('source.common.dropTable') }}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.COLUMN" class="cursor-pointer" @click="handlerChangeColumn(true)">
+                    <Pencil :size="18" class="mr-2"/>
+                    {{ $t('source.common.changeColumn') }}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem v-if="dataInfo?.level === StructureEnum.COLUMN" class="cursor-pointer" @click="handlerDropColumn(true)">
+                    <Delete :size="18" class="mr-2"/>
+                    {{ $t('source.common.dropColumn') }}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </template>
+          </Tree>
+        </div>
       </div>
-    </div>
-  </Card>
+    </template>
+  </DataCapCard>
   <TableCreate v-if="tableCreateVisible" :isVisible="tableCreateVisible" :info="dataInfo" @close="handlerCreateTable(false)"/>
   <TableExport v-if="tableExportVisible" :isVisible="tableExportVisible" :info="dataInfo" @close="handlerExportData(false)"/>
   <TableTruncate v-if="tableTruncateVisible" :isVisible="tableTruncateVisible" :info="dataInfo" @close="handlerTruncateTable(false)"/>
@@ -98,7 +100,6 @@ import DatabaseService from '@/services/database.ts'
 import { StructureEnum, StructureModel } from '@/model/structure.ts'
 import { Tree } from 'view-ui-plus'
 import '@/views/components/tree/style.css'
-import Card from '@/views/ui/card'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import TableService from '@/services/table.ts'
 import ColumnService from '@/services/column.ts'
@@ -124,12 +125,13 @@ import TableTruncate from '@/views/pages/admin/source/components/TableTruncate.v
 import TableDrop from '@/views/pages/admin/source/components/TableDrop.vue'
 import TableCreate from '@/views/pages/admin/source/components/TableCreate.vue'
 import { ToastUtils } from '@/utils/toast.ts'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'MetadataSidebar',
   components: {
+    DataCapCard,
     TableCreate, TableDrop, TableTruncate, ColumnChange, TableExport, ColumnDrop, ColumnCreate,
-    Card,
     Tree,
     CircularLoading,
     Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue,

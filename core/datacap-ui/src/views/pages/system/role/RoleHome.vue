@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-2 pl-4">
+    <DataCapCard>
       <template #title>{{ $t('role.common.list') }}</template>
       <template #extra>
         <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerChangeInfo(true, null)">
@@ -37,7 +37,7 @@
           </div>
         </template>
       </TableCommon>
-    </Card>
+    </DataCapCard>
     <RoleInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"/>
     <RoleMenu v-if="dataAllocationVisible" :is-visible="dataAllocationVisible" :info="dataInfo" @close="handlerAssignMenu(false, null)"/>
   </div>
@@ -45,7 +45,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -58,15 +57,16 @@ import RoleService from '@/services/role'
 import RoleInfo from '@/views/pages/system/role/RoleInfo.vue'
 import { RoleModel } from '@/model/role'
 import RoleMenu from '@/views/pages/system/role/RoleMenu.vue'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'RoleHome',
   components: {
+    DataCapCard,
     Plus,
     RoleMenu,
     RoleInfo,
     TooltipContent, TooltipTrigger, TooltipProvider, Tooltip,
-    Card,
     TableCommon,
     Pencil, Menu,
     Button

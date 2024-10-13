@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-4">
+    <DataCapCard>
       <template #title>{{ $t('schedule.common.list') }}</template>
       <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
         <template #active="{row}">
@@ -24,14 +24,14 @@
           </TooltipProvider>
         </template>
       </TableCommon>
-    </Card>
+    </DataCapCard>
     <ScheduleHistory v-if="dataHistoryVisible" :is-visible="dataHistoryVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"></ScheduleHistory>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -48,10 +48,10 @@ import { ScheduleModel } from '@/model/schedule'
 export default defineComponent({
   name: 'ScheduleHome',
   components: {
+    DataCapCard,
     ScheduleHistory,
     ArrowBigUp, History, Pencil,
     Button, Switch,
-    Card,
     Tooltip, TooltipProvider, TooltipContent, TooltipTrigger,
     TableCommon
   },

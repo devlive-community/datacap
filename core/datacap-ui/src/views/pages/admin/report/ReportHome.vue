@@ -1,51 +1,53 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-3.5">
+    <DataCapCard shadow="never">
       <template #title>{{ $t('report.common.list') }}</template>
-      <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
-        <template #realtime="{row}">
-          <Switch :value="row.realtime" :disabled="true"/>
-        </template>
-        <template #source="{ row }">
-          <Tooltip v-if="row.source" :content="row.source?.type">
-            <Avatar :size="'sm'" :src="'/static/images/plugin/' + row.source?.type + '.png'" :alt="row.source?.type"/>
-          </Tooltip>
-          <Tooltip v-else :content="row.dataset?.name">
-            <Tag>{{ $t('common.dataset') }}</Tag>
-          </Tooltip>
-        </template>
-        <template #action="{ row }">
-          <div class="space-x-2">
-            <Tooltip :content="$t('report.common.view').replace('$VALUE', row.name)">
-              <Button size="icon" class="rounded-full w-6 h-6" @click="handlerView(true, row)">
-                <Eye :size="14"/>
-              </Button>
+      <template #content>
+        <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
+          <template #realtime="{row}">
+            <Switch :value="row.realtime" :disabled="true"/>
+          </template>
+          <template #source="{ row }">
+            <Tooltip v-if="row.source" :content="row.source?.type">
+              <Avatar :size="'sm'" :src="'/static/images/plugin/' + row.source?.type + '.png'" :alt="row.source?.type"/>
             </Tooltip>
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
-                  <Cog class="w-full justify-center" :size="14"/>
+            <Tooltip v-else :content="row.dataset?.name">
+              <Tag>{{ $t('common.dataset') }}</Tag>
+            </Tooltip>
+          </template>
+          <template #action="{ row }">
+            <div class="space-x-2">
+              <Tooltip :content="$t('report.common.view').replace('$VALUE', row.name)">
+                <Button size="icon" class="rounded-full w-6 h-6" @click="handlerView(true, row)">
+                  <Eye :size="14"/>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuGroup>
-                  <DropdownMenuItem :disabled="row.type === 'QUERY'" class="cursor-pointer">
-                    <RouterLink :to="`/admin/dataset/adhoc/${row.dataset?.code}/${row.id}`" target="_blank" class="flex items-center">
-                      <Pencil class="mr-2 h-4 w-4"/>
-                      <span>{{ $t('report.common.modify') }}</span>
-                    </RouterLink>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem class="cursor-pointer" @click="handlerDelete(true, row)">
-                    <Delete class="mr-2 h-4 w-4"/>
-                    <span>{{ $t('report.common.delete') }}</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </template>
-      </TableCommon>
-    </Card>
+              </Tooltip>
+              <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                  <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
+                    <Cog class="w-full justify-center" :size="14"/>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem :disabled="row.type === 'QUERY'" class="cursor-pointer">
+                      <RouterLink :to="`/admin/dataset/adhoc/${row.dataset?.code}/${row.id}`" target="_blank" class="flex items-center">
+                        <Pencil class="mr-2 h-4 w-4"/>
+                        <span>{{ $t('report.common.modify') }}</span>
+                      </RouterLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem class="cursor-pointer" @click="handlerDelete(true, row)">
+                      <Delete class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('report.common.delete') }}</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </template>
+        </TableCommon>
+      </template>
+    </DataCapCard>
   </div>
   <ReportView v-if="dataViewVisible" :is-visible="dataViewVisible" :info="dataInfo" @close="handlerView(false, null)"/>
   <ReportDelete v-if="dataDeleteVisible" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
@@ -53,7 +55,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
 import { FilterModel } from '@/model/filter'
 import { useI18n } from 'vue-i18n'
 import { createHeaders } from '@/views/pages/admin/report/ReportUtils'
@@ -79,14 +80,15 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import ReportDelete from '@/views/pages/admin/report/ReportDelete.vue'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'ReportHome',
   components: {
+    DataCapCard,
     ReportDelete,
     ReportView,
     TableCommon,
-    Card,
     Switch,
     Tooltip,
     Avatar,

@@ -1,67 +1,71 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-2">
+    <DataCapCard>
       <template #title>{{ $t('dashboard.common.list') }}</template>
       <template #extra>
         <Button size="sm" to="/admin/dashboard/info">
           {{ $t('dashboard.common.create') }}
         </Button>
       </template>
-      <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
-      <div v-else class="hidden flex-col md:flex">
-        <div class="flex-1 space-y-4 pt-6">
-          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-            <Card title-class="p-2 pl-4 pr-4" footer-class="p-2 pl-2 pr-4" body-class="p-4" v-for="item in data">
-              <template #title>
-                <div class="flex space-x-1">
-                  <div>
-                    <RouterLink :to="`/admin/dashboard/preview/${item.code}`" target="_blank">{{ item.name }}</RouterLink>
+      <template #content>
+        <div class="mb-3">
+          <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
+          <div v-else class="hidden flex-col md:flex">
+            <div class="flex-1 space-y-4 pt-6">
+              <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+                <DataCapCard v-for="item in data">
+                  <template #title>
+                    <div class="flex space-x-1">
+                      <div>
+                        <RouterLink :to="`/admin/dashboard/preview/${item.code}`" target="_blank">{{ item.name }}</RouterLink>
+                      </div>
+                      <div>
+                        <Tooltip :content="item.description">
+                          <Info :size="18" class="cursor-pointer"/>
+                        </Tooltip>
+                      </div>
+                    </div>
+                  </template>
+                  <template #extra>
+                    <DropdownMenu class="justify-items-end">
+                      <DropdownMenuTrigger>
+                        <Cog :size="20"/>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem class="cursor-pointer">
+                          <RouterLink :to="`/admin/dashboard/info/${item.code}`" target="_blank" class="flex items-center">
+                            <Pencil :size="15" class="mr-1"/>
+                            {{ $t('dashboard.common.modify') }}
+                          </RouterLink>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem class="cursor-pointer" @click="handlerDelete(true, item)">
+                          <Trash :size="15" class="mr-1"/>
+                          {{ $t('dashboard.common.delete') }}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </template>
+                  <div class="shadow-blackA7 w-full overflow-hidden rounded-md">
+                    <AspectRatio :ratio="16 / 11">
+                      <img class="h-full w-full object-cover" :src="`${item.avatar?.path ? item.avatar.path : '/static/images/dashboard.png'}`" :alt="item.name"/>
+                    </AspectRatio>
                   </div>
-                  <div>
-                    <Tooltip :content="item.description">
-                      <Info :size="18" class="cursor-pointer"/>
-                    </Tooltip>
-                  </div>
-                </div>
-              </template>
-              <template #extra>
-                <DropdownMenu class="justify-items-end">
-                  <DropdownMenuTrigger>
-                    <Cog :size="20"/>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem class="cursor-pointer">
-                      <RouterLink :to="`/admin/dashboard/info/${item.code}`" target="_blank" class="flex items-center">
-                        <Pencil :size="15" class="mr-1"/>
-                        {{ $t('dashboard.common.modify') }}
-                      </RouterLink>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem class="cursor-pointer" @click="handlerDelete(true, item)">
-                      <Trash :size="15" class="mr-1"/>
-                      {{ $t('dashboard.common.delete') }}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </template>
-              <div class="shadow-blackA7 w-full overflow-hidden rounded-md">
-                <AspectRatio :ratio="16 / 11">
-                  <img class="h-full w-full object-cover" :src="`${item.avatar?.path ? item.avatar.path : '/static/images/dashboard.png'}`" :alt="item.name"/>
-                </AspectRatio>
+                  <template #footer>
+                    <p class="text-xs text-muted-foreground text-right">{{ item.createTime }}</p>
+                  </template>
+                </DataCapCard>
               </div>
-              <template #footer>
-                <p class="text-xs text-muted-foreground text-right">{{ item.createTime }}</p>
-              </template>
-            </Card>
-          </div>
-          <div v-if="data.length === 0" class="text-center">
-            {{ $t('common.noData') }}
-          </div>
-          <div>
-            <Pagination v-if="pagination && !loading && data.length > 0" :pagination="pagination" @changePage="handlerChangePage"/>
+              <div v-if="data.length === 0" class="text-center">
+                {{ $t('common.noData') }}
+              </div>
+              <div>
+                <Pagination v-if="pagination && !loading && data.length > 0" :pagination="pagination" @changePage="handlerChangePage"/>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </Card>
+      </template>
+    </DataCapCard>
     <DashboardDelete v-if="deleteVisible" :is-visible="deleteVisible" :data="dataInfo" @close="handlerDelete(false, null)"></DashboardDelete>
   </div>
 </template>
@@ -75,25 +79,22 @@ import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import { DashboardModel } from '@/model/dashboard'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import DashboardDelete from '@/views/pages/admin/dashboard/DashboardDelete.vue'
-import Card from '@/views/ui/card'
 import Pagination from '@/views/ui/pagination'
 import Button from '@/views/ui/button'
 import { TableCaption } from '@/components/ui/table'
 import Tooltip from '@/views/ui/tooltip'
 import { AspectRatio } from 'radix-vue'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'DashboardHome',
   components: {
+    DataCapCard,
     AspectRatio,
-    Tooltip,
-    TableCaption,
-    Pagination,
+    Button, Tooltip, TableCaption, Pagination,
     DashboardDelete,
     DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
-    Loader2, Cog, Trash, Pencil, Info,
-    Card,
-    Button
+    Loader2, Cog, Trash, Pencil, Info
   },
   setup()
   {

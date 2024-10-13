@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="right w-[210px] space-y-2">
-      <Card body-class="p-2">
+      <DataCapCard>
         <template #title>{{ $t('dataset.common.visualType') }}</template>
         <CircularLoading v-if="loading" :show="loading"/>
         <div v-else-if="configuration">
@@ -184,15 +184,15 @@
             </div>
           </ToggleGroup>
         </div>
-      </Card>
-      <Card body-class="p-2">
+      </DataCapCard>
+      <DataCapCard>
         <template #title>{{ $t('dataset.common.visualConfigure') }}</template>
         <CircularLoading v-if="loading" :show="loading"/>
         <div v-else-if="configuration" class="flex items-center justify-center">
           <Alert v-if="configuration.type === Type.TABLE" :title="$t('dataset.common.visualConfigureNotSpecified')"/>
           <Button v-else size="sm" class="w-[80%]" @click="configureVisible = true">{{ $t('common.configure') }}</Button>
         </div>
-      </Card>
+      </DataCapCard>
     </div>
   </div>
   <VisualConfigure v-if="configureVisible && configuration" :is-visible="configureVisible" :configuration="configuration" :field-group="forwardFiled(configuration.type)"
@@ -213,7 +213,7 @@ import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { Table } from 'lucide-vue-next'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import Tooltip from '@/views/ui/tooltip'
 import Alert from '@/views/ui/alert'
 import VisualScatter from '@/views/components/visual/components/VisualScatter.vue'
@@ -229,9 +229,9 @@ import VisualRose from '@/views/components/visual/components/VisualRose.vue'
 export default defineComponent({
   name: 'VisualEditor',
   components: {
+    DataCapCard,
     VisualRose,
     VisualGauge, VisualFunnel, VisualRadar, VisualConfigure, VisualScatter,
-    Card,
     Tooltip,
     RadioGroup, RadioGroupItem,
     ToggleGroup, ToggleGroupItem,

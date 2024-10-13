@@ -7,7 +7,7 @@
     </div>
     <CircularLoading v-if="loading" :show="loading"/>
     <div v-else>
-      <Card v-if="sourceInfo" title-class="p-2" body-class="p-0">
+      <DataCapCard v-if="sourceInfo">
         <template #title>
           <Button size="sm" :loading="running" :disabled="running" @click="handlerRun()">
             {{ $t('query.common.execute') }}
@@ -20,7 +20,7 @@
             </FormControl>
           </FormItem>
         </FormField>
-      </Card>
+      </DataCapCard>
       <div v-if="data || code" class="mt-3">
         <CircularLoading v-if="running" :show="running"/>
         <AgGridVue v-else-if="data?.data.columns" :style="{height: '300px'}" class="ag-theme-datacap" :pagination="true" :columnDefs="columnDefs" :rowData="data.data.columns"
@@ -296,7 +296,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Pencil, Plus, Trash } from 'lucide-vue-next'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { Separator } from '@/components/ui/separator'
 import { ToastUtils } from '@/utils/toast'
@@ -332,7 +332,7 @@ export default defineComponent({
     Tabs, TabsContent, TabsList, TabsTrigger,
     Popover, PopoverContent, PopoverTrigger,
     Pencil, Trash, Plus,
-    Card,
+    DataCapCard,
     HoverCard, HoverCardContent, HoverCardTrigger,
     AgGridVue
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-2 pl-4">
+    <DataCapCard>
       <template #title>{{ $t('function.common.list') }}</template>
       <template #extra>
         <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true, null)">
@@ -51,7 +51,7 @@
           </TooltipProvider>
         </template>
       </TableCommon>
-    </Card>
+    </DataCapCard>
     <FunctionInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
     <FunctionImport v-if="dataImportVisible" :is-visible="dataImportVisible" @close="handlerImport(false)"/>
   </div>
@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Cog, Import, Pencil, Plus } from 'lucide-vue-next'
 import { FilterModel } from '@/model/filter'
@@ -88,11 +88,11 @@ export default defineComponent({
   name: 'FunctionHome',
   components: {
     FunctionImport,
+    DataCapCard,
     Import, Pencil, Cog, Plus,
     Badge,
     Button,
     FunctionInfo,
-    Card,
     TableCommon,
     Avatar, AvatarFallback, AvatarImage,
     Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
