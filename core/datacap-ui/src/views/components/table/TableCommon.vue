@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="rounded-md mt-4">
+  <div class="mb-3">
+    <div class="rounded-md">
       <Loader2 v-if="loading" class="w-full justify-center animate-spin"/>
       <div v-else>
         <Table>
