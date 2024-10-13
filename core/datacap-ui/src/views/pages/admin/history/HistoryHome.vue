@@ -1,63 +1,65 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-3.5">
+    <DataCapCard>
       <template #title>{{ $t('common.history') }}</template>
-      <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
-        <template #source="{ row }">
-          <span>{{ row?.source?.name }}</span>
-        </template>
-        <template #type="{row}">
-          <Tooltip :content="row?.source?.type">
-            <Avatar :size="'sm'" :src="'/static/images/plugin/' + row?.source?.type + '.png'" :alt="row?.source?.type" class="cursor-pointer"/>
-          </Tooltip>
-        </template>
-        <template #mode="{ row }">
-          <Tag v-if="row.mode === 'ADHOC'">{{ $t('common.adhoc') }}</Tag>
-          <Tag v-else-if="row.mode === 'HISTORY'">{{ $t('common.history') }}</Tag>
-          <Tag v-else-if="row.mode === 'REPORT'">{{ $t('common.report') }}</Tag>
-          <Tag v-else-if="row.mode === 'SNIPPET'">{{ $t('common.snippet') }}</Tag>
-          <Tag v-else-if="row.mode === 'DATASET'">{{ $t('common.dataset') }}</Tag>
-          <Tag v-else>{{ row.mode }}</Tag>
-        </template>
-        <template #state="{ row }">
-          <Tag :class="row.state === 'SUCCESS' ? '' : 'bg-color-error'">{{ row.state }}</Tag>
-        </template>
-        <template #action="{row}">
-          <div class="space-x-2">
-            <Tooltip :content="$t('common.error')">
-              <Button :disabled="row.state === 'SUCCESS'" :color="'#ed4014'" size="icon" class="w-6 h-6 rounded-full" @click="handlerShowContent(true, row?.message)">
-                <TriangleAlert :size="14"/>
-              </Button>
+      <template #content>
+        <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
+          <template #source="{ row }">
+            <span>{{ row?.source?.name }}</span>
+          </template>
+          <template #type="{row}">
+            <Tooltip :content="row?.source?.type">
+              <Avatar :size="'sm'" :src="'/static/images/plugin/' + row?.source?.type + '.png'" :alt="row?.source?.type" class="cursor-pointer"/>
             </Tooltip>
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
-                  <Cog class="w-full justify-center" :size="14"/>
+          </template>
+          <template #mode="{ row }">
+            <Tag v-if="row.mode === 'ADHOC'">{{ $t('common.adhoc') }}</Tag>
+            <Tag v-else-if="row.mode === 'HISTORY'">{{ $t('common.history') }}</Tag>
+            <Tag v-else-if="row.mode === 'REPORT'">{{ $t('common.report') }}</Tag>
+            <Tag v-else-if="row.mode === 'SNIPPET'">{{ $t('common.snippet') }}</Tag>
+            <Tag v-else-if="row.mode === 'DATASET'">{{ $t('common.dataset') }}</Tag>
+            <Tag v-else>{{ row.mode }}</Tag>
+          </template>
+          <template #state="{ row }">
+            <Tag :class="row.state === 'SUCCESS' ? '' : 'bg-color-error'">{{ row.state }}</Tag>
+          </template>
+          <template #action="{row}">
+            <div class="space-x-2">
+              <Tooltip :content="$t('common.error')">
+                <Button :disabled="row.state === 'SUCCESS'" :color="'#ed4014'" size="icon" class="w-6 h-6 rounded-full" @click="handlerShowContent(true, row?.message)">
+                  <TriangleAlert :size="14"/>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuGroup>
-                  <DropdownMenuItem class="cursor-pointer">
-                    <RouterLink :to="`/admin/query/history/${row?.code}`" target="_blank" class="flex items-center">
-                      <Quote class="mr-2 h-4 w-4"/>
-                      <span>{{ $t('query.common.quoteRecord') }}</span>
-                    </RouterLink>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem class="cursor-pointer" @click="handlerShowContent(true, row?.content)">
-                    <SquareChevronRight class="mr-2 h-4 w-4"/>
-                    <span>{{ $t('query.common.showSql') }}</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem class="cursor-pointer" :disabled="row.state === 'FAILURE'" @click="handlerShowData(true, row)">
-                    <Table class="mr-2 h-4 w-4"/>
-                    <span>{{ $t('query.common.historyData') }}</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </template>
-      </TableCommon>
-    </Card>
+              </Tooltip>
+              <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                  <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
+                    <Cog class="w-full justify-center" :size="14"/>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem class="cursor-pointer">
+                      <RouterLink :to="`/admin/query/history/${row?.code}`" target="_blank" class="flex items-center">
+                        <Quote class="mr-2 h-4 w-4"/>
+                        <span>{{ $t('query.common.quoteRecord') }}</span>
+                      </RouterLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem class="cursor-pointer" @click="handlerShowContent(true, row?.content)">
+                      <SquareChevronRight class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('query.common.showSql') }}</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem class="cursor-pointer" :disabled="row.state === 'FAILURE'" @click="handlerShowData(true, row)">
+                      <Table class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('query.common.historyData') }}</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </template>
+        </TableCommon>
+      </template>
+    </DataCapCard>
   </div>
   <SqlInfo v-if="contentVisible && content" :is-visible="contentVisible" :content="content" @close="handlerShowContent(false, null)"/>
   <HistoryData v-if="dataVisible && dataInfo" :is-visible="dataVisible" :info="dataInfo" @close="handlerShowData(false, null)"/>
@@ -65,7 +67,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
 import { Cog, Quote, SquareChevronRight, Table, TriangleAlert } from 'lucide-vue-next'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter.ts'
@@ -89,19 +90,17 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { HistoryModel } from '@/model/history'
 import HistoryData from '@/views/pages/admin/history/HistoryData.vue'
+import DataCapCard from '@/views/ui/card/DataCapCard.vue'
 
 export default defineComponent({
   name: 'HistoryHome',
   components: {
+    DataCapCard,
     HistoryData,
     SqlInfo,
-    Button,
     TableCommon,
     TriangleAlert, Cog, SquareChevronRight, Quote, Table,
-    Card,
-    Tooltip,
-    Avatar,
-    Tag,
+    Button, Tooltip, Avatar, Tag,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu
   },
   setup()
