@@ -1,7 +1,7 @@
 <template>
   <CircularLoading v-if="loading" :show="loading"/>
   <div v-else>
-    <Card :title-class="'p-2'" :body-class="'p-0'">
+    <DataCapCard>
       <template #title>
         <div class="flex space-x-5">
           <div class="space-x-1">
@@ -113,7 +113,7 @@
                  :rowData="configure.datasets" :tooltipShowDelay="100" :sortingOrder="['desc', 'asc', null]" :rowSelection="'multiple'" @grid-ready="handlerGridReady"
                  @sortChanged="handlerSortChanged" @cellValueChanged="handlerCellValueChanged" @selectionChanged="handlerSelectionChanged" @columnVisible="handlerColumnVisible"
                  @columnMoved="handlerColumnMoved"/>
-    </Card>
+    </DataCapCard>
     <TableCellInfo v-if="dataCellChanged.pending" :isVisible="dataCellChanged.pending" :columns="dataCellChanged.columns" :type="dataCellChanged.type"
                    @close="handlerCellChangedPreview(false)"/>
     <TableRowDelete v-if="dataSelectedChanged.pending" :isVisible="dataSelectedChanged.pending" :columns="dataSelectedChanged.columns"
@@ -134,7 +134,7 @@ import { AgGridVue } from 'ag-grid-vue3'
 import 'ag-grid-community/styles/ag-grid.css'
 import '@/views/components/grid/ag-theme-datacap.css'
 import { ColumnApi, ColumnState, GridApi } from 'ag-grid-community'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import { PaginationEnum, PaginationModel } from '@/model/pagination.ts'
 import { createColumnDefs, createDataEditorOptions } from '@/views/pages/admin/source/components/TableUtils.ts'
 import { OrderFilter, SqlColumn, SqlType, TableFilter } from '@/model/table.ts'
@@ -155,6 +155,7 @@ import TableRowFilter from '@/views/pages/admin/source/components/TableRowFilter
 export default defineComponent({
   name: 'SourceTableData',
   components: {
+    DataCapCard,
     TableRowFilter,
     TableColumn,
     SqlInfo,
@@ -162,7 +163,6 @@ export default defineComponent({
     TableCellInfo,
     Input,
     CircularLoading,
-    Card,
     AgGridVue,
     Button,
     Tooltip,

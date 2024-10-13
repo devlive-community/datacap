@@ -1,47 +1,49 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-3.5">
+    <DataCapCard>
       <template #title>{{ $t('snippet.common.list') }}</template>
-      <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
-        <template #username="{ row }">
-          <Avatar :src="row.user.avatar" :alt="row.user.username"/>
-        </template>
-        <template #action="{ row }">
-          <div class="space-x-2">
-            <Tooltip :content="$t('snippet.common.modify').replace('$VALUE', row.name)">
-              <Button size="icon" class="rounded-full w-6 h-6" @click="handlerInfo(true, row)">
-                <Pencil :size="14"/>
-              </Button>
-            </Tooltip>
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
-                  <Cog class="w-full justify-center" :size="14"/>
+      <template #content>
+        <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
+          <template #username="{ row }">
+            <Avatar :src="row.user.avatar" :alt="row.user.username"/>
+          </template>
+          <template #action="{ row }">
+            <div class="space-x-2">
+              <Tooltip :content="$t('snippet.common.modify').replace('$VALUE', row.name)">
+                <Button size="icon" class="rounded-full w-6 h-6" @click="handlerInfo(true, row)">
+                  <Pencil :size="14"/>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuGroup>
-                  <DropdownMenuItem class="cursor-pointer">
-                    <RouterLink :to="`/admin/query/snippet/${row?.code}`" target="_blank" class="flex items-center">
-                      <Quote class="mr-2 h-4 w-4"/>
-                      <span>{{ $t('query.common.quoteRecord') }}</span>
-                    </RouterLink>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem class="cursor-pointer" @click="handlerShowContent(true, row?.context)">
-                    <SquareChevronRight class="mr-2 h-4 w-4"/>
-                    <span>{{ $t('query.common.showSql') }}</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem class="cursor-pointer" @click="handlerDelete(true, row)">
-                    <Delete class="mr-2 h-4 w-4"/>
-                    <span>{{ $t('snippet.common.delete') }}</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </template>
-      </TableCommon>
-    </Card>
+              </Tooltip>
+              <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                  <Button size="icon" class="rounded-full w-6 h-6" variant="outline">
+                    <Cog class="w-full justify-center" :size="14"/>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem class="cursor-pointer">
+                      <RouterLink :to="`/admin/query/snippet/${row?.code}`" target="_blank" class="flex items-center">
+                        <Quote class="mr-2 h-4 w-4"/>
+                        <span>{{ $t('query.common.quoteRecord') }}</span>
+                      </RouterLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem class="cursor-pointer" @click="handlerShowContent(true, row?.context)">
+                      <SquareChevronRight class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('query.common.showSql') }}</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem class="cursor-pointer" @click="handlerDelete(true, row)">
+                      <Delete class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('snippet.common.delete') }}</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </template>
+        </TableCommon>
+      </template>
+    </DataCapCard>
   </div>
   <SnippetInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
   <SnippetDelete v-if="dataDeleteVisible" :is-visible="dataDeleteVisible" :info="dataInfo" @close="handlerDelete(false, null)"/>
@@ -50,7 +52,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
 import { FilterModel } from '@/model/filter.ts'
 import { createHeaders } from '@/views/pages/admin/snippet/SnippetUtils'
 import { useI18n } from 'vue-i18n'
@@ -75,16 +76,17 @@ import {
 } from '@/components/ui/dropdown-menu'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import SnippetDelete from '@/views/pages/admin/snippet/SnippetDelete.vue'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'SnippetHome',
   components: {
+    DataCapCard,
     SnippetDelete,
     SqlInfo,
     SnippetInfo,
     Quote, Pencil, Cog, SquareChevronRight, Delete,
     TableCommon,
-    Card,
     Avatar,
     Tooltip,
     Button,

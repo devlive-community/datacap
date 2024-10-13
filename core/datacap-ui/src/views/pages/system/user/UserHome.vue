@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-2 pl-4">
+    <DataCapCard>
       <template #title>{{ $t('user.common.list') }}</template>
       <template #extra>
         <DcButton size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerChangeInfo(true, null)">
@@ -28,7 +28,7 @@
           </TooltipProvider>
         </template>
       </TableCommon>
-    </Card>
+    </DataCapCard>
     <UserRole v-if="dataRoleVisible" :is-visible="dataRoleVisible" :info="dataInfo" @close="handlerChangeRole(false, null)"/>
   </div>
   <UserInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"/>
@@ -42,7 +42,7 @@ import TableCommon from '@/views/components/table/TableCommon.vue'
 import { useI18n } from 'vue-i18n'
 import { createHeaders } from './UserUtils'
 import { ArrowUpFromLine, Loader2, Plus } from 'lucide-vue-next'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import { PaginationModel, PaginationRequest } from '@/model/pagination'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -55,12 +55,12 @@ import UserInfo from '@/views/pages/system/user/UserInfo.vue'
 export default defineComponent({
   name: 'UserHome',
   components: {
+    DataCapCard,
     UserInfo,
     DcButton,
     Badge,
     UserRole,
     TooltipContent, TooltipTrigger, Tooltip, TooltipProvider,
-    Card,
     Button,
     TableCommon,
     Loader2, ArrowUpFromLine, Plus

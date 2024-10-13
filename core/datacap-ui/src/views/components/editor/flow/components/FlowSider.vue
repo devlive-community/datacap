@@ -27,7 +27,7 @@
 <script lang="ts">
 import '../style.css'
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import Avatar from '@/views/ui/avatar'
 import { Configuration } from '@/views/components/editor/flow/Configuration.ts'
 

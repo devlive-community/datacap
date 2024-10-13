@@ -1,16 +1,16 @@
 <template>
   <div class="w-full h-screen">
-    <Card body-class="pl-4 pr-0">
+    <DataCapCard>
       <template #title>{{ $t('pipeline.common.create') }}</template>
       <CircularLoading v-if="loading" :show="loading"/>
       <FlowEditor v-else :data="contextData" @onCommit="handlerSave"/>
-    </Card>
+    </DataCapCard>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import FlowEditor from '@/views/components/editor/flow/FlowEditor.vue'
 import SourceService from '@/services/source'
 import PipelineService from '@/services/pipeline'
@@ -25,7 +25,7 @@ export default defineComponent({
   components: {
     CircularLoading,
     FlowEditor,
-    Card
+    DataCapCard
   },
   data()
   {

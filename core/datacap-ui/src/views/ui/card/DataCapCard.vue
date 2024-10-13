@@ -14,44 +14,29 @@
     <CardContent v-if="$slots.content" class="p-0">
       <slot name="content"/>
     </CardContent>
+    <CardContent v-else class="p-0">
+      <slot/>
+    </CardContent>
     <CardFooter v-if="$slots.footer" class="border-t p-4">
       <slot name="footer"/>
     </CardFooter>
   </Card>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watchEffect } from 'vue'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+<script setup lang="ts">
+import { ref, watchEffect } from 'vue'
+import { cn } from '@/lib/utils'
 import { Shadow } from '@/enums/shadow.ts'
-import { cn } from '@/lib/utils.ts'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
-export default defineComponent({
-  name: 'DataCapCard',
-  components: {
-    Card, CardHeader, CardTitle, CardContent, CardFooter
-  },
-  props: {
-    title: {
-      type: String
-    },
-    shadow: {
-      type: String,
-      default: 'never'
-    }
-  },
-  setup(props)
-  {
-    const computedShadow = ref<string>('never')
+const props = defineProps<{
+  title?: string
+  shadow?: keyof typeof Shadow
+}>()
 
-    watchEffect(() => {
-      computedShadow.value = Shadow[props.shadow as keyof typeof Shadow]
-    })
+const computedShadow = ref<string>('never')
 
-    return {
-      cn,
-      computedShadow
-    }
-  }
+watchEffect(() => {
+  computedShadow.value = Shadow[props.shadow || 'never']
 })
 </script>

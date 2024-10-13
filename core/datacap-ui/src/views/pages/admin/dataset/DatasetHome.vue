@@ -1,76 +1,78 @@
 <template>
   <div class="w-full">
-    <Card>
+    <DataCapCard>
       <template #title>{{ $t('dataset.common.list') }}</template>
-      <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
-        <template #source="{row}">
-          <Tooltip :content="row?.source.type">
-            <Avatar :size="'sm'" :src="'/static/images/plugin/' + row?.source.type + '.png'" :alt="row?.source.type" class="cursor-pointer"/>
-          </Tooltip>
-        </template>
-        <template #syncMode="{ row }">
-          <Badge v-if="row?.syncMode === 'MANUAL'">{{ $t('dataset.common.syncModeManual') }}</Badge>
-          <Badge v-else-if="row?.syncMode === 'TIMING'">{{ $t('dataset.common.syncModeTiming') }}</Badge>
-          <Badge v-else-if="row?.syncMode === 'OUT_SYNC'">{{ $t('dataset.common.syncModeOutSync') }}</Badge>
-        </template>
-        <template #state="{ row }">
-          <HoverCard>
-            <HoverCardTrigger>{{ getState(row?.state) }}</HoverCardTrigger>
-            <HoverCardContent>
-              <DatasetState class="mt-[25px]" :states="row?.state"/>
-            </HoverCardContent>
-          </HoverCard>
-        </template>
-        <template #action="{row}">
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <Button variant="outline">
-                <Cog class="w-full justify-center" :size="20"/>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <RouterLink :to="`/admin/dataset/info/${row?.code}`" target="_blank" class="flex items-center">
-                    <Info class="mr-2 h-4 w-4"/>
-                    <span>{{ $t('dataset.common.info') }}</span>
-                  </RouterLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem :disabled="!isSuccess(row?.state)">
-                  <RouterLink :to="`/admin/dataset/adhoc/${row?.code}`" target="_blank" class="flex items-center">
-                    <BarChart2 class="mr-2 h-4 w-4"/>
-                    <span>{{ $t('dataset.common.adhoc') }}</span>
-                  </RouterLink>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator/>
-                <DropdownMenuItem :disabled="!isSuccess(row?.state)" style="cursor: pointer;" @click="handlerSyncData(row, true)">
-                  <RefreshCcw class="mr-2 h-4 w-4"/>
-                  <span>{{ $t('dataset.common.syncData') }}</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem style="cursor: pointer;" @click="handlerHistory(row, true)">
-                  <History class="mr-2 h-4 w-4"/>
-                  <span>{{ $t('dataset.common.history') }}</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator/>
-                <DropdownMenuItem :disabled="isSuccess(row?.state)" style="cursor: pointer;" @click="handlerError(row, true)">
-                  <TriangleAlert class="mr-2 h-4 w-4"/>
-                  <span>{{ $t('dataset.common.error') }}</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem :disabled="isSuccess(row?.state)" style="cursor: pointer;" @click="handlerRebuild(row, true)">
-                  <CirclePlay v-if="row?.state === 'SUCCESS'" class="mr-2 h-4 w-4"/>
-                  <CircleStop v-else class="mr-2 h-4 w-4"/>
-                  {{ $t('dataset.common.rebuild') }}
-                </DropdownMenuItem>
-                <DropdownMenuItem :disabled="!(row?.totalRows > 0)" style="cursor: pointer;" @click="handlerClearData(row, true)">
-                  <SquareX class="mr-2 h-4 w-4"/>
-                  {{ $t('dataset.common.clearData') }}
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </template>
-      </TableCommon>
-    </Card>
+      <template #content>
+        <TableCommon :loading="loading" :columns="headers" :data="data" :pagination="pagination" @changePage="handlerChangePage">
+          <template #source="{row}">
+            <Tooltip :content="row?.source.type">
+              <Avatar :size="'sm'" :src="'/static/images/plugin/' + row?.source.type + '.png'" :alt="row?.source.type" class="cursor-pointer"/>
+            </Tooltip>
+          </template>
+          <template #syncMode="{ row }">
+            <Badge v-if="row?.syncMode === 'MANUAL'">{{ $t('dataset.common.syncModeManual') }}</Badge>
+            <Badge v-else-if="row?.syncMode === 'TIMING'">{{ $t('dataset.common.syncModeTiming') }}</Badge>
+            <Badge v-else-if="row?.syncMode === 'OUT_SYNC'">{{ $t('dataset.common.syncModeOutSync') }}</Badge>
+          </template>
+          <template #state="{ row }">
+            <HoverCard>
+              <HoverCardTrigger>{{ getState(row?.state) }}</HoverCardTrigger>
+              <HoverCardContent>
+                <DatasetState class="mt-[25px]" :states="row?.state"/>
+              </HoverCardContent>
+            </HoverCard>
+          </template>
+          <template #action="{row}">
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="outline">
+                  <Cog class="w-full justify-center" :size="20"/>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <RouterLink :to="`/admin/dataset/info/${row?.code}`" target="_blank" class="flex items-center">
+                      <Info class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('dataset.common.info') }}</span>
+                    </RouterLink>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem :disabled="!isSuccess(row?.state)">
+                    <RouterLink :to="`/admin/dataset/adhoc/${row?.code}`" target="_blank" class="flex items-center">
+                      <BarChart2 class="mr-2 h-4 w-4"/>
+                      <span>{{ $t('dataset.common.adhoc') }}</span>
+                    </RouterLink>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator/>
+                  <DropdownMenuItem :disabled="!isSuccess(row?.state)" style="cursor: pointer;" @click="handlerSyncData(row, true)">
+                    <RefreshCcw class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('dataset.common.syncData') }}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem style="cursor: pointer;" @click="handlerHistory(row, true)">
+                    <History class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('dataset.common.history') }}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator/>
+                  <DropdownMenuItem :disabled="isSuccess(row?.state)" style="cursor: pointer;" @click="handlerError(row, true)">
+                    <TriangleAlert class="mr-2 h-4 w-4"/>
+                    <span>{{ $t('dataset.common.error') }}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem :disabled="isSuccess(row?.state)" style="cursor: pointer;" @click="handlerRebuild(row, true)">
+                    <CirclePlay v-if="row?.state === 'SUCCESS'" class="mr-2 h-4 w-4"/>
+                    <CircleStop v-else class="mr-2 h-4 w-4"/>
+                    {{ $t('dataset.common.rebuild') }}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem :disabled="!(row?.totalRows > 0)" style="cursor: pointer;" @click="handlerClearData(row, true)">
+                    <SquareX class="mr-2 h-4 w-4"/>
+                    {{ $t('dataset.common.clearData') }}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </template>
+        </TableCommon>
+      </template>
+    </DataCapCard>
     <DatasetRebuild v-if="rebuildVisible" :is-visible="rebuildVisible" :data="contextData" @close="handlerRebuild(null, false)"/>
     <DatasetHistory v-if="historyVisible" :is-visible="historyVisible" :info="contextData" @close="handlerHistory(null, false)"/>
     <DatasetSync v-if="syncDataVisible" :is-visible="syncDataVisible" :info="contextData" @close="handlerSyncData(null, false)"/>
@@ -81,7 +83,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { FilterModel } from '@/model/filter'
 import { useI18n } from 'vue-i18n'
@@ -109,23 +110,17 @@ import DatasetHistory from '@/views/pages/admin/dataset/DatasetHistory.vue'
 import DatasetSync from '@/views/pages/admin/dataset/DatasetSync.vue'
 import DatasetClear from '@/views/pages/admin/dataset/DatasetClear.vue'
 import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'DatasetHome',
   components: {
-    MarkdownPreview,
-    DatasetClear,
-    DatasetSync,
-    DatasetHistory,
-    DatasetRebuild,
+    DataCapCard,
+    DatasetClear, DatasetSync, DatasetHistory, DatasetRebuild, DatasetState,
     DropdownMenuItem, DropdownMenuGroup, DropdownMenuSeparator, DropdownMenuLabel, DropdownMenuContent, DropdownMenuTrigger, DropdownMenu,
     HoverCardContent, HoverCardTrigger, HoverCard,
-    DatasetState,
-    Badge,
-    Avatar,
-    Tooltip,
-    TableCommon,
-    Card,
+    Badge, Avatar, Tooltip,
+    MarkdownPreview, TableCommon,
     Cog, BarChart2, CirclePlay, CircleStop, History, RefreshCcw, SquareX, TriangleAlert, Info
   },
   setup()

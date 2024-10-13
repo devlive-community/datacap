@@ -2,7 +2,7 @@
   <div class="hidden space-y-6 pb-16 w-full md:block">
     <div class="flex flex-col space-y-8 lg:flex-row lg:space-x-6 lg:space-y-0">
       <aside class="-mx-4 w-[200px]">
-        <Card title-class="p-2" body-class="p-2">
+        <DataCapCard>
           <template #title>{{ $t('common.chat') }}</template>
           <template #extra>
             <Button size="icon" class="w-6 h-6 rounded-full" @click="handlerInfo(true)">
@@ -35,11 +35,11 @@
               </FormItem>
             </FormField>
           </div>
-        </Card>
+        </DataCapCard>
       </aside>
       <div class="flex-1">
         <div v-if="dataInfo">
-          <Card title-class="p-2" body-class="p-2">
+          <DataCapCard>
             <template #title>
               <div class="flex flex-row items-center justify-between">
                 <div class="flex items-center space-x-4">
@@ -98,7 +98,7 @@
                 </Button>
               </div>
             </template>
-          </Card>
+          </DataCapCard>
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@ import CircularLoading from '@/views/components/loading/CircularLoading.vue'
 import { FilterModel } from '@/model/filter.ts'
 import ChatService from '@/services/chat.ts'
 import { ToastUtils } from '@/utils/toast.ts'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import Button from '@/views/ui/button'
@@ -138,10 +138,10 @@ export default defineComponent({
     ChatInfo,
     Button,
     CircularLoading,
-    Card,
     FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,
     RadioGroup, RadioGroupItem,
-    Plus, Send
+    Plus, Send,
+    DataCapCard
   },
   setup()
   {

@@ -90,7 +90,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { HistoryModel } from '@/model/history'
 import HistoryData from '@/views/pages/admin/history/HistoryData.vue'
-import DataCapCard from '@/views/ui/card/DataCapCard.vue'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'HistoryHome',

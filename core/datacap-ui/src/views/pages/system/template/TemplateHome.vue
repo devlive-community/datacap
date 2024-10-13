@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Card title-class="p-2 pl-4">
+    <DataCapCard>
       <template #title>{{ $t('template.common.list') }}</template>
       <template #extra>
         <Button size="icon" class="ml-auto gap-1 h-6 w-6" @click="handlerInfo(true, null)">
@@ -36,14 +36,14 @@
           </TooltipProvider>
         </template>
       </TableCommon>
-    </Card>
+    </DataCapCard>
   </div>
   <TemplateInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerInfo(false, null)"/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import TableCommon from '@/views/components/table/TableCommon.vue'
 import { Cog, Import, Pencil, Plus } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
@@ -61,12 +61,12 @@ import TemplateInfo from '@/views/pages/system/template/TemplateInfo.vue'
 export default defineComponent({
   name: 'TemplateHome',
   components: {
+    DataCapCard,
     TemplateInfo,
     Switch,
     Button,
     Pencil, Plus, Import, Cog,
     TableCommon,
-    Card,
     Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
     Avatar, AvatarFallback, AvatarImage
   },

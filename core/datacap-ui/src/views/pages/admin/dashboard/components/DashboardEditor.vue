@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <Card title-class="p-2">
+    <DataCapCard>
       <template #title>{{ title }}</template>
       <template #extra>
         <div class="space-x-5">
@@ -17,7 +17,7 @@
                     :use-css-transforms="true">
           <GridItem v-for="item in layouts" :ref="el => set$Children(el)" :key="item.i" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :min-h="3" :min-w="3"
                     @resized="handlerResize">
-            <Card :style="{width: item.width, height: item.height}" title-class="p-2">
+            <DataCapCard :style="{width: item.width, height: item.height}">
               <template #title>{{ item.title ? item.title : $t('dataset.common.notSpecifiedTitle') }}</template>
               <template #extra>
                 <Button size="icon" class="w-6 h-6 rounded-full bg-color-error" @click="handlerRemove(item.i)">
@@ -29,11 +29,11 @@
                           :query="item.original.type === 'DATASET' ? JSON.parse(item.original.query as string) : item.original.query" :original="item?.original?.source?.id"/>
               <VisualView v-else class="-ml-3" :width="item.width.replace('px', '') - 20 + 'px'" :height="item.height.replace('px', '') - 48 + 'px'"
                           :code="item.node.code" :configuration="JSON.parse(item.node.configure)" :query="JSON.parse(item.node.query)"/>
-            </Card>
+            </DataCapCard>
           </GridItem>
         </GridLayout>
       </div>
-    </Card>
+    </DataCapCard>
     <Dialog :is-visible="configureVisible" :title="$t('common.configure')">
       <div v-if="formState" class="pl-3 pr-4">
         <FormField name="name">
@@ -80,7 +80,7 @@ import DashboardService from '@/services/dashboard'
 import { ReportModel } from '@/model/report.ts'
 import VisualView from '@/views/components/visual/VisualView.vue'
 import { DashboardModel, DashboardRequest } from '@/model/dashboard.ts'
-import Card from '@/views/ui/card'
+import { DataCapCard } from '@/views/ui/card'
 import { Trash } from 'lucide-vue-next'
 import ChartContainer from '@/views/pages/admin/dashboard/components/ChartContainer.vue'
 import { ToastUtils } from '@/utils/toast.ts'
@@ -102,7 +102,7 @@ export default defineComponent({
     ChartContainer,
     VisualView,
     GridItem, GridLayout,
-    Card,
+    DataCapCard,
     Button,
     Trash,
     Dialog,

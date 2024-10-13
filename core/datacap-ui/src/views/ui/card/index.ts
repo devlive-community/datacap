@@ -1,3 +1,1 @@
-import Card from '@/views/ui/card/card.vue'
-
-export default Card
+export { default as DataCapCard } from './DataCapCard.vue'

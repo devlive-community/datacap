@@ -80,7 +80,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import ReportDelete from '@/views/pages/admin/report/ReportDelete.vue'
-import DataCapCard from '@/views/ui/card/DataCapCard.vue'
+import { DataCapCard } from '@/views/ui/card'
 
 export default defineComponent({
   name: 'ReportHome',
