@@ -14,7 +14,7 @@
     <description>DataCap - OceanBase</description>
 
     <properties>
-        <oceanbase.version>2.4.5</oceanbase.version>
+        <oceanbase.version>2.4.12</oceanbase.version>
         <plugin.name>jdbc-oceanbase</plugin.name>
     </properties>
 
