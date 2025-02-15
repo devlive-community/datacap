@@ -12,13 +12,17 @@
             path = path + ".html";
         }
         
-        var lang = path.split("/")[1];
+        var pathParts = path.split("/");
+        var version = pathParts[1];
+        var lang = version === "undefined" ? pathParts[2] : pathParts[1];
         var supportedLanguages = ["en","zh-CN"];
         
+        var versionPrefix = "";
+        
         if (supportedLanguages.includes(lang)) {
-            window.location.replace("/" + lang + "/404.html");
+            window.location.replace(versionPrefix + "/" + lang + "/404.html");
         } else {
-            window.location.replace("/zh-CN/404.html");
+            window.location.replace(versionPrefix + "/zh-CN/404.html");
         }
     </script>
 </head>

@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,7 @@
 <meta name="keywords" content="datacap,database,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark">
 <meta name="author" content="PageForge">
 
-    <title>Deploying in Rainbond - DataCap</title>
-    <link rel="icon" href="../../../assets/logo.png" type="image/x-icon">
+    <link rel="icon" href="/assets/logo.png" type="image/x-icon">
 
     <!-- 基础样式文件 -->
     <link rel="stylesheet" href="/assets/pageforge.min.css">
@@ -32,20 +31,41 @@
 
                 e.preventDefault();
 
-                // 获取目标语言
-                const targetLang = href.split('/')[1];
+                // 获取当前路径信息
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                let version = null;
+                let lang = null;
+
+                // 解析当前 URL 中的版本和语言信息
+                if (pathParts.length > 0) {
+                    if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
+                        version = pathParts[0];
+                        lang = pathParts[1];
+                    } else {
+                        lang = pathParts[0];
+                    }
+                }
+
+                // 构建 404 页面路径
+                let notFoundPath = '';
+                if (version) {
+                    notFoundPath += '/' + version;
+                }
+                if (lang) {
+                    notFoundPath += '/' + lang;
+                }
+                notFoundPath += '/404.html';
 
                 fetch(href)
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        }
-                        else {
-                            window.location.href = `/${targetLang}/404.html`;
+                        } else {
+                            window.location.href = notFoundPath;
                         }
                     })
                     .catch(() => {
-                        window.location.href = `/${targetLang}/404.html`;
+                        window.location.href = notFoundPath;
                     });
             });
         })();
@@ -96,7 +116,7 @@
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
             <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️  <span class="text-red-500">文档重构中，可能有偏差，会实时更新</span>
+                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
             </div>
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
@@ -111,12 +131,13 @@
         <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
             <div class="flex items-center h-16">
                 <!-- 左侧Logo和导航 -->
-                <div class="flex items-center flex-1">
+                <div class="flex items-center flex-1 min-w-0">
                     <!-- Logo和标题 -->
-                    <div class="flex items-center space-x-4 shrink-0 lg:mr-8">
+                    
+<div class="flex items-center space-x-4 shrink-0 lg:mr-8">
     
         <a href="/en" class="flex items-center">
-            <img src="../../..//assets/logo.png"
+            <img src="/assets/logo.png"
                  alt="DataCap"
                  class="h-10 w-auto object-contain transition-transform hover:scale-105">
         </a>
@@ -128,78 +149,90 @@
 </div>
 
                     <!-- 桌面端导航 -->
-                    <ul class="hidden lg:flex items-center gap-6 md:gap-8 py-3">
-    
-        <li class="shrink-0">
-            <a href="/en/reference/get-started/install.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          text-blue-600  bg-blue-50/80  font-medium">
-                Documentation
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/release/latest.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Release Note
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/developer/specification/home.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Developer
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/api/common/response.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Open API
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/driver/mongodb.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Driver
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/useCases.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                使用案例
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/partners.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                合作伙伴
-            </a>
-        </li>
-    
-</ul>
+                    <div class="hidden lg:flex items-center gap-2 overflow-x-auto py-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <ul class="flex items-center gap-2 shrink-0">
+        
+            <li class="shrink-0">
+                <a href="/en/reference/get-started/install.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          text-blue-600  bg-blue-50/80  font-medium">
+                    Documentation
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/release/latest.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Release Note
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/developer/specification/home.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Developer
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/api/common/response.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Open API
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/driver/mongodb.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Driver
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/useCases.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Use Cases
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/partners.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    合作伙伴
+                </a>
+            </li>
+        
+    </ul>
+</div>
+                </div>
 
+                <!-- 右侧工具栏 -->
+                <div class="flex items-center gap-2 lg:gap-4">
                     <!-- 搜索框 -->
                     
     <!-- 搜索按钮 -->
     <button type="button"
-            class="p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
+            class="ml-2 p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
             id="search-trigger">
         <div class="flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,6 +246,7 @@
 
     <!-- 搜索弹窗 -->
     <div id="search-dialog"
+         data-version=""
          class="fixed inset-0 z-50 bg-gray-500/70 items-start justify-center p-4 sm:p-6 md:p-20 hidden"
          aria-modal="true"
          role="dialog">
@@ -263,52 +297,55 @@
         </div>
     </div>
 
-                </div>
 
-                <!-- 右侧工具栏 -->
-                <div class="flex items-center gap-2 lg:gap-4">
+                    <!-- 版本选择器 -->
+                    <!-- 版本切换器 -->
+
+
                     <!-- 桌面端主题切换按钮 -->
                     
 
                     <!-- 语言切换器 -->
                     
                         <!-- 语言切换器 -->
-<div class="hidden lg:flex items-center ml-4">
-    <div class="relative">
-        <button type="button"
-                onclick="document.getElementById('language-menu').classList.toggle('hidden')"
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-            <!-- 当前语言 -->
-            
-            <span>🇬🇧</span>
-            <span>English</span>
-            <!-- 下拉箭头 -->
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-        </button>
 
-        <!-- 语言选择下拉菜单 -->
-        <div id="language-menu"
-             class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-            
+    <div class="hidden lg:flex items-center">
+        <div class="relative">
+            <button type="button"
+                    onclick="document.getElementById('language-menu').classList.toggle('hidden')"
+                    class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                <!-- 当前语言 -->
+                
+                <span>🇬🇧</span>
+                <span>English</span>
+                <!-- 下拉箭头 -->
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+
+            <!-- 语言选择下拉菜单 -->
+            <div id="language-menu"
+                 class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                
                 <a href="/en/reference/get-started/installRainbond.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     bg-gray-50 dark:bg-gray-700">
                     <span>🇬🇧</span>
                     <span>English</span>
                 </a>
-            
+                
                 <a href="/zh-CN/reference/get-started/installRainbond.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     ">
                     <span>🇨🇳</span>
                     <span>中文</span>
                 </a>
-            
+                
+            </div>
         </div>
     </div>
-</div>
+
                     
 
                     <!-- 仓库链接 -->
@@ -434,71 +471,74 @@
                 
                     <a href="/en/reference/get-started/install.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-blue-600  bg-blue-50/80 ">
+                      text-blue-600  bg-blue-50/80 ">
                         Documentation
                     </a>
                 
                     <a href="/en/release/latest.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Release Note
                     </a>
                 
                     <a href="/en/developer/specification/home.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Developer
                     </a>
                 
                     <a href="/en/api/common/response.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Open API
                     </a>
                 
                     <a href="/en/driver/mongodb.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Driver
                     </a>
                 
                     <a href="/en/useCases.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
-                        使用案例
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                        Use Cases
                     </a>
                 
                     <a href="/en/partners.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         合作伙伴
                     </a>
+                
+
+                <!-- 移动端版本切换 -->
                 
 
                 <!-- 移动端语言切换 -->
                 
                     <div class="px-3 py-2 space-y-1 border-t dark:border-gray-700">
     
-        <a href="/en/reference/get-started/installRainbond.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                bg-gray-50 dark:bg-gray-700">
-            <span>🇬🇧</span>
-            <span>English</span>
-        </a>
+    <a href="/en/reference/get-started/installRainbond.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            bg-gray-50 dark:bg-gray-700">
+        <span>🇬🇧</span>
+        <span>English</span>
+    </a>
     
-        <a href="/zh-CN/reference/get-started/installRainbond.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                ">
-            <span>🇨🇳</span>
-            <span>中文</span>
-        </a>
+    <a href="/zh-CN/reference/get-started/installRainbond.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            ">
+        <span>🇨🇳</span>
+        <span>中文</span>
+    </a>
     
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuButton = document.querySelector('button[onclick*="mobile-menu"]');
+        const menuButton = document.querySelector('button[data-menu-toggle]');
 
         // 只有当菜单元素存在时才添加事件监听
         if (mobileMenu && menuButton) {
@@ -509,11 +549,11 @@
 
                     mobileMenu.classList.add('hidden');
 
-                    const openIcon = menuButton.querySelector('svg:first-child');
-                    const closeIcon = menuButton.querySelector('svg:last-child');
+                    const menuIcon = menuButton.querySelector('.menu-icon');
+                    const closeIcon = menuButton.querySelector('.close-icon');
 
-                    if (openIcon && closeIcon) {
-                        openIcon.classList.remove('hidden');
+                    if (menuIcon && closeIcon) {
+                        menuIcon.classList.remove('hidden');
                         closeIcon.classList.add('hidden');
                     }
                 }
@@ -637,13 +677,13 @@
 
     <div class="pt-[--header-height] w-full">
         <div class="container mx-auto px-4 py-4 md:py-8 flex-grow flex flex-col md:flex-row">
-            <!-- 左侧列表 - 移动端隐藏，可通过菜单触发显示 -->
+            <!-- 左侧列表 -->
             
                 <aside class="fixed md:relative md:w-56 lg:w-64 flex-shrink-0 md:pr-4 lg:pr-8
                          inset-y-0 left-0 transform -translate-x-full md:translate-x-0
                          transition duration-200 ease-in-out
                          md:block z-30 bg-white dark:bg-gray-900 md:bg-transparent
-                         w-3/4 sm:w-64"
+                         w-3/4 sm:w-64 top-[--header-height] md:top-auto"
                        id="sidebar-menu">
                     <div class="h-16 md:hidden flex items-center justify-end px-4 border-b dark:border-gray-800">
                         <button class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
@@ -682,7 +722,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>自主机部署</span>
+                                <span>Deploying in Self Host</span>
                                 
 
 
@@ -707,7 +747,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>Docker 部署</span>
+                                <span>Docker Deployment</span>
                                 
 
 
@@ -732,7 +772,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>Docker Compose 部署</span>
+                                <span>Deploying in Docker Compose</span>
                                 
 
 
@@ -757,7 +797,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>Rainbond 部署</span>
+                                <span>Deploying in Rainbond</span>
                                 
 
 
@@ -1258,7 +1298,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>cli.md</span>
+                                <span>Command line interface</span>
                                 
 
 
@@ -1327,7 +1367,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>个人资料</span>
+                                <span>Personal Data</span>
                                 
 
 
@@ -1352,7 +1392,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>数据源</span>
+                                <span>Data Source</span>
                                 
 
 
@@ -1377,7 +1417,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>代码片段</span>
+                                <span>Snippet</span>
                                 
 
 
@@ -1402,7 +1442,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>查询历史</span>
+                                <span>Query history</span>
                                 
 
 
@@ -1427,7 +1467,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>流水线</span>
+                                <span>Pipeline</span>
                                 
 
 
@@ -1521,7 +1561,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Functions</span>
                                 
 
 
@@ -1546,7 +1586,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Sql Template</span>
                                 
 
 
@@ -1571,7 +1611,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>菜单</span>
                                 
 
 
@@ -1640,7 +1680,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>InfluxDB</span>
                                 
 
 
@@ -1665,7 +1705,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Apache Solr</span>
                                 
 
 
@@ -1690,7 +1730,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Timescale</span>
                                 
 
 
@@ -1715,7 +1755,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>ParadeDB</span>
                                 
 
 
@@ -1740,7 +1780,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>ScyllaDB</span>
                                 
 
 
@@ -1765,7 +1805,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>MatrixOne</span>
                                 
 
 
@@ -1790,7 +1830,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>ClickHouse</span>
                                 
 
 
@@ -1815,7 +1855,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>MySQL</span>
                                 
 
 
@@ -1840,7 +1880,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Redis</span>
                                 
 
 
@@ -1865,7 +1905,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>H2 Database</span>
                                 
 
 
@@ -1890,7 +1930,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Snowflake</span>
                                 
 
 
@@ -1915,7 +1955,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Yandex Database</span>
                                 
 
 
@@ -1940,7 +1980,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Apache Zookeeper</span>
                                 
 
 
@@ -1965,7 +2005,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>DuckDB</span>
                                 
 
 
@@ -1990,7 +2030,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>AliYun OSS</span>
                                 
 
 
@@ -2053,7 +2093,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Apache Kafka</span>
                                 
 
 
@@ -2078,7 +2118,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>show_topics.md</span>
+                                <span>SHOW TOPICS</span>
                                 
 
 
@@ -2103,7 +2143,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>show_consumers.md</span>
+                                <span>SHOW CONSUMERS</span>
                                 
 
 
@@ -2128,7 +2168,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>show_databases.md</span>
+                                <span>SHOW DATABASES</span>
                                 
 
 
@@ -2153,7 +2193,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>show_tables.md</span>
+                                <span>SHOW TABLES</span>
                                 
 
 
@@ -2184,7 +2224,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>CeresDB</span>
                                 
 
 
@@ -2209,7 +2249,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>GreptimeDB</span>
                                 
 
 
@@ -2234,7 +2274,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>QuestDB</span>
                                 
 
 
@@ -2259,7 +2299,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Apache Doris</span>
                                 
 
 
@@ -2284,7 +2324,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>StarRocks</span>
                                 
 
 
@@ -2309,7 +2349,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Hologres</span>
                                 
 
 
@@ -2334,7 +2374,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Apache Hadoop HDFS</span>
                                 
 
 
@@ -2359,7 +2399,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Apache Pinot</span>
                                 
 
 
@@ -2384,7 +2424,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Apache Cassandra</span>
                                 
 
 
@@ -2453,7 +2493,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Local (本地)</span>
                                 
 
 
@@ -2478,7 +2518,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>阿里云 OSS</span>
                                 
 
 
@@ -2503,7 +2543,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>七牛云存储</span>
                                 
 
 
@@ -2528,7 +2568,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>腾讯云 COS</span>
                                 
 
 
@@ -2553,7 +2593,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>亚马逊云 S3</span>
                                 
 
 
@@ -2578,7 +2618,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>MinIO</span>
                                 
 
 
@@ -2786,14 +2826,18 @@
         <div class="prose prose-gray dark:prose-invert max-w-none text-base">
             
         <div class="space-y-4"></div>
-    <span class="inline-block my-1 mx-auto">If you are unfamiliar with Kubernetes, and want to install DataCap in Kubernetes, you can use Rainbond to deploy. 
+    
+        <span class="text-base text-gray-700 leading-7 my-2">If you are unfamiliar with Kubernetes, and want to install DataCap in Kubernetes, you can use Rainbond to deploy. </span>
+    
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="http://www.rainbond.com/"
            target="_self"
            title="">
             Rainbond
         </a>
-     is a cloud-native application management platform built on Kubernetes and simplifies the application deployment to Kubernetes.</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> is a cloud-native application management platform built on Kubernetes and simplifies the application deployment to Kubernetes.</span>
+    
         <div class="space-y-4"></div>
     
         <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
@@ -2801,14 +2845,18 @@
         <span class="text-base text-gray-700 leading-7 my-2">Prerequisite</span>
     </div>
         </div>
-    <span class="inline-block my-1 mx-auto">To install Rainbond, please refer to 
+    
+        <span class="text-base text-gray-700 leading-7 my-2">To install Rainbond, please refer to </span>
+    
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://rainbond.com/docs/quick-start/quick-install"
            target="_self"
            title="">
             Rainbond Quick Install
         </a>
-    .</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">.</span>
+    
         <div class="space-y-4"></div>
     
         <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
@@ -2860,11 +2908,11 @@
             
             <!-- 图片 -->
             <img src="https://static.goodrain.com/wechat/datacap/datacap-store-en.png" 
-                 alt="" class="max-w-full h-auto"
+                 alt="" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         <div class="space-y-4"></div>
@@ -2879,27 +2927,27 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">Team: select a team or create a new team</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">Cluster: select a cluster</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">Application: select an application or create a new application</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">Version: select a version</span>
     </span>
             </li>
@@ -2940,11 +2988,11 @@
             
             <!-- 图片 -->
             <img src="https://static.goodrain.com/wechat/datacap/topology-datacap-en.png" 
-                 alt="" class="max-w-full h-auto"
+                 alt="" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         </div>
@@ -2965,7 +3013,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年2月11日 06:56</span>
+            <span>提交于 2025年2月15日 12:42</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2977,7 +3025,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年2月11日 06:56</span>
+            <span>修改于 2025年2月15日 12:42</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2990,11 +3038,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/9990580adda35578de8c52d0d9a62c7205576179"
+                <a href="https://github.com/devlive-community/datacap/commit/6760164e2bd6b1b6d3a22ec18e61aa6a4c06fe65"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (9990580a)
+                    首次提交 (6760164e)
                 </a>
             </div>
 
@@ -3006,11 +3054,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/9990580adda35578de8c52d0d9a62c7205576179"
+                <a href="https://github.com/devlive-community/datacap/commit/6760164e2bd6b1b6d3a22ec18e61aa6a4c06fe65"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (9990580a)
+                    末次提交 (6760164e)
                 </a>
             </div>
         
@@ -3101,39 +3149,41 @@
             <!-- 右侧目录 -->
             
                 <!-- 桌面端目录 -->
-<div class="hidden lg:block flex-none w-64 pl-8 mr-8">
+<div class="hidden lg:block flex-none md:w-56 lg:w-64 pl-8 mr-8">
     <div class="sticky" style="top: calc(var(--header-height) + 1rem)">
         <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4">目录</div>
-        <nav class="overflow-y-auto pr-4 -mr-4 space-y-1 pageforge-scrollbar"
-             style="max-height: calc(100vh - var(--header-height) - 8rem);"
-             id="table-of-contents">
-            
-            
+        <div class="overflow-y-auto overflow-x-auto pr-4 pageforge-scrollbar"
+             style="max-height: calc(100vh - var(--header-height) - 8rem);">
+            <nav class="space-y-1 inline-block min-w-full"
+                 id="table-of-contents">
                 
-                    <div class="pl-4">
-                        <a href="#Prerequisite"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="Prerequisite">
-                            
+                
+                    
+                        <div class="pl-4 inline-block min-w-full">
+                            <a href="#Prerequisite"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="Prerequisite">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">Prerequisite</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-4">
-                        <a href="#DeployDataCap"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="DeployDataCap">
-                            
+                        <div class="pl-4 inline-block min-w-full">
+                            <a href="#DeployDataCap"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="DeployDataCap">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">Deploy DataCap</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
                 
-            
-        </nav>
+            </nav>
+        </div>
     </div>
 </div>
 
@@ -3160,35 +3210,37 @@
             </svg>
         </button>
     </div>
-    <nav class="overflow-y-auto space-y-1"
+    <div class="overflow-y-auto overflow-x-auto"
          style="max-height: calc(60vh - var(--header-height));">
-        
-        
+        <nav class="space-y-1 inline-block min-w-full">
             
-                <div class="pl-4">
-                    <a href="#Prerequisite"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="Prerequisite">
-                        
+            
+                
+                    <div class="pl-4 inline-block min-w-full">
+                        <a href="#Prerequisite"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="Prerequisite">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">Prerequisite</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-4">
-                    <a href="#DeployDataCap"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="DeployDataCap">
-                        
+                    <div class="pl-4 inline-block min-w-full">
+                        <a href="#DeployDataCap"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="DeployDataCap">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">Deploy DataCap</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
             
-        
-    </nav>
+        </nav>
+    </div>
 </div>
 
 <!-- 控制脚本 -->
@@ -3213,7 +3265,9 @@
     </div>
 
     
-        <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        
+
+<footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="flex flex-col md:flex-row md:justify-between gap-8">
             <!-- Logo 和描述部分 -->
@@ -3221,7 +3275,7 @@
                 
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                         <a href="/en" class="flex items-center">
-                            <img src="../../..//assets/logo.png"
+                            <img src="/assets/logo.png"
                                  alt="DataCap"
                                  class="h-12">
                         </a>
@@ -3351,7 +3405,7 @@
                 © 2024 DataCap All Rights Reserved. 使用 ❤️ <a href="https://pageforge.devlive.org" class="hover:text-blue-600" target="_blank">PageForge</a> 构建
 
                 
-                    <a href="https://datacap.devlive.org/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
+                    <a href="/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
                 
             </span>
 
@@ -3407,7 +3461,7 @@
     </script>
 
 
-<!-- 遮罩层 - 移动端菜单打开时显示 -->
+<!-- 遮罩层 -->
 
     <div class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-20 hidden"
          id="sidebar-overlay"

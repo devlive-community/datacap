@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,7 @@
 <meta name="keywords" content="datacap,database,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark">
 <meta name="author" content="PageForge">
 
-    <title>Use Cases - DataCap</title>
-    <link rel="icon" href="../assets/logo.png" type="image/x-icon">
+    <link rel="icon" href="/assets/logo.png" type="image/x-icon">
 
     <!-- 基础样式文件 -->
     <link rel="stylesheet" href="/assets/pageforge.min.css">
@@ -32,20 +31,41 @@
 
                 e.preventDefault();
 
-                // 获取目标语言
-                const targetLang = href.split('/')[1];
+                // 获取当前路径信息
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                let version = null;
+                let lang = null;
+
+                // 解析当前 URL 中的版本和语言信息
+                if (pathParts.length > 0) {
+                    if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
+                        version = pathParts[0];
+                        lang = pathParts[1];
+                    } else {
+                        lang = pathParts[0];
+                    }
+                }
+
+                // 构建 404 页面路径
+                let notFoundPath = '';
+                if (version) {
+                    notFoundPath += '/' + version;
+                }
+                if (lang) {
+                    notFoundPath += '/' + lang;
+                }
+                notFoundPath += '/404.html';
 
                 fetch(href)
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        }
-                        else {
-                            window.location.href = `/${targetLang}/404.html`;
+                        } else {
+                            window.location.href = notFoundPath;
                         }
                     })
                     .catch(() => {
-                        window.location.href = `/${targetLang}/404.html`;
+                        window.location.href = notFoundPath;
                     });
             });
         })();
@@ -96,7 +116,7 @@
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
             <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️  <span class="text-red-500">文档重构中，可能有偏差，会实时更新</span>
+                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
             </div>
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
@@ -111,12 +131,13 @@
         <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
             <div class="flex items-center h-16">
                 <!-- 左侧Logo和导航 -->
-                <div class="flex items-center flex-1">
+                <div class="flex items-center flex-1 min-w-0">
                     <!-- Logo和标题 -->
-                    <div class="flex items-center space-x-4 shrink-0 lg:mr-8">
+                    
+<div class="flex items-center space-x-4 shrink-0 lg:mr-8">
     
         <a href="/en" class="flex items-center">
-            <img src="..//assets/logo.png"
+            <img src="/assets/logo.png"
                  alt="DataCap"
                  class="h-10 w-auto object-contain transition-transform hover:scale-105">
         </a>
@@ -128,78 +149,90 @@
 </div>
 
                     <!-- 桌面端导航 -->
-                    <ul class="hidden lg:flex items-center gap-6 md:gap-8 py-3">
-    
-        <li class="shrink-0">
-            <a href="/en/reference/get-started/install.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Documentation
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/release/latest.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Release Note
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/developer/specification/home.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Developer
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/api/common/response.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Open API
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/driver/mongodb.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Driver
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/useCases.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          text-blue-600  bg-blue-50/80  font-medium">
-                使用案例
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/partners.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                合作伙伴
-            </a>
-        </li>
-    
-</ul>
+                    <div class="hidden lg:flex items-center gap-2 overflow-x-auto py-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <ul class="flex items-center gap-2 shrink-0">
+        
+            <li class="shrink-0">
+                <a href="/en/reference/get-started/install.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Documentation
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/release/latest.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Release Note
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/developer/specification/home.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Developer
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/api/common/response.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Open API
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/driver/mongodb.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Driver
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/useCases.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          text-blue-600  bg-blue-50/80  font-medium">
+                    Use Cases
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/partners.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    合作伙伴
+                </a>
+            </li>
+        
+    </ul>
+</div>
+                </div>
 
+                <!-- 右侧工具栏 -->
+                <div class="flex items-center gap-2 lg:gap-4">
                     <!-- 搜索框 -->
                     
     <!-- 搜索按钮 -->
     <button type="button"
-            class="p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
+            class="ml-2 p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
             id="search-trigger">
         <div class="flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,6 +246,7 @@
 
     <!-- 搜索弹窗 -->
     <div id="search-dialog"
+         data-version=""
          class="fixed inset-0 z-50 bg-gray-500/70 items-start justify-center p-4 sm:p-6 md:p-20 hidden"
          aria-modal="true"
          role="dialog">
@@ -263,52 +297,55 @@
         </div>
     </div>
 
-                </div>
 
-                <!-- 右侧工具栏 -->
-                <div class="flex items-center gap-2 lg:gap-4">
+                    <!-- 版本选择器 -->
+                    <!-- 版本切换器 -->
+
+
                     <!-- 桌面端主题切换按钮 -->
                     
 
                     <!-- 语言切换器 -->
                     
                         <!-- 语言切换器 -->
-<div class="hidden lg:flex items-center ml-4">
-    <div class="relative">
-        <button type="button"
-                onclick="document.getElementById('language-menu').classList.toggle('hidden')"
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-            <!-- 当前语言 -->
-            
-            <span>🇬🇧</span>
-            <span>English</span>
-            <!-- 下拉箭头 -->
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-        </button>
 
-        <!-- 语言选择下拉菜单 -->
-        <div id="language-menu"
-             class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-            
+    <div class="hidden lg:flex items-center">
+        <div class="relative">
+            <button type="button"
+                    onclick="document.getElementById('language-menu').classList.toggle('hidden')"
+                    class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                <!-- 当前语言 -->
+                
+                <span>🇬🇧</span>
+                <span>English</span>
+                <!-- 下拉箭头 -->
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+
+            <!-- 语言选择下拉菜单 -->
+            <div id="language-menu"
+                 class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                
                 <a href="/en/useCases.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     bg-gray-50 dark:bg-gray-700">
                     <span>🇬🇧</span>
                     <span>English</span>
                 </a>
-            
+                
                 <a href="/zh-CN/useCases.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     ">
                     <span>🇨🇳</span>
                     <span>中文</span>
                 </a>
-            
+                
+            </div>
         </div>
     </div>
-</div>
+
                     
 
                     <!-- 仓库链接 -->
@@ -434,71 +471,74 @@
                 
                     <a href="/en/reference/get-started/install.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Documentation
                     </a>
                 
                     <a href="/en/release/latest.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Release Note
                     </a>
                 
                     <a href="/en/developer/specification/home.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Developer
                     </a>
                 
                     <a href="/en/api/common/response.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Open API
                     </a>
                 
                     <a href="/en/driver/mongodb.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Driver
                     </a>
                 
                     <a href="/en/useCases.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-blue-600  bg-blue-50/80 ">
-                        使用案例
+                      text-blue-600  bg-blue-50/80 ">
+                        Use Cases
                     </a>
                 
                     <a href="/en/partners.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         合作伙伴
                     </a>
+                
+
+                <!-- 移动端版本切换 -->
                 
 
                 <!-- 移动端语言切换 -->
                 
                     <div class="px-3 py-2 space-y-1 border-t dark:border-gray-700">
     
-        <a href="/en/useCases.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                bg-gray-50 dark:bg-gray-700">
-            <span>🇬🇧</span>
-            <span>English</span>
-        </a>
+    <a href="/en/useCases.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            bg-gray-50 dark:bg-gray-700">
+        <span>🇬🇧</span>
+        <span>English</span>
+    </a>
     
-        <a href="/zh-CN/useCases.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                ">
-            <span>🇨🇳</span>
-            <span>中文</span>
-        </a>
+    <a href="/zh-CN/useCases.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            ">
+        <span>🇨🇳</span>
+        <span>中文</span>
+    </a>
     
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuButton = document.querySelector('button[onclick*="mobile-menu"]');
+        const menuButton = document.querySelector('button[data-menu-toggle]');
 
         // 只有当菜单元素存在时才添加事件监听
         if (mobileMenu && menuButton) {
@@ -509,11 +549,11 @@
 
                     mobileMenu.classList.add('hidden');
 
-                    const openIcon = menuButton.querySelector('svg:first-child');
-                    const closeIcon = menuButton.querySelector('svg:last-child');
+                    const menuIcon = menuButton.querySelector('.menu-icon');
+                    const closeIcon = menuButton.querySelector('.close-icon');
 
-                    if (openIcon && closeIcon) {
-                        openIcon.classList.remove('hidden');
+                    if (menuIcon && closeIcon) {
+                        menuIcon.classList.remove('hidden');
                         closeIcon.classList.add('hidden');
                     }
                 }
@@ -629,7 +669,7 @@
 
     <div class="pt-[--header-height] w-full">
         <div class="container mx-auto px-4 py-4 md:py-8 flex-grow flex flex-col md:flex-row">
-            <!-- 左侧列表 - 移动端隐藏，可通过菜单触发显示 -->
+            <!-- 左侧列表 -->
             
 
             <!-- 中间内容 -->
@@ -658,14 +698,23 @@
                                      alt="DataCap developer's avatar"
                                      loading="lazy">
                                 
+
+                                <span class="group/tooltip absolute bottom-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-purple-600 dark:bg-purple-500 text-white rounded-full text-xs transform group-hover:scale-110 transition-transform duration-300">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z"/>
+                                        </svg>
+                                    <span class="absolute bottom-full right-0 mb-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                                        创作者
+                                    </span>
+                                </span>
                             </div>
 
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                                 DataCap developer
                             </h3>
 
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 capitalize">
-                                Creator
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                DataCap is an integrated software for data transformation, integration, and visualization. Supports multiple data sources, file types, big data-related databases, relational databases, NoSQL databases, etc. Through the software, it can manage a variety of data sources, perform various operations and transformations on the data under the source, make data charts, monitor data sources and other functions.
                             </p>
 
                             <div class="mt-4 transform translate-y-0 opacity-100 group-hover:translate-y-1 group-hover:opacity-90 transition-all duration-300">
@@ -690,14 +739,23 @@
                                      alt="Devlive Community's avatar"
                                      loading="lazy">
                                 
+
+                                <span class="group/tooltip absolute bottom-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-purple-600 dark:bg-purple-500 text-white rounded-full text-xs transform group-hover:scale-110 transition-transform duration-300">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z"/>
+                                        </svg>
+                                    <span class="absolute bottom-full right-0 mb-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                                        创作者
+                                    </span>
+                                </span>
                             </div>
 
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                                 Devlive Community
                             </h3>
 
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 capitalize">
-                                Creator
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                A community dedicated to open source projects, where you can discover the latest and greatest open source projects and participate in them to jointly promote the prosperity and development of the open source ecosystem.
                             </p>
 
                             <div class="mt-4 transform translate-y-0 opacity-100 group-hover:translate-y-1 group-hover:opacity-90 transition-all duration-300">
@@ -722,14 +780,23 @@
                                      alt="qianmoQ's avatar"
                                      loading="lazy">
                                 
+
+                                <span class="group/tooltip absolute bottom-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-green-600 dark:bg-green-500 text-white rounded-full text-xs transform group-hover:scale-110 transition-transform duration-300">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                        </svg>
+                                    <span class="absolute bottom-full right-0 mb-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                                        个人用户
+                                    </span>
+                                </span>
                             </div>
 
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                                 qianmoQ
                             </h3>
 
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 capitalize">
-                                Individual
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                Source code contributor to open source projects.
                             </p>
 
                             <div class="mt-4 transform translate-y-0 opacity-100 group-hover:translate-y-1 group-hover:opacity-90 transition-all duration-300">
@@ -754,14 +821,23 @@
                                      alt="Stacey1018's avatar"
                                      loading="lazy">
                                 
+
+                                <span class="group/tooltip absolute bottom-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-green-600 dark:bg-green-500 text-white rounded-full text-xs transform group-hover:scale-110 transition-transform duration-300">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                        </svg>
+                                    <span class="absolute bottom-full right-0 mb-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                                        个人用户
+                                    </span>
+                                </span>
                             </div>
 
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                                 Stacey1018
                             </h3>
 
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 capitalize">
-                                Individual
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                I was able to spend it in the rain. I can get back up again on my own.
                             </p>
 
                             <div class="mt-4 transform translate-y-0 opacity-100 group-hover:translate-y-1 group-hover:opacity-90 transition-all duration-300">
@@ -786,14 +862,23 @@
                                      alt="Yingke live broadcast's avatar"
                                      loading="lazy">
                                 
+
+                                <span class="group/tooltip absolute bottom-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 dark:bg-blue-500 text-white rounded-full text-xs transform group-hover:scale-110 transition-transform duration-300">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                                        </svg>
+                                    <span class="absolute bottom-full right-0 mb-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                                        企业用户
+                                    </span>
+                                </span>
                             </div>
 
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                                 Yingke live broadcast
                             </h3>
 
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 capitalize">
-                                Enterprise
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                Yingke Live, a mobile live broadcast platform.
                             </p>
 
                             <div class="mt-4 transform translate-y-0 opacity-100 group-hover:translate-y-1 group-hover:opacity-90 transition-all duration-300">
@@ -818,14 +903,23 @@
                                      alt="Beijing Wanxiang Xinyuan Technology Co., Ltd's avatar"
                                      loading="lazy">
                                 
+
+                                <span class="group/tooltip absolute bottom-0 right-0 inline-flex items-center justify-center w-6 h-6 bg-blue-600 dark:bg-blue-500 text-white rounded-full text-xs transform group-hover:scale-110 transition-transform duration-300">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                                        </svg>
+                                    <span class="absolute bottom-full right-0 mb-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                                        企业用户
+                                    </span>
+                                </span>
                             </div>
 
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                                 Beijing Wanxiang Xinyuan Technology Co., Ltd
                             </h3>
 
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 capitalize">
-                                Enterprise
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                The BI system needs to be connected to data sources, common data sources include file data sources (csv, json, excel), database data sources (mysql, oracle, sqlserver, mongodb...). ), API data source (REST interface to read data), streaming data source (websockt connection for data reading), Internet of Things (modbus) when accessing the database data source to read the datacap project source code has been inspired, and has a strong interest in the JDK SPI mechanism, benefited a lot, and will want to participate in the construction of the project in the future, and contribute their own modest efforts.
                             </p>
 
                             <div class="mt-4 transform translate-y-0 opacity-100 group-hover:translate-y-1 group-hover:opacity-90 transition-all duration-300">
@@ -855,7 +949,9 @@
     </div>
 
     
-        <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        
+
+<footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="flex flex-col md:flex-row md:justify-between gap-8">
             <!-- Logo 和描述部分 -->
@@ -863,7 +959,7 @@
                 
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                         <a href="/en" class="flex items-center">
-                            <img src="..//assets/logo.png"
+                            <img src="/assets/logo.png"
                                  alt="DataCap"
                                  class="h-12">
                         </a>
@@ -993,7 +1089,7 @@
                 © 2024 DataCap All Rights Reserved. 使用 ❤️ <a href="https://pageforge.devlive.org" class="hover:text-blue-600" target="_blank">PageForge</a> 构建
 
                 
-                    <a href="https://datacap.devlive.org/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
+                    <a href="/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
                 
             </span>
 
@@ -1049,7 +1145,7 @@
     </script>
 
 
-<!-- 遮罩层 - 移动端菜单打开时显示 -->
+<!-- 遮罩层 -->
 
 </body>
 

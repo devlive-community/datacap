@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,7 @@
 <meta name="keywords" content="datacap,database,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark">
 <meta name="author" content="PageForge">
 
-    <title>服务端 - DataCap</title>
-    <link rel="icon" href="../../../assets/logo.png" type="image/x-icon">
+    <link rel="icon" href="/assets/logo.png" type="image/x-icon">
 
     <!-- 基础样式文件 -->
     <link rel="stylesheet" href="/assets/pageforge.min.css">
@@ -32,20 +31,41 @@
 
                 e.preventDefault();
 
-                // 获取目标语言
-                const targetLang = href.split('/')[1];
+                // 获取当前路径信息
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                let version = null;
+                let lang = null;
+
+                // 解析当前 URL 中的版本和语言信息
+                if (pathParts.length > 0) {
+                    if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
+                        version = pathParts[0];
+                        lang = pathParts[1];
+                    } else {
+                        lang = pathParts[0];
+                    }
+                }
+
+                // 构建 404 页面路径
+                let notFoundPath = '';
+                if (version) {
+                    notFoundPath += '/' + version;
+                }
+                if (lang) {
+                    notFoundPath += '/' + lang;
+                }
+                notFoundPath += '/404.html';
 
                 fetch(href)
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        }
-                        else {
-                            window.location.href = `/${targetLang}/404.html`;
+                        } else {
+                            window.location.href = notFoundPath;
                         }
                     })
                     .catch(() => {
-                        window.location.href = `/${targetLang}/404.html`;
+                        window.location.href = notFoundPath;
                     });
             });
         })();
@@ -96,7 +116,7 @@
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
             <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️  <span class="text-red-500">文档重构中，可能有偏差，会实时更新</span>
+                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
             </div>
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
@@ -111,12 +131,13 @@
         <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
             <div class="flex items-center h-16">
                 <!-- 左侧Logo和导航 -->
-                <div class="flex items-center flex-1">
+                <div class="flex items-center flex-1 min-w-0">
                     <!-- Logo和标题 -->
-                    <div class="flex items-center space-x-4 shrink-0 lg:mr-8">
+                    
+<div class="flex items-center space-x-4 shrink-0 lg:mr-8">
     
         <a href="/en" class="flex items-center">
-            <img src="../../..//assets/logo.png"
+            <img src="/assets/logo.png"
                  alt="DataCap"
                  class="h-10 w-auto object-contain transition-transform hover:scale-105">
         </a>
@@ -128,78 +149,90 @@
 </div>
 
                     <!-- 桌面端导航 -->
-                    <ul class="hidden lg:flex items-center gap-6 md:gap-8 py-3">
-    
-        <li class="shrink-0">
-            <a href="/en/reference/get-started/install.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Documentation
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/release/latest.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Release Note
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/developer/specification/home.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          text-blue-600  bg-blue-50/80  font-medium">
-                Developer
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/api/common/response.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Open API
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/driver/mongodb.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Driver
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/useCases.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                使用案例
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/partners.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                合作伙伴
-            </a>
-        </li>
-    
-</ul>
+                    <div class="hidden lg:flex items-center gap-2 overflow-x-auto py-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <ul class="flex items-center gap-2 shrink-0">
+        
+            <li class="shrink-0">
+                <a href="/en/reference/get-started/install.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Documentation
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/release/latest.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Release Note
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/developer/specification/home.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          text-blue-600  bg-blue-50/80  font-medium">
+                    Developer
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/api/common/response.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Open API
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/driver/mongodb.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Driver
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/useCases.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Use Cases
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/partners.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    合作伙伴
+                </a>
+            </li>
+        
+    </ul>
+</div>
+                </div>
 
+                <!-- 右侧工具栏 -->
+                <div class="flex items-center gap-2 lg:gap-4">
                     <!-- 搜索框 -->
                     
     <!-- 搜索按钮 -->
     <button type="button"
-            class="p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
+            class="ml-2 p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
             id="search-trigger">
         <div class="flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,6 +246,7 @@
 
     <!-- 搜索弹窗 -->
     <div id="search-dialog"
+         data-version=""
          class="fixed inset-0 z-50 bg-gray-500/70 items-start justify-center p-4 sm:p-6 md:p-20 hidden"
          aria-modal="true"
          role="dialog">
@@ -263,52 +297,55 @@
         </div>
     </div>
 
-                </div>
 
-                <!-- 右侧工具栏 -->
-                <div class="flex items-center gap-2 lg:gap-4">
+                    <!-- 版本选择器 -->
+                    <!-- 版本切换器 -->
+
+
                     <!-- 桌面端主题切换按钮 -->
                     
 
                     <!-- 语言切换器 -->
                     
                         <!-- 语言切换器 -->
-<div class="hidden lg:flex items-center ml-4">
-    <div class="relative">
-        <button type="button"
-                onclick="document.getElementById('language-menu').classList.toggle('hidden')"
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-            <!-- 当前语言 -->
-            
-            <span>🇬🇧</span>
-            <span>English</span>
-            <!-- 下拉箭头 -->
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-        </button>
 
-        <!-- 语言选择下拉菜单 -->
-        <div id="language-menu"
-             class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-            
+    <div class="hidden lg:flex items-center">
+        <div class="relative">
+            <button type="button"
+                    onclick="document.getElementById('language-menu').classList.toggle('hidden')"
+                    class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                <!-- 当前语言 -->
+                
+                <span>🇬🇧</span>
+                <span>English</span>
+                <!-- 下拉箭头 -->
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+
+            <!-- 语言选择下拉菜单 -->
+            <div id="language-menu"
+                 class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                
                 <a href="/en/developer/server/home.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     bg-gray-50 dark:bg-gray-700">
                     <span>🇬🇧</span>
                     <span>English</span>
                 </a>
-            
+                
                 <a href="/zh-CN/developer/server/home.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     ">
                     <span>🇨🇳</span>
                     <span>中文</span>
                 </a>
-            
+                
+            </div>
         </div>
     </div>
-</div>
+
                     
 
                     <!-- 仓库链接 -->
@@ -434,71 +471,74 @@
                 
                     <a href="/en/reference/get-started/install.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Documentation
                     </a>
                 
                     <a href="/en/release/latest.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Release Note
                     </a>
                 
                     <a href="/en/developer/specification/home.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-blue-600  bg-blue-50/80 ">
+                      text-blue-600  bg-blue-50/80 ">
                         Developer
                     </a>
                 
                     <a href="/en/api/common/response.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Open API
                     </a>
                 
                     <a href="/en/driver/mongodb.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Driver
                     </a>
                 
                     <a href="/en/useCases.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
-                        使用案例
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                        Use Cases
                     </a>
                 
                     <a href="/en/partners.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         合作伙伴
                     </a>
+                
+
+                <!-- 移动端版本切换 -->
                 
 
                 <!-- 移动端语言切换 -->
                 
                     <div class="px-3 py-2 space-y-1 border-t dark:border-gray-700">
     
-        <a href="/en/developer/server/home.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                bg-gray-50 dark:bg-gray-700">
-            <span>🇬🇧</span>
-            <span>English</span>
-        </a>
+    <a href="/en/developer/server/home.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            bg-gray-50 dark:bg-gray-700">
+        <span>🇬🇧</span>
+        <span>English</span>
+    </a>
     
-        <a href="/zh-CN/developer/server/home.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                ">
-            <span>🇨🇳</span>
-            <span>中文</span>
-        </a>
+    <a href="/zh-CN/developer/server/home.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            ">
+        <span>🇨🇳</span>
+        <span>中文</span>
+    </a>
     
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuButton = document.querySelector('button[onclick*="mobile-menu"]');
+        const menuButton = document.querySelector('button[data-menu-toggle]');
 
         // 只有当菜单元素存在时才添加事件监听
         if (mobileMenu && menuButton) {
@@ -509,11 +549,11 @@
 
                     mobileMenu.classList.add('hidden');
 
-                    const openIcon = menuButton.querySelector('svg:first-child');
-                    const closeIcon = menuButton.querySelector('svg:last-child');
+                    const menuIcon = menuButton.querySelector('.menu-icon');
+                    const closeIcon = menuButton.querySelector('.close-icon');
 
-                    if (openIcon && closeIcon) {
-                        openIcon.classList.remove('hidden');
+                    if (menuIcon && closeIcon) {
+                        menuIcon.classList.remove('hidden');
                         closeIcon.classList.add('hidden');
                     }
                 }
@@ -637,13 +677,13 @@
 
     <div class="pt-[--header-height] w-full">
         <div class="container mx-auto px-4 py-4 md:py-8 flex-grow flex flex-col md:flex-row">
-            <!-- 左侧列表 - 移动端隐藏，可通过菜单触发显示 -->
+            <!-- 左侧列表 -->
             
                 <aside class="fixed md:relative md:w-56 lg:w-64 flex-shrink-0 md:pr-4 lg:pr-8
                          inset-y-0 left-0 transform -translate-x-full md:translate-x-0
                          transition duration-200 ease-in-out
                          md:block z-30 bg-white dark:bg-gray-900 md:bg-transparent
-                         w-3/4 sm:w-64"
+                         w-3/4 sm:w-64 top-[--header-height] md:top-auto"
                        id="sidebar-menu">
                     <div class="h-16 md:hidden flex items-center justify-end px-4 border-b dark:border-gray-800">
                         <button class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
@@ -682,7 +722,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>开发规范</span>
                                 
 
 
@@ -707,7 +747,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>服务端</span>
                                 
 
 
@@ -732,7 +772,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>UI 端</span>
                                 
 
 
@@ -757,7 +797,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>文档端</span>
                                 
 
 
@@ -782,7 +822,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>SDK 集成</span>
                                 
 
 
@@ -807,7 +847,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义功能</span>
                                 
 
 
@@ -870,7 +910,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Java Implementation</span>
                                 
 
 
@@ -939,7 +979,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Kotlin Implementation</span>
                                 
 
 
@@ -964,7 +1004,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 Fs 文件系统</span>
                                 
 
 
@@ -989,7 +1029,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 File 转换器</span>
                                 
 
 
@@ -1014,7 +1054,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 Notify 通知器</span>
                                 
 
 
@@ -1083,7 +1123,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Pipeline</span>
                                 
 
 
@@ -1310,9 +1350,10 @@
     </strong>
         <span class="text-base text-gray-700 leading-7 my-2"> 克隆源码到本地（如果您需要提交代码到主仓库中需要先将源码 fork 到您的 github 账户中）</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">bash</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -1330,13 +1371,27 @@
         </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>如果您已经 fork 源码到您的账户中，请将 `devlive-community` 替换为您的 github 账户的 ID
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">如果您已经 fork 源码到您的账户中，请将 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">devlive-community</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 替换为您的 github 账户的 ID</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     <strong>
@@ -1352,16 +1407,22 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             
-                                <th scope="col" class="px-6 py-3">
-                                    环境
+                                <th scope="col" class="px-3.5 py-1 text-left">
+                                    
+        <span class="text-base text-gray-700 leading-7 my-2">环境</span>
+    
                                 </th>
                             
-                                <th scope="col" class="px-6 py-3">
-                                    版本
+                                <th scope="col" class="px-3.5 py-1 text-left">
+                                    
+        <span class="text-base text-gray-700 leading-7 my-2">版本</span>
+    
                                 </th>
                             
-                                <th scope="col" class="px-6 py-3">
-                                    必需
+                                <th scope="col" class="px-3.5 py-1 text-left">
+                                    
+        <span class="text-base text-gray-700 leading-7 my-2">必需</span>
+    
                                 </th>
                             
                         </tr>
@@ -1370,48 +1431,80 @@
                         
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 
-                                    <td class="px-6 py-4">
-                                        `JDK`
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">JDK</code>
+    
                                     </td>
                                 
-                                    <td class="px-6 py-4">
-                                        `1.8` | `11`
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">1.8</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">11</code>
+    
                                     </td>
                                 
-                                    <td class="px-6 py-4">
-                                        必须
-                                    </td>
-                                
-                            </tr>
-                        
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                
-                                    <td class="px-6 py-4">
-                                        `Maven`
-                                    </td>
-                                
-                                    <td class="px-6 py-4">
-                                        >= 3.5
-                                    </td>
-                                
-                                    <td class="px-6 py-4">
-                                        可选
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <span class="text-base text-gray-700 leading-7 my-2">必须</span>
+    
                                     </td>
                                 
                             </tr>
                         
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 
-                                    <td class="px-6 py-4">
-                                        `IDEA` | `Eclipse` | `其他`
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Maven</code>
+    
                                     </td>
                                 
-                                    <td class="px-6 py-4">
-                                        任意版本
+                                    <td class="px-3 py-1.5 text-left">
+                                        <div class="pl-4 my-2 border-l-4 border-gray-200 dark:border-gray-700">
+            <div class="py-1">
+        <span class="text-base text-gray-700 leading-7 my-2">= 3.5</span>
+    </div>
+        </div>
                                     </td>
                                 
-                                    <td class="px-6 py-4">
-                                        必须
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <span class="text-base text-gray-700 leading-7 my-2">可选</span>
+    
+                                    </td>
+                                
+                            </tr>
+                        
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">IDEA</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Eclipse</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">其他</code>
+    
+                                    </td>
+                                
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <span class="text-base text-gray-700 leading-7 my-2">任意版本</span>
+    
+                                    </td>
+                                
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <span class="text-base text-gray-700 leading-7 my-2">必须</span>
+    
                                     </td>
                                 
                             </tr>
@@ -1421,13 +1514,27 @@
             </div>
         </div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>在本文中我们使用的是 `IDEA` 编辑器环境，用户可以根据自己喜好更换相应编辑器。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">在本文中我们使用的是 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">IDEA</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 编辑器环境，用户可以根据自己喜好更换相应编辑器。</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -1439,9 +1546,10 @@
     
         <span class="text-base text-gray-700 leading-7 my-2">进入项目根目录执行以下代码</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">bash</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -1500,22 +1608,32 @@
             
             <!-- 图片 -->
             <img src="img.png" 
-                 alt="img.png" class="max-w-full h-auto"
+                 alt="img.png" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>不同的 IDEA 版本，各个按钮的所在位置可能不相同。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">不同的 IDEA 版本，各个按钮的所在位置可能不相同。</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -1550,11 +1668,11 @@
             
             <!-- 图片 -->
             <img src="img_1.png" 
-                 alt="img_1.png" class="max-w-full h-auto"
+                 alt="img_1.png" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         <div class="space-y-4"></div>
@@ -1565,34 +1683,34 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">.github</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: github 需要的一些 issues 模版，pull request 模版，还有一些 CI 自动化配置脚本等</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">.mvn</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: maven wapper 的配置</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">client</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 客户端的相关源码</span>
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-cli</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 命令行源码</span>
@@ -1601,53 +1719,53 @@
         </ul>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 相关配置</span>
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">assembly</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 打包用到的各种配置</span>
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">etc</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端配置文件</span>
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">bin</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务启动脚本</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">conf</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务配置文件</span>
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">plugins</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 插件配置文件</span>
@@ -1662,33 +1780,33 @@
         </ul>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">git-forks</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap fork 主仓库脚本</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">git-hook</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap git 本地提交相关 hook</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">proxy</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务部署代理配置</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">publish</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 用于发布的各脚本</span>
@@ -1697,74 +1815,74 @@
         </ul>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">core</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端核心源码</span>
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-captcha</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 验证码源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-common</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 常用工具源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-parser</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap SQL 解析器源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-security</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 安全相关源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-server</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-service</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端服务源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-spi</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端 SPI 源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-web</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap Web 前端源码</span>
@@ -1773,89 +1891,89 @@
         </ul>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">docs</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 文档源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">driver</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 数据源驱动源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">executor</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 执行器源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">file</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 文件格式化转换器源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">fs</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 文件系统源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">lib</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 依赖包源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">notify</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 通知器源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">parser</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap sql 解析器源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">plugin</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 插件源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">scheduler</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 调度器源码</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">shaded</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 重制依赖源码</span>
@@ -1914,11 +2032,11 @@
             
             <!-- 图片 -->
             <img src="img_2.png" 
-                 alt="img_2.png" class="max-w-full h-auto"
+                 alt="img_2.png" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         <div class="space-y-4"></div>
@@ -1954,11 +2072,11 @@
             
             <!-- 图片 -->
             <img src="img_3.png" 
-                 alt="img_3.png" class="max-w-full h-auto"
+                 alt="img_3.png" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         <div class="space-y-4"></div>
@@ -2002,11 +2120,11 @@
             
             <!-- 图片 -->
             <img src="img_4.png" 
-                 alt="img_4.png" class="max-w-full h-auto"
+                 alt="img_4.png" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         <div class="space-y-4"></div>
@@ -2042,11 +2160,11 @@
             
             <!-- 图片 -->
             <img src="img_5.png" 
-                 alt="img_5.png" class="max-w-full h-auto"
+                 alt="img_5.png" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         <div class="space-y-4"></div>
@@ -2069,13 +2187,31 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! danger</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-red-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-red-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Danger</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-red-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>注意 `conf` 后必须增加 `/` 否则配置会不生效
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">注意 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">conf</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 后必须增加 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">/</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 否则配置会不生效</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -2107,7 +2243,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年2月11日 06:56</span>
+            <span>提交于 2025年2月15日 12:42</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2119,7 +2255,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年2月11日 06:56</span>
+            <span>修改于 2025年2月15日 12:42</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2132,11 +2268,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/9990580adda35578de8c52d0d9a62c7205576179"
+                <a href="https://github.com/devlive-community/datacap/commit/6760164e2bd6b1b6d3a22ec18e61aa6a4c06fe65"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (9990580a)
+                    首次提交 (6760164e)
                 </a>
             </div>
 
@@ -2148,11 +2284,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/9990580adda35578de8c52d0d9a62c7205576179"
+                <a href="https://github.com/devlive-community/datacap/commit/6760164e2bd6b1b6d3a22ec18e61aa6a4c06fe65"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (9990580a)
+                    末次提交 (6760164e)
                 </a>
             </div>
         
@@ -2243,61 +2379,63 @@
             <!-- 右侧目录 -->
             
                 <!-- 桌面端目录 -->
-<div class="hidden lg:block flex-none w-64 pl-8 mr-8">
+<div class="hidden lg:block flex-none md:w-56 lg:w-64 pl-8 mr-8">
     <div class="sticky" style="top: calc(var(--header-height) + 1rem)">
         <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4">目录</div>
-        <nav class="overflow-y-auto pr-4 -mr-4 space-y-1 pageforge-scrollbar"
-             style="max-height: calc(100vh - var(--header-height) - 8rem);"
-             id="table-of-contents">
-            
-            
+        <div class="overflow-y-auto overflow-x-auto pr-4 pageforge-scrollbar"
+             style="max-height: calc(100vh - var(--header-height) - 8rem);">
+            <nav class="space-y-1 inline-block min-w-full"
+                 id="table-of-contents">
                 
-                    <div class="pl-8">
-                        <a href="#zhun-bei-gong-zuo"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="zhun-bei-gong-zuo">
-                            
+                
+                    
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#zhun-bei-gong-zuo"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="zhun-bei-gong-zuo">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">准备工作</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-8">
-                        <a href="#bian-yi-xiang-mu"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="bian-yi-xiang-mu">
-                            
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#bian-yi-xiang-mu"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="bian-yi-xiang-mu">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">编译项目</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-8">
-                        <a href="#jia-zai-yuan-ma-dao-IDEA"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="jia-zai-yuan-ma-dao-IDEA">
-                            
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#jia-zai-yuan-ma-dao-IDEA"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="jia-zai-yuan-ma-dao-IDEA">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">加载源码到 IDEA</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-8">
-                        <a href="#qi-dong-fu-wu"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="qi-dong-fu-wu">
-                            
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#qi-dong-fu-wu"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="qi-dong-fu-wu">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">启动服务</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
                 
-            
-        </nav>
+            </nav>
+        </div>
     </div>
 </div>
 
@@ -2324,57 +2462,59 @@
             </svg>
         </button>
     </div>
-    <nav class="overflow-y-auto space-y-1"
+    <div class="overflow-y-auto overflow-x-auto"
          style="max-height: calc(60vh - var(--header-height));">
-        
-        
+        <nav class="space-y-1 inline-block min-w-full">
             
-                <div class="pl-8">
-                    <a href="#zhun-bei-gong-zuo"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="zhun-bei-gong-zuo">
-                        
+            
+                
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#zhun-bei-gong-zuo"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="zhun-bei-gong-zuo">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">准备工作</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-8">
-                    <a href="#bian-yi-xiang-mu"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="bian-yi-xiang-mu">
-                        
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#bian-yi-xiang-mu"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="bian-yi-xiang-mu">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">编译项目</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-8">
-                    <a href="#jia-zai-yuan-ma-dao-IDEA"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="jia-zai-yuan-ma-dao-IDEA">
-                        
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#jia-zai-yuan-ma-dao-IDEA"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="jia-zai-yuan-ma-dao-IDEA">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">加载源码到 IDEA</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-8">
-                    <a href="#qi-dong-fu-wu"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="qi-dong-fu-wu">
-                        
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#qi-dong-fu-wu"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="qi-dong-fu-wu">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">启动服务</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
             
-        
-    </nav>
+        </nav>
+    </div>
 </div>
 
 <!-- 控制脚本 -->
@@ -2399,7 +2539,9 @@
     </div>
 
     
-        <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        
+
+<footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="flex flex-col md:flex-row md:justify-between gap-8">
             <!-- Logo 和描述部分 -->
@@ -2407,7 +2549,7 @@
                 
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                         <a href="/en" class="flex items-center">
-                            <img src="../../..//assets/logo.png"
+                            <img src="/assets/logo.png"
                                  alt="DataCap"
                                  class="h-12">
                         </a>
@@ -2537,7 +2679,7 @@
                 © 2024 DataCap All Rights Reserved. 使用 ❤️ <a href="https://pageforge.devlive.org" class="hover:text-blue-600" target="_blank">PageForge</a> 构建
 
                 
-                    <a href="https://datacap.devlive.org/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
+                    <a href="/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
                 
             </span>
 
@@ -2593,7 +2735,7 @@
     </script>
 
 
-<!-- 遮罩层 - 移动端菜单打开时显示 -->
+<!-- 遮罩层 -->
 
     <div class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-20 hidden"
          id="sidebar-overlay"

@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,7 @@
 <meta name="keywords" content="datacap,database,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark">
 <meta name="author" content="PageForge">
 
-    <title>自定义功能 - DataCap</title>
-    <link rel="icon" href="../../../assets/logo.png" type="image/x-icon">
+    <link rel="icon" href="/assets/logo.png" type="image/x-icon">
 
     <!-- 基础样式文件 -->
     <link rel="stylesheet" href="/assets/pageforge.min.css">
@@ -32,20 +31,41 @@
 
                 e.preventDefault();
 
-                // 获取目标语言
-                const targetLang = href.split('/')[1];
+                // 获取当前路径信息
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                let version = null;
+                let lang = null;
+
+                // 解析当前 URL 中的版本和语言信息
+                if (pathParts.length > 0) {
+                    if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
+                        version = pathParts[0];
+                        lang = pathParts[1];
+                    } else {
+                        lang = pathParts[0];
+                    }
+                }
+
+                // 构建 404 页面路径
+                let notFoundPath = '';
+                if (version) {
+                    notFoundPath += '/' + version;
+                }
+                if (lang) {
+                    notFoundPath += '/' + lang;
+                }
+                notFoundPath += '/404.html';
 
                 fetch(href)
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        }
-                        else {
-                            window.location.href = `/${targetLang}/404.html`;
+                        } else {
+                            window.location.href = notFoundPath;
                         }
                     })
                     .catch(() => {
-                        window.location.href = `/${targetLang}/404.html`;
+                        window.location.href = notFoundPath;
                     });
             });
         })();
@@ -96,7 +116,7 @@
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
             <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️  <span class="text-red-500">文档重构中，可能有偏差，会实时更新</span>
+                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
             </div>
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
@@ -111,12 +131,13 @@
         <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
             <div class="flex items-center h-16">
                 <!-- 左侧Logo和导航 -->
-                <div class="flex items-center flex-1">
+                <div class="flex items-center flex-1 min-w-0">
                     <!-- Logo和标题 -->
-                    <div class="flex items-center space-x-4 shrink-0 lg:mr-8">
+                    
+<div class="flex items-center space-x-4 shrink-0 lg:mr-8">
     
         <a href="/en" class="flex items-center">
-            <img src="../../..//assets/logo.png"
+            <img src="/assets/logo.png"
                  alt="DataCap"
                  class="h-10 w-auto object-contain transition-transform hover:scale-105">
         </a>
@@ -128,78 +149,90 @@
 </div>
 
                     <!-- 桌面端导航 -->
-                    <ul class="hidden lg:flex items-center gap-6 md:gap-8 py-3">
-    
-        <li class="shrink-0">
-            <a href="/en/reference/get-started/install.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Documentation
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/release/latest.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Release Note
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/developer/specification/home.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          text-blue-600  bg-blue-50/80  font-medium">
-                Developer
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/api/common/response.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Open API
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/driver/mongodb.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                Driver
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/useCases.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                使用案例
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/en/partners.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                合作伙伴
-            </a>
-        </li>
-    
-</ul>
+                    <div class="hidden lg:flex items-center gap-2 overflow-x-auto py-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <ul class="flex items-center gap-2 shrink-0">
+        
+            <li class="shrink-0">
+                <a href="/en/reference/get-started/install.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Documentation
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/release/latest.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Release Note
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/developer/specification/home.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          text-blue-600  bg-blue-50/80  font-medium">
+                    Developer
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/api/common/response.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Open API
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/driver/mongodb.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Driver
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/useCases.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    Use Cases
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/en/partners.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    合作伙伴
+                </a>
+            </li>
+        
+    </ul>
+</div>
+                </div>
 
+                <!-- 右侧工具栏 -->
+                <div class="flex items-center gap-2 lg:gap-4">
                     <!-- 搜索框 -->
                     
     <!-- 搜索按钮 -->
     <button type="button"
-            class="p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
+            class="ml-2 p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
             id="search-trigger">
         <div class="flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,6 +246,7 @@
 
     <!-- 搜索弹窗 -->
     <div id="search-dialog"
+         data-version=""
          class="fixed inset-0 z-50 bg-gray-500/70 items-start justify-center p-4 sm:p-6 md:p-20 hidden"
          aria-modal="true"
          role="dialog">
@@ -263,52 +297,55 @@
         </div>
     </div>
 
-                </div>
 
-                <!-- 右侧工具栏 -->
-                <div class="flex items-center gap-2 lg:gap-4">
+                    <!-- 版本选择器 -->
+                    <!-- 版本切换器 -->
+
+
                     <!-- 桌面端主题切换按钮 -->
                     
 
                     <!-- 语言切换器 -->
                     
                         <!-- 语言切换器 -->
-<div class="hidden lg:flex items-center ml-4">
-    <div class="relative">
-        <button type="button"
-                onclick="document.getElementById('language-menu').classList.toggle('hidden')"
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-            <!-- 当前语言 -->
-            
-            <span>🇬🇧</span>
-            <span>English</span>
-            <!-- 下拉箭头 -->
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-        </button>
 
-        <!-- 语言选择下拉菜单 -->
-        <div id="language-menu"
-             class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-            
+    <div class="hidden lg:flex items-center">
+        <div class="relative">
+            <button type="button"
+                    onclick="document.getElementById('language-menu').classList.toggle('hidden')"
+                    class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                <!-- 当前语言 -->
+                
+                <span>🇬🇧</span>
+                <span>English</span>
+                <!-- 下拉箭头 -->
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+
+            <!-- 语言选择下拉菜单 -->
+            <div id="language-menu"
+                 class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                
                 <a href="/en/developer/feature/home.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     bg-gray-50 dark:bg-gray-700">
                     <span>🇬🇧</span>
                     <span>English</span>
                 </a>
-            
+                
                 <a href="/zh-CN/developer/feature/home.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     ">
                     <span>🇨🇳</span>
                     <span>中文</span>
                 </a>
-            
+                
+            </div>
         </div>
     </div>
-</div>
+
                     
 
                     <!-- 仓库链接 -->
@@ -434,71 +471,74 @@
                 
                     <a href="/en/reference/get-started/install.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Documentation
                     </a>
                 
                     <a href="/en/release/latest.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Release Note
                     </a>
                 
                     <a href="/en/developer/specification/home.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-blue-600  bg-blue-50/80 ">
+                      text-blue-600  bg-blue-50/80 ">
                         Developer
                     </a>
                 
                     <a href="/en/api/common/response.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Open API
                     </a>
                 
                     <a href="/en/driver/mongodb.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         Driver
                     </a>
                 
                     <a href="/en/useCases.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
-                        使用案例
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                        Use Cases
                     </a>
                 
                     <a href="/en/partners.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         合作伙伴
                     </a>
+                
+
+                <!-- 移动端版本切换 -->
                 
 
                 <!-- 移动端语言切换 -->
                 
                     <div class="px-3 py-2 space-y-1 border-t dark:border-gray-700">
     
-        <a href="/en/developer/feature/home.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                bg-gray-50 dark:bg-gray-700">
-            <span>🇬🇧</span>
-            <span>English</span>
-        </a>
+    <a href="/en/developer/feature/home.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            bg-gray-50 dark:bg-gray-700">
+        <span>🇬🇧</span>
+        <span>English</span>
+    </a>
     
-        <a href="/zh-CN/developer/feature/home.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                ">
-            <span>🇨🇳</span>
-            <span>中文</span>
-        </a>
+    <a href="/zh-CN/developer/feature/home.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            ">
+        <span>🇨🇳</span>
+        <span>中文</span>
+    </a>
     
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuButton = document.querySelector('button[onclick*="mobile-menu"]');
+        const menuButton = document.querySelector('button[data-menu-toggle]');
 
         // 只有当菜单元素存在时才添加事件监听
         if (mobileMenu && menuButton) {
@@ -509,11 +549,11 @@
 
                     mobileMenu.classList.add('hidden');
 
-                    const openIcon = menuButton.querySelector('svg:first-child');
-                    const closeIcon = menuButton.querySelector('svg:last-child');
+                    const menuIcon = menuButton.querySelector('.menu-icon');
+                    const closeIcon = menuButton.querySelector('.close-icon');
 
-                    if (openIcon && closeIcon) {
-                        openIcon.classList.remove('hidden');
+                    if (menuIcon && closeIcon) {
+                        menuIcon.classList.remove('hidden');
                         closeIcon.classList.add('hidden');
                     }
                 }
@@ -637,13 +677,13 @@
 
     <div class="pt-[--header-height] w-full">
         <div class="container mx-auto px-4 py-4 md:py-8 flex-grow flex flex-col md:flex-row">
-            <!-- 左侧列表 - 移动端隐藏，可通过菜单触发显示 -->
+            <!-- 左侧列表 -->
             
                 <aside class="fixed md:relative md:w-56 lg:w-64 flex-shrink-0 md:pr-4 lg:pr-8
                          inset-y-0 left-0 transform -translate-x-full md:translate-x-0
                          transition duration-200 ease-in-out
                          md:block z-30 bg-white dark:bg-gray-900 md:bg-transparent
-                         w-3/4 sm:w-64"
+                         w-3/4 sm:w-64 top-[--header-height] md:top-auto"
                        id="sidebar-menu">
                     <div class="h-16 md:hidden flex items-center justify-end px-4 border-b dark:border-gray-800">
                         <button class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
@@ -682,7 +722,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>开发规范</span>
                                 
 
 
@@ -707,7 +747,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>服务端</span>
                                 
 
 
@@ -732,7 +772,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>UI 端</span>
                                 
 
 
@@ -757,7 +797,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>文档端</span>
                                 
 
 
@@ -782,7 +822,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>SDK 集成</span>
                                 
 
 
@@ -807,7 +847,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义功能</span>
                                 
 
 
@@ -870,7 +910,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Java Implementation</span>
                                 
 
 
@@ -939,7 +979,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Kotlin Implementation</span>
                                 
 
 
@@ -964,7 +1004,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 Fs 文件系统</span>
                                 
 
 
@@ -989,7 +1029,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 File 转换器</span>
                                 
 
 
@@ -1014,7 +1054,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 Notify 通知器</span>
                                 
 
 
@@ -1083,7 +1123,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Pipeline</span>
                                 
 
 
@@ -1291,14 +1331,18 @@
         <div class="prose prose-gray dark:prose-invert max-w-none text-base">
             
         <div class="space-y-4"></div>
-    <span class="inline-block my-1 mx-auto">本文章主要用来介绍如何集成在 datacap 中开发新的功能。我们这里以 github 中的 
+    
+        <span class="text-base text-gray-700 leading-7 my-2">本文章主要用来介绍如何集成在 datacap 中开发新的功能。我们这里以 github 中的 </span>
+    
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/devlive-community/datacap/issues/481"
            target="_self"
            title="">
             issues-481
         </a>
-     为例来讲解。</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 为例来讲解。</span>
+    
         <div class="space-y-4"></div>
     
         <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
@@ -1315,9 +1359,10 @@
     </strong>
         <span class="text-base text-gray-700 leading-7 my-2"> 克隆源码到本地（如果您需要提交代码到主仓库中需要先将源码 fork 到您的 github 账户中）</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">bash</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -1335,13 +1380,27 @@
         </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>如果您已经 fork 源码到您的账户中，请将 `devlive-community` 替换为您的 github 账户的 ID
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">如果您已经 fork 源码到您的账户中，请将 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">devlive-community</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 替换为您的 github 账户的 ID</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     <strong>
@@ -1357,16 +1416,22 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             
-                                <th scope="col" class="px-6 py-3">
-                                    环境
+                                <th scope="col" class="px-3.5 py-1 text-left">
+                                    
+        <span class="text-base text-gray-700 leading-7 my-2">环境</span>
+    
                                 </th>
                             
-                                <th scope="col" class="px-6 py-3">
-                                    版本
+                                <th scope="col" class="px-3.5 py-1 text-left">
+                                    
+        <span class="text-base text-gray-700 leading-7 my-2">版本</span>
+    
                                 </th>
                             
-                                <th scope="col" class="px-6 py-3">
-                                    必需
+                                <th scope="col" class="px-3.5 py-1 text-left">
+                                    
+        <span class="text-base text-gray-700 leading-7 my-2">必需</span>
+    
                                 </th>
                             
                         </tr>
@@ -1375,48 +1440,80 @@
                         
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 
-                                    <td class="px-6 py-4">
-                                        `JDK`
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">JDK</code>
+    
                                     </td>
                                 
-                                    <td class="px-6 py-4">
-                                        `1.8` | `11`
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">1.8</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">11</code>
+    
                                     </td>
                                 
-                                    <td class="px-6 py-4">
-                                        必须
-                                    </td>
-                                
-                            </tr>
-                        
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                
-                                    <td class="px-6 py-4">
-                                        `Maven`
-                                    </td>
-                                
-                                    <td class="px-6 py-4">
-                                        >= 3.5
-                                    </td>
-                                
-                                    <td class="px-6 py-4">
-                                        可选
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <span class="text-base text-gray-700 leading-7 my-2">必须</span>
+    
                                     </td>
                                 
                             </tr>
                         
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 
-                                    <td class="px-6 py-4">
-                                        `IDEA` | `Eclipse` | `其他`
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Maven</code>
+    
                                     </td>
                                 
-                                    <td class="px-6 py-4">
-                                        任意版本
+                                    <td class="px-3 py-1.5 text-left">
+                                        <div class="pl-4 my-2 border-l-4 border-gray-200 dark:border-gray-700">
+            <div class="py-1">
+        <span class="text-base text-gray-700 leading-7 my-2">= 3.5</span>
+    </div>
+        </div>
                                     </td>
                                 
-                                    <td class="px-6 py-4">
-                                        必须
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <span class="text-base text-gray-700 leading-7 my-2">可选</span>
+    
+                                    </td>
+                                
+                            </tr>
+                        
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">IDEA</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Eclipse</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">其他</code>
+    
+                                    </td>
+                                
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <span class="text-base text-gray-700 leading-7 my-2">任意版本</span>
+    
+                                    </td>
+                                
+                                    <td class="px-3 py-1.5 text-left">
+                                        
+        <span class="text-base text-gray-700 leading-7 my-2">必须</span>
+    
                                     </td>
                                 
                             </tr>
@@ -1426,13 +1523,27 @@
             </div>
         </div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>在本文中我们使用的是 `IDEA` 编辑器环境，用户可以根据自己喜好更换相应编辑器。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">在本文中我们使用的是 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">IDEA</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 编辑器环境，用户可以根据自己喜好更换相应编辑器。</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -1469,21 +1580,21 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">服务端</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">[可选] UI 端</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">[可选] 文档 (</span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">如果增加了新功能，涉及到 UI 建议添加文档方便用户快速了解使用方式</span>
@@ -1511,41 +1622,41 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">entity</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> ： 数据模型</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">repository</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">： 数据库操作</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">service</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">： 业务逻辑</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">controller</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">： 接口</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">sql</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">： SQL 语句</span>
@@ -1581,41 +1692,41 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">id</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">：主键</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">name</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">：名称</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">active</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">：是否激活</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">create_time</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">：创建时间</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">update_time</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">：更新时间</span>
@@ -1631,9 +1742,10 @@
     
         <span class="text-base text-gray-700 leading-7 my-2"> 类，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -1696,13 +1808,27 @@
         </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! warning</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-yellow-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Warning</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-yellow-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>代码中的 `@SuperBuilder` 一定要添加，不然我们无法使用父类提供的 builder 方法。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">代码中的 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">@SuperBuilder</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 一定要添加，不然我们无法使用父类提供的 builder 方法。</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -1722,25 +1848,25 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">：配置</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">type</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">：类型</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">user</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">：用户关联信息</span>
@@ -1768,9 +1894,10 @@
     
         <span class="text-base text-gray-700 leading-7 my-2"> 接口，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -1822,33 +1949,33 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getAll</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的过滤器获取所有数据</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getById</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的 ID 获取数据</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">saveOrUpdate</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> 保存或更新数据</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">deleteById</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> 删除指定的 ID 数据</span>
@@ -1864,9 +1991,10 @@
     
         <span class="text-base text-gray-700 leading-7 my-2"> 类，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -1897,9 +2025,10 @@
     
         <span class="text-base text-gray-700 leading-7 my-2">，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -1926,13 +2055,23 @@
         </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>如果没有特殊的需求，实现类可以不添加。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">如果没有特殊的需求，实现类可以不添加。</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -1958,41 +2097,41 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">list</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的过滤器获取所有数据</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">saveOrUpdate</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> 保存或更新数据</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">delete</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> 删除指定的 ID 数据</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">deleteForPath</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的路径删除数据</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getInfoForPath</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的路径获取数据</span>
@@ -2008,9 +2147,10 @@
     
         <span class="text-base text-gray-700 leading-7 my-2"> 类，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -2060,13 +2200,23 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! danger</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-red-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-red-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Danger</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-red-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>一定要将自定义 controller 的构造函数中的参数修改为相关的具体类。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">一定要将自定义 controller 的构造函数中的参数修改为相关的具体类。</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -2082,13 +2232,23 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>如果没有新增 SQL 相关可以忽略此步骤。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">如果没有新增 SQL 相关可以忽略此步骤。</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -2102,9 +2262,10 @@
     
         <span class="text-base text-gray-700 leading-7 my-2"> 文件中，格式如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">sql</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -2141,13 +2302,39 @@
         </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>如果是新版本开发的话，需要在 `core/datacap-server/src/main/schema` 目录下新建 `版本号` 文件夹，在该文件夹下创建 `schema.sql` 文件。并将内容添加到 `schema.sql` 文件中。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">如果是新版本开发的话，需要在 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">core/datacap-server/src/main/schema</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 目录下新建 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">版本号</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 文件夹，在该文件夹下创建 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">schema.sql</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 文件。并将内容添加到 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">schema.sql</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2"> 文件中。</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -2167,15 +2354,15 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">构建菜单</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">构建 Vue 页面</span>
     </span>
             </li>
@@ -2193,22 +2380,35 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>如果构建的功能不支持菜单，可以忽略此步骤。此操作需要登录管理员权限。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!
-构建菜单可以参考 </span>
-    <span class="inline-block my-1 mx-auto">
+    
+        <span class="text-base text-gray-700 leading-7 my-2">如果构建的功能不支持菜单，可以忽略此步骤。此操作需要登录管理员权限。</span>
+    
+                </div>
+            </div>
+        </div>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">构建菜单可以参考 </span>
+    
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="../../reference/manager/menu/home.md"
            target="_self"
            title="">
             管理菜单
         </a>
-    。</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">。</span>
+    
         <div class="space-y-4"></div>
     
         <span class="text-base text-gray-700 leading-7 my-2">该功能的配置如下</span>
@@ -2242,11 +2442,11 @@
             
             <!-- 图片 -->
             <img src="img.png" 
-                 alt="img.png" class="max-w-full h-auto"
+                 alt="img.png" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         <div class="space-y-4"></div>
@@ -2282,11 +2482,11 @@
             
             <!-- 图片 -->
             <img src="img_1.png" 
-                 alt="img_1.png" class="max-w-full h-auto"
+                 alt="img_1.png" class="max-w-full h-auto my-1"
                  style="opacity: 0; "
                  onload="this.style.opacity = 1; this.previousElementSibling.style.display = 'none'"
                  onerror="this.parentElement.innerHTML = '<div class='text-red-500 dark:text-red-400'>图片加载失败</div>'"
-                 class="transition-opacity duration-300 max-w-full h-auto"/>
+                 class="transition-opacity duration-300 max-w-full h-auto my-1"/>
         </div>
     
         <div class="space-y-4"></div>
@@ -2307,15 +2507,15 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">core/datacap-web/src/i18n/langs/en/common.ts</code>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">core/datacap-web/src/i18n/langs/zhCn/common.ts</code>
     </span>
             </li>
@@ -2325,9 +2525,10 @@
     
         <span class="text-base text-gray-700 leading-7 my-2">在文件中增加以下代码</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -2367,9 +2568,10 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
     
         <span class="text-base text-gray-700 leading-7 my-2"> 文件，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">ts</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -2435,9 +2637,10 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
     
         <span class="text-base text-gray-700 leading-7 my-2"> 文件，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">ts</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -2506,9 +2709,14 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
     
         <span class="text-base text-gray-700 leading-7 my-2"> 文件，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
-            <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">vue</div>
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">$t('common.report')</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -2520,108 +2728,108 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
             <div class="!overflow-x-auto !flex">
                 
                 <div class="!flex-1">
-                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-vue"><template>
-  <div>
-    <Card style="width:100%"
-          :title="$t('common.report')"
-          dis-hover>
-      <Table :loading="loading"
-             :columns="headers"
-             :data="data.content">
-        <template #action="{ row }">
-          <Space>
-          </Space>
-        </template>
-      </Table>
-      <p v-if="!loading"
-         style="margin-top: 10px;">
-        <Page v-model="pagination.current"
-              show-sizer
-              show-elevator
-              show-total
-              :total="pagination.total"
-              :page-size="pagination.pageSize"
-              @on-page-size-change="handlerSizeChange"
-              @on-change="handlerIndexChange">
-        </Page>
-      </p>
-    </Card>
-  </div>
-</template>
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token operator">&lt;</span>template<span class="token operator">></span>
+  <span class="token operator">&lt;</span>div<span class="token operator">></span>
+    <span class="token operator">&lt;</span>Card style<span class="token operator">=</span><span class="token string">"width:100%"</span>
+          <span class="token operator">:</span>title<span class="token operator">=</span><span class="token string">"$t('common.report')"</span>
+          dis<span class="token operator">-</span>hover<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Table <span class="token operator">:</span>loading<span class="token operator">=</span><span class="token string">"loading"</span>
+             <span class="token operator">:</span>columns<span class="token operator">=</span><span class="token string">"headers"</span>
+             <span class="token operator">:</span>data<span class="token operator">=</span><span class="token string">"data.content"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>template #action<span class="token operator">=</span><span class="token string">"{ row }"</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>Space<span class="token operator">></span>
+          <span class="token operator">&lt;</span><span class="token operator">/</span>Space<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>template<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>Table<span class="token operator">></span>
+      <span class="token operator">&lt;</span>p v<span class="token operator">-</span><span class="token keyword">if</span><span class="token operator">=</span><span class="token string">"!loading"</span>
+         style<span class="token operator">=</span><span class="token string">"margin-top: 10px;"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>Page v<span class="token operator">-</span>model<span class="token operator">=</span><span class="token string">"pagination.current"</span>
+              show<span class="token operator">-</span>sizer
+              show<span class="token operator">-</span>elevator
+              show<span class="token operator">-</span>total
+              <span class="token operator">:</span>total<span class="token operator">=</span><span class="token string">"pagination.total"</span>
+              <span class="token operator">:</span>page<span class="token operator">-</span>size<span class="token operator">=</span><span class="token string">"pagination.pageSize"</span>
+              @on<span class="token operator">-</span>page<span class="token operator">-</span>size<span class="token operator">-</span>change<span class="token operator">=</span><span class="token string">"handlerSizeChange"</span>
+              @on<span class="token operator">-</span>change<span class="token operator">=</span><span class="token string">"handlerIndexChange"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>Page<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>Card<span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>template<span class="token operator">></span>
 
-<script lang="ts">
-import {defineComponent} from "vue";
-import {useI18n} from 'vue-i18n';
-import Common from "@/common/Common";
-import {ResponsePage} from "@/model/ResponsePage";
-import {createHeaders} from "@/views/admin/report/ReportUtils";
-import ReportService from "@/services/admin/ReportService";
-import {Filter} from "@/model/Filter";
-import {Pagination, PaginationBuilder} from "@/model/Pagination";
+<span class="token operator">&lt;</span>script lang<span class="token operator">=</span><span class="token string">"ts"</span><span class="token operator">></span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>defineComponent<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>useI18n<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue-i18n'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Common <span class="token keyword">from</span> <span class="token string">"@/common/Common"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>ResponsePage<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@/model/ResponsePage"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>createHeaders<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@/views/admin/report/ReportUtils"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> ReportService <span class="token keyword">from</span> <span class="token string">"@/services/admin/ReportService"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>Filter<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@/model/Filter"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>Pagination<span class="token punctuation">,</span> PaginationBuilder<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@/model/Pagination"</span><span class="token punctuation">;</span>
 
-const filter: Filter = new Filter();
-const pagination: Pagination = PaginationBuilder.newInstance();
-export default defineComponent({
-  name: "ReportAdmin",
-  setup()
-  {
-    const i18n = useI18n();
-    const headers = createHeaders(i18n);
-    const currentUserId = Common.getCurrentUserId();
-    return {
-      headers,
-      filter,
+<span class="token keyword">const</span> <span class="token literal-property property">filter</span><span class="token operator">:</span> Filter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Filter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token literal-property property">pagination</span><span class="token operator">:</span> Pagination <span class="token operator">=</span> PaginationBuilder<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineComponent</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"ReportAdmin"</span><span class="token punctuation">,</span>
+  <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> i18n <span class="token operator">=</span> <span class="token function">useI18n</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> headers <span class="token operator">=</span> <span class="token function">createHeaders</span><span class="token punctuation">(</span>i18n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> currentUserId <span class="token operator">=</span> Common<span class="token punctuation">.</span><span class="token function">getCurrentUserId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      headers<span class="token punctuation">,</span>
+      filter<span class="token punctuation">,</span>
       currentUserId
-    }
-  },
-  data()
-  {
-    return {
-      data: ResponsePage,
-      loading: false,
-      pagination: {
-        total: 0,
-        current: 1,
-        pageSize: 10
-      }
-    }
-  },
-  created()
-  {
-    this.handlerInitialize(this.filter);
-  },
-  methods: {
-    handlerInitialize(filter: Filter)
-    {
-      this.loading = true;
-      ReportService.getAll(filter)
-        .then((response) => {
-          if (response.status) {
-            this.data = response.data;
-            this.pagination.total = response.data.total;
-          }
-          this.loading = false;
-        })
-    },
-    handlerSizeChange(size: number)
-    {
-      this.pagination.pageSize = size;
-      this.handlerTableChange(this.pagination);
-    },
-    handlerIndexChange(index: number)
-    {
-      this.pagination.current = index;
-      this.handlerTableChange(this.pagination);
-    },
-    handlerTableChange(pagination: any)
-    {
-      this.pagination.current = pagination.current;
-      this.pagination.pageSize = pagination.pageSize;
-      this.handlerInitialize(this.filter)
-    }
-  }
-});
-</script></code></pre>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">data</span><span class="token operator">:</span> ResponsePage<span class="token punctuation">,</span>
+      <span class="token literal-property property">loading</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">pagination</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">total</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">current</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">pageSize</span><span class="token operator">:</span> <span class="token number">10</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token function">created</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">handlerInitialize</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>filter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">methods</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token function">handlerInitialize</span><span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">filter</span><span class="token operator">:</span> Filter</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      ReportService<span class="token punctuation">.</span><span class="token function">getAll</span><span class="token punctuation">(</span>filter<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>response<span class="token punctuation">.</span>status<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>data <span class="token operator">=</span> response<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">.</span>total <span class="token operator">=</span> response<span class="token punctuation">.</span>data<span class="token punctuation">.</span>total<span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>loading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">handlerSizeChange</span><span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">size</span><span class="token operator">:</span> number</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">.</span>pageSize <span class="token operator">=</span> size<span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">handlerTableChange</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">handlerIndexChange</span><span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">index</span><span class="token operator">:</span> number</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">.</span>current <span class="token operator">=</span> index<span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">handlerTableChange</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">handlerTableChange</span><span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">pagination</span><span class="token operator">:</span> any</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">.</span>current <span class="token operator">=</span> pagination<span class="token punctuation">.</span>current<span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">.</span>pageSize <span class="token operator">=</span> pagination<span class="token punctuation">.</span>pageSize<span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">handlerInitialize</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>filter<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span></code></pre>
                 </div>
             </div>
         </div>
@@ -2643,7 +2851,7 @@ export default defineComponent({
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年2月11日 06:56</span>
+            <span>提交于 2025年2月15日 12:42</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2655,7 +2863,7 @@ export default defineComponent({
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年2月11日 06:56</span>
+            <span>修改于 2025年2月15日 12:42</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2668,11 +2876,11 @@ export default defineComponent({
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/9990580adda35578de8c52d0d9a62c7205576179"
+                <a href="https://github.com/devlive-community/datacap/commit/6760164e2bd6b1b6d3a22ec18e61aa6a4c06fe65"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (9990580a)
+                    首次提交 (6760164e)
                 </a>
             </div>
 
@@ -2684,11 +2892,11 @@ export default defineComponent({
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/9990580adda35578de8c52d0d9a62c7205576179"
+                <a href="https://github.com/devlive-community/datacap/commit/6760164e2bd6b1b6d3a22ec18e61aa6a4c06fe65"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (9990580a)
+                    末次提交 (6760164e)
                 </a>
             </div>
         
@@ -2779,182 +2987,184 @@ export default defineComponent({
             <!-- 右侧目录 -->
             
                 <!-- 桌面端目录 -->
-<div class="hidden lg:block flex-none w-64 pl-8 mr-8">
+<div class="hidden lg:block flex-none md:w-56 lg:w-64 pl-8 mr-8">
     <div class="sticky" style="top: calc(var(--header-height) + 1rem)">
         <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4">目录</div>
-        <nav class="overflow-y-auto pr-4 -mr-4 space-y-1 pageforge-scrollbar"
-             style="max-height: calc(100vh - var(--header-height) - 8rem);"
-             id="table-of-contents">
-            
-            
+        <div class="overflow-y-auto overflow-x-auto pr-4 pageforge-scrollbar"
+             style="max-height: calc(100vh - var(--header-height) - 8rem);">
+            <nav class="space-y-1 inline-block min-w-full"
+                 id="table-of-contents">
                 
-                    <div class="pl-4">
-                        <a href="#zhun-bei-gong-zuo"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="zhun-bei-gong-zuo">
-                            
+                
+                    
+                        <div class="pl-4 inline-block min-w-full">
+                            <a href="#zhun-bei-gong-zuo"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="zhun-bei-gong-zuo">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">准备工作</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-4">
-                        <a href="#yuan-ma-kai-fa"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="yuan-ma-kai-fa">
-                            
+                        <div class="pl-4 inline-block min-w-full">
+                            <a href="#yuan-ma-kai-fa"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="yuan-ma-kai-fa">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">源码开发</span>
     
-                        </a>
-                    </div>
-                    
+                            </a>
+                        </div>
                         
-                
-                    <div class="pl-8">
-                        <a href="#fu-wu-duan"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="fu-wu-duan">
                             
+                    
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#fu-wu-duan"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="fu-wu-duan">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">服务端</span>
     
-                        </a>
-                    </div>
-                    
+                            </a>
+                        </div>
                         
-                
-                    <div class="pl-12">
-                        <a href="#tian-jia-entity"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="tian-jia-entity">
                             
+                    
+                        <div class="pl-12 inline-block min-w-full">
+                            <a href="#tian-jia-entity"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="tian-jia-entity">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">entity</code>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-12">
-                        <a href="#tian-jia-repository"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="tian-jia-repository">
-                            
+                        <div class="pl-12 inline-block min-w-full">
+                            <a href="#tian-jia-repository"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="tian-jia-repository">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">repository</code>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-12">
-                        <a href="#tian-jia-service"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="tian-jia-service">
-                            
+                        <div class="pl-12 inline-block min-w-full">
+                            <a href="#tian-jia-service"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="tian-jia-service">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">service</code>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-12">
-                        <a href="#tian-jia-controller"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="tian-jia-controller">
-                            
+                        <div class="pl-12 inline-block min-w-full">
+                            <a href="#tian-jia-controller"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="tian-jia-controller">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">controller</code>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-12">
-                        <a href="#tian-jia-sql"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="tian-jia-sql">
-                            
+                        <div class="pl-12 inline-block min-w-full">
+                            <a href="#tian-jia-sql"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="tian-jia-sql">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">sql</code>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
                 
-            
+                        
                     
-                
-                    <div class="pl-8">
-                        <a href="#UI-duan"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="UI-duan">
-                            
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#UI-duan"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="UI-duan">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">UI 端</span>
     
-                        </a>
-                    </div>
-                    
+                            </a>
+                        </div>
                         
-                
-                    <div class="pl-12">
-                        <a href="#gou-jian-cai-dan"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="gou-jian-cai-dan">
                             
+                    
+                        <div class="pl-12 inline-block min-w-full">
+                            <a href="#gou-jian-cai-dan"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="gou-jian-cai-dan">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">构建菜单</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-12">
-                        <a href="#guo-ji-hua-pei-zhi"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="guo-ji-hua-pei-zhi">
-                            
+                        <div class="pl-12 inline-block min-w-full">
+                            <a href="#guo-ji-hua-pei-zhi"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="guo-ji-hua-pei-zhi">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">国际化配置</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-12">
-                        <a href="#gou-jian-zi-yuan-fang-wen-qi"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="gou-jian-zi-yuan-fang-wen-qi">
-                            
+                        <div class="pl-12 inline-block min-w-full">
+                            <a href="#gou-jian-zi-yuan-fang-wen-qi"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="gou-jian-zi-yuan-fang-wen-qi">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">构建资源访问器</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-12">
-                        <a href="#gou-jian-Vue-ye-mian"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="gou-jian-Vue-ye-mian">
-                            
+                        <div class="pl-12 inline-block min-w-full">
+                            <a href="#gou-jian-Vue-ye-mian"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="gou-jian-Vue-ye-mian">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">构建 Vue 页面</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
                 
-            
+                        
                     
                 
-            
+                        
                     
                 
-            
-        </nav>
+            </nav>
+        </div>
     </div>
 </div>
 
@@ -2981,178 +3191,180 @@ export default defineComponent({
             </svg>
         </button>
     </div>
-    <nav class="overflow-y-auto space-y-1"
+    <div class="overflow-y-auto overflow-x-auto"
          style="max-height: calc(60vh - var(--header-height));">
-        
-        
+        <nav class="space-y-1 inline-block min-w-full">
             
-                <div class="pl-4">
-                    <a href="#zhun-bei-gong-zuo"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="zhun-bei-gong-zuo">
-                        
+            
+                
+                    <div class="pl-4 inline-block min-w-full">
+                        <a href="#zhun-bei-gong-zuo"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="zhun-bei-gong-zuo">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">准备工作</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-4">
-                    <a href="#yuan-ma-kai-fa"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="yuan-ma-kai-fa">
-                        
+                    <div class="pl-4 inline-block min-w-full">
+                        <a href="#yuan-ma-kai-fa"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="yuan-ma-kai-fa">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">源码开发</span>
     
-                    </a>
-                </div>
-                
+                        </a>
+                    </div>
                     
-            
-                <div class="pl-8">
-                    <a href="#fu-wu-duan"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="fu-wu-duan">
                         
+                
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#fu-wu-duan"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="fu-wu-duan">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">服务端</span>
     
-                    </a>
-                </div>
-                
+                        </a>
+                    </div>
                     
-            
-                <div class="pl-12">
-                    <a href="#tian-jia-entity"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="tian-jia-entity">
                         
+                
+                    <div class="pl-12 inline-block min-w-full">
+                        <a href="#tian-jia-entity"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="tian-jia-entity">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">entity</code>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-12">
-                    <a href="#tian-jia-repository"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="tian-jia-repository">
-                        
+                    <div class="pl-12 inline-block min-w-full">
+                        <a href="#tian-jia-repository"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="tian-jia-repository">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">repository</code>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-12">
-                    <a href="#tian-jia-service"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="tian-jia-service">
-                        
+                    <div class="pl-12 inline-block min-w-full">
+                        <a href="#tian-jia-service"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="tian-jia-service">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">service</code>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-12">
-                    <a href="#tian-jia-controller"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="tian-jia-controller">
-                        
+                    <div class="pl-12 inline-block min-w-full">
+                        <a href="#tian-jia-controller"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="tian-jia-controller">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">controller</code>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-12">
-                    <a href="#tian-jia-sql"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="tian-jia-sql">
-                        
+                    <div class="pl-12 inline-block min-w-full">
+                        <a href="#tian-jia-sql"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="tian-jia-sql">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">sql</code>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
             
-        
+                    
                 
-            
-                <div class="pl-8">
-                    <a href="#UI-duan"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="UI-duan">
-                        
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#UI-duan"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="UI-duan">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">UI 端</span>
     
-                    </a>
-                </div>
-                
+                        </a>
+                    </div>
                     
-            
-                <div class="pl-12">
-                    <a href="#gou-jian-cai-dan"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="gou-jian-cai-dan">
                         
+                
+                    <div class="pl-12 inline-block min-w-full">
+                        <a href="#gou-jian-cai-dan"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="gou-jian-cai-dan">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">构建菜单</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-12">
-                    <a href="#guo-ji-hua-pei-zhi"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="guo-ji-hua-pei-zhi">
-                        
+                    <div class="pl-12 inline-block min-w-full">
+                        <a href="#guo-ji-hua-pei-zhi"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="guo-ji-hua-pei-zhi">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">国际化配置</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-12">
-                    <a href="#gou-jian-zi-yuan-fang-wen-qi"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="gou-jian-zi-yuan-fang-wen-qi">
-                        
+                    <div class="pl-12 inline-block min-w-full">
+                        <a href="#gou-jian-zi-yuan-fang-wen-qi"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="gou-jian-zi-yuan-fang-wen-qi">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">构建资源访问器</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-12">
-                    <a href="#gou-jian-Vue-ye-mian"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="gou-jian-Vue-ye-mian">
-                        
+                    <div class="pl-12 inline-block min-w-full">
+                        <a href="#gou-jian-Vue-ye-mian"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="gou-jian-Vue-ye-mian">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">构建 Vue 页面</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
             
-        
+                    
                 
             
-        
+                    
                 
             
-        
-    </nav>
+        </nav>
+    </div>
 </div>
 
 <!-- 控制脚本 -->
@@ -3177,7 +3389,9 @@ export default defineComponent({
     </div>
 
     
-        <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        
+
+<footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="flex flex-col md:flex-row md:justify-between gap-8">
             <!-- Logo 和描述部分 -->
@@ -3185,7 +3399,7 @@ export default defineComponent({
                 
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                         <a href="/en" class="flex items-center">
-                            <img src="../../..//assets/logo.png"
+                            <img src="/assets/logo.png"
                                  alt="DataCap"
                                  class="h-12">
                         </a>
@@ -3315,7 +3529,7 @@ export default defineComponent({
                 © 2024 DataCap All Rights Reserved. 使用 ❤️ <a href="https://pageforge.devlive.org" class="hover:text-blue-600" target="_blank">PageForge</a> 构建
 
                 
-                    <a href="https://datacap.devlive.org/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
+                    <a href="/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
                 
             </span>
 
@@ -3371,7 +3585,7 @@ export default defineComponent({
     </script>
 
 
-<!-- 遮罩层 - 移动端菜单打开时显示 -->
+<!-- 遮罩层 -->
 
     <div class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-20 hidden"
          id="sidebar-overlay"

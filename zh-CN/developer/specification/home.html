@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh" class="scroll-smooth">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,7 @@
 <meta name="keywords" content="datacap,database,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark,mysql,postgresql,clickhouse,oracle,sqlserver,sqlserver2008,sqlserver2012,sqlserver2014,sqlserver2016,sqlserver2017,sqlserver2019,sqlserver2022,hive,spark">
 <meta name="author" content="PageForge">
 
-    <title>开发规范 - DataCap</title>
-    <link rel="icon" href="../../../assets/logo.png" type="image/x-icon">
+    <link rel="icon" href="/assets/logo.png" type="image/x-icon">
 
     <!-- 基础样式文件 -->
     <link rel="stylesheet" href="/assets/pageforge.min.css">
@@ -32,20 +31,41 @@
 
                 e.preventDefault();
 
-                // 获取目标语言
-                const targetLang = href.split('/')[1];
+                // 获取当前路径信息
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                let version = null;
+                let lang = null;
+
+                // 解析当前 URL 中的版本和语言信息
+                if (pathParts.length > 0) {
+                    if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
+                        version = pathParts[0];
+                        lang = pathParts[1];
+                    } else {
+                        lang = pathParts[0];
+                    }
+                }
+
+                // 构建 404 页面路径
+                let notFoundPath = '';
+                if (version) {
+                    notFoundPath += '/' + version;
+                }
+                if (lang) {
+                    notFoundPath += '/' + lang;
+                }
+                notFoundPath += '/404.html';
 
                 fetch(href)
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        }
-                        else {
-                            window.location.href = `/${targetLang}/404.html`;
+                        } else {
+                            window.location.href = notFoundPath;
                         }
                     })
                     .catch(() => {
-                        window.location.href = `/${targetLang}/404.html`;
+                        window.location.href = notFoundPath;
                     });
             });
         })();
@@ -96,7 +116,7 @@
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
             <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️  <span class="text-red-500">文档重构中，可能有偏差，会实时更新</span>
+                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
             </div>
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
@@ -111,12 +131,13 @@
         <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
             <div class="flex items-center h-16">
                 <!-- 左侧Logo和导航 -->
-                <div class="flex items-center flex-1">
+                <div class="flex items-center flex-1 min-w-0">
                     <!-- Logo和标题 -->
-                    <div class="flex items-center space-x-4 shrink-0 lg:mr-8">
+                    
+<div class="flex items-center space-x-4 shrink-0 lg:mr-8">
     
         <a href="/zh-CN" class="flex items-center">
-            <img src="../../..//assets/logo.png"
+            <img src="/assets/logo.png"
                  alt="DataCap"
                  class="h-10 w-auto object-contain transition-transform hover:scale-105">
         </a>
@@ -128,78 +149,90 @@
 </div>
 
                     <!-- 桌面端导航 -->
-                    <ul class="hidden lg:flex items-center gap-6 md:gap-8 py-3">
-    
-        <li class="shrink-0">
-            <a href="/zh-CN/reference/get-started/install.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                文档
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/zh-CN/release/latest.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                更新日志
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/zh-CN/developer/specification/home.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          text-blue-600  bg-blue-50/80  font-medium">
-                开发
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/zh-CN/api/common/response.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                开放 API
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/zh-CN/driver/mongodb.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                驱动
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/zh-CN/useCases.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                使用案例
-            </a>
-        </li>
-    
-        <li class="shrink-0">
-            <a href="/zh-CN/partners.html"
-               class="inline-flex items-center rounded-lg justify-center px-4 py-3
-                                          text-sm font-medium leading-none 
-                                          hover:text-gray-900  hover:bg-gray-50 ">
-                合作伙伴
-            </a>
-        </li>
-    
-</ul>
+                    <div class="hidden lg:flex items-center gap-2 overflow-x-auto py-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <ul class="flex items-center gap-2 shrink-0">
+        
+            <li class="shrink-0">
+                <a href="/zh-CN/reference/get-started/install.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    文档
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/zh-CN/release/latest.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    更新日志
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/zh-CN/developer/specification/home.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          text-blue-600  bg-blue-50/80  font-medium">
+                    开发
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/zh-CN/api/common/response.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    开放 API
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/zh-CN/driver/mongodb.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    驱动
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/zh-CN/useCases.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    使用案例
+                </a>
+            </li>
+        
+            <li class="shrink-0">
+                <a href="/zh-CN/partners.html"
+                   class="inline-flex items-center rounded-lg justify-center px-3.5 py-3
+                          text-sm font-medium leading-none whitespace-nowrap
+                          
+                          hover:text-gray-900  hover:bg-gray-50 ">
+                    合作伙伴
+                </a>
+            </li>
+        
+    </ul>
+</div>
+                </div>
 
+                <!-- 右侧工具栏 -->
+                <div class="flex items-center gap-2 lg:gap-4">
                     <!-- 搜索框 -->
                     
     <!-- 搜索按钮 -->
     <button type="button"
-            class="p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
+            class="ml-2 p-2 text-sm font-medium rounded-md hover:bg-gray-100 "
             id="search-trigger">
         <div class="flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,6 +246,7 @@
 
     <!-- 搜索弹窗 -->
     <div id="search-dialog"
+         data-version=""
          class="fixed inset-0 z-50 bg-gray-500/70 items-start justify-center p-4 sm:p-6 md:p-20 hidden"
          aria-modal="true"
          role="dialog">
@@ -263,52 +297,55 @@
         </div>
     </div>
 
-                </div>
 
-                <!-- 右侧工具栏 -->
-                <div class="flex items-center gap-2 lg:gap-4">
+                    <!-- 版本选择器 -->
+                    <!-- 版本切换器 -->
+
+
                     <!-- 桌面端主题切换按钮 -->
                     
 
                     <!-- 语言切换器 -->
                     
                         <!-- 语言切换器 -->
-<div class="hidden lg:flex items-center ml-4">
-    <div class="relative">
-        <button type="button"
-                onclick="document.getElementById('language-menu').classList.toggle('hidden')"
-                class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-            <!-- 当前语言 -->
-            
-            <span>🇨🇳</span>
-            <span>中文</span>
-            <!-- 下拉箭头 -->
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-        </button>
 
-        <!-- 语言选择下拉菜单 -->
-        <div id="language-menu"
-             class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-            
+    <div class="hidden lg:flex items-center">
+        <div class="relative">
+            <button type="button"
+                    onclick="document.getElementById('language-menu').classList.toggle('hidden')"
+                    class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                <!-- 当前语言 -->
+                
+                <span>🇨🇳</span>
+                <span>中文</span>
+                <!-- 下拉箭头 -->
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+
+            <!-- 语言选择下拉菜单 -->
+            <div id="language-menu"
+                 class="hidden absolute right-0 mt-2 py-2 w-36 space-y-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                
                 <a href="/en/developer/specification/home.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     ">
                     <span>🇬🇧</span>
                     <span>English</span>
                 </a>
-            
+                
                 <a href="/zh-CN/developer/specification/home.html"
                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
                                     bg-gray-50 dark:bg-gray-700">
                     <span>🇨🇳</span>
                     <span>中文</span>
                 </a>
-            
+                
+            </div>
         </div>
     </div>
-</div>
+
                     
 
                     <!-- 仓库链接 -->
@@ -434,71 +471,74 @@
                 
                     <a href="/zh-CN/reference/get-started/install.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         文档
                     </a>
                 
                     <a href="/zh-CN/release/latest.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         更新日志
                     </a>
                 
                     <a href="/zh-CN/developer/specification/home.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-blue-600  bg-blue-50/80 ">
+                      text-blue-600  bg-blue-50/80 ">
                         开发
                     </a>
                 
                     <a href="/zh-CN/api/common/response.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         开放 API
                     </a>
                 
                     <a href="/zh-CN/driver/mongodb.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         驱动
                     </a>
                 
                     <a href="/zh-CN/useCases.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         使用案例
                     </a>
                 
                     <a href="/zh-CN/partners.html"
                        class="block px-3 py-2 rounded-md text-base font-medium
-                              text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
+                      text-gray-700  hover:text-gray-900  hover:bg-gray-50 ">
                         合作伙伴
                     </a>
+                
+
+                <!-- 移动端版本切换 -->
                 
 
                 <!-- 移动端语言切换 -->
                 
                     <div class="px-3 py-2 space-y-1 border-t dark:border-gray-700">
     
-        <a href="/en/developer/specification/home.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                ">
-            <span>🇬🇧</span>
-            <span>English</span>
-        </a>
+    <a href="/en/developer/specification/home.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            ">
+        <span>🇬🇧</span>
+        <span>English</span>
+    </a>
     
-        <a href="/zh-CN/developer/specification/home.html"
-           class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
-                                bg-gray-50 dark:bg-gray-700">
-            <span>🇨🇳</span>
-            <span>中文</span>
-        </a>
+    <a href="/zh-CN/developer/specification/home.html"
+       class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700
+                            bg-gray-50 dark:bg-gray-700">
+        <span>🇨🇳</span>
+        <span>中文</span>
+    </a>
     
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuButton = document.querySelector('button[onclick*="mobile-menu"]');
+        const menuButton = document.querySelector('button[data-menu-toggle]');
 
         // 只有当菜单元素存在时才添加事件监听
         if (mobileMenu && menuButton) {
@@ -509,11 +549,11 @@
 
                     mobileMenu.classList.add('hidden');
 
-                    const openIcon = menuButton.querySelector('svg:first-child');
-                    const closeIcon = menuButton.querySelector('svg:last-child');
+                    const menuIcon = menuButton.querySelector('.menu-icon');
+                    const closeIcon = menuButton.querySelector('.close-icon');
 
-                    if (openIcon && closeIcon) {
-                        openIcon.classList.remove('hidden');
+                    if (menuIcon && closeIcon) {
+                        menuIcon.classList.remove('hidden');
                         closeIcon.classList.add('hidden');
                     }
                 }
@@ -637,13 +677,13 @@
 
     <div class="pt-[--header-height] w-full">
         <div class="container mx-auto px-4 py-4 md:py-8 flex-grow flex flex-col md:flex-row">
-            <!-- 左侧列表 - 移动端隐藏，可通过菜单触发显示 -->
+            <!-- 左侧列表 -->
             
                 <aside class="fixed md:relative md:w-56 lg:w-64 flex-shrink-0 md:pr-4 lg:pr-8
                          inset-y-0 left-0 transform -translate-x-full md:translate-x-0
                          transition duration-200 ease-in-out
                          md:block z-30 bg-white dark:bg-gray-900 md:bg-transparent
-                         w-3/4 sm:w-64"
+                         w-3/4 sm:w-64 top-[--header-height] md:top-auto"
                        id="sidebar-menu">
                     <div class="h-16 md:hidden flex items-center justify-end px-4 border-b dark:border-gray-800">
                         <button class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
@@ -682,7 +722,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>开发规范</span>
                                 
 
 
@@ -707,7 +747,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>服务端</span>
                                 
 
 
@@ -732,7 +772,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>UI 端</span>
                                 
 
 
@@ -757,7 +797,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>文档端</span>
                                 
 
 
@@ -782,7 +822,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>SDK 集成</span>
                                 
 
 
@@ -807,7 +847,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-sm sm:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义功能</span>
                                 
 
 
@@ -870,7 +910,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>Java 实现</span>
                                 
 
 
@@ -939,7 +979,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 Plugin 连接器</span>
                                 
 
 
@@ -964,7 +1004,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 Fs 文件系统</span>
                                 
 
 
@@ -989,7 +1029,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 File 转换器</span>
                                 
 
 
@@ -1014,7 +1054,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>自定义 Notify 通知器</span>
                                 
 
 
@@ -1083,7 +1123,7 @@
                             
 
                             <span class="flex flex-grow items-center space-x-4 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                                <span>home.md</span>
+                                <span>流水线</span>
                                 
 
 
@@ -1296,13 +1336,23 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! danger</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-red-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-red-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Danger</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-red-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>请仔细阅读该开发规范，并且遵守该规范，否则可能导致服务端和 UI 端的代码提交无法审核通过。
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">请仔细阅读该开发规范，并且遵守该规范，否则可能导致服务端和 UI 端的代码提交无法审核通过。</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -1316,7 +1366,8 @@
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -1344,73 +1395,73 @@
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">feat</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 新功能</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">fix</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Bug 修复</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">docs</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 仅文档更改</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">style</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 不影响代码含义的更改（空格、格式化等）</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">refactor</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 既不修复错误也不添加功能的代码更改</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">perf</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 提高性能的代码更改</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">test</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 添加或修正测试</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">chore</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 构建过程或辅助工具的变动</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">revert</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 撤销之前的提交</span>
@@ -1428,7 +1479,8 @@
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!text-blue-300 !transition-colors !duration-200 !z-10">
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
             <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -1460,30 +1512,86 @@ close (#123)</code></pre>
     </div>
         </div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! warning</span>
+        <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-yellow-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Warning</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-yellow-700">
+                    
+        <div class="space-y-4"></div>
     
-        <div class="space-y-4"></div>
-    <pre><code>所有的 **组件** | **字段名** 必须都以驼峰命名法命名
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+        <span class="text-base text-gray-700 leading-7 my-2">所有的 </span>
+    <strong>
+        <span class="text-base text-gray-700 leading-7 my-2">组件</span>
+    </strong>
+        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+    <strong>
+        <span class="text-base text-gray-700 leading-7 my-2">字段名</span>
+    </strong>
+        <span class="text-base text-gray-700 leading-7 my-2"> 必须都以驼峰命名法命名</span>
     
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">export default defineComponent({
-  name: &#39;RoleHome&#39;
-})
+                </div>
+            </div>
+        </div>
+    <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">正确示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineComponent</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'RoleHome'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-const showName = ref(false)
-</code></pre>
+<span class="token keyword">const</span> showName <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span></code></pre>
+                </div>
+            </div>
+        </div><div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">错误示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineComponent</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'rolehome'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">export default defineComponent({
-  name: &#39;rolehome&#39;
-})
-
-const showname = ref(false)
-</code></pre>
-
+<span class="token keyword">const</span> showname <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span></code></pre>
+                </div>
+            </div>
+        </div>
         <div class="space-y-4"></div>
     
         <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
@@ -1492,66 +1600,192 @@ const showname = ref(false)
     </div>
         </div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! warning</span>
-    
-        <div class="space-y-4"></div>
-    <pre><code>组件命名必须以 `Shadcn` 开头，如 `ShadcnButton`、`ShadcnInput`、`ShadcnSpace`
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
-    
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">&lt;ShadcnButton size=&quot;small&quot; circle @click=&quot;handlerChangeInfo(true, row)&quot;&gt;
-    &lt;ShadcnIcon icon=&quot;Pencil&quot; size=&quot;15&quot;/&gt;
-&lt;/ShadcnButton&gt;
-</code></pre>
-
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">&lt;shadcn-button size=&quot;small&quot; circle @click=&quot;handlerChangeInfo(true, row)&quot;&gt;
-    &lt;shadcn-icon icon=&quot;pencil&quot; size=&quot;15&quot;/&gt;
-&lt;/shadcn-button&gt;
-</code></pre>
-
+        <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-yellow-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Warning</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-yellow-700">
+                    
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! warning</span>
+        <span class="text-base text-gray-700 leading-7 my-2">组件命名必须以 </span>
     
-        <div class="space-y-4"></div>
-    <pre><code>属性命名首字母必须小写，如 `size`，多个单词必须已驼峰命名法命名，如 `showName`
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Shadcn</code>
     
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">const size = ref(&#39;small&#39;)
-
-const showName = ref(false)
-</code></pre>
-
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">const Size = ref(&#39;small&#39;)
-
-const showname = ref(false)
-const show-name = ref(false)
-</code></pre>
-
+        <span class="text-base text-gray-700 leading-7 my-2"> 开头，如 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ShadcnButton</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">、</span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ShadcnInput</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">、</span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ShadcnSpace</code>
+    
+                </div>
+            </div>
+        </div>
+    <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">正确示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token operator">&lt;</span>ShadcnButton size<span class="token operator">=</span><span class="token string">"small"</span> circle @click<span class="token operator">=</span><span class="token string">"handlerChangeInfo(true, row)"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>ShadcnIcon icon<span class="token operator">=</span><span class="token string">"Pencil"</span> size<span class="token operator">=</span><span class="token string">"15"</span><span class="token operator">/</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnButton<span class="token operator">></span></code></pre>
+                </div>
+            </div>
+        </div><div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">错误示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token operator">&lt;</span>shadcn<span class="token operator">-</span>button size<span class="token operator">=</span><span class="token string">"small"</span> circle @click<span class="token operator">=</span><span class="token string">"handlerChangeInfo(true, row)"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>shadcn<span class="token operator">-</span>icon icon<span class="token operator">=</span><span class="token string">"pencil"</span> size<span class="token operator">=</span><span class="token string">"15"</span><span class="token operator">/</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>shadcn<span class="token operator">-</span>button<span class="token operator">></span></code></pre>
+                </div>
+            </div>
+        </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! warning</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-yellow-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Warning</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-yellow-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>函数名必须符合以下规范
-</code></pre>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">属性命名首字母必须小写，如 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">size</code>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">，多个单词必须已驼峰命名法命名，如 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">showName</code>
+    
+                </div>
+            </div>
+        </div>
+    <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">正确示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token keyword">const</span> size <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'small'</span><span class="token punctuation">)</span>
 
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+<span class="token keyword">const</span> showName <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span></code></pre>
+                </div>
+            </div>
+        </div><div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">错误示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token keyword">const</span> Size <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'small'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> showname <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> show<span class="token operator">-</span>name <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span></code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="space-y-4"></div>
+    
+        <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-yellow-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Warning</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-yellow-700">
+                    
+        <div class="space-y-4"></div>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">函数名必须符合以下规范</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">处理函数必须以 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">handle</code>
@@ -1561,9 +1795,9 @@ const show-name = ref(false)
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">handleChangeInfo</code>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">回调函数必须以 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">on</code>
@@ -1573,9 +1807,9 @@ const show-name = ref(false)
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">onChange</code>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">涉及到弹出层的函数必须以 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">visible</code>
@@ -1586,23 +1820,61 @@ const show-name = ref(false)
     </span>
             </li>
         </ul>
+    <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">正确示例</span>
+        </div>
     
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">const handleChangeInfo = () =&gt; {}
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token keyword">const</span> <span class="token function-variable function">handleChangeInfo</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
 
-const onChange = () =&gt; {}
+<span class="token keyword">const</span> <span class="token function-variable function">onChange</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
 
-const visibleInfo = () =&gt; {}
-</code></pre>
+<span class="token keyword">const</span> <span class="token function-variable function">visibleInfo</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><span class="token punctuation">}</span></code></pre>
+                </div>
+            </div>
+        </div><div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">错误示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token keyword">const</span> <span class="token function-variable function">changeinfo</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
 
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">const changeinfo = () =&gt; {}
+<span class="token keyword">const</span> <span class="token function-variable function">change</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
 
-const change = () =&gt; {}
-
-const aaaInfo = () =&gt; {}
-</code></pre>
-
+<span class="token keyword">const</span> <span class="token function-variable function">aaaInfo</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><span class="token punctuation">}</span></code></pre>
+                </div>
+            </div>
+        </div>
         <div class="space-y-4"></div>
     
         <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
@@ -1611,45 +1883,93 @@ const aaaInfo = () =&gt; {}
     </div>
         </div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
+        <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-purple-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Note</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-purple-700">
+                    
+        <div class="space-y-4"></div>
     
-        <div class="space-y-4"></div>
-    <pre><code>多个组件内必须以新行分割
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+        <span class="text-base text-gray-700 leading-7 my-2">多个组件内必须以新行分割</span>
     
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">&lt;ShadcnSpace&gt;
-    &lt;ShadcnTooltip :content=&quot;$t(&#39;common.editData&#39;)&quot;&gt;
-        &lt;ShadcnButton size=&quot;small&quot; circle @click=&quot;handlerChangeInfo(true, row)&quot;&gt;
-            &lt;ShadcnIcon icon=&quot;Pencil&quot; size=&quot;15&quot;/&gt;
-        &lt;/ShadcnButton&gt;
-    &lt;/ShadcnTooltip&gt;
+                </div>
+            </div>
+        </div>
+    <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">正确示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token operator">&lt;</span>ShadcnSpace<span class="token operator">></span>
+    <span class="token operator">&lt;</span>ShadcnTooltip <span class="token operator">:</span>content<span class="token operator">=</span><span class="token string">"$t('common.editData')"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>ShadcnButton size<span class="token operator">=</span><span class="token string">"small"</span> circle @click<span class="token operator">=</span><span class="token string">"handlerChangeInfo(true, row)"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span>ShadcnIcon icon<span class="token operator">=</span><span class="token string">"Pencil"</span> size<span class="token operator">=</span><span class="token string">"15"</span><span class="token operator">/</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnButton<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnTooltip<span class="token operator">></span>
 
-    &lt;ShadcnTooltip :content=&quot;$t(&#39;role.common.assignMenu&#39;).replace(&#39;$NAME&#39;, row?.name)&quot;&gt;
-        &lt;ShadcnButton size=&quot;small&quot; circle @click=&quot;handlerAssignMenu(true, row)&quot;&gt;
-            &lt;ShadcnIcon icon=&quot;Menu&quot; size=&quot;15&quot;/&gt;
-        &lt;/ShadcnButton&gt;
-    &lt;/ShadcnTooltip&gt;
-&lt;/ShadcnSpace&gt;
-</code></pre>
-
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">&lt;ShadcnSpace&gt;
-    &lt;ShadcnTooltip :content=&quot;$t(&#39;common.editData&#39;)&quot;&gt;
-        &lt;ShadcnButton size=&quot;small&quot; circle @click=&quot;handlerChangeInfo(true, row)&quot;&gt;
-            &lt;ShadcnIcon icon=&quot;Pencil&quot; size=&quot;15&quot;/&gt;
-        &lt;/ShadcnButton&gt;
-    &lt;/ShadcnTooltip&gt;
-    &lt;ShadcnTooltip :content=&quot;$t(&#39;role.common.assignMenu&#39;).replace(&#39;$NAME&#39;, row?.name)&quot;&gt;
-        &lt;ShadcnButton size=&quot;small&quot; circle @click=&quot;handlerAssignMenu(true, row)&quot;&gt;
-            &lt;ShadcnIcon icon=&quot;Menu&quot; size=&quot;15&quot;/&gt;
-        &lt;/ShadcnButton&gt;
-    &lt;/ShadcnTooltip&gt;
-&lt;/ShadcnSpace&gt;
-</code></pre>
-
+    <span class="token operator">&lt;</span>ShadcnTooltip <span class="token operator">:</span>content<span class="token operator">=</span><span class="token string">"$t('role.common.assignMenu').replace('$NAME', row?.name)"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>ShadcnButton size<span class="token operator">=</span><span class="token string">"small"</span> circle @click<span class="token operator">=</span><span class="token string">"handlerAssignMenu(true, row)"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span>ShadcnIcon icon<span class="token operator">=</span><span class="token string">"Menu"</span> size<span class="token operator">=</span><span class="token string">"15"</span><span class="token operator">/</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnButton<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnTooltip<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnSpace<span class="token operator">></span></code></pre>
+                </div>
+            </div>
+        </div><div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">错误示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token operator">&lt;</span>ShadcnSpace<span class="token operator">></span>
+    <span class="token operator">&lt;</span>ShadcnTooltip <span class="token operator">:</span>content<span class="token operator">=</span><span class="token string">"$t('common.editData')"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>ShadcnButton size<span class="token operator">=</span><span class="token string">"small"</span> circle @click<span class="token operator">=</span><span class="token string">"handlerChangeInfo(true, row)"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span>ShadcnIcon icon<span class="token operator">=</span><span class="token string">"Pencil"</span> size<span class="token operator">=</span><span class="token string">"15"</span><span class="token operator">/</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnButton<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnTooltip<span class="token operator">></span>
+    <span class="token operator">&lt;</span>ShadcnTooltip <span class="token operator">:</span>content<span class="token operator">=</span><span class="token string">"$t('role.common.assignMenu').replace('$NAME', row?.name)"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>ShadcnButton size<span class="token operator">=</span><span class="token string">"small"</span> circle @click<span class="token operator">=</span><span class="token string">"handlerAssignMenu(true, row)"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span>ShadcnIcon icon<span class="token operator">=</span><span class="token string">"Menu"</span> size<span class="token operator">=</span><span class="token string">"15"</span><span class="token operator">/</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnButton<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnTooltip<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>ShadcnSpace<span class="token operator">></span></code></pre>
+                </div>
+            </div>
+        </div>
         <div class="space-y-4"></div>
     
         <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
@@ -1658,13 +1978,23 @@ const aaaInfo = () =&gt; {}
     </div>
         </div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! warning</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-yellow-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Warning</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-yellow-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>请保证属性的顺序，以便于后续的维护
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
+    
+        <span class="text-base text-gray-700 leading-7 my-2">请保证属性的顺序，以便于后续的维护</span>
+    
+                </div>
+            </div>
+        </div>
     
         <div class="space-y-4"></div>
     
@@ -1674,9 +2004,9 @@ const aaaInfo = () =&gt; {}
     
         <ul class="my-4 pl-4 list-inside list-disc">
             
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">系统属性 (必须都在第一位，如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">v-model</code>
@@ -1684,9 +2014,9 @@ const aaaInfo = () =&gt; {}
         <span class="text-base text-gray-700 leading-7 my-2">)</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">固定属性 (如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">show-total</code>
@@ -1694,9 +2024,9 @@ const aaaInfo = () =&gt; {}
         <span class="text-base text-gray-700 leading-7 my-2">)</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">动态变量 (如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">:page-size="pageSize"</code>
@@ -1704,9 +2034,9 @@ const aaaInfo = () =&gt; {}
         <span class="text-base text-gray-700 leading-7 my-2">)</span>
     </span>
             </li>
-            <li class="mb-2 grid grid-cols-[1em_1fr] gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none">•</span>
-                <span>
+            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
+                <span class="text-gray-600 text-xl select-none w-4">•</span>
+                <span class="flex-1 w-[calc(100%-1rem)]">
         <span class="text-base text-gray-700 leading-7 my-2">动态事件 (如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">@on-change="onPageChange"</code>
@@ -1715,15 +2045,53 @@ const aaaInfo = () =&gt; {}
     </span>
             </li>
         </ul>
+    <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">正确示例</span>
+        </div>
     
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">&lt;ShadcnPagination v-model=&quot;pageIndex&quot; show-total :page-size=&quot;pageSize&quot; @on-change=&quot;onPageChange&quot;/&gt;
-</code></pre>
-
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">&lt;ShadcnPagination v-model=&quot;pageIndex&quot; @on-change=&quot;onPageChange&quot; show-total :page-size=&quot;pageSize&quot;/&gt;
-</code></pre>
-
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token operator">&lt;</span>ShadcnPagination v<span class="token operator">-</span>model<span class="token operator">=</span><span class="token string">"pageIndex"</span> show<span class="token operator">-</span>total <span class="token operator">:</span>page<span class="token operator">-</span>size<span class="token operator">=</span><span class="token string">"pageSize"</span> @on<span class="token operator">-</span>change<span class="token operator">=</span><span class="token string">"onPageChange"</span><span class="token operator">/</span><span class="token operator">></span></code></pre>
+                </div>
+            </div>
+        </div><div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">错误示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token operator">&lt;</span>ShadcnPagination v<span class="token operator">-</span>model<span class="token operator">=</span><span class="token string">"pageIndex"</span> @on<span class="token operator">-</span>change<span class="token operator">=</span><span class="token string">"onPageChange"</span> show<span class="token operator">-</span>total <span class="token operator">:</span>page<span class="token operator">-</span>size<span class="token operator">=</span><span class="token string">"pageSize"</span><span class="token operator">/</span><span class="token operator">></span></code></pre>
+                </div>
+            </div>
+        </div>
         <div class="space-y-4"></div>
     
         <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
@@ -1732,31 +2100,79 @@ const aaaInfo = () =&gt; {}
     </div>
         </div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! warning</span>
-    
+        <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
+        
+        <div class="flex items-start space-x-2 p-2 rounded-t-lg bg-yellow-50">
+               <div class="flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+               <h3 class="text-sm font-medium text-gray-900 mb-2">Warning</h3>
+           </div>
+                   
+            <div class="w-full px-5 py-3">
+                <div class="text-sm text-yellow-700">
+                    
         <div class="space-y-4"></div>
-    <pre><code>多个属性且超过 3 个必须以新行分割
-</code></pre>
-
-        <span class="text-base text-gray-700 leading-7 my-2">!!!</span>
     
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">&lt;ShadcnPagination v-model=&quot;pageIndex&quot; show-total @on-change=&quot;onPageChange&quot;/&gt;
+        <span class="text-base text-gray-700 leading-7 my-2">多个属性且超过 3 个必须以新行分割</span>
+    
+                </div>
+            </div>
+        </div>
+    <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">正确示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token operator">&lt;</span>ShadcnPagination v<span class="token operator">-</span>model<span class="token operator">=</span><span class="token string">"pageIndex"</span> show<span class="token operator">-</span>total @on<span class="token operator">-</span>change<span class="token operator">=</span><span class="token string">"onPageChange"</span><span class="token operator">/</span><span class="token operator">></span>
                   
-&lt;ShadcnPagination v-model=&quot;pageIndex&quot;
-                  show-total
-                  :page-size=&quot;pageSize&quot;
-                  @on-change=&quot;onPageChange&quot;/&gt;
-</code></pre>
+<span class="token operator">&lt;</span>ShadcnPagination v<span class="token operator">-</span>model<span class="token operator">=</span><span class="token string">"pageIndex"</span>
+                  show<span class="token operator">-</span>total
+                  <span class="token operator">:</span>page<span class="token operator">-</span>size<span class="token operator">=</span><span class="token string">"pageSize"</span>
+                  @on<span class="token operator">-</span>change<span class="token operator">=</span><span class="token string">"onPageChange"</span><span class="token operator">/</span><span class="token operator">></span></code></pre>
+                </div>
+            </div>
+        </div><div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
+            
+        <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
+            <span class="!text-sm !text-gray-700 !dark:text-gray-300">错误示例</span>
+        </div>
+    
+            <div class="!absolute !right-12 !top-14 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">javascript</div>
+            
+        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-14 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
+            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    
+            <div class="!overflow-x-auto !flex">
+                
+                <div class="!flex-1">
+                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-javascript"><span class="token operator">&lt;</span>ShadcnPagination v<span class="token operator">-</span>model<span class="token operator">=</span><span class="token string">"pageIndex"</span>
+                  show<span class="token operator">-</span>total
+                  @on<span class="token operator">-</span>change<span class="token operator">=</span><span class="token string">"onPageChange"</span><span class="token operator">/</span><span class="token operator">></span>
 
-        <div class="space-y-4"></div>
-    <pre><code class="language-vue">&lt;ShadcnPagination v-model=&quot;pageIndex&quot;
-                  show-total
-                  @on-change=&quot;onPageChange&quot;/&gt;
-
-&lt;ShadcnPagination v-model=&quot;pageIndex&quot; show-total :page-size=&quot;pageSize&quot; @on-change=&quot;onPageChange&quot;/&gt;
-</code></pre>
-
+<span class="token operator">&lt;</span>ShadcnPagination v<span class="token operator">-</span>model<span class="token operator">=</span><span class="token string">"pageIndex"</span> show<span class="token operator">-</span>total <span class="token operator">:</span>page<span class="token operator">-</span>size<span class="token operator">=</span><span class="token string">"pageSize"</span> @on<span class="token operator">-</span>change<span class="token operator">=</span><span class="token string">"onPageChange"</span><span class="token operator">/</span><span class="token operator">></span></code></pre>
+                </div>
+            </div>
+        </div>
         </div>
 
         <div class="clear-both"></div>
@@ -1775,7 +2191,7 @@ const aaaInfo = () =&gt; {}
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年2月11日 06:56</span>
+            <span>提交于 2025年2月15日 12:42</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -1787,7 +2203,7 @@ const aaaInfo = () =&gt; {}
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年2月11日 06:56</span>
+            <span>修改于 2025年2月15日 12:42</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -1800,11 +2216,11 @@ const aaaInfo = () =&gt; {}
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/9990580adda35578de8c52d0d9a62c7205576179"
+                <a href="https://github.com/devlive-community/datacap/commit/6760164e2bd6b1b6d3a22ec18e61aa6a4c06fe65"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (9990580a)
+                    首次提交 (6760164e)
                 </a>
             </div>
 
@@ -1816,11 +2232,11 @@ const aaaInfo = () =&gt; {}
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/9990580adda35578de8c52d0d9a62c7205576179"
+                <a href="https://github.com/devlive-community/datacap/commit/6760164e2bd6b1b6d3a22ec18e61aa6a4c06fe65"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (9990580a)
+                    末次提交 (6760164e)
                 </a>
             </div>
         
@@ -1911,87 +2327,89 @@ const aaaInfo = () =&gt; {}
             <!-- 右侧目录 -->
             
                 <!-- 桌面端目录 -->
-<div class="hidden lg:block flex-none w-64 pl-8 mr-8">
+<div class="hidden lg:block flex-none md:w-56 lg:w-64 pl-8 mr-8">
     <div class="sticky" style="top: calc(var(--header-height) + 1rem)">
         <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4">目录</div>
-        <nav class="overflow-y-auto pr-4 -mr-4 space-y-1 pageforge-scrollbar"
-             style="max-height: calc(100vh - var(--header-height) - 8rem);"
-             id="table-of-contents">
-            
-            
+        <div class="overflow-y-auto overflow-x-auto pr-4 pageforge-scrollbar"
+             style="max-height: calc(100vh - var(--header-height) - 8rem);">
+            <nav class="space-y-1 inline-block min-w-full"
+                 id="table-of-contents">
                 
-                    <div class="pl-4">
-                        <a href="#dai-ma-ti-jiao-gui-fan"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="dai-ma-ti-jiao-gui-fan">
-                            
+                
+                    
+                        <div class="pl-4 inline-block min-w-full">
+                            <a href="#dai-ma-ti-jiao-gui-fan"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="dai-ma-ti-jiao-gui-fan">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">代码提交规范</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-4">
-                        <a href="#qian-duan-dai-ma-gui-fan"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="qian-duan-dai-ma-gui-fan">
-                            
+                        <div class="pl-4 inline-block min-w-full">
+                            <a href="#qian-duan-dai-ma-gui-fan"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="qian-duan-dai-ma-gui-fan">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">前端代码规范</span>
     
-                        </a>
-                    </div>
-                    
+                            </a>
+                        </div>
                         
-                
-                    <div class="pl-8">
-                        <a href="#yuan-su-ming-ming"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="yuan-su-ming-ming">
                             
+                    
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#yuan-su-ming-ming"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="yuan-su-ming-ming">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">元素命名</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-8">
-                        <a href="#zu-jian-huan-hang"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="zu-jian-huan-hang">
-                            
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#zu-jian-huan-hang"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="zu-jian-huan-hang">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">组件换行</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-8">
-                        <a href="#shu-xing-pai-xu"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="shu-xing-pai-xu">
-                            
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#shu-xing-pai-xu"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="shu-xing-pai-xu">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">属性排序</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
-                
-                    <div class="pl-8">
-                        <a href="#shu-xing-huan-hang"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                           data-slug="shu-xing-huan-hang">
-                            
+                        <div class="pl-8 inline-block min-w-full">
+                            <a href="#shu-xing-huan-hang"
+                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                               data-slug="shu-xing-huan-hang">
+                                
         <span class="text-base text-gray-700 leading-7 my-2">属性换行</span>
     
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                        
                     
                 
-            
+                        
                     
                 
-            
-        </nav>
+            </nav>
+        </div>
     </div>
 </div>
 
@@ -2018,83 +2436,85 @@ const aaaInfo = () =&gt; {}
             </svg>
         </button>
     </div>
-    <nav class="overflow-y-auto space-y-1"
+    <div class="overflow-y-auto overflow-x-auto"
          style="max-height: calc(60vh - var(--header-height));">
-        
-        
+        <nav class="space-y-1 inline-block min-w-full">
             
-                <div class="pl-4">
-                    <a href="#dai-ma-ti-jiao-gui-fan"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="dai-ma-ti-jiao-gui-fan">
-                        
+            
+                
+                    <div class="pl-4 inline-block min-w-full">
+                        <a href="#dai-ma-ti-jiao-gui-fan"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="dai-ma-ti-jiao-gui-fan">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">代码提交规范</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-4">
-                    <a href="#qian-duan-dai-ma-gui-fan"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="qian-duan-dai-ma-gui-fan">
-                        
+                    <div class="pl-4 inline-block min-w-full">
+                        <a href="#qian-duan-dai-ma-gui-fan"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="qian-duan-dai-ma-gui-fan">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">前端代码规范</span>
     
-                    </a>
-                </div>
-                
+                        </a>
+                    </div>
                     
-            
-                <div class="pl-8">
-                    <a href="#yuan-su-ming-ming"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="yuan-su-ming-ming">
                         
+                
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#yuan-su-ming-ming"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="yuan-su-ming-ming">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">元素命名</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-8">
-                    <a href="#zu-jian-huan-hang"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="zu-jian-huan-hang">
-                        
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#zu-jian-huan-hang"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="zu-jian-huan-hang">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">组件换行</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-8">
-                    <a href="#shu-xing-pai-xu"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="shu-xing-pai-xu">
-                        
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#shu-xing-pai-xu"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="shu-xing-pai-xu">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">属性排序</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
-            
-                <div class="pl-8">
-                    <a href="#shu-xing-huan-hang"
-                       class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link"
-                       data-slug="shu-xing-huan-hang">
-                        
+                    <div class="pl-8 inline-block min-w-full">
+                        <a href="#shu-xing-huan-hang"
+                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
+                           data-slug="shu-xing-huan-hang">
+                            
         <span class="text-base text-gray-700 leading-7 my-2">属性换行</span>
     
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    
                 
             
-        
+                    
                 
             
-        
-    </nav>
+        </nav>
+    </div>
 </div>
 
 <!-- 控制脚本 -->
@@ -2119,7 +2539,9 @@ const aaaInfo = () =&gt; {}
     </div>
 
     
-        <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        
+
+<footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="flex flex-col md:flex-row md:justify-between gap-8">
             <!-- Logo 和描述部分 -->
@@ -2127,7 +2549,7 @@ const aaaInfo = () =&gt; {}
                 
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                         <a href="/zh-CN" class="flex items-center">
-                            <img src="../../..//assets/logo.png"
+                            <img src="/assets/logo.png"
                                  alt="DataCap"
                                  class="h-12">
                         </a>
@@ -2257,7 +2679,7 @@ const aaaInfo = () =&gt; {}
                 © 2024 DataCap All Rights Reserved. 使用 ❤️ <a href="https://pageforge.devlive.org" class="hover:text-blue-600" target="_blank">PageForge</a> 构建
 
                 
-                    <a href="https://datacap.devlive.org/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
+                    <a href="/sitemap.xml" target="_blank" class="ml-3 dark:hover:text-white hover:underline hover:text-blue-600">站点地图</a>
                 
             </span>
 
@@ -2313,7 +2735,7 @@ const aaaInfo = () =&gt; {}
     </script>
 
 
-<!-- 遮罩层 - 移动端菜单打开时显示 -->
+<!-- 遮罩层 -->
 
     <div class="md:hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-20 hidden"
          id="sidebar-overlay"
