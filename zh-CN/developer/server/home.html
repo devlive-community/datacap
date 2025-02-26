@@ -41,7 +41,8 @@
                     if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
                         version = pathParts[0];
                         lang = pathParts[1];
-                    } else {
+                    }
+                    else {
                         lang = pathParts[0];
                     }
                 }
@@ -60,7 +61,8 @@
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        } else {
+                        }
+                        else {
                             window.location.href = notFoundPath;
                         }
                     })
@@ -102,6 +104,9 @@
     
         <script src="https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js"></script>
     
+
+    <!-- KaTeX 数学公式 -->
+    
 </head>
 
 <body class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -115,9 +120,11 @@
         
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
-            <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
-            </div>
+            
+                <div class="text-blue-700 ">
+                    💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
+                </div>
+            
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
                 <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -1681,304 +1688,168 @@
     
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">.github</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: github 需要的一些 issues 模版，pull request 模版，还有一些 CI 自动化配置脚本等</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">.mvn</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: maven wapper 的配置</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">client</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: 客户端的相关源码</span>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-cli</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 命令行源码</span>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 相关配置</span>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">assembly</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 打包用到的各种配置</span>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">etc</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端配置文件</span>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">bin</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务启动脚本</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">conf</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务配置文件</span>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">plugins</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 插件配置文件</span>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">git-forks</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap fork 主仓库脚本</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">git-hook</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap git 本地提交相关 hook</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">proxy</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务部署代理配置</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">publish</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 用于发布的各脚本</span>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">core</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端核心源码</span>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-captcha</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 验证码源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-common</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 常用工具源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-parser</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap SQL 解析器源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-security</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 安全相关源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-server</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-service</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端服务源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-spi</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap 服务端 SPI 源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap-web</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> datacap Web 前端源码</span>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">docs</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 文档源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">driver</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 数据源驱动源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">executor</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 执行器源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">file</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 文件格式化转换器源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">fs</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 文件系统源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">lib</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 依赖包源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">notify</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 通知器源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">parser</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap sql 解析器源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">plugin</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 插件源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">scheduler</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 调度器源码</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">shaded</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: datacap 重制依赖源码</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -2243,7 +2114,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年2月24日 15:02</span>
+            <span>提交于 2025年2月26日 14:05</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2255,7 +2126,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年2月24日 15:02</span>
+            <span>修改于 2025年2月26日 14:05</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2268,11 +2139,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (0e0cc072)
+                    首次提交 (0f782f10)
                 </a>
             </div>
 
@@ -2284,11 +2155,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (0e0cc072)
+                    末次提交 (0f782f10)
                 </a>
             </div>
         

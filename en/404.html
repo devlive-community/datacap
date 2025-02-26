@@ -41,7 +41,8 @@
                     if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
                         version = pathParts[0];
                         lang = pathParts[1];
-                    } else {
+                    }
+                    else {
                         lang = pathParts[0];
                     }
                 }
@@ -60,7 +61,8 @@
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        } else {
+                        }
+                        else {
                             window.location.href = notFoundPath;
                         }
                     })
@@ -96,6 +98,9 @@
     
         <script src="https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js"></script>
     
+
+    <!-- KaTeX 数学公式 -->
+    
 </head>
 
 <body class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -109,9 +114,11 @@
         
     <div class="w-full bg-blue-50" data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
-            <div class="text-blue-700">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
-            </div>
+            
+                <div class="text-blue-700">
+                    💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
+                </div>
+            
             <button class="text-blue-500 hover:text-blue-700" data-banner-close>
                 <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/>

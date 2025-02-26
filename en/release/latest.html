@@ -41,7 +41,8 @@
                     if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
                         version = pathParts[0];
                         lang = pathParts[1];
-                    } else {
+                    }
+                    else {
                         lang = pathParts[0];
                     }
                 }
@@ -60,7 +61,8 @@
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        } else {
+                        }
+                        else {
                             window.location.href = notFoundPath;
                         }
                     })
@@ -102,6 +104,9 @@
     
         <script src="https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js"></script>
     
+
+    <!-- KaTeX 数学公式 -->
+    
 </head>
 
 <body class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -115,9 +120,11 @@
         
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
-            <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
-            </div>
+            
+                <div class="text-blue-700 ">
+                    💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
+                </div>
+            
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
                 <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -1813,126 +1820,58 @@
     </div>
         </div>
     
-        <ol class="my-4 pl-4 list-inside list-decimal">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]"><strong>
+        <ol class="my-4 pl-8 list-decimal">
+            <li class="mb-2 text-gray-700"><strong>
         <span class="text-base text-gray-700 leading-7 my-2">Database Enhancements (Implementations)</span>
     </strong>
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Added database management feature: You can create, delete, and switch databases</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Improved table management features: You can create, delete, and insert data</span>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]"><strong>
+    </li><li class="mb-2 text-gray-700"><strong>
         <span class="text-base text-gray-700 leading-7 my-2">MongoDB driver upgrade</span>
     </strong>
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Optimize query performance: Replace find with aggregate</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Added metadata support</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Supports com.dbschema.MongoJdbcDriver adaptation</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Improve version control and index fetching functions</span>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]"><strong>
+    </li><li class="mb-2 text-gray-700"><strong>
         <span class="text-base text-gray-700 leading-7 my-2">Workflow Engine Optimization</span>
     </strong>
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Added workflow task submission feature</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Workflow restart operations are supported</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Optimized the SeatTunnel executor to support custom node types</span>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]"><strong>
+    </li><li class="mb-2 text-gray-700"><strong>
         <span class="text-base text-gray-700 leading-7 my-2">SQL parser enhancements</span>
     </strong>
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Optimized the structure of G4 expressions</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Added support for SHOW statements</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Improve the formatting function of SELECT statements</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Support for CREATE DATABASE syntax</span>
-    </span>
-            </li>
+    </li>
         </ul>
-    </span>
-            </li>
+    </li>
         </ol>
     
         <div class="space-y-4"></div>
@@ -1943,32 +1882,16 @@
     </div>
         </div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Fixed the issue of creating query history</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Fixed the JSON conversion issue of the LocalDateTime type</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">The issue of historical data acquisition failure is fixed</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Optimized the acquisition of the Dameng database plug-in version</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -1979,26 +1902,14 @@
     </div>
         </div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Improved Windows platform support</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Optimized release scripts</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Optimize your CI/CD process</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -2009,40 +1920,18 @@
     </div>
         </div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">GitHub：</span>
-    
-        <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
-           href="https://github.com/devlive-community/datacap"
-           target="_self"
-           title="">
-            https://github.com/devlive-community/datacap
-        </a>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    <a href="https://github.com/devlive-community/datacap">
+        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap</span>
+    </a></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Official website: </span>
-    
-        <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
-           href="https://datacap.devlive.org/"
-           target="_self"
-           title="">
-            https://datacap.devlive.org/
-        </a>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    <a href="https://datacap.devlive.org/">
+        <span class="text-base text-gray-700 leading-7 my-2">https://datacap.devlive.org/</span>
+    </a></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Docker: The latest image has been updated</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -2067,7 +1956,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年2月24日 15:02</span>
+            <span>提交于 2025年2月26日 14:05</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2079,7 +1968,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年2月24日 15:02</span>
+            <span>修改于 2025年2月26日 14:05</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2092,11 +1981,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (0e0cc072)
+                    首次提交 (0f782f10)
                 </a>
             </div>
 
@@ -2108,11 +1997,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (0e0cc072)
+                    末次提交 (0f782f10)
                 </a>
             </div>
         

@@ -41,7 +41,8 @@
                     if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
                         version = pathParts[0];
                         lang = pathParts[1];
-                    } else {
+                    }
+                    else {
                         lang = pathParts[0];
                     }
                 }
@@ -60,7 +61,8 @@
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        } else {
+                        }
+                        else {
                             window.location.href = notFoundPath;
                         }
                     })
@@ -102,6 +104,9 @@
     
         <script src="https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js"></script>
     
+
+    <!-- KaTeX 数学公式 -->
+    
 </head>
 
 <body class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -115,9 +120,11 @@
         
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
-            <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
-            </div>
+            
+                <div class="text-blue-700 ">
+                    💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
+                </div>
+            
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
                 <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -1809,17 +1816,10 @@
     
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[User] Support upload avatar</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Source] Remove v1 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">saveAndUpdate</code>
@@ -1829,112 +1829,47 @@
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getInfo</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> fc</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Source] Replace </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getSource</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> fc</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Source] Add code and name column</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Source] Refactor metadata layout</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Source] Add database info to metadata</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Function] Fix error when converting undefined attribute in info</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Query] Remove old api</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Query] Fixed history data is null</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Snippet] Adapter base module</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Pipeline] Adapter base module</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Dashboard] Optimize the way to obtain the dashboard</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Dashboard] Add description</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Dashboard] Add default image</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Remove schema to configure</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Enable unified BaseEntity, BaseRepository, BaseController, BaseService</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Support </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">saveOrUpdate</code>
     
         <span class="text-base text-gray-700 leading-7 my-2"> method to set related values based on attributes</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Add info by code permission</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -1949,62 +1884,26 @@
     
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Layout] Optimize menu selection and highlight display</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Layout] Support parent menu selection highlighting display</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Layout] Add callback to 404 page</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Layout] Add redirect to 403 page</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Layout] Add redirect to network page</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[User] Fix loading status</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Add page loading progress</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Remove echarts</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Merge i18n</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -2019,44 +1918,20 @@
     
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Fix the problem of missing columns in data set construction</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Fixed info path</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Optimize query column transmission data problem that is too large</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Add permission to get columns</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Highlight indicator dimension container</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Replace id to code</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -2067,68 +1942,28 @@
     </div>
         </div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">[Line] Add title to line</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Remove unused component</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Merge configuration into editor</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Fix the problem that the configuration is not echoed</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Remove unused configure component</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Disable visualization without querying</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Add scatter chart</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Add radar chart</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Add funnel chart</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Add gauge chart</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -2143,20 +1978,12 @@
     
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Replace schema path</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Repair docker compose image and change example address</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         </div>
@@ -2177,7 +2004,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年2月24日 15:02</span>
+            <span>提交于 2025年2月26日 14:05</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2189,7 +2016,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年2月24日 15:02</span>
+            <span>修改于 2025年2月26日 14:05</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2202,11 +2029,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (0e0cc072)
+                    首次提交 (0f782f10)
                 </a>
             </div>
 
@@ -2218,11 +2045,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (0e0cc072)
+                    末次提交 (0f782f10)
                 </a>
             </div>
         

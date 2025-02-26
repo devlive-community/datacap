@@ -41,7 +41,8 @@
                     if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
                         version = pathParts[0];
                         lang = pathParts[1];
-                    } else {
+                    }
+                    else {
                         lang = pathParts[0];
                     }
                 }
@@ -60,7 +61,8 @@
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        } else {
+                        }
+                        else {
                             window.location.href = notFoundPath;
                         }
                     })
@@ -102,6 +104,9 @@
     
         <script src="https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js"></script>
     
+
+    <!-- KaTeX 数学公式 -->
+    
 </head>
 
 <body class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -115,9 +120,11 @@
         
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
-            <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
-            </div>
+            
+                <div class="text-blue-700 ">
+                    💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
+                </div>
+            
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
                 <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -2954,25 +2961,17 @@
     
         <div class="space-y-4"></div>
     
-        <ol class="my-4 pl-4 list-inside list-decimal">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ol class="my-4 pl-8 list-decimal">
+            <li class="mb-2 text-gray-700">
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="../../download.md"
            target="_self"
            title="">
             Download the latest release version
         </a>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Run the following command after downloading the binaries locally</span>
-    </span>
-            </li>
+    </li>
         </ol>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
@@ -2994,14 +2993,10 @@
                 </div>
             </div>
         </div>
-        <ol class="my-4 pl-4 list-inside list-decimal">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ol class="my-4 pl-8 list-decimal">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">Go to the root directory of the software</span>
-    </span>
-            </li>
+    </li>
         </ol>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
@@ -3119,64 +3114,36 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">server.port</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: The port on which the service initiates the listener on the server</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">server.address</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Configure the local listening address of the service</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.jackson.time-zone</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the time zone</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.jackson.date-format</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the date format</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.security.secret</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: The key used to configure data security management</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.security.expiration</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: The expiration time for configuring data security management</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.editor.sugs.maxSize</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the maximum number of rows in the data editor</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3210,32 +3177,20 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.mvc.throw-exception-if-no-handler-found</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Used to configure whether an exception is thrown</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.resources.add-mappings</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure whether to enable static resource mapping</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.web.resources.add-mappings</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure whether to enable static resource mapping</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3293,32 +3248,20 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.datasource.url</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the database connection address</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.datasource.username</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the database username</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.datasource.password</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the database password</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3373,40 +3316,24 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.data</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the data buffer path of the actuator</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.way</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: It is used to configure the execution mode of the actuator, and different actuators have different execution methods</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.mode</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: It is used to configure the execution mode of the actuator, different actuators have different execution modes</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.seatunnel.home</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: The Apache Seatunnel home directory used to configure the executor</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3439,24 +3366,16 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.config.data</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: The path used to configure the upload profile</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.cache.data</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the path to upload the cache file</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3491,40 +3410,24 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.backend</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Used to configure OpenAI's backend address</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.token</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: The token used to configure OpenAI</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.model</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: The model used to configure OpenAI</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.timeout</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the timeout period for OpenAI</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3560,48 +3463,28 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.registration.enable</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Used to configure whether to enable registration</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.captcha.enable</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: This parameter is used to configure whether to enable the verification code</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.cache.maximum</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the maximum cache value</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.cache.expiration</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the cache expiration time</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.audit.sql.print</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: This parameter is used to configure whether to print SQL statements</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3635,32 +3518,20 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.pipeline.maxRunning</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the maximum number of runs</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.pipeline.maxQueue</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the maximum queue</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.pipeline.reset</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure a reset policy</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3679,32 +3550,20 @@
     
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Local</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: local storage</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">AliOss</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Alibaba Cloud OSS</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Qiniu</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Qiniu Cloud</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3740,50 +3599,30 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.type</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: used to configure the file system type</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.access</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: used to configure file system access, this type can be empty</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.secret</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: used to configure the file system key, this type can be empty</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.endpoint</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: used to configure the file system endpoint. If filled in, it will be appended as a directory </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">This type can be empty</span>
-    </strong></span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </strong></li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.bucket</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: used to configure the file system bucket, this type can be empty</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3819,16 +3658,12 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.type</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: AliOss</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3864,16 +3699,12 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.type</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Qiniu</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -3907,32 +3738,20 @@
         </div>
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.experimental.autoLimit</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: This parameter specifies whether to automatically increase the LIMIT</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.experimental.data</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: The data path used to configure the experimental feature</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.experimental.avatarPath</code>
     
         <span class="text-base text-gray-700 leading-7 my-2">: Avatar path to configure experimental features</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -4095,7 +3914,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年2月24日 15:02</span>
+            <span>提交于 2025年2月26日 14:05</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -4107,7 +3926,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年2月24日 15:02</span>
+            <span>修改于 2025年2月26日 14:05</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -4120,11 +3939,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (0e0cc072)
+                    首次提交 (0f782f10)
                 </a>
             </div>
 
@@ -4136,11 +3955,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (0e0cc072)
+                    末次提交 (0f782f10)
                 </a>
             </div>
         

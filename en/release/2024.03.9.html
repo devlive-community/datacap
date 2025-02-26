@@ -41,7 +41,8 @@
                     if (/^\d+\.\d+(\.\d+)?$/.test(pathParts[0]) || pathParts[0] === 'current') {
                         version = pathParts[0];
                         lang = pathParts[1];
-                    } else {
+                    }
+                    else {
                         lang = pathParts[0];
                     }
                 }
@@ -60,7 +61,8 @@
                     .then(response => {
                         if (response.ok) {
                             window.location.href = href;
-                        } else {
+                        }
+                        else {
                             window.location.href = notFoundPath;
                         }
                     })
@@ -102,6 +104,9 @@
     
         <script src="https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js"></script>
     
+
+    <!-- KaTeX 数学公式 -->
+    
 </head>
 
 <body class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -115,9 +120,11 @@
         
     <div class="w-full bg-blue-50 " data-banner>
         <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
-            <div class="text-blue-700 ">
-                💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
-            </div>
+            
+                <div class="text-blue-700 ">
+                    💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2024.4.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
+                </div>
+            
             <button class="text-blue-500 hover:text-blue-700 "
                     data-banner-close>
                 <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -1809,32 +1816,16 @@
     
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">修复 maven 发布 CI</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">修复包缺少文件导致启动失败的问题</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">修复构建数据集不携带查询 SQL 的问题</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">修复数据集未携带 injector 导致构建失败的问题</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -1849,20 +1840,12 @@
     
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">支持腾讯 COS</span>
-    </span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">支持 Amazon S3</span>
-    </span>
-            </li>
+    </li>
         </ul>
     
         <div class="space-y-4"></div>
@@ -1877,11 +1860,8 @@
     
         <div class="space-y-4"></div>
     
-        <ul class="my-4 pl-4 list-inside list-disc">
-            
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+        <ul class="my-4 pl-8 list-disc">
+            <li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">升级 UI </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">braces</code>
@@ -1893,11 +1873,7 @@
         <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">3.0.3</span>
-    </strong></span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </strong></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">升级 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">org.apache.kyuubi:kyuubi-hive-jdbc-shaded</code>
@@ -1909,11 +1885,7 @@
         <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">1.9.2</span>
-    </strong></span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </strong></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">升级 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">org.apache.maven.plugins:maven-compiler-plugin</code>
@@ -1925,11 +1897,7 @@
         <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">3.13.0</span>
-    </strong></span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </strong></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">升级 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">testcontainers.version</code>
@@ -1941,11 +1909,7 @@
         <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">1.20.1</span>
-    </strong></span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </strong></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">升级 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">org.apache.maven.plugins:maven-javadoc-plugin</code>
@@ -1957,11 +1921,7 @@
         <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">3.8.0</span>
-    </strong></span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </strong></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">升级 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">jackson.version</code>
@@ -1973,11 +1933,7 @@
         <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">2.17.2</span>
-    </strong></span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </strong></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">升级 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">org.elasticsearch.plugin:x-pack-sql-jdbc</code>
@@ -1989,11 +1945,7 @@
         <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">8.15.0</span>
-    </strong></span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </strong></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">升级 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">org.apache.commons:commons-csv</code>
@@ -2005,11 +1957,7 @@
         <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">1.11.0</span>
-    </strong></span>
-            </li>
-            <li class="mb-2 flex gap-2 text-gray-700 leading-relaxed hover:text-gray-900">
-                <span class="text-gray-600 text-xl select-none w-4">•</span>
-                <span class="flex-1 w-[calc(100%-1rem)]">
+    </strong></li><li class="mb-2 text-gray-700">
         <span class="text-base text-gray-700 leading-7 my-2">升级 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">monetdb:monetdb-jdbc</code>
@@ -2021,8 +1969,7 @@
         <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
     <strong>
         <span class="text-base text-gray-700 leading-7 my-2">11.19.15</span>
-    </strong></span>
-            </li>
+    </strong></li>
         </ul>
     
         </div>
@@ -2043,7 +1990,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年2月24日 15:02</span>
+            <span>提交于 2025年2月26日 14:05</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2055,7 +2002,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年2月24日 15:02</span>
+            <span>修改于 2025年2月26日 14:05</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2068,11 +2015,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (0e0cc072)
+                    首次提交 (0f782f10)
                 </a>
             </div>
 
@@ -2084,11 +2031,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/0e0cc072a0ece5d5e2dbe7c380ebb86fd6f68c4e"
+                <a href="https://github.com/devlive-community/datacap/commit/0f782f10aa804b2cb6d8c8d26a167ed5258b799e"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (0e0cc072)
+                    末次提交 (0f782f10)
                 </a>
             </div>
         
