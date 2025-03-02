@@ -316,7 +316,12 @@
         <priority>0.5</priority>
     </url>
     <url>
-        <loc>https://datacap.devlive.org/en/release/latest.html</loc>
+        <loc>https://datacap.devlive.org/en/release/2025.1.0.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://datacap.devlive.org/en/release/2024.4.1.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
     </url>
@@ -1001,7 +1006,12 @@
         <priority>0.5</priority>
     </url>
     <url>
-        <loc>https://datacap.devlive.org/zh-CN/release/latest.html</loc>
+        <loc>https://datacap.devlive.org/zh-CN/release/2025.1.0.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://datacap.devlive.org/zh-CN/release/2024.4.1.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
     </url>
