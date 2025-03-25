@@ -116,11 +116,6 @@
         <priority>0.5</priority>
     </url>
     <url>
-        <loc>https://datacap.devlive.org/en/reference/manager/pipeline/home.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
         <loc>https://datacap.devlive.org/en/reference/manager/report/home.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
@@ -546,11 +541,6 @@
         <priority>0.5</priority>
     </url>
     <url>
-        <loc>https://datacap.devlive.org/en/developer/pipeline/home.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
         <loc>https://datacap.devlive.org/en/api/common/response.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
@@ -802,11 +792,6 @@
     </url>
     <url>
         <loc>https://datacap.devlive.org/zh-CN/reference/manager/history/query/home.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://datacap.devlive.org/zh-CN/reference/manager/pipeline/home.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
     </url>
@@ -1232,11 +1217,6 @@
     </url>
     <url>
         <loc>https://datacap.devlive.org/zh-CN/developer/notify/kotlin/home.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://datacap.devlive.org/zh-CN/developer/pipeline/home.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
     </url>
