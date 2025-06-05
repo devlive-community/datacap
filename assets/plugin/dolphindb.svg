@@ -1,0 +1,33 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <radialGradient id="gradient1" cx="50%" cy="50%" r="75%">
+            <stop offset="0" stop-color="#00a0cd" />
+            <stop offset="0.42" stop-color="#009199" />
+            <stop offset="1" stop-color="#1e247e" />
+        </radialGradient>
+        <clipPath id="clip-path">
+            <path d="M35.49,0h-30L0,76.38H30c12.31,0,23-10.28,23.94-23L56.14,23C57,10.28,47.8,0,35.49,0Z" />
+        </clipPath>
+    </defs>
+
+    <!-- Background circle -->
+    <circle cx="100" cy="100" r="100" fill="#F5F8FA" />
+
+    <!-- Border circle -->
+    <circle cx="100" cy="100" r="100" fill="none" stroke="#E1E8ED" stroke-width="2" />
+
+    <!-- DolphinDB Logo scaled and positioned -->
+    <g transform="translate(50, 30) scale(1.8)">
+        <!-- Main D shape with gradient -->
+        <path d="M35.46 0H5.58l-5.44 76H30c12.25 0 22.92-10.23 23.82-22.85L56 23.07C56.91 10.42 47.71 0 35.46 0Z"
+              fill="url(#gradient1)" />
+
+        <!-- White dolphin shape -->
+        <path d="M48.18,39.14c-.87-3.43,7.71-1.87,4.42-4.26s-8.39.73-14.38-2.28-16.4-6.54-21.14-6.29-3.14,3.39-6.41,3.24S7.46,31,7.46,31c0,.89,4.13,1.62,4.59,1.68s9.55,1.9,12.77,8.58a18.7,18.7,0,0,0,7.85,8.64c.18.09,0-.25-.1-.49a57.48,57.48,0,0,1-2.39-6.07c-.05-.13.07-.15.14-.13A29.9,29.9,0,0,1,43,51.15c2,2.09,6.19,9.34,4.12,15.36a15.5,15.5,0,0,1-7.5,8.22A25.19,25.19,0,0,0,54,54.92c-.07-.54-.15-1.08-.24-1.61C52.52,46.62,49.06,42.56,48.18,39.14Z"
+              fill="#ffffff" />
+
+        <!-- Additional dolphin elements -->
+        <path d="M39.65,74.73a22.59,22.59,0,0,1-9.48,2.1A20.3,20.3,0,0,0,39.65,74.73Z"
+              fill="#ffffff" />
+    </g>
+</svg>

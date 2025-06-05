@@ -136,6 +136,11 @@
         <priority>0.5</priority>
     </url>
     <url>
+        <loc>https://datacap.devlive.org/en/reference/connectors/dolphindb/home.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
         <loc>https://datacap.devlive.org/en/reference/connectors/influxdb/home.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
@@ -812,6 +817,11 @@
     </url>
     <url>
         <loc>https://datacap.devlive.org/zh-CN/reference/system/menu/home.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://datacap.devlive.org/zh-CN/reference/connectors/dolphindb/home.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
     </url>

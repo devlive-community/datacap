@@ -162,6 +162,12 @@
     "lang": "en"
   },
   {
+    "title": "DolphinDB",
+    "content": "由高性能时间序列数据库提供支持的分析和流处理实时平台。 --- DataCap 整合 DolphinDB 模块，用于实现对 DolphinDB 数据源的数据操作。 在该模块中我们使用的是 com.dolphindb 依赖，版本为 3.00.2.0。 使用到的驱动器为 com.dolphindb.jdbc.Driver。 --- | 操作 | 是否支持 | |:--------:|:----:| | SELECT | ✅ | > 所有驱动器支持的操作均支持。 --- !!! note 如果需要使用该数据源，需要将 DataCap 服务升级到 >= 2025.1.1 !!! --- !!! note 如果您的服务版本需要其他特殊配置，请参考修改配置文件并重启 DataCap 服务。 !!! ::: tabs === \"基本配置\" | 属性 | 是否必要 | 默认值 | 备注 | |---|---|---|---| | 名称 | ✅ | - |-| | 主机地址 | ✅ | 127.0.0.1 | - | | 端口 | ✅ | 8848 | - | === \"授权配置\" | 属性 | 是否必要 | 默认值 | |---|---|---| | 用户名 | ❌ | - | | 密码 | ❌ | - | === \"自定义\" > 可以添加所有 DolphinDB 驱动支持的配置，方式为 key = value 默认: | 属性 | 默认值 | |---|---| | database | default | :::",
+    "url": "https://datacap.devlive.org/en/reference/connectors/dolphindb/home.html",
+    "lang": "en"
+  },
+  {
     "title": "InfluxDB",
     "content": "InfluxDB 是一个由 InfluxData 开发的开源时序型数据库。它由 Go 写成，着力于高性能地查询与存储时序型数据。InfluxDB 被广泛应用于存储系统的监控数据。 --- DataCap 整合 InfluxDB 模块，用于实现对 InfluxDB 数据源的数据操作。 在该模块中我们使用的是 influxdb-jdbc 依赖，版本为 0.2.6。 使用到的驱动器为 net.suteren.jdbc.influxdb.InfluxDbDriver。 驱动源码可参考：https://github.com/konikvranik/jdbc-influxdb/ --- | 操作 | 是否支持 | |:--------:|:----:| | SELECT | ✅ | > 所有驱动器支持的操作均支持。 --- !!! note 如果需要使用该数据源，需要将 DataCap 服务升级到 >= 2024.03.7 !!! 支持时间: 2024-06-26 --- !!! note 如果您的服务版本需要其他特殊配置，请参考修改配置文件并重启 DataCap 服务。 !!! ::: tabs === \"基本配置\" | 属性 | 是否必要 | 默认值 | 备注 | |---|---|---|---| | 名称 | ✅ | - |-| | 主机地址 | ✅ | 127.0.0.1 | - | | 端口 | ✅ | 8086 | - | === \"授权配置\" | 属性 | 是否必要 | 默认值 | |---|---|---| | 用户名 | ❌ | - | | 密码 | ❌ | - | === \"自定义\" > 可以添加所有 InfluxDB 驱动支持的配置，方式为 key = value 默认: | 属性 | 默认值 | |---|---| | database | default | :::",
     "url": "https://datacap.devlive.org/en/reference/connectors/influxdb/home.html",
@@ -975,6 +981,12 @@
     "title": "菜单",
     "content": "鼠标移向顶部菜单的 Admin 标识下，会弹出下拉框，点击下拉框中的 Menu 子菜单。弹出类似如下窗口，默认列表为空，通过查询页面进行查询即可自动添加记录。 !img.png --- 点击列表展示区域的右侧添加按钮（它是一个 + 图标），点击后将弹出如下添加数据源窗口 !img1.png 填写完以上内容后，点击底部的 Submit 按钮保存代码片段。 !!! note 数据保存后，数据源列表会自动刷新。 !!! --- 点击列表中某个数据中 Action 中的第一个按钮，会弹出修改窗口，它和新建菜单一致。",
     "url": "https://datacap.devlive.org/zh-CN/reference/system/menu/home.html",
+    "lang": "zh-CN"
+  },
+  {
+    "title": "DolphinDB",
+    "content": "由高性能时间序列数据库提供支持的分析和流处理实时平台。 --- DataCap 整合 DolphinDB 模块，用于实现对 DolphinDB 数据源的数据操作。 在该模块中我们使用的是 com.dolphindb 依赖，版本为 3.00.2.0。 使用到的驱动器为 com.dolphindb.jdbc.Driver。 --- | 操作 | 是否支持 | |:--------:|:----:| | SELECT | ✅ | > 所有驱动器支持的操作均支持。 --- !!! note 如果需要使用该数据源，需要将 DataCap 服务升级到 >= 2025.1.1 !!! --- !!! note 如果您的服务版本需要其他特殊配置，请参考修改配置文件并重启 DataCap 服务。 !!! ::: tabs === \"基本配置\" | 属性 | 是否必要 | 默认值 | 备注 | |---|---|---|---| | 名称 | ✅ | - |-| | 主机地址 | ✅ | 127.0.0.1 | - | | 端口 | ✅ | 8848 | - | === \"授权配置\" | 属性 | 是否必要 | 默认值 | |---|---|---| | 用户名 | ❌ | - | | 密码 | ❌ | - | === \"自定义\" > 可以添加所有 DolphinDB 驱动支持的配置，方式为 key = value 默认: | 属性 | 默认值 | |---|---| | database | default | :::",
+    "url": "https://datacap.devlive.org/zh-CN/reference/connectors/dolphindb/home.html",
     "lang": "zh-CN"
   },
   {
