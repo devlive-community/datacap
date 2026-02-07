@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -1281,7 +1322,7 @@
                     +
                 
                 
-                    4338 词
+                    4089 词
                 
             </span>
         
@@ -1301,7 +1342,7 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">本文档主要用来介绍 DataCap 服务端和 UI 端的开发规范。</span>
+        <span class="leading-7">本文档主要用来介绍 DataCap 服务端和 UI 端的开发规范。</span>
     
         <div class="space-y-4"></div>
     
@@ -1317,7 +1358,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">请仔细阅读该开发规范，并且遵守该规范，否则可能导致服务端和 UI 端的代码提交无法审核通过。</span>
+        <span class="leading-7">请仔细阅读该开发规范，并且遵守该规范，否则可能导致服务端和 UI 端的代码提交无法审核通过。</span>
     
                 </div>
             </div>
@@ -1325,13 +1366,13 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="dai-ma-ti-jiao-gui-fan" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">代码提交规范</span>
-    </div>
-        </div>
+        <h2 id="dai-ma-ti-jiao-gui-fan">
+            
+        <span class="leading-7">代码提交规范</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">我们使用严格的提交信息格式：</span>
+        </h2>
+    
+        <span class="leading-7">我们使用严格的提交信息格式：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             
@@ -1358,7 +1399,7 @@
         </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">类型必须是以下之一：</span>
+        <span class="leading-7">类型必须是以下之一：</span>
     
         <div class="space-y-4"></div>
     
@@ -1366,49 +1407,49 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">feat</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 新功能</span>
+        <span class="leading-7">: 新功能</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">fix</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Bug 修复</span>
+        <span class="leading-7">: Bug 修复</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">docs</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 仅文档更改</span>
+        <span class="leading-7">: 仅文档更改</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">style</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 不影响代码含义的更改（空格、格式化等）</span>
+        <span class="leading-7">: 不影响代码含义的更改（空格、格式化等）</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">refactor</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 既不修复错误也不添加功能的代码更改</span>
+        <span class="leading-7">: 既不修复错误也不添加功能的代码更改</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">perf</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 提高性能的代码更改</span>
+        <span class="leading-7">: 提高性能的代码更改</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">test</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 添加或修正测试</span>
+        <span class="leading-7">: 添加或修正测试</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">chore</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 构建过程或辅助工具的变动</span>
+        <span class="leading-7">: 构建过程或辅助工具的变动</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">revert</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 撤销之前的提交</span>
+        <span class="leading-7">: 撤销之前的提交</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">范围应该是受影响的模块名称。</span>
+        <span class="leading-7">范围应该是受影响的模块名称。</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">示例：</span>
+        <span class="leading-7">示例：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             
@@ -1439,11 +1480,11 @@ close (#123)</code></pre>
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="qian-duan-dai-ma-gui-fan" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">前端代码规范</span>
-    </div>
-        </div>
+        <h2 id="qian-duan-dai-ma-gui-fan">
+            
+        <span class="leading-7">前端代码规范</span>
+    
+        </h2>
     
         <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
         
@@ -1457,15 +1498,15 @@ close (#123)</code></pre>
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">所有的 </span>
+        <span class="leading-7">所有的 </span>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">组件</span>
+        <span class="leading-7">组件</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+        <span class="leading-7"> | </span>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">字段名</span>
+        <span class="leading-7">字段名</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2"> 必须都以驼峰命名法命名</span>
+        <span class="leading-7"> 必须都以驼峰命名法命名</span>
     
                 </div>
             </div>
@@ -1527,11 +1568,11 @@ close (#123)</code></pre>
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="yuan-su-ming-ming" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">元素命名</span>
-    </div>
-        </div>
+        <h3 id="yuan-su-ming-ming">
+            
+        <span class="leading-7">元素命名</span>
+    
+        </h3>
     
         <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
         
@@ -1545,19 +1586,19 @@ close (#123)</code></pre>
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">组件命名必须以 </span>
+        <span class="leading-7">组件命名必须以 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Shadcn</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 开头，如 </span>
+        <span class="leading-7"> 开头，如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ShadcnButton</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">、</span>
+        <span class="leading-7">、</span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ShadcnInput</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">、</span>
+        <span class="leading-7">、</span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ShadcnSpace</code>
     
@@ -1629,11 +1670,11 @@ close (#123)</code></pre>
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">属性命名首字母必须小写，如 </span>
+        <span class="leading-7">属性命名首字母必须小写，如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">size</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">，多个单词必须已驼峰命名法命名，如 </span>
+        <span class="leading-7">，多个单词必须已驼峰命名法命名，如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">showName</code>
     
@@ -1706,7 +1747,7 @@ close (#123)</code></pre>
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">函数名必须符合以下规范</span>
+        <span class="leading-7">函数名必须符合以下规范</span>
     
                 </div>
             </div>
@@ -1716,27 +1757,27 @@ close (#123)</code></pre>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">处理函数必须以 </span>
+        <span class="leading-7">处理函数必须以 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">handle</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 开头，如 </span>
+        <span class="leading-7"> 开头，如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">handleChangeInfo</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">回调函数必须以 </span>
+        <span class="leading-7">回调函数必须以 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">on</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 开头，如 </span>
+        <span class="leading-7"> 开头，如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">onChange</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">涉及到弹出层的函数必须以 </span>
+        <span class="leading-7">涉及到弹出层的函数必须以 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">visible</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 开头，如 </span>
+        <span class="leading-7"> 开头，如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">visibleInfo</code>
     </li>
@@ -1798,11 +1839,11 @@ close (#123)</code></pre>
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="zu-jian-huan-hang" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">组件换行</span>
-    </div>
-        </div>
+        <h3 id="zu-jian-huan-hang">
+            
+        <span class="leading-7">组件换行</span>
+    
+        </h3>
     
         <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
         
@@ -1816,7 +1857,7 @@ close (#123)</code></pre>
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">多个组件内必须以新行分割</span>
+        <span class="leading-7">多个组件内必须以新行分割</span>
     
                 </div>
             </div>
@@ -1893,11 +1934,11 @@ close (#123)</code></pre>
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="shu-xing-pai-xu" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">属性排序</span>
-    </div>
-        </div>
+        <h3 id="shu-xing-pai-xu">
+            
+        <span class="leading-7">属性排序</span>
+    
+        </h3>
     
         <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
         
@@ -1911,7 +1952,7 @@ close (#123)</code></pre>
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">请保证属性的顺序，以便于后续的维护</span>
+        <span class="leading-7">请保证属性的顺序，以便于后续的维护</span>
     
                 </div>
             </div>
@@ -1919,35 +1960,35 @@ close (#123)</code></pre>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">多属性的正常顺序是</span>
+        <span class="leading-7">多属性的正常顺序是</span>
     
         <div class="space-y-4"></div>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">系统属性 (必须都在第一位，如 </span>
+        <span class="leading-7">系统属性 (必须都在第一位，如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">v-model</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">固定属性 (如 </span>
+        <span class="leading-7">固定属性 (如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">show-total</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">动态变量 (如 </span>
+        <span class="leading-7">动态变量 (如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">:page-size="pageSize"</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">动态事件 (如 </span>
+        <span class="leading-7">动态事件 (如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">@on-change="onPageChange"</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li>
         </ul>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
@@ -1999,11 +2040,11 @@ close (#123)</code></pre>
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="shu-xing-huan-hang" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">属性换行</span>
-    </div>
-        </div>
+        <h3 id="shu-xing-huan-hang">
+            
+        <span class="leading-7">属性换行</span>
+    
+        </h3>
     
         <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
         
@@ -2017,7 +2058,7 @@ close (#123)</code></pre>
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">多个属性且超过 3 个必须以新行分割</span>
+        <span class="leading-7">多个属性且超过 3 个必须以新行分割</span>
     
                 </div>
             </div>
@@ -2096,7 +2137,7 @@ close (#123)</code></pre>
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2108,7 +2149,7 @@ close (#123)</code></pre>
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2121,11 +2162,11 @@ close (#123)</code></pre>
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -2137,11 +2178,11 @@ close (#123)</code></pre>
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -2247,7 +2288,7 @@ close (#123)</code></pre>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="dai-ma-ti-jiao-gui-fan">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">代码提交规范</span>
+        <span class="leading-7">代码提交规范</span>
     
                             </a>
                         </div>
@@ -2258,7 +2299,7 @@ close (#123)</code></pre>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="qian-duan-dai-ma-gui-fan">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">前端代码规范</span>
+        <span class="leading-7">前端代码规范</span>
     
                             </a>
                         </div>
@@ -2270,7 +2311,7 @@ close (#123)</code></pre>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="yuan-su-ming-ming">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">元素命名</span>
+        <span class="leading-7">元素命名</span>
     
                             </a>
                         </div>
@@ -2281,7 +2322,7 @@ close (#123)</code></pre>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="zu-jian-huan-hang">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">组件换行</span>
+        <span class="leading-7">组件换行</span>
     
                             </a>
                         </div>
@@ -2292,7 +2333,7 @@ close (#123)</code></pre>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="shu-xing-pai-xu">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">属性排序</span>
+        <span class="leading-7">属性排序</span>
     
                             </a>
                         </div>
@@ -2303,7 +2344,7 @@ close (#123)</code></pre>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="shu-xing-huan-hang">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">属性换行</span>
+        <span class="leading-7">属性换行</span>
     
                             </a>
                         </div>
@@ -2352,7 +2393,7 @@ close (#123)</code></pre>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="dai-ma-ti-jiao-gui-fan">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">代码提交规范</span>
+        <span class="leading-7">代码提交规范</span>
     
                         </a>
                     </div>
@@ -2363,7 +2404,7 @@ close (#123)</code></pre>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="qian-duan-dai-ma-gui-fan">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">前端代码规范</span>
+        <span class="leading-7">前端代码规范</span>
     
                         </a>
                     </div>
@@ -2375,7 +2416,7 @@ close (#123)</code></pre>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="yuan-su-ming-ming">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">元素命名</span>
+        <span class="leading-7">元素命名</span>
     
                         </a>
                     </div>
@@ -2386,7 +2427,7 @@ close (#123)</code></pre>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="zu-jian-huan-hang">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">组件换行</span>
+        <span class="leading-7">组件换行</span>
     
                         </a>
                     </div>
@@ -2397,7 +2438,7 @@ close (#123)</code></pre>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="shu-xing-pai-xu">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">属性排序</span>
+        <span class="leading-7">属性排序</span>
     
                         </a>
                     </div>
@@ -2408,7 +2449,7 @@ close (#123)</code></pre>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="shu-xing-huan-hang">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">属性换行</span>
+        <span class="leading-7">属性换行</span>
     
                         </a>
                     </div>

@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -1807,14 +1848,14 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <span>10 分钟阅读</span>
+        <span>5 分钟阅读</span>
         
             <span class="mx-1">•</span>
             <span>
                 
                 
                 
-                    1204 词
+                    972 词
                 
             </span>
         
@@ -1846,7 +1887,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">The current release involves several major updates.</span>
+        <span class="leading-7">The current release involves several major updates.</span>
     
                 </div>
             </div>
@@ -1862,7 +1903,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1872,7 +1913,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1882,7 +1923,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1892,7 +1933,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1902,7 +1943,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1912,11 +1953,11 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap is released</span>
+        <span class="leading-7">DataCap is released</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1926,7 +1967,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1936,7 +1977,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1946,7 +1987,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1956,7 +1997,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1966,7 +2007,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1986,13 +2027,13 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Release Version</span>
+        <span class="leading-7">Release Version</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Release Time</span>
+        <span class="leading-7">Release Time</span>
     
                                 </th>
                             
@@ -2023,11 +2064,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="General" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">General</span>
-    </div>
-        </div>
+        <h4 id="General">
+            
+        <span class="leading-7">General</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2035,29 +2076,29 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fix the issue where the data source check task returns an empty</span>
+        <span class="leading-7">Fix the issue where the data source check task returns an empty</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add captcha</span>
+        <span class="leading-7">Add captcha</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support login verification code</span>
+        <span class="leading-7">Support login verification code</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Automatic refresh of verification code failure is supported</span>
+        <span class="leading-7">Automatic refresh of verification code failure is supported</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support signup verification code</span>
+        <span class="leading-7">Support signup verification code</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support signup enable</span>
+        <span class="leading-7">Support signup enable</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Move etc to configure</span>
+        <span class="leading-7">Move etc to configure</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Web" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Web</span>
-    </div>
-        </div>
+        <h4 id="Web">
+            
+        <span class="leading-7">Web</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2065,23 +2106,23 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed empty editor destruction exception</span>
+        <span class="leading-7">Fixed empty editor destruction exception</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Global public page adds layout</span>
+        <span class="leading-7">Global public page adds layout</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed the profile page error</span>
+        <span class="leading-7">Fixed the profile page error</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed the abnormal login page style</span>
+        <span class="leading-7">Fixed the abnormal login page style</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="PipelineApacheSeatunnel" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Pipeline (Apache Seatunnel)</span>
-    </div>
-        </div>
+        <h4 id="PipelineApacheSeatunnel">
+            
+        <span class="leading-7">Pipeline (Apache Seatunnel)</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2089,47 +2130,47 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support kafka source and sink</span>
+        <span class="leading-7">Support kafka source and sink</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support delete</span>
+        <span class="leading-7">Support delete</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Build pipeline page</span>
+        <span class="leading-7">Build pipeline page</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support submit</span>
+        <span class="leading-7">Support submit</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support SWITCH field type</span>
+        <span class="leading-7">Support SWITCH field type</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add executor logo</span>
+        <span class="leading-7">Add executor logo</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Supports traffic limiting queuing</span>
+        <span class="leading-7">Supports traffic limiting queuing</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support stop</span>
+        <span class="leading-7">Support stop</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Reset the pipeline when the service restarts</span>
+        <span class="leading-7">Reset the pipeline when the service restarts</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add logging interface and optimize UI</span>
+        <span class="leading-7">Add logging interface and optimize UI</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support field description</span>
+        <span class="leading-7">Support field description</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support field select type</span>
+        <span class="leading-7">Support field select type</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support field checker</span>
+        <span class="leading-7">Support field checker</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support field array</span>
+        <span class="leading-7">Support field array</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support redis sink</span>
+        <span class="leading-7">Support redis sink</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Supports specifying the runtime mechanism</span>
+        <span class="leading-7">Supports specifying the runtime mechanism</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Dependencies" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Dependencies</span>
-    </div>
-        </div>
+        <h4 id="Dependencies">
+            
+        <span class="leading-7">Dependencies</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2137,23 +2178,23 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump com.google.guava:guava from 31.1-jre to 32.1.2-jre</span>
+        <span class="leading-7">Bump com.google.guava:guava from 31.1-jre to 32.1.2-jre</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump org.devlive.sdk:openai-java-sdk from 1.5.0 to 1.9.0</span>
+        <span class="leading-7">Bump org.devlive.sdk:openai-java-sdk from 1.5.0 to 1.9.0</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump com.h2database:h2 from 2.1.214 to 2.2.220</span>
+        <span class="leading-7">Bump com.h2database:h2 from 2.1.214 to 2.2.220</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump org.projectlombok:lombok from 1.18.24 to 1.18.28</span>
+        <span class="leading-7">Bump org.projectlombok:lombok from 1.18.24 to 1.18.28</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump org.apache.kafka:kafka-clients from 2.8.0 to 2.8.1</span>
+        <span class="leading-7">Bump org.apache.kafka:kafka-clients from 2.8.0 to 2.8.1</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump org.duckdb:duckdb_jdbc from 0.7.0 to 0.8.1</span>
+        <span class="leading-7">Bump org.duckdb:duckdb_jdbc from 0.7.0 to 0.8.1</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump com.github.eirslett:frontend-maven-plugin from 1.12.1 to 1.13.4</span>
+        <span class="leading-7">Bump com.github.eirslett:frontend-maven-plugin from 1.12.1 to 1.13.4</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump kotlin.version from 1.8.20 to 1.9.10</span>
+        <span class="leading-7">Bump kotlin.version from 1.8.20 to 1.9.10</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump org.sonatype.plugins:nexus-staging-maven-plugin from 1.6 to 1.6.13</span>
+        <span class="leading-7">Bump org.sonatype.plugins:nexus-staging-maven-plugin from 1.6 to 1.6.13</span>
     </li>
         </ul>
     
@@ -2175,7 +2216,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2187,7 +2228,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2200,11 +2241,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -2216,11 +2257,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -2326,7 +2367,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="General">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">General</span>
+        <span class="leading-7">General</span>
     
                             </a>
                         </div>
@@ -2337,7 +2378,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Web">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Web</span>
+        <span class="leading-7">Web</span>
     
                             </a>
                         </div>
@@ -2348,7 +2389,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="PipelineApacheSeatunnel">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Pipeline (Apache Seatunnel)</span>
+        <span class="leading-7">Pipeline (Apache Seatunnel)</span>
     
                             </a>
                         </div>
@@ -2359,7 +2400,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Dependencies">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Dependencies</span>
+        <span class="leading-7">Dependencies</span>
     
                             </a>
                         </div>
@@ -2405,7 +2446,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="General">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">General</span>
+        <span class="leading-7">General</span>
     
                         </a>
                     </div>
@@ -2416,7 +2457,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Web">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Web</span>
+        <span class="leading-7">Web</span>
     
                         </a>
                     </div>
@@ -2427,7 +2468,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="PipelineApacheSeatunnel">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Pipeline (Apache Seatunnel)</span>
+        <span class="leading-7">Pipeline (Apache Seatunnel)</span>
     
                         </a>
                     </div>
@@ -2438,7 +2479,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Dependencies">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Dependencies</span>
+        <span class="leading-7">Dependencies</span>
     
                         </a>
                     </div>

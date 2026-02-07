@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -1807,14 +1848,14 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <span>5 分钟阅读</span>
+        <span>3 分钟阅读</span>
         
             <span class="mx-1">•</span>
             <span>
                 
                 
                 
-                    925 词
+                    674 词
                 
             </span>
         
@@ -1834,7 +1875,7 @@
             
         <div class="space-y-4"></div>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap released!</span>
+        <span class="leading-7">DataCap released!</span>
     </strong>
         <div class="space-y-4"></div>
     
@@ -1846,13 +1887,13 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Release version</span>
+        <span class="leading-7">Release version</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Release time</span>
+        <span class="leading-7">Release time</span>
     
                                 </th>
                             
@@ -1883,11 +1924,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Core" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Core</span>
-    </div>
-        </div>
+        <h4 id="Core">
+            
+        <span class="leading-7">Core</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -1895,67 +1936,67 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[User] Support upload avatar</span>
+        <span class="leading-7">[User] Support upload avatar</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Source] Remove v1 </span>
+        <span class="leading-7">[Source] Remove v1 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">saveAndUpdate</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">, </span>
+        <span class="leading-7">, </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getInfo</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> fc</span>
+        <span class="leading-7"> fc</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Source] Replace </span>
+        <span class="leading-7">[Source] Replace </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getSource</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> fc</span>
+        <span class="leading-7"> fc</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Source] Add code and name column</span>
+        <span class="leading-7">[Source] Add code and name column</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Source] Refactor metadata layout</span>
+        <span class="leading-7">[Source] Refactor metadata layout</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Source] Add database info to metadata</span>
+        <span class="leading-7">[Source] Add database info to metadata</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Function] Fix error when converting undefined attribute in info</span>
+        <span class="leading-7">[Function] Fix error when converting undefined attribute in info</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Query] Remove old api</span>
+        <span class="leading-7">[Query] Remove old api</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Query] Fixed history data is null</span>
+        <span class="leading-7">[Query] Fixed history data is null</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Snippet] Adapter base module</span>
+        <span class="leading-7">[Snippet] Adapter base module</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Pipeline] Adapter base module</span>
+        <span class="leading-7">[Pipeline] Adapter base module</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Dashboard] Optimize the way to obtain the dashboard</span>
+        <span class="leading-7">[Dashboard] Optimize the way to obtain the dashboard</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Dashboard] Add description</span>
+        <span class="leading-7">[Dashboard] Add description</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Dashboard] Add default image</span>
+        <span class="leading-7">[Dashboard] Add default image</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Remove schema to configure</span>
+        <span class="leading-7">Remove schema to configure</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Enable unified BaseEntity, BaseRepository, BaseController, BaseService</span>
+        <span class="leading-7">Enable unified BaseEntity, BaseRepository, BaseController, BaseService</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support </span>
+        <span class="leading-7">Support </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">saveOrUpdate</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> method to set related values based on attributes</span>
+        <span class="leading-7"> method to set related values based on attributes</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add info by code permission</span>
+        <span class="leading-7">Add info by code permission</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="UI" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">UI</span>
-    </div>
-        </div>
+        <h4 id="UI">
+            
+        <span class="leading-7">UI</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -1963,33 +2004,33 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Layout] Optimize menu selection and highlight display</span>
+        <span class="leading-7">[Layout] Optimize menu selection and highlight display</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Layout] Support parent menu selection highlighting display</span>
+        <span class="leading-7">[Layout] Support parent menu selection highlighting display</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Layout] Add callback to 404 page</span>
+        <span class="leading-7">[Layout] Add callback to 404 page</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Layout] Add redirect to 403 page</span>
+        <span class="leading-7">[Layout] Add redirect to 403 page</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Layout] Add redirect to network page</span>
+        <span class="leading-7">[Layout] Add redirect to network page</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[User] Fix loading status</span>
+        <span class="leading-7">[User] Fix loading status</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add page loading progress</span>
+        <span class="leading-7">Add page loading progress</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Remove echarts</span>
+        <span class="leading-7">Remove echarts</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Merge i18n</span>
+        <span class="leading-7">Merge i18n</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Dataset" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Dataset</span>
-    </div>
-        </div>
+        <h4 id="Dataset">
+            
+        <span class="leading-7">Dataset</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -1997,59 +2038,59 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fix the problem of missing columns in data set construction</span>
+        <span class="leading-7">Fix the problem of missing columns in data set construction</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed info path</span>
+        <span class="leading-7">Fixed info path</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Optimize query column transmission data problem that is too large</span>
+        <span class="leading-7">Optimize query column transmission data problem that is too large</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add permission to get columns</span>
+        <span class="leading-7">Add permission to get columns</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Highlight indicator dimension container</span>
+        <span class="leading-7">Highlight indicator dimension container</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Replace id to code</span>
+        <span class="leading-7">Replace id to code</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Visual" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Visual</span>
-    </div>
-        </div>
+        <h4 id="Visual">
+            
+        <span class="leading-7">Visual</span>
+    
+        </h4>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[Line] Add title to line</span>
+        <span class="leading-7">[Line] Add title to line</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Remove unused component</span>
+        <span class="leading-7">Remove unused component</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Merge configuration into editor</span>
+        <span class="leading-7">Merge configuration into editor</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fix the problem that the configuration is not echoed</span>
+        <span class="leading-7">Fix the problem that the configuration is not echoed</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Remove unused configure component</span>
+        <span class="leading-7">Remove unused configure component</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Disable visualization without querying</span>
+        <span class="leading-7">Disable visualization without querying</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add scatter chart</span>
+        <span class="leading-7">Add scatter chart</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add radar chart</span>
+        <span class="leading-7">Add radar chart</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add funnel chart</span>
+        <span class="leading-7">Add funnel chart</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add gauge chart</span>
+        <span class="leading-7">Add gauge chart</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Docker" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Docker</span>
-    </div>
-        </div>
+        <h4 id="Docker">
+            
+        <span class="leading-7">Docker</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2057,9 +2098,9 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Replace schema path</span>
+        <span class="leading-7">Replace schema path</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Repair docker compose image and change example address</span>
+        <span class="leading-7">Repair docker compose image and change example address</span>
     </li>
         </ul>
     
@@ -2081,7 +2122,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2093,7 +2134,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2106,11 +2147,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -2122,11 +2163,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -2232,7 +2273,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Core">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Core</span>
+        <span class="leading-7">Core</span>
     
                             </a>
                         </div>
@@ -2243,7 +2284,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="UI">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">UI</span>
+        <span class="leading-7">UI</span>
     
                             </a>
                         </div>
@@ -2254,7 +2295,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Dataset">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Dataset</span>
+        <span class="leading-7">Dataset</span>
     
                             </a>
                         </div>
@@ -2265,7 +2306,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Visual">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Visual</span>
+        <span class="leading-7">Visual</span>
     
                             </a>
                         </div>
@@ -2276,7 +2317,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Docker">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Docker</span>
+        <span class="leading-7">Docker</span>
     
                             </a>
                         </div>
@@ -2322,7 +2363,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Core">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Core</span>
+        <span class="leading-7">Core</span>
     
                         </a>
                     </div>
@@ -2333,7 +2374,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="UI">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">UI</span>
+        <span class="leading-7">UI</span>
     
                         </a>
                     </div>
@@ -2344,7 +2385,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Dataset">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Dataset</span>
+        <span class="leading-7">Dataset</span>
     
                         </a>
                     </div>
@@ -2355,7 +2396,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Visual">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Visual</span>
+        <span class="leading-7">Visual</span>
     
                         </a>
                     </div>
@@ -2366,7 +2407,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Docker">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Docker</span>
+        <span class="leading-7">Docker</span>
     
                         </a>
                     </div>

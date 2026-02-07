@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -2845,7 +2886,7 @@
                     +
                 
                 
-                    1414 词
+                    1229 词
                 
             </span>
         
@@ -2865,21 +2906,21 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
+        <span class="leading-7">!!! note</span>
     
         <div class="space-y-4"></div>
     <pre><code>The snippet feature allows you to add support for various custom snippets, perform subsequent snippet operations, and more. The added code snippet is then added to the editor.
 </code></pre>
 
-        <span class="text-base text-gray-700 leading-7 my-2">Move your mouse over the </span>
+        <span class="leading-7">Move your mouse over the </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Admin</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> icon in the top menu to pop up the drop-down box, click the </span>
+        <span class="leading-7"> icon in the top menu to pop up the drop-down box, click the </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Snippet</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> submenu in the drop-down box. A window similar to the following pops up, the default list is empty, you need to add it yourself.</span>
+        <span class="leading-7"> submenu in the drop-down box. A window similar to the following pops up, the default list is empty, you need to add it yourself.</span>
     
         <div class="space-y-4"></div>
     
@@ -2919,7 +2960,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">If you added a fragment, a page similar to the following appears</span>
+        <span class="leading-7">If you added a fragment, a page similar to the following appears</span>
     
         <div class="space-y-4"></div>
     
@@ -2959,21 +3000,21 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="AddSnippet" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Add Snippet</span>
-    </div>
-        </div>
+        <h3 id="AddSnippet">
+            
+        <span class="leading-7">Add Snippet</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Click the Add button on the right side of the list display area (it is a </span>
+        <span class="leading-7">Click the Add button on the right side of the list display area (it is a </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">+</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> icon), and after clicking it, the Add Data Source window will pop up as follows</span>
+        <span class="leading-7"> icon), and after clicking it, the Add Data Source window will pop up as follows</span>
     
         <div class="space-y-4"></div>
     
@@ -3013,7 +3054,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">In the window, we need to enter the following</span>
+        <span class="leading-7">In the window, we need to enter the following</span>
     
         <div class="space-y-4"></div>
     
@@ -3025,13 +3066,13 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Attribute</span>
+        <span class="leading-7">Attribute</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Description</span>
+        <span class="leading-7">Description</span>
     
                                 </th>
                             
@@ -3049,7 +3090,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">Marks the name of the current snippet</span>
+        <span class="leading-7">Marks the name of the current snippet</span>
     
                                     </td>
                                 
@@ -3065,7 +3106,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">A description of the current code snippet</span>
+        <span class="leading-7">A description of the current code snippet</span>
     
                                     </td>
                                 
@@ -3081,7 +3122,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">The specific SQL content of the current code snippet</span>
+        <span class="leading-7">The specific SQL content of the current code snippet</span>
     
                                     </td>
                                 
@@ -3094,35 +3135,35 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">After filling in the above, click the </span>
+        <span class="leading-7">After filling in the above, click the </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Submit</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> button at the bottom to save the code snippet.</span>
+        <span class="leading-7"> button at the bottom to save the code snippet.</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
+        <span class="leading-7">!!! note</span>
     
         <div class="space-y-4"></div>
     <pre><code>After the data is saved, the list of data sources is automatically refreshed.
 </code></pre>
 
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="Reviewthesnippetcontent" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Review the snippet content</span>
-    </div>
-        </div>
+        <h3 id="Reviewthesnippetcontent">
+            
+        <span class="leading-7">Review the snippet content</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Click the first button in </span>
+        <span class="leading-7">Click the first button in </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Action</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> in a data in the list to view the specific code snippet content, and a dialog box will pop up, which is roughly as follows</span>
+        <span class="leading-7"> in a data in the list to view the specific code snippet content, and a dialog box will pop up, which is roughly as follows</span>
     
         <div class="space-y-4"></div>
     
@@ -3162,73 +3203,73 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Click </span>
+        <span class="leading-7">Click </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">OK</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> or </span>
+        <span class="leading-7"> or </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Cancel</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> to close the dialog box</span>
+        <span class="leading-7"> to close the dialog box</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="Modifythecodesnippet" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Modify the code snippet</span>
-    </div>
-        </div>
+        <h3 id="Modifythecodesnippet">
+            
+        <span class="leading-7">Modify the code snippet</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Click the second button in </span>
+        <span class="leading-7">Click the second button in </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Action</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> in one of the data in the list to modify the snippet, similar to the </span>
+        <span class="leading-7"> in one of the data in the list to modify the snippet, similar to the </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Add Snippet</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> action.</span>
+        <span class="leading-7"> action.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="QuoteSnippet" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Quote Snippet</span>
-    </div>
-        </div>
+        <h3 id="QuoteSnippet">
+            
+        <span class="leading-7">Quote Snippet</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Click the third button in </span>
+        <span class="leading-7">Click the third button in </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Action</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> of a piece of data in the list, reference the current code snippet, and you will be taken to the query page, and the fragment content will be entered directly into the editor.</span>
+        <span class="leading-7"> of a piece of data in the list, reference the current code snippet, and you will be taken to the query page, and the fragment content will be entered directly into the editor.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="Deletethesnippet" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Delete the snippet</span>
-    </div>
-        </div>
+        <h3 id="Deletethesnippet">
+            
+        <span class="leading-7">Delete the snippet</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Click the fourth button in </span>
+        <span class="leading-7">Click the fourth button in </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Action</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> of a piece of data in the list to delete the snippet, and the following will pop up after clicking</span>
+        <span class="leading-7"> of a piece of data in the list to delete the snippet, and the following will pop up after clicking</span>
     
         <div class="space-y-4"></div>
     
@@ -3268,11 +3309,11 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Click the small pop-up window and click </span>
+        <span class="leading-7">Click the small pop-up window and click </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">OK</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> to remove the snippet.</span>
+        <span class="leading-7"> to remove the snippet.</span>
     
         </div>
 
@@ -3292,7 +3333,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -3304,7 +3345,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -3317,11 +3358,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -3333,11 +3374,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -3443,7 +3484,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="AddSnippet">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Add Snippet</span>
+        <span class="leading-7">Add Snippet</span>
     
                             </a>
                         </div>
@@ -3454,7 +3495,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Reviewthesnippetcontent">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Review the snippet content</span>
+        <span class="leading-7">Review the snippet content</span>
     
                             </a>
                         </div>
@@ -3465,7 +3506,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Modifythecodesnippet">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Modify the code snippet</span>
+        <span class="leading-7">Modify the code snippet</span>
     
                             </a>
                         </div>
@@ -3476,7 +3517,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="QuoteSnippet">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Quote Snippet</span>
+        <span class="leading-7">Quote Snippet</span>
     
                             </a>
                         </div>
@@ -3487,7 +3528,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Deletethesnippet">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Delete the snippet</span>
+        <span class="leading-7">Delete the snippet</span>
     
                             </a>
                         </div>
@@ -3533,7 +3574,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="AddSnippet">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Add Snippet</span>
+        <span class="leading-7">Add Snippet</span>
     
                         </a>
                     </div>
@@ -3544,7 +3585,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Reviewthesnippetcontent">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Review the snippet content</span>
+        <span class="leading-7">Review the snippet content</span>
     
                         </a>
                     </div>
@@ -3555,7 +3596,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Modifythecodesnippet">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Modify the code snippet</span>
+        <span class="leading-7">Modify the code snippet</span>
     
                         </a>
                     </div>
@@ -3566,7 +3607,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="QuoteSnippet">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Quote Snippet</span>
+        <span class="leading-7">Quote Snippet</span>
     
                         </a>
                     </div>
@@ -3577,7 +3618,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Deletethesnippet">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Delete the snippet</span>
+        <span class="leading-7">Delete the snippet</span>
     
                         </a>
                     </div>

@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -2845,7 +2886,7 @@
                     +
                 
                 
-                    1284 词
+                    1157 词
                 
             </span>
         
@@ -2865,21 +2906,21 @@
             
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="WhatisRedis" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">What is Redis ?</span>
-    </div>
-        </div>
+        <h4 id="WhatisRedis">
+            
+        <span class="leading-7">What is Redis ?</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">The open source, in-memory data store used by millions of developers as a database, cache, streaming engine, and message broker.</span>
+        </h4>
+    
+        <span class="leading-7">The open source, in-memory data store used by millions of developers as a database, cache, streaming engine, and message broker.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Environment" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Environment</span>
-    </div>
-        </div>
+        <h4 id="Environment">
+            
+        <span class="leading-7">Environment</span>
+    
+        </h4>
     
         <div class="rounded-lg my-2 overflow-hidden border border-purple-200">
         
@@ -2891,7 +2932,7 @@
             <div class="w-full px-5 py-3">
                 <div class="text-sm text-purple-700">
                     
-        <span class="text-base text-gray-700 leading-7 my-2">If you need to use this data source, you need to upgrade the DataCap service to >= </span>
+        <span class="leading-7">If you need to use this data source, you need to upgrade the DataCap service to >= </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">1.3.x</code>
     
@@ -2901,23 +2942,23 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Support Time: </span>
+        <span class="leading-7">Support Time: </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2022-12-01</code>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Configure" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Configure</span>
-    </div>
-        </div>
+        <h4 id="Configure">
+            
+        <span class="leading-7">Configure</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap uses configuration files by default </span>
+        <span class="leading-7">DataCap uses configuration files by default </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/blob/develop/server/src/main/etc/conf/plugins/native/redis.json"
@@ -2940,7 +2981,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">If your Redis service version requires other special configurations, please refer to modifying the configuration file and restarting the DataCap service.</span>
+        <span class="leading-7">If your Redis service version requires other special configurations, please refer to modifying the configuration file and restarting the DataCap service.</span>
     
                 </div>
             </div>
@@ -2956,10 +2997,10 @@
             class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
                    border-blue-500 text-blue-600
                    focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-j3cbvmuj7', 0)"
+            onclick="switchTab(event, 'tabgroup-120x2npts', 0)"
             aria-selected="true"
-            aria-controls="tabgroup-j3cbvmuj7-panel-0"
-            id="tabgroup-j3cbvmuj7-tab-0">
+            aria-controls="tabgroup-120x2npts-panel-0"
+            id="tabgroup-120x2npts-tab-0">
             Configure
         </button>
     
@@ -2967,10 +3008,10 @@
             class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
                    border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300
                    focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-j3cbvmuj7', 1)"
+            onclick="switchTab(event, 'tabgroup-120x2npts', 1)"
             aria-selected="false"
-            aria-controls="tabgroup-j3cbvmuj7-panel-1"
-            id="tabgroup-j3cbvmuj7-tab-1">
+            aria-controls="tabgroup-120x2npts-panel-1"
+            id="tabgroup-120x2npts-tab-1">
             Authorization
         </button>
     
@@ -2980,8 +3021,8 @@
                 
         <div class="p-4 "
             role="tabpanel"
-            aria-labelledby="tabgroup-j3cbvmuj7-tab-0"
-            id="tabgroup-j3cbvmuj7-panel-0">
+            aria-labelledby="tabgroup-120x2npts-tab-0"
+            id="tabgroup-120x2npts-panel-0">
             
         <div class="space-y-4">
             <div class="relative overflow-x-auto shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 sm:rounded-lg">
@@ -2991,19 +3032,19 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Field</span>
+        <span class="leading-7">Field</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Required</span>
+        <span class="leading-7">Required</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Default Value</span>
+        <span class="leading-7">Default Value</span>
     
                                 </th>
                             
@@ -3033,7 +3074,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">-</span>
+        <span class="leading-7">-</span>
     
                                     </td>
                                 
@@ -3104,8 +3145,8 @@
     
         <div class="p-4 hidden"
             role="tabpanel"
-            aria-labelledby="tabgroup-j3cbvmuj7-tab-1"
-            id="tabgroup-j3cbvmuj7-panel-1">
+            aria-labelledby="tabgroup-120x2npts-tab-1"
+            id="tabgroup-120x2npts-panel-1">
             
         <div class="space-y-4">
             <div class="relative overflow-x-auto shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 sm:rounded-lg">
@@ -3115,19 +3156,19 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Field</span>
+        <span class="leading-7">Field</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Required</span>
+        <span class="leading-7">Required</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Default Value</span>
+        <span class="leading-7">Default Value</span>
     
                                 </th>
                             
@@ -3157,7 +3198,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">-</span>
+        <span class="leading-7">-</span>
     
                                     </td>
                                 
@@ -3206,11 +3247,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="VersionValidation" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Version (Validation)</span>
-    </div>
-        </div>
+        <h4 id="VersionValidation">
+            
+        <span class="leading-7">Version (Validation)</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -3228,7 +3269,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">The online service has not been tested yet, if you have detailed test results, please submit </span>
+        <span class="leading-7">The online service has not been tested yet, if you have detailed test results, please submit </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/issues/new/choose"
@@ -3237,7 +3278,7 @@
             issues
         </a>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> to us</span>
+        <span class="leading-7"> to us</span>
     
         <div class="space-y-4"></div>
     
@@ -3255,7 +3296,7 @@
               </svg>
             </span>
           </label>
-          <span class="text-gray-500"><span class="text-base text-gray-700 leading-7 my-2">6.x</span></span>
+          <span class="text-gray-500"><span class="leading-7">6.x</span></span>
         </div>
     </li><li class="mb-2 flex items-start">
         <div class="inline-flex items-center space-x-2">
@@ -3270,7 +3311,7 @@
               </svg>
             </span>
           </label>
-          <span class="text-gray-500"><span class="text-base text-gray-700 leading-7 my-2">7.x</span></span>
+          <span class="text-gray-500"><span class="leading-7">7.x</span></span>
         </div>
     </li>
         </ul>
@@ -3297,7 +3338,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -3309,7 +3350,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -3322,11 +3363,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -3338,11 +3379,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -3448,7 +3489,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="WhatisRedis">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">What is Redis ?</span>
+        <span class="leading-7">What is Redis ?</span>
     
                             </a>
                         </div>
@@ -3459,7 +3500,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Environment">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Environment</span>
+        <span class="leading-7">Environment</span>
     
                             </a>
                         </div>
@@ -3470,7 +3511,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Configure">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Configure</span>
+        <span class="leading-7">Configure</span>
     
                             </a>
                         </div>
@@ -3481,7 +3522,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="VersionValidation">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Version (Validation)</span>
+        <span class="leading-7">Version (Validation)</span>
     
                             </a>
                         </div>
@@ -3527,7 +3568,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="WhatisRedis">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">What is Redis ?</span>
+        <span class="leading-7">What is Redis ?</span>
     
                         </a>
                     </div>
@@ -3538,7 +3579,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Environment">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Environment</span>
+        <span class="leading-7">Environment</span>
     
                         </a>
                     </div>
@@ -3549,7 +3590,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Configure">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Configure</span>
+        <span class="leading-7">Configure</span>
     
                         </a>
                     </div>
@@ -3560,7 +3601,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="VersionValidation">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Version (Validation)</span>
+        <span class="leading-7">Version (Validation)</span>
     
                         </a>
                     </div>

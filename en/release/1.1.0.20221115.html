@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -1814,7 +1855,7 @@
                 
                 
                 
-                    1662 词
+                    1373 词
                 
             </span>
         
@@ -1846,7 +1887,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">The current release involves several major updates. The following link is </span>
+        <span class="leading-7">The current release involves several major updates. The following link is </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/orgs/EdurtIO/projects/1"
@@ -1869,7 +1910,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1879,7 +1920,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1889,7 +1930,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1899,7 +1940,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1909,7 +1950,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1919,11 +1960,11 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap is released</span>
+        <span class="leading-7">DataCap is released</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1933,7 +1974,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1943,7 +1984,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1953,7 +1994,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1963,7 +2004,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1973,7 +2014,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> </span>
+        <span class="leading-7"> </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -1993,13 +2034,13 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Release Version</span>
+        <span class="leading-7">Release Version</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Release Time</span>
+        <span class="leading-7">Release Time</span>
     
                                 </th>
                             
@@ -2030,8 +2071,8 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="simplespinnakerGeneral" class="inline-flex items-center">
+        <h4 id="simplespinnakerGeneral">
+            
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
             <i data-lucide="simple-spinnaker"
@@ -2040,9 +2081,9 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> General</span>
-    </div>
-        </div>
+        <span class="leading-7"> General</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2050,9 +2091,9 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Replace plugin name to id</span>
+        <span class="leading-7">Replace plugin name to id</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support for internationalization </span>
+        <span class="leading-7">Support for internationalization </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/pull/82"
@@ -2061,11 +2102,11 @@
             issues-82
         </a>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Reduce size of docker image</span>
+        <span class="leading-7">Reduce size of docker image</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Switch bash docker image to eclipse-temurin:8-jdk-focal</span>
+        <span class="leading-7">Switch bash docker image to eclipse-temurin:8-jdk-focal</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support ssl </span>
+        <span class="leading-7">Support ssl </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/pull/75"
@@ -2074,9 +2115,9 @@
             issues-75
         </a>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Extract the plug-in to get the global tool</span>
+        <span class="leading-7">Extract the plug-in to get the global tool</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support database write operation </span>
+        <span class="leading-7">Support database write operation </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/pull/70"
@@ -2085,9 +2126,9 @@
             issues-70
         </a>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Supports user rights management</span>
+        <span class="leading-7">Supports user rights management</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support code snippet </span>
+        <span class="leading-7">Support code snippet </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/pull/74"
@@ -2096,9 +2137,9 @@
             issues-74
         </a>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support editor auto completion</span>
+        <span class="leading-7">Support editor auto completion</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support to provide data source schema tree bar </span>
+        <span class="leading-7">Support to provide data source schema tree bar </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/pull/106"
@@ -2107,7 +2148,7 @@
             issues-106
         </a>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support multiple editor </span>
+        <span class="leading-7">Support multiple editor </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/pull/110"
@@ -2116,15 +2157,15 @@
             issues-110
         </a>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add profile for user</span>
+        <span class="leading-7">Add profile for user</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support change user password</span>
+        <span class="leading-7">Support change user password</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add data source radar map within 7 days</span>
+        <span class="leading-7">Add data source radar map within 7 days</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add about page</span>
+        <span class="leading-7">Add about page</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add feedback </span>
+        <span class="leading-7">Add feedback </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/pull/126"
@@ -2137,11 +2178,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="SPI" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">SPI</span>
-    </div>
-        </div>
+        <h4 id="SPI">
+            
+        <span class="leading-7">SPI</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2149,14 +2190,14 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Add custom validator</span>
+        <span class="leading-7">Add custom validator</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="materialpowerplugoutlinePlugins" class="inline-flex items-center">
+        <h4 id="materialpowerplugoutlinePlugins">
+            
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
             <i data-lucide="material-power-plug-outline"
@@ -2165,9 +2206,9 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> Plugins</span>
-    </div>
-        </div>
+        <span class="leading-7"> Plugins</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2175,11 +2216,11 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support MongoDB</span>
+        <span class="leading-7">Support MongoDB</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support Dremio</span>
+        <span class="leading-7">Support Dremio</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support HBase jdbc for Phoenix </span>
+        <span class="leading-7">Support HBase jdbc for Phoenix </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/issues/103"
@@ -2188,21 +2229,21 @@
             issues-103
         </a>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support H2</span>
+        <span class="leading-7">Support H2</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support SqlServer</span>
+        <span class="leading-7">Support SqlServer</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Support Oracle</span>
+        <span class="leading-7">Support Oracle</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Redis" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Redis</span>
-    </div>
-        </div>
+        <h4 id="Redis">
+            
+        <span class="leading-7">Redis</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2210,7 +2251,7 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fix cannot init RedisConnection </span>
+        <span class="leading-7">Fix cannot init RedisConnection </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/EdurtIO/datacap/issues/71"
@@ -2223,11 +2264,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="ElasticSearch" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">ElasticSearch</span>
-    </div>
-        </div>
+        <h4 id="ElasticSearch">
+            
+        <span class="leading-7">ElasticSearch</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2235,7 +2276,7 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Update version to </span>
+        <span class="leading-7">Update version to </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">7.10.0</code>
     </li>
@@ -2243,11 +2284,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Kyuubi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Kyuubi</span>
-    </div>
-        </div>
+        <h4 id="Kyuubi">
+            
+        <span class="leading-7">Kyuubi</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2255,7 +2296,7 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Bump Kyuubi </span>
+        <span class="leading-7">Bump Kyuubi </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">1.6.0-incubating</code>
     </li>
@@ -2263,11 +2304,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Thankyou" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Thank you</span>
-    </div>
-        </div>
+        <h4 id="Thankyou">
+            
+        <span class="leading-7">Thank you</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2285,11 +2326,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Many thanks to the following contributors for contributing to the source code of this release</span>
+        <span class="leading-7">Many thanks to the following contributors for contributing to the source code of this release</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">In no particular order</span>
+        <span class="leading-7">In no particular order</span>
     
         <div class="space-y-4"></div>
     
@@ -2301,7 +2342,7 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">GitHub ID</span>
+        <span class="leading-7">GitHub ID</span>
     
                                 </th>
                             
@@ -2313,7 +2354,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">@pan3793</span>
+        <span class="leading-7">@pan3793</span>
     
                                     </td>
                                 
@@ -2323,7 +2364,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">@javalover123</span>
+        <span class="leading-7">@javalover123</span>
     
                                     </td>
                                 
@@ -2333,7 +2374,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">@shuangzishuai</span>
+        <span class="leading-7">@shuangzishuai</span>
     
                                     </td>
                                 
@@ -2343,7 +2384,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">@GtoCm</span>
+        <span class="leading-7">@GtoCm</span>
     
                                     </td>
                                 
@@ -2353,7 +2394,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">@why198852</span>
+        <span class="leading-7">@why198852</span>
     
                                     </td>
                                 
@@ -2363,7 +2404,7 @@
                                 
                                     <td class="px-3 py-1.5 text-center">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">@qianmoQ</span>
+        <span class="leading-7">@qianmoQ</span>
     
                                     </td>
                                 
@@ -2396,7 +2437,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2408,7 +2449,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2421,11 +2462,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -2437,11 +2478,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -2555,7 +2596,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> General</span>
+        <span class="leading-7"> General</span>
     
                             </a>
                         </div>
@@ -2566,7 +2607,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="SPI">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">SPI</span>
+        <span class="leading-7">SPI</span>
     
                             </a>
                         </div>
@@ -2585,7 +2626,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> Plugins</span>
+        <span class="leading-7"> Plugins</span>
     
                             </a>
                         </div>
@@ -2596,7 +2637,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Redis">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Redis</span>
+        <span class="leading-7">Redis</span>
     
                             </a>
                         </div>
@@ -2607,7 +2648,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ElasticSearch">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">ElasticSearch</span>
+        <span class="leading-7">ElasticSearch</span>
     
                             </a>
                         </div>
@@ -2618,7 +2659,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Kyuubi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Kyuubi</span>
+        <span class="leading-7">Kyuubi</span>
     
                             </a>
                         </div>
@@ -2629,7 +2670,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Thankyou">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Thank you</span>
+        <span class="leading-7">Thank you</span>
     
                             </a>
                         </div>
@@ -2683,7 +2724,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> General</span>
+        <span class="leading-7"> General</span>
     
                         </a>
                     </div>
@@ -2694,7 +2735,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="SPI">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">SPI</span>
+        <span class="leading-7">SPI</span>
     
                         </a>
                     </div>
@@ -2713,7 +2754,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> Plugins</span>
+        <span class="leading-7"> Plugins</span>
     
                         </a>
                     </div>
@@ -2724,7 +2765,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Redis">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Redis</span>
+        <span class="leading-7">Redis</span>
     
                         </a>
                     </div>
@@ -2735,7 +2776,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ElasticSearch">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">ElasticSearch</span>
+        <span class="leading-7">ElasticSearch</span>
     
                         </a>
                     </div>
@@ -2746,7 +2787,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Kyuubi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Kyuubi</span>
+        <span class="leading-7">Kyuubi</span>
     
                         </a>
                     </div>
@@ -2757,7 +2798,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Thankyou">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Thank you</span>
+        <span class="leading-7">Thank you</span>
     
                         </a>
                     </div>

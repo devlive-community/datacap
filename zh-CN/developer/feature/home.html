@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -1281,7 +1322,7 @@
                     +
                 
                 
-                    7210 词
+                    6633 词
                 
             </span>
         
@@ -1301,7 +1342,7 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">本文章主要用来介绍如何集成在 datacap 中开发新的功能。我们这里以 github 中的 </span>
+        <span class="leading-7">本文章主要用来介绍如何集成在 datacap 中开发新的功能。我们这里以 github 中的 </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="https://github.com/devlive-community/datacap/issues/481"
@@ -1310,23 +1351,23 @@
             issues-481
         </a>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 为例来讲解。</span>
+        <span class="leading-7"> 为例来讲解。</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="zhun-bei-gong-zuo" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">准备工作</span>
-    </div>
-        </div>
+        <h2 id="zhun-bei-gong-zuo">
+            
+        <span class="leading-7">准备工作</span>
+    
+        </h2>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">重要</span>
+        <span class="leading-7">重要</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2"> 克隆源码到本地（如果您需要提交代码到主仓库中需要先将源码 fork 到您的 github 账户中）</span>
+        <span class="leading-7"> 克隆源码到本地（如果您需要提交代码到主仓库中需要先将源码 fork 到您的 github 账户中）</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">bash</div>
@@ -1361,11 +1402,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果您已经 fork 源码到您的账户中，请将 </span>
+        <span class="leading-7">如果您已经 fork 源码到您的账户中，请将 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">devlive-community</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 替换为您的 github 账户的 ID</span>
+        <span class="leading-7"> 替换为您的 github 账户的 ID</span>
     
                 </div>
             </div>
@@ -1373,9 +1414,9 @@
     
         <div class="space-y-4"></div>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">重要</span>
+        <span class="leading-7">重要</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2"> 以下是基本的环境配置</span>
+        <span class="leading-7"> 以下是基本的环境配置</span>
     
         <div class="space-y-4"></div>
     
@@ -1387,19 +1428,19 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">环境</span>
+        <span class="leading-7">环境</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">版本</span>
+        <span class="leading-7">版本</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">必需</span>
+        <span class="leading-7">必需</span>
     
                                 </th>
                             
@@ -1419,7 +1460,7 @@
                                         
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">1.8</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+        <span class="leading-7"> | </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">11</code>
     
@@ -1427,7 +1468,7 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">必须</span>
+        <span class="leading-7">必须</span>
     
                                     </td>
                                 
@@ -1444,14 +1485,14 @@
                                     <td class="px-3 py-1.5 text-left">
                                         <div class="pl-4 my-2 border-l-4 border-gray-200 dark:border-gray-700">
             <div class="py-1">
-        <span class="text-base text-gray-700 leading-7 my-2">= 3.5</span>
+        <span class="leading-7">= 3.5</span>
     </div>
         </div>
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">可选</span>
+        <span class="leading-7">可选</span>
     
                                     </td>
                                 
@@ -1463,11 +1504,11 @@
                                         
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">IDEA</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+        <span class="leading-7"> | </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Eclipse</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> | </span>
+        <span class="leading-7"> | </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">其他</code>
     
@@ -1475,13 +1516,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">任意版本</span>
+        <span class="leading-7">任意版本</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">必须</span>
+        <span class="leading-7">必须</span>
     
                                     </td>
                                 
@@ -1504,11 +1545,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在本文中我们使用的是 </span>
+        <span class="leading-7">在本文中我们使用的是 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">IDEA</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 编辑器环境，用户可以根据自己喜好更换相应编辑器。</span>
+        <span class="leading-7"> 编辑器环境，用户可以根据自己喜好更换相应编辑器。</span>
     
                 </div>
             </div>
@@ -1516,7 +1557,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">可参考 </span>
+        <span class="leading-7">可参考 </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="../server/home.md"
@@ -1525,55 +1566,55 @@
             服务端
         </a>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文档中的 </span>
+        <span class="leading-7"> 文档中的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">加载源码到 IDEA</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 部分。</span>
+        <span class="leading-7"> 部分。</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="yuan-ma-kai-fa" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">源码开发</span>
-    </div>
-        </div>
+        <h2 id="yuan-ma-kai-fa">
+            
+        <span class="leading-7">源码开发</span>
+    
+        </h2>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">针对于源码开发分为以下部分：</span>
+        <span class="leading-7">针对于源码开发分为以下部分：</span>
     
         <div class="space-y-4"></div>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">服务端</span>
+        <span class="leading-7">服务端</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[可选] UI 端</span>
+        <span class="leading-7">[可选] UI 端</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[可选] 文档 (</span>
+        <span class="leading-7">[可选] 文档 (</span>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">如果增加了新功能，涉及到 UI 建议添加文档方便用户快速了解使用方式</span>
+        <span class="leading-7">如果增加了新功能，涉及到 UI 建议添加文档方便用户快速了解使用方式</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="fu-wu-duan" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">服务端</span>
-    </div>
-        </div>
+        <h3 id="fu-wu-duan">
+            
+        <span class="leading-7">服务端</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">服务端的源码大致可以分为以下部分：</span>
+        <span class="leading-7">服务端的源码大致可以分为以下部分：</span>
     
         <div class="space-y-4"></div>
     
@@ -1581,49 +1622,49 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">entity</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> ： 数据模型</span>
+        <span class="leading-7"> ： 数据模型</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">repository</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">： 数据库操作</span>
+        <span class="leading-7">： 数据库操作</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">service</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">： 业务逻辑</span>
+        <span class="leading-7">： 业务逻辑</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">controller</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">： 接口</span>
+        <span class="leading-7">： 接口</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">sql</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">： SQL 语句</span>
+        <span class="leading-7">： SQL 语句</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">以上三个部分在 datacap 中已经提供相应的基础支持，如果没有特殊的需求可以直接使用提供的基础功能，该示例中我们不做特殊的需求开发，只用到 datacap 提供的基础功能。</span>
+        <span class="leading-7">以上三个部分在 datacap 中已经提供相应的基础支持，如果没有特殊的需求可以直接使用提供的基础功能，该示例中我们不做特殊的需求开发，只用到 datacap 提供的基础功能。</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="tian-jia-entity" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <h4 id="tian-jia-entity">
+            
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">entity</code>
-    </div>
-        </div>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在 datacap 中提供了 </span>
+        <span class="leading-7">在 datacap 中提供了 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">BaseEntity</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 类，可以作为基础的实体类使用。它提供了以下属性：</span>
+        <span class="leading-7"> 类，可以作为基础的实体类使用。它提供了以下属性：</span>
     
         <div class="space-y-4"></div>
     
@@ -1631,33 +1672,33 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">id</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">：主键</span>
+        <span class="leading-7">：主键</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">name</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">：名称</span>
+        <span class="leading-7">：名称</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">active</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">：是否激活</span>
+        <span class="leading-7">：是否激活</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">create_time</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">：创建时间</span>
+        <span class="leading-7">：创建时间</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">update_time</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">：更新时间</span>
+        <span class="leading-7">：更新时间</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">我们新建 </span>
+        <span class="leading-7">我们新建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ReportEntity</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 类，代码如下：</span>
+        <span class="leading-7"> 类，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
@@ -1737,11 +1778,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">代码中的 </span>
+        <span class="leading-7">代码中的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">@SuperBuilder</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 一定要添加，不然我们无法使用父类提供的 builder 方法。</span>
+        <span class="leading-7"> 一定要添加，不然我们无法使用父类提供的 builder 方法。</span>
     
                 </div>
             </div>
@@ -1751,15 +1792,15 @@
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">@Table(name = "datacap_report")</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 这里我们需要修改表名，格式为 </span>
+        <span class="leading-7"> 这里我们需要修改表名，格式为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap_${表名}</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">。</span>
+        <span class="leading-7">。</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在以上示例中我们增加了三个属性 (根据功能的情况而定需要的属性)：</span>
+        <span class="leading-7">在以上示例中我们增加了三个属性 (根据功能的情况而定需要的属性)：</span>
     
         <div class="space-y-4"></div>
     
@@ -1767,37 +1808,37 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">：配置</span>
+        <span class="leading-7">：配置</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">type</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">：类型</span>
+        <span class="leading-7">：类型</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">user</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">：用户关联信息</span>
+        <span class="leading-7">：用户关联信息</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="tian-jia-repository" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <h4 id="tian-jia-repository">
+            
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">repository</code>
-    </div>
-        </div>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">我们新建 </span>
+        <span class="leading-7">我们新建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ReportRepository</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 接口，代码如下：</span>
+        <span class="leading-7"> 接口，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
@@ -1828,27 +1869,27 @@
         </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果没有特殊需求，这里我们使用 JPA 提供的默认方法，无需自己实现。</span>
+        <span class="leading-7">如果没有特殊需求，这里我们使用 JPA 提供的默认方法，无需自己实现。</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="tian-jia-service" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <h4 id="tian-jia-service">
+            
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">service</code>
-    </div>
-        </div>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在 datacap 中提供了 </span>
+        <span class="leading-7">在 datacap 中提供了 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">BaseService</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 类，可以作为基础的实体类使用。它提供了以下属性：</span>
+        <span class="leading-7"> 类，可以作为基础的实体类使用。它提供了以下属性：</span>
     
         <div class="space-y-4"></div>
     
@@ -1856,29 +1897,29 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getAll</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的过滤器获取所有数据</span>
+        <span class="leading-7"> 根据指定的过滤器获取所有数据</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getById</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的 ID 获取数据</span>
+        <span class="leading-7"> 根据指定的 ID 获取数据</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">saveOrUpdate</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 保存或更新数据</span>
+        <span class="leading-7"> 保存或更新数据</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">deleteById</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 删除指定的 ID 数据</span>
+        <span class="leading-7"> 删除指定的 ID 数据</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">我们新建 </span>
+        <span class="leading-7">我们新建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ReportService</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 类，代码如下：</span>
+        <span class="leading-7"> 类，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
@@ -1908,11 +1949,11 @@
         </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">添加实现类 </span>
+        <span class="leading-7">添加实现类 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ReportServiceImpl</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">，代码如下：</span>
+        <span class="leading-7">，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
@@ -1956,7 +1997,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果没有特殊的需求，实现类可以不添加。</span>
+        <span class="leading-7">如果没有特殊的需求，实现类可以不添加。</span>
     
                 </div>
             </div>
@@ -1964,23 +2005,23 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="tian-jia-controller" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <h4 id="tian-jia-controller">
+            
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">controller</code>
-    </div>
-        </div>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在 datacap 中提供了 </span>
+        <span class="leading-7">在 datacap 中提供了 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">BaseController</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 类，可以作为基础的实体类使用。它提供了以下属性：</span>
+        <span class="leading-7"> 类，可以作为基础的实体类使用。它提供了以下属性：</span>
     
         <div class="space-y-4"></div>
     
@@ -1988,33 +2029,33 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">list</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的过滤器获取所有数据</span>
+        <span class="leading-7"> 根据指定的过滤器获取所有数据</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">saveOrUpdate</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 保存或更新数据</span>
+        <span class="leading-7"> 保存或更新数据</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">delete</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 删除指定的 ID 数据</span>
+        <span class="leading-7"> 删除指定的 ID 数据</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">deleteForPath</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的路径删除数据</span>
+        <span class="leading-7"> 根据指定的路径删除数据</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">getInfoForPath</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 根据指定的路径获取数据</span>
+        <span class="leading-7"> 根据指定的路径获取数据</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">我们新建 </span>
+        <span class="leading-7">我们新建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ReportController</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 类，代码如下：</span>
+        <span class="leading-7"> 类，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
@@ -2061,11 +2102,11 @@
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">@RequestMapping(value = "/api/v1/report")</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 这里我们需要修改表名，格式为 </span>
+        <span class="leading-7"> 这里我们需要修改表名，格式为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">/api/v1/${路由}</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">.</span>
+        <span class="leading-7">.</span>
     
         <div class="space-y-4"></div>
     
@@ -2081,7 +2122,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">一定要将自定义 controller 的构造函数中的参数修改为相关的具体类。</span>
+        <span class="leading-7">一定要将自定义 controller 的构造函数中的参数修改为相关的具体类。</span>
     
                 </div>
             </div>
@@ -2089,13 +2130,13 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="tian-jia-sql" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <h4 id="tian-jia-sql">
+            
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">sql</code>
-    </div>
-        </div>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2113,7 +2154,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果没有新增 SQL 相关可以忽略此步骤。</span>
+        <span class="leading-7">如果没有新增 SQL 相关可以忽略此步骤。</span>
     
                 </div>
             </div>
@@ -2121,15 +2162,15 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">通过以上步骤已经提供了 API，底层处理相关类，剩下的需要我们添加对于功能实现的相关 SQL 语句。</span>
+        <span class="leading-7">通过以上步骤已经提供了 API，底层处理相关类，剩下的需要我们添加对于功能实现的相关 SQL 语句。</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">将 SQL 语句添加到 </span>
+        <span class="leading-7">将 SQL 语句添加到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.sql</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文件中，格式如下：</span>
+        <span class="leading-7"> 文件中，格式如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">sql</div>
@@ -2183,23 +2224,23 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果是新版本开发的话，需要在 </span>
+        <span class="leading-7">如果是新版本开发的话，需要在 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">core/datacap-server/src/main/schema</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 目录下新建 </span>
+        <span class="leading-7"> 目录下新建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">版本号</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文件夹，在该文件夹下创建 </span>
+        <span class="leading-7"> 文件夹，在该文件夹下创建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">schema.sql</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文件。并将内容添加到 </span>
+        <span class="leading-7"> 文件。并将内容添加到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">schema.sql</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文件中。</span>
+        <span class="leading-7"> 文件中。</span>
     
                 </div>
             </div>
@@ -2207,35 +2248,35 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="UI-duan" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">UI 端</span>
-    </div>
-        </div>
+        <h3 id="UI-duan">
+            
+        <span class="leading-7">UI 端</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">UI 端的源码大致可以分为以下部分：</span>
+        <span class="leading-7">UI 端的源码大致可以分为以下部分：</span>
     
         <div class="space-y-4"></div>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">构建菜单</span>
+        <span class="leading-7">构建菜单</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">构建 Vue 页面</span>
+        <span class="leading-7">构建 Vue 页面</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="gou-jian-cai-dan" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">构建菜单</span>
-    </div>
-        </div>
+        <h4 id="gou-jian-cai-dan">
+            
+        <span class="leading-7">构建菜单</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2253,13 +2294,13 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果构建的功能不支持菜单，可以忽略此步骤。此操作需要登录管理员权限。</span>
+        <span class="leading-7">如果构建的功能不支持菜单，可以忽略此步骤。此操作需要登录管理员权限。</span>
     
                 </div>
             </div>
         </div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">构建菜单可以参考 </span>
+        <span class="leading-7">构建菜单可以参考 </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
            href="../../reference/manager/menu/home.md"
@@ -2268,11 +2309,11 @@
             管理菜单
         </a>
     
-        <span class="text-base text-gray-700 leading-7 my-2">。</span>
+        <span class="leading-7">。</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">该功能的配置如下</span>
+        <span class="leading-7">该功能的配置如下</span>
     
         <div class="space-y-4"></div>
     
@@ -2312,7 +2353,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">跳转到权限模块进行新菜单权限的分配。</span>
+        <span class="leading-7">跳转到权限模块进行新菜单权限的分配。</span>
     
         <div class="space-y-4"></div>
     
@@ -2352,17 +2393,17 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="guo-ji-hua-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">国际化配置</span>
-    </div>
-        </div>
+        <h4 id="guo-ji-hua-pei-zhi">
+            
+        <span class="leading-7">国际化配置</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在修改国际化配置需要修改两个配置文件(如果增加了其他的国际化文件修改的会更多)</span>
+        <span class="leading-7">在修改国际化配置需要修改两个配置文件(如果增加了其他的国际化文件修改的会更多)</span>
     
         <div class="space-y-4"></div>
     
@@ -2376,7 +2417,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在文件中增加以下代码</span>
+        <span class="leading-7">在文件中增加以下代码</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">java</div>
@@ -2401,25 +2442,25 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="gou-jian-zi-yuan-fang-wen-qi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">构建资源访问器</span>
-    </div>
-        </div>
+        <h4 id="gou-jian-zi-yuan-fang-wen-qi">
+            
+        <span class="leading-7">构建资源访问器</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在 </span>
+        <span class="leading-7">在 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">core/datacap-web/src/services/admin</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 目录下新建 </span>
+        <span class="leading-7"> 目录下新建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ReportService.ts</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文件，代码如下：</span>
+        <span class="leading-7"> 文件，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">ts</div>
@@ -2466,29 +2507,29 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="gou-jian-Vue-ye-mian" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">构建 Vue 页面</span>
-    </div>
-        </div>
+        <h4 id="gou-jian-Vue-ye-mian">
+            
+        <span class="leading-7">构建 Vue 页面</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在 </span>
+        <span class="leading-7">在 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">core/datacap-web/src/views/admin</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 目录下新建 </span>
+        <span class="leading-7"> 目录下新建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">report</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 目录，并在该文件夹下创建 </span>
+        <span class="leading-7"> 目录，并在该文件夹下创建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ReportUtils.ts</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文件，代码如下：</span>
+        <span class="leading-7"> 文件，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">ts</div>
@@ -2548,19 +2589,19 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
         </div>
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在 </span>
+        <span class="leading-7">在 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">core/datacap-web/src/views/admin</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 目录下新建 </span>
+        <span class="leading-7"> 目录下新建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">report</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 目录，并在该文件夹下创建 </span>
+        <span class="leading-7"> 目录，并在该文件夹下创建 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">AdminReport.vue</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文件，代码如下：</span>
+        <span class="leading-7"> 文件，代码如下：</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
         <div class="!px-3 !py-2 !bg-gray-200 !dark:bg-gray-700 !border-b !border-gray-300 !dark:border-gray-600">
@@ -2704,7 +2745,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2716,7 +2757,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2729,11 +2770,11 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -2745,11 +2786,11 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -2855,7 +2896,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="zhun-bei-gong-zuo">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">准备工作</span>
+        <span class="leading-7">准备工作</span>
     
                             </a>
                         </div>
@@ -2866,7 +2907,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="yuan-ma-kai-fa">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">源码开发</span>
+        <span class="leading-7">源码开发</span>
     
                             </a>
                         </div>
@@ -2878,7 +2919,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="fu-wu-duan">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">服务端</span>
+        <span class="leading-7">服务端</span>
     
                             </a>
                         </div>
@@ -2890,7 +2931,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="tian-jia-entity">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">entity</code>
     
@@ -2903,7 +2944,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="tian-jia-repository">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">repository</code>
     
@@ -2916,7 +2957,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="tian-jia-service">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">service</code>
     
@@ -2929,7 +2970,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="tian-jia-controller">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">controller</code>
     
@@ -2942,7 +2983,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="tian-jia-sql">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">sql</code>
     
@@ -2958,7 +2999,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="UI-duan">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">UI 端</span>
+        <span class="leading-7">UI 端</span>
     
                             </a>
                         </div>
@@ -2970,7 +3011,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="gou-jian-cai-dan">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">构建菜单</span>
+        <span class="leading-7">构建菜单</span>
     
                             </a>
                         </div>
@@ -2981,7 +3022,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="guo-ji-hua-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">国际化配置</span>
+        <span class="leading-7">国际化配置</span>
     
                             </a>
                         </div>
@@ -2992,7 +3033,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="gou-jian-zi-yuan-fang-wen-qi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">构建资源访问器</span>
+        <span class="leading-7">构建资源访问器</span>
     
                             </a>
                         </div>
@@ -3003,7 +3044,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="gou-jian-Vue-ye-mian">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">构建 Vue 页面</span>
+        <span class="leading-7">构建 Vue 页面</span>
     
                             </a>
                         </div>
@@ -3055,7 +3096,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="zhun-bei-gong-zuo">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">准备工作</span>
+        <span class="leading-7">准备工作</span>
     
                         </a>
                     </div>
@@ -3066,7 +3107,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="yuan-ma-kai-fa">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">源码开发</span>
+        <span class="leading-7">源码开发</span>
     
                         </a>
                     </div>
@@ -3078,7 +3119,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="fu-wu-duan">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">服务端</span>
+        <span class="leading-7">服务端</span>
     
                         </a>
                     </div>
@@ -3090,7 +3131,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="tian-jia-entity">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">entity</code>
     
@@ -3103,7 +3144,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="tian-jia-repository">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">repository</code>
     
@@ -3116,7 +3157,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="tian-jia-service">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">service</code>
     
@@ -3129,7 +3170,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="tian-jia-controller">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">controller</code>
     
@@ -3142,7 +3183,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="tian-jia-sql">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">添加 </span>
+        <span class="leading-7">添加 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">sql</code>
     
@@ -3158,7 +3199,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="UI-duan">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">UI 端</span>
+        <span class="leading-7">UI 端</span>
     
                         </a>
                     </div>
@@ -3170,7 +3211,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="gou-jian-cai-dan">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">构建菜单</span>
+        <span class="leading-7">构建菜单</span>
     
                         </a>
                     </div>
@@ -3181,7 +3222,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="guo-ji-hua-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">国际化配置</span>
+        <span class="leading-7">国际化配置</span>
     
                         </a>
                     </div>
@@ -3192,7 +3233,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="gou-jian-zi-yuan-fang-wen-qi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">构建资源访问器</span>
+        <span class="leading-7">构建资源访问器</span>
     
                         </a>
                     </div>
@@ -3203,7 +3244,7 @@ report<span class="token operator">:</span> <span class="token char">'报表'</s
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="gou-jian-Vue-ye-mian">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">构建 Vue 页面</span>
+        <span class="leading-7">构建 Vue 页面</span>
     
                         </a>
                     </div>

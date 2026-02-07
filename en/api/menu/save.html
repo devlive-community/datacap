@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -1752,7 +1793,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <span>15 分钟阅读</span>
+        <span>10 分钟阅读</span>
         
             <span class="mx-1">•</span>
             <span>
@@ -1763,7 +1804,7 @@
                     +
                 
                 
-                    2068 词
+                    1868 词
                 
             </span>
         
@@ -1783,23 +1824,23 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">请求地址：</span>
+        <span class="leading-7">请求地址：</span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">/api/v1/menu</code>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">请求方式：</span>
+        <span class="leading-7">请求方式：</span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">POST</code>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="Body" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Body</span>
-    </div>
-        </div>
+        <h2 id="Body">
+            
+        <span class="leading-7">Body</span>
+    
+        </h2>
     
         <div class="w-full">
             <div class="border-b border-gray-200">
@@ -1809,10 +1850,10 @@
             class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
                    border-blue-500 text-blue-600
                    focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-krxiwc612', 0)"
+            onclick="switchTab(event, 'tabgroup-69bkp72zc', 0)"
             aria-selected="true"
-            aria-controls="tabgroup-krxiwc612-panel-0"
-            id="tabgroup-krxiwc612-tab-0">
+            aria-controls="tabgroup-69bkp72zc-panel-0"
+            id="tabgroup-69bkp72zc-tab-0">
             示例
         </button>
     
@@ -1820,10 +1861,10 @@
             class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
                    border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300
                    focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-krxiwc612', 1)"
+            onclick="switchTab(event, 'tabgroup-69bkp72zc', 1)"
             aria-selected="false"
-            aria-controls="tabgroup-krxiwc612-panel-1"
-            id="tabgroup-krxiwc612-tab-1">
+            aria-controls="tabgroup-69bkp72zc-panel-1"
+            id="tabgroup-69bkp72zc-tab-1">
             参数
         </button>
     
@@ -1833,8 +1874,8 @@
                 
         <div class="p-4 "
             role="tabpanel"
-            aria-labelledby="tabgroup-krxiwc612-tab-0"
-            id="tabgroup-krxiwc612-panel-0">
+            aria-labelledby="tabgroup-69bkp72zc-tab-0"
+            id="tabgroup-69bkp72zc-panel-0">
             <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">json</div>
@@ -1869,8 +1910,8 @@
     
         <div class="p-4 hidden"
             role="tabpanel"
-            aria-labelledby="tabgroup-krxiwc612-tab-1"
-            id="tabgroup-krxiwc612-panel-1">
+            aria-labelledby="tabgroup-69bkp72zc-tab-1"
+            id="tabgroup-69bkp72zc-panel-1">
             
         <div class="space-y-4">
             <div class="relative overflow-x-auto shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 sm:rounded-lg">
@@ -1880,19 +1921,19 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">参数</span>
+        <span class="leading-7">参数</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">类型</span>
+        <span class="leading-7">类型</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">描述</span>
+        <span class="leading-7">描述</span>
     
                                 </th>
                             
@@ -1910,13 +1951,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单名称</span>
+        <span class="leading-7">菜单名称</span>
     
                                     </td>
                                 
@@ -1932,13 +1973,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单描述</span>
+        <span class="leading-7">菜单描述</span>
     
                                     </td>
                                 
@@ -1954,13 +1995,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单路径</span>
+        <span class="leading-7">菜单路径</span>
     
                                     </td>
                                 
@@ -1976,13 +2017,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单排序</span>
+        <span class="leading-7">菜单排序</span>
     
                                     </td>
                                 
@@ -1998,13 +2039,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单类型</span>
+        <span class="leading-7">菜单类型</span>
     
                                     </td>
                                 
@@ -2020,13 +2061,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">Boolean</span>
+        <span class="leading-7">Boolean</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">是否激活</span>
+        <span class="leading-7">是否激活</span>
     
                                     </td>
                                 
@@ -2042,13 +2083,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">国际化key</span>
+        <span class="leading-7">国际化key</span>
     
                                     </td>
                                 
@@ -2064,13 +2105,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">图标</span>
+        <span class="leading-7">图标</span>
     
                                     </td>
                                 
@@ -2086,13 +2127,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">Boolean</span>
+        <span class="leading-7">Boolean</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">是否为新菜单</span>
+        <span class="leading-7">是否为新菜单</span>
     
                                     </td>
                                 
@@ -2141,11 +2182,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="Response" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Response</span>
-    </div>
-        </div>
+        <h2 id="Response">
+            
+        <span class="leading-7">Response</span>
+    
+        </h2>
     
         <div class="w-full">
             <div class="border-b border-gray-200">
@@ -2155,10 +2196,10 @@
             class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
                    border-blue-500 text-blue-600
                    focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-bxf5mftit', 0)"
+            onclick="switchTab(event, 'tabgroup-xe0wsmlu8', 0)"
             aria-selected="true"
-            aria-controls="tabgroup-bxf5mftit-panel-0"
-            id="tabgroup-bxf5mftit-tab-0">
+            aria-controls="tabgroup-xe0wsmlu8-panel-0"
+            id="tabgroup-xe0wsmlu8-tab-0">
             示例
         </button>
     
@@ -2166,10 +2207,10 @@
             class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
                    border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300
                    focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-bxf5mftit', 1)"
+            onclick="switchTab(event, 'tabgroup-xe0wsmlu8', 1)"
             aria-selected="false"
-            aria-controls="tabgroup-bxf5mftit-panel-1"
-            id="tabgroup-bxf5mftit-tab-1">
+            aria-controls="tabgroup-xe0wsmlu8-panel-1"
+            id="tabgroup-xe0wsmlu8-tab-1">
             参数
         </button>
     
@@ -2179,8 +2220,8 @@
                 
         <div class="p-4 "
             role="tabpanel"
-            aria-labelledby="tabgroup-bxf5mftit-tab-0"
-            id="tabgroup-bxf5mftit-panel-0">
+            aria-labelledby="tabgroup-xe0wsmlu8-tab-0"
+            id="tabgroup-xe0wsmlu8-panel-0">
             <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">json</div>
@@ -2221,8 +2262,8 @@
     
         <div class="p-4 hidden"
             role="tabpanel"
-            aria-labelledby="tabgroup-bxf5mftit-tab-1"
-            id="tabgroup-bxf5mftit-panel-1">
+            aria-labelledby="tabgroup-xe0wsmlu8-tab-1"
+            id="tabgroup-xe0wsmlu8-panel-1">
             
         <div class="space-y-4">
             <div class="relative overflow-x-auto shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 sm:rounded-lg">
@@ -2232,19 +2273,19 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">参数</span>
+        <span class="leading-7">参数</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">类型</span>
+        <span class="leading-7">类型</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">描述</span>
+        <span class="leading-7">描述</span>
     
                                 </th>
                             
@@ -2262,13 +2303,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单名称</span>
+        <span class="leading-7">菜单名称</span>
     
                                     </td>
                                 
@@ -2284,13 +2325,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单code</span>
+        <span class="leading-7">菜单code</span>
     
                                     </td>
                                 
@@ -2306,13 +2347,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">创建时间</span>
+        <span class="leading-7">创建时间</span>
     
                                     </td>
                                 
@@ -2328,13 +2369,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">更新时间</span>
+        <span class="leading-7">更新时间</span>
     
                                     </td>
                                 
@@ -2350,13 +2391,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单描述</span>
+        <span class="leading-7">菜单描述</span>
     
                                     </td>
                                 
@@ -2372,13 +2413,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单路径</span>
+        <span class="leading-7">菜单路径</span>
     
                                     </td>
                                 
@@ -2394,13 +2435,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单分组</span>
+        <span class="leading-7">菜单分组</span>
     
                                     </td>
                                 
@@ -2416,13 +2457,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">Number</span>
+        <span class="leading-7">Number</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单排序</span>
+        <span class="leading-7">菜单排序</span>
     
                                     </td>
                                 
@@ -2438,13 +2479,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">菜单类型</span>
+        <span class="leading-7">菜单类型</span>
     
                                     </td>
                                 
@@ -2460,13 +2501,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">Number</span>
+        <span class="leading-7">Number</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">父菜单</span>
+        <span class="leading-7">父菜单</span>
     
                                     </td>
                                 
@@ -2482,13 +2523,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">国际化key</span>
+        <span class="leading-7">国际化key</span>
     
                                     </td>
                                 
@@ -2504,13 +2545,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">String</span>
+        <span class="leading-7">String</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">图标</span>
+        <span class="leading-7">图标</span>
     
                                     </td>
                                 
@@ -2526,13 +2567,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">Number</span>
+        <span class="leading-7">Number</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">跳转地址</span>
+        <span class="leading-7">跳转地址</span>
     
                                     </td>
                                 
@@ -2548,13 +2589,13 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">Boolean</span>
+        <span class="leading-7">Boolean</span>
     
                                     </td>
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">是否为新菜单</span>
+        <span class="leading-7">是否为新菜单</span>
     
                                     </td>
                                 
@@ -2619,7 +2660,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2631,7 +2672,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2644,11 +2685,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -2660,11 +2701,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -2770,7 +2811,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Body">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Body</span>
+        <span class="leading-7">Body</span>
     
                             </a>
                         </div>
@@ -2781,7 +2822,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Response">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Response</span>
+        <span class="leading-7">Response</span>
     
                             </a>
                         </div>
@@ -2827,7 +2868,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Body">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Body</span>
+        <span class="leading-7">Body</span>
     
                         </a>
                     </div>
@@ -2838,7 +2879,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Response">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Response</span>
+        <span class="leading-7">Response</span>
     
                         </a>
                     </div>

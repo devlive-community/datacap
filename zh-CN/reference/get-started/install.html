@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -2845,7 +2886,7 @@
                     +
                 
                 
-                    6084 词
+                    5382 词
                 
             </span>
         
@@ -2865,15 +2906,15 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap 是支持用户将服务部署到自主机中。通过本文档用户可以了解如何在自主机中部署 DataCap。</span>
+        <span class="leading-7">DataCap 是支持用户将服务部署到自主机中。通过本文档用户可以了解如何在自主机中部署 DataCap。</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="xi-tong-yao-qiu" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">系统要求</span>
-    </div>
-        </div>
+        <h3 id="xi-tong-yao-qiu">
+            
+        <span class="leading-7">系统要求</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2891,11 +2932,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">该软件的二进制包基于以下系统进行编译和测试。它尚未在其他版本上进行测试，理论上受支持。</span>
+        <span class="leading-7">该软件的二进制包基于以下系统进行编译和测试。它尚未在其他版本上进行测试，理论上受支持。</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果有不支持的系统，请使用源码编译方法主动编译二进制文件。</span>
+        <span class="leading-7">如果有不支持的系统，请使用源码编译方法主动编译二进制文件。</span>
     
                 </div>
             </div>
@@ -2911,13 +2952,13 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">System</span>
+        <span class="leading-7">System</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Version</span>
+        <span class="leading-7">Version</span>
     
                                 </th>
                             
@@ -2929,7 +2970,7 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">JDK</span>
+        <span class="leading-7">JDK</span>
     
                                     </td>
                                 
@@ -2945,7 +2986,7 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">MySQL</span>
+        <span class="leading-7">MySQL</span>
     
                                     </td>
                                 
@@ -2962,11 +3003,11 @@
             </div>
         </div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="zhun-bei-an-zhuang-bao" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">准备安装包</span>
-    </div>
-        </div>
+        <h3 id="zhun-bei-an-zhuang-bao">
+            
+        <span class="leading-7">准备安装包</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2984,7 +3025,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">从以下地址下载相应系统的二进制软件包进行安装。如果您需要使用源码安装请前往查看开发者文档模块。</span>
+        <span class="leading-7">从以下地址下载相应系统的二进制软件包进行安装。如果您需要使用源码安装请前往查看开发者文档模块。</span>
     
                 </div>
             </div>
@@ -2992,11 +3033,11 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">1.下载最新发布版本</span>
+        <span class="leading-7">1.下载最新发布版本</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">2.将二进制文件下载到本地后运行以下命令</span>
+        <span class="leading-7">2.将二进制文件下载到本地后运行以下命令</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">bash</div>
@@ -3021,7 +3062,7 @@
     
         <ol class="my-4 pl-8 list-decimal">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">进入软件根目录</span>
+        <span class="leading-7">进入软件根目录</span>
     </li>
         </ol>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
@@ -3046,21 +3087,21 @@
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="ruan-jian-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">软件配置</span>
-    </div>
-        </div>
+        <h3 id="ruan-jian-pei-zhi">
+            
+        <span class="leading-7">软件配置</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">对于软件的首次安装，您需要将 </span>
+        <span class="leading-7">对于软件的首次安装，您需要将 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">schema/datacap.sql</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文件中的sql脚本导入MySQL服务器。注意需要导入的脚本根据下载的软件包进行匹配</span>
+        <span class="leading-7"> 文件中的sql脚本导入MySQL服务器。注意需要导入的脚本根据下载的软件包进行匹配</span>
     
         <div class="space-y-4"></div>
     
@@ -3076,7 +3117,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果您是通过其他版本升级，请执行 </span>
+        <span class="leading-7">如果您是通过其他版本升级，请执行 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">schema/<VERSION>/schema.sql</code>
     
@@ -3086,29 +3127,29 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">datacap 软件中的所有配置均在 </span>
+        <span class="leading-7">datacap 软件中的所有配置均在 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure/application.properties</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 文件中。</span>
+        <span class="leading-7"> 文件中。</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="ji-ben-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">基本配置</span>
-    </div>
-        </div>
+        <h4 id="ji-ben-pei-zhi">
+            
+        <span class="leading-7">基本配置</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">导入 </span>
+        </h4>
+    
+        <span class="leading-7">导入 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">SQL</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 脚本后，修改 </span>
+        <span class="leading-7"> 脚本后，修改 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure/application.properties</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 配置文件以修改MySQL服务器的配置信息</span>
+        <span class="leading-7"> 配置文件以修改MySQL服务器的配置信息</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3141,65 +3182,65 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">server.port</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置服务在服务器中启动监听的端口，默认为 </span>
+        <span class="leading-7">: 用于配置服务在服务器中启动监听的端口，默认为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">9096</code>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">server.address</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置服务在本地的监听地址，如果需要使用 </span>
+        <span class="leading-7">: 用于配置服务在本地的监听地址，如果需要使用 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">IP+端口</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 方便外部机器访问，请不要设置为 </span>
+        <span class="leading-7"> 方便外部机器访问，请不要设置为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">localhost</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">，建议设置为 </span>
+        <span class="leading-7">，建议设置为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">0.0.0.0</code>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.jackson.time-zone</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置时区，默认为 </span>
+        <span class="leading-7">: 用于配置时区，默认为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">GMT+8</code>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.jackson.date-format</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置日期格式，默认为 </span>
+        <span class="leading-7">: 用于配置日期格式，默认为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">yyyy-MM-dd HH:mm:ss</code>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.security.secret</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置数据安全管理的密钥，默认为 </span>
+        <span class="leading-7">: 用于配置数据安全管理的密钥，默认为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">DataCapSecretKey</code>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.security.expiration</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置数据安全管理的过期时间，单位为毫秒，默认为 </span>
+        <span class="leading-7">: 用于配置数据安全管理的过期时间，单位为毫秒，默认为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">86400000</code>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.editor.sugs.maxSize</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置数据编辑器的最大行数，默认为 </span>
+        <span class="leading-7">: 用于配置数据编辑器的最大行数，默认为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">1000</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 已经失效不在使用</span>
+        <span class="leading-7"> 已经失效不在使用</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Web-fu-wu-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Web 服务配置</span>
-    </div>
-        </div>
+        <h4 id="Web-fu-wu-pei-zhi">
+            
+        <span class="leading-7">Web 服务配置</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3228,25 +3269,25 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.mvc.throw-exception-if-no-handler-found</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置是否抛出异常</span>
+        <span class="leading-7">: 用于配置是否抛出异常</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.resources.add-mappings</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置是否启用静态资源映射</span>
+        <span class="leading-7">: 用于配置是否启用静态资源映射</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.web.resources.add-mappings</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置是否启用静态资源映射</span>
+        <span class="leading-7">: 用于配置是否启用静态资源映射</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="shu-ju-ku-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">数据库配置</span>
-    </div>
-        </div>
+        <h4 id="shu-ju-ku-pei-zhi">
+            
+        <span class="leading-7">数据库配置</span>
+    
+        </h4>
     
         <div class="rounded-lg my-2 overflow-hidden border border-red-200">
         
@@ -3260,11 +3301,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果版本 </span>
+        <span class="leading-7">如果版本 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">>=8.x</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">，请设置 </span>
+        <span class="leading-7">，请设置 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">allowPublicKeyRetrieval=true</code>
     
@@ -3299,15 +3340,15 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.datasource.url</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置数据库连接地址</span>
+        <span class="leading-7">: 用于配置数据库连接地址</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.datasource.username</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置数据库用户名</span>
+        <span class="leading-7">: 用于配置数据库用户名</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.datasource.password</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置数据库密码</span>
+        <span class="leading-7">: 用于配置数据库密码</span>
     </li>
         </ul>
     
@@ -3325,7 +3366,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">支持所有 Spring Data 的配置参数</span>
+        <span class="leading-7">支持所有 Spring Data 的配置参数</span>
     
                 </div>
             </div>
@@ -3333,11 +3374,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="zhi-xing-qi-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">执行器配置</span>
-    </div>
-        </div>
+        <h4 id="zhi-xing-qi-pei-zhi">
+            
+        <span class="leading-7">执行器配置</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3369,37 +3410,37 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.data</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置执行器的数据缓冲路径</span>
+        <span class="leading-7">: 用于配置执行器的数据缓冲路径</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.way</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置执行器的执行方式，不同的执行器拥有不同的执行方式</span>
+        <span class="leading-7">: 用于配置执行器的执行方式，不同的执行器拥有不同的执行方式</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.mode</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置执行器的执行模式，不同的执行器拥有不同的执行模式</span>
+        <span class="leading-7">: 用于配置执行器的执行模式，不同的执行器拥有不同的执行模式</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.engine</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置执行器的执行引擎</span>
+        <span class="leading-7">: 用于配置执行器的执行引擎</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.startScript</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置执行器的启动脚本</span>
+        <span class="leading-7">: 用于配置执行器的启动脚本</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.seatunnel.home</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置执行器的 Apache Seatunnel 主目录</span>
+        <span class="leading-7">: 用于配置执行器的 Apache Seatunnel 主目录</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-md sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-md [&_span]:sm:!text-lg">
-            <div id="ApacheSeatunnel" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Apache Seatunnel</span>
-    </div>
-        </div>
+        <h5 id="ApacheSeatunnel">
+            
+        <span class="leading-7">Apache Seatunnel</span>
+    
+        </h5>
     
         <div class="w-full">
             <div class="border-b border-gray-200">
@@ -3409,10 +3450,10 @@
             class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
                    border-blue-500 text-blue-600
                    focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-2r2yfs4zs', 0)"
+            onclick="switchTab(event, 'tabgroup-nyr8miiam', 0)"
             aria-selected="true"
-            aria-controls="tabgroup-2r2yfs4zs-panel-0"
-            id="tabgroup-2r2yfs4zs-tab-0">
+            aria-controls="tabgroup-nyr8miiam-panel-0"
+            id="tabgroup-nyr8miiam-tab-0">
             Spark 引擎配置
         </button>
     
@@ -3420,10 +3461,10 @@
             class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
                    border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300
                    focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-2r2yfs4zs', 1)"
+            onclick="switchTab(event, 'tabgroup-nyr8miiam', 1)"
             aria-selected="false"
-            aria-controls="tabgroup-2r2yfs4zs-panel-1"
-            id="tabgroup-2r2yfs4zs-tab-1">
+            aria-controls="tabgroup-nyr8miiam-panel-1"
+            id="tabgroup-nyr8miiam-tab-1">
             Flink 引擎配置
         </button>
     
@@ -3431,10 +3472,10 @@
             class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
                    border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300
                    focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-2r2yfs4zs', 2)"
+            onclick="switchTab(event, 'tabgroup-nyr8miiam', 2)"
             aria-selected="false"
-            aria-controls="tabgroup-2r2yfs4zs-panel-2"
-            id="tabgroup-2r2yfs4zs-tab-2">
+            aria-controls="tabgroup-nyr8miiam-panel-2"
+            id="tabgroup-nyr8miiam-tab-2">
             Seatunnel 引擎配置
         </button>
     
@@ -3444,8 +3485,8 @@
                 
         <div class="p-4 "
             role="tabpanel"
-            aria-labelledby="tabgroup-2r2yfs4zs-tab-0"
-            id="tabgroup-2r2yfs4zs-panel-0">
+            aria-labelledby="tabgroup-nyr8miiam-tab-0"
+            id="tabgroup-nyr8miiam-panel-0">
             <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3475,8 +3516,8 @@
     
         <div class="p-4 hidden"
             role="tabpanel"
-            aria-labelledby="tabgroup-2r2yfs4zs-tab-1"
-            id="tabgroup-2r2yfs4zs-panel-1">
+            aria-labelledby="tabgroup-nyr8miiam-tab-1"
+            id="tabgroup-nyr8miiam-panel-1">
             <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3506,8 +3547,8 @@
     
         <div class="p-4 hidden"
             role="tabpanel"
-            aria-labelledby="tabgroup-2r2yfs4zs-tab-2"
-            id="tabgroup-2r2yfs4zs-panel-2">
+            aria-labelledby="tabgroup-nyr8miiam-tab-2"
+            id="tabgroup-nyr8miiam-panel-2">
             <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3572,11 +3613,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="shang-chuan-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">上传配置</span>
-    </div>
-        </div>
+        <h4 id="shang-chuan-pei-zhi">
+            
+        <span class="leading-7">上传配置</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3604,21 +3645,21 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.config.data</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置上传配置文件的路径</span>
+        <span class="leading-7">: 用于配置上传配置文件的路径</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.cache.data</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置上传缓存文件的路径</span>
+        <span class="leading-7">: 用于配置上传缓存文件的路径</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="OpenAi-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">OpenAi 配置</span>
-    </div>
-        </div>
+        <h4 id="OpenAi-pei-zhi">
+            
+        <span class="leading-7">OpenAi 配置</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3648,29 +3689,29 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.backend</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置 OpenAI 的后端地址</span>
+        <span class="leading-7">: 用于配置 OpenAI 的后端地址</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.token</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置 OpenAI 的 token</span>
+        <span class="leading-7">: 用于配置 OpenAI 的 token</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.model</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置 OpenAI 的模型</span>
+        <span class="leading-7">: 用于配置 OpenAI 的模型</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.timeout</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置 OpenAI 的超时时间，单位为秒</span>
+        <span class="leading-7">: 用于配置 OpenAI 的超时时间，单位为秒</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="zhu-xi-tong-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">主系统配置</span>
-    </div>
-        </div>
+        <h4 id="zhu-xi-tong-pei-zhi">
+            
+        <span class="leading-7">主系统配置</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3701,33 +3742,33 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.registration.enable</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置是否开启注册</span>
+        <span class="leading-7">: 用于配置是否开启注册</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.captcha.enable</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置是否开启验证码</span>
+        <span class="leading-7">: 用于配置是否开启验证码</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.cache.maximum</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置缓存最大值</span>
+        <span class="leading-7">: 用于配置缓存最大值</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.cache.expiration</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置缓存过期时间，单位为分钟</span>
+        <span class="leading-7">: 用于配置缓存过期时间，单位为分钟</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.audit.sql.print</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置是否打印 SQL</span>
+        <span class="leading-7">: 用于配置是否打印 SQL</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="liu-shui-xian-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">流水线配置</span>
-    </div>
-        </div>
+        <h4 id="liu-shui-xian-pei-zhi">
+            
+        <span class="leading-7">流水线配置</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3756,41 +3797,41 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.pipeline.maxRunning</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置最大运行数</span>
+        <span class="leading-7">: 用于配置最大运行数</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.pipeline.maxQueue</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置最大队列</span>
+        <span class="leading-7">: 用于配置最大队列</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.pipeline.reset</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置重置策略</span>
+        <span class="leading-7">: 用于配置重置策略</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="cun-chu-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">存储配置</span>
-    </div>
-        </div>
+        <h4 id="cun-chu-pei-zhi">
+            
+        <span class="leading-7">存储配置</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">支持的存储类型详见 </span>
+        <span class="leading-7">支持的存储类型详见 </span>
     <a href="https://github.com/devlive-community/datacap/tree/dev/fs">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/tree/dev/fs</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/tree/dev/fs</span>
     </a>
         <div class="space-y-4"></div>
     
-        <div class="text-md sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-md [&_span]:sm:!text-lg">
-            <div id="ben-di-cun-chu-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">本地存储配置</span>
-    </div>
-        </div>
+        <h5 id="ben-di-cun-chu-pei-zhi">
+            
+        <span class="leading-7">本地存储配置</span>
+    
+        </h5>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3821,35 +3862,35 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.type</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置文件系统类型</span>
+        <span class="leading-7">: 用于配置文件系统类型</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.access</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置文件系统访问，该类型可以为空</span>
+        <span class="leading-7">: 用于配置文件系统访问，该类型可以为空</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.secret</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置文件系统密钥，该类型可以为空</span>
+        <span class="leading-7">: 用于配置文件系统密钥，该类型可以为空</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.endpoint</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置文件系统端点，如果填写后将追加为目录 </span>
+        <span class="leading-7">: 用于配置文件系统端点，如果填写后将追加为目录 </span>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">该类型可以为空</span>
+        <span class="leading-7">该类型可以为空</span>
     </strong></li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.bucket</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置文件系统存储桶，该类型可以为空</span>
+        <span class="leading-7">: 用于配置文件系统存储桶，该类型可以为空</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-md sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-md [&_span]:sm:!text-lg">
-            <div id="a-li-yun-OSS-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">阿里云 OSS 配置</span>
-    </div>
-        </div>
+        <h5 id="a-li-yun-OSS-pei-zhi">
+            
+        <span class="leading-7">阿里云 OSS 配置</span>
+    
+        </h5>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3880,17 +3921,17 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.type</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: AliOss</span>
+        <span class="leading-7">: AliOss</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-md sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-md [&_span]:sm:!text-lg">
-            <div id="qi-niu-yun-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">七牛云配置</span>
-    </div>
-        </div>
+        <h5 id="qi-niu-yun-pei-zhi">
+            
+        <span class="leading-7">七牛云配置</span>
+    
+        </h5>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3921,17 +3962,17 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.type</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Qiniu</span>
+        <span class="leading-7">: Qiniu</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="shi-yan-xing-gong-neng" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">实验性功能</span>
-    </div>
-        </div>
+        <h4 id="shi-yan-xing-gong-neng">
+            
+        <span class="leading-7">实验性功能</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3960,25 +4001,25 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.experimental.autoLimit</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置是否自动增加 LIMIT</span>
+        <span class="leading-7">: 用于配置是否自动增加 LIMIT</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.experimental.data</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置实验性功能的数据路径</span>
+        <span class="leading-7">: 用于配置实验性功能的数据路径</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.experimental.avatarPath</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置实验性功能的头像路径</span>
+        <span class="leading-7">: 用于配置实验性功能的头像路径</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="ri-zhi-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">日志配置</span>
-    </div>
-        </div>
+        <h4 id="ri-zhi-pei-zhi">
+            
+        <span class="leading-7">日志配置</span>
+    
+        </h4>
     
         <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
         
@@ -3992,11 +4033,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果需要修改日志配置，只需修改 </span>
+        <span class="leading-7">如果需要修改日志配置，只需修改 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure/logback.xml</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 配置文件即可</span>
+        <span class="leading-7"> 配置文件即可</span>
     
                 </div>
             </div>
@@ -4004,11 +4045,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="JVM-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">JVM 配置</span>
-    </div>
-        </div>
+        <h4 id="JVM-pei-zhi">
+            
+        <span class="leading-7">JVM 配置</span>
+    
+        </h4>
     
         <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
         
@@ -4022,11 +4063,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果您需要定制化 JVM 配置，只需修改 </span>
+        <span class="leading-7">如果您需要定制化 JVM 配置，只需修改 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure/jvm.conf</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 配置文件即可</span>
+        <span class="leading-7"> 配置文件即可</span>
     
                 </div>
             </div>
@@ -4034,11 +4075,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="cha-jian-guan-li-qi-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">插件管理器配置</span>
-    </div>
-        </div>
+        <h4 id="cha-jian-guan-li-qi-pei-zhi">
+            
+        <span class="leading-7">插件管理器配置</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -4065,37 +4106,37 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">plugin.manager.extend.packages</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: 用于配置插件扩展包，配置后将优先加载父类加载器中的依赖</span>
+        <span class="leading-7">: 用于配置插件扩展包，配置后将优先加载父类加载器中的依赖</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="ruan-jian-qi-dong" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">软件启动</span>
-    </div>
-        </div>
+        <h3 id="ruan-jian-qi-dong">
+            
+        <span class="leading-7">软件启动</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     <div class="pl-4 my-2 border-l-4 border-gray-200 dark:border-gray-700">
             <div class="py-1">
-        <span class="text-base text-gray-700 leading-7 my-2">启动服务前请安装系统需要的各种插件，执行命令 </span>
+        <span class="leading-7">启动服务前请安装系统需要的各种插件，执行命令 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">./bin/install-plugin.sh</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">，也可以到服务商店中进行安装。</span>
+        <span class="leading-7">，也可以到服务商店中进行安装。</span>
     </div>
         </div>
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="qi-dong-fu-wu" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">启动服务</span>
-    </div>
-        </div>
+        <h4 id="qi-dong-fu-wu">
+            
+        <span class="leading-7">启动服务</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap服务启动非常简单，执行以下脚本</span>
+        </h4>
+    
+        <span class="leading-7">DataCap服务启动非常简单，执行以下脚本</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">bash</div>
@@ -4118,13 +4159,13 @@
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="ting-zhi-fu-wu" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">停止服务</span>
-    </div>
-        </div>
+        <h4 id="ting-zhi-fu-wu">
+            
+        <span class="leading-7">停止服务</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">停止服务并执行以下脚本</span>
+        </h4>
+    
+        <span class="leading-7">停止服务并执行以下脚本</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">bash</div>
@@ -4147,11 +4188,11 @@
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="tiao-shi-fu-wu" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">调试服务</span>
-    </div>
-        </div>
+        <h4 id="tiao-shi-fu-wu">
+            
+        <span class="leading-7">调试服务</span>
+    
+        </h4>
     
         <div class="rounded-lg my-2 overflow-hidden border border-blue-200">
         
@@ -4165,11 +4206,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果要调试系统，可以使用 </span>
+        <span class="leading-7">如果要调试系统，可以使用 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">./bin/debug.sh</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 启动服务，但关闭窗口时它将停止</span>
+        <span class="leading-7"> 启动服务，但关闭窗口时它将停止</span>
     
                 </div>
             </div>
@@ -4193,7 +4234,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -4205,7 +4246,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -4218,11 +4259,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -4234,11 +4275,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -4344,7 +4385,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="xi-tong-yao-qiu">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">系统要求</span>
+        <span class="leading-7">系统要求</span>
     
                             </a>
                         </div>
@@ -4355,7 +4396,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="zhun-bei-an-zhuang-bao">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">准备安装包</span>
+        <span class="leading-7">准备安装包</span>
     
                             </a>
                         </div>
@@ -4366,7 +4407,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ruan-jian-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">软件配置</span>
+        <span class="leading-7">软件配置</span>
     
                             </a>
                         </div>
@@ -4378,7 +4419,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ji-ben-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">基本配置</span>
+        <span class="leading-7">基本配置</span>
     
                             </a>
                         </div>
@@ -4389,7 +4430,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Web-fu-wu-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Web 服务配置</span>
+        <span class="leading-7">Web 服务配置</span>
     
                             </a>
                         </div>
@@ -4400,7 +4441,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="shu-ju-ku-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">数据库配置</span>
+        <span class="leading-7">数据库配置</span>
     
                             </a>
                         </div>
@@ -4411,7 +4452,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="zhi-xing-qi-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">执行器配置</span>
+        <span class="leading-7">执行器配置</span>
     
                             </a>
                         </div>
@@ -4423,7 +4464,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ApacheSeatunnel">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Apache Seatunnel</span>
+        <span class="leading-7">Apache Seatunnel</span>
     
                             </a>
                         </div>
@@ -4437,7 +4478,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="shang-chuan-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">上传配置</span>
+        <span class="leading-7">上传配置</span>
     
                             </a>
                         </div>
@@ -4448,7 +4489,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="OpenAi-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">OpenAi 配置</span>
+        <span class="leading-7">OpenAi 配置</span>
     
                             </a>
                         </div>
@@ -4459,7 +4500,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="zhu-xi-tong-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">主系统配置</span>
+        <span class="leading-7">主系统配置</span>
     
                             </a>
                         </div>
@@ -4470,7 +4511,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="liu-shui-xian-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">流水线配置</span>
+        <span class="leading-7">流水线配置</span>
     
                             </a>
                         </div>
@@ -4481,7 +4522,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="cun-chu-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">存储配置</span>
+        <span class="leading-7">存储配置</span>
     
                             </a>
                         </div>
@@ -4493,7 +4534,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ben-di-cun-chu-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">本地存储配置</span>
+        <span class="leading-7">本地存储配置</span>
     
                             </a>
                         </div>
@@ -4504,7 +4545,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="a-li-yun-OSS-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">阿里云 OSS 配置</span>
+        <span class="leading-7">阿里云 OSS 配置</span>
     
                             </a>
                         </div>
@@ -4515,7 +4556,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="qi-niu-yun-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">七牛云配置</span>
+        <span class="leading-7">七牛云配置</span>
     
                             </a>
                         </div>
@@ -4529,7 +4570,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="shi-yan-xing-gong-neng">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">实验性功能</span>
+        <span class="leading-7">实验性功能</span>
     
                             </a>
                         </div>
@@ -4540,7 +4581,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ri-zhi-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">日志配置</span>
+        <span class="leading-7">日志配置</span>
     
                             </a>
                         </div>
@@ -4551,7 +4592,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="JVM-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">JVM 配置</span>
+        <span class="leading-7">JVM 配置</span>
     
                             </a>
                         </div>
@@ -4562,7 +4603,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="cha-jian-guan-li-qi-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">插件管理器配置</span>
+        <span class="leading-7">插件管理器配置</span>
     
                             </a>
                         </div>
@@ -4576,7 +4617,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ruan-jian-qi-dong">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">软件启动</span>
+        <span class="leading-7">软件启动</span>
     
                             </a>
                         </div>
@@ -4588,7 +4629,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="qi-dong-fu-wu">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">启动服务</span>
+        <span class="leading-7">启动服务</span>
     
                             </a>
                         </div>
@@ -4599,7 +4640,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ting-zhi-fu-wu">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">停止服务</span>
+        <span class="leading-7">停止服务</span>
     
                             </a>
                         </div>
@@ -4610,7 +4651,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="tiao-shi-fu-wu">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">调试服务</span>
+        <span class="leading-7">调试服务</span>
     
                             </a>
                         </div>
@@ -4659,7 +4700,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="xi-tong-yao-qiu">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">系统要求</span>
+        <span class="leading-7">系统要求</span>
     
                         </a>
                     </div>
@@ -4670,7 +4711,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="zhun-bei-an-zhuang-bao">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">准备安装包</span>
+        <span class="leading-7">准备安装包</span>
     
                         </a>
                     </div>
@@ -4681,7 +4722,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ruan-jian-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">软件配置</span>
+        <span class="leading-7">软件配置</span>
     
                         </a>
                     </div>
@@ -4693,7 +4734,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ji-ben-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">基本配置</span>
+        <span class="leading-7">基本配置</span>
     
                         </a>
                     </div>
@@ -4704,7 +4745,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Web-fu-wu-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Web 服务配置</span>
+        <span class="leading-7">Web 服务配置</span>
     
                         </a>
                     </div>
@@ -4715,7 +4756,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="shu-ju-ku-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">数据库配置</span>
+        <span class="leading-7">数据库配置</span>
     
                         </a>
                     </div>
@@ -4726,7 +4767,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="zhi-xing-qi-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">执行器配置</span>
+        <span class="leading-7">执行器配置</span>
     
                         </a>
                     </div>
@@ -4738,7 +4779,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ApacheSeatunnel">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Apache Seatunnel</span>
+        <span class="leading-7">Apache Seatunnel</span>
     
                         </a>
                     </div>
@@ -4752,7 +4793,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="shang-chuan-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">上传配置</span>
+        <span class="leading-7">上传配置</span>
     
                         </a>
                     </div>
@@ -4763,7 +4804,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="OpenAi-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">OpenAi 配置</span>
+        <span class="leading-7">OpenAi 配置</span>
     
                         </a>
                     </div>
@@ -4774,7 +4815,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="zhu-xi-tong-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">主系统配置</span>
+        <span class="leading-7">主系统配置</span>
     
                         </a>
                     </div>
@@ -4785,7 +4826,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="liu-shui-xian-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">流水线配置</span>
+        <span class="leading-7">流水线配置</span>
     
                         </a>
                     </div>
@@ -4796,7 +4837,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="cun-chu-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">存储配置</span>
+        <span class="leading-7">存储配置</span>
     
                         </a>
                     </div>
@@ -4808,7 +4849,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ben-di-cun-chu-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">本地存储配置</span>
+        <span class="leading-7">本地存储配置</span>
     
                         </a>
                     </div>
@@ -4819,7 +4860,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="a-li-yun-OSS-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">阿里云 OSS 配置</span>
+        <span class="leading-7">阿里云 OSS 配置</span>
     
                         </a>
                     </div>
@@ -4830,7 +4871,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="qi-niu-yun-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">七牛云配置</span>
+        <span class="leading-7">七牛云配置</span>
     
                         </a>
                     </div>
@@ -4844,7 +4885,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="shi-yan-xing-gong-neng">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">实验性功能</span>
+        <span class="leading-7">实验性功能</span>
     
                         </a>
                     </div>
@@ -4855,7 +4896,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ri-zhi-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">日志配置</span>
+        <span class="leading-7">日志配置</span>
     
                         </a>
                     </div>
@@ -4866,7 +4907,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="JVM-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">JVM 配置</span>
+        <span class="leading-7">JVM 配置</span>
     
                         </a>
                     </div>
@@ -4877,7 +4918,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="cha-jian-guan-li-qi-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">插件管理器配置</span>
+        <span class="leading-7">插件管理器配置</span>
     
                         </a>
                     </div>
@@ -4891,7 +4932,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ruan-jian-qi-dong">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">软件启动</span>
+        <span class="leading-7">软件启动</span>
     
                         </a>
                     </div>
@@ -4903,7 +4944,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="qi-dong-fu-wu">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">启动服务</span>
+        <span class="leading-7">启动服务</span>
     
                         </a>
                     </div>
@@ -4914,7 +4955,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ting-zhi-fu-wu">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">停止服务</span>
+        <span class="leading-7">停止服务</span>
     
                         </a>
                     </div>
@@ -4925,7 +4966,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="tiao-shi-fu-wu">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">调试服务</span>
+        <span class="leading-7">调试服务</span>
     
                         </a>
                     </div>

@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -2845,7 +2886,7 @@
                     +
                 
                 
-                    1013 词
+                    906 词
                 
             </span>
         
@@ -2865,7 +2906,7 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在查询页面进行查询后会在结果表格上方显示出如下窗口</span>
+        <span class="leading-7">在查询页面进行查询后会在结果表格上方显示出如下窗口</span>
     
         <div class="space-y-4"></div>
     
@@ -2905,7 +2946,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">点击图中红框选择的按钮，跳转到新建数据集页面</span>
+        <span class="leading-7">点击图中红框选择的按钮，跳转到新建数据集页面</span>
     
         <div class="space-y-4"></div>
     
@@ -2945,7 +2986,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">该页面中我们可以修改要执行的 SQL 点击 </span>
+        <span class="leading-7">该页面中我们可以修改要执行的 SQL 点击 </span>
     
             <button class="inline-flex items-center justify-center px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <span class="inline-flex items-center">
@@ -2953,7 +2994,7 @@
                 </span>
             </button>
         
-        <span class="text-base text-gray-700 leading-7 my-2"> 按钮，会在下方出现预览数据的列表，点击顶部的 </span>
+        <span class="leading-7"> 按钮，会在下方出现预览数据的列表，点击顶部的 </span>
     
             <button class="inline-flex items-center justify-center px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <span class="inline-flex items-center">
@@ -2961,7 +3002,7 @@
                 </span>
             </button>
         
-        <span class="text-base text-gray-700 leading-7 my-2"> 按钮，窗口如下</span>
+        <span class="leading-7"> 按钮，窗口如下</span>
     
         <div class="space-y-4"></div>
     
@@ -3001,15 +3042,15 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在页面中我们可以配置 </span>
+        <span class="leading-7">在页面中我们可以配置 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">数据列</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 和 </span>
+        <span class="leading-7"> 和 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">基本信息</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">，根据选择不同的 tab 进行相关配置。</span>
+        <span class="leading-7">，根据选择不同的 tab 进行相关配置。</span>
     
         <div class="space-y-4"></div>
     
@@ -3025,25 +3066,25 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在数据集中列分为两种 </span>
+        <span class="leading-7">在数据集中列分为两种 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">虚拟列</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 和 </span>
+        <span class="leading-7"> 和 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">真实列</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">。</span>
+        <span class="leading-7">。</span>
     
         <div class="space-y-4"></div>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">虚拟列</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 不会在实际的底层存储构建（只是用函数比较，只会在查询中实时展示），</span>
+        <span class="leading-7"> 不会在实际的底层存储构建（只是用函数比较，只会在查询中实时展示），</span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">真实列</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 需要在底层存储中进行构建，这样在查询的时候会有更好的性能。</span>
+        <span class="leading-7"> 需要在底层存储中进行构建，这样在查询的时候会有更好的性能。</span>
     
                 </div>
             </div>
@@ -3051,17 +3092,17 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="xu-ni-lie" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">虚拟列</span>
-    </div>
-        </div>
+        <h3 id="xu-ni-lie">
+            
+        <span class="leading-7">虚拟列</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">我们点击每行数据中的 </span>
+        </h3>
+    
+        <span class="leading-7">我们点击每行数据中的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">操作</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 配置下的 </span>
+        <span class="leading-7"> 配置下的 </span>
     
         <span class="inline-flex items-center justify-center relative top-[3px]" style="width: px; height: px;">
             <span class="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"></span>
@@ -3071,7 +3112,7 @@
             </i>
         </span>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 按钮，可以添加虚拟列</span>
+        <span class="leading-7"> 按钮，可以添加虚拟列</span>
     
         <div class="space-y-4"></div>
     
@@ -3111,7 +3152,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在虚拟列中部分配置无法使用，因为它不做具体的存储操作。</span>
+        <span class="leading-7">在虚拟列中部分配置无法使用，因为它不做具体的存储操作。</span>
     
         <div class="space-y-4"></div>
     
@@ -3129,11 +3170,11 @@
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">虚拟列</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 是 DataCap 中的一个新特性，该列只会在运行时生效，一般列名都是函数的表示，比如 </span>
+        <span class="leading-7"> 是 DataCap 中的一个新特性，该列只会在运行时生效，一般列名都是函数的表示，比如 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">SUM(id)</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">，在查询的时候会将该 SQL 转换。</span>
+        <span class="leading-7">，在查询的时候会将该 SQL 转换。</span>
     
                 </div>
             </div>
@@ -3141,17 +3182,17 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="ji-ben-pei-zhi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">基本配置</span>
-    </div>
-        </div>
+        <h3 id="ji-ben-pei-zhi">
+            
+        <span class="leading-7">基本配置</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">点击顶部的 </span>
+        </h3>
+    
+        <span class="leading-7">点击顶部的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">数据配置</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 标签，配置项显示如下</span>
+        <span class="leading-7"> 标签，配置项显示如下</span>
     
         <div class="space-y-4"></div>
     
@@ -3191,11 +3232,11 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">我们完成基本的配置信息后点击顶部的 </span>
+        <span class="leading-7">我们完成基本的配置信息后点击顶部的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">创建数据集</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 按钮，即可在后台构建数据集。届时会跳转到数据集列表。</span>
+        <span class="leading-7"> 按钮，即可在后台构建数据集。届时会跳转到数据集列表。</span>
     
         </div>
 
@@ -3215,7 +3256,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -3227,7 +3268,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -3240,11 +3281,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -3256,11 +3297,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -3366,7 +3407,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="xu-ni-lie">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">虚拟列</span>
+        <span class="leading-7">虚拟列</span>
     
                             </a>
                         </div>
@@ -3377,7 +3418,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ji-ben-pei-zhi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">基本配置</span>
+        <span class="leading-7">基本配置</span>
     
                             </a>
                         </div>
@@ -3423,7 +3464,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="xu-ni-lie">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">虚拟列</span>
+        <span class="leading-7">虚拟列</span>
     
                         </a>
                     </div>
@@ -3434,7 +3475,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ji-ben-pei-zhi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">基本配置</span>
+        <span class="leading-7">基本配置</span>
     
                         </a>
                     </div>

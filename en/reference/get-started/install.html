@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -2834,14 +2875,14 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <span>30 分钟阅读</span>
+        <span>25 分钟阅读</span>
         
             <span class="mx-1">•</span>
             <span>
                 
                 
                 
-                    5546 词
+                    4909 词
                 
             </span>
         
@@ -2861,15 +2902,15 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap enables users to deploy services to their own machines. This document allows users to learn how to deploy DataCap in an autonomous machine.</span>
+        <span class="leading-7">DataCap enables users to deploy services to their own machines. This document allows users to learn how to deploy DataCap in an autonomous machine.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="SystemRequirements" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">System Requirements</span>
-    </div>
-        </div>
+        <h3 id="SystemRequirements">
+            
+        <span class="leading-7">System Requirements</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2887,11 +2928,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">The binary package of the software is compiled and tested based on the following system. It has not been tested on other versions and is theoretically supported.</span>
+        <span class="leading-7">The binary package of the software is compiled and tested based on the following system. It has not been tested on other versions and is theoretically supported.</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">If you have an unsupported system, use the source code compilation method to actively compile the binary file.</span>
+        <span class="leading-7">If you have an unsupported system, use the source code compilation method to actively compile the binary file.</span>
     
                 </div>
             </div>
@@ -2907,13 +2948,13 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">System</span>
+        <span class="leading-7">System</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-left">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">Version</span>
+        <span class="leading-7">Version</span>
     
                                 </th>
                             
@@ -2925,7 +2966,7 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">JDK</span>
+        <span class="leading-7">JDK</span>
     
                                     </td>
                                 
@@ -2941,7 +2982,7 @@
                                 
                                     <td class="px-3 py-1.5 text-left">
                                         
-        <span class="text-base text-gray-700 leading-7 my-2">MySQL</span>
+        <span class="leading-7">MySQL</span>
     
                                     </td>
                                 
@@ -2958,11 +2999,11 @@
             </div>
         </div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="Preparetheinstallationpackage" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Prepare the installation package</span>
-    </div>
-        </div>
+        <h3 id="Preparetheinstallationpackage">
+            
+        <span class="leading-7">Prepare the installation package</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2980,7 +3021,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Download the binary package of the corresponding system from the following address and install it. If you need to install using source code, go to the Developer Documentation module.</span>
+        <span class="leading-7">Download the binary package of the corresponding system from the following address and install it. If you need to install using source code, go to the Developer Documentation module.</span>
     
                 </div>
             </div>
@@ -2997,7 +3038,7 @@
             Download the latest release version
         </a>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Run the following command after downloading the binaries locally</span>
+        <span class="leading-7">Run the following command after downloading the binaries locally</span>
     </li>
         </ol>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
@@ -3022,7 +3063,7 @@
         </div>
         <ol class="my-4 pl-8 list-decimal">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Go to the root directory of the software</span>
+        <span class="leading-7">Go to the root directory of the software</span>
     </li>
         </ol>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
@@ -3047,21 +3088,21 @@
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="Softwareconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Software configuration</span>
-    </div>
-        </div>
+        <h3 id="Softwareconfiguration">
+            
+        <span class="leading-7">Software configuration</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">For the first installation of the software, you need to import the sql script from the </span>
+        <span class="leading-7">For the first installation of the software, you need to import the sql script from the </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">schema/datacap.sql</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> file into the MySQL server. Note: The scripts that need to be imported are matched based on the downloaded package</span>
+        <span class="leading-7"> file into the MySQL server. Note: The scripts that need to be imported are matched based on the downloaded package</span>
     
         <div class="space-y-4"></div>
     
@@ -3077,7 +3118,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">If you are upgrading from another version, run </span>
+        <span class="leading-7">If you are upgrading from another version, run </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">schema/VERSION/schema.sql</code>
     
@@ -3087,29 +3128,29 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">All configurations in the DataCap software are in the </span>
+        <span class="leading-7">All configurations in the DataCap software are in the </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure/application.properties</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> file.</span>
+        <span class="leading-7"> file.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Basicconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Basic configuration</span>
-    </div>
-        </div>
+        <h4 id="Basicconfiguration">
+            
+        <span class="leading-7">Basic configuration</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">After importing the </span>
+        </h4>
+    
+        <span class="leading-7">After importing the </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">SQL</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> script, modify the </span>
+        <span class="leading-7"> script, modify the </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">configure/application.properties</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> configuration file to modify the configuration information of the MySQL server</span>
+        <span class="leading-7"> configuration file to modify the configuration information of the MySQL server</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3145,41 +3186,41 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">server.port</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: The port on which the service initiates the listener on the server</span>
+        <span class="leading-7">: The port on which the service initiates the listener on the server</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">server.address</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Configure the local listening address of the service</span>
+        <span class="leading-7">: Configure the local listening address of the service</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.jackson.time-zone</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the time zone</span>
+        <span class="leading-7">: Used to configure the time zone</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.jackson.date-format</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the date format</span>
+        <span class="leading-7">: Lets you configure the date format</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.security.secret</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: The key used to configure data security management</span>
+        <span class="leading-7">: The key used to configure data security management</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.security.expiration</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: The expiration time for configuring data security management</span>
+        <span class="leading-7">: The expiration time for configuring data security management</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.editor.sugs.maxSize</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the maximum number of rows in the data editor</span>
+        <span class="leading-7">: Lets you configure the maximum number of rows in the data editor</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Webserviceconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Web service configuration</span>
-    </div>
-        </div>
+        <h4 id="Webserviceconfiguration">
+            
+        <span class="leading-7">Web service configuration</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3208,25 +3249,25 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.mvc.throw-exception-if-no-handler-found</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Used to configure whether an exception is thrown</span>
+        <span class="leading-7">: Used to configure whether an exception is thrown</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.resources.add-mappings</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure whether to enable static resource mapping</span>
+        <span class="leading-7">: Lets you configure whether to enable static resource mapping</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.web.resources.add-mappings</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure whether to enable static resource mapping</span>
+        <span class="leading-7">: Lets you configure whether to enable static resource mapping</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Databaseconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Database configuration</span>
-    </div>
-        </div>
+        <h4 id="Databaseconfiguration">
+            
+        <span class="leading-7">Database configuration</span>
+    
+        </h4>
     
         <div class="rounded-lg my-2 overflow-hidden border border-red-200">
         
@@ -3240,11 +3281,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">If version </span>
+        <span class="leading-7">If version </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">>=8.x</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">, set </span>
+        <span class="leading-7">, set </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">allowPublicKeyRetrieval=true</code>
     
@@ -3279,15 +3320,15 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.datasource.url</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the database connection address</span>
+        <span class="leading-7">: Lets you configure the database connection address</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.datasource.username</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the database username</span>
+        <span class="leading-7">: Lets you configure the database username</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">spring.datasource.password</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the database password</span>
+        <span class="leading-7">: Used to configure the database password</span>
     </li>
         </ul>
     
@@ -3305,7 +3346,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">All Spring Data configuration parameters are supported</span>
+        <span class="leading-7">All Spring Data configuration parameters are supported</span>
     
                 </div>
             </div>
@@ -3313,11 +3354,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Actuatorconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Actuator configuration</span>
-    </div>
-        </div>
+        <h4 id="Actuatorconfiguration">
+            
+        <span class="leading-7">Actuator configuration</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3347,29 +3388,29 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.data</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the data buffer path of the actuator</span>
+        <span class="leading-7">: Used to configure the data buffer path of the actuator</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.way</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: It is used to configure the execution mode of the actuator, and different actuators have different execution methods</span>
+        <span class="leading-7">: It is used to configure the execution mode of the actuator, and different actuators have different execution methods</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.mode</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: It is used to configure the execution mode of the actuator, different actuators have different execution modes</span>
+        <span class="leading-7">: It is used to configure the execution mode of the actuator, different actuators have different execution modes</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.seatunnel.home</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: The Apache Seatunnel home directory used to configure the executor</span>
+        <span class="leading-7">: The Apache Seatunnel home directory used to configure the executor</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Uploadtheconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Upload the configuration</span>
-    </div>
-        </div>
+        <h4 id="Uploadtheconfiguration">
+            
+        <span class="leading-7">Upload the configuration</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3397,21 +3438,21 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.config.data</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: The path used to configure the upload profile</span>
+        <span class="leading-7">: The path used to configure the upload profile</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.cache.data</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the path to upload the cache file</span>
+        <span class="leading-7">: Lets you configure the path to upload the cache file</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="OpenAiconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">OpenAi configuration</span>
-    </div>
-        </div>
+        <h4 id="OpenAiconfiguration">
+            
+        <span class="leading-7">OpenAi configuration</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3441,29 +3482,29 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.backend</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Used to configure OpenAI's backend address</span>
+        <span class="leading-7">: Used to configure OpenAI's backend address</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.token</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: The token used to configure OpenAI</span>
+        <span class="leading-7">: The token used to configure OpenAI</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.model</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: The model used to configure OpenAI</span>
+        <span class="leading-7">: The model used to configure OpenAI</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.openai.timeout</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the timeout period for OpenAI</span>
+        <span class="leading-7">: Used to configure the timeout period for OpenAI</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Primarysystemconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Primary system configuration</span>
-    </div>
-        </div>
+        <h4 id="Primarysystemconfiguration">
+            
+        <span class="leading-7">Primary system configuration</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3494,33 +3535,33 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.registration.enable</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Used to configure whether to enable registration</span>
+        <span class="leading-7">: Used to configure whether to enable registration</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.captcha.enable</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: This parameter is used to configure whether to enable the verification code</span>
+        <span class="leading-7">: This parameter is used to configure whether to enable the verification code</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.cache.maximum</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the maximum cache value</span>
+        <span class="leading-7">: Lets you configure the maximum cache value</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.cache.expiration</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure the cache expiration time</span>
+        <span class="leading-7">: Lets you configure the cache expiration time</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.audit.sql.print</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: This parameter is used to configure whether to print SQL statements</span>
+        <span class="leading-7">: This parameter is used to configure whether to print SQL statements</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Pipelineconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Pipeline configuration</span>
-    </div>
-        </div>
+        <h4 id="Pipelineconfiguration">
+            
+        <span class="leading-7">Pipeline configuration</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3549,31 +3590,31 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.pipeline.maxRunning</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the maximum number of runs</span>
+        <span class="leading-7">: Used to configure the maximum number of runs</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.pipeline.maxQueue</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Used to configure the maximum queue</span>
+        <span class="leading-7">: Used to configure the maximum queue</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.pipeline.reset</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Lets you configure a reset policy</span>
+        <span class="leading-7">: Lets you configure a reset policy</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Storageconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Storage configuration</span>
-    </div>
-        </div>
+        <h4 id="Storageconfiguration">
+            
+        <span class="leading-7">Storage configuration</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Storage currently supports</span>
+        <span class="leading-7">Storage currently supports</span>
     
         <div class="space-y-4"></div>
     
@@ -3581,25 +3622,25 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Local</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: local storage</span>
+        <span class="leading-7">: local storage</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">AliOss</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Alibaba Cloud OSS</span>
+        <span class="leading-7">: Alibaba Cloud OSS</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Qiniu</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Qiniu Cloud</span>
+        <span class="leading-7">: Qiniu Cloud</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-md sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-md [&_span]:sm:!text-lg">
-            <div id="Localstorageconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Local storage configuration</span>
-    </div>
-        </div>
+        <h5 id="Localstorageconfiguration">
+            
+        <span class="leading-7">Local storage configuration</span>
+    
+        </h5>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3630,35 +3671,35 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.type</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: used to configure the file system type</span>
+        <span class="leading-7">: used to configure the file system type</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.access</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: used to configure file system access, this type can be empty</span>
+        <span class="leading-7">: used to configure file system access, this type can be empty</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.secret</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: used to configure the file system key, this type can be empty</span>
+        <span class="leading-7">: used to configure the file system key, this type can be empty</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.endpoint</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: used to configure the file system endpoint. If filled in, it will be appended as a directory </span>
+        <span class="leading-7">: used to configure the file system endpoint. If filled in, it will be appended as a directory </span>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">This type can be empty</span>
+        <span class="leading-7">This type can be empty</span>
     </strong></li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.bucket</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: used to configure the file system bucket, this type can be empty</span>
+        <span class="leading-7">: used to configure the file system bucket, this type can be empty</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-md sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-md [&_span]:sm:!text-lg">
-            <div id="AlibabaCloudOSSconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Alibaba Cloud OSS configuration</span>
-    </div>
-        </div>
+        <h5 id="AlibabaCloudOSSconfiguration">
+            
+        <span class="leading-7">Alibaba Cloud OSS configuration</span>
+    
+        </h5>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3689,17 +3730,17 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.type</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: AliOss</span>
+        <span class="leading-7">: AliOss</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-md sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-md [&_span]:sm:!text-lg">
-            <div id="QiniuCloudConfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Qiniu Cloud Configuration</span>
-    </div>
-        </div>
+        <h5 id="QiniuCloudConfiguration">
+            
+        <span class="leading-7">Qiniu Cloud Configuration</span>
+    
+        </h5>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3730,17 +3771,17 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.fs.type</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Qiniu</span>
+        <span class="leading-7">: Qiniu</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Experimentalfeatures" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Experimental features</span>
-    </div>
-        </div>
+        <h4 id="Experimentalfeatures">
+            
+        <span class="leading-7">Experimental features</span>
+    
+        </h4>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
@@ -3769,25 +3810,25 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.experimental.autoLimit</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: This parameter specifies whether to automatically increase the LIMIT</span>
+        <span class="leading-7">: This parameter specifies whether to automatically increase the LIMIT</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.experimental.data</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: The data path used to configure the experimental feature</span>
+        <span class="leading-7">: The data path used to configure the experimental feature</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.experimental.avatarPath</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">: Avatar path to configure experimental features</span>
+        <span class="leading-7">: Avatar path to configure experimental features</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Logconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Log configuration</span>
-    </div>
-        </div>
+        <h4 id="Logconfiguration">
+            
+        <span class="leading-7">Log configuration</span>
+    
+        </h4>
     
         <div class="rounded-lg my-2 overflow-hidden border border-yellow-200">
         
@@ -3803,13 +3844,13 @@
     <pre><code>If you need to modify the log configuration, you can simply modify the `configure/logback.xml` configuration file
 </code></pre>
 
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="JVMconfiguration" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">JVM configuration</span>
-    </div>
-        </div>
+        <h4 id="JVMconfiguration">
+            
+        <span class="leading-7">JVM configuration</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! warning "Warning"</span>
+        </h4>
+    
+        <span class="leading-7">!!! warning "Warning"</span>
     
         <div class="space-y-4"></div>
     <pre><code>If you need to customize the JVM configuration, you can simply modify the `configure/jvm.conf` configuration file
@@ -3821,29 +3862,29 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="Softwarestartup" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Software startup</span>
-    </div>
-        </div>
+        <h3 id="Softwarestartup">
+            
+        <span class="leading-7">Software startup</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     <div class="pl-4 my-2 border-l-4 border-gray-200 dark:border-gray-700">
             <div class="py-1">
-        <span class="text-base text-gray-700 leading-7 my-2">Before starting the service, please install various plug-ins required by the system and execute the command </span>
+        <span class="leading-7">Before starting the service, please install various plug-ins required by the system and execute the command </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">./bin/install-plugin.sh</code>
     </div>
         </div>
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Starttheservice" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Start the service</span>
-    </div>
-        </div>
+        <h4 id="Starttheservice">
+            
+        <span class="leading-7">Start the service</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap service startup is very simple, execute the following script</span>
+        </h4>
+    
+        <span class="leading-7">DataCap service startup is very simple, execute the following script</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">bash</div>
@@ -3866,13 +3907,13 @@
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Discontinuationofservice" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Discontinuation of service</span>
-    </div>
-        </div>
+        <h4 id="Discontinuationofservice">
+            
+        <span class="leading-7">Discontinuation of service</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Stop the service and execute the following script</span>
+        </h4>
+    
+        <span class="leading-7">Stop the service and execute the following script</span>
     <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
             
             <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">bash</div>
@@ -3895,11 +3936,11 @@
         </div>
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Debugtheservice" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Debug the service</span>
-    </div>
-        </div>
+        <h4 id="Debugtheservice">
+            
+        <span class="leading-7">Debug the service</span>
+    
+        </h4>
     
         <div class="rounded-lg my-2 overflow-hidden border border-blue-200">
         
@@ -3913,11 +3954,11 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">If you want to debug the system, you can start the service with </span>
+        <span class="leading-7">If you want to debug the system, you can start the service with </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">./bin/debug.sh</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">, but it stops when you close the window</span>
+        <span class="leading-7">, but it stops when you close the window</span>
     
                 </div>
             </div>
@@ -3941,7 +3982,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -3953,7 +3994,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -3966,11 +4007,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -3982,11 +4023,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -4092,7 +4133,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="SystemRequirements">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">System Requirements</span>
+        <span class="leading-7">System Requirements</span>
     
                             </a>
                         </div>
@@ -4103,7 +4144,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Preparetheinstallationpackage">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Prepare the installation package</span>
+        <span class="leading-7">Prepare the installation package</span>
     
                             </a>
                         </div>
@@ -4114,7 +4155,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Softwareconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Software configuration</span>
+        <span class="leading-7">Software configuration</span>
     
                             </a>
                         </div>
@@ -4126,7 +4167,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Basicconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Basic configuration</span>
+        <span class="leading-7">Basic configuration</span>
     
                             </a>
                         </div>
@@ -4137,7 +4178,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Webserviceconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Web service configuration</span>
+        <span class="leading-7">Web service configuration</span>
     
                             </a>
                         </div>
@@ -4148,7 +4189,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Databaseconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Database configuration</span>
+        <span class="leading-7">Database configuration</span>
     
                             </a>
                         </div>
@@ -4159,7 +4200,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Actuatorconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Actuator configuration</span>
+        <span class="leading-7">Actuator configuration</span>
     
                             </a>
                         </div>
@@ -4170,7 +4211,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Uploadtheconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Upload the configuration</span>
+        <span class="leading-7">Upload the configuration</span>
     
                             </a>
                         </div>
@@ -4181,7 +4222,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="OpenAiconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">OpenAi configuration</span>
+        <span class="leading-7">OpenAi configuration</span>
     
                             </a>
                         </div>
@@ -4192,7 +4233,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Primarysystemconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Primary system configuration</span>
+        <span class="leading-7">Primary system configuration</span>
     
                             </a>
                         </div>
@@ -4203,7 +4244,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Pipelineconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Pipeline configuration</span>
+        <span class="leading-7">Pipeline configuration</span>
     
                             </a>
                         </div>
@@ -4214,7 +4255,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Storageconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Storage configuration</span>
+        <span class="leading-7">Storage configuration</span>
     
                             </a>
                         </div>
@@ -4226,7 +4267,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Localstorageconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Local storage configuration</span>
+        <span class="leading-7">Local storage configuration</span>
     
                             </a>
                         </div>
@@ -4237,7 +4278,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="AlibabaCloudOSSconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Alibaba Cloud OSS configuration</span>
+        <span class="leading-7">Alibaba Cloud OSS configuration</span>
     
                             </a>
                         </div>
@@ -4248,7 +4289,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="QiniuCloudConfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Qiniu Cloud Configuration</span>
+        <span class="leading-7">Qiniu Cloud Configuration</span>
     
                             </a>
                         </div>
@@ -4262,7 +4303,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Experimentalfeatures">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Experimental features</span>
+        <span class="leading-7">Experimental features</span>
     
                             </a>
                         </div>
@@ -4273,7 +4314,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Logconfiguration">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Log configuration</span>
+        <span class="leading-7">Log configuration</span>
     
                             </a>
                         </div>
@@ -4287,7 +4328,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Softwarestartup">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Software startup</span>
+        <span class="leading-7">Software startup</span>
     
                             </a>
                         </div>
@@ -4299,7 +4340,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Starttheservice">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Start the service</span>
+        <span class="leading-7">Start the service</span>
     
                             </a>
                         </div>
@@ -4310,7 +4351,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Discontinuationofservice">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Discontinuation of service</span>
+        <span class="leading-7">Discontinuation of service</span>
     
                             </a>
                         </div>
@@ -4321,7 +4362,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Debugtheservice">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Debug the service</span>
+        <span class="leading-7">Debug the service</span>
     
                             </a>
                         </div>
@@ -4370,7 +4411,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="SystemRequirements">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">System Requirements</span>
+        <span class="leading-7">System Requirements</span>
     
                         </a>
                     </div>
@@ -4381,7 +4422,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Preparetheinstallationpackage">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Prepare the installation package</span>
+        <span class="leading-7">Prepare the installation package</span>
     
                         </a>
                     </div>
@@ -4392,7 +4433,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Softwareconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Software configuration</span>
+        <span class="leading-7">Software configuration</span>
     
                         </a>
                     </div>
@@ -4404,7 +4445,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Basicconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Basic configuration</span>
+        <span class="leading-7">Basic configuration</span>
     
                         </a>
                     </div>
@@ -4415,7 +4456,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Webserviceconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Web service configuration</span>
+        <span class="leading-7">Web service configuration</span>
     
                         </a>
                     </div>
@@ -4426,7 +4467,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Databaseconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Database configuration</span>
+        <span class="leading-7">Database configuration</span>
     
                         </a>
                     </div>
@@ -4437,7 +4478,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Actuatorconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Actuator configuration</span>
+        <span class="leading-7">Actuator configuration</span>
     
                         </a>
                     </div>
@@ -4448,7 +4489,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Uploadtheconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Upload the configuration</span>
+        <span class="leading-7">Upload the configuration</span>
     
                         </a>
                     </div>
@@ -4459,7 +4500,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="OpenAiconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">OpenAi configuration</span>
+        <span class="leading-7">OpenAi configuration</span>
     
                         </a>
                     </div>
@@ -4470,7 +4511,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Primarysystemconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Primary system configuration</span>
+        <span class="leading-7">Primary system configuration</span>
     
                         </a>
                     </div>
@@ -4481,7 +4522,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Pipelineconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Pipeline configuration</span>
+        <span class="leading-7">Pipeline configuration</span>
     
                         </a>
                     </div>
@@ -4492,7 +4533,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Storageconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Storage configuration</span>
+        <span class="leading-7">Storage configuration</span>
     
                         </a>
                     </div>
@@ -4504,7 +4545,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Localstorageconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Local storage configuration</span>
+        <span class="leading-7">Local storage configuration</span>
     
                         </a>
                     </div>
@@ -4515,7 +4556,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="AlibabaCloudOSSconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Alibaba Cloud OSS configuration</span>
+        <span class="leading-7">Alibaba Cloud OSS configuration</span>
     
                         </a>
                     </div>
@@ -4526,7 +4567,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="QiniuCloudConfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Qiniu Cloud Configuration</span>
+        <span class="leading-7">Qiniu Cloud Configuration</span>
     
                         </a>
                     </div>
@@ -4540,7 +4581,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Experimentalfeatures">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Experimental features</span>
+        <span class="leading-7">Experimental features</span>
     
                         </a>
                     </div>
@@ -4551,7 +4592,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Logconfiguration">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Log configuration</span>
+        <span class="leading-7">Log configuration</span>
     
                         </a>
                     </div>
@@ -4565,7 +4606,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Softwarestartup">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Software startup</span>
+        <span class="leading-7">Software startup</span>
     
                         </a>
                     </div>
@@ -4577,7 +4618,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Starttheservice">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Start the service</span>
+        <span class="leading-7">Start the service</span>
     
                         </a>
                     </div>
@@ -4588,7 +4629,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Discontinuationofservice">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Discontinuation of service</span>
+        <span class="leading-7">Discontinuation of service</span>
     
                         </a>
                     </div>
@@ -4599,7 +4640,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Debugtheservice">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Debug the service</span>
+        <span class="leading-7">Debug the service</span>
     
                         </a>
                     </div>

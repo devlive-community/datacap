@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -1807,14 +1848,14 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <span>5 分钟阅读</span>
+        <span>4 分钟阅读</span>
         
             <span class="mx-1">•</span>
             <span>
                 
                 
                 
-                    1084 词
+                    751 词
                 
             </span>
         
@@ -1834,49 +1875,49 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Dear DataCap Users,</span>
+        <span class="leading-7">Dear DataCap Users,</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">We are delighted to announce the official release of DataCap 2025.1.0! This update introduces a brand-new notification center, enhances metadata management capabilities, and fixes multiple known issues, further improving the software's stability and user experience.</span>
+        <span class="leading-7">We are delighted to announce the official release of DataCap 2025.1.0! This update introduces a brand-new notification center, enhances metadata management capabilities, and fixes multiple known issues, further improving the software's stability and user experience.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="ReleaseHighlights" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Release Highlights</span>
-    </div>
-        </div>
+        <h2 id="ReleaseHighlights">
+            
+        <span class="leading-7">Release Highlights</span>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="NewNotificationCenter" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🔔 New Notification Center</span>
-    </div>
-        </div>
+        </h2>
+    
+        <h3 id="NewNotificationCenter">
+            
+        <span class="leading-7">🔔 New Notification Center</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Added a complete notification system architecture to help users receive important updates and alerts</span>
+        <span class="leading-7">Added a complete notification system architecture to help users receive important updates and alerts</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Implemented dataset update notifications to keep teams informed about data changes</span>
+        <span class="leading-7">Implemented dataset update notifications to keep teams informed about data changes</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Optimized notification plugin SPI interface for easier developer extensions</span>
+        <span class="leading-7">Optimized notification plugin SPI interface for easier developer extensions</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Added notification pagination configuration and empty data prompts for better user experience</span>
+        <span class="leading-7">Added notification pagination configuration and empty data prompts for better user experience</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="DatasetEnhancements" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">📊 Dataset Enhancements</span>
-    </div>
-        </div>
+        <h3 id="DatasetEnhancements">
+            
+        <span class="leading-7">📊 Dataset Enhancements</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Added support for dataset deletion (closing issue </span>
+        <span class="leading-7">Added support for dataset deletion (closing issue </span>
     
         <a href="https://github.com/devlive-community/datacap/issues/904" 
            target="_blank" 
@@ -1899,129 +1940,129 @@
             </span>
         </a>
     
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed ad-hoc query sorting issues to improve data query efficiency</span>
+        <span class="leading-7">Fixed ad-hoc query sorting issues to improve data query efficiency</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed content population issues in the query page builder</span>
+        <span class="leading-7">Fixed content population issues in the query page builder</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Resolved dataset startup failure problems</span>
+        <span class="leading-7">Resolved dataset startup failure problems</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="ClickHouseCompatibilityImprovements" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">💻 ClickHouse Compatibility Improvements</span>
-    </div>
-        </div>
+        <h3 id="ClickHouseCompatibilityImprovements">
+            
+        <span class="leading-7">💻 ClickHouse Compatibility Improvements</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Adapted metadata management functionality for better compatibility</span>
+        <span class="leading-7">Adapted metadata management functionality for better compatibility</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed column conversion build issues</span>
+        <span class="leading-7">Fixed column conversion build issues</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Removed invalid function menus for a streamlined interface</span>
+        <span class="leading-7">Removed invalid function menus for a streamlined interface</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="SystemOptimizations" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🔧 System Optimizations</span>
-    </div>
-        </div>
+        <h3 id="SystemOptimizations">
+            
+        <span class="leading-7">🔧 System Optimizations</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Improved user avatar upload logic</span>
+        <span class="leading-7">Improved user avatar upload logic</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed editor configuration save failure issues</span>
+        <span class="leading-7">Fixed editor configuration save failure issues</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Resolved Docker image build problems</span>
+        <span class="leading-7">Resolved Docker image build problems</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Optimized pagination data retrieval methods</span>
+        <span class="leading-7">Optimized pagination data retrieval methods</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Added auto-suggestion functionality</span>
+        <span class="leading-7">Added auto-suggestion functionality</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="DocumentationUpdates" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">📋 Documentation Updates</span>
-    </div>
-        </div>
+        <h3 id="DocumentationUpdates">
+            
+        <span class="leading-7">📋 Documentation Updates</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Completely restructured development documentation, changelog, connector documentation, and system documentation</span>
+        <span class="leading-7">Completely restructured development documentation, changelog, connector documentation, and system documentation</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Refactored management documentation, workflow documentation, and dataset documentation</span>
+        <span class="leading-7">Refactored management documentation, workflow documentation, and dataset documentation</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Enhanced overall system documentation</span>
+        <span class="leading-7">Enhanced overall system documentation</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="InterfaceImprovements" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🖼️ Interface Improvements</span>
-    </div>
-        </div>
+        <h3 id="InterfaceImprovements">
+            
+        <span class="leading-7">🖼️ Interface Improvements</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed dashboard image display and upload path issues</span>
+        <span class="leading-7">Fixed dashboard image display and upload path issues</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Resolved visualization type splitting problems</span>
+        <span class="leading-7">Resolved visualization type splitting problems</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Fixed menu layout anomalies</span>
+        <span class="leading-7">Fixed menu layout anomalies</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Removed invalid menu items</span>
+        <span class="leading-7">Removed invalid menu items</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="MetadataManagementReconstruction" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🔍 Metadata Management Reconstruction</span>
-    </div>
-        </div>
+        <h3 id="MetadataManagementReconstruction">
+            
+        <span class="leading-7">🔍 Metadata Management Reconstruction</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Refactored metadata retrieval methods for improved performance</span>
+        <span class="leading-7">Refactored metadata retrieval methods for improved performance</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Optimized database, table, and column retrieval approaches</span>
+        <span class="leading-7">Optimized database, table, and column retrieval approaches</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Enhanced data CRUD operations</span>
+        <span class="leading-7">Enhanced data CRUD operations</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Added support for engines and data types</span>
+        <span class="leading-7">Added support for engines and data types</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="HowtoGetIt" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">How to Get It</span>
-    </div>
-        </div>
+        <h2 id="HowtoGetIt">
+            
+        <span class="leading-7">How to Get It</span>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="GitHubDownload" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">GitHub Download</span>
-    </div>
-        </div>
+        </h2>
     
-        <span class="text-base text-gray-700 leading-7 my-2">You can get the latest version from our GitHub repository:
+        <h3 id="GitHubDownload">
+            
+        <span class="leading-7">GitHub Download</span>
+    
+        </h3>
+    
+        <span class="leading-7">You can get the latest version from our GitHub repository:
 </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
@@ -2033,13 +2074,13 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="OfficialWebsite" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Official Website</span>
-    </div>
-        </div>
+        <h3 id="OfficialWebsite">
+            
+        <span class="leading-7">Official Website</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Visit our official website for more information:
+        </h3>
+    
+        <span class="leading-7">Visit our official website for more information:
 </span>
     
         <a class="text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200 cursor-pointer"
@@ -2051,21 +2092,21 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="Acknowledgments" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Acknowledgments</span>
-    </div>
-        </div>
+        <h2 id="Acknowledgments">
+            
+        <span class="leading-7">Acknowledgments</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">We would like to thank all developers and users who have contributed to DataCap. Your support and feedback are the driving force behind our continuous improvement. We will continue our efforts to provide you with better data transformation, integration, and visualization experiences.</span>
+        </h2>
     
-        <div class="space-y-4"></div>
-    
-        <span class="text-base text-gray-700 leading-7 my-2">If you encounter any issues during use or have any suggestions, please contact us through GitHub Issues.</span>
+        <span class="leading-7">We would like to thank all developers and users who have contributed to DataCap. Your support and feedback are the driving force behind our continuous improvement. We will continue our efforts to provide you with better data transformation, integration, and visualization experiences.</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">The DataCap Team
+        <span class="leading-7">If you encounter any issues during use or have any suggestions, please contact us through GitHub Issues.</span>
+    
+        <div class="space-y-4"></div>
+    
+        <span class="leading-7">The DataCap Team
 March 2, 2025</span>
     
         </div>
@@ -2086,7 +2127,7 @@ March 2, 2025</span>
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2098,7 +2139,7 @@ March 2, 2025</span>
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2111,11 +2152,11 @@ March 2, 2025</span>
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -2127,11 +2168,11 @@ March 2, 2025</span>
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -2237,7 +2278,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ReleaseHighlights">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Release Highlights</span>
+        <span class="leading-7">Release Highlights</span>
     
                             </a>
                         </div>
@@ -2249,7 +2290,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="NewNotificationCenter">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🔔 New Notification Center</span>
+        <span class="leading-7">🔔 New Notification Center</span>
     
                             </a>
                         </div>
@@ -2260,7 +2301,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="DatasetEnhancements">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">📊 Dataset Enhancements</span>
+        <span class="leading-7">📊 Dataset Enhancements</span>
     
                             </a>
                         </div>
@@ -2271,7 +2312,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ClickHouseCompatibilityImprovements">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">💻 ClickHouse Compatibility Improvements</span>
+        <span class="leading-7">💻 ClickHouse Compatibility Improvements</span>
     
                             </a>
                         </div>
@@ -2282,7 +2323,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="SystemOptimizations">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🔧 System Optimizations</span>
+        <span class="leading-7">🔧 System Optimizations</span>
     
                             </a>
                         </div>
@@ -2293,7 +2334,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="DocumentationUpdates">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">📋 Documentation Updates</span>
+        <span class="leading-7">📋 Documentation Updates</span>
     
                             </a>
                         </div>
@@ -2304,7 +2345,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="InterfaceImprovements">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🖼️ Interface Improvements</span>
+        <span class="leading-7">🖼️ Interface Improvements</span>
     
                             </a>
                         </div>
@@ -2315,7 +2356,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="MetadataManagementReconstruction">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🔍 Metadata Management Reconstruction</span>
+        <span class="leading-7">🔍 Metadata Management Reconstruction</span>
     
                             </a>
                         </div>
@@ -2329,7 +2370,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="HowtoGetIt">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">How to Get It</span>
+        <span class="leading-7">How to Get It</span>
     
                             </a>
                         </div>
@@ -2341,7 +2382,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="GitHubDownload">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">GitHub Download</span>
+        <span class="leading-7">GitHub Download</span>
     
                             </a>
                         </div>
@@ -2352,7 +2393,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="OfficialWebsite">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Official Website</span>
+        <span class="leading-7">Official Website</span>
     
                             </a>
                         </div>
@@ -2366,7 +2407,7 @@ March 2, 2025</span>
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Acknowledgments">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Acknowledgments</span>
+        <span class="leading-7">Acknowledgments</span>
     
                             </a>
                         </div>
@@ -2412,7 +2453,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ReleaseHighlights">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Release Highlights</span>
+        <span class="leading-7">Release Highlights</span>
     
                         </a>
                     </div>
@@ -2424,7 +2465,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="NewNotificationCenter">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🔔 New Notification Center</span>
+        <span class="leading-7">🔔 New Notification Center</span>
     
                         </a>
                     </div>
@@ -2435,7 +2476,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="DatasetEnhancements">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">📊 Dataset Enhancements</span>
+        <span class="leading-7">📊 Dataset Enhancements</span>
     
                         </a>
                     </div>
@@ -2446,7 +2487,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ClickHouseCompatibilityImprovements">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">💻 ClickHouse Compatibility Improvements</span>
+        <span class="leading-7">💻 ClickHouse Compatibility Improvements</span>
     
                         </a>
                     </div>
@@ -2457,7 +2498,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="SystemOptimizations">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🔧 System Optimizations</span>
+        <span class="leading-7">🔧 System Optimizations</span>
     
                         </a>
                     </div>
@@ -2468,7 +2509,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="DocumentationUpdates">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">📋 Documentation Updates</span>
+        <span class="leading-7">📋 Documentation Updates</span>
     
                         </a>
                     </div>
@@ -2479,7 +2520,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="InterfaceImprovements">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🖼️ Interface Improvements</span>
+        <span class="leading-7">🖼️ Interface Improvements</span>
     
                         </a>
                     </div>
@@ -2490,7 +2531,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="MetadataManagementReconstruction">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🔍 Metadata Management Reconstruction</span>
+        <span class="leading-7">🔍 Metadata Management Reconstruction</span>
     
                         </a>
                     </div>
@@ -2504,7 +2545,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="HowtoGetIt">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">How to Get It</span>
+        <span class="leading-7">How to Get It</span>
     
                         </a>
                     </div>
@@ -2516,7 +2557,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="GitHubDownload">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">GitHub Download</span>
+        <span class="leading-7">GitHub Download</span>
     
                         </a>
                     </div>
@@ -2527,7 +2568,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="OfficialWebsite">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Official Website</span>
+        <span class="leading-7">Official Website</span>
     
                         </a>
                     </div>
@@ -2541,7 +2582,7 @@ March 2, 2025</span>
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Acknowledgments">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Acknowledgments</span>
+        <span class="leading-7">Acknowledgments</span>
     
                         </a>
                     </div>

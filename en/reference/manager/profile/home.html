@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -2845,7 +2886,7 @@
                     +
                 
                 
-                    1482 词
+                    1286 词
                 
             </span>
         
@@ -2865,13 +2906,13 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! note</span>
+        <span class="leading-7">!!! note</span>
     
         <div class="space-y-4"></div>
     <pre><code>The profile feature provides an overview of some of the query history and data source usage of individual users.
 </code></pre>
 
-        <span class="text-base text-gray-700 leading-7 my-2">Hover the mouse over the avatar menu on the far right of the top menu, a drop-down box will pop up, click the first submenu in the drop-down box. A window similar to the following pops up:</span>
+        <span class="leading-7">Hover the mouse over the avatar menu on the far right of the top menu, a drop-down box will pop up, click the first submenu in the drop-down box. A window similar to the following pops up:</span>
     
         <div class="space-y-4"></div>
     
@@ -2911,25 +2952,25 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">First of all, the top chart we see is the query calendar chart for the past year. It is calculated based on the summary of the total number of queries per day.</span>
+        <span class="leading-7">First of all, the top chart we see is the query calendar chart for the past year. It is calculated based on the summary of the total number of queries per day.</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">The second chart shows the data source usage in the last 7 days. It is calculated based on a daily summary of data source usage.</span>
+        <span class="leading-7">The second chart shows the data source usage in the last 7 days. It is calculated based on a daily summary of data source usage.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="Profile" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Profile</span>
-    </div>
-        </div>
+        <h3 id="Profile">
+            
+        <span class="leading-7">Profile</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">When you click on the profile button (the first button on the left menu), you will see a pop-up window like this:</span>
+        <span class="leading-7">When you click on the profile button (the first button on the left menu), you will see a pop-up window like this:</span>
     
         <div class="space-y-4"></div>
     
@@ -2969,21 +3010,21 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">This page mainly displays the basic information of the profile.</span>
+        <span class="leading-7">This page mainly displays the basic information of the profile.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="Loginlogs" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Login logs</span>
-    </div>
-        </div>
+        <h3 id="Loginlogs">
+            
+        <span class="leading-7">Login logs</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">When you click the login log button (the second button on the left menu), the following window will pop up:</span>
+        <span class="leading-7">When you click the login log button (the second button on the left menu), the following window will pop up:</span>
     
         <div class="space-y-4"></div>
     
@@ -3023,21 +3064,21 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">This page displays the login logs of the current user, including the login time, login location, and login method.</span>
+        <span class="leading-7">This page displays the login logs of the current user, including the login time, login location, and login method.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="AccountSettings" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Account Settings</span>
-    </div>
-        </div>
+        <h3 id="AccountSettings">
+            
+        <span class="leading-7">Account Settings</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">When you click on the Account Settings button (the third button on the left menu), the following window will pop up:</span>
+        <span class="leading-7">When you click on the Account Settings button (the third button on the left menu), the following window will pop up:</span>
     
         <div class="space-y-4"></div>
     
@@ -3077,21 +3118,21 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">This page mainly shows some of the configuration functions that users can make.</span>
+        <span class="leading-7">This page mainly shows some of the configuration functions that users can make.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Username" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Username</span>
-    </div>
-        </div>
+        <h4 id="Username">
+            
+        <span class="leading-7">Username</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">When you click the Modify Username button, the following window will pop up:</span>
+        <span class="leading-7">When you click the Modify Username button, the following window will pop up:</span>
     
         <div class="space-y-4"></div>
     
@@ -3131,27 +3172,27 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Enter the modified username and current password, and click the OK button to complete the modification.</span>
+        <span class="leading-7">Enter the modified username and current password, and click the OK button to complete the modification.</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! danger</span>
+        <span class="leading-7">!!! danger</span>
     
         <div class="space-y-4"></div>
     <pre><code>It should be noted that after changing the user name, you need to log in again. The system will log out of the current account by default.
 </code></pre>
 
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Password" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Password</span>
-    </div>
-        </div>
+        <h4 id="Password">
+            
+        <span class="leading-7">Password</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">When you click the Change Password button, the following window will pop up:</span>
+        <span class="leading-7">When you click the Change Password button, the following window will pop up:</span>
     
         <div class="space-y-4"></div>
     
@@ -3191,27 +3232,27 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">Enter the original password and the new password, and click the OK button to complete the modification.</span>
+        <span class="leading-7">Enter the original password and the new password, and click the OK button to complete the modification.</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">!!! danger</span>
+        <span class="leading-7">!!! danger</span>
     
         <div class="space-y-4"></div>
     <pre><code>It should be noted that after changing the password, you need to log in again. The system will log out of the current account by default.
 </code></pre>
 
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="ChatGPT" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">ChatGPT</span>
-    </div>
-        </div>
+        <h4 id="ChatGPT">
+            
+        <span class="leading-7">ChatGPT</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">When you click the ChatGPT button, the following window will pop up:</span>
+        <span class="leading-7">When you click the ChatGPT button, the following window will pop up:</span>
     
         <div class="space-y-4"></div>
     
@@ -3251,21 +3292,21 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">This page mainly shows some of the configuration features that ChatGPT can do.</span>
+        <span class="leading-7">This page mainly shows some of the configuration features that ChatGPT can do.</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Editor" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Editor</span>
-    </div>
-        </div>
+        <h4 id="Editor">
+            
+        <span class="leading-7">Editor</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">When you click the editor button, the following window will pop up:</span>
+        <span class="leading-7">When you click the editor button, the following window will pop up:</span>
     
         <div class="space-y-4"></div>
     
@@ -3305,11 +3346,11 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">When you modify the editor, the modified configuration is synchronized to all locations in the system that use the editor.</span>
+        <span class="leading-7">When you modify the editor, the modified configuration is synchronized to all locations in the system that use the editor.</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">The editor's changes are WYSIWYG and show the current configuration scheme in real time.</span>
+        <span class="leading-7">The editor's changes are WYSIWYG and show the current configuration scheme in real time.</span>
     
         </div>
 
@@ -3329,7 +3370,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -3341,7 +3382,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -3354,11 +3395,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -3370,11 +3411,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -3480,7 +3521,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Profile">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Profile</span>
+        <span class="leading-7">Profile</span>
     
                             </a>
                         </div>
@@ -3491,7 +3532,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Loginlogs">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Login logs</span>
+        <span class="leading-7">Login logs</span>
     
                             </a>
                         </div>
@@ -3502,7 +3543,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="AccountSettings">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Account Settings</span>
+        <span class="leading-7">Account Settings</span>
     
                             </a>
                         </div>
@@ -3514,7 +3555,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Username">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Username</span>
+        <span class="leading-7">Username</span>
     
                             </a>
                         </div>
@@ -3525,7 +3566,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Password">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Password</span>
+        <span class="leading-7">Password</span>
     
                             </a>
                         </div>
@@ -3536,7 +3577,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ChatGPT">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">ChatGPT</span>
+        <span class="leading-7">ChatGPT</span>
     
                             </a>
                         </div>
@@ -3547,7 +3588,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Editor">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Editor</span>
+        <span class="leading-7">Editor</span>
     
                             </a>
                         </div>
@@ -3596,7 +3637,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Profile">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Profile</span>
+        <span class="leading-7">Profile</span>
     
                         </a>
                     </div>
@@ -3607,7 +3648,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Loginlogs">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Login logs</span>
+        <span class="leading-7">Login logs</span>
     
                         </a>
                     </div>
@@ -3618,7 +3659,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="AccountSettings">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Account Settings</span>
+        <span class="leading-7">Account Settings</span>
     
                         </a>
                     </div>
@@ -3630,7 +3671,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Username">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Username</span>
+        <span class="leading-7">Username</span>
     
                         </a>
                     </div>
@@ -3641,7 +3682,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Password">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Password</span>
+        <span class="leading-7">Password</span>
     
                         </a>
                     </div>
@@ -3652,7 +3693,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ChatGPT">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">ChatGPT</span>
+        <span class="leading-7">ChatGPT</span>
     
                         </a>
                     </div>
@@ -3663,7 +3704,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Editor">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Editor</span>
+        <span class="leading-7">Editor</span>
     
                         </a>
                     </div>

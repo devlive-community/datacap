@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -2845,7 +2886,7 @@
                     +
                 
                 
-                    2177 词
+                    1943 词
                 
             </span>
         
@@ -2877,7 +2918,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">通过数据源功能，可以添加对各种自定义数据源的支持，并执行后续的数据源操作等。</span>
+        <span class="leading-7">通过数据源功能，可以添加对各种自定义数据源的支持，并执行后续的数据源操作等。</span>
     
                 </div>
             </div>
@@ -2885,11 +2926,11 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">鼠标移向顶部菜单的 </span>
+        <span class="leading-7">鼠标移向顶部菜单的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Admin</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 标识下，会弹出下拉框，点击下拉框中的第一个子菜单。弹出类似如下窗口，默认列表为空，需要自行添加。</span>
+        <span class="leading-7"> 标识下，会弹出下拉框，点击下拉框中的第一个子菜单。弹出类似如下窗口，默认列表为空，需要自行添加。</span>
     
         <div class="space-y-4"></div>
     
@@ -2929,7 +2970,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果您添加了数据源会显示类似如下页面</span>
+        <span class="leading-7">如果您添加了数据源会显示类似如下页面</span>
     
         <div class="space-y-4"></div>
     
@@ -2969,21 +3010,21 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="tian-jia-shu-ju-yuan" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">添加数据源</span>
-    </div>
-        </div>
+        <h3 id="tian-jia-shu-ju-yuan">
+            
+        <span class="leading-7">添加数据源</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">点击列表展示区域的右侧添加按钮（它是一个 </span>
+        <span class="leading-7">点击列表展示区域的右侧添加按钮（它是一个 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">+</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 图标），点击后将弹出如下添加数据源窗口</span>
+        <span class="leading-7"> 图标），点击后将弹出如下添加数据源窗口</span>
     
         <div class="space-y-4"></div>
     
@@ -3023,15 +3064,15 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">当我们选择某种类型的数据源时，数据源配置信息将显示在顶部标签栏中，不同的数据源有不同的配置项，它的配置单在服务启动是的指定目录中。</span>
+        <span class="leading-7">当我们选择某种类型的数据源时，数据源配置信息将显示在顶部标签栏中，不同的数据源有不同的配置项，它的配置单在服务启动是的指定目录中。</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">当我们选择类型为 </span>
+        <span class="leading-7">当我们选择类型为 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">MySQL</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 的源时，弹出类似以下窗口</span>
+        <span class="leading-7"> 的源时，弹出类似以下窗口</span>
     
         <div class="space-y-4"></div>
     
@@ -3071,11 +3112,11 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在配置页面中出现了4个选项卡，点击不同的选项卡填充相关信息，然后点击底部的 </span>
+        <span class="leading-7">在配置页面中出现了4个选项卡，点击不同的选项卡填充相关信息，然后点击底部的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Test</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 按钮，会弹出如下页面：</span>
+        <span class="leading-7"> 按钮，会弹出如下页面：</span>
     
         <div class="space-y-4"></div>
     
@@ -3115,11 +3156,11 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">当数据源测试成功后顶部会展示当前服务测试后的版本号，此时点击地步的 </span>
+        <span class="leading-7">当数据源测试成功后顶部会展示当前服务测试后的版本号，此时点击地步的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Save</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 按钮即可保存数据。</span>
+        <span class="leading-7"> 按钮即可保存数据。</span>
     
         <div class="space-y-4"></div>
     
@@ -3135,7 +3176,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">数据源保存后，数据源列表会自动刷新。</span>
+        <span class="leading-7">数据源保存后，数据源列表会自动刷新。</span>
     
                 </div>
             </div>
@@ -3143,43 +3184,43 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="xiu-gai-shu-ju-yuan" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">修改数据源</span>
-    </div>
-        </div>
+        <h3 id="xiu-gai-shu-ju-yuan">
+            
+        <span class="leading-7">修改数据源</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">点击列表中某个数据源中 </span>
+        <span class="leading-7">点击列表中某个数据源中 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Action</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 中的第一个按钮即可修改数据源，操作类似于 </span>
+        <span class="leading-7"> 中的第一个按钮即可修改数据源，操作类似于 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">添加数据源</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 操作</span>
+        <span class="leading-7"> 操作</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="shan-chu-shu-ju-yuan" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">删除数据源</span>
-    </div>
-        </div>
+        <h3 id="shan-chu-shu-ju-yuan">
+            
+        <span class="leading-7">删除数据源</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">点击列表中某个数据源的 </span>
+        <span class="leading-7">点击列表中某个数据源的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Action</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 中的第二个按钮，删除该数据源，点击后会弹出以下内容</span>
+        <span class="leading-7"> 中的第二个按钮，删除该数据源，点击后会弹出以下内容</span>
     
         <div class="space-y-4"></div>
     
@@ -3219,11 +3260,11 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">单击弹出的小窗口，然后单击 </span>
+        <span class="leading-7">单击弹出的小窗口，然后单击 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">OK</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 以删除选中的数据源。</span>
+        <span class="leading-7"> 以删除选中的数据源。</span>
     
         <div class="space-y-4"></div>
     
@@ -3239,7 +3280,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">需要注意的是，删除数据源后，与数据源相关的查询历史记录将被删除。</span>
+        <span class="leading-7">需要注意的是，删除数据源后，与数据源相关的查询历史记录将被删除。</span>
     
                 </div>
             </div>
@@ -3247,21 +3288,21 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="shu-ju-yuan-guan-li" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">数据源管理</span>
-    </div>
-        </div>
+        <h3 id="shu-ju-yuan-guan-li">
+            
+        <span class="leading-7">数据源管理</span>
+    
+        </h3>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">单击列表中数据源的 </span>
+        <span class="leading-7">单击列表中数据源的 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Action</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 中的第三个或者第四个按钮，跳转到数据源管理页面。</span>
+        <span class="leading-7"> 中的第三个或者第四个按钮，跳转到数据源管理页面。</span>
     
         <div class="space-y-4"></div>
     
@@ -3301,25 +3342,25 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">页面分为左右两部分。左侧主要展示数据源的基本信息，包括：</span>
+        <span class="leading-7">页面分为左右两部分。左侧主要展示数据源的基本信息，包括：</span>
     
         <div class="space-y-4"></div>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">选中数据源的相关元数据</span>
+        <span class="leading-7">选中数据源的相关元数据</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="xin-xi-mo-kuai" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">信息模块</span>
-    </div>
-        </div>
+        <h4 id="xin-xi-mo-kuai">
+            
+        <span class="leading-7">信息模块</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">当我们在左侧选择数据库和数据表时，右侧的内容显示如下</span>
+        </h4>
+    
+        <span class="leading-7">当我们在左侧选择数据库和数据表时，右侧的内容显示如下</span>
     
         <div class="space-y-4"></div>
     
@@ -3359,7 +3400,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在右侧内容中出现两个选项卡:</span>
+        <span class="leading-7">在右侧内容中出现两个选项卡:</span>
     
         <div class="space-y-4"></div>
     
@@ -3367,7 +3408,7 @@
             <li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Info</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">（默认选项）</span>
+        <span class="leading-7">（默认选项）</span>
     </li><li class="mb-2 text-gray-700">
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Data</code>
     </li>
@@ -3387,7 +3428,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">默认当前选项卡下显示关于当前表的相关信息。</span>
+        <span class="leading-7">默认当前选项卡下显示关于当前表的相关信息。</span>
     
                 </div>
             </div>
@@ -3395,17 +3436,17 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="shu-ju-mo-kuai" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">数据模块</span>
-    </div>
-        </div>
+        <h4 id="shu-ju-mo-kuai">
+            
+        <span class="leading-7">数据模块</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">点击 </span>
+        </h4>
+    
+        <span class="leading-7">点击 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Data</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 选项卡，会出现类似如下页面，它展示了当前选中表的相关数据。</span>
+        <span class="leading-7"> 选项卡，会出现类似如下页面，它展示了当前选中表的相关数据。</span>
     
         <div class="space-y-4"></div>
     
@@ -3445,7 +3486,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在顶部的四个按钮分别是：</span>
+        <span class="leading-7">在顶部的四个按钮分别是：</span>
     
         <div class="space-y-4"></div>
     
@@ -3463,7 +3504,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">接下来后面的按钮是用于设置数据查询的配置：</span>
+        <span class="leading-7">接下来后面的按钮是用于设置数据查询的配置：</span>
     
         <div class="space-y-4"></div>
     
@@ -3513,19 +3554,19 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">填充配置后，点击 </span>
+        <span class="leading-7">填充配置后，点击 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">Apply</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 按钮即可应用当前配置信息。</span>
+        <span class="leading-7"> 按钮即可应用当前配置信息。</span>
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">在右侧还有一个按钮，点击后会展示当前查询使用到的详细 </span>
+        <span class="leading-7">在右侧还有一个按钮，点击后会展示当前查询使用到的详细 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">SQL</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 内容</span>
+        <span class="leading-7"> 内容</span>
     
         <div class="space-y-4"></div>
     
@@ -3577,7 +3618,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">当前 SQL 生成是根据同步到元数据的顺序而定。</span>
+        <span class="leading-7">当前 SQL 生成是根据同步到元数据的顺序而定。</span>
     
                 </div>
             </div>
@@ -3597,7 +3638,7 @@
                     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">目前并不是所有的数据源都支持管理，如果需要可自行添加模版。如果有兴趣可将源码贡献给我们。</span>
+        <span class="leading-7">目前并不是所有的数据源都支持管理，如果需要可自行添加模版。如果有兴趣可将源码贡献给我们。</span>
     
                 </div>
             </div>
@@ -3621,7 +3662,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -3633,7 +3674,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -3646,11 +3687,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -3662,11 +3703,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -3772,7 +3813,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="tian-jia-shu-ju-yuan">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">添加数据源</span>
+        <span class="leading-7">添加数据源</span>
     
                             </a>
                         </div>
@@ -3783,7 +3824,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="xiu-gai-shu-ju-yuan">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">修改数据源</span>
+        <span class="leading-7">修改数据源</span>
     
                             </a>
                         </div>
@@ -3794,7 +3835,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="shan-chu-shu-ju-yuan">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">删除数据源</span>
+        <span class="leading-7">删除数据源</span>
     
                             </a>
                         </div>
@@ -3805,7 +3846,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="shu-ju-yuan-guan-li">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">数据源管理</span>
+        <span class="leading-7">数据源管理</span>
     
                             </a>
                         </div>
@@ -3817,7 +3858,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="xin-xi-mo-kuai">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">信息模块</span>
+        <span class="leading-7">信息模块</span>
     
                             </a>
                         </div>
@@ -3828,7 +3869,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="shu-ju-mo-kuai">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">数据模块</span>
+        <span class="leading-7">数据模块</span>
     
                             </a>
                         </div>
@@ -3877,7 +3918,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="tian-jia-shu-ju-yuan">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">添加数据源</span>
+        <span class="leading-7">添加数据源</span>
     
                         </a>
                     </div>
@@ -3888,7 +3929,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="xiu-gai-shu-ju-yuan">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">修改数据源</span>
+        <span class="leading-7">修改数据源</span>
     
                         </a>
                     </div>
@@ -3899,7 +3940,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="shan-chu-shu-ju-yuan">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">删除数据源</span>
+        <span class="leading-7">删除数据源</span>
     
                         </a>
                     </div>
@@ -3910,7 +3951,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="shu-ju-yuan-guan-li">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">数据源管理</span>
+        <span class="leading-7">数据源管理</span>
     
                         </a>
                     </div>
@@ -3922,7 +3963,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="xin-xi-mo-kuai">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">信息模块</span>
+        <span class="leading-7">信息模块</span>
     
                         </a>
                     </div>
@@ -3933,7 +3974,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="shu-ju-mo-kuai">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">数据模块</span>
+        <span class="leading-7">数据模块</span>
     
                         </a>
                     </div>

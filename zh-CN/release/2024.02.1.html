@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -1818,7 +1859,7 @@
                     +
                 
                 
-                    1446 词
+                    1077 词
                 
             </span>
         
@@ -1838,7 +1879,7 @@
             
         <div class="space-y-4"></div>
     <strong>
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap 发布!</span>
+        <span class="leading-7">DataCap 发布!</span>
     </strong>
         <div class="space-y-4"></div>
     
@@ -1850,13 +1891,13 @@
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">发布版本</span>
+        <span class="leading-7">发布版本</span>
     
                                 </th>
                             
                                 <th scope="col" class="px-3.5 py-1 text-center">
                                     
-        <span class="text-base text-gray-700 leading-7 my-2">发布时间</span>
+        <span class="leading-7">发布时间</span>
     
                                 </th>
                             
@@ -1887,11 +1928,11 @@
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Plugin" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Plugin</span>
-    </div>
-        </div>
+        <h4 id="Plugin">
+            
+        <span class="leading-7">Plugin</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -1899,27 +1940,27 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持 ParadeDB (</span>
+        <span class="leading-7">支持 ParadeDB (</span>
     <a href="https://github.com/devlive-community/datacap/issues/589">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/589</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/589</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持 TimescaleDB (</span>
+        <span class="leading-7">支持 TimescaleDB (</span>
     <a href="https://github.com/devlive-community/datacap/issues/593">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/593</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/593</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="DataSet" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">DataSet</span>
-    </div>
-        </div>
+        <h4 id="DataSet">
+            
+        <span class="leading-7">DataSet</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -1927,197 +1968,197 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[图表] 添加面积图 (</span>
+        <span class="leading-7">[图表] 添加面积图 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/611">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/611</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/611</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[图表] 添加多面积图 (</span>
+        <span class="leading-7">[图表] 添加多面积图 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/610">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/610</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/610</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[图表] 添加饼图 (</span>
+        <span class="leading-7">[图表] 添加饼图 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/613">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/613</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/613</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[图表] 支持折线图断点处理</span>
+        <span class="leading-7">[图表] 支持折线图断点处理</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[图表] 支持分组直方图 (</span>
+        <span class="leading-7">[图表] 支持分组直方图 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/612">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/612</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/612</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">[图表] 支持词云图 (</span>
+        <span class="leading-7">[图表] 支持词云图 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/614">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/614</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/614</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持添加主键 (</span>
+        <span class="leading-7">支持添加主键 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/624">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/624</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/624</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">添加</span>
+        <span class="leading-7">添加</span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">总行数</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">和</span>
+        <span class="leading-7">和</span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">总大小</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> (</span>
+        <span class="leading-7"> (</span>
     <a href="https://github.com/devlive-community/datacap/pull/676">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/pull/676</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/pull/676</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持自定义别名的即席查询 (</span>
+        <span class="leading-7">支持自定义别名的即席查询 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/615">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/615</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/615</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持维度排序</span>
+        <span class="leading-7">支持维度排序</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持指标排序</span>
+        <span class="leading-7">支持指标排序</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持数据采样列 (</span>
+        <span class="leading-7">支持数据采样列 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/605">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/605</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/605</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">添加有符号号码类型</span>
+        <span class="leading-7">添加有符号号码类型</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">修复了小屏幕上列表中的显示问题</span>
+        <span class="leading-7">修复了小屏幕上列表中的显示问题</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持即席查询自定义函数 (</span>
+        <span class="leading-7">支持即席查询自定义函数 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/603">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/603</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/603</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">添加筛选器分组</span>
+        <span class="leading-7">添加筛选器分组</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">合并查询列</span>
+        <span class="leading-7">合并查询列</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">修复复制数据导致重复请求的问题</span>
+        <span class="leading-7">修复复制数据导致重复请求的问题</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">修复编辑报表分组异常问题</span>
+        <span class="leading-7">修复编辑报表分组异常问题</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">修复无限循环查询问题</span>
+        <span class="leading-7">修复无限循环查询问题</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持过滤器 </span>
+        <span class="leading-7">支持过滤器 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">IS NULL</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">， </span>
+        <span class="leading-7">， </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">IS NOT NULL</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">修复了多列查询导致 expres 混淆的问题</span>
+        <span class="leading-7">修复了多列查询导致 expres 混淆的问题</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持过滤器 </span>
+        <span class="leading-7">支持过滤器 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">LIKE</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">， </span>
+        <span class="leading-7">， </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">NOT LIKE</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持过滤器 </span>
+        <span class="leading-7">支持过滤器 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">=</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">， </span>
+        <span class="leading-7">， </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere"><></code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持过滤器 </span>
+        <span class="leading-7">支持过滤器 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">></code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">， </span>
+        <span class="leading-7">， </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">>=</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持过滤器 </span>
+        <span class="leading-7">支持过滤器 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere"><</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">， </span>
+        <span class="leading-7">， </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere"><=</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持历史错误信息同步</span>
+        <span class="leading-7">支持历史错误信息同步</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持清空数据 (</span>
+        <span class="leading-7">支持清空数据 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/622">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/622</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/622</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持动态添加列 (</span>
+        <span class="leading-7">支持动态添加列 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/623">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/623</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/623</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">重构数据集详细信息页面</span>
+        <span class="leading-7">重构数据集详细信息页面</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">添加日期时间类型</span>
+        <span class="leading-7">添加日期时间类型</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持自定义生命周期 (</span>
+        <span class="leading-7">支持自定义生命周期 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/616">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/616</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/616</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">禁用 </span>
+        <span class="leading-7">禁用 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">BOOLEAN</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2">、</span>
+        <span class="leading-7">、</span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">DATETIME</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 类型分配</span>
+        <span class="leading-7"> 类型分配</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持虚拟列 (</span>
+        <span class="leading-7">支持虚拟列 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/602">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/602</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/602</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持docker compose (</span>
+        <span class="leading-7">支持docker compose (</span>
     <a href="https://github.com/devlive-community/datacap/issues/648">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/648</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/648</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">支持七牛云存储 (</span>
+        <span class="leading-7">支持七牛云存储 (</span>
     <a href="https://github.com/devlive-community/datacap/issues/618">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues/618</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues/618</span>
     </a>
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-lg [&_span]:sm:!text-xl">
-            <div id="Dependencies" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">Dependencies</span>
-    </div>
-        </div>
+        <h4 id="Dependencies">
+            
+        <span class="leading-7">Dependencies</span>
+    
+        </h4>
     
         <hr class="my-4 h-0.5 border-0 bg-gray-200 dark:bg-gray-700"/>
     
@@ -2125,75 +2166,75 @@
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">更新 io.crate:crate-jdbc </span>
+        <span class="leading-7">更新 io.crate:crate-jdbc </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2.6.0</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
+        <span class="leading-7"> 到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2.7.0</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">更新 Impala:ImpalaJDBC42 </span>
+        <span class="leading-7">更新 Impala:ImpalaJDBC42 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2.6.29.1035</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
+        <span class="leading-7"> 到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2.6.32.1041</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">更新 org.yaml:snakeyaml </span>
+        <span class="leading-7">更新 org.yaml:snakeyaml </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2.0</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
+        <span class="leading-7"> 到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2.2</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">更新 org.apache.hive:hive-jdbc </span>
+        <span class="leading-7">更新 org.apache.hive:hive-jdbc </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">3.1.2</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
+        <span class="leading-7"> 到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">3.1.3</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">更新 org.elasticsearch.plugin:x-pack-sql-jdbc </span>
+        <span class="leading-7">更新 org.elasticsearch.plugin:x-pack-sql-jdbc </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">8.11.3</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
+        <span class="leading-7"> 到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">8.12.0</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">更新 jackson.version </span>
+        <span class="leading-7">更新 jackson.version </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2.16.0</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
+        <span class="leading-7"> 到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2.16.1</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">更新 org.apache.maven.plugins:maven-javadoc-plugin </span>
+        <span class="leading-7">更新 org.apache.maven.plugins:maven-javadoc-plugin </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">3.6.0</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
+        <span class="leading-7"> 到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">3.6.3</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">更新 com.microsoft.sqlserver:mssql-jdbc </span>
+        <span class="leading-7">更新 com.microsoft.sqlserver:mssql-jdbc </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">11.2.1.jre8</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
+        <span class="leading-7"> 到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">12.6.0.jre8</code>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">更新 postgresql.version </span>
+        <span class="leading-7">更新 postgresql.version </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">42.6.0</code>
     
-        <span class="text-base text-gray-700 leading-7 my-2"> 到 </span>
+        <span class="leading-7"> 到 </span>
     
         <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">42.7.2</code>
     </li>
@@ -2217,7 +2258,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2229,7 +2270,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2242,11 +2283,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -2258,11 +2299,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -2368,7 +2409,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Plugin">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Plugin</span>
+        <span class="leading-7">Plugin</span>
     
                             </a>
                         </div>
@@ -2379,7 +2420,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="DataSet">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">DataSet</span>
+        <span class="leading-7">DataSet</span>
     
                             </a>
                         </div>
@@ -2390,7 +2431,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="Dependencies">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">Dependencies</span>
+        <span class="leading-7">Dependencies</span>
     
                             </a>
                         </div>
@@ -2436,7 +2477,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Plugin">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Plugin</span>
+        <span class="leading-7">Plugin</span>
     
                         </a>
                     </div>
@@ -2447,7 +2488,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="DataSet">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">DataSet</span>
+        <span class="leading-7">DataSet</span>
     
                         </a>
                     </div>
@@ -2458,7 +2499,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="Dependencies">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">Dependencies</span>
+        <span class="leading-7">Dependencies</span>
     
                         </a>
                     </div>

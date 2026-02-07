@@ -76,8 +76,49 @@
     <!-- 加载主题配置中的额外 CSS 文件 -->
     
 
+    <style>
+        :root {
+            
+            --header-height: 112px; /* banner 48px + nav 64px */
+            
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                h1: { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h2: { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h3: { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h4: { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h5: { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                                h6: { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [
+                function({ addBase }) {
+                    addBase({
+                        'h1': { fontWeight: '700', fontSize: '1.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h2': { fontWeight: '700', fontSize: '1.5rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h3': { fontWeight: '700', fontSize: '1.25rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h4': { fontWeight: '700', fontSize: '1.125rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h5': { fontWeight: '700', fontSize: '1rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        'h6': { fontWeight: '700', fontSize: '0.875rem', marginTop: '0.75rem', marginBottom: '0.75rem', color: 'rgb(17, 24, 39)' },
+                        '.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6': { color: 'rgb(255, 255, 255)' }
+                    })
+                }
+            ]
+        }
+    </script>
 
     <!-- Prism.js 语法高亮样式 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-ghcolors.css" rel="stylesheet"/>
@@ -119,8 +160,8 @@
     <nav class="fixed top-0 w-full bg-white  border-b z-40">
         <!-- Banner -->
         
-    <div class="w-full bg-blue-50 " data-banner>
-        <div class="max-w-screen-xl px-6 py-3 mx-auto flex items-center justify-between">
+    <div class="w-full bg-blue-50  h-12" data-banner>
+        <div class="max-w-screen-xl px-6 mx-auto flex items-center justify-between h-full">
             
                 <div class="text-blue-700 ">
                     💗 <a href="https://afdian.com/a/devlive-community" target="_blank">DataCap 2025.1.1 is released, 如果喜欢我们的软件，请点击这里支持我们</a> ❤️
@@ -359,11 +400,11 @@
                     <!-- 仓库链接 -->
                     <div class="hidden lg:block">
                         
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -574,11 +615,11 @@
                 <!-- 移动端的仓库链接 -->
                 <div class="px-3 py-2 border-t ">
                     
-    <div class="hidden lg:flex items-center space-x-4 text-sm" id="github-stats-desktop">
+    <div class="hidden lg:flex items-center space-x-4 text-sm min-w-[200px]" id="github-stats-desktop">
         <a href="https://github.com/devlive-community/datacap"
            target="_blank"
            rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors">
+           class="inline-flex items-center gap-3 text-gray-600 hover:text-gray-500 transition-colors min-w-full">
             <div class="inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -1818,7 +1859,7 @@
                     +
                 
                 
-                    1207 词
+                    801 词
                 
             </span>
         
@@ -1838,95 +1879,95 @@
             
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">我们很高兴地宣布 DataCap 2025.1.1 版本正式发布！本次更新专注于提升系统稳定性、修复关键问题，并新增了多项实用功能。</span>
+        <span class="leading-7">我们很高兴地宣布 DataCap 2025.1.1 版本正式发布！本次更新专注于提升系统稳定性、修复关键问题，并新增了多项实用功能。</span>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="fa-bu-xin-xi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">📅 发布信息</span>
-    </div>
-        </div>
+        <h2 id="fa-bu-xin-xi">
+            
+        <span class="leading-7">📅 发布信息</span>
+    
+        </h2>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">版本号</span>
+        <span class="leading-7">版本号</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 2025.1.1</span>
+        <span class="leading-7">: 2025.1.1</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">发布日期</span>
+        <span class="leading-7">发布日期</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 2025年7月28日</span>
+        <span class="leading-7">: 2025年7月28日</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">项目地址</span>
+        <span class="leading-7">项目地址</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: </span>
+        <span class="leading-7">: </span>
     <a href="https://github.com/devlive-community/datacap">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap</span>
     </a></li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">官方网站</span>
+        <span class="leading-7">官方网站</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: </span>
+        <span class="leading-7">: </span>
     <a href="https://datacap.devlive.org/">
-        <span class="text-base text-gray-700 leading-7 my-2">https://datacap.devlive.org/</span>
+        <span class="leading-7">https://datacap.devlive.org/</span>
     </a></li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="ban-ben-liang-dian" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🎯 版本亮点</span>
-    </div>
-        </div>
+        <h2 id="ban-ben-liang-dian">
+            
+        <span class="leading-7">🎯 版本亮点</span>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="xin-gong-neng-te-xing" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🆕 新功能特性</span>
-    </div>
-        </div>
+        </h2>
+    
+        <h3 id="xin-gong-neng-te-xing">
+            
+        <span class="leading-7">🆕 新功能特性</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">🐬 DolphinDB 数据库支持</span>
+        <span class="leading-7">🐬 DolphinDB 数据库支持</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 全新支持 DolphinDB 时序数据库，扩展了高性能时间序列数据处理能力</span>
+        <span class="leading-7">: 全新支持 DolphinDB 时序数据库，扩展了高性能时间序列数据处理能力</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">📊 数据集通知系统</span>
+        <span class="leading-7">📊 数据集通知系统</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 新增数据集通知配置功能，支持自定义通知规则和异步任务处理</span>
+        <span class="leading-7">: 新增数据集通知配置功能，支持自定义通知规则和异步任务处理</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">🔧 Flink SQL 解析器</span>
+        <span class="leading-7">🔧 Flink SQL 解析器</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 增强了 SQL 解析能力，现已支持 Flink SQL 语法解析</span>
+        <span class="leading-7">: 增强了 SQL 解析能力，现已支持 Flink SQL 语法解析</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">📱 多 SQL 语句支持</span>
+        <span class="leading-7">📱 多 SQL 语句支持</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 优化解析器，支持在单次操作中处理多条 SQL 语句</span>
+        <span class="leading-7">: 优化解析器，支持在单次操作中处理多条 SQL 语句</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">🔌 插件详情展示</span>
+        <span class="leading-7">🔌 插件详情展示</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 改进插件商店界面，提供更详细的插件信息展示</span>
+        <span class="leading-7">: 改进插件商店界面，提供更详细的插件信息展示</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="zhong-yao-xiu-fu" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🛠️ 重要修复</span>
-    </div>
-        </div>
+        <h3 id="zhong-yao-xiu-fu">
+            
+        <span class="leading-7">🛠️ 重要修复</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">数据导出格式化</span>
+        <span class="leading-7">数据导出格式化</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 修复了数据导出时未指定格式化的问题，确保导出数据的正确性</span>
+        <span class="leading-7">: 修复了数据导出时未指定格式化的问题，确保导出数据的正确性</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">Doris 插件优化</span>
+        <span class="leading-7">Doris 插件优化</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 解决了 Doris 插件在渲染数据库名称时的显示异常 (</span>
+        <span class="leading-7">: 解决了 Doris 插件在渲染数据库名称时的显示异常 (</span>
     
         <a href="https://github.com/devlive-community/datacap/issues/943" 
            target="_blank" 
@@ -1949,15 +1990,15 @@
             </span>
         </a>
     
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">分页国际化</span>
+        <span class="leading-7">分页国际化</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 完善了分页组件的多语言支持，提升用户体验</span>
+        <span class="leading-7">: 完善了分页组件的多语言支持，提升用户体验</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">JSON 转换精度</span>
+        <span class="leading-7">JSON 转换精度</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 修复了 JSON 转换过程中 LocalDateTime 丢失秒精度的问题 (</span>
+        <span class="leading-7">: 修复了 JSON 转换过程中 LocalDateTime 丢失秒精度的问题 (</span>
     
         <a href="https://github.com/devlive-community/datacap/issues/920" 
            target="_blank" 
@@ -1980,159 +2021,159 @@
             </span>
         </a>
     
-        <span class="text-base text-gray-700 leading-7 my-2">)</span>
+        <span class="leading-7">)</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">数据重复问题</span>
+        <span class="leading-7">数据重复问题</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 解决了数据集执行后可能导致数据重复的问题</span>
+        <span class="leading-7">: 解决了数据集执行后可能导致数据重复的问题</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">用户密码安全</span>
+        <span class="leading-7">用户密码安全</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 修复了管理员修改用户密码时可能导致密码明文存储的安全隐患</span>
+        <span class="leading-7">: 修复了管理员修改用户密码时可能导致密码明文存储的安全隐患</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="xi-tong-you-hua" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🔧 系统优化</span>
-    </div>
-        </div>
+        <h3 id="xi-tong-you-hua">
+            
+        <span class="leading-7">🔧 系统优化</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">达梦数据库增强</span>
+        <span class="leading-7">达梦数据库增强</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 改进了达梦数据库连接器的兼容性，解决了 Docker 平台兼容性问题</span>
+        <span class="leading-7">: 改进了达梦数据库连接器的兼容性，解决了 Docker 平台兼容性问题</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">通知中心升级</span>
+        <span class="leading-7">通知中心升级</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 优化了通知中心的界面和功能，提供更好的消息管理体验</span>
+        <span class="leading-7">: 优化了通知中心的界面和功能，提供更好的消息管理体验</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">代码质量提升</span>
+        <span class="leading-7">代码质量提升</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 修复了多个静态代码分析发现的潜在问题，提高了代码稳定性</span>
+        <span class="leading-7">: 修复了多个静态代码分析发现的潜在问题，提高了代码稳定性</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">Docker 镜像优化</span>
+        <span class="leading-7">Docker 镜像优化</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 支持构建多平台 Docker 镜像，提升部署灵活性</span>
+        <span class="leading-7">: 支持构建多平台 Docker 镜像，提升部署灵活性</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-xl [&_span]:sm:!text-2xl">
-            <div id="gong-neng-yi-chu" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🗑️ 功能移除</span>
-    </div>
-        </div>
+        <h3 id="gong-neng-yi-chu">
+            
+        <span class="leading-7">🗑️ 功能移除</span>
+    
+        </h3>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">Pipeline 功能清理</span>
+        <span class="leading-7">Pipeline 功能清理</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 移除了 Pipeline 相关功能及代码，简化了系统架构</span>
+        <span class="leading-7">: 移除了 Pipeline 相关功能及代码，简化了系统架构</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">无效组件清理</span>
+        <span class="leading-7">无效组件清理</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 清理了未使用的属性和无效配置，优化了系统性能</span>
+        <span class="leading-7">: 清理了未使用的属性和无效配置，优化了系统性能</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="sheng-ji-zhi-nan" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🚀 升级指南</span>
-    </div>
-        </div>
+        <h2 id="sheng-ji-zhi-nan">
+            
+        <span class="leading-7">🚀 升级指南</span>
+    
+        </h2>
     
         <ol class="my-4 pl-8 list-decimal">
             <li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">备份数据</span>
+        <span class="leading-7">备份数据</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 升级前请务必备份您的数据和配置文件</span>
+        <span class="leading-7">: 升级前请务必备份您的数据和配置文件</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">停止服务</span>
+        <span class="leading-7">停止服务</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 停止当前运行的 DataCap 服务</span>
+        <span class="leading-7">: 停止当前运行的 DataCap 服务</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">更新版本</span>
+        <span class="leading-7">更新版本</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 下载最新的 2025.1.1 版本文件</span>
+        <span class="leading-7">: 下载最新的 2025.1.1 版本文件</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">数据库升级</span>
+        <span class="leading-7">数据库升级</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 如有数据库结构变更，请参考升级脚本</span>
+        <span class="leading-7">: 如有数据库结构变更，请参考升级脚本</span>
     </li><li class="mb-2 text-gray-700"><strong>
-        <span class="text-base text-gray-700 leading-7 my-2">重启服务</span>
+        <span class="leading-7">重启服务</span>
     </strong>
-        <span class="text-base text-gray-700 leading-7 my-2">: 启动新版本服务并验证功能</span>
+        <span class="leading-7">: 启动新版本服务并验证功能</span>
     </li>
         </ol>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="zhu-yi-shi-xiang" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">📝 注意事项</span>
-    </div>
-        </div>
+        <h2 id="zhu-yi-shi-xiang">
+            
+        <span class="leading-7">📝 注意事项</span>
+    
+        </h2>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">本版本移除了 Pipeline 功能，如果您在使用相关功能，请在升级前做好数据迁移</span>
+        <span class="leading-7">本版本移除了 Pipeline 功能，如果您在使用相关功能，请在升级前做好数据迁移</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">新增的 DolphinDB 支持需要相应的插件配置</span>
+        <span class="leading-7">新增的 DolphinDB 支持需要相应的插件配置</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">建议在生产环境升级前，先在测试环境进行完整验证</span>
+        <span class="leading-7">建议在生产环境升级前，先在测试环境进行完整验证</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="zhi-xie" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">🤝 致谢</span>
-    </div>
-        </div>
+        <h2 id="zhi-xie">
+            
+        <span class="leading-7">🤝 致谢</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">感谢所有为本版本贡献代码和反馈的开发者和用户，特别感谢：</span>
+        </h2>
+    
+        <span class="leading-7">感谢所有为本版本贡献代码和反馈的开发者和用户，特别感谢：</span>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">qianmoQ - 主要开发贡献</span>
+        <span class="leading-7">qianmoQ - 主要开发贡献</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">Max Xie - SR & Doris 插件支持</span>
+        <span class="leading-7">Max Xie - SR & Doris 插件支持</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">AllData数据中台创始人 & CTO - 配置优化</span>
+        <span class="leading-7">AllData数据中台创始人 & CTO - 配置优化</span>
     </li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">zhanggaopan - 文档改进</span>
+        <span class="leading-7">zhanggaopan - 文档改进</span>
     </li>
         </ul>
     
         <div class="space-y-4"></div>
     
-        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white my-3 [&_span]:!font-inherit [&_span]:!text-inherit [&_code]:!text-inherit [&_span]:!text-2xl [&_span]:sm:!text-3xl">
-            <div id="huo-qu-zhi-chi" class="inline-flex items-center">
-        <span class="text-base text-gray-700 leading-7 my-2">📞 获取支持</span>
-    </div>
-        </div>
+        <h2 id="huo-qu-zhi-chi">
+            
+        <span class="leading-7">📞 获取支持</span>
     
-        <span class="text-base text-gray-700 leading-7 my-2">如果您在使用过程中遇到任何问题，请通过以下方式获取帮助：</span>
+        </h2>
+    
+        <span class="leading-7">如果您在使用过程中遇到任何问题，请通过以下方式获取帮助：</span>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">GitHub Issues: </span>
+        <span class="leading-7">GitHub Issues: </span>
     <a href="https://github.com/devlive-community/datacap/issues">
-        <span class="text-base text-gray-700 leading-7 my-2">https://github.com/devlive-community/datacap/issues</span>
+        <span class="leading-7">https://github.com/devlive-community/datacap/issues</span>
     </a></li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">官方文档: </span>
+        <span class="leading-7">官方文档: </span>
     <a href="https://datacap.devlive.org/">
-        <span class="text-base text-gray-700 leading-7 my-2">https://datacap.devlive.org/</span>
+        <span class="leading-7">https://datacap.devlive.org/</span>
     </a></li><li class="mb-2 text-gray-700">
-        <span class="text-base text-gray-700 leading-7 my-2">社区讨论: 欢迎加入我们的开发者社区</span>
+        <span class="leading-7">社区讨论: 欢迎加入我们的开发者社区</span>
     </li>
         </ul>
     
@@ -2142,7 +2183,7 @@
     
         <div class="space-y-4"></div>
     
-        <span class="text-base text-gray-700 leading-7 my-2">DataCap 团队将持续致力于为用户提供更稳定、更强大的数据处理平台。感谢您的支持与信任！</span>
+        <span class="leading-7">DataCap 团队将持续致力于为用户提供更稳定、更强大的数据处理平台。感谢您的支持与信任！</span>
     
         </div>
 
@@ -2162,7 +2203,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2025年8月17日 08:29</span>
+            <span>提交于 2026年2月7日 13:54</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -2174,7 +2215,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2025年8月17日 08:29</span>
+            <span>修改于 2026年2月7日 13:54</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -2187,11 +2228,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (797c0bf8)
+                    首次提交 (bd0cb1c3)
                 </a>
             </div>
 
@@ -2203,11 +2244,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/797c0bf82c2cbdb156251a260ec37ee1d0ed0c87"
+                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (797c0bf8)
+                    末次提交 (bd0cb1c3)
                 </a>
             </div>
         
@@ -2313,7 +2354,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="fa-bu-xin-xi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">📅 发布信息</span>
+        <span class="leading-7">📅 发布信息</span>
     
                             </a>
                         </div>
@@ -2324,7 +2365,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="ban-ben-liang-dian">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🎯 版本亮点</span>
+        <span class="leading-7">🎯 版本亮点</span>
     
                             </a>
                         </div>
@@ -2336,7 +2377,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="xin-gong-neng-te-xing">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🆕 新功能特性</span>
+        <span class="leading-7">🆕 新功能特性</span>
     
                             </a>
                         </div>
@@ -2347,7 +2388,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="zhong-yao-xiu-fu">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🛠️ 重要修复</span>
+        <span class="leading-7">🛠️ 重要修复</span>
     
                             </a>
                         </div>
@@ -2358,7 +2399,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="xi-tong-you-hua">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🔧 系统优化</span>
+        <span class="leading-7">🔧 系统优化</span>
     
                             </a>
                         </div>
@@ -2369,7 +2410,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="gong-neng-yi-chu">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🗑️ 功能移除</span>
+        <span class="leading-7">🗑️ 功能移除</span>
     
                             </a>
                         </div>
@@ -2383,7 +2424,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="sheng-ji-zhi-nan">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🚀 升级指南</span>
+        <span class="leading-7">🚀 升级指南</span>
     
                             </a>
                         </div>
@@ -2394,7 +2435,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="zhu-yi-shi-xiang">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">📝 注意事项</span>
+        <span class="leading-7">📝 注意事项</span>
     
                             </a>
                         </div>
@@ -2405,7 +2446,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="zhi-xie">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">🤝 致谢</span>
+        <span class="leading-7">🤝 致谢</span>
     
                             </a>
                         </div>
@@ -2416,7 +2457,7 @@
                                class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                                data-slug="huo-qu-zhi-chi">
                                 
-        <span class="text-base text-gray-700 leading-7 my-2">📞 获取支持</span>
+        <span class="leading-7">📞 获取支持</span>
     
                             </a>
                         </div>
@@ -2462,7 +2503,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="fa-bu-xin-xi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">📅 发布信息</span>
+        <span class="leading-7">📅 发布信息</span>
     
                         </a>
                     </div>
@@ -2473,7 +2514,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="ban-ben-liang-dian">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🎯 版本亮点</span>
+        <span class="leading-7">🎯 版本亮点</span>
     
                         </a>
                     </div>
@@ -2485,7 +2526,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="xin-gong-neng-te-xing">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🆕 新功能特性</span>
+        <span class="leading-7">🆕 新功能特性</span>
     
                         </a>
                     </div>
@@ -2496,7 +2537,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="zhong-yao-xiu-fu">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🛠️ 重要修复</span>
+        <span class="leading-7">🛠️ 重要修复</span>
     
                         </a>
                     </div>
@@ -2507,7 +2548,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="xi-tong-you-hua">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🔧 系统优化</span>
+        <span class="leading-7">🔧 系统优化</span>
     
                         </a>
                     </div>
@@ -2518,7 +2559,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="gong-neng-yi-chu">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🗑️ 功能移除</span>
+        <span class="leading-7">🗑️ 功能移除</span>
     
                         </a>
                     </div>
@@ -2532,7 +2573,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="sheng-ji-zhi-nan">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🚀 升级指南</span>
+        <span class="leading-7">🚀 升级指南</span>
     
                         </a>
                     </div>
@@ -2543,7 +2584,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="zhu-yi-shi-xiang">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">📝 注意事项</span>
+        <span class="leading-7">📝 注意事项</span>
     
                         </a>
                     </div>
@@ -2554,7 +2595,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="zhi-xie">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">🤝 致谢</span>
+        <span class="leading-7">🤝 致谢</span>
     
                         </a>
                     </div>
@@ -2565,7 +2606,7 @@
                            class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
                            data-slug="huo-qu-zhi-chi">
                             
-        <span class="text-base text-gray-700 leading-7 my-2">📞 获取支持</span>
+        <span class="leading-7">📞 获取支持</span>
     
                         </a>
                     </div>
