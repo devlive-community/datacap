@@ -2882,7 +2882,7 @@
                 
                 
                 
-                    4909 词
+                    4885 词
                 
             </span>
         
@@ -3359,48 +3359,68 @@
         <span class="leading-7">Actuator configuration</span>
     
         </h4>
-    <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
-            
-            <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
-            
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
-            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-            </svg>
-            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-        </button>
     
-            <div class="!overflow-x-auto !flex">
-                
-                <div class="!flex-1">
-                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-properties"><span class="token key attr-name">datacap.executor.data</span><span class="token punctuation">=</span>
-<span class="token key attr-name">datacap.executor.way</span><span class="token punctuation">=</span><span class="token value attr-value">local</span>
-<span class="token key attr-name">datacap.executor.mode</span><span class="token punctuation">=</span><span class="token value attr-value">client</span>
-<span class="token key attr-name">datacap.executor.seatunnel.home</span><span class="token punctuation">=</span><span class="token value attr-value">/opt/lib/seatunnel</span></code></pre>
-                </div>
-            </div>
-        </div>
+        <span class="leading-7">Since </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2026.0.0</code>
+    
+        <span class="leading-7">, executor configuration (formerly </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.*</code>
+    
+        <span class="leading-7">) has moved to the database table </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap_configure</code>
+    
+        <span class="leading-7"> (category = </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">EXECUTOR</code>
+    
+        <span class="leading-7">) and is no longer set via </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">application.properties</code>
+    
+        <span class="leading-7">.</span>
+    
         <div class="space-y-4"></div>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.data</code>
+        <span class="leading-7">Default values are declared by each executor plugin (</span>
     
-        <span class="leading-7">: Used to configure the data buffer path of the actuator</span>
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ExecutorPlugin.configures()</code>
+    
+        <span class="leading-7">) and </span>
+    <strong>
+        <span class="leading-7">auto-seeded on first startup</span>
+    </strong>
+        <span class="leading-7">.</span>
     </li><li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.way</code>
+        <span class="leading-7">Administrators can edit every field in the UI under </span>
+    <strong>
+        <span class="leading-7">System Configuration → Runtime Configuration</span>
+    </strong>
+        <span class="leading-7"> (</span>
     
-        <span class="leading-7">: It is used to configure the execution mode of the actuator, and different actuators have different execution methods</span>
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">/system/configure</code>
+    
+        <span class="leading-7">).</span>
     </li><li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.mode</code>
+        <span class="leading-7">Regular users can override </span>
     
-        <span class="leading-7">: It is used to configure the execution mode of the actuator, different actuators have different execution modes</span>
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">tunable=true</code>
+    
+        <span class="leading-7"> fields </span>
+    <strong>
+        <span class="leading-7">per sync invocation</span>
+    </strong>
+        <span class="leading-7"> (not persisted).</span>
     </li><li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.seatunnel.home</code>
+        <span class="leading-7">The effective configuration JSON used by each sync is recorded in </span>
     
-        <span class="leading-7">: The Apache Seatunnel home directory used to configure the executor</span>
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap_dataset_history.executor_configure</code>
+    
+        <span class="leading-7"> for audit.</span>
     </li>
         </ul>
     
@@ -3982,7 +4002,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2026年2月7日 13:54</span>
+            <span>提交于 2026年6月3日 10:40</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -3994,7 +4014,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2026年2月7日 13:54</span>
+            <span>修改于 2026年6月3日 10:40</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -4007,11 +4027,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
+                <a href="https://github.com/devlive-community/datacap/commit/e0d081d01bb0297732ab2e8a4a5f192c061c6fb4"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (bd0cb1c3)
+                    首次提交 (e0d081d0)
                 </a>
             </div>
 
@@ -4023,11 +4043,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
+                <a href="https://github.com/devlive-community/datacap/commit/e0d081d01bb0297732ab2e8a4a5f192c061c6fb4"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (bd0cb1c3)
+                    末次提交 (e0d081d0)
                 </a>
             </div>
         

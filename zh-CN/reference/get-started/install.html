@@ -2875,18 +2875,18 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <span>半小时以上阅读</span>
+        <span>30 分钟阅读</span>
         
             <span class="mx-1">•</span>
             <span>
                 
-                    1195 字
+                    1170 字
                 
                 
                     +
                 
                 
-                    5382 词
+                    4591 词
                 
             </span>
         
@@ -3379,237 +3379,68 @@
         <span class="leading-7">执行器配置</span>
     
         </h4>
-    <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
-            
-            <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
-            
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
-            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-            </svg>
-            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-        </button>
     
-            <div class="!overflow-x-auto !flex">
-                
-                <div class="!flex-1">
-                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-properties"><span class="token key attr-name">datacap.executor.data</span><span class="token punctuation">=</span>
-<span class="token key attr-name">datacap.executor.way</span><span class="token punctuation">=</span><span class="token value attr-value">LOCAL</span>
-<span class="token key attr-name">datacap.executor.mode</span><span class="token punctuation">=</span><span class="token value attr-value">CLIENT</span>
-<span class="token key attr-name">datacap.executor.engine</span><span class="token punctuation">=</span><span class="token value attr-value">SPARK</span>
-<span class="token key attr-name">datacap.executor.startScript</span><span class="token punctuation">=</span><span class="token value attr-value">start-seatunnel-spark-connector-v2.sh</span>
-<span class="token key attr-name">datacap.executor.seatunnel.home</span><span class="token punctuation">=</span><span class="token value attr-value">/opt/lib/seatunnel</span></code></pre>
-                </div>
-            </div>
-        </div>
+        <span class="leading-7">从 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">2026.0.0</code>
+    
+        <span class="leading-7"> 起，执行器配置（原 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.*</code>
+    
+        <span class="leading-7">）已经迁移到数据库表 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap_configure</code>
+    
+        <span class="leading-7">（category = </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">EXECUTOR</code>
+    
+        <span class="leading-7">），不再通过 </span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">application.properties</code>
+    
+        <span class="leading-7"> 配置。</span>
+    
         <div class="space-y-4"></div>
     
         <ul class="my-4 pl-8 list-disc">
             <li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.data</code>
+        <span class="leading-7">默认值由各执行器插件（</span>
     
-        <span class="leading-7">: 用于配置执行器的数据缓冲路径</span>
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">ExecutorPlugin.configures()</code>
+    
+        <span class="leading-7">）声明，</span>
+    <strong>
+        <span class="leading-7">首次启动会自动写入数据库</span>
+    </strong></li><li class="mb-2 text-gray-700">
+        <span class="leading-7">管理员可在 UI 的 </span>
+    <strong>
+        <span class="leading-7">系统配置 → 运行时配置</span>
+    </strong>
+        <span class="leading-7"> 页面（</span>
+    
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">/system/configure</code>
+    
+        <span class="leading-7">）修改全部字段</span>
     </li><li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.way</code>
+        <span class="leading-7">普通用户在触发同步时，可对每个执行器的 </span>
     
-        <span class="leading-7">: 用于配置执行器的执行方式，不同的执行器拥有不同的执行方式</span>
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">tunable=true</code>
+    
+        <span class="leading-7"> 字段做</span>
+    <strong>
+        <span class="leading-7">本次运行临时覆盖</span>
+    </strong>
+        <span class="leading-7">（不持久化）</span>
     </li><li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.mode</code>
+        <span class="leading-7">每次同步实际生效的配置 JSON 会写入对应 </span>
     
-        <span class="leading-7">: 用于配置执行器的执行模式，不同的执行器拥有不同的执行模式</span>
-    </li><li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.engine</code>
+        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap_dataset_history.executor_configure</code>
     
-        <span class="leading-7">: 用于配置执行器的执行引擎</span>
-    </li><li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.startScript</code>
-    
-        <span class="leading-7">: 用于配置执行器的启动脚本</span>
-    </li><li class="mb-2 text-gray-700">
-        <code class="bg-gray-100 text-gray-900 px-1.5 py-0.5 rounded text-sm font-mono mx-1 inline-block max-w-full break-all whitespace-pre-wrap overflow-wrap-anywhere">datacap.executor.seatunnel.home</code>
-    
-        <span class="leading-7">: 用于配置执行器的 Apache Seatunnel 主目录</span>
+        <span class="leading-7">，方便审计</span>
     </li>
         </ul>
-    
-        <div class="space-y-4"></div>
-    
-        <h5 id="ApacheSeatunnel">
-            
-        <span class="leading-7">Apache Seatunnel</span>
-    
-        </h5>
-    
-        <div class="w-full">
-            <div class="border-b border-gray-200">
-                <nav class="flex space-x-4" role="tablist" aria-label="Tabs">
-                    
-        <button role="tab"
-            class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
-                   border-blue-500 text-blue-600
-                   focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-nyr8miiam', 0)"
-            aria-selected="true"
-            aria-controls="tabgroup-nyr8miiam-panel-0"
-            id="tabgroup-nyr8miiam-tab-0">
-            Spark 引擎配置
-        </button>
-    
-        <button role="tab"
-            class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
-                   border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300
-                   focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-nyr8miiam', 1)"
-            aria-selected="false"
-            aria-controls="tabgroup-nyr8miiam-panel-1"
-            id="tabgroup-nyr8miiam-tab-1">
-            Flink 引擎配置
-        </button>
-    
-        <button role="tab"
-            class="px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200
-                   border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300
-                   focus:outline-none"
-            onclick="switchTab(event, 'tabgroup-nyr8miiam', 2)"
-            aria-selected="false"
-            aria-controls="tabgroup-nyr8miiam-panel-2"
-            id="tabgroup-nyr8miiam-tab-2">
-            Seatunnel 引擎配置
-        </button>
-    
-                </nav>
-            </div>
-            <div class="mt-2">
-                
-        <div class="p-4 "
-            role="tabpanel"
-            aria-labelledby="tabgroup-nyr8miiam-tab-0"
-            id="tabgroup-nyr8miiam-panel-0">
-            <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
-            
-            <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
-            
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
-            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-            </svg>
-            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-        </button>
-    
-            <div class="!overflow-x-auto !flex">
-                
-                <div class="!flex-1">
-                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-properties"><span class="token key attr-name">datacap.executor.data</span><span class="token punctuation">=</span>
-<span class="token key attr-name">datacap.executor.way</span><span class="token punctuation">=</span><span class="token value attr-value">LOCAL</span>
-<span class="token key attr-name">datacap.executor.mode</span><span class="token punctuation">=</span><span class="token value attr-value">CLIENT</span>
-<span class="token key attr-name">datacap.executor.engine</span><span class="token punctuation">=</span><span class="token value attr-value">SPARK</span>
-<span class="token key attr-name">datacap.executor.startScript</span><span class="token punctuation">=</span><span class="token value attr-value">start-seatunnel-spark-connector-v2.sh</span>
-<span class="token key attr-name">datacap.executor.seatunnel.home</span><span class="token punctuation">=</span><span class="token value attr-value">/opt/lib/seatunnel</span></code></pre>
-                </div>
-            </div>
-        </div>
-        </div>
-    
-        <div class="p-4 hidden"
-            role="tabpanel"
-            aria-labelledby="tabgroup-nyr8miiam-tab-1"
-            id="tabgroup-nyr8miiam-panel-1">
-            <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
-            
-            <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
-            
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
-            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-            </svg>
-            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-        </button>
-    
-            <div class="!overflow-x-auto !flex">
-                
-                <div class="!flex-1">
-                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-properties"><span class="token key attr-name"> datacap.executor.data</span><span class="token punctuation">=</span>
-<span class="token key attr-name"> datacap.executor.way</span><span class="token punctuation">=</span><span class="token value attr-value">LOCAL</span>
-<span class="token key attr-name"> datacap.executor.mode</span><span class="token punctuation">=</span><span class="token value attr-value">CLIENT</span>
-<span class="token key attr-name"> datacap.executor.engine</span><span class="token punctuation">=</span><span class="token value attr-value">FLINK</span>
-<span class="token key attr-name"> datacap.executor.startScript</span><span class="token punctuation">=</span><span class="token value attr-value">start-seatunnel-flink-13-connector-v2.sh</span>
-<span class="token key attr-name"> datacap.executor.seatunnel.home</span><span class="token punctuation">=</span><span class="token value attr-value">/opt/lib/seatunnel</span></code></pre>
-                </div>
-            </div>
-        </div>
-        </div>
-    
-        <div class="p-4 hidden"
-            role="tabpanel"
-            aria-labelledby="tabgroup-nyr8miiam-tab-2"
-            id="tabgroup-nyr8miiam-panel-2">
-            <div class="!block !w-full !bg-gray-100 !dark:bg-gray-800 !dark:text-gray-300 !text-gray-900 !my-3 !rounded !font-mono !leading-normal !overflow-hidden !relative">
-            
-            <div class="!absolute !right-12 !top-2 !text-sm !text-gray-500 !dark:text-gray-400 !bg-gray-100 !dark:bg-gray-800 !z-10">properties</div>
-            
-        <button onclick="window.PageForge.CodeCopy.copy(this)" class="!absolute !right-2 !top-1 !p-1 !rounded !text-gray-400 hover:!text-blue-600 !dark:text-gray-500 hover:!dark:text-blue-300 !transition-colors !duration-200 !z-10">
-            <svg class="copy-icon !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-            </svg>
-            <svg class="check-icon !hidden !w-5 !h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-        </button>
-    
-            <div class="!overflow-x-auto !flex">
-                
-                <div class="!flex-1">
-                    <pre class="!px-3 !py-2.5 !m-0"><code class="language-properties"><span class="token key attr-name"> datacap.executor.data</span><span class="token punctuation">=</span>
-<span class="token comment"> # Only support LOCAL</span>
-<span class="token key attr-name"> datacap.executor.way</span><span class="token punctuation">=</span><span class="token value attr-value">LOCAL</span>
-<span class="token key attr-name"> datacap.executor.mode</span><span class="token punctuation">=</span><span class="token value attr-value">CLIENT</span>
-<span class="token key attr-name"> datacap.executor.engine</span><span class="token punctuation">=</span><span class="token value attr-value">SEATUNNEL</span>
-<span class="token key attr-name"> datacap.executor.startScript</span><span class="token punctuation">=</span><span class="token value attr-value">seatunnel.sh</span>
-<span class="token key attr-name"> datacap.executor.seatunnel.home</span><span class="token punctuation">=</span><span class="token value attr-value">/opt/lib/seatunnel</span></code></pre>
-                </div>
-            </div>
-        </div>
-        </div>
-    
-            </div>
-            
-        <script>
-            function switchTab(event, tabGroupId, selectedIndex) {
-                // 获取当前 tab 组的所有按钮和面板
-                const tabButtons = event.target.parentElement.children;
-                const tabPanels = document.querySelectorAll('[id^="' + tabGroupId + '-panel-"]');
-                
-                // 更新所有 tab 按钮的状态
-                Array.from(tabButtons).forEach((button, index) => {
-                    if (index === selectedIndex) {
-                        button.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                        button.classList.add('border-blue-500', 'text-blue-600');
-                        button.setAttribute('aria-selected', 'true');
-                    } else {
-                        button.classList.remove('border-blue-500', 'text-blue-600');
-                        button.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                        button.setAttribute('aria-selected', 'false');
-                    }
-                });
-                
-                // 更新所有面板的显示状态
-                tabPanels.forEach((panel, index) => {
-                    if (index === selectedIndex) {
-                        panel.classList.remove('hidden');
-                    } else {
-                        panel.classList.add('hidden');
-                    }
-                });
-            }
-        </script>
-    
-        </div>
     
         <div class="space-y-4"></div>
     
@@ -4234,7 +4065,7 @@
                 <line x1="3" y1="12" y2="12" x2="9"/>
                 <line x1="15" y1="12" y2="12" x2="21"/>
             </svg>
-            <span>提交于 2026年2月7日 13:54</span>
+            <span>提交于 2026年6月3日 10:40</span>
         </div>
 
         <!-- 最后修改时间 -->
@@ -4246,7 +4077,7 @@
                 <path d="M3 3v5h5"/>
                 <path d="M12 7v5l4 2"/>
             </svg>
-            <span>修改于 2026年2月7日 13:54</span>
+            <span>修改于 2026年6月3日 10:40</span>
         </div>
 
         <!-- Hash 链接 -->
@@ -4259,11 +4090,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
+                <a href="https://github.com/devlive-community/datacap/commit/e0d081d01bb0297732ab2e8a4a5f192c061c6fb4"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    首次提交 (bd0cb1c3)
+                    首次提交 (e0d081d0)
                 </a>
             </div>
 
@@ -4275,11 +4106,11 @@
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
-                <a href="https://github.com/devlive-community/datacap/commit/bd0cb1c3f7f26f018823593ff98474bd79dd05b7"
+                <a href="https://github.com/devlive-community/datacap/commit/e0d081d01bb0297732ab2e8a4a5f192c061c6fb4"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:text-blue-600 dark:hover:text-blue-400">
-                    末次提交 (bd0cb1c3)
+                    末次提交 (e0d081d0)
                 </a>
             </div>
         
@@ -4456,21 +4287,6 @@
     
                             </a>
                         </div>
-                        
-                            
-                    
-                        <div class="pl-16 inline-block min-w-full">
-                            <a href="#ApacheSeatunnel"
-                               class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
-                               data-slug="ApacheSeatunnel">
-                                
-        <span class="leading-7">Apache Seatunnel</span>
-    
-                            </a>
-                        </div>
-                        
-                    
-                
                         
                     
                         <div class="pl-12 inline-block min-w-full">
@@ -4771,21 +4587,6 @@
     
                         </a>
                     </div>
-                    
-                        
-                
-                    <div class="pl-16 inline-block min-w-full">
-                        <a href="#ApacheSeatunnel"
-                           class="block px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors duration-150 toc-link whitespace-nowrap"
-                           data-slug="ApacheSeatunnel">
-                            
-        <span class="leading-7">Apache Seatunnel</span>
-    
-                        </a>
-                    </div>
-                    
-                
-            
                     
                 
                     <div class="pl-12 inline-block min-w-full">
