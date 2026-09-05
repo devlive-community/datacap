@@ -4,51 +4,45 @@
       <div class="ml-2 font-normal text-sm">{{ $t('user.common.list') }}</div>
     </template>
 
-    <template #extra>
-      <a-button size="small" shape="circle" @click="handlerChangeInfo(true, null)">
-        <template #icon>
-          <ShadcnIcon icon="Plus"/>
-        </template>
-      </a-button>
-    </template>
-
-    <a-spin :spinning="loading">
-      <a-table size="small"
-               :columns="headers"
+    <DataTable :columns="headers"
                :data-source="data"
-               :pagination="false"
-               row-key="id">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'role'">
-            <a-tag v-for="role in record.roles" :key="role.id">{{ role.name }}</a-tag>
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handlerInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #actions>
+        <a-button type="primary" @click="handlerChangeInfo(true, null)">
+          <template #icon>
+            <ShadcnIcon icon="Plus"/>
           </template>
-          <template v-else-if="column.key === 'action'">
-            <a-space>
-              <a-tooltip :title="$t('user.common.assignRole')">
-                <a-button size="small" shape="circle" @click="handlerChangeRole(true, record)">
-                  <ShadcnIcon icon="SquareArrowUp" size="15"/>
-                </a-button>
-              </a-tooltip>
+          {{ $t('user.common.create') }}
+        </a-button>
+      </template>
 
-              <a-tooltip :title="$t('common.editData')">
-                <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
-                  <ShadcnIcon icon="Pencil" size="15"/>
-                </a-button>
-              </a-tooltip>
-            </a-space>
-          </template>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'role'">
+          <a-tag v-for="role in record.roles" :key="role.id">{{ role.name }}</a-tag>
         </template>
-      </a-table>
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('user.common.assignRole')">
+              <a-button size="small" shape="circle" @click="handlerChangeRole(true, record)">
+                <ShadcnIcon icon="SquareArrowUp" size="15"/>
+              </a-button>
+            </a-tooltip>
 
-      <a-pagination v-model:current="pageIndex"
-                    class="py-2"
-                    :page-size="pageSize"
-                    :total="dataCount"
-                    show-size-changer
-                    :page-size-options="['10', '20', '50']"
-                    @change="onPageChange"
-                    @show-size-change="onSizeChange"/>
-    </a-spin>
+            <a-tooltip :title="$t('common.editData')">
+              <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+                <ShadcnIcon icon="Pencil" size="15"/>
+              </a-button>
+            </a-tooltip>
+          </a-space>
+        </template>
+      </template>
+    </DataTable>
   </a-card>
 
   <UserRole v-if="dataRoleVisible"
@@ -65,11 +59,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
-import UserService from '@/services/user'
 import { useHeaders } from './UserUtils'
 import { UserModel } from '@/model/user'
+import DataTable from '@/views/components/table/DataTable.vue'
 import UserInfo from '@/views/pages/system/user/UserInfo.vue'
 import UserRole from '@/views/pages/system/user/components/UserRole.vue'
+import UserService from '@/services/user'
+
+defineOptions({ name: 'UserHome' })
 
 const filter: FilterModel = new FilterModel()
 const { headers } = useHeaders()
