@@ -4,47 +4,41 @@
       <div class="ml-2 font-normal text-sm">{{ $t('menu.common.list') }}</div>
     </template>
 
-    <template #extra>
-      <a-tooltip :title="$t('menu.common.create')">
-        <a-button size="small" shape="circle" @click="handlerChangeInfo(true, null)">
-          <template #icon>
-            <ShadcnIcon icon="Plus"/>
-          </template>
-        </a-button>
-      </a-tooltip>
-    </template>
-
-    <a-spin :spinning="loading">
-      <a-table size="small"
-               :columns="headers"
+    <DataTable :columns="headers"
                :data-source="data"
-               :pagination="false"
-               row-key="id">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'active'">
-            <a-switch v-model:checked="record.active" :disabled="record.active"/>
-          </template>
-          <template v-else-if="column.key === 'action'">
-            <a-space>
-              <a-tooltip :title="$t('common.editData')">
-                <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
-                  <ShadcnIcon icon="Pencil" size="15"/>
-                </a-button>
-              </a-tooltip>
-            </a-space>
-          </template>
-        </template>
-      </a-table>
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handlerInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #actions>
+        <a-tooltip :title="$t('menu.common.create')">
+          <a-button type="primary" @click="handlerChangeInfo(true, null)">
+            <template #icon>
+              <ShadcnIcon icon="Plus"/>
+            </template>
+            {{ $t('menu.common.create') }}
+          </a-button>
+        </a-tooltip>
+      </template>
 
-      <a-pagination v-model:current="pageIndex"
-                    class="py-2"
-                    :page-size="pageSize"
-                    :total="dataCount"
-                    show-size-changer
-                    :page-size-options="['10', '20', '50']"
-                    @change="onPageChange"
-                    @show-size-change="onSizeChange"/>
-    </a-spin>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'active'">
+          <a-switch v-model:checked="record.active" :disabled="record.active"/>
+        </template>
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('common.editData')">
+              <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+                <ShadcnIcon icon="Pencil" size="15"/>
+              </a-button>
+            </a-tooltip>
+          </a-space>
+        </template>
+      </template>
+    </DataTable>
   </a-card>
 
   <MenuInfo v-if="dataInfoVisible"
@@ -58,8 +52,9 @@ import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from '@/views/pages/system/menu/MenuUtils'
 import { MenuModel } from '@/model/menu'
-import MenuService from '@/services/menu'
+import DataTable from '@/views/components/table/DataTable.vue'
 import MenuInfo from '@/views/pages/system/menu/MenuInfo.vue'
+import MenuService from '@/services/menu'
 
 defineOptions({ name: 'MenuHome' })
 

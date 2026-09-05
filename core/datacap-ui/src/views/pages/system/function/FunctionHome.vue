@@ -4,58 +4,48 @@
       <div class="ml-2 font-normal text-sm">{{ $t('function.common.list') }}</div>
     </template>
 
-    <template #extra>
-      <a-space>
-        <a-button size="small" shape="circle" @click="handlerInfo(true, null)">
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handlerInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #actions>
+        <a-button type="primary" @click="handlerInfo(true, null)">
           <template #icon>
             <ShadcnIcon icon="Plus"/>
           </template>
+          {{ $t('function.common.create') }}
         </a-button>
-        <a-tooltip :title="$t('function.common.import')">
-          <a-button size="small" shape="circle" @click="handlerImport(true)">
-            <template #icon>
-              <ShadcnIcon icon="Import" size="16"/>
-            </template>
-          </a-button>
-        </a-tooltip>
-      </a-space>
-    </template>
+        <a-button @click="handlerImport(true)">
+          <template #icon>
+            <ShadcnIcon icon="Import" size="16"/>
+          </template>
+          {{ $t('function.common.import') }}
+        </a-button>
+      </template>
 
-    <a-spin :spinning="loading">
-      <a-table size="small"
-               :columns="headers"
-               :data-source="data"
-               :pagination="false"
-               row-key="id">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'type'">
-            <a-tag>{{ $t('function.common.' + record.type.toLowerCase()) }}</a-tag>
-          </template>
-          <template v-else-if="column.key === 'plugin'">
-            <a-avatar-group :max-count="3" size="small">
-              <a-avatar v-for="item in extractItem(record?.plugin)" :key="item.name" :src="item.src"/>
-            </a-avatar-group>
-          </template>
-          <template v-else-if="column.key === 'action'">
-            <a-tooltip :title="$t('common.editData')">
-              <a-button size="small" shape="circle" @click="handlerInfo(true, record)">
-                <ShadcnIcon icon="Pencil" size="15"/>
-              </a-button>
-            </a-tooltip>
-          </template>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'type'">
+          <a-tag>{{ $t('function.common.' + record.type.toLowerCase()) }}</a-tag>
         </template>
-      </a-table>
-
-      <a-pagination v-if="data?.length > 0"
-                    v-model:current="pageIndex"
-                    class="py-2"
-                    :page-size="pageSize"
-                    :total="dataCount"
-                    show-size-changer
-                    :page-size-options="['10', '20', '50']"
-                    @change="onPageChange"
-                    @show-size-change="onSizeChange"/>
-    </a-spin>
+        <template v-else-if="column.key === 'plugin'">
+          <a-avatar-group :max-count="3" size="small">
+            <a-avatar v-for="item in extractItem(record?.plugin)" :key="item.name" :src="item.src"/>
+          </a-avatar-group>
+        </template>
+        <template v-else-if="column.key === 'action'">
+          <a-tooltip :title="$t('common.editData')">
+            <a-button size="small" shape="circle" @click="handlerInfo(true, record)">
+              <ShadcnIcon icon="Pencil" size="15"/>
+            </a-button>
+          </a-tooltip>
+        </template>
+      </template>
+    </DataTable>
   </a-card>
 
   <FunctionInfo v-if="dataInfoVisible"
@@ -70,10 +60,11 @@
 import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from '@/views/pages/system/function/FunctionUtils'
+import { FunctionModel } from '@/model/function'
+import DataTable from '@/views/components/table/DataTable.vue'
 import FunctionService from '@/services/function'
 import FunctionInfo from '@/views/pages/system/function/FunctionInfo.vue'
 import FunctionImport from '@/views/pages/system/function/FunctionImport.vue'
-import { FunctionModel } from '@/model/function'
 
 defineOptions({ name: 'FunctionHome' })
 

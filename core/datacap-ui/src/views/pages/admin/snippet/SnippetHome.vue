@@ -6,71 +6,63 @@
       </div>
     </template>
 
-    <a-spin :spinning="loading">
-      <a-table size="small"
-               :columns="headers"
+    <DataTable :columns="headers"
                :data-source="data"
-               :pagination="false"
-               row-key="id">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'username'">
-            <a-avatar size="small" :src="record.user.avatarConfigure?.path" :alt="record.user.username"/>
-          </template>
-          <template v-else-if="column.key === 'action'">
-            <a-space>
-              <a-tooltip :title="$t('snippet.common.modify').replace('$VALUE', record.name)">
-                <a-button size="small" shape="circle" @click="visibleInfo(true, record)">
-                  <ShadcnIcon icon="Pencil" size="15"/>
-                </a-button>
-              </a-tooltip>
-
-              <a-dropdown trigger="click">
-                <a-button size="small" shape="circle">
-                  <ShadcnIcon icon="Cog" size="15"/>
-                </a-button>
-
-                <template #overlay>
-                  <a-menu>
-                    <a-menu-item>
-                      <router-link :to="`/admin/query/snippet/${ record?.code }`" target="_blank">
-                        <div class="flex items-center space-x-2">
-                          <ShadcnIcon icon="Quote" size="15"/>
-                          <span>{{ $t('query.common.quoteRecord') }}</span>
-                        </div>
-                      </router-link>
-                    </a-menu-item>
-
-                    <a-menu-item @click="visibleContent(true, record?.context)">
-                      <div class="flex items-center space-x-2">
-                        <ShadcnIcon icon="SquareChevronRight" size="15"/>
-                        <span>{{ $t('query.common.showSql') }}</span>
-                      </div>
-                    </a-menu-item>
-
-                    <a-menu-item @click="visibleDelete(true, record)">
-                      <div class="flex items-center space-x-2">
-                        <ShadcnIcon icon="Delete" size="15"/>
-                        <span>{{ $t('snippet.common.delete') }}</span>
-                      </div>
-                    </a-menu-item>
-                  </a-menu>
-                </template>
-              </a-dropdown>
-            </a-space>
-          </template>
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handleInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'username'">
+          <a-avatar size="small" :src="record.user.avatarConfigure?.path" :alt="record.user.username"/>
         </template>
-      </a-table>
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('snippet.common.modify').replace('$VALUE', record.name)">
+              <a-button size="small" shape="circle" @click="visibleInfo(true, record)">
+                <ShadcnIcon icon="Pencil" size="15"/>
+              </a-button>
+            </a-tooltip>
 
-      <a-pagination v-if="data.length > 0"
-                    v-model:current="pageIndex"
-                    class="py-2"
-                    :page-size="pageSize"
-                    :total="dataCount"
-                    show-size-changer
-                    :page-size-options="['10', '20', '50']"
-                    @change="onPageChange"
-                    @show-size-change="onSizeChange"/>
-    </a-spin>
+            <a-dropdown trigger="click">
+              <a-button size="small" shape="circle">
+                <ShadcnIcon icon="Cog" size="15"/>
+              </a-button>
+
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item>
+                    <router-link :to="`/admin/query/snippet/${ record?.code }`" target="_blank">
+                      <div class="flex items-center space-x-2">
+                        <ShadcnIcon icon="Quote" size="15"/>
+                        <span>{{ $t('query.common.quoteRecord') }}</span>
+                      </div>
+                    </router-link>
+                  </a-menu-item>
+
+                  <a-menu-item @click="visibleContent(true, record?.context)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="SquareChevronRight" size="15"/>
+                      <span>{{ $t('query.common.showSql') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item @click="visibleDelete(true, record)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="Delete" size="15"/>
+                      <span>{{ $t('snippet.common.delete') }}</span>
+                    </div>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </a-space>
+        </template>
+      </template>
+    </DataTable>
   </a-card>
 
   <SnippetInfo v-if="dataInfoVisible"
@@ -94,8 +86,9 @@ import { onMounted, ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { FilterModel } from '@/model/filter.ts'
 import { useHeaders } from '@/views/pages/admin/snippet/SnippetUtils'
-import SnippetService from '@/services/snippet'
 import { SnippetModel } from '@/model/snippet'
+import DataTable from '@/views/components/table/DataTable.vue'
+import SnippetService from '@/services/snippet'
 import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import SnippetDelete from '@/views/pages/admin/snippet/SnippetDelete.vue'

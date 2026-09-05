@@ -4,50 +4,42 @@
       <div class="ml-2 font-normal text-sm">{{ $t('role.common.list') }}</div>
     </template>
 
-    <template #extra>
-      <a-tooltip :title="$t('role.common.create')">
-        <a-button size="small" shape="circle" @click="handlerChangeInfo(true, null)">
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handlerInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #actions>
+        <a-button type="primary" @click="handlerChangeInfo(true, null)">
           <template #icon>
             <ShadcnIcon icon="Plus"/>
           </template>
+          {{ $t('role.common.create') }}
         </a-button>
-      </a-tooltip>
-    </template>
+      </template>
 
-    <a-spin :spinning="loading">
-      <a-table size="small"
-               :columns="headers"
-               :data-source="data"
-               :pagination="false"
-               row-key="id">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'action'">
-            <a-space>
-              <a-tooltip :title="$t('common.editData')">
-                <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
-                  <ShadcnIcon icon="Pencil" size="15"/>
-                </a-button>
-              </a-tooltip>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('common.editData')">
+              <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+                <ShadcnIcon icon="Pencil" size="15"/>
+              </a-button>
+            </a-tooltip>
 
-              <a-tooltip :title="$t('role.common.assignMenu').replace('$NAME', record?.name)">
-                <a-button size="small" shape="circle" @click="handlerAssignMenu(true, record)">
-                  <ShadcnIcon icon="Menu" size="15"/>
-                </a-button>
-              </a-tooltip>
-            </a-space>
-          </template>
+            <a-tooltip :title="$t('role.common.assignMenu').replace('$NAME', record?.name)">
+              <a-button size="small" shape="circle" @click="handlerAssignMenu(true, record)">
+                <ShadcnIcon icon="Menu" size="15"/>
+              </a-button>
+            </a-tooltip>
+          </a-space>
         </template>
-      </a-table>
-
-      <a-pagination v-model:current="pageIndex"
-                    class="py-2"
-                    :page-size="pageSize"
-                    :total="dataCount"
-                    show-size-changer
-                    :page-size-options="['10', '20', '50']"
-                    @change="onPageChange"
-                    @show-size-change="onSizeChange"/>
-    </a-spin>
+      </template>
+    </DataTable>
   </a-card>
 
   <RoleInfo v-if="dataInfoVisible"
@@ -64,10 +56,11 @@
 import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from '@/views/pages/system/role/RoleUtils'
-import RoleService from '@/services/role'
 import { RoleModel } from '@/model/role'
+import DataTable from '@/views/components/table/DataTable.vue'
 import RoleInfo from '@/views/pages/system/role/RoleInfo.vue'
 import RoleMenu from '@/views/pages/system/role/RoleMenu.vue'
+import RoleService from '@/services/role'
 
 defineOptions({ name: 'RoleHome' })
 
