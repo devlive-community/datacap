@@ -1,114 +1,94 @@
 <template>
-  <ShadcnForm v-model="formState" v-if="formState" @on-submit="onSubmit" @on-error="onError">
-    <ShadcnFormItem name="username"
-                    :label="$t('user.common.username')"
-                    :rules="[
-                          { required: true, message: $t('user.auth.usernameTip') },
-                          { min: 3, message: $t('user.auth.usernameSizeTip') },
-                          { max: 20, message: $t('user.auth.usernameSizeTip') }
-                    ]">
-      <ShadcnInput v-model="formState.username" name="username"/>
-    </ShadcnFormItem>
+  <a-form v-if="formState" :model="formState" layout="vertical" @finish="onSubmit" @finishFailed="onError">
+    <a-form-item name="username"
+                 :label="$t('user.common.username')"
+                 :rules="[
+                   { required: true, message: $t('user.auth.usernameTip') },
+                   { min: 3, message: $t('user.auth.usernameSizeTip') },
+                   { max: 20, message: $t('user.auth.usernameSizeTip') }
+               ]">
+      <a-input v-model:value="formState.username"/>
+    </a-form-item>
 
-    <ShadcnFormItem name="password"
-                    :label="$t('user.common.password')"
-                    :rules="[
-                                { required: true, message: $t('user.auth.passwordTip') },
-                                { min: 6, message: $t('user.auth.passwordSizeTip') },
-                                { max: 20, message: $t('user.auth.passwordSizeTip') }
-                            ]">
-      <ShadcnInput v-model="formState.password"
-                   type="password"
-                   name="password"
-                   :placeholder="$t('user.auth.passwordTip')"/>
-    </ShadcnFormItem>
+    <a-form-item name="password"
+                 :label="$t('user.common.password')"
+                 :rules="[
+                   { required: true, message: $t('user.auth.passwordTip') },
+                   { min: 6, message: $t('user.auth.passwordSizeTip') },
+                   { max: 20, message: $t('user.auth.passwordSizeTip') }
+               ]">
+      <a-input-password v-model:value="formState.password"
+                        :placeholder="$t('user.auth.passwordTip')"/>
+    </a-form-item>
 
-    <ShadcnFormItem name="confirmPassword"
-                    :label="$t('user.common.confirmPassword')"
-                    :rules="[
-                                { required: true, message: $t('user.auth.passwordTip') },
-                                { validator: validatePassword }
-                            ]">
-      <ShadcnInput v-model="formState.confirmPassword"
-                   type="password"
-                   name="confirmPassword"
-                   :placeholder="$t('user.auth.confirmPasswordTip')"/>
-    </ShadcnFormItem>
+    <a-form-item name="confirmPassword"
+                 :label="$t('user.common.confirmPassword')"
+                 :rules="[
+                   { required: true, message: $t('user.auth.passwordTip') },
+                   { validator: validatePassword }
+               ]">
+      <a-input-password v-model:value="formState.confirmPassword"
+                        :placeholder="$t('user.auth.confirmPasswordTip')"/>
+    </a-form-item>
 
     <div class="flex justify-end">
-      <ShadcnButton submit :loading="loading" :disabled="loading">
+      <a-button type="primary" html-type="submit" :loading="loading" :disabled="loading">
         {{ $t('common.save') }}
-      </ShadcnButton>
+      </a-button>
     </div>
-  </ShadcnForm>
+  </a-form>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import { UserModel } from '@/model/user'
 import UserService from '@/services/user'
 
-export default defineComponent({
-  name: 'UserForm',
-  props: {
-    info: {
-      type: Object as () => UserModel
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      formState: ref<UserModel>({
-        code: undefined,
-        username: undefined,
-        password: undefined,
-        confirmPassword: undefined
-      })
-    }
-  },
-  created()
-  {
-    if (this.info) {
-      const { code, username } = this.info as UserModel
-      this.formState = {
-        code,
-        username
-      }
-    }
-  },
-  methods: {
-    validatePassword(value: string)
-    {
-      if (value !== this.formState.password) {
-        return Promise.reject(new Error(this.$t('user.auth.passwordNotMatchTip')))
-      }
-      return Promise.resolve(true)
-    },
-    onError(errors: any)
-    {
-      this.$Message.error({
-        content: `Validation error field: [ ${ Object.keys(errors).join(', ') } ]`,
-        showIcon: true
-      })
-    },
-    onSubmit()
-    {
-      this.loading = true
-      UserService.saveOrUpdate(this.formState)
-                 .then((response) => {
-                   if (response.status) {
-                     this.$emit('close', true)
-                   }
-                   else {
-                     this.$Message.error({
-                       content: response.message,
-                       showIcon: true
-                     })
-                   }
-                 })
-                 .finally(() => this.loading = false)
-    }
+defineOptions({ name: 'UserForm' })
+
+const props = defineProps<{ info?: UserModel }>()
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const loading = ref(false)
+const formState = ref<UserModel>({
+  code: undefined,
+  username: undefined,
+  password: undefined,
+  confirmPassword: undefined
+} as UserModel)
+
+if (props.info) {
+  const { code, username } = props.info as UserModel
+  formState.value = { code, username } as UserModel
+}
+
+const validatePassword = (_rule: any, value: string) => {
+  if (value !== formState.value.password) {
+    return Promise.reject(new Error(t('user.auth.passwordNotMatchTip')))
   }
-})
+  return Promise.resolve(true)
+}
+
+const onError = (error: any) => {
+  const names = (error?.errorFields || []).map((field: any) => (Array.isArray(field.name) ? field.name.join('.') : field.name))
+  message.error(`Validation error field: [ ${ names.join(', ') } ]`)
+}
+
+const onSubmit = () => {
+  loading.value = true
+  UserService.saveOrUpdate(formState.value)
+             .then((response) => {
+               if (response.status) {
+                 emit('close', true)
+               }
+               else {
+                 message.error(response.message)
+               }
+             })
+             .finally(() => (loading.value = false))
+}
 </script>
