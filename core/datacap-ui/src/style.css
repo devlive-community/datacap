@@ -9,3 +9,18 @@
 .w-screen {
     width: 100vw;
 }
+
+/* ant-design-vue 定制：下拉选项（Select / 分页每页条数等）之间留间距 + 圆角，
+   避免 hover 态与已选态紧贴在一起 */
+.ant-select-dropdown .ant-select-item {
+    margin: 2px 4px;
+    border-radius: 6px;
+}
+
+.ant-select-dropdown .ant-select-item:first-child {
+    margin-top: 4px;
+}
+
+.ant-select-dropdown .ant-select-item:last-child {
+    margin-bottom: 4px;
+}
