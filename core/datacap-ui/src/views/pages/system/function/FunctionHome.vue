@@ -1,63 +1,62 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2 font-normal text-sm">{{ $t('function.common.list') }}</div>
     </template>
 
     <template #extra>
-      <ShadcnSpace>
-        <ShadcnButton size="small" circle @click="handlerInfo(true, null)">
+      <a-space>
+        <a-button size="small" shape="circle" @click="handlerInfo(true, null)">
           <template #icon>
             <ShadcnIcon icon="Plus"/>
           </template>
-        </ShadcnButton>
-        <ShadcnTooltip :content="$t('function.common.import')">
-          <ShadcnButton size="small" circle @click="handlerImport(true)">
+        </a-button>
+        <a-tooltip :title="$t('function.common.import')">
+          <a-button size="small" shape="circle" @click="handlerImport(true)">
             <template #icon>
               <ShadcnIcon icon="Import" size="16"/>
             </template>
-          </ShadcnButton>
-        </ShadcnTooltip>
-      </ShadcnSpace>
+          </a-button>
+        </a-tooltip>
+      </a-space>
     </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
-
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #type="{ row }">
-          <ShadcnTag :text="$t('function.common.' + row.type.toLowerCase())"/>
+    <a-spin :spinning="loading">
+      <a-table size="small"
+               :columns="headers"
+               :data-source="data"
+               :pagination="false"
+               row-key="id">
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'type'">
+            <a-tag>{{ $t('function.common.' + record.type.toLowerCase()) }}</a-tag>
+          </template>
+          <template v-else-if="column.key === 'plugin'">
+            <a-avatar-group :max-count="3" size="small">
+              <a-avatar v-for="item in extractItem(record?.plugin)" :key="item.name" :src="item.src"/>
+            </a-avatar-group>
+          </template>
+          <template v-else-if="column.key === 'action'">
+            <a-tooltip :title="$t('common.editData')">
+              <a-button size="small" shape="circle" @click="handlerInfo(true, record)">
+                <ShadcnIcon icon="Pencil" size="15"/>
+              </a-button>
+            </a-tooltip>
+          </template>
         </template>
+      </a-table>
 
-        <template #plugin="{ row }">
-          <ShadcnAvatarGroup :items="extractItem(row?.plugin)" size="small" max="3"/>
-        </template>
-
-        <template #action="{row}">
-          <ShadcnTooltip :content="$t('common.editData')">
-            <ShadcnButton size="small" circle @click="handlerInfo(true, row)">
-              <ShadcnIcon icon="Pencil" size="15"/>
-            </ShadcnButton>
-          </ShadcnTooltip>
-        </template>
-      </ShadcnTable>
-
-      <ShadcnPagination v-if="data?.length > 0"
-                        v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
+      <a-pagination v-if="data?.length > 0"
+                    v-model:current="pageIndex"
+                    class="py-2"
+                    :page-size="pageSize"
+                    :total="dataCount"
+                    show-size-changer
+                    :page-size-options="['10', '20', '50']"
+                    @change="onPageChange"
+                    @show-size-change="onSizeChange"/>
+    </a-spin>
+  </a-card>
 
   <FunctionInfo v-if="dataInfoVisible"
                 :is-visible="dataInfoVisible"
@@ -67,8 +66,8 @@
   <FunctionImport v-if="dataImportVisible" :is-visible="dataImportVisible" @close="handlerImport(false)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from '@/views/pages/system/function/FunctionUtils'
 import FunctionService from '@/services/function'
@@ -76,96 +75,66 @@ import FunctionInfo from '@/views/pages/system/function/FunctionInfo.vue'
 import FunctionImport from '@/views/pages/system/function/FunctionImport.vue'
 import { FunctionModel } from '@/model/function'
 
-export default defineComponent({
-  name: 'FunctionHome',
-  components: { FunctionImport, FunctionInfo },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
+defineOptions({ name: 'FunctionHome' })
 
-    return {
-      filter,
-      headers
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      dataInfoVisible: false,
-      dataImportVisible: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      dataInfo: null as FunctionModel | null
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
+
+const loading = ref(false)
+const dataInfoVisible = ref(false)
+const dataImportVisible = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const dataInfo = ref<FunctionModel | null>(null)
+
+const handlerInitialize = () => {
+  loading.value = true
+  FunctionService.getAll(filter)
+                 .then((response) => {
+                   if (response.status) {
+                     data.value = response.data.content
+                     dataCount.value = response.data.total
+                     pageSize.value = response.data.size
+                     pageIndex.value = response.data.page
+                   }
+                 })
+                 .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handlerInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const extractItem = (plugins: string[]) => {
+  return (plugins || []).map((item: string) => ({
+    name: item,
+    src: `/static/images/plugin/${ item.toLowerCase() }.svg`
+  }))
+}
+
+const handlerInfo = (opened: boolean, value: FunctionModel | null) => {
+  dataInfoVisible.value = opened
+  dataInfo.value = value
+  if (!opened) {
     handlerInitialize()
-    {
-      this.loading = true
-      FunctionService.getAll(this.filter)
-                     .then((response) => {
-                       if (response.status) {
-                         this.data = response.data.content
-                         this.dataCount = response.data.total
-                         this.pageSize = response.data.size
-                         this.pageIndex = response.data.page
-                       }
-                     })
-                     .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handlerInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    extractItem(plugins: string[])
-    {
-      return plugins.map((item: string) => {
-        return {
-          name: item,
-          src: `/static/images/plugin/${ item.toLowerCase() }.svg`
-        }
-      })
-    },
-    handlerInfo(opened: boolean, value: FunctionModel | null)
-    {
-      this.dataInfoVisible = opened
-      this.dataInfo = value
-      if (!opened) {
-        this.handlerInitialize()
-      }
-    },
-    handlerImport(value: boolean)
-    {
-      this.dataImportVisible = value
-      this.handlerInitialize()
-    }
   }
-})
+}
+
+const handlerImport = (value: boolean) => {
+  dataImportVisible.value = value
+  handlerInitialize()
+}
+
+onMounted(() => handlerInitialize())
 </script>
