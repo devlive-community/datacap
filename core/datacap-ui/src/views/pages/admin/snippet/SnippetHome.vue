@@ -1,77 +1,77 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2 font-normal text-sm">
         {{ $t('snippet.common.list') }}
       </div>
     </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
+    <a-spin :spinning="loading">
+      <a-table size="small"
+               :columns="headers"
+               :data-source="data"
+               :pagination="false"
+               row-key="id">
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'username'">
+            <a-avatar size="small" :src="record.user.avatarConfigure?.path" :alt="record.user.username"/>
+          </template>
+          <template v-else-if="column.key === 'action'">
+            <a-space>
+              <a-tooltip :title="$t('snippet.common.modify').replace('$VALUE', record.name)">
+                <a-button size="small" shape="circle" @click="visibleInfo(true, record)">
+                  <ShadcnIcon icon="Pencil" size="15"/>
+                </a-button>
+              </a-tooltip>
 
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #username="{ row }">
-          <ShadcnAvatar size="small" :src="row.user.avatarConfigure?.path" :alt="row.user.username"/>
-        </template>
-
-        <template #action="{ row }">
-          <ShadcnSpace>
-            <ShadcnTooltip :content="$t('snippet.common.modify').replace('$VALUE', row.name)">
-              <ShadcnButton size="small" circle @click="visibleInfo(true, row)">
-                <ShadcnIcon icon="Pencil" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
-
-            <ShadcnDropdown trigger="click">
-              <template #trigger>
-                <ShadcnButton size="small" circle>
+              <a-dropdown trigger="click">
+                <a-button size="small" shape="circle">
                   <ShadcnIcon icon="Cog" size="15"/>
-                </ShadcnButton>
-              </template>
+                </a-button>
 
-              <ShadcnDropdownItem>
-                <ShadcnLink :link="`/admin/query/snippet/${row?.code}`" target="_blank">
-                  <div class="flex items-center space-x-2">
-                    <ShadcnIcon icon="Quote" size="15"/>
-                    <span>{{ $t('query.common.quoteRecord') }}</span>
-                  </div>
-                </ShadcnLink>
-              </ShadcnDropdownItem>
+                <template #overlay>
+                  <a-menu>
+                    <a-menu-item>
+                      <router-link :to="`/admin/query/snippet/${ record?.code }`" target="_blank">
+                        <div class="flex items-center space-x-2">
+                          <ShadcnIcon icon="Quote" size="15"/>
+                          <span>{{ $t('query.common.quoteRecord') }}</span>
+                        </div>
+                      </router-link>
+                    </a-menu-item>
 
-              <ShadcnDropdownItem @on-click="visibleContent(true, row?.context)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="SquareChevronRight" size="15"/>
-                  <span>{{ $t('query.common.showSql') }}</span>
-                </div>
-              </ShadcnDropdownItem>
+                    <a-menu-item @click="visibleContent(true, record?.context)">
+                      <div class="flex items-center space-x-2">
+                        <ShadcnIcon icon="SquareChevronRight" size="15"/>
+                        <span>{{ $t('query.common.showSql') }}</span>
+                      </div>
+                    </a-menu-item>
 
-              <ShadcnDropdownItem @on-click="visibleDelete(true, row)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="Delete" size="15"/>
-                  <span>{{ $t('snippet.common.delete') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-            </ShadcnDropdown>
-          </ShadcnSpace>
+                    <a-menu-item @click="visibleDelete(true, record)">
+                      <div class="flex items-center space-x-2">
+                        <ShadcnIcon icon="Delete" size="15"/>
+                        <span>{{ $t('snippet.common.delete') }}</span>
+                      </div>
+                    </a-menu-item>
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </a-space>
+          </template>
         </template>
-      </ShadcnTable>
+      </a-table>
 
-      <ShadcnPagination v-if="data.length > 0"
-                        v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
+      <a-pagination v-if="data.length > 0"
+                    v-model:current="pageIndex"
+                    class="py-2"
+                    :page-size="pageSize"
+                    :total="dataCount"
+                    show-size-changer
+                    :page-size-options="['10', '20', '50']"
+                    @change="onPageChange"
+                    @show-size-change="onSizeChange"/>
+    </a-spin>
+  </a-card>
 
   <SnippetInfo v-if="dataInfoVisible"
                :is-visible="dataInfoVisible"
@@ -89,8 +89,9 @@
            @close="visibleContent(false, null)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { message } from 'ant-design-vue'
 import { FilterModel } from '@/model/filter.ts'
 import { useHeaders } from '@/views/pages/admin/snippet/SnippetUtils'
 import SnippetService from '@/services/snippet'
@@ -99,103 +100,72 @@ import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import SnippetDelete from '@/views/pages/admin/snippet/SnippetDelete.vue'
 
-export default defineComponent({
-  name: 'SnippetHome',
-  components: { SnippetDelete, SqlInfo, SnippetInfo },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
+defineOptions({ name: 'SnippetHome' })
 
-    return {
-      filter,
-      headers
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      dataInfoVisible: false,
-      dataInfo: null as null | SnippetModel,
-      contentVisible: false,
-      content: null as string | null,
-      dataDeleteVisible: false
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
+
+const loading = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const dataInfoVisible = ref(false)
+const dataInfo = ref<SnippetModel | null>(null)
+const contentVisible = ref(false)
+const content = ref<string | null>(null)
+const dataDeleteVisible = ref(false)
+
+const handleInitialize = () => {
+  loading.value = true
+  SnippetService.getAll(filter)
+                .then(response => {
+                  if (response.status) {
+                    data.value = response.data.content
+                    dataCount.value = response.data.total
+                    pageSize.value = response.data.size
+                    pageIndex.value = response.data.page
+                  }
+                  else {
+                    message.error(response.message)
+                  }
+                })
+                .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handleInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const visibleInfo = (opened: boolean, value: SnippetModel | null) => {
+  dataInfoVisible.value = opened
+  dataInfo.value = value
+  if (!opened) {
     handleInitialize()
-    {
-      this.loading = true
-      SnippetService.getAll(this.filter)
-                    .then(response => {
-                      if (response.status) {
-                        this.data = response.data.content
-                        this.dataCount = response.data.total
-                        this.pageSize = response.data.size
-                        this.pageIndex = response.data.page
-                      }
-                      else {
-                        this.$Message.error({
-                          content: response.message,
-                          showIcon: true
-                        })
-                      }
-                    })
-                    .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handleInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    visibleInfo(opened: boolean, value: null | SnippetModel)
-    {
-      this.dataInfoVisible = opened
-      this.dataInfo = value
-      if (!opened) {
-        this.handleInitialize()
-      }
-    },
-    visibleContent(opened: boolean, value: string | null)
-    {
-      this.contentVisible = opened
-      this.content = value
-    },
-    visibleDelete(opened: boolean, data: null | SnippetModel)
-    {
-      this.dataDeleteVisible = opened
-      this.dataInfo = data
-      if (!opened) {
-        this.handleInitialize()
-      }
-    }
   }
-})
+}
+
+const visibleContent = (opened: boolean, value: string | null) => {
+  contentVisible.value = opened
+  content.value = value
+}
+
+const visibleDelete = (opened: boolean, value: SnippetModel | null) => {
+  dataDeleteVisible.value = opened
+  dataInfo.value = value
+  if (!opened) {
+    handleInitialize()
+  }
+}
+
+onMounted(() => handleInitialize())
 </script>

@@ -1,113 +1,92 @@
 <template>
-  <ShadcnDrawer v-model="visible" :title="title" width="40%">
-    <ShadcnSpin v-if="loading" fixed/>
+  <a-drawer v-model:open="visible" :title="title" width="40%">
+    <a-spin :spinning="loading">
+      <a-form v-if="formState" :model="formState" layout="vertical" @finish="onSubmit">
+        <a-form-item name="name"
+                     :label="$t('common.name')"
+                     :rules="[{ required: true, message: $t('common.name') }]">
+          <a-input v-model:value="formState.name"/>
+        </a-form-item>
 
-    <ShadcnForm v-model="formState" v-if="formState" @on-submit="onSubmit">
-      <ShadcnFormItem name="name"
-                      :label="$t('common.name')"
-                      :rules="[
-                          { required: true, message: $t('common.name') }
-                      ]">
-        <ShadcnInput v-model="formState.name" name="name"/>
-      </ShadcnFormItem>
+        <a-form-item name="description" :label="$t('common.description')">
+          <a-textarea v-model:value="formState.description"/>
+        </a-form-item>
 
-      <ShadcnFormItem name="description" :label="$t('common.description')">
-        <ShadcnInput v-model="formState.description" name="description" type="textarea"/>
-      </ShadcnFormItem>
+        <a-form-item name="content" :label="$t('common.content')">
+          <AceEditor :value="formState.context" @update:value="formState.context = $event"/>
+        </a-form-item>
 
-      <ShadcnFormItem name="content" :label="$t('common.content')">
-        <AceEditor :value="formState.context" name="content" @update:value="formState.context = $event"/>
-      </ShadcnFormItem>
-
-      <div class="flex justify-end">
-        <ShadcnSpace>
-          <ShadcnButton type="error" @click="onCancel()">
-            {{ $t('common.cancel') }}
-          </ShadcnButton>
-          <ShadcnButton submit :loading="loading" :disabled="loading">
-            {{ $t('common.save') }}
-          </ShadcnButton>
-        </ShadcnSpace>
-      </div>
-    </ShadcnForm>
-  </ShadcnDrawer>
+        <div class="flex justify-end">
+          <a-space>
+            <a-button danger @click="onCancel()">
+              {{ $t('common.cancel') }}
+            </a-button>
+            <a-button type="primary" html-type="submit" :loading="loading" :disabled="loading">
+              {{ $t('common.save') }}
+            </a-button>
+          </a-space>
+        </div>
+      </a-form>
+    </a-spin>
+  </a-drawer>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { SnippetModel, SnippetRequest } from '@/model/snippet'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import { cloneDeep } from 'lodash'
+import { SnippetModel, SnippetRequest } from '@/model/snippet'
 import AceEditor from '@/views/components/editor/AceEditor.vue'
 import SnippetService from '@/services/snippet'
 
-export default defineComponent({
-  name: 'SnippetInfo',
-  components: { AceEditor },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => SnippetModel | null
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      formState: null as unknown as SnippetModel,
-      title: null as string | null
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      this.title = this.$t('snippet.common.create')
-      if (this.info) {
-        this.formState = cloneDeep(this.info)
-        if (this.info.id) {
-          this.title = `${ this.$t('snippet.common.modify').replace('$VALUE', this.info.name as string) }`
-        }
-      }
-      else {
-        this.formState = SnippetRequest.of()
-      }
-    },
-    onSubmit()
-    {
-      this.loading = true
-      SnippetService.saveOrUpdate(this.formState)
-                    .then((response) => {
-                      if (response.status) {
-                        this.$Message.success({
-                          content: this.$t('snippet.tip.createSuccess').replace('$VALUE', this.formState.name as string),
-                          showIcon: true
-                        })
-                        this.onCancel()
-                      }
-                    })
-                    .finally(() => this.loading = false)
-    },
-    onCancel()
-    {
-      this.visible = false
+defineOptions({ name: 'SnippetInfo' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: SnippetModel | null }>(), {
+  isVisible: false,
+  info: null
+})
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const formState = ref<SnippetModel>(null as unknown as SnippetModel)
+const title = ref<string | null>(null)
+
+const handleInitialize = () => {
+  title.value = t('snippet.common.create')
+  if (props.info) {
+    formState.value = cloneDeep(props.info)
+    if (props.info.id) {
+      title.value = `${ t('snippet.common.modify').replace('$VALUE', props.info.name as string) }`
     }
   }
-})
+  else {
+    formState.value = SnippetRequest.of()
+  }
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  loading.value = true
+  SnippetService.saveOrUpdate(formState.value)
+                .then((response) => {
+                  if (response.status) {
+                    message.success(t('snippet.tip.createSuccess').replace('$VALUE', formState.value.name as string))
+                    onCancel()
+                  }
+                })
+                .finally(() => (loading.value = false))
+}
+
+handleInitialize()
 </script>
