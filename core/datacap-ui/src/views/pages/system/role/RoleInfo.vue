@@ -1,125 +1,94 @@
 <template>
-  <ShadcnModal v-model="visible" :title="title" @on-close="onCancel">
+  <a-modal v-model:open="visible" :title="title" :footer="null">
+    <div class="relative">
+      <a-form v-if="formState" :model="formState" layout="vertical" @finish="onSubmit">
+        <a-form-item name="name"
+                     :label="$t('role.common.name')"
+                     :rules="[
+                       { required: true, message: $t('role.tip.name') },
+                       { min: 2, message: $t('role.validate.nameSize') },
+                       { max: 20, message: $t('role.validate.nameSize') }
+                   ]">
+          <a-input v-model:value="formState.name" :placeholder="$t('role.tip.name')"/>
+        </a-form-item>
 
-    <div class="flex items-center justify-center h-32">Content</div>
+        <a-form-item name="description"
+                     :label="$t('role.common.description')"
+                     :rules="[
+                       { required: true, message: $t('role.tip.description') },
+                       { min: 3, message: $t('role.validate.descriptionSize') },
+                       { max: 50, message: $t('role.validate.descriptionSize') }
+                   ]">
+          <a-textarea v-model:value="formState.description" :placeholder="$t('role.tip.description')"/>
+        </a-form-item>
 
-    <template #content>
-      <div class="relative">
-        <ShadcnForm v-model="formState" v-if="formState" @on-submit="onSubmit">
-          <ShadcnFormItem name="name"
-                          :label="$t('role.common.name')"
-                          :rules="[
-                              { required: true, message: $t('role.tip.name') },
-                              { min: 2, message: $t('role.validate.nameSize') },
-                              { max: 20, message: $t('role.validate.nameSize') }
-                          ]">
-            <ShadcnInput v-model="formState.name" name="name" :placeholder="$t('role.tip.name')"/>
-          </ShadcnFormItem>
-
-          <ShadcnFormItem name="description"
-                          :label="$t('role.common.description')"
-                          :rules="[
-                              { required: true, message: $t('role.tip.description') },
-                              { min: 3, message: $t('role.validate.descriptionSize') },
-                              { max: 50, message: $t('role.validate.descriptionSize') }
-                          ]">
-            <ShadcnInput v-model="formState.description"
-                         type="textarea"
-                         name="description"
-                         :placeholder="$t('role.tip.description')"/>
-          </ShadcnFormItem>
-
-          <div class="flex justify-end">
-            <ShadcnButton submit :loading="loading" :disabled="loading">
-              {{ title }}
-            </ShadcnButton>
-          </div>
-        </ShadcnForm>
-      </div>
-    </template>
-  </ShadcnModal>
+        <div class="flex justify-end">
+          <a-button type="primary" html-type="submit" :loading="loading" :disabled="loading">
+            {{ title }}
+          </a-button>
+        </div>
+      </a-form>
+    </div>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
+import { cloneDeep } from 'lodash'
 import { RoleModel, RoleRequest } from '@/model/role'
 import { StringUtils } from '@/utils/string'
-import { cloneDeep } from 'lodash'
 import RoleService from '@/services/role'
 
-export default defineComponent({
-  name: 'RoleInfo',
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: () => false
-    },
-    info: {
-      type: Object as () => RoleModel | null,
-      default: null
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      title: null as string | null,
-      formState: null as unknown as RoleModel
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
-    handlerInitialize()
-    {
-      if (this.info) {
-        this.title = `${ StringUtils.replace(this.$t('role.common.edit'), '$NAME', this.info.name as string) }`
-        this.formState = cloneDeep(this.info)
-      }
-      else {
-        this.title = this.$t('role.common.create')
-        this.formState = RoleRequest.of()
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    },
-    onSubmit()
-    {
-      this.loading = true
-      RoleService.saveOrUpdate(this.formState)
-                 .then(response => {
-                   if (response.status) {
-                     this.$Message.success({
-                       content: `${ this.title } ${ this.$t('common.successfully') }`,
-                       showIcon: true
-                     })
-                     this.onCancel()
-                   }
-                   else {
-                     this.$Message.error({
-                       content: response.message,
-                       showIcon: true
-                     })
-                   }
-                 })
-                 .finally(() => this.loading = false)
-    }
-  }
+defineOptions({ name: 'RoleInfo' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: RoleModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const title = ref<string | null>(null)
+const formState = ref<RoleModel>(null as unknown as RoleModel)
+
+const handlerInitialize = () => {
+  if (props.info) {
+    title.value = `${ StringUtils.replace(t('role.common.edit'), '$NAME', props.info.name as string) }`
+    formState.value = cloneDeep(props.info)
+  }
+  else {
+    title.value = t('role.common.create')
+    formState.value = RoleRequest.of()
+  }
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  loading.value = true
+  RoleService.saveOrUpdate(formState.value)
+             .then(response => {
+               if (response.status) {
+                 message.success(`${ title.value } ${ t('common.successfully') }`)
+                 onCancel()
+               }
+               else {
+                 message.error(response.message)
+               }
+             })
+             .finally(() => (loading.value = false))
+}
+
+handlerInitialize()
 </script>
