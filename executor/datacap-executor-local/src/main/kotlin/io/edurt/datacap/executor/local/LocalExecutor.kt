@@ -28,6 +28,14 @@ class LocalExecutor : ExecutorPlugin()
                     "Run SELECT COUNT(*) over the user query before sync to populate the progress denominator. " +
                             "Default OFF: derived-table wrapping is expensive on MySQL/InnoDB for large tables.",
                     true
+            ),
+            PluginConfigureField(
+                    "timeout",
+                    PluginFieldType.NUMBER,
+                    "0",
+                    "Whole-task timeout in seconds; when exceeded the sync is cancelled and marked TIMEOUT. " +
+                            "Default 0 disables the timeout (sync runs to completion).",
+                    true
             )
     )
 }

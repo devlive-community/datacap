@@ -1,57 +1,56 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2 font-normal text-sm">{{ $t('user.common.list') }}</div>
     </template>
 
     <template #extra>
-      <ShadcnButton size="small" circle @click="handlerChangeInfo(true, null)">
+      <a-button size="small" shape="circle" @click="handlerChangeInfo(true, null)">
         <template #icon>
           <ShadcnIcon icon="Plus"/>
         </template>
-      </ShadcnButton>
+      </a-button>
     </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
+    <a-spin :spinning="loading">
+      <a-table size="small"
+               :columns="headers"
+               :data-source="data"
+               :pagination="false"
+               row-key="id">
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'role'">
+            <a-tag v-for="role in record.roles" :key="role.id">{{ role.name }}</a-tag>
+          </template>
+          <template v-else-if="column.key === 'action'">
+            <a-space>
+              <a-tooltip :title="$t('user.common.assignRole')">
+                <a-button size="small" shape="circle" @click="handlerChangeRole(true, record)">
+                  <ShadcnIcon icon="SquareArrowUp" size="15"/>
+                </a-button>
+              </a-tooltip>
 
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #role="{row}">
-          <ShadcnTag v-for="role in row.roles" :text="role.name"/>
+              <a-tooltip :title="$t('common.editData')">
+                <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+                  <ShadcnIcon icon="Pencil" size="15"/>
+                </a-button>
+              </a-tooltip>
+            </a-space>
+          </template>
         </template>
+      </a-table>
 
-        <template #action="{row}">
-          <ShadcnSpace>
-            <ShadcnTooltip :content="$t('user.common.assignRole')">
-              <ShadcnButton size="small" circle @click="handlerChangeRole(true, row)">
-                <ShadcnIcon icon="SquareArrowUp" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
-
-            <ShadcnTooltip :content="$t('common.editData')">
-              <ShadcnButton size="small" circle @click="handlerChangeInfo(true, row)">
-                <ShadcnIcon icon="Pencil" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
-          </ShadcnSpace>
-        </template>
-      </ShadcnTable>
-
-      <ShadcnPagination v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
+      <a-pagination v-model:current="pageIndex"
+                    class="py-2"
+                    :page-size="pageSize"
+                    :total="dataCount"
+                    show-size-changer
+                    :page-size-options="['10', '20', '50']"
+                    :show-total="(total: number) => `${ total }`"
+                    @change="onPageChange"
+                    @show-size-change="onSizeChange"/>
+    </a-spin>
+  </a-card>
 
   <UserRole v-if="dataRoleVisible"
             :is-visible="dataRoleVisible"
@@ -64,8 +63,8 @@
             @close="handlerChangeInfo(false, null)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import UserService from '@/services/user'
 import { useHeaders } from './UserUtils'
@@ -73,90 +72,60 @@ import { UserModel } from '@/model/user'
 import UserInfo from '@/views/pages/system/user/UserInfo.vue'
 import UserRole from '@/views/pages/system/user/components/UserRole.vue'
 
-export default defineComponent({
-  name: 'UserHome',
-  components: { UserRole, UserInfo },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
 
-    return {
-      filter,
-      headers
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      dataRoleVisible: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      dataInfo: null as UserModel | null,
-      dataInfoVisible: false
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
+const loading = ref(false)
+const dataRoleVisible = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const dataInfo = ref<UserModel | null>(null)
+const dataInfoVisible = ref(false)
+
+const handlerInitialize = () => {
+  loading.value = true
+  UserService.getAll(filter)
+             .then((response) => {
+               if (response.status) {
+                 data.value = response.data.content
+                 dataCount.value = response.data.total
+                 pageSize.value = response.data.size
+                 pageIndex.value = response.data.page
+               }
+             })
+             .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handlerInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const handlerChangeRole = (isOpen: boolean, info: UserModel | null) => {
+  dataRoleVisible.value = isOpen
+  dataInfo.value = info
+  if (!isOpen) {
     handlerInitialize()
-    {
-      this.loading = true
-      UserService.getAll(this.filter)
-                 .then((response) => {
-                   if (response.status) {
-                     this.data = response.data.content
-                     this.dataCount = response.data.total
-                     this.pageSize = response.data.size
-                     this.pageIndex = response.data.page
-                   }
-                 })
-                 .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handlerInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    handlerChangeRole(isOpen: boolean, dataInfo: UserModel | null)
-    {
-      this.dataRoleVisible = isOpen
-      this.dataInfo = dataInfo
-      if (!isOpen) {
-        this.handlerInitialize()
-      }
-    },
-    handlerChangeInfo(opened: boolean, dataInfo: UserModel | null)
-    {
-      this.dataInfoVisible = opened
-      this.dataInfo = dataInfo
-      if (!opened) {
-        this.handlerInitialize()
-      }
-    }
   }
-})
+}
+
+const handlerChangeInfo = (opened: boolean, info: UserModel | null) => {
+  dataInfoVisible.value = opened
+  dataInfo.value = info
+  if (!opened) {
+    handlerInitialize()
+  }
+}
+
+onMounted(() => handlerInitialize())
 </script>

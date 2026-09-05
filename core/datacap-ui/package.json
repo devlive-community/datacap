@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "@antv/x6": "^2.18.1",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
@@ -22,6 +23,7 @@
     "ag-grid-community": "^31.3.4",
     "ag-grid-vue3": "^31.3.4",
     "ansi_up": "^6.0.2",
+    "ant-design-vue": "^4.2.6",
     "axios": "^1.7.4",
     "clsx": "^2.1.0",
     "lodash": "^4.17.21",
@@ -45,5 +47,12 @@
     "typescript": "^5.2.2",
     "vite": "^5.4.8",
     "vue-tsc": "^1.8.27"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "vue-demi",
+      "core-js"
+    ]
   }
 }
