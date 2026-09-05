@@ -1,212 +1,172 @@
 <template>
-  <ShadcnDrawer v-model="visible" :title="title" width="40%">
-    <ShadcnSpin v-if="loading" fixed/>
+  <a-drawer v-model:open="visible" :title="title" width="40%">
+    <a-spin :spinning="loading">
+      <a-form v-if="formState" :model="formState" layout="vertical" @finish="onSubmit">
+        <a-row :gutter="16">
+          <a-col :span="12">
+            <a-form-item name="name"
+                         :label="$t('common.name')"
+                         :rules="[{ required: true, message: $t('common.name') }]">
+              <a-input v-model:value="formState.name"/>
+            </a-form-item>
+          </a-col>
 
-    <ShadcnForm v-model="formState" v-if="formState" @on-submit="onSubmit">
-      <ShadcnRow class="space-x-2">
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="name"
-                          :label="$t('common.name')"
-                          :rules="[
-                          { required: true, message: $t('common.name') }
-                      ]">
-            <ShadcnInput v-model="formState.name" name="name"/>
-          </ShadcnFormItem>
-        </ShadcnCol>
+          <a-col :span="12">
+            <a-form-item name="icon" :label="$t('menu.common.icon')">
+              <a-input v-model:value="formState.icon"/>
+            </a-form-item>
+          </a-col>
+        </a-row>
 
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="icon" :label="$t('menu.common.icon')">
-            <ShadcnInput v-model="formState.icon" name="icon"/>
-          </ShadcnFormItem>
-        </ShadcnCol>
-      </ShadcnRow>
+        <a-row :gutter="16">
+          <a-col :span="12">
+            <a-form-item name="url"
+                         :label="$t('common.url')"
+                         :rules="[{ required: true, message: $t('common.url') }]">
+              <a-input v-model:value="formState.url"/>
+            </a-form-item>
+          </a-col>
 
-      <ShadcnRow class="space-x-2">
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="url"
-                          :label="$t('common.url')"
-                          :rules="[
-                              { required: true, message: $t('common.url') }
-                          ]">
-            <ShadcnInput v-model="formState.url" name="url"/>
-          </ShadcnFormItem>
-        </ShadcnCol>
+          <a-col :span="12">
+            <a-form-item name="group" :label="$t('common.group')">
+              <a-input v-model:value="formState.group"/>
+            </a-form-item>
+          </a-col>
+        </a-row>
 
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="group" :label="$t('common.group')">
-            <ShadcnInput v-model="formState.group" name="group"/>
-          </ShadcnFormItem>
-        </ShadcnCol>
-      </ShadcnRow>
+        <a-row :gutter="16">
+          <a-col :span="12">
+            <a-form-item name="sorted" :label="$t('common.sorted')" :rules="[{ required: true, message: $t('common.sorted') }]">
+              <a-input-number v-model:value="formState.sorted" :style="{ width: '100%' }"/>
+            </a-form-item>
+          </a-col>
 
-      <ShadcnRow class="space-x-2">
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="sorted" :label="$t('common.sorted')" :rules="[ { required: true, message: $t('common.sorted') } ]">
-            <ShadcnNumber v-model="formState.sorted" name="sorted"/>
-          </ShadcnFormItem>
-        </ShadcnCol>
+          <a-col :span="12">
+            <a-form-item name="type"
+                         :label="$t('common.type')"
+                         :rules="[{ required: true, message: $t('common.type') }]">
+              <a-select v-model:value="formState.type" :placeholder="$t('menu.tip.selectType')">
+                <a-select-option value="VIEW">VIEW</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
 
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="type"
-                          :label="$t('common.type')"
-                          :rules="[
-                              { required: true, message: $t('common.type') }
-                          ]">
-            <ShadcnSelect v-model="formState.type"
-                          name="type"
-                          :label="$t('common.type')"
-                          :placeholder="$t('menu.tip.selectType')">
-              <template #options>
-                <ShadcnSelectOption label="VIEW" value="VIEW"/>
-              </template>
-            </ShadcnSelect>
-          </ShadcnFormItem>
-        </ShadcnCol>
-      </ShadcnRow>
+        <a-row :gutter="16">
+          <a-col :span="12">
+            <a-form-item :label="$t('common.parent')">
+              <a-select v-model:value="formState.parent" :placeholder="$t('menu.tip.selectParent')" allow-clear>
+                <a-select-option v-for="menu in fullMenus" :key="menu.id" :value="menu.id">{{ menu.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
 
-      <ShadcnRow class="space-x-2">
-        <ShadcnCol span="6">
-          <ShadcnSelect v-model="formState.parent"
-                        name="parent"
-                        :placeholder="$t('menu.tip.selectParent')"
-                        :label="$t('common.parent')">
-            <template #options>
-              <ShadcnSelectOption v-for="menu in fullMenus" :label="menu.name as string" :value="menu.id as string"/>
-            </template>
-          </ShadcnSelect>
-        </ShadcnCol>
+          <a-col :span="12">
+            <a-form-item :label="$t('menu.common.redirect')">
+              <a-select v-model:value="formState.redirect" :placeholder="$t('menu.tip.selectRedirect')" allow-clear>
+                <a-select-option v-for="menu in fullMenus" :key="menu.id" :value="menu.id">{{ menu.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
 
-        <ShadcnCol span="6">
-          <ShadcnSelect v-model="formState.redirect"
-                        name="parent"
-                        :placeholder="$t('menu.tip.selectRedirect')"
-                        :label="$t('menu.common.redirect')">
-            <template #options>
-              <ShadcnSelectOption v-for="menu in fullMenus" :label="menu.name as string" :value="menu.id as string "/>
-            </template>
-          </ShadcnSelect>
-        </ShadcnCol>
-      </ShadcnRow>
+        <a-row :gutter="16">
+          <a-col :span="12">
+            <a-form-item name="new" :label="$t('menu.common.new')">
+              <a-switch v-model:checked="formState.new"/>
+            </a-form-item>
+          </a-col>
 
-      <ShadcnRow class="space-x-2">
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="new" :label="$t('menu.common.new')">
-            <ShadcnSwitch v-model="formState.new" name="new"/>
-          </ShadcnFormItem>
-        </ShadcnCol>
+          <a-col :span="12">
+            <a-form-item name="i18nKey" :label="$t('menu.common.i18nKey')" :rules="[{ required: true, message: $t('menu.common.i18nKey') }]">
+              <a-input v-model:value="formState.i18nKey"/>
+            </a-form-item>
+          </a-col>
+        </a-row>
 
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="i18nKey" :label="$t('menu.common.i18nKey')" :rules="[ { required: true, message: $t('menu.common.i18nKey') } ]">
-            <ShadcnInput v-model="formState.i18nKey" name="i18nKey"/>
-          </ShadcnFormItem>
-        </ShadcnCol>
-      </ShadcnRow>
+        <a-form-item name="description" :label="$t('common.description')">
+          <a-textarea v-model:value="formState.description"/>
+        </a-form-item>
 
-      <ShadcnFormItem name="description" :label="$t('common.description')">
-        <ShadcnInput v-model="formState.description" type="textarea" name="description"/>
-      </ShadcnFormItem>
-
-      <div class="flex justify-end">
-        <ShadcnButton submit :loading="loading" :disabled="loading">
-          {{ $t('common.save') }}
-        </ShadcnButton>
-      </div>
-    </ShadcnForm>
-  </ShadcnDrawer>
+        <div class="flex justify-end">
+          <a-button type="primary" html-type="submit" :loading="loading" :disabled="loading">
+            {{ $t('common.save') }}
+          </a-button>
+        </div>
+      </a-form>
+    </a-spin>
+  </a-drawer>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { MenuModel, MenuRequest } from '@/model/menu'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import { cloneDeep } from 'lodash'
+import { MenuModel, MenuRequest } from '@/model/menu'
 import MenuService from '@/services/menu'
 import { FilterModel } from '@/model/filter'
 
-export default defineComponent({
-  name: 'MenuInfo',
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: () => false
-    },
-    info: {
-      type: Object as () => MenuModel | null,
-      default: null
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      title: null as string | null,
-      formState: null as unknown as MenuModel,
-      loading: false,
-      fullMenus: [] as MenuModel[],
-      saving: false
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
-    handlerInitialize()
-    {
-      this.title = `${ this.$t('menu.common.create') }`
-      if (this.info) {
-        this.formState = cloneDeep(this.info)
-        this.title = `${ this.$t('menu.common.modify').replace('$NAME', this.info.name as string) }`
-      }
-      else {
-        this.formState = MenuRequest.of()
-      }
+defineOptions({ name: 'MenuInfo' })
 
-      const filter: FilterModel = new FilterModel()
-      this.loading = true
-      MenuService.getAll(filter)
-                 .then((response) => {
-                   if (response.status) {
-                     this.fullMenus = response.data.content
-                   }
-                 })
-                 .finally(() => this.loading = false)
-    },
-    onSubmit()
-    {
-      this.saving = true
-      MenuService.saveOrUpdate(this.formState)
-                 .then(response => {
-                   if (response.status) {
-                     this.$Message.success({
-                       content: 'successful',
-                       showIcon: true
-                     })
-                     this.onCancel()
-                   }
-                   else {
-                     this.$Message.error({
-                       content: response.message,
-                       showIcon: true
-                     })
-                   }
-                 })
-                 .finally(() => this.saving = false)
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: MenuModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const title = ref<string | null>(null)
+const formState = ref<MenuModel>(null as unknown as MenuModel)
+const loading = ref(false)
+const fullMenus = ref<MenuModel[]>([])
+const saving = ref(false)
+
+const handlerInitialize = () => {
+  title.value = `${ t('menu.common.create') }`
+  if (props.info) {
+    formState.value = cloneDeep(props.info)
+    title.value = `${ t('menu.common.modify').replace('$NAME', props.info.name as string) }`
+  }
+  else {
+    formState.value = MenuRequest.of()
+  }
+
+  const filter: FilterModel = new FilterModel()
+  loading.value = true
+  MenuService.getAll(filter)
+             .then((response) => {
+               if (response.status) {
+                 fullMenus.value = response.data.content
+               }
+             })
+             .finally(() => (loading.value = false))
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  saving.value = true
+  MenuService.saveOrUpdate(formState.value)
+             .then(response => {
+               if (response.status) {
+                 message.success('successful')
+                 onCancel()
+               }
+               else {
+                 message.error(response.message)
+               }
+             })
+             .finally(() => (saving.value = false))
+}
+
+handlerInitialize()
 </script>
