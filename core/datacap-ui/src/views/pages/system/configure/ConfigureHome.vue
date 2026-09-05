@@ -1,5 +1,5 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2 font-normal text-sm">{{ $t('configure.runtime.title') }}</div>
     </template>
@@ -25,46 +25,49 @@
 
       <!-- right: detail form -->
       <div class="col-span-9 pl-2">
-        <ShadcnSpin v-if="loading" fixed/>
-
-        <div v-if="!selected" class="text-xs text-gray-500 italic">
-          {{ $t('configure.runtime.selectHint') }}
-        </div>
-
-        <div v-else class="space-y-3">
-          <div class="text-sm font-medium">{{ selected.category }} / {{ selected.name }}</div>
-
-          <div v-for="field in schema" :key="field.name" class="space-y-1">
-            <label class="text-xs">
-              <span>{{ field.name }}</span>
-              <span v-if="!field.tunable" class="ml-1 text-xs text-orange-500">[{{ $t('configure.runtime.adminOnly') }}]</span>
-            </label>
-            <div v-if="field.description" class="text-xs text-gray-500">{{ field.description }}</div>
-
-            <ShadcnInput v-if="field.type === 'STRING'" v-model="form[field.name]"/>
-            <ShadcnInputNumber v-else-if="field.type === 'NUMBER'" v-model="form[field.name]"/>
-            <ShadcnSwitch v-else-if="field.type === 'BOOLEAN'"
-                          v-model="booleanProxies[field.name]"
-                          @on-change="(v: boolean) => onBoolChange(field.name, v)"/>
-            <ShadcnInput v-else-if="field.type === 'PASSWORD'" type="password" v-model="form[field.name]"/>
+        <a-spin :spinning="loading">
+          <div v-if="!selected" class="text-xs text-gray-500 italic">
+            {{ $t('configure.runtime.selectHint') }}
           </div>
 
-          <div class="pt-2">
-            <ShadcnButton type="primary" :loading="saving" @click="onSave">
-              {{ $t('common.save') }}
-            </ShadcnButton>
+          <div v-else class="space-y-3">
+            <div class="text-sm font-medium">{{ selected.category }} / {{ selected.name }}</div>
+
+            <div v-for="field in schema" :key="field.name" class="space-y-1">
+              <label class="text-xs">
+                <span>{{ field.name }}</span>
+                <span v-if="!field.tunable" class="ml-1 text-xs text-orange-500">[{{ $t('configure.runtime.adminOnly') }}]</span>
+              </label>
+              <div v-if="field.description" class="text-xs text-gray-500">{{ field.description }}</div>
+
+              <a-input v-if="field.type === 'STRING'" v-model:value="form[field.name]"/>
+              <a-input-number v-else-if="field.type === 'NUMBER'" v-model:value="form[field.name]" :style="{ width: '100%' }"/>
+              <a-switch v-else-if="field.type === 'BOOLEAN'"
+                        v-model:checked="booleanProxies[field.name]"
+                        @change="(v: boolean) => onBoolChange(field.name, v)"/>
+              <a-input-password v-else-if="field.type === 'PASSWORD'" v-model:value="form[field.name]"/>
+            </div>
+
+            <div class="pt-2">
+              <a-button type="primary" :loading="saving" @click="onSave">
+                {{ $t('common.save') }}
+              </a-button>
+            </div>
           </div>
-        </div>
+        </a-spin>
       </div>
     </div>
-  </ShadcnCard>
+  </a-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import RuntimeConfigureService from '@/services/runtimeConfigure'
 
-interface PluginConfigureField {
+interface PluginConfigureField
+{
   name: string
   type: 'STRING' | 'NUMBER' | 'BOOLEAN' | 'PASSWORD'
   defaultValue: string
@@ -72,105 +75,96 @@ interface PluginConfigureField {
   tunable: boolean
 }
 
-interface ConfigureRow {
+interface ConfigureRow
+{
   id: number
   name: string
   category: string
 }
 
+defineOptions({ name: 'ConfigureHome' })
+
+const { t } = useI18n()
+
 const CATEGORY_KEYS = ['EXECUTOR', 'DATASET']
 
-export default defineComponent({
-  name: 'ConfigureHome',
-  computed: {
-    categories(): Array<{ value: string; label: string }>
-    {
-      return [
-        { value: 'EXECUTOR', label: this.$t('configure.runtime.categoryExecutor') as string },
-        { value: 'DATASET', label: this.$t('configure.runtime.categoryDataset') as string }
-      ]
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      saving: false,
-      groupedRows: {} as Record<string, ConfigureRow[]>,
-      selected: null as { category: string; name: string } | null,
-      schema: [] as PluginConfigureField[],
-      form: {} as Record<string, string>,
-      booleanProxies: {} as Record<string, boolean>
-    }
-  },
-  created()
-  {
-    this.loadAll()
-  },
-  methods: {
-    async loadAll()
-    {
-      this.loading = true
-      try {
-        for (const c of CATEGORY_KEYS) {
-          const response = await RuntimeConfigureService.list(c)
-          this.groupedRows[c] = response.status ? (response.data || []) : []
-        }
-      }
-      finally {
-        this.loading = false
-      }
-    },
-    onSelect(category: string, name: string)
-    {
-      this.selected = { category, name }
-      this.loading = true
-      RuntimeConfigureService.detail(category, name)
-                             .then(response => {
-                               if (response.status && response.data) {
-                                 this.schema = response.data.schema || []
-                                 this.form = {}
-                                 this.booleanProxies = {}
-                                 const values = response.data.values || {}
-                                 for (const f of this.schema) {
-                                   this.form[f.name] = values[f.name] ?? f.defaultValue ?? ''
-                                   if (f.type === 'BOOLEAN') {
-                                     this.booleanProxies[f.name] = (this.form[f.name] + '').toLowerCase() === 'true'
-                                   }
-                                 }
-                               }
-                               else {
-                                 this.$Message.error({ content: response.message, showIcon: true })
-                               }
-                             })
-                             .finally(() => this.loading = false)
-    },
-    onBoolChange(name: string, value: boolean)
-    {
-      this.form[name] = value ? 'true' : 'false'
-    },
-    onSave()
-    {
-      if (!this.selected) return
-      // sync booleans
-      for (const f of this.schema) {
-        if (f.type === 'BOOLEAN') {
-          this.form[f.name] = this.booleanProxies[f.name] ? 'true' : 'false'
-        }
-      }
-      this.saving = true
-      RuntimeConfigureService.save(this.selected.category, this.selected.name, this.form)
-                             .then(response => {
-                               if (response.status) {
-                                 this.$Message.success({ content: this.$t('common.successfully'), showIcon: true })
-                                 this.loadAll()
-                               }
-                               else {
-                                 this.$Message.error({ content: response.message, showIcon: true })
-                               }
-                             })
-                             .finally(() => this.saving = false)
+const categories = computed(() => [
+  { value: 'EXECUTOR', label: t('configure.runtime.categoryExecutor') as string },
+  { value: 'DATASET', label: t('configure.runtime.categoryDataset') as string }
+])
+
+const loading = ref(false)
+const saving = ref(false)
+const groupedRows = ref<Record<string, ConfigureRow[]>>({})
+const selected = ref<{ category: string; name: string } | null>(null)
+const schema = ref<PluginConfigureField[]>([])
+const form = ref<Record<string, string>>({})
+const booleanProxies = ref<Record<string, boolean>>({})
+
+const loadAll = async () => {
+  loading.value = true
+  try {
+    for (const c of CATEGORY_KEYS) {
+      const response = await RuntimeConfigureService.list(c)
+      groupedRows.value[c] = response.status ? (response.data || []) : []
     }
   }
-})
+  finally {
+    loading.value = false
+  }
+}
+
+const onSelect = (category: string, name: string) => {
+  selected.value = { category, name }
+  loading.value = true
+  RuntimeConfigureService.detail(category, name)
+                         .then(response => {
+                           if (response.status && response.data) {
+                             schema.value = response.data.schema || []
+                             form.value = {}
+                             booleanProxies.value = {}
+                             const values = response.data.values || {}
+                             for (const f of schema.value) {
+                               form.value[f.name] = values[f.name] ?? f.defaultValue ?? ''
+                               if (f.type === 'BOOLEAN') {
+                                 booleanProxies.value[f.name] = (form.value[f.name] + '').toLowerCase() === 'true'
+                               }
+                             }
+                           }
+                           else {
+                             message.error(response.message)
+                           }
+                         })
+                         .finally(() => (loading.value = false))
+}
+
+const onBoolChange = (name: string, value: boolean) => {
+  form.value[name] = value ? 'true' : 'false'
+}
+
+const onSave = () => {
+  if (!selected.value) {
+    return
+  }
+  // sync booleans
+  for (const f of schema.value) {
+    if (f.type === 'BOOLEAN') {
+      form.value[f.name] = booleanProxies.value[f.name] ? 'true' : 'false'
+    }
+  }
+  saving.value = true
+  RuntimeConfigureService.save(selected.value.category, selected.value.name, form.value)
+                         .then(response => {
+                           if (response.status) {
+                             message.success(t('common.successfully'))
+                             loadAll()
+                           }
+                           else {
+                             message.error(response.message)
+                           }
+                         })
+                         .finally(() => (saving.value = false))
+}
+
+loadAll()
 </script>
