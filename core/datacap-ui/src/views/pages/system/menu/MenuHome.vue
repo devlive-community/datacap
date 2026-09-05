@@ -42,7 +42,6 @@
                     :total="dataCount"
                     show-size-changer
                     :page-size-options="['10', '20', '50']"
-                    :show-total="(total: number) => `${ total }`"
                     @change="onPageChange"
                     @show-size-change="onSizeChange"/>
     </a-spin>
