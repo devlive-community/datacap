@@ -1,17 +1,17 @@
 <template>
-  <div class="datacap-data-table">
+  <div class="dc-table">
     <!-- 顶部筛选区：各页面自定义（关键词 / 状态 / 归属等 + 查询 / 重置） -->
-    <div v-if="$slots.filter" class="datacap-data-table__filter mb-3">
+    <div v-if="$slots.filter" class="dc-table__filter">
       <slot name="filter"/>
     </div>
 
     <!-- 操作条：左侧页面功能（新建 / 导入…），右侧通用工具（刷新 / 列设置 / 下载） -->
-    <div class="datacap-data-table__toolbar flex items-center justify-between mb-2">
-      <div class="flex items-center gap-2">
+    <div class="dc-table__toolbar">
+      <div class="dc-table__actions">
         <slot name="actions"/>
       </div>
 
-      <div class="flex items-center gap-1">
+      <div class="dc-table__tools">
         <slot name="tools"/>
 
         <a-tooltip :title="t('common.refresh')">
@@ -24,7 +24,7 @@
 
         <a-popover trigger="click" placement="bottomRight">
           <template #content>
-            <div class="flex flex-col gap-1" style="min-width: 150px; max-height: 320px; overflow: auto;">
+            <div class="dc-table__columns">
               <a-checkbox v-for="col in toggleableColumns"
                           :key="col.key"
                           :checked="!hiddenKeys.has(col.key)"
@@ -58,22 +58,22 @@
                :data-source="dataSource"
                :pagination="false"
                :row-key="rowKey"
-               :size="size">
+               :size="size"
+               :scroll="{ x: 'max-content' }">
         <template #bodyCell="slotProps">
           <slot name="bodyCell" v-bind="slotProps"/>
         </template>
       </a-table>
 
-      <a-pagination v-if="total > 0"
-                    class="py-2"
-                    style="display: flex; justify-content: flex-end;"
-                    :current="pageIndex"
-                    :page-size="pageSize"
-                    :total="total"
-                    show-size-changer
-                    :page-size-options="pageSizeOptions"
-                    @change="(page: number, size: number) => emit('page-change', page, size)"
-                    @show-size-change="(current: number, size: number) => emit('size-change', current, size)"/>
+      <div v-if="total > 0" class="dc-table__pagination">
+        <a-pagination :current="pageIndex"
+                      :page-size="pageSize"
+                      :total="total"
+                      show-size-changer
+                      :page-size-options="pageSizeOptions"
+                      @change="(page: number, size: number) => emit('page-change', page, size)"
+                      @show-size-change="(current: number, size: number) => emit('size-change', current, size)"/>
+      </div>
     </a-spin>
   </div>
 </template>
@@ -181,3 +181,46 @@ const onDownload = () => {
   URL.revokeObjectURL(url)
 }
 </script>
+
+<style scoped>
+/* 自带布局样式，不依赖 Tailwind 工具类（view-shadcn-ui 移除后也不塌） */
+.dc-table__filter {
+    margin-bottom: 12px;
+}
+
+.dc-table__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.dc-table__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.dc-table__tools {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dc-table__pagination {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 0 4px;
+}
+
+.dc-table__columns {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 150px;
+    max-height: 320px;
+    overflow: auto;
+}
+</style>
