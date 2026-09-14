@@ -1,284 +1,197 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="60%"
-               :title="`[ ${info?.name} ] ${$t('dataset.common.history')}`"
-               @on-close="onCancel">
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
+  <a-modal v-model:open="visible"
+           width="60%"
+           :title="`[ ${ info?.name } ] ${ $t('dataset.common.history') }`"
+           :footer="null">
+    <a-spin :spinning="loading">
+      <a-table size="small"
+               :columns="historyHeaders"
+               :data-source="data"
+               :pagination="false"
+               row-key="id"
+               :scroll="{ x: 'max-content' }">
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'state'">
+            <a-popover v-if="hasMessage(record)">
+              <template #content>
+                <div class="p-2 w-full overflow-x-auto">{{ record?.message }}</div>
+              </template>
+              <a-tag :color="Common.getColor(record?.state)">{{ getStateText(record?.state) }}</a-tag>
+            </a-popover>
+            <a-tag v-else :color="Common.getColor(record?.state)">{{ getStateText(record?.state) }}</a-tag>
+          </template>
 
-      <ShadcnTable size="small" :columns="historyHeaders" :data="data">
-        <template #state="{ row }">
-          <ShadcnHoverCard v-if="hasMessage(row)">
-            <ShadcnTag :color="Common.getColor(row?.state)">
-              {{ getStateText(row?.state) }}
-            </ShadcnTag>
+          <template v-else-if="column.key === 'progress'">
+            <a-progress :percent="toPercent(record?.progress)" size="small" style="min-width: 120px;"/>
+          </template>
 
-            <template #content>
-              <div class="p-2 w-full overflow-x-auto">
-                {{ row?.message }}
-              </div>
-            </template>
-          </ShadcnHoverCard>
-
-          <ShadcnTag v-else :color="Common.getColor(row?.state)">
-            <span>{{ getStateText(row?.state) }}</span>
-          </ShadcnTag>
-        </template>
-
-        <template #progress="{ row }">
-          <div class="flex items-center gap-2 min-w-[120px]">
-            <div class="flex-1 h-2 rounded bg-gray-200 dark:bg-gray-700 overflow-hidden">
-              <div class="h-full bg-blue-500 transition-all"
-                   :style="{ width: formatProgressWidth(row?.progress) }"/>
+          <template v-else-if="column.key === 'action'">
+            <div class="flex gap-1">
+              <a-button size="small" type="primary" @click="onViewLog(record)">
+                {{ $t('dataset.history.viewLog') }}
+              </a-button>
+              <a-button v-if="record?.executorConfigure" size="small" @click="onViewConfigure(record)">
+                {{ $t('dataset.history.viewConfigure') }}
+              </a-button>
+              <a-button v-if="isStoppable(record)"
+                        size="small"
+                        danger
+                        :loading="stoppingId === record.id"
+                        @click="onStop(record)">
+                {{ $t('dataset.history.stop') }}
+              </a-button>
             </div>
-            <span class="text-xs whitespace-nowrap">{{ formatProgressText(row?.progress) }}</span>
-          </div>
+          </template>
         </template>
+      </a-table>
 
-        <template #action="{ row }">
-          <div class="flex gap-1">
-            <ShadcnButton size="small" type="primary" @click="onViewLog(row)">
-              {{ $t('dataset.history.viewLog') }}
-            </ShadcnButton>
-            <ShadcnButton v-if="row?.executorConfigure"
-                          size="small"
-                          type="default"
-                          @click="onViewConfigure(row)">
-              {{ $t('dataset.history.viewConfigure') }}
-            </ShadcnButton>
-            <ShadcnButton v-if="isStoppable(row)"
-                          size="small"
-                          type="error"
-                          :loading="stoppingId === row.id"
-                          @click="onStop(row)">
-              {{ $t('dataset.history.stop') }}
-            </ShadcnButton>
-          </div>
-        </template>
-      </ShadcnTable>
+      <div v-if="data.length > 0" class="py-2 flex justify-end">
+        <a-pagination :current="pageIndex"
+                      :page-size="pageSize"
+                      :total="dataCount"
+                      show-size-changer
+                      :page-size-options="['10', '20', '50']"
+                      @change="onPageChange"
+                      @show-size-change="onSizeChange"/>
+      </div>
+    </a-spin>
 
-      <DatasetHistoryLogger v-if="loggerVisible"
-                            :is-visible="loggerVisible"
-                            :info="loggerInfo"
-                            @close="onLoggerClose"/>
+    <DatasetHistoryLogger v-if="loggerVisible"
+                          :is-visible="loggerVisible"
+                          :info="loggerInfo"
+                          @close="onLoggerClose"/>
 
-      <ShadcnModal v-model="configureVisible"
-                   width="50%"
-                   :title="$t('dataset.history.configureTitle')"
-                   @on-close="configureVisible = false">
-        <pre class="text-xs whitespace-pre-wrap break-all p-2 bg-gray-50 dark:bg-gray-900 rounded">{{ formatJson(configureInfo) }}</pre>
-        <template #footer>
-          <ShadcnButton type="default" @click="configureVisible = false">
-            {{ $t('common.cancel') }}
-          </ShadcnButton>
-        </template>
-      </ShadcnModal>
-
-      <ShadcnPagination v-if="data?.length > 0"
-                        v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnModal>
+    <a-modal v-model:open="configureVisible"
+             width="50%"
+             :title="$t('dataset.history.configureTitle')"
+             :footer="null">
+      <pre class="text-xs whitespace-pre-wrap break-all p-2 bg-gray-50 dark:bg-gray-900 rounded">{{ formatJson(configureInfo) }}</pre>
+    </a-modal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import { FilterModel } from '@/model/filter'
 import { useDatasetHeaders } from './DatasetUtils'
-import DatasetService from '@/services/dataset'
 import { DatasetModel } from '@/model/dataset'
 import Common, { useUtil } from '@/utils/common'
+import DatasetService from '@/services/dataset'
 import DatasetHistoryLogger from './DatasetHistoryLogger.vue'
 
-export default defineComponent({
-  name: 'DatasetHistory',
-  components: { DatasetHistoryLogger },
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: () => false
-    },
-    info: {
-      type: Object as () => DatasetModel | null
-    }
-  },
-  computed: {
-    Common()
-    {
-      return Common
-    },
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { historyHeaders } = useDatasetHeaders()
-    const { getText } = useUtil()
+defineOptions({ name: 'DatasetHistory' })
 
-    return {
-      filter,
-      historyHeaders,
-      getText
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      loggerVisible: false,
-      loggerInfo: null as any,
-      stoppingId: null as number | null,
-      configureVisible: false,
-      configureInfo: null as string | null
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      this.loading = true
-      DatasetService.getHistory(this.info?.code as string, this.filter)
-                    .then((response) => {
-                      if (response.status) {
-                        this.data = response.data.content
-                        this.dataCount = response.data.total
-                        this.pageSize = response.data.size
-                        this.pageIndex = response.data.page
-                      }
-                    })
-                    .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handleInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    onCancel()
-    {
-      this.visible = false
-    },
-    getStateText(origin: string): string
-    {
-      return this.getText(origin)
-    },
-    formatProgressWidth(value: number | string | null | undefined): string
-    {
-      if (value === null || value === undefined || value === '') return '0%'
-      const v = typeof value === 'string' ? parseFloat(value) : value
-      if (isNaN(v) || v < 0) return '0%'
-      return Math.min(v, 100) + '%'
-    },
-    formatProgressText(value: number | string | null | undefined): string
-    {
-      if (value === null || value === undefined || value === '') return '-'
-      const v = typeof value === 'string' ? parseFloat(value) : value
-      if (isNaN(v)) return '-'
-      return v.toFixed(2) + '%'
-    },
-    onViewLog(row: any)
-    {
-      this.loggerInfo = row
-      this.loggerVisible = true
-    },
-    onLoggerClose()
-    {
-      this.loggerVisible = false
-      this.loggerInfo = null
-    },
-    isStoppable(row: any): boolean
-    {
-      // STOPPING 状态已经在停了，不再展示按钮，防止重复点击
-      return row?.state === 'RUNNING' || row?.state === 'CREATED'
-    },
-    hasMessage(row: any): boolean
-    {
-      // FAILURE / INTERRUPTED 都带 message，hover 显示原因
-      return !!row?.message && (row?.state === 'FAILURE' || row?.state === 'INTERRUPTED')
-    },
-    onViewConfigure(row: any)
-    {
-      this.configureInfo = row?.executorConfigure || ''
-      this.configureVisible = true
-    },
-    formatJson(raw: string | null | undefined): string
-    {
-      if (!raw) return ''
-      try {
-        return JSON.stringify(JSON.parse(raw), null, 2)
-      }
-      catch {
-        return raw
-      }
-    },
-    onStop(row: any)
-    {
-      if (!row?.id) {
-        return
-      }
-      this.stoppingId = row.id
-      DatasetService.stopHistory(row.id)
-                    .then(response => {
-                      if (response.status) {
-                        this.$Message.success({
-                          content: this.$t('dataset.history.stopRequested'),
-                          showIcon: true
-                        })
-                        this.handleInitialize()
-                      }
-                      else {
-                        this.$Message.error({
-                          content: response.message,
-                          showIcon: true
-                        })
-                      }
-                    })
-                    .finally(() => this.stoppingId = null)
-    }
-  }
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: DatasetModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+const filter: FilterModel = new FilterModel()
+const { historyHeaders } = useDatasetHeaders()
+const { getText } = useUtil()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const loggerVisible = ref(false)
+const loggerInfo = ref<any>(null)
+const stoppingId = ref<number | null>(null)
+const configureVisible = ref(false)
+const configureInfo = ref<string | null>(null)
+
+const handleInitialize = () => {
+  loading.value = true
+  DatasetService.getHistory(props.info?.code as string, filter)
+                .then((response: any) => {
+                  if (response.status) {
+                    data.value = response.data.content
+                    dataCount.value = response.data.total
+                    pageSize.value = response.data.size
+                    pageIndex.value = response.data.page
+                  }
+                })
+                .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handleInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const getStateText = (origin: string): string => getText(origin)
+
+const toPercent = (value: number | string | null | undefined): number => {
+  if (value === null || value === undefined || value === '') return 0
+  const v = typeof value === 'string' ? parseFloat(value) : value
+  if (isNaN(v) || v < 0) return 0
+  return Math.min(v, 100)
+}
+
+const onViewLog = (row: any) => {
+  loggerInfo.value = row
+  loggerVisible.value = true
+}
+
+const onLoggerClose = () => {
+  loggerVisible.value = false
+  loggerInfo.value = null
+}
+
+const isStoppable = (row: any): boolean => row?.state === 'RUNNING' || row?.state === 'CREATED'
+
+const hasMessage = (row: any): boolean => !!row?.message && (row?.state === 'FAILURE' || row?.state === 'INTERRUPTED')
+
+const onViewConfigure = (row: any) => {
+  configureInfo.value = row?.executorConfigure || ''
+  configureVisible.value = true
+}
+
+const formatJson = (raw: string | null | undefined): string => {
+  if (!raw) return ''
+  try {
+    return JSON.stringify(JSON.parse(raw), null, 2)
+  }
+  catch {
+    return raw
+  }
+}
+
+const onStop = (row: any) => {
+  if (!row?.id) {
+    return
+  }
+  stoppingId.value = row.id
+  DatasetService.stopHistory(row.id)
+                .then((response: any) => {
+                  if (response.status) {
+                    message.success(t('dataset.history.stopRequested'))
+                    handleInitialize()
+                  }
+                  else {
+                    message.error(response.message)
+                  }
+                })
+                .finally(() => (stoppingId.value = null))
+}
+
+handleInitialize()
 </script>
