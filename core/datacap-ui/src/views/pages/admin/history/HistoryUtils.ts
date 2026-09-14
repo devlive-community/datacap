@@ -5,18 +5,19 @@ export function useHeaders()
 {
     const { t } = useI18n()
 
+    // ant-design-vue Table 列格式；source/type/mode/format/state/action 列通过 #bodyCell 按 column.key 渲染
     const headers = computed(() => [
-        { key: 'id', label: t('common.id') },
-        { key: 'source', label: t('common.plugin'), slot: 'source' },
-        { key: 'type', label: t('common.type'), slot: 'type' },
-        { key: 'createTime', label: t('common.createTime') },
-        { key: 'updateTime', label: t('common.endTime') },
-        { key: 'elapsed', label: t('common.elapsed') },
-        { key: 'mode', label: t('common.from'), slot: 'mode' },
-        { key: 'count', label: t('common.count') },
-        { key: 'format', label: t('common.format'), slot: 'format' },
-        { key: 'state', label: t('common.state'), slot: 'state' },
-        { key: 'action', label: t('common.action'), slot: 'action' }
+        { title: t('common.id'), dataIndex: 'id', key: 'id' },
+        { title: t('common.plugin'), key: 'source' },
+        { title: t('common.type'), key: 'type' },
+        { title: t('common.createTime'), dataIndex: 'createTime', key: 'createTime' },
+        { title: t('common.endTime'), dataIndex: 'updateTime', key: 'updateTime' },
+        { title: t('common.elapsed'), dataIndex: 'elapsed', key: 'elapsed' },
+        { title: t('common.from'), key: 'mode' },
+        { title: t('common.count'), dataIndex: 'count', key: 'count' },
+        { title: t('common.format'), key: 'format' },
+        { title: t('common.state'), key: 'state' },
+        { title: t('common.action'), key: 'action' }
     ])
 
     return {
