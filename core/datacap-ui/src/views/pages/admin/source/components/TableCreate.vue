@@ -1,266 +1,222 @@
 <template>
-  <ShadcnDrawer v-model="visible"
-                height="80%"
-                width="40%"
-                :title="$t('source.common.menuNewTable')"
-                @on-close="onCancel">
-    <ShadcnSkeleton v-if="loading" animation/>
+  <a-drawer v-model:open="visible" width="40%" :title="$t('source.common.menuNewTable')">
+    <a-skeleton v-if="loading" active/>
 
-    <ShadcnForm v-else-if="!loading && formState"
-                v-model="formState"
-                style="padding-bottom: 40px;"
-                @on-submit="onSubmit">
-      <ShadcnRow gutter="16">
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="name"
-                          :label="$t('source.common.tableName')"
-                          :rules="[
-                              { required: true, message: $t('source.validator.tableName.required') },
-                              { pattern: /^[A-Za-z][A-Za-z0-9_-]*$/, message: $t('source.validator.tableName.pattern') }
-                          ]">
-            <ShadcnInput v-model="formState.name" name="name" :placeholder="$t('source.placeholder.tableName')"/>
-          </ShadcnFormItem>
-        </ShadcnCol>
+    <a-form v-else-if="!loading && formState"
+            :model="formState"
+            layout="vertical"
+            style="padding-bottom: 40px;"
+            @finish="onSubmit">
+      <a-row :gutter="16">
+        <a-col :span="12">
+          <a-form-item name="name"
+                       :label="$t('source.common.tableName')"
+                       :rules="[
+                           { required: true, message: $t('source.validator.tableName.required') },
+                           { pattern: /^[A-Za-z][A-Za-z0-9_-]*$/, message: $t('source.validator.tableName.pattern') }
+                       ]">
+            <a-input v-model:value="formState.name" :placeholder="$t('source.placeholder.tableName')"/>
+          </a-form-item>
+        </a-col>
 
-        <ShadcnCol span="6">
-          <ShadcnFormItem name="engine"
-                          :label="$t('source.common.engine')"
-                          :rules="[{ required: true, message: $t('source.validator.tableEngine.required') }]">
-            <ShadcnSelect v-model="formState.engine" name="engine" :placeholder="$t('source.placeholder.tableEngine')">
-              <template #options>
-                <ShadcnSelectOption v-for="engine in engines"
-                                    :key="engine"
-                                    :value="engine"
-                                    :label="engine">
-                </ShadcnSelectOption>
-              </template>
-            </ShadcnSelect>
-          </ShadcnFormItem>
-        </ShadcnCol>
+        <a-col :span="12">
+          <a-form-item name="engine"
+                       :label="$t('source.common.engine')"
+                       :rules="[{ required: true, message: $t('source.validator.tableEngine.required') }]">
+            <a-select v-model:value="formState.engine" :placeholder="$t('source.placeholder.tableEngine')">
+              <a-select-option v-for="engine in engines" :key="engine" :value="engine">
+                {{ engine }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
 
-        <ShadcnCol span="12">
-          <ShadcnFormItem name="comment"
-                          :label="$t('source.common.comment')">
-            <ShadcnInput v-model="formState.comment"
-                         name="comment"
-                         type="textarea"
-                         :placeholder="$t('source.placeholder.tableComment')"/>
-          </ShadcnFormItem>
-        </ShadcnCol>
-      </ShadcnRow>
+        <a-col :span="24">
+          <a-form-item name="comment" :label="$t('source.common.comment')">
+            <a-textarea v-model:value="formState.comment" :placeholder="$t('source.placeholder.tableComment')"/>
+          </a-form-item>
+        </a-col>
+      </a-row>
 
-      <ShadcnRow gutter="16">
-        <ShadcnButton circle size="small" @click="onAdd">
-          <ShadcnIcon icon="Plus" size="15"/>
-        </ShadcnButton>
+      <a-row :gutter="16">
+        <a-col :span="24" class="mb-2">
+          <a-button shape="circle" size="small" @click="onAdd">
+            <template #icon>
+              <ShadcnIcon icon="Plus" :size="15"/>
+            </template>
+          </a-button>
+        </a-col>
 
-        <ShadcnCol v-for="(item, index) in formState.columns" span="12">
-          <ShadcnDivider orientation="left">{{ item.name }}</ShadcnDivider>
+        <a-col v-for="(item, index) in formState.columns" :key="index" :span="24">
+          <a-divider orientation="left">{{ item.name }}</a-divider>
 
-          <ShadcnButton circle
-                        size="small"
-                        type="error"
-                        :disabled="item.removed"
-                        @click="onRemove(index)">
-            <ShadcnIcon icon="Minus" size="15"/>
-          </ShadcnButton>
+          <a-button shape="circle" size="small" danger :disabled="item.removed" class="mb-2" @click="onRemove(index)">
+            <template #icon>
+              <ShadcnIcon icon="Minus" :size="15"/>
+            </template>
+          </a-button>
 
-          <ShadcnRow gutter="16">
-            <ShadcnCol span="6">
-              <ShadcnFormItem :name="`columns[${index}].name`"
-                              :label="`${$t('source.common.columnName')} ${index + 1}`"
-                              :rules="[
-                                  { required: true, message: $t('source.validator.columnName.required') },
-                                  { pattern: /^[A-Za-z][A-Za-z0-9_-]*$/, message: $t('source.validator.columnName.pattern') }
-                              ]">
-                <ShadcnInput v-model="formState.columns[index].name" :placeholder="$t('source.placeholder.columnName')" :name="`columns[${index}].name`"/>
-              </ShadcnFormItem>
-            </ShadcnCol>
+          <a-row :gutter="16">
+            <a-col :span="12">
+              <a-form-item :name="['columns', index, 'name']"
+                           :label="`${$t('source.common.columnName')} ${index + 1}`"
+                           :rules="[
+                               { required: true, message: $t('source.validator.columnName.required') },
+                               { pattern: /^[A-Za-z][A-Za-z0-9_-]*$/, message: $t('source.validator.columnName.pattern') }
+                           ]">
+                <a-input v-model:value="formState.columns[index].name" :placeholder="$t('source.placeholder.columnName')"/>
+              </a-form-item>
+            </a-col>
 
-            <ShadcnCol span="6">
-              <ShadcnFormItem :name="`columns[${index}].type`"
-                              :label="$t('source.common.columnType')"
-                              :rules="[{ required: true, message: $t('source.validator.columnType.required') }]">
-                <ShadcnSelect v-model="formState.columns[index].type" :placeholder="$t('source.placeholder.columnType')" :name="`columns[${index}].type`">
-                  <template #options>
-                    <ShadcnSelectOption v-for="dataType in dataTypes"
-                                        :key="dataType"
-                                        :value="dataType"
-                                        :label="dataType">
-                    </ShadcnSelectOption>
-                  </template>
-                </ShadcnSelect>
-              </ShadcnFormItem>
-            </ShadcnCol>
+            <a-col :span="12">
+              <a-form-item :name="['columns', index, 'type']"
+                           :label="$t('source.common.columnType')"
+                           :rules="[{ required: true, message: $t('source.validator.columnType.required') }]">
+                <a-select v-model:value="formState.columns[index].type" :placeholder="$t('source.placeholder.columnType')">
+                  <a-select-option v-for="dataType in dataTypes" :key="dataType" :value="dataType">
+                    {{ dataType }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
 
-            <ShadcnCol span="6">
-              <ShadcnFormItem :name="`columns[${index}].length`"
-                              :label="$t('source.common.columnLength')"
-                              :rules="[
-                                  { required: true, message: $t('source.validator.columnLength.required') },
-                                  { min: 1, message: $t('source.validator.columnLength.min') }
-                              ]">
-                <ShadcnNumber v-model="formState.columns[index].length"
-                              :placeholder="$t('source.placeholder.columnLength')"
-                              :name="`columns[${index}].length`"
-                              :min="1"/>
-              </ShadcnFormItem>
-            </ShadcnCol>
+            <a-col :span="12">
+              <a-form-item :name="['columns', index, 'length']"
+                           :label="$t('source.common.columnLength')"
+                           :rules="[
+                               { required: true, message: $t('source.validator.columnLength.required') },
+                               { type: 'number', min: 1, message: $t('source.validator.columnLength.min') }
+                           ]">
+                <a-input-number v-model:value="formState.columns[index].length"
+                                :placeholder="$t('source.placeholder.columnLength')"
+                                :style="{ width: '100%' }"
+                                :min="1"/>
+              </a-form-item>
+            </a-col>
 
-            <ShadcnCol span="6">
-              <ShadcnFormItem :name="`columns[${index}].defaultValue`" :label="$t('source.common.columnDefaultValue')">
-                <ShadcnInput v-model="formState.columns[index].defaultValue" :placeholder="$t('source.placeholder.columnDefaultValue')" :name="`columns[${index}].defaultValue`"/>
-              </ShadcnFormItem>
-            </ShadcnCol>
+            <a-col :span="12">
+              <a-form-item :name="['columns', index, 'defaultValue']" :label="$t('source.common.columnDefaultValue')">
+                <a-input v-model:value="formState.columns[index].defaultValue" :placeholder="$t('source.placeholder.columnDefaultValue')"/>
+              </a-form-item>
+            </a-col>
 
-            <ShadcnCol span="4">
-              <ShadcnFormItem :name="`columns[${index}].primaryKey`" :label="$t('source.common.columnPrimaryKey')">
-                <ShadcnSwitch v-model="formState.columns[index].primaryKey" :placeholder="$t('source.placeholder.columnPrimaryKey')" :name="`columns[${index}].primaryKey`"/>
-              </ShadcnFormItem>
-            </ShadcnCol>
+            <a-col :span="8">
+              <a-form-item :name="['columns', index, 'primaryKey']" :label="$t('source.common.columnPrimaryKey')">
+                <a-switch v-model:checked="formState.columns[index].primaryKey"/>
+              </a-form-item>
+            </a-col>
 
-            <ShadcnCol span="4">
-              <ShadcnFormItem :name="`columns[${index}].autoIncrement`" :label="$t('source.common.columnAutoIncrement')">
-                <ShadcnSwitch v-model="formState.columns[index].autoIncrement" :placeholder="$t('source.placeholder.columnAutoIncrement')"
-                              :name="`columns[${index}].autoIncrement`"/>
-              </ShadcnFormItem>
-            </ShadcnCol>
+            <a-col :span="8">
+              <a-form-item :name="['columns', index, 'autoIncrement']" :label="$t('source.common.columnAutoIncrement')">
+                <a-switch v-model:checked="formState.columns[index].autoIncrement"/>
+              </a-form-item>
+            </a-col>
 
-            <ShadcnCol span="4">
-              <ShadcnFormItem :name="`columns[${index}].isNullable`" :label="$t('source.common.columnIsNullable')">
-                <ShadcnSwitch v-model="formState.columns[index].isNullable" :placeholder="$t('source.placeholder.columnIsNullable')" :name="`columns[${index}].isNullable`"/>
-              </ShadcnFormItem>
-            </ShadcnCol>
+            <a-col :span="8">
+              <a-form-item :name="['columns', index, 'isNullable']" :label="$t('source.common.columnIsNullable')">
+                <a-switch v-model:checked="formState.columns[index].isNullable"/>
+              </a-form-item>
+            </a-col>
 
-            <ShadcnCol span="12">
-              <ShadcnFormItem :name="`columns[${index}].comment`" :label="$t('source.common.columnComment')">
-                <ShadcnInput v-model="formState.columns[index].comment"
-                             type="textarea"
-                             :placeholder="$t('source.placeholder.columnComment')"
-                             :name="`columns[${index}].comment`"/>
-              </ShadcnFormItem>
-            </ShadcnCol>
-          </ShadcnRow>
-        </ShadcnCol>
-      </ShadcnRow>
+            <a-col :span="24">
+              <a-form-item :name="['columns', index, 'comment']" :label="$t('source.common.columnComment')">
+                <a-textarea v-model:value="formState.columns[index].comment" :placeholder="$t('source.placeholder.columnComment')"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-col>
+      </a-row>
 
-      <ShadcnSpace class="fixed bottom-0 left-0 right-0 border-t bg-white p-2 flex justify-end gap-4 shadow-lg">
-        <ShadcnButton type="default" @click="onCancel">{{ $t('common.cancel') }}</ShadcnButton>
+      <div class="fixed bottom-0 left-0 right-0 border-t bg-white p-2 flex justify-end gap-4 shadow-lg">
+        <a-button @click="onCancel">{{ $t('common.cancel') }}</a-button>
 
-        <ShadcnButton submit :loading="saving" :disabled="saving">
+        <a-button type="primary" html-type="submit" :loading="saving" :disabled="saving">
           {{ $t('common.save') }}
-        </ShadcnButton>
-      </ShadcnSpace>
-    </ShadcnForm>
-  </ShadcnDrawer>
+        </a-button>
+      </div>
+    </a-form>
+  </a-drawer>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import MetadataService from '@/services/metadata'
 import HttpUtils from '@/utils/http'
 
-export default defineComponent({
-  name: 'TableCreate',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      saving: false,
-      engines: [],
-      dataTypes: [],
-      formState: null as any
-    }
-  },
-  created()
-  {
-    const code = this.$route.params.source
+defineOptions({ name: 'TableCreate' })
 
-    this.formState = {
-      columns: []
-    }
+const props = withDefaults(defineProps<{ isVisible?: boolean }>(), { isVisible: false })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
 
-    this.loading = true
-    HttpUtils.all([MetadataService.getEngines(code), MetadataService.getDataTypes(code)])
-             .then(HttpUtils.spread((...responses) => {
-               const [engines, dataTypes] = responses
+const route = useRoute()
+const { t } = useI18n()
 
-               if (engines.status && engines.data && engines.data.isSuccessful) {
-                 this.engines = engines.data.columns
-               }
-
-               if (dataTypes.status && dataTypes.data && dataTypes.data.isSuccessful) {
-                 this.dataTypes = dataTypes.data.columns
-               }
-             }))
-             .finally(() => this.loading = false)
-
-    this.onAdd()
-  },
-  methods: {
-    onSubmit()
-    {
-      this.saving = true
-
-      const code = this.$route.params.source
-      const database = this.$route.params.database
-
-      MetadataService.createTable(code, database, this.formState)
-                     .then(response => {
-                       if (response.status && response.data && response.data.isSuccessful) {
-                         this.$Message.success({
-                           content: this.$t('source.tip.createTableSuccess').replace('$VALUE', String(this.formState.name)),
-                           showIcon: true
-                         })
-
-                         this.onCancel()
-                       }
-                       else {
-                         this.$Message.error({
-                           content: response.data.message,
-                           showIcon: true
-                         })
-                       }
-                     })
-                     .finally(() => this.saving = false)
-    },
-    onAdd()
-    {
-      const newColumn = {
-        removed: false
-      }
-      if (this.formState.columns.length === 0) {
-        newColumn.removed = true
-      }
-      this.formState.columns.push(newColumn)
-    },
-    onRemove(index: number)
-    {
-      if (this.formState.columns) {
-        this.formState.columns.splice(index, 1)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
 })
+
+const loading = ref(false)
+const saving = ref(false)
+const engines = ref<any[]>([])
+const dataTypes = ref<any[]>([])
+const formState = ref<any>({ columns: [] })
+
+const onAdd = () => {
+  const newColumn = { removed: false }
+  if (formState.value.columns.length === 0) {
+    newColumn.removed = true
+  }
+  formState.value.columns.push(newColumn)
+}
+
+const onRemove = (index: number) => {
+  if (formState.value.columns) {
+    formState.value.columns.splice(index, 1)
+  }
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  saving.value = true
+
+  const code = route.params.source as string
+  const database = route.params.database as string
+
+  MetadataService.createTable(code, database, formState.value)
+                 .then((response) => {
+                   if (response.status && response.data && response.data.isSuccessful) {
+                     message.success(t('source.tip.createTableSuccess').replace('$VALUE', String(formState.value.name)))
+                     onCancel()
+                   }
+                   else {
+                     message.error(response.data.message)
+                   }
+                 })
+                 .finally(() => (saving.value = false))
+}
+
+const code = route.params.source as string
+loading.value = true
+HttpUtils.all([MetadataService.getEngines(code), MetadataService.getDataTypes(code)])
+         .then(HttpUtils.spread((...responses: any[]) => {
+           const [enginesResponse, dataTypesResponse] = responses
+
+           if (enginesResponse.status && enginesResponse.data && enginesResponse.data.isSuccessful) {
+             engines.value = enginesResponse.data.columns
+           }
+
+           if (dataTypesResponse.status && dataTypesResponse.data && dataTypesResponse.data.isSuccessful) {
+             dataTypes.value = dataTypesResponse.data.columns
+           }
+         }))
+         .finally(() => (loading.value = false))
+
+onAdd()
 </script>
