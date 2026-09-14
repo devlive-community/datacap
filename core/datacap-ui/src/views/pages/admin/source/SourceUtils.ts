@@ -21,15 +21,15 @@ export function useHeaders()
         { title: t('common.action'), key: 'action' }
     ])
 
-    // TODO: SourceHistory 迁 antd 后改成 antd 列格式；目前仍是 ShadcnTable 的 {key,label,slot}
+    // ant-design-vue Table 列格式（SourceHistory 已迁 antd）；elapsed/state/result 走 #bodyCell
     const historyHeaders = computed(() => [
-        { key: 'id', label: t('common.id'), width: 80 },
-        { key: 'name', label: t('common.name') },
-        { key: 'createTime', label: t('common.createTime') },
-        { key: 'updateTime', label: t('common.updateTime') },
-        { key: 'elapsed', label: t('common.elapsed'), slot: 'elapsed' },
-        { key: 'state', label: t('common.state'), slot: 'state' },
-        { key: 'result', label: t('common.result'), slot: 'result' }
+        { title: t('common.id'), dataIndex: 'id', key: 'id', width: 80 },
+        { title: t('common.name'), dataIndex: 'name', key: 'name' },
+        { title: t('common.createTime'), dataIndex: 'createTime', key: 'createTime' },
+        { title: t('common.updateTime'), dataIndex: 'updateTime', key: 'updateTime' },
+        { title: t('common.elapsed'), key: 'elapsed' },
+        { title: t('common.state'), key: 'state' },
+        { title: t('common.result'), key: 'result' }
     ])
 
     return {

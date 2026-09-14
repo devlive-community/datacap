@@ -1,182 +1,120 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="60%"
-               :title="$t('source.common.syncHistory')"
-               @on-close="onCancel">
+  <a-modal v-model:open="visible"
+           width="60%"
+           :title="$t('source.common.syncHistory')"
+           :footer="null">
+    <a-spin :spinning="loading">
+      <a-table size="small"
+               :columns="headers"
+               :data-source="data"
+               :pagination="false"
+               row-key="id"
+               :scroll="{ x: 'max-content' }">
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'elapsed'">
+            {{ (getTime(record.updateTime) - getTime(record.createTime)) / 1000 }}
+          </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
+          <template v-else-if="column.key === 'state'">
+            <a-tooltip v-if="record?.state === 'FAILURE'" :title="record.message">
+              <a-badge :color="Common.getColor(record?.state)" :text="getStateText(record.state)"/>
+            </a-tooltip>
+            <a-badge v-else :color="Common.getColor(record?.state)" :text="getStateText(record.state)"/>
+          </template>
 
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #elapsed="{ row }">
-          {{ (getTime(row.updateTime) - getTime(row.createTime)) / 1000 }}
-        </template>
-
-        <template #state="{ row }">
-          <ShadcnTooltip v-if="row?.state === 'FAILURE'" :content="row.message">
-            <ShadcnBadge :color="Common.getColor(row?.state)" :text="getStateText(row.state)"/>
-          </ShadcnTooltip>
-          <ShadcnBadge v-else :color="Common.getColor(row?.state)" :text="getStateText(row.state)"/>
-        </template>
-
-        <template #result="{ row }">
-          <ShadcnTooltip>
-            <template #content>
-              <MdPreview :modelValue="toMarkdown(row.info)" style="padding: 0"/>
-            </template>
-
-            <ShadcnButton circle size="small">
-              <template #icon>
-                <ShadcnIcon icon="Eye" :size="20"/>
+          <template v-else-if="column.key === 'result'">
+            <a-tooltip>
+              <template #title>
+                <MdPreview :modelValue="toMarkdown(record.info)" style="padding: 0"/>
               </template>
-            </ShadcnButton>
-          </ShadcnTooltip>
+              <a-button shape="circle" size="small">
+                <template #icon>
+                  <ShadcnIcon icon="Eye" :size="20"/>
+                </template>
+              </a-button>
+            </a-tooltip>
+          </template>
         </template>
-      </ShadcnTable>
+      </a-table>
 
-      <ShadcnPagination v-if="data?.length > 0"
-                        v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-
-    <template #footer>
-      <ShadcnButton type="error" @click="onCancel">
-        {{ $t('common.cancel') }}
-      </ShadcnButton>
-    </template>
-  </ShadcnModal>
+      <div v-if="data.length > 0" class="py-2 flex justify-end">
+        <a-pagination :current="pageIndex"
+                      :page-size="pageSize"
+                      :total="dataCount"
+                      show-size-changer
+                      :page-size-options="['10', '20', '50']"
+                      @change="onPageChange"
+                      @show-size-change="onSizeChange"/>
+      </div>
+    </a-spin>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import { SourceModel } from '@/model/source'
-import SourceService from '@/services/source'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from '@/views/pages/admin/source/SourceUtils'
 import Common, { useUtil } from '@/utils/common'
+import SourceService from '@/services/source'
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 
-export default defineComponent({
-  name: 'SourceHistory',
-  components: {
-    MdPreview
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    },
-    Common()
-    {
-      return Common
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => SourceModel | null
-    }
-  },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { historyHeaders: headers } = useHeaders()
-    const { getText } = useUtil()
+defineOptions({ name: 'SourceHistory' })
 
-    return {
-      filter,
-      headers,
-      getText
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      this.loading = true
-      SourceService.getHistory(this.info?.code as string, this.filter)
-                   .then((response) => {
-                     if (response.status) {
-                       this.data = response.data.content
-                       this.dataCount = response.data.total
-                       this.pageSize = response.data.size
-                       this.pageIndex = response.data.page
-                     }
-                   })
-                   .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handleInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    onCancel()
-    {
-      this.visible = false
-    },
-    getTime(time: any)
-    {
-      return time ? new Date(time).getTime() : 0
-    },
-    getStateText(origin: string): string
-    {
-      return this.getText(origin)
-    },
-    toMarkdown(content: string)
-    {
-      return '```json\n' + JSON.stringify(content, null, 4) + '\n```'
-    }
-  }
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: SourceModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const filter: FilterModel = new FilterModel()
+const { historyHeaders: headers } = useHeaders()
+const { getText } = useUtil()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+
+const handleInitialize = () => {
+  loading.value = true
+  SourceService.getHistory(props.info?.code as string, filter)
+               .then((response) => {
+                 if (response.status) {
+                   data.value = response.data.content
+                   dataCount.value = response.data.total
+                   pageSize.value = response.data.size
+                   pageIndex.value = response.data.page
+                 }
+               })
+               .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handleInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const getTime = (time: any) => (time ? new Date(time).getTime() : 0)
+
+const getStateText = (origin: string): string => getText(origin)
+
+const toMarkdown = (content: string) => '```json\n' + JSON.stringify(content, null, 4) + '\n```'
+
+handleInitialize()
 </script>
