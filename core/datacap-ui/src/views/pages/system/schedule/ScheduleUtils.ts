@@ -5,33 +5,29 @@ export function useHeaders()
 {
     const { t } = useI18n()
 
+    // ant-design-vue Table 列格式（ScheduleHome 已迁 antd）；active/system/action 走 #bodyCell
     const headers = computed(() => [
-        { key: 'id', label: t('common.id') },
-        { key: 'name', label: t('common.name') },
-        { key: 'description', label: t('common.description') },
-        { key: 'expression', label: t('common.expression') },
-        { key: 'active', label: t('common.active'), slot: 'active' },
-        { key: 'system', label: t('common.system'), slot: 'system' },
-        { key: 'type', label: t('common.type') },
-        { key: 'createTime', label: t('common.createTime') },
-        { key: 'updateTime', label: t('common.updateTime') },
-        { key: 'action', label: t('common.action'), slot: 'action' }
+        { title: t('common.id'), dataIndex: 'id', key: 'id' },
+        { title: t('common.name'), dataIndex: 'name', key: 'name' },
+        { title: t('common.description'), dataIndex: 'description', key: 'description' },
+        { title: t('common.expression'), dataIndex: 'expression', key: 'expression' },
+        { title: t('common.active'), key: 'active' },
+        { title: t('common.system'), key: 'system' },
+        { title: t('common.type'), dataIndex: 'type', key: 'type' },
+        { title: t('common.createTime'), dataIndex: 'createTime', key: 'createTime' },
+        { title: t('common.updateTime'), dataIndex: 'updateTime', key: 'updateTime' },
+        { title: t('common.action'), key: 'action' }
     ])
 
-    /**
-     * Creates history headers with internationalization support.
-     *
-     * @param {any} i18n - the internationalization object
-     * @return {Array} an array of history headers
-     */
+    // ant-design-vue Table 列格式（ScheduleHistory 已迁 antd）
     const historyHeaders = computed(() => [
-            { key: 'id', label: t('common.id') },
-            { key: 'name', label: t('common.name') },
-            { key: 'createTime', label: t('common.createTime') },
-            { key: 'updateTime', label: t('common.updateTime') },
-            { key: 'elapsed', label: t('common.elapsed') },
-            { key: 'state', label: t('common.state') },
-            { key: 'result', label: t('common.result') }
+            { title: t('common.id'), dataIndex: 'id', key: 'id' },
+            { title: t('common.name'), dataIndex: 'name', key: 'name' },
+            { title: t('common.createTime'), dataIndex: 'createTime', key: 'createTime' },
+            { title: t('common.updateTime'), dataIndex: 'updateTime', key: 'updateTime' },
+            { title: t('common.elapsed'), dataIndex: 'elapsed', key: 'elapsed' },
+            { title: t('common.state'), dataIndex: 'state', key: 'state' },
+            { title: t('common.result'), dataIndex: 'result', key: 'result' }
         ]
     )
 
