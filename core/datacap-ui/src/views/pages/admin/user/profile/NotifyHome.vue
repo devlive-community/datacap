@@ -1,18 +1,15 @@
 <template>
-  <ShadcnCard :title="$t('user.common.notify')" :description="$t('user.tip.notify')" :border="false">
-    <ShadcnDivider class="my-2"/>
+  <a-card :bordered="false" :title="$t('user.common.notify')">
+    <div class="text-sm text-gray-500">{{ $t('user.tip.notify') }}</div>
+    <a-divider class="my-2"/>
     <div class="p-3">
       <NotifyForm/>
     </div>
-  </ShadcnCard>
+  </a-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import NotifyForm from '@/views/pages/admin/user/profile/components/NotifyForm.vue'
 
-export default defineComponent({
-  name: 'NotifyHome',
-  components: { NotifyForm }
-})
+defineOptions({ name: 'NotifyHome' })
 </script>

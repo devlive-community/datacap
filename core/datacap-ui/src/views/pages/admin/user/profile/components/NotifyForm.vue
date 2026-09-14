@@ -1,175 +1,140 @@
 <template>
   <div class="relative min-h-screen">
-    <ShadcnSpin v-model="loading" fixed/>
-
-    <ShadcnForm v-model="formState" @on-submit="onSubmit">
-      <ShadcnSpace wrap>
-        <div v-for="item in formState.notifyConfigure" class="flex items-center justify-between w-full space-y-2">
-          <span class="text-muted-foreground">
-            {{ $t('notify.text.' + item.type.toLowerCase()) }}
-          </span>
-          <div class="flex items-center space-x-2">
-            <ShadcnSwitch v-model="item.enabled"/>
-            <ShadcnButton circle size="small" :disabled="!item.enabled" @click="visibleConfigure(true, item)">
-              <ShadcnIcon icon="Cog" size="15"/>
-            </ShadcnButton>
+    <a-spin :spinning="loading">
+      <a-form :model="formState" @finish="onSubmit">
+        <div class="space-y-2">
+          <div v-for="item in formState.notifyConfigure"
+               :key="item.type"
+               class="flex items-center justify-between w-full">
+            <span class="text-gray-500">
+              {{ $t('notify.text.' + item.type.toLowerCase()) }}
+            </span>
+            <div class="flex items-center space-x-2">
+              <a-switch v-model:checked="item.enabled"/>
+              <a-button shape="circle" size="small" :disabled="!item.enabled" @click="visibleConfigure(true, item)">
+                <ShadcnIcon icon="Cog" size="15"/>
+              </a-button>
+            </div>
           </div>
         </div>
-      </ShadcnSpace>
 
-      <ShadcnButton submit :loading="submitting" :disabled="submitting">
-        {{ $t('common.save') }}
-      </ShadcnButton>
-    </ShadcnForm>
+        <a-button type="primary" html-type="submit" class="mt-3" :loading="submitting" :disabled="submitting">
+          {{ $t('common.save') }}
+        </a-button>
+      </a-form>
+    </a-spin>
 
     <NotifyConfigure v-if="visible"
                      :model-value="visible"
                      :item="info"
                      @update:model-value="visibleConfigure($event)"
-                     @update:configure="updateConfigure">
-    </NotifyConfigure>
+                     @update:configure="updateConfigure"/>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import UserService from '@/services/user.ts'
 import PluginService from '@/services/plugin.ts'
 import { HttpUtils } from '@/utils/http.ts'
 import NotifyConfigure from '@/views/pages/admin/user/profile/components/NotifyConfigure.vue'
 
-export default defineComponent({
-  name: 'NotifyForm',
-  components: { NotifyConfigure },
-  data()
-  {
-    return {
-      visible: false,
-      info: {},
-      loading: false,
-      submitting: false,
-      plugins: [],
-      formState: {
-        notifyConfigure: []
-      }
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
-    handlerInitialize()
-    {
-      this.loading = true
-      const axios = new HttpUtils().getAxios()
+defineOptions({ name: 'NotifyForm' })
 
-      axios.all([UserService.getInfo(), PluginService.getPlugins()])
-           .then(axios.spread((info, plugin) => {
-             // 初始化默认配置
-             this.formState = {
-               notifyConfigure: [
-                 { type: 'Internal', enabled: false, services: [] }
-               ]
+const { t } = useI18n()
+
+const visible = ref(false)
+const info = ref<any>({})
+const loading = ref(false)
+const submitting = ref(false)
+const plugins = ref<any[]>([])
+const formState = ref<{ notifyConfigure: any[] }>({ notifyConfigure: [] })
+
+const handlerInitialize = () => {
+  loading.value = true
+  const axios = new HttpUtils().getAxios()
+
+  axios.all([UserService.getInfo(), PluginService.getPlugins()])
+       .then(axios.spread((infoResponse: any, plugin: any) => {
+         // 初始化默认配置
+         formState.value = {
+           notifyConfigure: [
+             { type: 'Internal', enabled: false, services: [] }
+           ]
+         }
+
+         // 处理插件数据
+         if (plugin.status && plugin.data && Array.isArray(plugin.data)) {
+           plugins.value = plugin.data.filter((v: { type: string }) => v.type === 'NOTIFY')
+           plugins.value.forEach((item: { name: string }) => {
+             if (item && item.name) {
+               formState.value.notifyConfigure.push({ type: item.name, enabled: false, services: [] })
              }
-
-             // 处理插件数据
-             if (plugin.status && plugin.data && Array.isArray(plugin.data)) {
-               this.plugins = plugin.data.filter((v: { type: string }) => v.type === 'NOTIFY')
-
-               // 添加插件相关的配置
-               this.plugins.forEach((item: { name: string }) => {
-                 if (item && item.name) {
-                   this.formState.notifyConfigure.push({
-                     type: item.name,
-                     enabled: false,
-                     services: []
-                   })
-                 }
-               })
-             }
-             else {
-               this.$Message.error({
-                 content: plugin.message,
-                 showIcon: true
-               })
-             }
-
-             // 处理用户信息数据
-             if (info.status && info.data) {
-               // 合并服务器配置与本地默认配置
-               if (info.data.notifyConfigure && Array.isArray(info.data.notifyConfigure) &&
-                   info.data.notifyConfigure.length > 0) {
-
-                 // 创建一个映射以便更高效地查找和合并
-                 const serverConfigMap = {}
-                 info.data.notifyConfigure.forEach(config => {
-                   if (config && config.type) {
-                     serverConfigMap[config.type] = config
-                   }
-                 })
-
-                 // 更新本地配置，保留所有插件项
-                 this.formState.notifyConfigure = this.formState.notifyConfigure.map(localConfig => {
-                   return serverConfigMap[localConfig.type] || localConfig
-                 })
-
-                 // 添加服务器上有但本地没有的配置
-                 info.data.notifyConfigure.forEach(serverConfig => {
-                   if (serverConfig && serverConfig.type) {
-                     const exists = this.formState.notifyConfigure.some(
-                         localConfig => localConfig.type === serverConfig.type
-                     )
-
-                     if (!exists) {
-                       this.formState.notifyConfigure.push(serverConfig)
-                     }
-                   }
-                 })
-               }
-             }
-             else {
-               this.$Message.error({
-                 content: info.message,
-                 showIcon: true
-               })
-             }
-           }))
-           .finally(() => {
-             this.loading = false
            })
-    },
-    visibleConfigure(opened?: boolean, item?: any)
-    {
-      this.visible = opened
-      this.info = item
-    },
-    updateConfigure(updatedItem)
-    {
-      if (updatedItem && updatedItem.type) {
-        const index = this.formState.notifyConfigure.findIndex((item: { type: string }) => item.type === updatedItem.type)
-        if (index !== -1) {
-          this.formState.notifyConfigure[index] = { ...updatedItem }
-        }
-      }
-    },
-    onSubmit()
-    {
-      this.submitting = true
-      UserService.changeNotify(this.formState)
-                 .then((response) => {
-                   if (response.status) {
-                     this.$Message.success({
-                       content: this.$t('common.successfully') as string,
-                       showIcon: true
-                     })
-                   }
-                   else {
-                     this.$Message.error({ content: response.message, showIcon: true })
-                   }
-                 })
-                 .finally(() => this.submitting = false)
+         }
+         else {
+           message.error(plugin.message)
+         }
+
+         // 处理用户信息数据：合并服务器配置与本地默认配置
+         if (infoResponse.status && infoResponse.data) {
+           const serverConfigure = infoResponse.data.notifyConfigure
+           if (serverConfigure && Array.isArray(serverConfigure) && serverConfigure.length > 0) {
+             const serverConfigMap: Record<string, any> = {}
+             serverConfigure.forEach((config: any) => {
+               if (config && config.type) {
+                 serverConfigMap[config.type] = config
+               }
+             })
+
+             formState.value.notifyConfigure = formState.value.notifyConfigure.map(localConfig => serverConfigMap[localConfig.type] || localConfig)
+
+             serverConfigure.forEach((serverConfig: any) => {
+               if (serverConfig && serverConfig.type) {
+                 const exists = formState.value.notifyConfigure.some(localConfig => localConfig.type === serverConfig.type)
+                 if (!exists) {
+                   formState.value.notifyConfigure.push(serverConfig)
+                 }
+               }
+             })
+           }
+         }
+         else {
+           message.error(infoResponse.message)
+         }
+       }))
+       .finally(() => (loading.value = false))
+}
+
+const visibleConfigure = (opened?: boolean, item?: any) => {
+  visible.value = !!opened
+  info.value = item
+}
+
+const updateConfigure = (updatedItem: any) => {
+  if (updatedItem && updatedItem.type) {
+    const index = formState.value.notifyConfigure.findIndex((item: { type: string }) => item.type === updatedItem.type)
+    if (index !== -1) {
+      formState.value.notifyConfigure[index] = { ...updatedItem }
     }
   }
-})
+}
+
+const onSubmit = () => {
+  submitting.value = true
+  UserService.changeNotify(formState.value)
+             .then((response) => {
+               if (response.status) {
+                 message.success(t('common.successfully') as string)
+               }
+               else {
+                 message.error(response.message)
+               }
+             })
+             .finally(() => (submitting.value = false))
+}
+
+handlerInitialize()
 </script>

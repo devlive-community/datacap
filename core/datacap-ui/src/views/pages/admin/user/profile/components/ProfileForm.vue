@@ -1,91 +1,76 @@
 <template>
   <div class="relative">
-    <ShadcnSpin v-model="loading" fixed/>
-    <ShadcnForm v-model="formState" v-if="formState">
-      <ShadcnFormItem name="avatar"
-                      class="w-[40%]"
-                      :label="$t('user.common.avatar')"
-                      :description="$t('user.tip.avatar')">
-        <CropperHome :pic="formState.avatarConfigure?.path" @update:value="onCropper"/>
-      </ShadcnFormItem>
+    <a-spin :spinning="loading">
+      <a-form v-if="formState" :model="formState" layout="vertical">
+        <a-form-item name="avatar"
+                     class="w-[40%]"
+                     :label="$t('user.common.avatar')"
+                     :extra="$t('user.tip.avatar')">
+          <CropperHome :pic="formState.avatarConfigure?.path" @update:value="onCropper"/>
+        </a-form-item>
 
-      <ShadcnFormItem name="username"
-                      class="w-[40%]"
-                      :label="$t('user.common.username')"
-                      :description="$t('user.tip.username')">
-        <ShadcnInput v-model="formState.username" disabled/>
-      </ShadcnFormItem>
+        <a-form-item name="username"
+                     class="w-[40%]"
+                     :label="$t('user.common.username')"
+                     :extra="$t('user.tip.username')">
+          <a-input v-model:value="formState.username" disabled/>
+        </a-form-item>
 
-      <ShadcnFormItem name="createTime"
-                      class="w-[40%]"
-                      :label="$t('user.common.createTime')"
-                      :description="$t('user.tip.createTime')">
-        <ShadcnInput v-model="formState.createTime" disabled/>
-      </ShadcnFormItem>
-    </ShadcnForm>
+        <a-form-item name="createTime"
+                     class="w-[40%]"
+                     :label="$t('user.common.createTime')"
+                     :extra="$t('user.tip.createTime')">
+          <a-input v-model:value="formState.createTime" disabled/>
+        </a-form-item>
+      </a-form>
+    </a-spin>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import UserService from '@/services/user'
 import { UserModel } from '@/model/user'
 import CropperHome from '@/views/components/cropper/CropperHome.vue'
 
-export default defineComponent({
-  name: 'ProfileForm',
-  components: { CropperHome },
-  data()
-  {
-    return {
-      loading: false,
-      formState: null as UserModel | null,
-      inputFile: null as any,
-      inputFileBase64: null as string | null,
-      uploading: false
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
-    handlerInitialize()
-    {
-      this.loading = true
-      UserService.getInfo()
-                 .then(response => {
-                   if (response.status) {
-                     this.formState = response.data
-                   }
-                 })
-                 .finally(() => this.loading = false)
-    },
-    onCropper(value: any)
-    {
-      const configure = {
-        mode: 'AVATAR',
-        file: value
-      }
-      UserService.uploadAvatar(configure)
-                 .then(response => {
-                   if (response.status) {
-                     if (this.formState) {
-                       this.formState.avatar = response.data
-                     }
-                     this.$Message.success({
-                       content: this.$t('common.successfully'),
-                       showIcon: true
-                     })
-                   }
-                   else {
-                     this.$Message.error({
-                       content: response.message,
-                       showIcon: true
-                     })
-                   }
-                 })
-    }
+defineOptions({ name: 'ProfileForm' })
+
+const { t } = useI18n()
+
+const loading = ref(false)
+const formState = ref<UserModel | null>(null)
+
+const handlerInitialize = () => {
+  loading.value = true
+  UserService.getInfo()
+             .then(response => {
+               if (response.status) {
+                 formState.value = response.data
+               }
+             })
+             .finally(() => (loading.value = false))
+}
+
+const onCropper = (value: any) => {
+  const configure = {
+    mode: 'AVATAR',
+    file: value
   }
-})
+  UserService.uploadAvatar(configure)
+             .then(response => {
+               if (response.status) {
+                 if (formState.value) {
+                   formState.value.avatar = response.data
+                 }
+                 message.success(t('common.successfully'))
+               }
+               else {
+                 message.error(response.message)
+               }
+             })
+}
+
+handlerInitialize()
 </script>

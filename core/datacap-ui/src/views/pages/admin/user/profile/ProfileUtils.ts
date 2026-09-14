@@ -5,14 +5,15 @@ export function useHeaders()
 {
     const { t } = useI18n()
 
+    // ant-design-vue Table 列格式；state 列通过 #bodyCell 渲染
     const headers = computed(() => [
-        { key: 'id', label: t('common.id') },
-        { key: 'device', label: t('common.device') },
-        { key: 'client', label: t('common.client') },
-        { key: 'ip', label: t('common.ip') },
-        { key: 'state', label: t('common.state'), slot: 'state' },
-        { key: 'ua', label: t('common.ua'), width: 350 },
-        { key: 'createTime', label: t('common.loginTime') }
+        { title: t('common.id'), dataIndex: 'id', key: 'id' },
+        { title: t('common.device'), dataIndex: 'device', key: 'device' },
+        { title: t('common.client'), dataIndex: 'client', key: 'client' },
+        { title: t('common.ip'), dataIndex: 'ip', key: 'ip' },
+        { title: t('common.state'), key: 'state' },
+        { title: t('common.ua'), dataIndex: 'ua', key: 'ua', width: 350 },
+        { title: t('common.loginTime'), dataIndex: 'createTime', key: 'createTime' }
     ])
 
     return {
