@@ -1,133 +1,138 @@
 <template>
   <div class="relative min-h-screen">
-    <ShadcnSpin v-if="loading" fixed/>
-    <ShadcnAlert type="warning" class="mb-2">
-      {{ $t('common.plugin.systemVersion') }}
-      <ShadcnTag class="text-red-400">{{ version }}</ShadcnTag>
-    </ShadcnAlert>
+    <a-spin :spinning="loading">
+      <a-alert type="warning" class="mb-2">
+        <template #message>
+          {{ $t('common.plugin.systemVersion') }}
+          <a-tag class="text-red-400">{{ version }}</a-tag>
+        </template>
+      </a-alert>
 
-    <ShadcnTab v-model="activeTab" v-show="!loading">
-      <template #extra>
-        <ShadcnHoverCard :arrow="false" position="bottom">
-          <ShadcnButton circle size="small">
-            <ShadcnIcon icon="Cog" :size="15"/>
-          </ShadcnButton>
+      <a-tabs v-show="!loading" v-model:activeKey="activeTab">
+        <template #rightExtra>
+          <a-popover trigger="click" placement="bottom">
+            <template #content>
+              <div class="p-2 space-y-2 flex flex-col">
+                <a-form-item :label="$t('common.plugin.metadata.url')" :extra="$t('common.plugin.metadata.description')">
+                  <a-input v-model:value="applyMetadataUrl"/>
+                </a-form-item>
 
-          <template #content>
-            <div class="p-2 space-y-2 flex flex-col">
-              <ShadcnFormItem :label="$t('common.plugin.metadata.url')" :description="$t('common.plugin.metadata.description')">
-                <ShadcnInput v-model="applyMetadataUrl"/>
-              </ShadcnFormItem>
+                <a-button type="primary" @click="onSave">{{ $t('common.save') }}</a-button>
+              </div>
+            </template>
 
-              <ShadcnButton type="info" @click="onSave">{{ $t('common.save') }}</ShadcnButton>
-            </div>
-          </template>
-        </ShadcnHoverCard>
-      </template>
+            <a-button shape="circle" size="small">
+              <template #icon>
+                <ShadcnIcon icon="Cog" :size="15"/>
+              </template>
+            </a-button>
+          </a-popover>
+        </template>
 
-      <ShadcnTabItem v-for="type in pluginTypes" :key="type" :label="type" :value="type">
-        <div class="relative">
-          <ShadcnSpace wrap size="15">
-            <ShadcnAlert v-if="typeDescription(type)">
-              {{ typeDescription(type) }}
-            </ShadcnAlert>
+        <a-tab-pane v-for="type in pluginTypes" :key="type" :tab="type">
+          <div class="relative">
+            <a-space direction="vertical" :size="15" :style="{ width: '100%' }">
+              <a-alert v-if="typeDescription(type)" :message="typeDescription(type)"/>
 
-            <ShadcnCard v-for="plugin in pluginsByType(type)" :key="plugin.key" class="w-full">
-              <ShadcnRow class="p-3 px-6 items-center">
-                <ShadcnCol span="2">
-                  <!-- Logo and Name -->
-                  <div class="flex flex-col items-center space-y-2 justify-between">
-                    <ShadcnAvatar class="bg-transparent"
-                                  size="large"
-                                  style="width: 4rem; height: 4rem;"
-                                  :src="plugin.logo"
-                                  :alt="plugin.i18nFormat ? $t(plugin.label) : plugin.label"
-                                  @click="onVisibleInfo(plugin, true)">
-                    </ShadcnAvatar>
+              <a-card v-for="plugin in pluginsByType(type)" :key="plugin.key" class="w-full">
+                <a-row class="p-3 px-6 items-center">
+                  <a-col :span="4">
+                    <!-- Logo and Name -->
+                    <div class="flex flex-col items-center space-y-2 justify-between">
+                      <a-avatar class="bg-transparent"
+                                :size="64"
+                                :src="plugin.logo"
+                                :alt="plugin.i18nFormat ? $t(plugin.label) : plugin.label"
+                                @click="onVisibleInfo(plugin, true)">
+                      </a-avatar>
 
-                    <ShadcnText type="h6">
-                      {{ plugin.i18nFormat ? $t(plugin.label) : plugin.label }}
-                    </ShadcnText>
-                  </div>
-                </ShadcnCol>
+                      <span class="text-base font-medium">
+                        {{ plugin.i18nFormat ? $t(plugin.label) : plugin.label }}
+                      </span>
+                    </div>
+                  </a-col>
 
-                <ShadcnCol span="9">
-                  <!-- Plugin -->
-                  <div class="flex items-center space-x-4 justify-between">
-                    <ShadcnSpace class="pl-8" wrap :size="[20, 40]">
-                      <!-- Description -->
-                      <div class="flex flex-col space-y-4">
-                        <ShadcnText class="text-sm text-gray-500" type="small">
-                          {{ plugin.i18nFormat ? $t(plugin.description) : plugin.description }}
-                        </ShadcnText>
+                  <a-col :span="18">
+                    <!-- Plugin -->
+                    <div class="flex items-center space-x-4 justify-between">
+                      <div class="pl-8 flex flex-wrap">
+                        <!-- Description -->
+                        <div class="flex flex-col space-y-4">
+                          <span class="text-sm text-gray-500">
+                            {{ plugin.i18nFormat ? $t(plugin.description) : plugin.description }}
+                          </span>
 
-                        <!-- Support Version -->
-                        <div class="flex space-x-2 text-sm text-gray-500">
-                          <div class="flex items-center space-x-2">
-                            {{ $t('common.plugin.list.supportVersion') }} :
+                          <!-- Support Version -->
+                          <div class="flex space-x-2 text-sm text-gray-500">
+                            <div class="flex items-center space-x-2">
+                              {{ $t('common.plugin.list.supportVersion') }} :
+                            </div>
+
+                            <a-tag v-for="ver in plugin.supportVersion" :key="ver" color="success">
+                              {{ ver }}
+                            </a-tag>
                           </div>
 
-                          <ShadcnTag v-for="version in plugin.supportVersion" type="success" :key="version">
-                            {{ version }}
-                          </ShadcnTag>
-                        </div>
+                          <!-- Version -->
+                          <div class="flex space-x-2 text-sm text-gray-500">
+                            <div class="space-x-1">
+                              {{ $t('common.plugin.version') }} :
+                              <a-tag>{{ plugin.version }}</a-tag>
+                            </div>
 
-                        <!-- Version -->
-                        <div class="flex space-x-2 text-sm text-gray-500">
-                          <div class="space-x-1">
-                            {{ $t('common.plugin.version') }} :
-                            <ShadcnTag>{{ plugin.version }}</ShadcnTag>
+                            <a-divider v-if="plugin.installed" type="vertical"/>
+
+                            <div v-if="plugin.installed" class="space-x-1">
+                              {{ $t('common.installVersion') }}:
+                              <a-tag color="#00BFFF">{{ plugin.installVersion }}</a-tag>
+                            </div>
                           </div>
 
-                          <ShadcnDivider v-if="plugin.installed" type="vertical"/>
+                          <!-- Time -->
+                          <div class="flex space-x-2 text-sm text-gray-500">
+                            <div class="space-x-1">
+                              {{ $t('common.releasedTime') }}：
+                              <a-tag color="warning">{{ plugin.released }}</a-tag>
+                            </div>
 
-                          <div v-if="plugin.installed" class="space-x-1">
-                            {{ $t('common.installVersion') }}:
-                            <ShadcnTag color="#00BFFF">{{ plugin.installVersion }}</ShadcnTag>
+                            <a-divider v-if="plugin.installed" type="vertical"/>
+
+                            <div v-if="plugin.installed" class="space-x-1">
+                              {{ $t('common.installTime') }}：
+                              <a-tag color="#00BFFF">{{ plugin.installTime }}</a-tag>
+                            </div>
                           </div>
-                        </div>
 
-                        <!-- Time -->
-                        <div class="flex space-x-2 text-sm text-gray-500">
-                          <div class="space-x-1">
-                            {{ $t('common.releasedTime') }}：
-                            <ShadcnTag type="warning">{{ plugin.released }}</ShadcnTag>
-                          </div>
-
-                          <ShadcnDivider v-if="plugin.installed" type="vertical"/>
-
-                          <div v-if="plugin.installed" class="space-x-1">
-                            {{ $t('common.installTime') }}：
-                            <ShadcnTag color="#00BFFF">{{ plugin.installTime }}</ShadcnTag>
-                          </div>
-                        </div>
-
-                        <!-- Other -->
-                        <div class="flex space-x-2 text-sm text-gray-500">
-                          <div class="space-x-1">
-                            {{ $t('common.author') }}： {{ plugin.author }}
+                          <!-- Other -->
+                          <div class="flex space-x-2 text-sm text-gray-500">
+                            <div class="space-x-1">
+                              {{ $t('common.author') }}： {{ plugin.author }}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </ShadcnSpace>
-                  </div>
-                </ShadcnCol>
+                    </div>
+                  </a-col>
 
-                <ShadcnCol span="1">
-                  <!-- Action -->
-                  <ShadcnButton :type="plugin.installed ? 'danger' : 'primary'" :loading="plugin.loading" @click="plugin.installed ? onUninstall(plugin) : onInstall(plugin)">
-                    <template #icon>
-                      <ShadcnIcon :icon="plugin.installed ? 'Trash' : 'Plus'" size="15"/>
-                    </template>
-                    {{ plugin.installed ? $t('common.uninstall') : $t('common.install') }}
-                  </ShadcnButton>
-                </ShadcnCol>
-              </ShadcnRow>
-            </ShadcnCard>
-          </ShadcnSpace>
-        </div>
-      </ShadcnTabItem>
-    </ShadcnTab>
+                  <a-col :span="2">
+                    <!-- Action -->
+                    <a-button :type="plugin.installed ? 'default' : 'primary'"
+                              :danger="plugin.installed"
+                              :loading="plugin.loading"
+                              @click="plugin.installed ? onUninstall(plugin) : onInstall(plugin)">
+                      <template #icon>
+                        <ShadcnIcon :icon="plugin.installed ? 'Trash' : 'Plus'" :size="15"/>
+                      </template>
+                      {{ plugin.installed ? $t('common.uninstall') : $t('common.install') }}
+                    </a-button>
+                  </a-col>
+                </a-row>
+              </a-card>
+            </a-space>
+          </div>
+        </a-tab-pane>
+      </a-tabs>
+    </a-spin>
   </div>
 
   <PluginInfo v-if="infoVisible && info"
@@ -138,7 +143,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, onBeforeMount, ref, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import { useI18nHandler } from '@/i18n/I18n'
 import { PackageUtils } from '@/utils/package.ts'
 import PluginService from '@/services/plugin.ts'
@@ -172,6 +179,8 @@ interface Metadata
   children: MetadataItem[]
 }
 
+defineOptions({ name: 'StoreHome' })
+
 const DEFAULT_METADATA_URL = 'https://cdn.north.devlive.org/applications/datacap/metadata/metadata.json'
 
 // URL validation helper
@@ -185,13 +194,13 @@ const isValidUrl = (urlString: string): boolean => {
   }
 }
 
-const { proxy } = getCurrentInstance()!
+const { t } = useI18n()
 // @ts-ignore
 const { loadingState } = useI18nHandler()
 const loading = ref(false)
-const metadata = ref<Metadata>(null)
+const metadata = ref<Metadata | null>(null)
 const version = ref(PackageUtils.get('version'))
-const info = ref<MetadataItem>(null)
+const info = ref<MetadataItem | null>(null)
 const infoVisible = ref(false)
 
 // Default to first plugin type found
@@ -275,13 +284,12 @@ const loadMetadata = async () => {
 
     const installResponse = await PluginService.getPlugins()
     if (!installResponse.status) {
-      // @ts-ignore
-      proxy?.$Message.error({ content: installResponse.message, showIcon: true })
+      message.error(installResponse.message)
       return
     }
 
     // Bind installation information
-    metadata.value.children.forEach(item => {
+    metadata.value!.children.forEach(item => {
       item.loading = false
       installResponse.data.some((installedPlugin: { key: string, loadTime: string, version: string }) => {
         if (installedPlugin.key === item.key) {
@@ -294,14 +302,12 @@ const loadMetadata = async () => {
       })
     })
   }
-  catch (error) {
+  catch (error: any) {
     if (error instanceof TypeError) {
-      // @ts-ignore
-      proxy?.$Message.error({ content: proxy?.$t('common.tip.pageNotNetwork'), showIcon: true })
+      message.error(t('common.tip.pageNotNetwork'))
     }
     else {
-      // @ts-ignore
-      proxy?.$Message.error({ content: `${ proxy?.$t('common.pageNotFoundTip') }: ${ error.message }`, showIcon: true })
+      message.error(`${ t('common.pageNotFoundTip') }: ${ error.message }`)
     }
 
     // Reset to default URL if current URL is invalid
@@ -324,12 +330,10 @@ const onInstall = async (item: MetadataItem) => {
     item.loading = true
     const installResponse = await PluginService.install({ name: item.key, url: item.url })
     if (installResponse.status) {
-      // @ts-ignore
-      proxy?.$Message.success({ content: proxy?.$t('common.installSuccess'), showIcon: true })
+      message.success(t('common.installSuccess'))
     }
     else {
-      // @ts-ignore
-      proxy?.$Message.error({ content: installResponse.message, showIcon: true })
+      message.error(installResponse.message)
     }
 
     await loadMetadata()
@@ -348,12 +352,10 @@ const onUninstall = async (item: MetadataItem) => {
     item.loading = true
     const unInstallResponse = await PluginService.uninstall(item.label)
     if (unInstallResponse.status) {
-      // @ts-ignore
-      proxy?.$Message.success({ content: proxy?.$t('common.uninstallSuccess'), showIcon: true })
+      message.success(t('common.uninstallSuccess'))
     }
     else {
-      // @ts-ignore
-      proxy?.$Message.error({ content: unInstallResponse.message, showIcon: true })
+      message.error(unInstallResponse.message)
     }
 
     await loadMetadata()
@@ -367,34 +369,22 @@ const onSave = async () => {
   try {
     const url = applyMetadataUrl.value.trim()
     if (!isValidUrl(url)) {
-      // @ts-ignore
-      proxy?.$Message.error({
-        content: 'Invalid Url',
-        showIcon: true
-      })
+      message.error('Invalid Url')
       return
     }
 
     metadataUrl.value = url
-    // @ts-ignore
-    proxy?.$Message.success({
-      content: proxy?.$t('common.successfully'),
-      showIcon: true
-    })
+    message.success(t('common.successfully'))
 
     await loadMetadata()
   }
   catch (error) {
-    // @ts-ignore
-    proxy?.$Message.error({
-      content: proxy?.$t('common.error'),
-      showIcon: true
-    })
+    message.error(t('common.error'))
   }
 }
 
-const onVisibleInfo = (item: MetadataItem, opened?: boolean) => {
-  infoVisible.value = opened
+const onVisibleInfo = (item: MetadataItem | null, opened?: boolean) => {
+  infoVisible.value = !!opened
   if (opened) {
     info.value = item
   }

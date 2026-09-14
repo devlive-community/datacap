@@ -1,37 +1,37 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="50%"
-               height="60%"
-               :title="title"
-               @on-close="onCancel">
+  <a-modal v-model:open="visible"
+           width="50%"
+           :title="title"
+           :footer="null"
+           @cancel="onCancel">
     <div v-if="info" class="relative w-full h-full flex flex-col items-center p-6">
       <div class="flex flex-col items-center mb-6">
-        <ShadcnAvatar class="mb-4 shadow-lg border-4 border-gray-100"
-                      style="width: 5rem; height: 5rem;"
-                      :src="info.logo || '/static/images/plugin.png'"
-                      :alt="info.label">
-        </ShadcnAvatar>
+        <a-avatar class="mb-4 shadow-lg border-4 border-gray-100"
+                  :size="80"
+                  :src="info.logo || '/static/images/plugin.png'"
+                  :alt="info.label">
+        </a-avatar>
 
         <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ info.label }}</h3>
       </div>
 
       <div class="w-full max-w-md mb-6">
         <div class="bg-gray-50 rounded-lg p-4 text-center">
-          <ShadcnText class="text-sm text-gray-600 leading-relaxed" type="small">
+          <span class="text-sm text-gray-600 leading-relaxed">
             {{ info.i18nFormat ? $t(info.description) : info.description }}
-          </ShadcnText>
+          </span>
         </div>
       </div>
 
       <div class="w-full max-w-md space-y-4">
         <div class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
           <span class="text-sm font-medium text-gray-700">{{ $t('common.plugin.version') }}</span>
-          <ShadcnTag>{{ info.version }}</ShadcnTag>
+          <a-tag>{{ info.version }}</a-tag>
         </div>
 
         <div v-if="info.installed" class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
           <span class="text-sm font-medium text-gray-700">{{ $t('common.installVersion') }}</span>
-          <ShadcnTag color="#00BFFF">{{ info.installVersion }}</ShadcnTag>
+          <a-tag color="#00BFFF">{{ info.installVersion }}</a-tag>
         </div>
 
         <div class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
@@ -50,20 +50,20 @@
           </div>
 
           <div class="flex flex-wrap gap-2">
-            <ShadcnTag v-for="version in info.supportVersion" type="success" :key="version">
-              {{ version }}
-            </ShadcnTag>
+            <a-tag v-for="ver in info.supportVersion" :key="ver" color="success">
+              {{ ver }}
+            </a-tag>
           </div>
         </div>
       </div>
     </div>
 
     <template #footer>
-      <ShadcnButton type="default" @click="onCancel">
+      <a-button @click="onCancel">
         {{ $t('common.cancel') }}
-      </ShadcnButton>
+      </a-button>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
@@ -80,6 +80,8 @@ interface Emits
   (e: 'close', value: boolean): void
 }
 
+defineOptions({ name: 'PluginInfo' })
+
 const props = withDefaults(defineProps<Props>(), {
   isVisible: false,
   info: null
@@ -88,14 +90,8 @@ const emit = defineEmits<Emits>()
 const title = ref<string | null>(null)
 
 const visible = computed({
-  get(): boolean
-  {
-    return props.isVisible
-  },
-  set(value: boolean)
-  {
-    emit('close', value)
-  }
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
 })
 
 const handleInitialize = () => {
