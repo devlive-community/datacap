@@ -1,86 +1,74 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2 font-normal text-sm">{{ $t('report.common.list') }}</div>
     </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
-
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #realtime="{ row }">
-          <ShadcnSwitch v-model="row.realtime" size="small" :disabled="row.realtime"/>
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handleInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'realtime'">
+          <a-switch v-model:checked="record.realtime" size="small" :disabled="record.realtime"/>
         </template>
-
-        <template #source="{ row }">
-          <ShadcnTooltip v-if="row.source" :content="row.source?.type">
-            <ShadcnAvatar size="small" :src="'/static/images/plugin/' + row.source?.type.toLowerCase() + '.svg'" :alt="row.source?.type"/>
-          </ShadcnTooltip>
-
-          <ShadcnTooltip v-else :content="row.dataset?.name">
-            <ShadcnTag>{{ $t('common.dataset') }}</ShadcnTag>
-          </ShadcnTooltip>
+        <template v-else-if="column.key === 'source'">
+          <a-tooltip v-if="record.source" :title="record.source?.type">
+            <a-avatar size="small" :src="'/static/images/plugin/' + record.source?.type.toLowerCase() + '.svg'" :alt="record.source?.type"/>
+          </a-tooltip>
+          <a-tooltip v-else :title="record.dataset?.name">
+            <a-tag>{{ $t('common.dataset') }}</a-tag>
+          </a-tooltip>
         </template>
-
-        <template #action="{ row }">
-          <ShadcnSpace>
-            <ShadcnTooltip :content="$t('report.common.view').replace('$VALUE', row.name)">
-              <ShadcnButton circle size="small" @click="visibleView(true, row)">
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('report.common.view').replace('$VALUE', record.name)">
+              <a-button shape="circle" size="small" @click="visibleView(true, record)">
                 <ShadcnIcon icon="Eye" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
+              </a-button>
+            </a-tooltip>
 
-            <ShadcnDropdown trigger="click">
-              <template #trigger>
-                <ShadcnButton circle size="small">
-                  <ShadcnIcon icon="Cog" size="15"/>
-                </ShadcnButton>
-              </template>
+            <a-dropdown trigger="click">
+              <a-button shape="circle" size="small">
+                <ShadcnIcon icon="Cog" size="15"/>
+              </a-button>
 
-              <ShadcnDropdownItem :disabled="row.type === 'QUERY'">
-                <template v-if="row.type !== 'QUERY'">
-                  <ShadcnLink :link="`/admin/dataset/adhoc/${row.dataset?.code}/${row.code}`" target="_blank">
-                    <div class="flex items-center space-x-2">
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item :disabled="record.type === 'QUERY'">
+                    <router-link v-if="record.type !== 'QUERY'"
+                                 :to="`/admin/dataset/adhoc/${ record.dataset?.code }/${ record.code }`"
+                                 target="_blank">
+                      <div class="flex items-center space-x-2">
+                        <ShadcnIcon icon="Pencil" size="15"/>
+                        <span>{{ $t('report.common.modify') }}</span>
+                      </div>
+                    </router-link>
+                    <div v-else class="flex items-center space-x-2">
                       <ShadcnIcon icon="Pencil" size="15"/>
                       <span>{{ $t('report.common.modify') }}</span>
                     </div>
-                  </ShadcnLink>
-                </template>
-                <template v-else>
-                  <div class="flex items-center space-x-2">
-                    <ShadcnIcon icon="Pencil" size="15"/>
-                    <span>{{ $t('report.common.modify') }}</span>
-                  </div>
-                </template>
-              </ShadcnDropdownItem>
+                  </a-menu-item>
 
-              <ShadcnDropdownItem @on-click="visibleDelete(true, row)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="Delete" size="15"/>
-                  <span>{{ $t('report.common.delete') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-            </ShadcnDropdown>
-          </ShadcnSpace>
+                  <a-menu-item @click="visibleDelete(true, record)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="Delete" size="15"/>
+                      <span>{{ $t('report.common.delete') }}</span>
+                    </div>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </a-space>
         </template>
-      </ShadcnTable>
-
-      <ShadcnPagination v-if="data?.length > 0"
-                        v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
+      </template>
+    </DataTable>
+  </a-card>
 
   <ReportView v-if="dataViewVisible"
               :is-visible="dataViewVisible"
@@ -93,102 +81,73 @@
                 @close="visibleDelete(false, null)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { message } from 'ant-design-vue'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from '@/views/pages/admin/report/ReportUtils'
-import ReportService from '@/services/report'
 import { ReportModel } from '@/model/report'
+import DataTable from '@/views/components/table/DataTable.vue'
+import ReportService from '@/services/report'
 import ReportView from '@/views/pages/admin/report/ReportView.vue'
 import ReportDelete from '@/views/pages/admin/report/ReportDelete.vue'
 
-export default defineComponent({
-  name: 'ReportHome',
-  components: { ReportDelete, ReportView },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
+defineOptions({ name: 'ReportHome' })
 
-    return {
-      filter,
-      headers
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      dataInfo: null as ReportModel | null,
-      dataViewVisible: false,
-      dataDeleteVisible: false
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
+
+const loading = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const dataInfo = ref<ReportModel | null>(null)
+const dataViewVisible = ref(false)
+const dataDeleteVisible = ref(false)
+
+const handleInitialize = () => {
+  loading.value = true
+  ReportService.getAll(filter)
+               .then(response => {
+                 if (response.status) {
+                   data.value = response.data.content
+                   dataCount.value = response.data.total
+                   pageSize.value = response.data.size
+                   pageIndex.value = response.data.page
+                 }
+                 else {
+                   message.error(response.message)
+                 }
+               })
+               .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handleInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const visibleView = (opened: boolean, value: ReportModel | null) => {
+  dataViewVisible.value = opened
+  dataInfo.value = value
+}
+
+const visibleDelete = (opened: boolean, value: ReportModel | null) => {
+  dataDeleteVisible.value = opened
+  dataInfo.value = value
+  if (!opened) {
     handleInitialize()
-    {
-      this.loading = true
-      ReportService.getAll(this.filter)
-                   .then(response => {
-                     if (response.status) {
-                       this.data = response.data.content
-                       this.dataCount = response.data.total
-                       this.pageSize = response.data.size
-                       this.pageIndex = response.data.page
-                     }
-                     else {
-                       this.$Message.error({
-                         content: response.message,
-                         showIcon: true
-                       })
-                     }
-                   })
-                   .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handleInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    visibleView(opened: boolean, value: ReportModel | null)
-    {
-      this.dataViewVisible = opened
-      this.dataInfo = value
-    },
-    visibleDelete(opened: boolean, data: ReportModel | null)
-    {
-      this.dataDeleteVisible = opened
-      this.dataInfo = data
-      if (!opened) {
-        this.handleInitialize()
-      }
-    }
   }
-})
+}
+
+onMounted(() => handleInitialize())
 </script>
