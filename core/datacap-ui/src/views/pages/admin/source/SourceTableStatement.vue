@@ -1,73 +1,48 @@
 <template>
   <div class="relative min-h-screen">
-    <ShadcnSkeleton v-if="loading" animation/>
+    <a-skeleton v-if="loading" active/>
 
-    <ShadcnCodeEditor v-else-if="statement"
-                      v-model="statement"
-                      height="100vh"
-                      :config="{
-                        language: 'sql',
-                        readOnly: true,
-                        minimap: {
-                          enabled: false
-                        }
-                      }">
-    </ShadcnCodeEditor>
+    <AceEditor v-else-if="statement" :value="statement" height="100vh" :read-only="true"/>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, watch } from 'vue'
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { message } from 'ant-design-vue'
 import MetadataService from '@/services/metadata'
+import AceEditor from '@/views/components/editor/AceEditor.vue'
 
-export default defineComponent({
-  name: 'SourceTableStatement',
-  data()
-  {
-    return {
-      loading: false,
-      statement: null as string | null,
-      formState: null as any
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-    this.watchChange()
-  },
-  methods: {
-    handleInitialize()
-    {
-      const code = this.$route?.params.source
-      const database = this.$route?.params.database
-      const table = this.$route?.params.table
+defineOptions({ name: 'SourceTableStatement' })
 
-      if (code && database && table) {
-        this.loading = true
-        this.statement = null
-        MetadataService.getTableStatement(code, database, table)
-                       .then(response => {
-                         if (response.status && response.data && response.data.isSuccessful) {
-                           const content = response.data.columns[0]
-                           this.statement = content.create_table_sql
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.data?.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => this.loading = false)
-      }
-    },
-    watchChange()
-    {
-      watch(
-          () => this.$route?.params.table,
-          () => this.handleInitialize()
-      )
-    }
+const route = useRoute()
+
+const loading = ref(false)
+const statement = ref<string | null>(null)
+
+const handleInitialize = () => {
+  const code = route?.params.source as string
+  const database = route?.params.database as string
+  const table = route?.params.table as string
+
+  if (code && database && table) {
+    loading.value = true
+    statement.value = null
+    MetadataService.getTableStatement(code, database, table)
+                   .then((response) => {
+                     if (response.status && response.data && response.data.isSuccessful) {
+                       const content = response.data.columns[0]
+                       statement.value = content.create_table_sql
+                     }
+                     else {
+                       message.error(response.data?.message)
+                     }
+                   })
+                   .finally(() => (loading.value = false))
   }
-})
+}
+
+watch(() => route?.params.table, () => handleInitialize())
+
+handleInitialize()
 </script>

@@ -1,67 +1,52 @@
 <template>
   <div class="relative h-screen">
-    <ShadcnSpin v-model="loading" fixed/>
-
-    <ErDiagram v-if="!loading && options" :options="options"/>
+    <a-spin :spinning="loading">
+      <ErDiagram v-if="!loading && options" :options="options"/>
+    </a-spin>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, watch } from 'vue'
+
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { message } from 'ant-design-vue'
 import ErDiagram from '@/views/components/diagram/ErDiagram.vue'
 import { ErDiagramOptions } from '@/views/components/diagram/ErDiagramOptions.ts'
 import MetadataService from '@/services/metadata.ts'
 
-export default defineComponent({
-  name: 'SourceTableErDiagram',
-  components: { ErDiagram },
-  data()
-  {
-    return {
-      loading: false,
-      options: null as unknown as ErDiagramOptions
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-    this.watchChange()
-  },
-  methods: {
-    handleInitialize()
-    {
-      const code = this.$route?.params.source
-      const database = this.$route?.params.database
-      const table = this.$route?.params.table
+defineOptions({ name: 'SourceTableErDiagram' })
 
-      if (code && database && table) {
-        this.loading = true
-        MetadataService.getColumnsByTable(code, database, table)
-                       .then(response => {
-                         if (response.status && response.data && response.data.isSuccessful) {
-                           const table = response.data[0]
-                           this.options = new ErDiagramOptions()
-                           this.options.table = { id: table, name: table }
-                           this.options.columns = response.data.columns
-                                                          .filter(col => col.type_name === 'column')
-                                                          .map(col => ({ id: col.object_name, name: col.object_name, type: col.object_data_type }))
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => this.loading = false)
-      }
-    },
-    watchChange()
-    {
-      watch(
-          () => this.$route?.params.table,
-          () => this.handleInitialize()
-      )
-    }
+const route = useRoute()
+
+const loading = ref(false)
+const options = ref<ErDiagramOptions>(null as unknown as ErDiagramOptions)
+
+const handleInitialize = () => {
+  const code = route?.params.source as string
+  const database = route?.params.database as string
+  const table = route?.params.table as string
+
+  if (code && database && table) {
+    loading.value = true
+    MetadataService.getColumnsByTable(code, database, table)
+                   .then((response) => {
+                     if (response.status && response.data && response.data.isSuccessful) {
+                       const tableName = response.data[0]
+                       options.value = new ErDiagramOptions()
+                       options.value.table = { id: tableName, name: tableName }
+                       options.value.columns = response.data.columns
+                                                       .filter((col: any) => col.type_name === 'column')
+                                                       .map((col: any) => ({ id: col.object_name, name: col.object_name, type: col.object_data_type }))
+                     }
+                     else {
+                       message.error(response.message)
+                     }
+                   })
+                   .finally(() => (loading.value = false))
   }
-})
+}
+
+watch(() => route?.params.table, () => handleInitialize())
+
+handleInitialize()
 </script>
