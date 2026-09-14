@@ -1,139 +1,104 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="40%"
-               :title="title"
-               @on-close="onCancel">
-    <ShadcnSpace wrap>
-      <ShadcnAlert type="error" :title="$t('source.tip.dropColumn1')"/>
-      <ShadcnAlert type="error" :title="$t('source.tip.dropColumn2')"/>
-      <ShadcnAlert type="error" :title="$t('source.tip.dropColumn3')"/>
-      <ShadcnAlert type="error" :title="$t('source.tip.dropColumn4')"/>
-      <ShadcnAlert type="error" :title="$t('source.tip.dropColumn5')"/>
-    </ShadcnSpace>
+  <a-modal v-model:open="visible" width="40%" :title="title" :footer="null" @cancel="onCancel">
+    <a-space direction="vertical" :style="{ width: '100%' }">
+      <a-alert type="error" :message="$t('source.tip.dropColumn1')"/>
+      <a-alert type="error" :message="$t('source.tip.dropColumn2')"/>
+      <a-alert type="error" :message="$t('source.tip.dropColumn3')"/>
+      <a-alert type="error" :message="$t('source.tip.dropColumn4')"/>
+      <a-alert type="error" :message="$t('source.tip.dropColumn5')"/>
+    </a-space>
 
     <div class="relative mt-2">
-      <ShadcnSpin v-model="loading"/>
-
-      <AceEditor v-if="formState.statement" :value="formState.statement" :read-only="true"/>
+      <a-spin :spinning="loading">
+        <AceEditor v-if="formState.statement" :value="formState.statement" :read-only="true"/>
+      </a-spin>
     </div>
 
     <template #footer>
-      <ShadcnSpace>
-        <ShadcnButton type="default" @click="onCancel">
+      <a-space>
+        <a-button @click="onCancel">
           {{ $t('common.cancel') }}
-        </ShadcnButton>
+        </a-button>
 
-        <ShadcnButton type="error"
-                      :loading="submitting"
-                      :disabled="submitting"
-                      @click="onSubmit(false)">
+        <a-button type="primary" danger :loading="submitting" :disabled="submitting" @click="onSubmit(false)">
           {{ $t('source.common.dropColumn') }}
-        </ShadcnButton>
-      </ShadcnSpace>
+        </a-button>
+      </a-space>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import MetadataService from '@/services/metadata'
 import AceEditor from '@/views/components/editor/AceEditor.vue'
 
-export default defineComponent({
-  name: 'ColumnDrop',
-  components: { AceEditor },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    column: {
-      type: String
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      submitting: false,
-      title: null as string | null,
-      formState: null as any
-    }
-  },
-  created()
-  {
-    this.formState = {
-      statement: null
-    }
+defineOptions({ name: 'ColumnDrop' })
 
-    if (this.column) {
-      this.title = this.$t('source.common.dropColumnInfo').replace('$VALUE', this.column)
+const props = withDefaults(defineProps<{ isVisible?: boolean; column?: string }>(), { isVisible: false })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
 
-      this.onSubmit(true)
-    }
-  },
-  methods: {
-    onSubmit(preview: boolean)
-    {
-      const code = this.$route.params?.source
-      const database = this.$route.params?.database
-      const table = this.$route.params?.table
+const route = useRoute()
+const { t } = useI18n()
 
-      if (code && database && table) {
-        if (preview) {
-          this.loading = true
-        }
-        else {
-          this.submitting = true
-        }
-
-        MetadataService.dropColumn(code, database, table, { preview, columns: [{ name: this.column }] })
-                       .then(response => {
-                         if (response.status) {
-                           if (preview) {
-                             this.formState.statement = response.data.content
-                           }
-                           else {
-                             this.$Message.success({
-                               content: this.$t('source.tip.dropColumnSuccess').replace('$VALUE', String(this.column)),
-                               showIcon: true
-                             })
-
-                             this.onCancel()
-                           }
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => {
-                         if (preview) {
-                           this.loading = false
-                         }
-                         else {
-                           this.submitting = false
-                         }
-                       })
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
 })
+
+const loading = ref(false)
+const submitting = ref(false)
+const title = ref<string | null>(null)
+const formState = ref<any>({ statement: null })
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = (preview: boolean) => {
+  const code = route.params?.source as string
+  const database = route.params?.database as string
+  const table = route.params?.table as string
+
+  if (code && database && table) {
+    if (preview) {
+      loading.value = true
+    }
+    else {
+      submitting.value = true
+    }
+
+    MetadataService.dropColumn(code, database, table, { preview, columns: [{ name: props.column }] })
+                   .then((response) => {
+                     if (response.status) {
+                       if (preview) {
+                         formState.value.statement = response.data.content
+                       }
+                       else {
+                         message.success(t('source.tip.dropColumnSuccess').replace('$VALUE', String(props.column)))
+                         onCancel()
+                       }
+                     }
+                     else {
+                       message.error(response.message)
+                     }
+                   })
+                   .finally(() => {
+                     if (preview) {
+                       loading.value = false
+                     }
+                     else {
+                       submitting.value = false
+                     }
+                   })
+  }
+}
+
+if (props.column) {
+  title.value = t('source.common.dropColumnInfo').replace('$VALUE', props.column)
+  onSubmit(true)
+}
 </script>

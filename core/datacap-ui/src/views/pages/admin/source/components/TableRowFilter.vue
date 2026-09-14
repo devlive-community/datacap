@@ -1,140 +1,109 @@
 <template>
-  <ShadcnModal v-model="visible"
-               height="410"
-               width="50%"
-               :title="$t('source.common.filterData')"
-               @on-close="onCancel">
+  <a-modal v-model:open="visible"
+           width="50%"
+           :title="$t('source.common.filterData')"
+           :footer="null"
+           @cancel="onCancel">
+    <a-form :model="formState" layout="vertical">
+      <div v-for="(item, index) in formState.filters" :key="index" class="flex items-center space-x-2">
+        <a-form-item class="w-full">
+          <a-select v-model:value="item.index" @change="onFetchOperations(item.index, item)">
+            <a-select-option v-for="column in columns" :key="column" :value="column">
+              {{ column }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
 
-    <ShadcnForm v-model="formState">
-      <div class="flex items-center space-x-2" v-for="(item, index) in formState.filters">
-        <ShadcnFormItem name="column" class="w-full">
-          <ShadcnSelect v-model="item.index" @on-change="onFetchOperations(item.index, item)">
-            <template #options>
-              <ShadcnSelectOption v-for="column in columns" :value="column" :label="column"/>
+        <a-form-item class="w-full">
+          <a-select v-model:value="item.operator" :disabled="!item.index">
+            <a-select-option v-for="operation in item.operations" :key="operation" :value="operation">
+              {{ operation }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <a-form-item class="w-full">
+          <a-input v-model:value="item.value" :disabled="!item.operator"/>
+        </a-form-item>
+
+        <a-form-item>
+          <a-button shape="circle" size="small" danger @click="onRemoveFilter(index)">
+            <template #icon>
+              <ShadcnIcon icon="Minus"/>
             </template>
-          </ShadcnSelect>
-        </ShadcnFormItem>
-
-        <ShadcnFormItem name="operator" class="w-full">
-          <ShadcnSelect v-model="item.operator" :disabled="!item.index">
-            <template #options>
-              <ShadcnSelectOption v-for="operation in item.operations" :value="operation" :label="operation">
-                {{ operation }}
-              </ShadcnSelectOption>
-            </template>
-          </ShadcnSelect>
-        </ShadcnFormItem>
-
-        <ShadcnFormItem name="value" class="w-full">
-          <ShadcnInput v-model="item.value" :disabled="!item.operator"/>
-        </ShadcnFormItem>
-
-        <ShadcnFormItem>
-          <ShadcnButton circle
-                        size="small"
-                        type="error"
-                        @click="onRemoveFilter(index)">
-            <ShadcnIcon icon="Minus"/>
-          </ShadcnButton>
-        </ShadcnFormItem>
+          </a-button>
+        </a-form-item>
       </div>
 
-      <ShadcnFormItem class="space-y-1" :label="$t('source.common.filterCondition')">
-        <ShadcnButton size="small" @click="onAddFilter">
+      <a-form-item class="space-y-1" :label="$t('source.common.filterCondition')">
+        <a-button size="small" @click="onAddFilter">
           {{ $t('source.common.addFilter') }}
-        </ShadcnButton>
-      </ShadcnFormItem>
-    </ShadcnForm>
+        </a-button>
+      </a-form-item>
+    </a-form>
 
     <template #footer>
-      <ShadcnSpace>
-        <ShadcnButton type="default" @click="onCancel">
+      <a-space>
+        <a-button @click="onCancel">
           {{ $t('common.cancel') }}
-        </ShadcnButton>
-        <ShadcnButton @click="onFilter">
+        </a-button>
+        <a-button type="primary" @click="onFilter">
           {{ $t('common.apply') }}
-        </ShadcnButton>
-      </ShadcnSpace>
+        </a-button>
+      </a-space>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import { cloneDeep } from 'lodash'
 
-export default defineComponent({
-  name: 'TableRowFilter',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    columns: {
-      type: Array,
-      default: [] as number[]
-    },
-    types: {
-      type: Array,
-      default: [] as number[]
-    },
-    configure: {
-      type: Object as () => any
-    }
-  },
-  created()
-  {
-    if (this.configure) {
-      this.formState = {
-        filters: cloneDeep(this.configure)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      OPERATOR: '',
-      formState: {
-        filters: [] as any[]
-      }
-    }
-  },
-  methods: {
-    onAddFilter()
-    {
-      const filter = {}
-      this.formState.filters.push(filter)
-    },
-    onRemoveFilter(index: number)
-    {
-      this.formState.filters.splice(index, 1)
-    },
-    onFetchOperations(value: any, filter: any)
-    {
-      filter.name = value
-      filter.operations = ['EQ', 'NE', 'GT', 'GE', 'LT', 'LE', 'LIKE', 'IN', 'NOT IN', 'IS NULL', 'IS NOT NULL']
-    },
-    onFilter()
-    {
-      this.$emit('apply', this.formState.filters)
+defineOptions({ name: 'TableRowFilter' })
 
-      this.onCancel()
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const props = withDefaults(defineProps<{
+  isVisible?: boolean
+  columns?: any[]
+  types?: any[]
+  configure?: any
+}>(), {
+  isVisible: false,
+  columns: () => [],
+  types: () => []
 })
+const emit = defineEmits<{
+  (e: 'close', value: boolean): void
+  (e: 'apply', value: any[]): void
+}>()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const formState = ref<{ filters: any[] }>({
+  filters: props.configure ? cloneDeep(props.configure) : []
+})
+
+const onAddFilter = () => {
+  formState.value.filters.push({})
+}
+
+const onRemoveFilter = (index: number) => {
+  formState.value.filters.splice(index, 1)
+}
+
+const onFetchOperations = (value: any, filter: any) => {
+  filter.name = value
+  filter.operations = ['EQ', 'NE', 'GT', 'GE', 'LT', 'LE', 'LIKE', 'IN', 'NOT IN', 'IS NULL', 'IS NOT NULL']
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onFilter = () => {
+  emit('apply', formState.value.filters)
+  onCancel()
+}
 </script>

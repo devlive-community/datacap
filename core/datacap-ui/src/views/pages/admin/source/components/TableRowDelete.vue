@@ -1,143 +1,104 @@
 <template>
-  <ShadcnModal v-model="visible"
-               height="410"
-               width="40%"
-               :title="$t('source.common.previewDML')"
-               @on-close="onCancel">
+  <a-modal v-model:open="visible"
+           width="40%"
+           :title="$t('source.common.previewDML')"
+           :footer="null"
+           @cancel="onCancel">
     <div class="relative h-full">
-      <ShadcnSkeleton v-if="loading" animation/>
+      <a-skeleton v-if="loading" active/>
 
-      <ShadcnCodeEditor v-else-if="contentDML" v-model="contentDML"
-                        :config="{
-                        language: 'sql',
-                        readOnly: true,
-                        minimap: {
-                          enabled: false
-                        }
-                      }">
-      </ShadcnCodeEditor>
+      <AceEditor v-else-if="contentDML" :value="contentDML" :read-only="true"/>
     </div>
 
     <template #footer>
-      <ShadcnSpace>
-        <ShadcnButton type="default" @click="onCancel">
+      <a-space>
+        <a-button @click="onCancel">
           {{ $t('common.cancel') }}
-        </ShadcnButton>
+        </a-button>
 
-        <ShadcnButton type="danger" :disabled="submitting" :loading="submitting" @click="onSubmit">
+        <a-button type="primary" danger :disabled="submitting" :loading="submitting" @click="onSubmit">
           {{ $t('source.common.deleteRows') }}
-        </ShadcnButton>
-      </ShadcnSpace>
+        </a-button>
+      </a-space>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import MetadataService from '@/services/metadata'
 import AceEditor from '@/views/components/editor/AceEditor.vue'
 
-export default defineComponent({
-  name: 'TableRowDelete',
-  components: { AceEditor },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    columns: {
-      type: Array<any>
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      submitting: false,
-      contentDML: null as string | null,
-      configure: null as any
-    }
-  },
-  created()
-  {
-    this.onChange(true)
-  },
-  methods: {
-    onChange(preview: boolean)
-    {
-      const code = this.$route?.params.source
-      const database = this.$route?.params.database
-      const table = this.$route?.params.table
+defineOptions({ name: 'TableRowDelete' })
 
-      if (code && database && table) {
-        if (preview) {
-          this.loading = true
-        }
-        else {
-          this.submitting = true
-        }
+const props = withDefaults(defineProps<{ isVisible?: boolean; columns?: any[] }>(), { isVisible: false })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
 
-        const columns = this.columns.map(item => {
-          return {
-            original: item
-          }
-        })
+const route = useRoute()
+const { t } = useI18n()
 
-        const configure = {
-          preview: preview,
-          columns: columns
-        }
-        MetadataService.deleteData(code, database, table, configure)
-                       .then(response => {
-                         if (response.status && response.data && response.data.isSuccessful) {
-                           if (preview) {
-                             this.contentDML = response.data.content
-                           }
-                           else {
-                             this.$Message.success({
-                               content: this.$t('source.tip.deleteSuccess'),
-                               showIcon: true
-                             })
-
-                             this.onCancel()
-                           }
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => {
-                         if (preview) {
-                           this.loading = false
-                         }
-                         else {
-                           this.submitting = false
-                         }
-                       })
-      }
-    },
-    onSubmit()
-    {
-      this.onChange(false)
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
 })
+
+const loading = ref(false)
+const submitting = ref(false)
+const contentDML = ref<string | null>(null)
+
+const onChange = (preview: boolean) => {
+  const code = route?.params.source as string
+  const database = route?.params.database as string
+  const table = route?.params.table as string
+
+  if (code && database && table) {
+    if (preview) {
+      loading.value = true
+    }
+    else {
+      submitting.value = true
+    }
+
+    const columns = (props.columns ?? []).map((item) => ({ original: item }))
+
+    const configure = {
+      preview: preview,
+      columns: columns
+    }
+    MetadataService.deleteData(code, database, table, configure)
+                   .then((response) => {
+                     if (response.status && response.data && response.data.isSuccessful) {
+                       if (preview) {
+                         contentDML.value = response.data.content
+                       }
+                       else {
+                         message.success(t('source.tip.deleteSuccess'))
+                         onCancel()
+                       }
+                     }
+                     else {
+                       message.error(response.message)
+                     }
+                   })
+                   .finally(() => {
+                     if (preview) {
+                       loading.value = false
+                     }
+                     else {
+                       submitting.value = false
+                     }
+                   })
+  }
+}
+
+const onSubmit = () => onChange(false)
+
+const onCancel = () => {
+  visible.value = false
+}
+
+onChange(true)
 </script>

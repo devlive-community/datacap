@@ -1,137 +1,108 @@
 <template>
-  <ShadcnModal v-model="visible"
-               :title="title"
-               width="60%"
-               @on-close="onCancel">
-    <ShadcnSpace wrap>
-      <ShadcnAlert type="error" :title="$t('source.tip.truncateTable1')"/>
-      <ShadcnAlert type="error" :title="$t('source.tip.truncateTable2')"/>
-      <ShadcnAlert type="error" :title="$t('source.tip.truncateTable3')"/>
-      <ShadcnAlert type="error" :title="$t('source.tip.truncateTable4')"/>
-      <ShadcnAlert type="error" :title="$t('source.tip.truncateTable5')"/>
-    </ShadcnSpace>
+  <a-modal v-model:open="visible" :title="title" width="60%" :footer="null" @cancel="onCancel">
+    <a-space direction="vertical" :style="{ width: '100%' }">
+      <a-alert type="error" :message="$t('source.tip.truncateTable1')"/>
+      <a-alert type="error" :message="$t('source.tip.truncateTable2')"/>
+      <a-alert type="error" :message="$t('source.tip.truncateTable3')"/>
+      <a-alert type="error" :message="$t('source.tip.truncateTable4')"/>
+      <a-alert type="error" :message="$t('source.tip.truncateTable5')"/>
+    </a-space>
 
     <div class="relative">
-      <ShadcnSpin v-model="loading"/>
-
-      <AceEditor v-if="!loading && formState.statement"
-                 class="mt-2"
-                 :value="formState.statement"
-                 :read-only="true"/>
+      <a-spin :spinning="loading">
+        <AceEditor v-if="!loading && formState.statement"
+                   class="mt-2"
+                   :value="formState.statement"
+                   :read-only="true"/>
+      </a-spin>
     </div>
 
     <template #footer>
-      <ShadcnSpace>
-        <ShadcnButton type="default" @click="onCancel">
+      <a-space>
+        <a-button @click="onCancel">
           {{ $t('common.cancel') }}
-        </ShadcnButton>
+        </a-button>
 
-        <ShadcnButton type="error" :loading="submitting" :disabled="submitting" @click="onSubmit(false)">
+        <a-button type="primary" danger :loading="submitting" :disabled="submitting" @click="onSubmit(false)">
           {{ $t('source.common.truncateTable') }}
-        </ShadcnButton>
-      </ShadcnSpace>
+        </a-button>
+      </a-space>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import AceEditor from '@/views/components/editor/AceEditor.vue'
 import MetadataService from '@/services/metadata.ts'
 
-export default defineComponent({
-  name: 'TableTruncate',
-  components: { AceEditor },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      submitting: false,
-      title: null as string | null,
-      formState: null as any
-    }
-  },
-  created()
-  {
-    this.formState = {
-      statement: null
-    }
+defineOptions({ name: 'TableTruncate' })
 
-    const table = this.$route.params?.table
-    if (table) {
-      this.title = this.$t('source.common.truncateTable').replace('$VALUE', table)
+const props = withDefaults(defineProps<{ isVisible?: boolean }>(), { isVisible: false })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
 
-      this.onSubmit(true)
-    }
-  },
-  methods: {
-    onSubmit(preview: boolean)
-    {
-      const code = this.$route.params?.source
-      const database = this.$route.params?.database
-      const table = this.$route.params?.table
+const route = useRoute()
+const { t } = useI18n()
 
-      if (code && database && table) {
-        if (preview) {
-          this.loading = true
-        }
-        else {
-          this.submitting = true
-        }
-
-        MetadataService.truncateTable(code, database, table, { preview })
-                       .then(response => {
-                         if (response.status) {
-                           if (preview) {
-                             this.formState.statement = response.data.content
-                           }
-                           else {
-                             this.$Message.success({
-                               content: this.$t('source.tip.truncateTableSuccess').replace('$VALUE', table),
-                               showIcon: true
-                             })
-
-                             this.onCancel()
-                           }
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => {
-                         if (preview) {
-                           this.loading = false
-                         }
-                         else {
-                           this.submitting = false
-                         }
-                       })
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
 })
+
+const loading = ref(false)
+const submitting = ref(false)
+const title = ref<string | null>(null)
+const formState = ref<any>({ statement: null })
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = (preview: boolean) => {
+  const code = route.params?.source as string
+  const database = route.params?.database as string
+  const table = route.params?.table as string
+
+  if (code && database && table) {
+    if (preview) {
+      loading.value = true
+    }
+    else {
+      submitting.value = true
+    }
+
+    MetadataService.truncateTable(code, database, table, { preview })
+                   .then((response) => {
+                     if (response.status) {
+                       if (preview) {
+                         formState.value.statement = response.data.content
+                       }
+                       else {
+                         message.success(t('source.tip.truncateTableSuccess').replace('$VALUE', table))
+                         onCancel()
+                       }
+                     }
+                     else {
+                       message.error(response.message)
+                     }
+                   })
+                   .finally(() => {
+                     if (preview) {
+                       loading.value = false
+                     }
+                     else {
+                       submitting.value = false
+                     }
+                   })
+  }
+}
+
+const table = route.params?.table as string
+if (table) {
+  title.value = t('source.common.truncateTable').replace('$VALUE', table)
+  onSubmit(true)
+}
 </script>
