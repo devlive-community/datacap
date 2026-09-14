@@ -1,123 +1,121 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2">{{ $t('workflow.text.list') }}</div>
     </template>
 
-    <template #extra>
-      <ShadcnTooltip :content="$t('workflow.text.create')">
-        <ShadcnLink link="/admin/workflow/info">
-          <ShadcnButton circle size="small">
-            <ShadcnIcon icon="Plus" size="15"/>
-          </ShadcnButton>
-        </ShadcnLink>
-      </ShadcnTooltip>
-
-    </template>
-
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
-
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #executor="{row}">
-          <ShadcnTooltip :content="row.executor">
-            <ShadcnAvatar size="small" :src="`/static/images/executor/${row.executor.replace('Executor', '').toLowerCase()}.svg`"/>
-          </ShadcnTooltip>
-        </template>
-
-        <template #state="{row}">
-          <ShadcnTag class="w-20" :color="Common.getColor(row.state)">
-            {{ getText(row.state) }}
-          </ShadcnTag>
-        </template>
-
-        <template #action="{row}">
-          <ShadcnSpace>
-            <ShadcnTooltip :content="$t('common.error')">
-              <ShadcnButton circle
-                            size="small"
-                            type="error"
-                            :disabled="row.state !== 'FAILURE' && !(row.state == 'STOPPED' && row.message)"
-                            @click="visibleShowMessage(true, row)">
-                <ShadcnIcon icon="TriangleAlert" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
-
-            <ShadcnDropdown trigger="click" position="right">
-              <template #trigger>
-                <ShadcnButton circle size="small">
-                  <ShadcnIcon icon="Cog" :size="15"/>
-                </ShadcnButton>
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handleInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #actions>
+        <a-tooltip :title="$t('workflow.text.create')">
+          <router-link to="/admin/workflow/info" target="_blank">
+            <a-button type="primary" shape="circle" size="small">
+              <template #icon>
+                <ShadcnIcon icon="Plus" :size="15"/>
               </template>
+            </a-button>
+          </router-link>
+        </a-tooltip>
+      </template>
 
-              <ShadcnDropdownItem :disabled="row.state === 'RUNNING'">
-                <template v-if="row.state !== 'RUNNING'">
-                  <RouterLink :to="`/admin/workflow/info/${row.code}`" target="_blank" class="flex items-center">
-                    <ShadcnIcon icon="Info" size="15"/>
-                    <span class="ml-2">{{ $t('workflow.text.modify') }}</span>
-                  </RouterLink>
-                </template>
-                <div v-else class="flex items-center">
-                  <ShadcnIcon icon="Info" size="15"/>
-                  <span class="ml-2">{{ $t('workflow.text.modify') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem :disabled="row.state !== 'RUNNING'" @on-click="visibleStop(true, row)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="CircleStop" size="15"/>
-                  <span>{{ $t('workflow.text.stop') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem :disabled="row.state === 'RUNNING'" @on-click="visibleRestart(true, row)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="CirclePlay" size="15"/>
-                  <span>{{ $t('workflow.text.restart') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem @on-click="visibleLogger(true, row)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="Rss" size="15"/>
-                  <span>{{ $t('workflow.text.logger') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem :disabled="row.state === 'RUNNING'" @on-click="visibleDelete(true, row)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="Delete" size="15"/>
-                  <span>{{ $t('workflow.text.delete') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem @on-click="visibleFlow(true, row)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="Flower" size="15"/>
-                  <span>{{ $t('workflow.text.flow') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-            </ShadcnDropdown>
-          </ShadcnSpace>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'executor'">
+          <a-tooltip :title="record.executor">
+            <a-avatar size="small" :src="`/static/images/executor/${record.executor.replace('Executor', '').toLowerCase()}.svg`"/>
+          </a-tooltip>
         </template>
-      </ShadcnTable>
 
-      <ShadcnPagination v-if="data.length > 0"
-                        v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
+        <template v-else-if="column.key === 'state'">
+          <a-tag class="w-20" :color="Common.getColor(record.state)">
+            {{ getText(record.state) }}
+          </a-tag>
+        </template>
+
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('common.error')">
+              <a-button shape="circle"
+                        size="small"
+                        danger
+                        :disabled="record.state !== 'FAILURE' && !(record.state == 'STOPPED' && record.message)"
+                        @click="visibleShowMessage(true, record)">
+                <template #icon>
+                  <ShadcnIcon icon="TriangleAlert" :size="15"/>
+                </template>
+              </a-button>
+            </a-tooltip>
+
+            <a-dropdown trigger="click" placement="bottomRight">
+              <a-button shape="circle" size="small">
+                <template #icon>
+                  <ShadcnIcon icon="Cog" :size="15"/>
+                </template>
+              </a-button>
+
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item :disabled="record.state === 'RUNNING'">
+                    <template v-if="record.state !== 'RUNNING'">
+                      <router-link :to="`/admin/workflow/info/${record.code}`" target="_blank" class="flex items-center">
+                        <ShadcnIcon icon="Info" :size="15"/>
+                        <span class="ml-2">{{ $t('workflow.text.modify') }}</span>
+                      </router-link>
+                    </template>
+                    <div v-else class="flex items-center">
+                      <ShadcnIcon icon="Info" :size="15"/>
+                      <span class="ml-2">{{ $t('workflow.text.modify') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item :disabled="record.state !== 'RUNNING'" @click="visibleStop(true, record)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="CircleStop" :size="15"/>
+                      <span>{{ $t('workflow.text.stop') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item :disabled="record.state === 'RUNNING'" @click="visibleRestart(true, record)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="CirclePlay" :size="15"/>
+                      <span>{{ $t('workflow.text.restart') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item @click="visibleLogger(true, record)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="Rss" :size="15"/>
+                      <span>{{ $t('workflow.text.logger') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item :disabled="record.state === 'RUNNING'" @click="visibleDelete(true, record)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="Delete" :size="15"/>
+                      <span>{{ $t('workflow.text.delete') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item @click="visibleFlow(true, record)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="Flower" :size="15"/>
+                      <span>{{ $t('workflow.text.flow') }}</span>
+                    </div>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </a-space>
+        </template>
+      </template>
+    </DataTable>
+  </a-card>
 
   <MarkdownPreview v-if="dataMessageVisible && dataInfo"
                    :is-visible="dataMessageVisible"
@@ -150,139 +148,105 @@
                    @close="visibleRestart(false, null)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from './Utils'
 import WorkflowService from '@/services/workflow'
 import Common, { useUtil } from '@/utils/common.ts'
 import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
 import { WorkflowModel } from '@/model/workflow.ts'
+import DataTable from '@/views/components/table/DataTable.vue'
 import WorkflowFlow from '@/views/pages/admin/wofkflow/WorkflowFlow.vue'
 import WorkflowDelete from '@/views/pages/admin/wofkflow/WorkflowDelete.vue'
 import WorkflowStop from '@/views/pages/admin/wofkflow/WorkflowStop.vue'
 import WorkflowLogger from '@/views/pages/admin/wofkflow/WorkflowLogger.vue'
 import WorkflowRestart from '@/views/pages/admin/wofkflow/WorkflowRestart.vue'
 
-export default defineComponent({
-  name: 'PipelineHome',
-  components: { WorkflowRestart, WorkflowLogger, WorkflowStop, WorkflowDelete, WorkflowFlow, MarkdownPreview },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
-    const { getText } = useUtil()
+defineOptions({ name: 'PipelineHome' })
 
-    return {
-      filter,
-      headers,
-      getText
-    }
-  },
-  computed: {
-    Common()
-    {
-      return Common
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      dataInfo: null as WorkflowModel | null,
-      dataMessageVisible: false,
-      dataLoggerVisible: false,
-      dataDeleteVisible: false,
-      dataStopVisible: false,
-      dataFlowVisible: false,
-      dataRestartVisible: false
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
+const { getText } = useUtil()
+
+const loading = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const dataInfo = ref<WorkflowModel | null>(null)
+const dataMessageVisible = ref(false)
+const dataLoggerVisible = ref(false)
+const dataDeleteVisible = ref(false)
+const dataStopVisible = ref(false)
+const dataFlowVisible = ref(false)
+const dataRestartVisible = ref(false)
+
+const handleInitialize = () => {
+  loading.value = true
+  WorkflowService.getAll(filter)
+                 .then((response) => {
+                   if (response.status) {
+                     data.value = response.data.content
+                     dataCount.value = response.data.total
+                     pageSize.value = response.data.size
+                     pageIndex.value = response.data.page
+                   }
+                 })
+                 .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handleInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const visibleStop = (opened: boolean, value: null | WorkflowModel) => {
+  dataStopVisible.value = opened
+  dataInfo.value = value
+  if (!opened) {
     handleInitialize()
-    {
-      this.loading = true
-      WorkflowService.getAll(this.filter)
-                     .then((response) => {
-                       if (response.status) {
-                         this.data = response.data.content
-                         this.dataCount = response.data.total
-                         this.pageSize = response.data.size
-                         this.pageIndex = response.data.page
-                       }
-                     })
-                     .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handleInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    visibleStop(opened: boolean, value: null | WorkflowModel)
-    {
-      this.dataStopVisible = opened
-      this.dataInfo = value
-      if (!opened) {
-        this.handleInitialize()
-      }
-    },
-    visibleShowMessage(opened: boolean, value: null | WorkflowModel)
-    {
-      this.dataMessageVisible = opened
-      this.dataInfo = value
-    },
-    visibleLogger(opened: boolean, value: null | WorkflowModel)
-    {
-      this.dataLoggerVisible = opened
-      this.dataInfo = value
-    },
-    visibleDelete(opened: boolean, value: null | WorkflowModel)
-    {
-      this.dataDeleteVisible = opened
-      this.dataInfo = value
-      if (!opened) {
-        this.handleInitialize()
-      }
-    },
-    visibleFlow(opened: boolean, value: null | WorkflowModel)
-    {
-      this.dataFlowVisible = opened
-      this.dataInfo = value
-    },
-    visibleRestart(opened: boolean, value: null | WorkflowModel)
-    {
-      this.dataRestartVisible = opened
-      this.dataInfo = value
-      if (!opened) {
-        this.handleInitialize()
-      }
-    }
   }
-})
+}
+
+const visibleShowMessage = (opened: boolean, value: null | WorkflowModel) => {
+  dataMessageVisible.value = opened
+  dataInfo.value = value
+}
+
+const visibleLogger = (opened: boolean, value: null | WorkflowModel) => {
+  dataLoggerVisible.value = opened
+  dataInfo.value = value
+}
+
+const visibleDelete = (opened: boolean, value: null | WorkflowModel) => {
+  dataDeleteVisible.value = opened
+  dataInfo.value = value
+  if (!opened) {
+    handleInitialize()
+  }
+}
+
+const visibleFlow = (opened: boolean, value: null | WorkflowModel) => {
+  dataFlowVisible.value = opened
+  dataInfo.value = value
+}
+
+const visibleRestart = (opened: boolean, value: null | WorkflowModel) => {
+  dataRestartVisible.value = opened
+  dataInfo.value = value
+  if (!opened) {
+    handleInitialize()
+  }
+}
+
+handleInitialize()
 </script>

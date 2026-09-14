@@ -1,111 +1,89 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="40%"
-               :mask-closable="false"
-               :title="$t('workflow.text.restart')"
-               @on-close="onCancel">
-    <ShadcnSpace wrap>
-      <ShadcnAlert type="error" :title="$t('workflow.tip.stopAlert2')"/>
-      <ShadcnAlert :title="$t('workflow.tip.stopAlert3').replace('$VALUE', String(info?.name))"/>
-    </ShadcnSpace>
+  <a-modal v-model:open="visible"
+           width="40%"
+           :mask-closable="false"
+           :title="$t('workflow.text.restart')"
+           :footer="null"
+           @cancel="onCancel">
+    <a-space direction="vertical" :style="{ width: '100%' }">
+      <a-alert type="error" :message="$t('workflow.tip.stopAlert2')"/>
+      <a-alert :message="$t('workflow.tip.stopAlert3').replace('$VALUE', String(info?.name))"/>
+    </a-space>
 
-    <ShadcnForm v-model="formState" @on-submit="onSubmit">
-      <ShadcnFormItem name="name"
-                      :rules="[
-                            { required: true, message: $t('workflow.validator.name.required') },
-                            { validator: validateMatch }
-                      ]">
-        <ShadcnInput v-model="formState.name" name="name" :placeholder="$t('workflow.placeholder.name')"/>
-      </ShadcnFormItem>
+    <a-form :model="formState" class="mt-3" @finish="onSubmit">
+      <a-form-item name="name"
+                   :rules="[
+                         { required: true, message: $t('workflow.validator.name.required') },
+                         { validator: validateMatch }
+                   ]">
+        <a-input v-model:value="formState.name" :placeholder="$t('workflow.placeholder.name')"/>
+      </a-form-item>
 
       <div class="flex justify-end">
-        <ShadcnSpace>
-          <ShadcnButton type="default" @click="onCancel">
+        <a-space>
+          <a-button @click="onCancel">
             {{ $t('common.cancel') }}
-          </ShadcnButton>
+          </a-button>
 
-          <ShadcnButton submit type="error" :disabled="loading" :loading="loading">
+          <a-button type="primary" danger html-type="submit" :disabled="loading" :loading="loading">
             {{ $t('workflow.text.restart') }}
-          </ShadcnButton>
-        </ShadcnSpace>
+          </a-button>
+        </a-space>
       </div>
-    </ShadcnForm>
-  </ShadcnModal>
+    </a-form>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import WorkflowService from '@/services/workflow'
 import { WorkflowModel } from '@/model/workflow'
 
-export default defineComponent({
-  name: 'WorkflowRestart',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => WorkflowModel | null
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      title: null as string | null,
-      formState: {
-        name: ''
-      }
-    }
-  },
-  methods: {
-    onSubmit()
-    {
-      if (this.info) {
-        this.loading = true
-        WorkflowService.restart(this.info.code!)
-                       .then(response => {
-                         if (response.status) {
-                           this.$Message.success({
-                             content: this.$t('workflow.tip.restartSuccess').replace('$VALUE', String(this.info?.name)),
-                             showIcon: true
-                           })
+defineOptions({ name: 'WorkflowRestart' })
 
-                           this.onCancel()
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => this.loading = false)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    },
-    validateMatch(value: string)
-    {
-      if (value !== String(this.info?.name)) {
-        return Promise.reject(new Error(this.$t('workflow.validator.name.match').replace('$VALUE', String(this.info?.name))))
-      }
-      return Promise.resolve(true)
-    }
-  }
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: WorkflowModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const formState = ref({ name: '' })
+
+const validateMatch = (_rule: any, value: string) => {
+  if (value !== String(props.info?.name)) {
+    return Promise.reject(new Error(t('workflow.validator.name.match').replace('$VALUE', String(props.info?.name))))
+  }
+  return Promise.resolve(true)
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  if (props.info) {
+    loading.value = true
+    WorkflowService.restart(props.info.code!)
+                   .then((response) => {
+                     if (response.status) {
+                       message.success(t('workflow.tip.restartSuccess').replace('$VALUE', String(props.info?.name)))
+                       onCancel()
+                     }
+                     else {
+                       message.error(response.message)
+                     }
+                   })
+                   .finally(() => (loading.value = false))
+  }
+}
 </script>
