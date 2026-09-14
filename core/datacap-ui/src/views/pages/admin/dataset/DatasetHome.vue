@@ -1,120 +1,113 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2 font-normal text-sm">{{ $t('dataset.common.list') }}</div>
     </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
-
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #source="{row}">
-          <ShadcnTooltip :content="row?.source.type">
-            <ShadcnAvatar size="small" :src="'/static/images/plugin/' + row?.source.type.toLowerCase() + '.svg'" :alt="row?.source.type"/>
-          </ShadcnTooltip>
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handleInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'source'">
+          <a-tooltip :title="record?.source.type">
+            <a-avatar size="small" :src="'/static/images/plugin/' + record?.source.type.toLowerCase() + '.svg'" :alt="record?.source.type"/>
+          </a-tooltip>
         </template>
-
-        <template #syncMode="{ row }">
-          <ShadcnTag v-if="row?.syncMode === 'MANUAL'" :text=" $t('dataset.common.syncModeManual')"/>
-          <ShadcnTag v-else-if="row?.syncMode === 'TIMING'" :text="$t('dataset.common.syncModeTiming')"/>
-          <ShadcnTag v-else-if="row?.syncMode === 'OUT_SYNC'" :text="$t('dataset.common.syncModeOutSync')"/>
+        <template v-else-if="column.key === 'syncMode'">
+          <a-tag v-if="record?.syncMode === 'MANUAL'">{{ $t('dataset.common.syncModeManual') }}</a-tag>
+          <a-tag v-else-if="record?.syncMode === 'TIMING'">{{ $t('dataset.common.syncModeTiming') }}</a-tag>
+          <a-tag v-else-if="record?.syncMode === 'OUT_SYNC'">{{ $t('dataset.common.syncModeOutSync') }}</a-tag>
         </template>
-
-        <template #state="{ row }">
-          <ShadcnHoverCard>
+        <template v-else-if="column.key === 'state'">
+          <a-popover>
             <template #content>
-              <DatasetState :states="row?.state"/>
+              <DatasetState :states="record?.state"/>
             </template>
-            {{ getState(row?.state) }}
-          </ShadcnHoverCard>
+            <span class="cursor-pointer">{{ getState(record?.state) }}</span>
+          </a-popover>
         </template>
-
-        <template #action="{ row }">
-          <ShadcnSpace>
-            <ShadcnTooltip :content="$t('dataset.common.adhoc')">
-              <ShadcnLink :link="`/admin/dataset/adhoc/${row?.code}`" target="_blank">
-                <ShadcnButton circle size="small" :disabled="!isSuccess(row?.state)">
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('dataset.common.adhoc')">
+              <router-link v-if="isSuccess(record?.state)" :to="`/admin/dataset/adhoc/${ record?.code }`" target="_blank">
+                <a-button shape="circle" size="small">
                   <ShadcnIcon icon="BarChart2" size="15"/>
-                </ShadcnButton>
-              </ShadcnLink>
-            </ShadcnTooltip>
+                </a-button>
+              </router-link>
+              <a-button v-else shape="circle" size="small" disabled>
+                <ShadcnIcon icon="BarChart2" size="15"/>
+              </a-button>
+            </a-tooltip>
 
-            <ShadcnDropdown trigger="click" position="right">
-              <template #trigger>
-                <ShadcnButton circle size="small">
-                  <ShadcnIcon icon="Cog" size="15"/>
-                </ShadcnButton>
+            <a-dropdown trigger="click" placement="bottomRight">
+              <a-button shape="circle" size="small">
+                <ShadcnIcon icon="Cog" size="15"/>
+              </a-button>
+
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item>
+                    <router-link :to="`/admin/dataset/info/${ record?.code }`" target="_blank" class="flex items-center">
+                      <ShadcnIcon icon="Info" size="15"/>
+                      <span class="ml-2">{{ $t('dataset.common.info') }}</span>
+                    </router-link>
+                  </a-menu-item>
+
+                  <a-menu-item :disabled="!isSuccess(record?.state)" @click="visibleSyncData(record, true)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="RefreshCcw" size="15"/>
+                      <span>{{ $t('dataset.common.syncData') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item @click="visibleHistory(record, true)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="History" size="15"/>
+                      <span>{{ $t('dataset.common.history') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item :disabled="isSuccess(record?.state)" @click="visibleError(record, true)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="TriangleAlert" size="15"/>
+                      <span>{{ $t('dataset.common.error') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item :disabled="isSuccess(record?.state)" @click="visibleRebuild(record, true)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon :icon="record?.state === 'SUCCESS' ? 'CirclePlay' : 'CircleStop'" size="15"/>
+                      <span>{{ $t('dataset.common.rebuild') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item :disabled="!(record?.totalRows > 0)" @click="visibleClearData(record, true)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="SquareX" size="15"/>
+                      <span>{{ $t('dataset.common.clearData') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item @click="visibleDelete(record, true)">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="Delete" size="15"/>
+                      <span>{{ $t('dataset.common.delete') }}</span>
+                    </div>
+                  </a-menu-item>
+                </a-menu>
               </template>
-
-              <ShadcnDropdownItem>
-                <RouterLink :to="`/admin/dataset/info/${row?.code}`" target="_blank" class="flex items-center">
-                  <ShadcnIcon icon="Info" size="15"/>
-                  <span class="ml-2">{{ $t('dataset.common.info') }}</span>
-                </RouterLink>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem :disabled="!isSuccess(row?.state)" @on-click="visibleSyncData(row, true)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="RefreshCcw" size="15"/>
-                  <span>{{ $t('dataset.common.syncData') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem @on-click="visibleHistory(row, true)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="History" size="15"/>
-                  <span>{{ $t('dataset.common.history') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem :disabled="isSuccess(row?.state)" @on-click="visibleError(row, true)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="TriangleAlert" size="15"/>
-                  <span>{{ $t('dataset.common.error') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem :disabled="isSuccess(row?.state)" @on-click="visibleRebuild(row, true)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon :icon="row?.state === 'SUCCESS' ? 'CirclePlay' : 'CircleStop'" size="15"/>
-                  <span>{{ $t('dataset.common.rebuild') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem :disabled="!(row?.totalRows > 0)" @on-click="visibleClearData(row, true)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="SquareX" size="15"/>
-                  <span>{{ $t('dataset.common.clearData') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem @on-click="visibleDelete(row, true)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="Delete" size="15"/>
-                  <span>{{ $t('dataset.common.delete') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-            </ShadcnDropdown>
-          </ShadcnSpace>
+            </a-dropdown>
+          </a-space>
         </template>
-      </ShadcnTable>
-
-      <ShadcnPagination v-if="data?.length > 0"
-                        v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
+      </template>
+    </DataTable>
+  </a-card>
 
   <DatasetRebuild v-if="rebuildVisible"
                   :is-visible="rebuildVisible"
@@ -147,12 +140,14 @@
                    @close="visibleError(null, false)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import { useDatasetHeaders } from './DatasetUtils'
-import DatasetService from '@/services/dataset'
 import { DatasetModel } from '@/model/dataset'
+import { useUtil } from '@/utils/common'
+import DataTable from '@/views/components/table/DataTable.vue'
+import DatasetService from '@/services/dataset'
 import DatasetState from '@/views/pages/admin/dataset/components/DatasetState.vue'
 import DatasetSync from '@/views/pages/admin/dataset/DatasetSync.vue'
 import DatasetHistory from '@/views/pages/admin/dataset/DatasetHistory.vue'
@@ -160,144 +155,112 @@ import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
 import DatasetRebuild from '@/views/pages/admin/dataset/DatasetRebuild.vue'
 import DatasetClear from '@/views/pages/admin/dataset/DatasetClear.vue'
 import DatasetDelete from '@/views/pages/admin/dataset/DatasetDelete.vue'
-import { useUtil } from '@/utils/common'
 
-export default defineComponent({
-  name: 'DatasetHome',
-  components: { DatasetDelete, DatasetClear, DatasetRebuild, MarkdownPreview, DatasetHistory, DatasetSync, DatasetState },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useDatasetHeaders()
-    const { getDatasetStateText } = useUtil()
+defineOptions({ name: 'DatasetHome' })
 
-    return {
-      filter,
-      headers,
-      getDatasetStateText
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      contextData: null as DatasetModel | null,
-      rebuildVisible: false,
-      historyVisible: false,
-      syncDataVisible: false,
-      clearDataVisible: false,
-      errorVisible: false,
-      deleteVisible: false
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      this.loading = true
-      DatasetService.getAll(this.filter)
-                    .then((response) => {
-                      if (response.status) {
-                        this.data = response.data.content
-                        this.dataCount = response.data.total
-                        this.pageSize = response.data.size
-                        this.pageIndex = response.data.page
-                      }
-                    })
-                    .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handleInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    visibleRebuild(record: DatasetModel | null, opened: boolean)
-    {
-      if (record && this.isSuccess(record.state)) {
-        return
-      }
-      this.rebuildVisible = opened
-      this.contextData = record
-    },
-    visibleHistory(record: DatasetModel | null, opened: boolean)
-    {
-      this.contextData = record
-      this.historyVisible = opened
-    },
-    visibleSyncData(record: DatasetModel | null, opened: boolean)
-    {
-      if (record && !this.isSuccess(record.state)) {
-        return
-      }
-      this.contextData = record
-      this.syncDataVisible = opened
-    },
-    visibleClearData(record: DatasetModel | null, opened: boolean)
-    {
-      if (record && !(record.totalRows > 0)) {
-        return
-      }
-      this.contextData = record
-      this.clearDataVisible = opened
-      if (!opened) {
-        this.handleInitialize()
-      }
-    },
-    visibleError(record: DatasetModel | null, opened: boolean)
-    {
-      this.errorVisible = opened
-      this.contextData = record
-    },
-    visibleDelete(record: DatasetModel | null, opened: boolean)
-    {
-      this.deleteVisible = opened
-      this.contextData = record
+const filter: FilterModel = new FilterModel()
+const { headers } = useDatasetHeaders()
+const { getDatasetStateText } = useUtil()
 
-      if (!opened) {
-        this.handleInitialize()
-      }
-    },
-    getState(state: Array<any> | null): string | null
-    {
-      if (state && state.length > 0) {
-        const last = state[state.length - 1]
-        return last ? this.getDatasetStateText(String(last)) : null
-      }
-      return null
-    },
-    isSuccess(state: Array<any> | null)
-    {
-      if (state && state.length > 0) {
-        return state[state.length - 1].endsWith('SUCCESS')
-      }
-      return false
-    }
+const loading = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const contextData = ref<DatasetModel | null>(null)
+const rebuildVisible = ref(false)
+const historyVisible = ref(false)
+const syncDataVisible = ref(false)
+const clearDataVisible = ref(false)
+const errorVisible = ref(false)
+const deleteVisible = ref(false)
+
+const handleInitialize = () => {
+  loading.value = true
+  DatasetService.getAll(filter)
+                .then((response) => {
+                  if (response.status) {
+                    data.value = response.data.content
+                    dataCount.value = response.data.total
+                    pageSize.value = response.data.size
+                    pageIndex.value = response.data.page
+                  }
+                })
+                .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handleInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const isSuccess = (state: Array<any> | null) => {
+  if (state && state.length > 0) {
+    return state[state.length - 1].endsWith('SUCCESS')
   }
-})
+  return false
+}
 
+const getState = (state: Array<any> | null): string | null => {
+  if (state && state.length > 0) {
+    const last = state[state.length - 1]
+    return last ? getDatasetStateText(String(last)) : null
+  }
+  return null
+}
+
+const visibleRebuild = (record: DatasetModel | null, opened: boolean) => {
+  if (record && isSuccess(record.state)) {
+    return
+  }
+  rebuildVisible.value = opened
+  contextData.value = record
+}
+
+const visibleHistory = (record: DatasetModel | null, opened: boolean) => {
+  contextData.value = record
+  historyVisible.value = opened
+}
+
+const visibleSyncData = (record: DatasetModel | null, opened: boolean) => {
+  if (record && !isSuccess(record.state)) {
+    return
+  }
+  contextData.value = record
+  syncDataVisible.value = opened
+}
+
+const visibleClearData = (record: DatasetModel | null, opened: boolean) => {
+  if (record && !(record.totalRows > 0)) {
+    return
+  }
+  contextData.value = record
+  clearDataVisible.value = opened
+  if (!opened) {
+    handleInitialize()
+  }
+}
+
+const visibleError = (record: DatasetModel | null, opened: boolean) => {
+  errorVisible.value = opened
+  contextData.value = record
+}
+
+const visibleDelete = (record: DatasetModel | null, opened: boolean) => {
+  deleteVisible.value = opened
+  contextData.value = record
+  if (!opened) {
+    handleInitialize()
+  }
+}
+
+onMounted(() => handleInitialize())
 </script>

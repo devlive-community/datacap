@@ -8,22 +8,25 @@ export function useDatasetHeaders()
 {
     const { t } = useI18n()
 
+    // ant-design-vue Table 列格式（DatasetHome 已迁 antd）；source/syncMode/state/action 走 #bodyCell
     const headers = computed(() => [
-        { key: 'id', label: t('common.id') },
-        { key: 'name', label: t('common.name') },
-        { key: 'description', label: t('common.description') },
-        { key: 'source', label: t('common.source'), slot: 'source' },
-        { key: 'syncMode', label: t('dataset.common.syncMode'), slot: 'syncMode' },
-        { key: 'scheduler', label: t('common.scheduler') },
-        { key: 'executor', label: t('common.executor') },
-        { key: 'state', label: t('common.state'), slot: 'state' },
-        { key: 'totalRows', label: t('dataset.common.totalRows') },
-        { key: 'totalSize', label: t('dataset.common.totalSize') },
-        { key: 'createTime', label: t('common.createTime') },
-        { key: 'updateTime', label: t('common.updateTime') },
-        { key: 'action', label: t('common.action'), slot: 'action' }
+        { title: t('common.id'), dataIndex: 'id', key: 'id' },
+        { title: t('common.name'), dataIndex: 'name', key: 'name' },
+        { title: t('common.description'), dataIndex: 'description', key: 'description' },
+        { title: t('common.source'), key: 'source' },
+        { title: t('dataset.common.syncMode'), key: 'syncMode' },
+        { title: t('common.scheduler'), dataIndex: 'scheduler', key: 'scheduler' },
+        { title: t('common.executor'), dataIndex: 'executor', key: 'executor' },
+        { title: t('common.state'), key: 'state' },
+        { title: t('dataset.common.totalRows'), dataIndex: 'totalRows', key: 'totalRows' },
+        { title: t('dataset.common.totalSize'), dataIndex: 'totalSize', key: 'totalSize' },
+        { title: t('common.createTime'), dataIndex: 'createTime', key: 'createTime' },
+        { title: t('common.updateTime'), dataIndex: 'updateTime', key: 'updateTime' },
+        { title: t('common.action'), key: 'action' }
     ])
 
+    // TODO: DatasetHistory 迁移到 antd 后，这里同样改成 antd 列格式（title/dataIndex）
+    // 目前 DatasetHistory 仍是 view-shadcn-ui 的 ShadcnTable，保持 {key,label,slot} 格式
     const historyHeaders = computed(() => [
         { key: 'id', label: t('common.id') },
         { key: 'elapsed', label: t('common.elapsed') },
