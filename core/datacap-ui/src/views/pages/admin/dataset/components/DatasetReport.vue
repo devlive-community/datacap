@@ -1,56 +1,65 @@
 <template>
-  <ShadcnModal v-model="localVisible" :title="$t('common.configure')" @on-close="onCancel">
-    <ShadcnForm v-model="formState" @on-error="console.log($event)" @on-submit="onSubmit">
-      <ShadcnSpace wrap>
-        <ShadcnFormItem name="name"
-                        class="w-full"
-                        :label="$t('common.name')"
-                        :rules="[{ required: true, message: $t('common.name') }]">
-          <ShadcnInput v-model="formState.name" name="name"/>
-        </ShadcnFormItem>
+  <a-modal v-model:open="localVisible" :title="$t('common.configure')" :footer="null" @cancel="onCancel">
+    <a-form :model="formState" layout="vertical" @finish="onSubmit" @finishFailed="(e: any) => console.log(e)">
+      <a-form-item name="name"
+                   :label="$t('common.name')"
+                   :rules="[{ required: true, message: $t('common.name') }]">
+        <a-input v-model:value="formState.name"/>
+      </a-form-item>
 
-        <ShadcnFormItem class="w-full" name="description" :label="$t('common.description')">
-          <ShadcnInput v-model="formState.description" type="textarea" name="description"/>
-        </ShadcnFormItem>
+      <a-form-item name="description" :label="$t('common.description')">
+        <a-textarea v-model:value="formState.description"/>
+      </a-form-item>
 
-        <ShadcnFormItem class="w-full" name="build" :label="$t('dataset.common.continuousBuild')">
-          <ShadcnSwitch v-model="formState.build" name="build"/>
-        </ShadcnFormItem>
-      </ShadcnSpace>
+      <a-form-item name="build" :label="$t('dataset.common.continuousBuild')">
+        <a-switch v-model:checked="formState.build"/>
+      </a-form-item>
 
-      <ShadcnSpace>
-        <ShadcnButton type="default" @click="onCancel">
-          {{ $t('common.cancel') }}
-        </ShadcnButton>
-
-        <ShadcnButton submit :disabled="published" :loading="published">
-          {{ $t('common.publish') }}
-        </ShadcnButton>
-      </ShadcnSpace>
-    </ShadcnForm>
-  </ShadcnModal>
+      <div class="flex justify-end">
+        <a-space>
+          <a-button @click="onCancel">
+            {{ $t('common.cancel') }}
+          </a-button>
+          <a-button type="primary" html-type="submit" :disabled="published" :loading="published">
+            {{ $t('common.publish') }}
+          </a-button>
+        </a-space>
+      </div>
+    </a-form>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, ref } from 'vue'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import router from '@/router'
 import ReportService from '@/services/report.ts'
 
-const emit = defineEmits(['close'])
-const { proxy } = getCurrentInstance()!
+defineOptions({ name: 'DatasetReport' })
 
 const props = defineProps<{
-  visible: boolean,
-  info?: { name: string, description: string, build: boolean }
+  visible: boolean
+  info?: { name: string; description: string; build: boolean }
   code?: string
   dimension?: any
   commitOptions?: any
   configure?: any
 }>()
 
+const emit = defineEmits(['close'])
+
+const { t } = useI18n()
+
 const localVisible = ref(props.visible)
 const published = ref(false)
-const formState = ref(props.info || { name: undefined, description: undefined, build: false })
+const formState = ref<{ name?: string; description?: string; build: boolean }>(
+  props.info || { name: undefined, description: undefined, build: false }
+)
+
+const onCancel = () => {
+  emit('close', !props.visible)
+}
 
 const onSubmit = () => {
   published.value = true
@@ -70,23 +79,13 @@ const onSubmit = () => {
   ReportService.saveOrUpdate(configure)
                .then(response => {
                  if (response.status) {
-                   // @ts-ignore
-                   proxy?.$Message.success({
-                     content: proxy.$t('report.tip.publishSuccess').replace('$VALUE', formState.value.name),
-                     showIcon: true
-                   })
-
+                   message.success(t('report.tip.publishSuccess').replace('$VALUE', String(formState.value.name)))
                    if (formState.value.build) {
                      router.push('/admin/report')
                    }
-
                    onCancel()
                  }
                })
-               .finally(() => published.value = false)
-}
-
-const onCancel = () => {
-  emit('close', !props.visible)
+               .finally(() => (published.value = false))
 }
 </script>
