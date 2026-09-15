@@ -1,103 +1,75 @@
 <template>
-  <ShadcnModal v-model="visible" :title="$t('common.chat')">
+  <a-modal v-model:open="visible" :title="$t('common.chat')" :footer="null">
+    <a-form v-if="formState" :model="formState" layout="vertical" @finish="onSubmit">
+      <a-form-item name="name"
+                   :label="$t('common.name')"
+                   :rules="[ { required: true, message: $t('common.name') } ]">
+        <a-input v-model:value="formState.name"/>
+      </a-form-item>
 
-    <ShadcnForm v-model="formState" @on-submit="onSubmit">
-      <ShadcnFormItem name="name"
-                      :label="$t('common.name')"
-                      :rules="[ { required: true, message: $t('common.name') } ]">
-        <ShadcnInput v-model="formState.name" name="name"/>
-      </ShadcnFormItem>
+      <a-form-item name="avatar" :label="$t('common.avatar')">
+        <a-input v-model:value="formState.avatar"/>
+      </a-form-item>
 
-      <ShadcnFormItem name="avatar" :label="$t('common.avatar')">
-        <ShadcnInput v-model="formState.avatar" name="avatar"/>
-      </ShadcnFormItem>
-
-      <ShadcnFormItem name="description" :label="$t('common.description')">
-        <ShadcnInput v-model="formState.description" type="textarea" name="description"/>
-      </ShadcnFormItem>
+      <a-form-item name="description" :label="$t('common.description')">
+        <a-textarea v-model:value="formState.description"/>
+      </a-form-item>
 
       <div class="flex justify-end">
-        <ShadcnSpace>
-          <ShadcnButton type="default" @click="onCancel">
+        <a-space>
+          <a-button @click="onCancel">
             {{ $t('common.cancel') }}
-          </ShadcnButton>
+          </a-button>
 
-          <ShadcnButton submit :disabled="loading" :loading="loading">
+          <a-button type="primary" html-type="submit" :disabled="loading" :loading="loading">
             {{ $t('common.save') }}
-          </ShadcnButton>
-        </ShadcnSpace>
+          </a-button>
+        </a-space>
       </div>
-    </ShadcnForm>
-
-  </ShadcnModal>
+    </a-form>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import ChatService from '@/services/chat.ts'
 import { ChatModel, ChatRequest } from '@/model/chat.ts'
 
-export default defineComponent({
-  name: 'ChatInfo',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      formState: null as unknown as ChatModel
-    }
-  },
-  created()
-  {
-    this.formState = ChatRequest.of()
-  },
-  methods: {
-    onSubmit()
-    {
-      if (this.formState) {
-        this.loading = true
-        ChatService.saveOrUpdate(this.formState)
-                   .then(response => {
-                     if (response.status) {
-                       this.$Message.success({
-                         content: this.$t('common.success'),
-                         showIcon: true
-                       })
+defineOptions({ name: 'ChatInfo' })
 
-                       this.onCancel()
-                     }
-                     else {
-                       this.$Message.error(
-                           {
-                             content: response.message,
-                             showIcon: true
-                           }
-                       )
-                     }
-                   })
-                   .finally(() => this.loading = false)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const props = withDefaults(defineProps<{ isVisible?: boolean }>(), { isVisible: false })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
 })
+
+const loading = ref(false)
+const formState = ref<ChatModel>(ChatRequest.of())
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  if (formState.value) {
+    loading.value = true
+    ChatService.saveOrUpdate(formState.value)
+               .then((response) => {
+                 if (response.status) {
+                   message.success(t('common.success'))
+                   onCancel()
+                 }
+                 else {
+                   message.error(response.message)
+                 }
+               })
+               .finally(() => (loading.value = false))
+  }
+}
 </script>
