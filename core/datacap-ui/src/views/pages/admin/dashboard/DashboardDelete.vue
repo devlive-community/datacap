@@ -1,110 +1,88 @@
 <template>
-  <ShadcnModal v-model="visible" :title=" $t('dashboard.common.delete') + ' [ ' + data?.name + ' ]'" @on-close="onCancel">
-    <ShadcnSpace wrap>
-      <ShadcnAlert type="error" :title="$t('dashboard.tip.deleteTip1')"/>
+  <a-modal v-model:open="visible"
+           :title="$t('dashboard.common.delete') + ' [ ' + data?.name + ' ]'"
+           :footer="null"
+           @cancel="onCancel">
+    <a-space direction="vertical" :style="{ width: '100%' }">
+      <a-alert type="error" :message="$t('dashboard.tip.deleteTip1')"/>
+      <a-alert type="error" :message="$t('dashboard.tip.deleteTip2')"/>
+      <a-alert type="error" :message="$t('dashboard.tip.deleteTip3').replace('$NAME', data?.name as string)"/>
+    </a-space>
 
-      <ShadcnAlert type="error" :title="$t('dashboard.tip.deleteTip2')"/>
-
-      <ShadcnAlert type="error" :title="$t('dashboard.tip.deleteTip3').replace('$NAME', data?.name as string)"/>
-    </ShadcnSpace>
-
-    <ShadcnForm v-model="formState" @on-error="console.log($event)" @on-submit="onSubmit">
-      <ShadcnFormItem name="name"
-                      :rules="[
-                            { required: true, message: $t('dashboard.validator.name.required') },
-                            { validator: validateMatch }
-                      ]">
-        <ShadcnInput v-model="formState.name" name="name" :placeholder="$t('dashboard.placeholder.name')"/>
-      </ShadcnFormItem>
+    <a-form :model="formState" class="mt-3" @finish="onSubmit">
+      <a-form-item name="name"
+                   :rules="[
+                         { required: true, message: $t('dashboard.validator.name.required') },
+                         { validator: validateMatch }
+                   ]">
+        <a-input v-model:value="formState.name" :placeholder="$t('dashboard.placeholder.name')"/>
+      </a-form-item>
 
       <div class="flex justify-end">
-        <ShadcnSpace>
-          <ShadcnButton type="default" @click="onCancel">
+        <a-space>
+          <a-button @click="onCancel">
             {{ $t('common.cancel') }}
-          </ShadcnButton>
+          </a-button>
 
-          <ShadcnButton submit type="error" :loading="loading">
+          <a-button type="primary" danger html-type="submit" :loading="loading">
             {{ $t('dashboard.common.delete') }}
-          </ShadcnButton>
-        </ShadcnSpace>
+          </a-button>
+        </a-space>
       </div>
-    </ShadcnForm>
-  </ShadcnModal>
+    </a-form>
+  </a-modal>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
+
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import DashboardService from '@/services/dashboard'
 import { DashboardModel } from '@/model/dashboard'
 
-export default defineComponent({
-  name: 'DashboardDelete',
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: () => false
-    },
-    data: {
-      type: Object as () => DashboardModel | null,
-      default: null
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      formState: {
-        name: ''
-      }
-    }
-  },
-  methods: {
-    onSubmit()
-    {
-      if (this.data) {
-        this.loading = true
-        DashboardService.deleteByCode(this.data.code)
-                        .then((response) => {
-                          if (response.status) {
-                            this.$Message.success({
-                              content: `${ this.$t('dashboard.common.delete') } [ ${ this.data?.name } ] ${ this.$t('common.successfully') }`,
-                              showIcon: true
-                            })
+defineOptions({ name: 'DashboardDelete' })
 
-                            this.onCancel()
-                          }
-                          else {
-                            this.$Message.error({
-                              content: response.message,
-                              showIcon: true
-                            })
-                          }
-                        })
-                        .finally(() => this.loading = false)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    },
-    validateMatch(value: string)
-    {
-      if (value !== String(this.data?.name)) {
-        return Promise.reject(new Error(this.$t('dashboard.validator.name.match').replace('$VALUE', String(this.data?.name))))
-      }
-      return Promise.resolve(true)
-    }
-  }
+const props = withDefaults(defineProps<{ isVisible?: boolean; data?: DashboardModel | null }>(), {
+  isVisible: false,
+  data: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const formState = ref({ name: '' })
+
+const validateMatch = (_rule: any, value: string) => {
+  if (value !== String(props.data?.name)) {
+    return Promise.reject(new Error(t('dashboard.validator.name.match').replace('$VALUE', String(props.data?.name))))
+  }
+  return Promise.resolve(true)
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  if (props.data) {
+    loading.value = true
+    DashboardService.deleteByCode(props.data.code)
+                    .then((response) => {
+                      if (response.status) {
+                        message.success(`${ t('dashboard.common.delete') } [ ${ props.data?.name } ] ${ t('common.successfully') }`)
+                        onCancel()
+                      }
+                      else {
+                        message.error(response.message)
+                      }
+                    })
+                    .finally(() => (loading.value = false))
+  }
+}
 </script>
