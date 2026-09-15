@@ -1,11 +1,11 @@
 <template>
   <div v-if="!originalDatabase">
-    <ShadcnAlert type="warning" :title="$t('source.tip.notSelectedNode')"/>
+    <a-alert type="warning" :message="$t('source.tip.notSelectedNode')"/>
   </div>
 
-  <ShadcnTab v-else v-model="selectTab" @on-change="onChange">
-    <ShadcnTabItem value="info">
-      <template #label>
+  <a-tabs v-else v-model:activeKey="selectTab" @change="onChange">
+    <a-tab-pane key="info">
+      <template #tab>
         <div class="flex items-center space-x-1">
           <ShadcnIcon icon="Info"/>
           <span>{{ $t('source.common.info') }}</span>
@@ -13,10 +13,10 @@
       </template>
 
       <RouterView/>
-    </ShadcnTabItem>
+    </a-tab-pane>
 
-    <ShadcnTabItem value="structure" :disabled="!originalTable">
-      <template #label>
+    <a-tab-pane key="structure" :disabled="!originalTable">
+      <template #tab>
         <div class="flex items-center space-x-2">
           <ShadcnIcon icon="LayoutPanelTop"/>
           <span>{{ $t('source.common.structure') }}</span>
@@ -24,10 +24,10 @@
       </template>
 
       <RouterView/>
-    </ShadcnTabItem>
+    </a-tab-pane>
 
-    <ShadcnTabItem value="data" :disabled="!originalTable">
-      <template #label>
+    <a-tab-pane key="data" :disabled="!originalTable">
+      <template #tab>
         <div class="flex items-center space-x-2">
           <ShadcnIcon icon="Table"/>
           <span>{{ $t('source.common.tableData') }}</span>
@@ -35,10 +35,10 @@
       </template>
 
       <RouterView/>
-    </ShadcnTabItem>
+    </a-tab-pane>
 
-    <ShadcnTabItem value="statement" :disabled="!originalTable">
-      <template #label>
+    <a-tab-pane key="statement" :disabled="!originalTable">
+      <template #tab>
         <div class="flex items-center space-x-2">
           <ShadcnIcon icon="SatelliteDish"/>
           <span>{{ $t('source.common.statement') }}</span>
@@ -46,24 +46,26 @@
       </template>
 
       <RouterView/>
-    </ShadcnTabItem>
+    </a-tab-pane>
 
-    <ShadcnTabItem value="erDiagram" :disabled="!originalTable">
-      <template #label>
+    <a-tab-pane key="erDiagram" :disabled="!originalTable">
+      <template #tab>
         <div class="flex items-center space-x-2">
-          <ShadcdnIcon icon="Wind"/>
+          <ShadcnIcon icon="Wind"/>
           <span>{{ $t('source.common.erDiagram') }}</span>
         </div>
       </template>
 
       <RouterView/>
-    </ShadcnTabItem>
-  </ShadcnTab>
+    </a-tab-pane>
+  </a-tabs>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
+defineOptions({ name: 'MetadataContent' })
 
 const route = useRoute()
 const router = useRouter()

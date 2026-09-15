@@ -1,19 +1,17 @@
 <template>
   <BaseLayout>
-    <ShadcnLayout>
+    <a-layout>
       <LayoutHeader/>
       <div class="container my-2 min-h-screen">
-        <ShadcnLayoutWrapper>
+        <a-layout has-sider>
           <LayoutSidebar/>
-          <ShadcnLayoutMain class="ml-20">
-            <ShadcnLayoutContent>
-              <RouterView/>
-            </ShadcnLayoutContent>
-          </ShadcnLayoutMain>
-        </ShadcnLayoutWrapper>
+          <a-layout-content class="ml-20">
+            <RouterView/>
+          </a-layout-content>
+        </a-layout>
       </div>
       <LayoutFooter/>
-    </ShadcnLayout>
+    </a-layout>
   </BaseLayout>
 </template>
 

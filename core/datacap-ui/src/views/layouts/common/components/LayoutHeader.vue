@@ -1,166 +1,161 @@
 <template>
-  <ShadcnAlert banner show-icon closable>
-    <ShadcnLink link="/admin/chat" target="_blank">
-      Support ChatGPT
-    </ShadcnLink>
-  </ShadcnAlert>
+  <a-alert banner show-icon closable class="dc-header-banner">
+    <template #message>
+      <router-link to="/admin/chat" target="_blank">
+        Support ChatGPT
+      </router-link>
+    </template>
+  </a-alert>
 
   <div class="border-b">
     <div class="container">
       <div class="flex items-center">
         <div class="flex items-center shrink-0 mt-1">
-          <ShadcnLink link="/" class="block">
-            <ShadcnAvatar src="/static/images/logo.png" alt="DataCap Logo"/>
-          </ShadcnLink>
+          <router-link to="/" class="block">
+            <a-avatar src="/static/images/logo.png" alt="DataCap Logo"/>
+          </router-link>
         </div>
 
-        <ShadcnLayoutHeader class="ml-6">
-          <ShadcnMenu direction="horizontal">
-            <div v-for="item in activeMenus" :key="item.id">
-              <ShadcnMenuSub v-if="item.children" :name="item.id">
+        <div class="ml-6 flex-1">
+          <a-menu mode="horizontal" :selectedKeys="[route.path]">
+            <template v-for="item in activeMenus" :key="item.id">
+              <a-sub-menu v-if="item.children" :key="item.id">
                 <template #title>
                   <div class="flex items-center space-x-2">
-                    <ShadcnIcon v-if="item.icon" :icon="item.icon" size="18"/>
-                    <div>{{ item.i18nKey ? $t(item.i18nKey) : 'Unknown' }}</div>
+                    <ShadcnIcon v-if="item.icon" :icon="item.icon" :size="18"/>
+                    <span>{{ item.i18nKey ? $t(item.i18nKey) : 'Unknown' }}</span>
                   </div>
                 </template>
 
-                <ShadcnMenuItem v-for="children in item.children"
-                                class="w-full"
-                                :name="children.id"
-                                :active="$route.path === children.url"
-                                :to="children.url">
-                  <div class="flex items-center space-x-2">
-                    <ShadcnIcon v-if="children.icon" :icon="children.icon" size="18"/>
-                    <div>{{ children.i18nKey ? $t(children.i18nKey) : 'Unknown' }}</div>
-                  </div>
-                </ShadcnMenuItem>
-              </ShadcnMenuSub>
-              <ShadcnMenuItem v-else
-                              class="w-full"
-                              :name="item.id"
-                              :active="$route.path === item.url"
-                              :to="item.url">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon v-if="item.icon" :icon="item.icon" size="18"/>
-                  <div>{{ item.i18nKey ? $t(item.i18nKey) : 'Unknown' }}</div>
-                </div>
-              </ShadcnMenuItem>
-            </div>
-          </ShadcnMenu>
-        </ShadcnLayoutHeader>
+                <a-menu-item v-for="children in item.children" :key="children.url">
+                  <router-link :to="children.url" class="flex items-center space-x-2">
+                    <ShadcnIcon v-if="children.icon" :icon="children.icon" :size="18"/>
+                    <span>{{ children.i18nKey ? $t(children.i18nKey) : 'Unknown' }}</span>
+                  </router-link>
+                </a-menu-item>
+              </a-sub-menu>
 
-        <ShadcnSpace size="large">
+              <a-menu-item v-else :key="item.url">
+                <router-link :to="item.url" class="flex items-center space-x-2">
+                  <ShadcnIcon v-if="item.icon" :icon="item.icon" :size="18"/>
+                  <span>{{ item.i18nKey ? $t(item.i18nKey) : 'Unknown' }}</span>
+                </router-link>
+              </a-menu-item>
+            </template>
+          </a-menu>
+        </div>
+
+        <a-space :size="16">
           <!-- Language Switcher -->
           <div class="mt-2.5 items-center">
-            <ShadcnTooltip :content="$t('common.feedback')">
-              <ShadcnLink link="https://github.com/devlive-community/datacap" external target="_blank">
+            <a-tooltip :title="$t('common.feedback')">
+              <a href="https://github.com/devlive-community/datacap" target="_blank" rel="noopener noreferrer">
                 <ShadcnIcon icon="CircleHelp" :size="20"/>
-              </ShadcnLink>
-            </ShadcnTooltip>
+              </a>
+            </a-tooltip>
           </div>
           <div class="mt-1">
             <LanguageSwitcher @changeLanguage="onChangeLanguage"/>
           </div>
 
           <div v-if="userInfo" class="mt-2.5">
-            <ShadcnNotification :height="300" :loadData="loadMoreNotifications">
-              <template #trigger>
-                <ShadcnBadge v-if="userInfo?.unreadCount > 0" dot :text="userInfo?.unreadCount">
-                  <ShadcnIcon icon="Bell" class="hover:text-blue-400 cursor-pointer" :size="20"/>
-                </ShadcnBadge>
-                <ShadcnIcon v-else icon="Bell" class="hover:text-blue-400 cursor-pointer" :size="20"/>
-              </template>
-
-              <template #actions>
-                <span></span>
-              </template>
-
-              <ShadcnNotificationItem v-for="(item, index) in messages"
-                                      :key="index"
-                                      :item="item"
-                                      @on-click="handleNotificationClick">
-                <template #title>
-                  <div class="mt-1 text-sm text-gray-600">
-                    <div v-if="item.entityExists" class="flex space-x-1">
-                      <span>{{ $t(`common.${ item.entityType?.toLowerCase() || '' }`) }}</span>
-
-                      <template v-if="item.entityType === 'DATASET'">
-                        <RouterLink :to="`/admin/dataset/info/${item.entityCode}`" target="_blank" class="hover:text-blue-400 flex items-center">
-                          [ {{ item.entityName }} ]
-                        </RouterLink>
-                      </template>
-
-                      <template v-else>
-                        <ShadcnLink class="hover:text-blue-400" :to="'/' + item.entityType + '/' + item.entityCode">[ {{ item.entityName }} ]</ShadcnLink>
-                      </template>
-
-                      <span>{{ $t(`common.${ item.type?.toLowerCase() || '' }`) }}</span>
-                    </div>
-                    <div v-else>
-                      {{ $t(`common.${ item.entityType?.toLowerCase() || '' }`) }} [ {{ item.entityName }} ] {{ $t(`common.${ item.type?.toLowerCase() || '' }`) }}
-                    </div>
+            <a-popover trigger="click" placement="bottomRight">
+              <template #content>
+                <div class="dc-notify" style="width: 340px; max-height: 300px; overflow-y: auto;" @scroll="onNotifyScroll">
+                  <div v-if="messages.length === 0" class="p-4 text-center text-sm text-gray-400">
+                    {{ $t('common.noData') }}
                   </div>
-                </template>
 
-                <template #time>
-                  <ShadcnTime relative :reference-time="item.createTime"/>
-                </template>
-              </ShadcnNotificationItem>
-            </ShadcnNotification>
+                  <div v-for="(item, index) in messages"
+                       :key="index"
+                       class="dc-notify__item"
+                       @click="handleNotificationClick(item)">
+                    <div class="mt-1 text-sm text-gray-600">
+                      <div v-if="item.entityExists" class="flex space-x-1">
+                        <span>{{ $t(`common.${ item.entityType?.toLowerCase() || '' }`) }}</span>
+
+                        <template v-if="item.entityType === 'DATASET'">
+                          <router-link :to="`/admin/dataset/info/${item.entityCode}`" target="_blank" class="hover:text-blue-400 flex items-center">
+                            [ {{ item.entityName }} ]
+                          </router-link>
+                        </template>
+
+                        <template v-else>
+                          <router-link class="hover:text-blue-400" :to="'/' + item.entityType + '/' + item.entityCode">[ {{ item.entityName }} ]</router-link>
+                        </template>
+
+                        <span>{{ $t(`common.${ item.type?.toLowerCase() || '' }`) }}</span>
+                      </div>
+                      <div v-else>
+                        {{ $t(`common.${ item.entityType?.toLowerCase() || '' }`) }} [ {{ item.entityName }} ] {{ $t(`common.${ item.type?.toLowerCase() || '' }`) }}
+                      </div>
+                    </div>
+
+                    <div class="text-xs text-gray-400 mt-1">{{ item.createTime }}</div>
+                  </div>
+                </div>
+              </template>
+
+              <a-badge :count="userInfo?.unreadCount || 0">
+                <ShadcnIcon icon="Bell" class="hover:text-blue-400 cursor-pointer" :size="20"/>
+              </a-badge>
+            </a-popover>
           </div>
 
           <!-- User Info -->
-          <ShadcnSpace v-if="!isLoggedIn">
-            <ShadcnButton to="/auth/signin">
-              {{ $t('user.common.signin') }}
-            </ShadcnButton>
-            <ShadcnButton to="/auth/signup" type="default">
-              {{ $t('user.common.signup') }}
-            </ShadcnButton>
-          </ShadcnSpace>
+          <a-space v-if="!isLoggedIn">
+            <router-link to="/auth/signin">
+              <a-button type="primary">{{ $t('user.common.signin') }}</a-button>
+            </router-link>
+            <router-link to="/auth/signup">
+              <a-button>{{ $t('user.common.signup') }}</a-button>
+            </router-link>
+          </a-space>
           <div v-else>
-            <ShadcnDropdown position="right">
-              <template #trigger>
-                <ShadcnAvatar class="mt-1"
-                              style="width: 2rem;"
-                              :src="userInfo?.avatarConfigure?.path"
-                              :alt="userInfo?.username">
-                </ShadcnAvatar>
+            <a-dropdown placement="bottomRight">
+              <a-avatar class="mt-1"
+                        :size="32"
+                        :src="userInfo?.avatarConfigure?.path"
+                        :alt="userInfo?.username">
+              </a-avatar>
+
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item disabled>
+                    <div class="flex flex-col space-y-1">
+                      <p class="text-sm font-medium leading-none text-center">{{ userInfo?.username }}</p>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-divider/>
+
+                  <a-menu-item>
+                    <router-link to="/admin/user" class="flex items-center space-x-2">
+                      <ShadcnIcon icon="Settings"/>
+                      <span>{{ $t('user.common.setting') }}</span>
+                    </router-link>
+                  </a-menu-item>
+
+                  <a-menu-item @click="logout">
+                    <div class="flex items-center space-x-2">
+                      <ShadcnIcon icon="LogOut"/>
+                      <span>{{ $t('user.common.signout') }}</span>
+                    </div>
+                  </a-menu-item>
+                </a-menu>
               </template>
-
-              <ShadcnDropdownItem>
-                <div class="flex flex-col space-y-1">
-                  <p class="text-sm font-medium leading-none text-center">{{ userInfo?.username }}</p>
-                  <p class="text-xs leading-none text-muted-foreground"></p>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem divided>
-                <ShadcnLink link="/admin/user">
-                  <ShadcnSpace>
-                    <ShadcnIcon icon="Settings"/>
-                    {{ $t('user.common.setting') }}
-                  </ShadcnSpace>
-                </ShadcnLink>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem @on-click="logout">
-                <ShadcnSpace>
-                  <ShadcnIcon icon="LogOut"/>
-                  {{ $t('user.common.signout') }}
-                </ShadcnSpace>
-              </ShadcnDropdownItem>
-            </ShadcnDropdown>
+            </a-dropdown>
           </div>
-        </ShadcnSpace>
+        </a-space>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { message } from 'ant-design-vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { TokenUtils } from '@/utils/token'
@@ -169,10 +164,11 @@ import { createDefaultRouter } from '@/router/default'
 import LanguageSwitcher from '@/views/layouts/common/components/components/LanguageSwitcher.vue'
 import NotificationService from '@/services/notification'
 import { FilterModel } from '@/model/filter.ts'
-import { cloneDeep } from 'lodash'
 
+defineOptions({ name: 'LayoutHeader' })
+
+const route = useRoute()
 const userStore = useUserStore()
-const { proxy } = getCurrentInstance()!
 const filter: FilterModel = new FilterModel()
 const messages = ref<any[]>([])
 const pageIndex = ref<number>(1)
@@ -184,6 +180,40 @@ const { userInfo, isLoggedIn, menu: activeMenus } = storeToRefs(userStore)
 const emit = defineEmits<{
   changeLanguage: [language: string]
 }>()
+
+const fetchMessages = async (value: number = 1, append = false) => {
+  filter.page = value
+  filter.orders = [{ column: 'createTime', order: 'desc' }]
+  loading.value = true
+  try {
+    const response = await NotificationService.getAll(filter)
+    if (response.status && response.data) {
+      const items = response.data.content.map((item: any) => {
+        item.read = item.isRead
+        return item
+      })
+      messages.value = append ? [...messages.value, ...items] : items
+      pageIndex.value = response.data.page
+      hasMoreData.value = response.data.page < response.data.totalPage
+    }
+    else {
+      message.error(response.message)
+    }
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+const onNotifyScroll = (event: any) => {
+  const target = event.target
+  if (loading.value || !hasMoreData.value) {
+    return
+  }
+  if (target.scrollTop + target.offsetHeight >= target.scrollHeight - 10) {
+    fetchMessages(pageIndex.value + 1, true)
+  }
+}
 
 onMounted(async () => {
   if (TokenUtils.getAuthUser()) {
@@ -202,8 +232,8 @@ const onChangeLanguage = (language: string) => {
   emit('changeLanguage', language)
 }
 
-const handleNotificationClick = (message: any) => {
-  const { id, code } = message
+const handleNotificationClick = (msg: any) => {
+  const { id, code } = msg
   const payload = { id, code, isRead: true }
   NotificationService.saveOrUpdate(payload)
                      .then(response => {
@@ -212,55 +242,20 @@ const handleNotificationClick = (message: any) => {
                          userStore.fetchUserInfo()
                        }
                        else {
-                         // @ts-ignore
-                         proxy.$Message.error({
-                           content: response.message,
-                           showIcon: true
-                         })
+                         message.error(response.message)
                        }
                      })
 }
-
-const fetchMessages = async (value: number = 1) => {
-  filter.page = value
-  filter.orders = [{ column: 'createTime', order: 'desc' }]
-  loading.value = true
-  try {
-    const response = await NotificationService.getAll(filter)
-    if (response.status && response.data) {
-      messages.value = response.data.content.map((item: any) => {
-        item.read = item.isRead
-        return item
-      })
-      pageIndex.value = response.data.page
-      hasMoreData.value = response.data.page < response.data.totalPage
-    }
-    else {
-      // @ts-ignore
-      proxy.$Message.error({
-        content: response.message,
-        showIcon: true
-      })
-    }
-  }
-  finally {
-    loading.value = false
-  }
-}
-
-const loadMoreNotifications = async (callback: (items: any[]) => void) => {
-  if (loading.value || !hasMoreData.value) {
-    callback([])
-    return
-  }
-
-  const oldData = cloneDeep(messages.value)
-  loading.value = true
-  pageIndex.value++
-  await fetchMessages(pageIndex.value)
-  const newItems = messages.value
-  messages.value = [...oldData, ...newItems]
-  callback(newItems)
-  loading.value = false
-}
 </script>
+
+<style scoped>
+.dc-notify__item {
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.dc-notify__item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+</style>

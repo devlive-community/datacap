@@ -1,15 +1,15 @@
 <template>
   <div class="relative">
     <div class="relative" v-if="loadingState" style="height: 100vh;">
-      <ShadcnSpin v-model="loadingState" fixed>
-        {{ loadingText }}
-      </ShadcnSpin>
+      <a-spin :spinning="loadingState" :tip="loadingText" class="w-full">
+        <div style="height: 100vh;"></div>
+      </a-spin>
     </div>
 
     <div v-show="!loadingState">
-      <ShadcnLayout>
+      <a-layout>
         <LayoutHeader/>
-      </ShadcnLayout>
+      </a-layout>
 
       <div class="container my-2 min-h-screen">
         <LayoutBreadcrumb class="mb-2"/>
