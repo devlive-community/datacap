@@ -1,54 +1,33 @@
 <template>
-  <ShadcnModal v-model="visible" title="Show Content" width="40%">
-    <ShadcnCodeEditor v-model="content"
-                      :config="{
-                        language: 'sql',
-                        readOnly: true,
-                        minimap: {
-                          enabled: false
-                        }
-                      }">
-    </ShadcnCodeEditor>
+  <a-modal v-model:open="visible" title="Show Content" width="40%" :footer="null">
+    <AceEditor v-if="content" :value="content" :read-only="true"/>
 
     <template #footer>
-      <ShadcnButton type="error" @click="onCancel">
+      <a-button danger @click="onCancel">
         {{ $t('common.cancel') }}
-      </ShadcnButton>
+      </a-button>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import AceEditor from '@/views/components/editor/AceEditor.vue'
 
-export default defineComponent({
-  name: 'SqlInfo',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: () => false
-    },
-    content: {
-      type: String as PropType<string | null>
-    }
-  },
-  methods: {
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+defineOptions({ name: 'SqlInfo' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; content?: string | null }>(), {
+  isVisible: false,
+  content: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const onCancel = () => {
+  visible.value = false
+}
 </script>

@@ -1,89 +1,80 @@
 <template>
   <div>
-    <ShadcnSelect v-model="applySource"
-                  v-model:options="options"
-                  lazy
-                  :placeholder="$t('source.tip.selectSource')"
-                  :load-data="loadMoreData"
-                  @on-change="onChange">
-    </ShadcnSelect>
+    <a-select v-model:value="applySource"
+              :options="options"
+              :loading="loading"
+              show-search
+              option-filter-prop="label"
+              :style="{ width: '100%' }"
+              :placeholder="$t('source.tip.selectSource')"
+              @change="onChange"
+              @popup-scroll="onPopupScroll">
+    </a-select>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref } from 'vue'
 import SourceService from '@/services/source'
-import { defineComponent } from 'vue'
 import { SourceModel } from '@/model/source'
-
 import { FilterModel } from '@/model/filter.ts'
 
-export default defineComponent({
-  name: 'SourceSelect',
-  props: {
-    value: {
-      type: Object as () => String | undefined
-    }
-  },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    return {
-      filter
-    }
-  },
-  data()
-  {
-    return {
-      options: [] as SourceModel[],
-      loading: false,
-      applySource: undefined,
-      pageIndex: 1,
-      pageTotal: 10,
-      dataCount: 0
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      this.loading = true
-      SourceService.getAll(this.filter)
-                   .then((response) => {
-                     if (response.status) {
-                       this.options = response.data.content.map((item: any) => ({ ...item, label: item.name, value: `${ item.id }:${ item.type }:${ item.code }` }))
-                       this.dataCount = response.data.total
-                       this.pageTotal = response.data.totalPage
-                       this.pageIndex = response.data.page
-                       if (this.value) {
-                         this.applySource = this.value as any
-                       }
-                     }
-                   })
-                   .finally(() => this.loading = false)
-    },
-    async loadMoreData(callback: (children: any[]) => void)
-    {
-      if (this.pageIndex < this.pageTotal) {
-        this.filter.page = this.pageIndex + 1
-        const response = await SourceService.getAll(this.filter)
+defineOptions({ name: 'SourceSelect' })
 
-        if (response.status) {
-          const options = response.data.content.map((item: any) => ({ ...item, label: item.name, value: `${ item.id }:${ item.type }:${ item.code }` }))
-          this.dataCount = response.data.total
-          this.pageTotal = response.data.totalPage
-          this.pageIndex = response.data.page
-          console.log(options)
-          callback(options)
-        }
-      }
-    },
-    onChange()
-    {
-      this.$emit('on-change', this.applySource)
+const props = defineProps<{ value?: string }>()
+const emit = defineEmits<{ (e: 'on-change', value: any): void }>()
+
+const filter: FilterModel = new FilterModel()
+
+const options = ref<SourceModel[]>([])
+const loading = ref(false)
+const applySource = ref<any>(undefined)
+const pageIndex = ref(1)
+const pageTotal = ref(10)
+const dataCount = ref(0)
+
+const handleInitialize = () => {
+  loading.value = true
+  SourceService.getAll(filter)
+               .then((response) => {
+                 if (response.status) {
+                   options.value = response.data.content.map((item: any) => ({ ...item, label: item.name, value: `${ item.id }:${ item.type }:${ item.code }` }))
+                   dataCount.value = response.data.total
+                   pageTotal.value = response.data.totalPage
+                   pageIndex.value = response.data.page
+                   if (props.value) {
+                     applySource.value = props.value as any
+                   }
+                 }
+               })
+               .finally(() => (loading.value = false))
+}
+
+const loadMoreData = async () => {
+  if (pageIndex.value < pageTotal.value) {
+    filter.page = pageIndex.value + 1
+    const response = await SourceService.getAll(filter)
+
+    if (response.status) {
+      const more = response.data.content.map((item: any) => ({ ...item, label: item.name, value: `${ item.id }:${ item.type }:${ item.code }` }))
+      dataCount.value = response.data.total
+      pageTotal.value = response.data.totalPage
+      pageIndex.value = response.data.page
+      options.value = [...options.value, ...more]
     }
   }
-})
+}
+
+const onPopupScroll = (e: any) => {
+  const target = e.target
+  if (target.scrollTop + target.offsetHeight >= target.scrollHeight - 10) {
+    loadMoreData()
+  }
+}
+
+const onChange = () => {
+  emit('on-change', applySource.value)
+}
+
+handleInitialize()
 </script>

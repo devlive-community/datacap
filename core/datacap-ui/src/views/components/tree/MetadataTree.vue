@@ -1,18 +1,18 @@
 <template>
   <div class="relative overflow-auto" style="height: 500px; max-height: 500px; max-width: 300px;">
-    <ShadcnSkeleton v-if="loading" animation class="mt-2"/>
+    <a-skeleton v-if="loading" active class="mt-2"/>
 
-    <ShadcnAlert v-else-if="data.length === 0 && errorMessage" class="mt-2" type="error" :title="errorMessage"/>
+    <a-alert v-else-if="data.length === 0 && errorMessage" class="mt-2" type="error" :message="errorMessage"/>
 
-    <ShadcnTree v-else-if="data.length > 0"
-                v-model="value"
-                :data="data"
-                :loadData="onLoadData"
-                @on-node-click="onNodeClick">
-      <template #label="{ node }">
+    <a-tree v-else-if="data.length > 0"
+            v-model:selectedKeys="selectedKeys"
+            :tree-data="data"
+            :load-data="onLoadData"
+            @select="onSelect">
+      <template #title="node">
         <div class="flex items-center space-x-1">
           <ShadcnIcon class="text-xs font-semibold text-gray-500"
-                      size="13"
+                      :size="13"
                       :icon="node.level === 2 ? 'Database' :
                               node.level === 3 ? 'Table' :
                               node.level === 4 ? 'Columns' :
@@ -22,132 +22,147 @@
           <span class="text-sm font-normal text-gray-500">{{ node.title }}</span>
         </div>
       </template>
-    </ShadcnTree>
+    </a-tree>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, watch } from 'vue'
+
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { message } from 'ant-design-vue'
 import { StructureEnum, StructureModel } from '@/model/structure'
 import MetadataService from '@/services/metadata.ts'
 import { ObjectUtils } from '@/utils/object'
 
-export default defineComponent({
-  name: 'MetadataTree',
-  props: {
-    code: {
-      type: String
+defineOptions({ name: 'MetadataTree' })
+
+const props = defineProps<{ code?: string }>()
+
+const loading = ref(false)
+const selectedKeys = ref<any[]>([])
+const data = ref<StructureModel[]>([])
+const errorMessage = ref<string | null>(null)
+
+const updateTreeChildren = (list: any[], key: string, children: any[]): any[] =>
+  list.map((node) => {
+    if (node.key === key) {
+      return { ...node, children }
     }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      value: [],
-      data: Array<StructureModel>(),
-      errorMessage: null as string | null
+    if (node.children) {
+      return { ...node, children: updateTreeChildren(node.children, key, children) }
     }
-  },
-  created()
-  {
-    this.handleInitialize()
-    watch(() => this.code, () => this.handleInitialize())
-  },
-  methods: {
-    handleInitialize()
-    {
-      if (this.code) {
-        this.data = []
-        this.loading = true
-        MetadataService.getDatabaseBySource(this.code)
-                       .then(response => {
-                         if (response.status && response.data && response.data.isSuccessful) {
-                           response.data.columns.forEach(item => {
-                             const structure = {
-                               title: item.object_name || item.schema_name || item.SCHEMA_NAME,
-                               catalog: item.object_name || item.schema_name || item.SCHEMA_NAME,
-                               code: item.object_name || item.schema_name || item.SCHEMA_NAME,
-                               level: StructureEnum.DATABASE,
-                               value: item.object_name || item.schema_name || item.SCHEMA_NAME,
-                               isLeaf: false
-                             }
-                             this.data.push(structure)
-                           })
-                         }
-                         else {
-                           this.errorMessage = response.data.message
-                         }
+    return node
+  })
+
+const handleInitialize = () => {
+  if (props.code) {
+    data.value = []
+    errorMessage.value = null
+    loading.value = true
+    MetadataService.getDatabaseBySource(props.code)
+                   .then((response) => {
+                     if (response.status && response.data && response.data.isSuccessful) {
+                       response.data.columns.forEach((item: any) => {
+                         const name = item.object_name || item.schema_name || item.SCHEMA_NAME
+                         data.value.push({
+                           key: name,
+                           title: name,
+                           catalog: name,
+                           code: name,
+                           level: StructureEnum.DATABASE,
+                           value: name,
+                           isLeaf: false
+                         } as any)
                        })
-                       .finally(() => this.loading = false)
-      }
-    },
-    onLoadData(item: any, callback: any)
-    {
-      const children = [] as StructureModel[]
-      if (item.level === StructureEnum.DATABASE) {
-        MetadataService.getTablesByDatabase(this.code, item.code)
-                       .then(response => {
-                         if (response.status && response.data && response.data.isSuccessful) {
-                           response.data.columns.forEach((value: any) => children.push({
-                             title: value.object_name,
-                             value: value.object_name,
-                             code: value.object_name,
-                             database: item.code,
-                             catalog: value.object_name,
-                             level: StructureEnum.TABLE,
-                             isLeaf: false
-                           }))
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.data.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => callback(children))
-      }
-      else if (item.level === StructureEnum.TABLE) {
-        MetadataService.getColumnsByTable(this.code, item.database, item.code)
-                       .then(response => {
-                         if (response.status && response.data && response.data.isSuccessful) {
-                           response.data.columns
-                                   .filter(value => value.type_name === 'column')
-                                   .forEach((value: any) => children.push({
-                                     title: value.object_name,
-                                     value: value.object_name,
-                                     database: item.database,
-                                     table: item.code,
-                                     catalog: value.object_name,
-                                     code: value.object_name,
-                                     level: StructureEnum.COLUMN
-                                   }))
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.data.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => callback(children))
-      }
-      else {
-        callback(children)
-      }
-    },
-    onNodeClick(item: StructureModel)
-    {
-      let text: string = item.title as string
-      switch (item.level) {
-        case StructureEnum.TABLE:
-          text = item.database + '.' + text
-          break
-        case StructureEnum.COLUMN:
-          text = item.database + '.' + item.table + '.' + text
-          break
-      }
-      ObjectUtils.copy(text)
-    }
+                     }
+                     else {
+                       errorMessage.value = response.data.message
+                     }
+                   })
+                   .finally(() => (loading.value = false))
   }
-})
+}
+
+const onLoadData = (treeNode: any): Promise<void> => {
+  const item = treeNode.dataRef as any
+  return new Promise<void>((resolve) => {
+    if (item.children) {
+      resolve()
+      return
+    }
+
+    const children = [] as any[]
+    if (item.level === StructureEnum.DATABASE) {
+      MetadataService.getTablesByDatabase(props.code, item.code)
+                     .then((response) => {
+                       if (response.status && response.data && response.data.isSuccessful) {
+                         response.data.columns.forEach((value: any) => children.push({
+                           key: `${ item.key }.${ value.object_name }`,
+                           title: value.object_name,
+                           value: value.object_name,
+                           code: value.object_name,
+                           database: item.code,
+                           catalog: value.object_name,
+                           level: StructureEnum.TABLE,
+                           isLeaf: false
+                         }))
+                       }
+                       else {
+                         message.error(response.data.message)
+                       }
+                     })
+                     .finally(() => {
+                       data.value = updateTreeChildren(data.value, item.key, children)
+                       resolve()
+                     })
+    }
+    else if (item.level === StructureEnum.TABLE) {
+      MetadataService.getColumnsByTable(props.code, item.database, item.code)
+                     .then((response) => {
+                       if (response.status && response.data && response.data.isSuccessful) {
+                         response.data.columns
+                                 .filter((value: any) => value.type_name === 'column')
+                                 .forEach((value: any) => children.push({
+                                   key: `${ item.key }.${ value.object_name }`,
+                                   title: value.object_name,
+                                   value: value.object_name,
+                                   database: item.database,
+                                   table: item.code,
+                                   catalog: value.object_name,
+                                   code: value.object_name,
+                                   level: StructureEnum.COLUMN,
+                                   isLeaf: true
+                                 }))
+                       }
+                       else {
+                         message.error(response.data.message)
+                       }
+                     })
+                     .finally(() => {
+                       data.value = updateTreeChildren(data.value, item.key, children)
+                       resolve()
+                     })
+    }
+    else {
+      resolve()
+    }
+  })
+}
+
+const onSelect = (_keys: any[], info: any) => {
+  const item = info.node.dataRef as StructureModel
+  let text: string = item.title as string
+  switch (item.level) {
+    case StructureEnum.TABLE:
+      text = item.database + '.' + text
+      break
+    case StructureEnum.COLUMN:
+      text = item.database + '.' + item.table + '.' + text
+      break
+  }
+  ObjectUtils.copy(text)
+}
+
+watch(() => props.code, () => handleInitialize())
+
+handleInitialize()
 </script>

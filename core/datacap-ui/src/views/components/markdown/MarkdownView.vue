@@ -1,49 +1,34 @@
 <template>
-  <ShadcnModal v-model="visible" :title="$t('common.content')" @on-close="onCancel">
+  <a-modal v-model:open="visible" :title="$t('common.content')" :footer="null" @cancel="onCancel">
     <MdPreview v-if="content" :modelValue="content" style="padding: 0"/>
 
     <template #footer>
-      <ShadcnButton type="default" @click="onCancel">
+      <a-button @click="onCancel">
         {{ $t('common.cancel') }}
-      </ShadcnButton>
+      </a-button>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
+
+<script setup lang="ts">
+import { computed } from 'vue'
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 
-export default defineComponent({
-  name: 'MarkdownPreview',
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: () => false
-    },
-    content: {
-      type: String,
-      default: () => ''
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  components: { MdPreview },
-  methods: {
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+defineOptions({ name: 'MarkdownPreview' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; content?: string }>(), {
+  isVisible: false,
+  content: ''
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const onCancel = () => {
+  visible.value = false
+}
 </script>
