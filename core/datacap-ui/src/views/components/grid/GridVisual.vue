@@ -1,149 +1,122 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="80%"
-               :title="$t('dataset.common.visual')"
-               @on-close="onCancel">
-    <ShadcnAlert v-if="message" type="error" :title="message"/>
+  <a-modal v-model:open="visible"
+           width="80%"
+           :title="$t('dataset.common.visual')"
+           :footer="null"
+           @cancel="onCancel">
+    <a-alert v-if="message" type="error" :message="message" class="mb-3"/>
 
-    <ShadcnForm v-model="formState" @on-submit="onSubmit">
-      <ShadcnFormItem name="name"
-                      :label="$t('common.name')"
-                      :rules="[
-                            { required: true, message: $t('report.validator.name.required') }
-                      ]">
-        <ShadcnInput v-model="formState.name" name="name" :placeholder="$t('report.placeholder.name')"/>
-      </ShadcnFormItem>
+    <a-form :model="formState" layout="vertical" @finish="onSubmit">
+      <a-form-item name="name"
+                   :label="$t('common.name')"
+                   :rules="[
+                         { required: true, message: $t('report.validator.name.required') }
+                   ]">
+        <a-input v-model:value="formState.name" :placeholder="$t('report.placeholder.name')"/>
+      </a-form-item>
 
-      <ShadcnFormItem name="description"
-                      :label="$t('common.description')">
-        <ShadcnInput v-model="formState.description"
-                     type="textarea"
-                     name="description"
-                     :placeholder="$t('report.placeholder.description')"/>
-      </ShadcnFormItem>
+      <a-form-item name="description" :label="$t('common.description')">
+        <a-textarea v-model:value="formState.description" :placeholder="$t('report.placeholder.description')"/>
+      </a-form-item>
 
-      <ShadcnFormItem>
+      <a-form-item>
         <VisualEditor :loading="loading" :configuration="configuration as any" @commitOptions="onCommitOptions"/>
-      </ShadcnFormItem>
+      </a-form-item>
 
       <div class="flex justify-end">
-        <ShadcnSpace>
-          <ShadcnButton type="default" @click="onCancel">
+        <a-space>
+          <a-button @click="onCancel">
             {{ $t('common.cancel') }}
-          </ShadcnButton>
+          </a-button>
 
-          <ShadcnButton submit :disabled="published" :loading="published">
+          <a-button type="primary" html-type="submit" :disabled="published" :loading="published">
             {{ $t('common.publish') }}
-          </ShadcnButton>
-        </ShadcnSpace>
+          </a-button>
+        </a-space>
       </div>
-    </ShadcnForm>
-  </ShadcnModal>
+    </a-form>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message as antdMessage } from 'ant-design-vue'
 import VisualEditor from '@/views/components/visual/VisualEditor.vue'
 import { Configuration } from '@/views/components/visual/Configuration.ts'
 import { GridConfigure } from '@/views/components/grid/GridConfigure.ts'
 import router from '@/router'
 import ReportService from '@/services/report'
 
-export default defineComponent({
-  name: 'GridVisual',
-  components: { VisualEditor },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: false
-    },
-    configure: {
-      type: Object as () => GridConfigure,
-      default: () => null
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      configuration: null as Configuration | null,
-      published: false,
-      message: null as string | null,
-      formState: {
-        name: '',
-        realtime: true,
-        type: 'QUERY',
-        configure: null as string | null,
-        query: this.configure?.query,
-        description: '',
-        source: {
-          code: this.configure.code
-        }
-      }
-    }
-  },
-  created()
-  {
-    if (this.configure) {
-      this.configuration = new Configuration()
-      this.configuration.headers = this.configure?.headers as never[]
-      this.configuration.columns = this.configure?.columns as never[]
-    }
-  },
-  methods: {
-    onCommitOptions(value: any)
-    {
-      this.formState.configure = JSON.stringify(value)
-    },
-    onSubmit()
-    {
-      this.validator()
-      if (!this.message) {
-        this.published = true
-        ReportService.saveOrUpdate(this.formState)
-                     .then(response => {
-                       if (response.status) {
-                         this.$Message.success({
-                           content: this.$t('report.tip.publishSuccess').replace('$VALUE', this.formState.name),
-                           showIcon: true
-                         })
-                         router.push('/admin/report')
-                       }
-                       else {
-                         this.$Message.error({
-                           content: response.message,
-                           showIcon: true
-                         })
-                       }
-                     })
-                     .finally(() => this.published = false)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    },
-    validator()
-    {
-      if (!this.formState.name) {
-        this.message = this.$t('report.validator.name').toString()
-      }
-      else {
-        this.message = null
-      }
-    }
+defineOptions({ name: 'GridVisual' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; configure?: GridConfigure }>(), {
+  isVisible: false,
+  configure: () => null as unknown as GridConfigure
+})
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const configuration = ref<Configuration | null>(null)
+const published = ref(false)
+const message = ref<string | null>(null)
+const formState = ref({
+  name: '',
+  realtime: true,
+  type: 'QUERY',
+  configure: null as string | null,
+  query: props.configure?.query,
+  description: '',
+  source: {
+    code: props.configure.code
   }
 })
+
+if (props.configure) {
+  configuration.value = new Configuration()
+  configuration.value.headers = props.configure?.headers as never[]
+  configuration.value.columns = props.configure?.columns as never[]
+}
+
+const onCommitOptions = (value: any) => {
+  formState.value.configure = JSON.stringify(value)
+}
+
+const validator = () => {
+  if (!formState.value.name) {
+    message.value = t('report.validator.name').toString()
+  }
+  else {
+    message.value = null
+  }
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  validator()
+  if (!message.value) {
+    published.value = true
+    ReportService.saveOrUpdate(formState.value)
+                 .then((response) => {
+                   if (response.status) {
+                     antdMessage.success(t('report.tip.publishSuccess').replace('$VALUE', formState.value.name))
+                     router.push('/admin/report')
+                   }
+                   else {
+                     antdMessage.error(response.message)
+                   }
+                 })
+                 .finally(() => (published.value = false))
+  }
+}
 </script>
