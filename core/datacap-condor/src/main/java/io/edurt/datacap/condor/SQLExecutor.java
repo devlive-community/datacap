@@ -245,18 +245,24 @@ public class SQLExecutor
     private SQLResult<Integer> executeInsert(InsertStatement statement)
     {
         try {
-            if (statement.getSimpleValues().size() == 1) {
+            List<List<Object>> simpleValues = statement.getSimpleValues()
+                    .stream()
+                    .map(row -> row.stream()
+                            .map(SQLExecutor::unquoteLiteral)
+                            .collect(Collectors.toList()))
+                    .collect(Collectors.toList());
+            if (simpleValues.size() == 1) {
                 tableManager.insert(
                         statement.getTableName(),
                         statement.getColumns(),
-                        statement.getSimpleValues().get(0)
+                        simpleValues.get(0)
                 );
             }
             else {
                 tableManager.batchInsert(
                         statement.getTableName(),
                         statement.getColumns(),
-                        statement.getSimpleValues()
+                        simpleValues
                 );
             }
 
@@ -307,7 +313,7 @@ public class SQLExecutor
 
             Map<String, Object> setValues = new HashMap<>();
             for (Map.Entry<String, Expression> entry : statement.getSetValues().entrySet()) {
-                setValues.put(entry.getKey(), entry.getValue().getValue());
+                setValues.put(entry.getKey(), unquoteLiteral(entry.getValue().getValue()));
             }
 
             int updatedCount = tableManager.update(
@@ -367,13 +373,28 @@ public class SQLExecutor
             Expression rightExpr = children.get(1);
 
             String columnName = (String) leftExpr.getValue();
-            Object value = rightExpr.getValue();
+            Object value = unquoteLiteral(rightExpr.getValue());
 
             ComparisonOperator compOp = convertOperator(operator);
             return new SimpleCondition(columnName, value, compOp);
         }
 
         return null;
+    }
+
+    /**
+     * 剥离 SQL 字符串字面量包裹的单引号（解析器保留原始文本），
+     * 保证存储值与 WHERE / SET 字面量比较时的一致性
+     */
+    private static Object unquoteLiteral(Object value)
+    {
+        if (value instanceof String) {
+            String text = (String) value;
+            if (text.length() >= 2 && text.startsWith("'") && text.endsWith("'")) {
+                return text.substring(1, text.length() - 1).replace("''", "'");
+            }
+        }
+        return value;
     }
 
     private ComparisonOperator convertOperator(String operator)
