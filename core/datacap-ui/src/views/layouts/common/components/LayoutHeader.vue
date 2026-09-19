@@ -7,7 +7,8 @@
     </template>
   </a-alert>
 
-  <div class="border-b">
+  <!-- 白底铺满整行：a-layout 默认灰底会在宽屏下从两侧透出来 -->
+  <div class="border-b bg-white">
     <div class="container">
       <div class="flex items-center">
         <div class="flex items-center shrink-0 mt-1">
