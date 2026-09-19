@@ -190,6 +190,18 @@ public class UserServiceImpl
     }
 
     @Override
+    public CommonResponse<Boolean> checkUsername(String username)
+    {
+        if (!username.matches("^[A-Za-z_][A-Za-z0-9_]{3,19}$")) {
+            return CommonResponse.failure(ServiceState.USER_NAME_FORMAT_INVALID);
+        }
+        if (this.userRepository.findByUsername(username).isPresent()) {
+            return CommonResponse.failure(ServiceState.USER_NAME_ALREADY_EXISTS);
+        }
+        return CommonResponse.success(true);
+    }
+
+    @Override
     public CommonResponse<Long> changeUsername(UserNameBody configure)
     {
         Optional<UserEntity> userOptional = this.userRepository.findById(UserDetailsService.getUser().getId());

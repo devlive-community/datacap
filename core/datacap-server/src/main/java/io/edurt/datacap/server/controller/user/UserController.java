@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -67,6 +68,12 @@ public class UserController
     public CommonResponse<Long> changePassword(@Validated @RequestBody UserPasswordBody configure)
     {
         return this.service.changePassword(configure);
+    }
+
+    @GetMapping(value = "checkUsername")
+    public CommonResponse<Boolean> checkUsername(@RequestParam(value = "username") String username)
+    {
+        return service.checkUsername(username);
     }
 
     @PutMapping(value = "changeUsername")

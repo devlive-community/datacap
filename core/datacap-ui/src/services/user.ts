@@ -116,6 +116,11 @@ class UserService
         return new HttpUtils().put(`${ DEFAULT_PATH_USER }/changeThirdConfigure`, configure)
     }
 
+    checkUsername(username: string): Promise<ResponseModel>
+    {
+      return new HttpUtils().get(`${ DEFAULT_PATH_USER }/checkUsername?username=${ encodeURIComponent(username) }`)
+    }
+
     changeUsername(configure: UsernameModel): Promise<ResponseModel>
     {
         return new HttpUtils().put(`${ DEFAULT_PATH_USER }/changeUsername`, configure)
