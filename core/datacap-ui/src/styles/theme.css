@@ -142,6 +142,46 @@ html:not(.dark) body {
     background-repeat: no-repeat;
 }
 
+/* ---- 全局滚动条（横向 + 纵向）：细轨 + 圆角拇指，跟随 --dc-* 令牌 ----
+   WebKit 走 ::-webkit-scrollbar（自定义滚动条常驻显示，且可做 hover 态）；
+   Firefox 不识别 -moz-appearance 之外的写法，用标准属性 thin + 颜色。
+   注意：Chromium 121+ 一旦 scrollbar-width/color 非 auto 就会忽略
+   ::-webkit-scrollbar 并退回 macOS 悬浮式，因此标准属性必须只留给 Firefox。 */
+@supports (-moz-appearance: none) {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--dc-text-placeholder) transparent;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--dc-text-placeholder);
+    border: 2px solid transparent;
+    border-radius: 9999px;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--dc-text-secondary);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: var(--dc-text-primary);
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
 /* ---- 通用卡片：白底 + 极浅边框 + 很轻的阴影 ---- */
 .dc-card {
     background: var(--dc-surface);
