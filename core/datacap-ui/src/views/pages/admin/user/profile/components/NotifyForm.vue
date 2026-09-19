@@ -53,7 +53,7 @@
       </a-spin>
     </div>
 
-    <!-- 通知类型（触发场景） -->
+    <!-- 触发场景 -->
     <div class="dc-notify__card">
       <div class="dc-notify__section-head">
         <div class="dc-notify__section-icon">
@@ -64,7 +64,7 @@
           <div class="dc-notify__section-sub">{{ $t('notify.tip.scenarios') }}</div>
         </div>
         <a-button type="primary"
-                  class="ml-auto"
+                  style="margin-left: auto"
                   @click="openBatch">
           <template #icon>
             <SettingOutlined/>
@@ -85,13 +85,18 @@
             <div class="dc-notify__row-desc">{{ $t(scenario.tipKey) }}</div>
           </div>
           <a-switch :checked="isScenarioOn(scenario.key)"
-                    :disabled="!hasEnabledChannel || saving"
-                    @change="toggleScenario(scenario.key, $event)"/>
+                    :disabled="saving"
+                    @change="checked => toggleScenario(scenario.key, checked)"/>
+          <a-button type="text" shape="circle" size="small" @click="openScenarioChannels(scenario.key)">
+            <template #icon>
+              <SettingOutlined :style="{ fontSize: '15px', color: 'var(--dc-text-secondary)' }"/>
+            </template>
+          </a-button>
         </div>
       </div>
     </div>
 
-    <!-- 批量设置：渠道 × 场景 -->
+    <!-- 批量设置：发送渠道 × 触发场景 -->
     <a-modal v-model:open="batchVisible"
              :title="$t('notify.common.batch')"
              :width="480">
@@ -121,10 +126,30 @@
 
       <template #footer>
         <a-button @click="batchVisible = false">{{ $t('common.cancel') }}</a-button>
-        <a-button type="primary" :loading="saving" @click="applyBatch">{{ $t('notify.common.apply') }}</a-button>
+        <a-button type="primary" :loading="saving" @click="applyBatch">{{ $t('common.apply') }}</a-button>
       </template>
     </a-modal>
 
+    <!-- 单场景配置：选择接收该场景通知的渠道 -->
+    <a-modal v-model:open="scenarioVisible"
+             :title="scenarioName(scenarioKey)"
+             :width="440">
+      <div class="dc-notify__batch-section">
+        <div class="dc-notify__batch-label">{{ $t('notify.common.sendChannels') }}</div>
+        <a-checkbox-group v-model:value="scenarioChannels" class="dc-notify__batch-group">
+          <a-checkbox v-for="channel in channels"
+                      :key="channel.type"
+                      :value="channel.type">
+            {{ channelName(channel.type) }}
+          </a-checkbox>
+        </a-checkbox-group>
+      </div>
+
+      <template #footer>
+        <a-button @click="scenarioVisible = false">{{ $t('common.cancel') }}</a-button>
+        <a-button type="primary" :loading="saving" @click="applyScenarioChannels">{{ $t('common.confirm') }}</a-button>
+      </template>
+    </a-modal>
   </div>
 </template>
 
@@ -157,11 +182,7 @@ const loading = ref(false)
 const saving = ref(false)
 const formState = reactive<{ notifyConfigure: any[] }>({ notifyConfigure: [] })
 
-const batchVisible = ref(false)
-const batchChannels = ref<string[]>([])
-const batchScenarios = ref<string[]>([])
-
-/** 触发场景定义（通知枚举：CREATED/UPDATED/DELETED/DYNAMIC/SYNCDATA） */
+/** 触发场景（服务端枚举：CREATED/UPDATED/DELETED/DYNAMIC/SYNCDATA） */
 const scenarios = [
   { key: 'CREATED', icon: PlusCircleOutlined, nameKey: 'notify.text.created', tipKey: 'notify.tip.created' },
   { key: 'UPDATED', icon: EditOutlined, nameKey: 'notify.text.updated', tipKey: 'notify.tip.updated' },
@@ -171,13 +192,13 @@ const scenarios = [
 ]
 
 const channels = computed(() => formState.notifyConfigure)
-const hasEnabledChannel = computed(() => formState.notifyConfigure.some(channel => channel.enabled))
+const batchVisible = ref(false)
+const batchChannels = ref<string[]>([])
+const batchScenarios = ref<string[]>([])
 
-const isScenarioOn = (key: string): boolean => {
-  return formState.notifyConfigure
-      .filter(channel => channel.enabled)
-      .some(channel => (channel.services || []).includes(key))
-}
+const scenarioVisible = ref(false)
+const scenarioKey = ref('')
+const scenarioChannels = ref<string[]>([])
 
 const channelIcon = (type: string): any => {
   if (type === 'Internal') {
@@ -189,8 +210,26 @@ const channelIcon = (type: string): any => {
   return ApiOutlined
 }
 
-const channelName = (type: string): string => t(`notify.text.${ type.toLowerCase() }`)
-const channelDesc = (type: string): string => t(`notify.tip.${ type.toLowerCase() }`)
+const channelName = (type: string): string => {
+  const key = `notify.text.${ type.toLowerCase() }`
+  const value = t(key)
+  return value === key ? type : value
+}
+
+const channelDesc = (type: string): string => {
+  const key = `notify.tip.${ type.toLowerCase() }`
+  const value = t(key)
+  return value === key ? t('notify.tip.channelFallback') : value
+}
+
+const scenarioName = (key: string): string => {
+  const scenario = scenarios.find(item => item.key === key)
+  return scenario ? t(scenario.nameKey) : key
+}
+
+const isScenarioOn = (key: string): boolean => {
+  return channels.value.some(channel => (channel.services || []).includes(key))
+}
 
 const handlerInitialize = () => {
   loading.value = true
@@ -204,7 +243,7 @@ const handlerInitialize = () => {
            plugin.data
                  .filter((v: { type: string }) => v.type === 'NOTIFY')
                  .forEach((item: { name: string }) => {
-                   if (item?.name) {
+                   if (item?.name && !formState.notifyConfigure.some(c => c.type === item.name)) {
                      formState.notifyConfigure.push({ type: item.name, enabled: false, services: [] })
                    }
                  })
@@ -212,21 +251,17 @@ const handlerInitialize = () => {
 
          if (infoResponse.status && infoResponse.data) {
            const serverConfigure = infoResponse.data.notifyConfigure
-           if (serverConfigure && Array.isArray(serverConfigure) && serverConfigure.length > 0) {
-             const serverConfigMap: Record<string, any> = {}
-             serverConfigure.forEach((config: any) => {
-               if (config?.type) {
-                 serverConfigMap[config.type] = config
-               }
-             })
-
-             formState.notifyConfigure = formState.notifyConfigure.map(localConfig => {
-               const server = serverConfigMap[localConfig.type]
-               return server ? { ...server, services: server.services || [] } : localConfig
-             })
-
+           if (serverConfigure && Array.isArray(serverConfigure)) {
              serverConfigure.forEach((serverConfig: any) => {
-               if (serverConfig?.type && !formState.notifyConfigure.some(c => c.type === serverConfig.type)) {
+               if (!serverConfig?.type) {
+                 return
+               }
+               const exists = formState.notifyConfigure.find(c => c.type === serverConfig.type)
+               if (exists) {
+                 exists.enabled = !!serverConfig.enabled
+                 exists.services = serverConfig.services || []
+               }
+               else {
                  formState.notifyConfigure.push({ ...serverConfig, services: serverConfig.services || [] })
                }
              })
@@ -259,24 +294,22 @@ const toggleChannel = (channel: any, enabled: boolean) => {
 }
 
 const toggleScenario = (key: string, checked: boolean) => {
-  formState.notifyConfigure
-           .filter(channel => channel.enabled)
-           .forEach(channel => {
-             const services = new Set(channel.services || [])
-             if (checked) {
-               services.add(key)
-             }
-             else {
-               services.delete(key)
-             }
-             channel.services = Array.from(services)
-           })
+  formState.notifyConfigure.forEach(channel => {
+    const services = new Set(channel.services || [])
+    if (checked) {
+      services.add(key)
+    }
+    else {
+      services.delete(key)
+    }
+    channel.services = Array.from(services)
+  })
   save()
 }
 
 const openBatch = () => {
-  batchChannels.value = formState.notifyConfigure.filter(c => c.enabled).map(c => c.type)
-  batchScenarios.value = scenarios.filter(s => isScenarioOn(s.key)).map(s => s.key)
+  batchChannels.value = channels.value.map(channel => channel.type)
+  batchScenarios.value = scenarios.filter(scenario => isScenarioOn(scenario.key)).map(scenario => scenario.key)
   batchVisible.value = true
 }
 
@@ -288,6 +321,29 @@ const applyBatch = () => {
     }
   })
   batchVisible.value = false
+  save()
+}
+
+const openScenarioChannels = (key: string) => {
+  scenarioKey.value = key
+  scenarioChannels.value = channels.value
+      .filter(channel => (channel.services || []).includes(key))
+      .map(channel => channel.type)
+  scenarioVisible.value = true
+}
+
+const applyScenarioChannels = () => {
+  formState.notifyConfigure.forEach(channel => {
+    const services = new Set(channel.services || [])
+    if (scenarioChannels.value.includes(channel.type)) {
+      services.add(scenarioKey.value)
+    }
+    else {
+      services.delete(scenarioKey.value)
+    }
+    channel.services = Array.from(services)
+  })
+  scenarioVisible.value = false
   save()
 }
 
@@ -370,7 +426,7 @@ handlerInitialize()
 
 .dc-notify__channel-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 12px;
 }
 
