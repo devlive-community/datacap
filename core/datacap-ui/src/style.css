@@ -24,3 +24,15 @@
 .ant-select-dropdown .ant-select-item:last-child {
     margin-bottom: 4px;
 }
+
+/* 全站页面背景：品牌绿色波纹图（铺满视口、固定不随滚动），
+   html body 提升优先级，覆盖 utilities.local.css 里的纯色背景；
+   y 向下偏移一个 header 高度，让图片顶部的波纹从内容区露出来 */
+html body {
+    background-color: #f7fbf9;
+    background-image: url('/static/images/bg-main.png');
+    background-size: cover;
+    background-position: center 88px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
