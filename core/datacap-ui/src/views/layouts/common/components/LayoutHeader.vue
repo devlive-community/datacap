@@ -85,13 +85,13 @@
                         <span>{{ $t(`common.${ item.entityType?.toLowerCase() || '' }`) }}</span>
 
                         <template v-if="item.entityType === 'DATASET'">
-                          <router-link :to="`/admin/dataset/info/${item.entityCode}`" target="_blank" class="hover:text-blue-400 flex items-center">
+                          <router-link :to="`/admin/dataset/info/${item.entityCode}`" target="_blank" class="hover:text-[var(--dc-primary)] flex items-center">
                             [ {{ item.entityName }} ]
                           </router-link>
                         </template>
 
                         <template v-else>
-                          <router-link class="hover:text-blue-400" :to="'/' + item.entityType + '/' + item.entityCode">[ {{ item.entityName }} ]</router-link>
+                          <router-link class="hover:text-[var(--dc-primary)]" :to="'/' + item.entityType + '/' + item.entityCode">[ {{ item.entityName }} ]</router-link>
                         </template>
 
                         <span>{{ $t(`common.${ item.type?.toLowerCase() || '' }`) }}</span>
@@ -107,7 +107,7 @@
               </template>
 
               <a-badge :count="userInfo?.unreadCount || 0">
-                <BellOutlined class="hover:text-blue-400 cursor-pointer" :style="{ fontSize: '20px' }"/>
+                <BellOutlined class="dc-header__bell cursor-pointer" :style="{ fontSize: '20px' }"/>
               </a-badge>
             </a-popover>
           </div>
@@ -378,6 +378,15 @@ const handleNotificationClick = (msg: any) => {
 .dc-header__menu :deep(.ant-menu-submenu-selected) {
     background: var(--dc-primary-light) !important;
     color: var(--dc-primary-700) !important;
+}
+
+.dc-header__bell {
+    color: var(--dc-text-primary);
+    transition: color 0.2s;
+}
+
+.dc-header__bell:hover {
+    color: var(--dc-primary);
 }
 
 .dc-header__help {

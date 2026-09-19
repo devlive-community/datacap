@@ -10,7 +10,7 @@
           <div class="text-xs text-gray-400 py-1">{{ group.group }}</div>
           <div v-for="child in group.children"
                :key="child.type + child.label"
-               class="flex items-center gap-2 px-2 py-1.5 mb-1 rounded border bg-white cursor-grab hover:border-blue-400 hover:shadow-sm text-sm"
+               class="flex items-center gap-2 px-2 py-1.5 mb-1 rounded border bg-white cursor-grab hover:border-[var(--dc-primary)] hover:shadow-sm text-sm"
                draggable="true"
                @dragstart="onPanelDragStart($event, child)">
             <AppstoreOutlined :style="{ fontSize: '14px' }" class="text-gray-500"/>
@@ -49,7 +49,7 @@
         <div v-for="component in components"
              :key="component.id"
              class="absolute bg-white border rounded shadow-sm"
-             :class="selectedId === component.id ? 'border-blue-500 ring-1 ring-blue-300' : 'border-gray-200'"
+             :class="selectedId === component.id ? 'border-[var(--dc-primary)] ring-1 ring-[var(--dc-primary-light)]' : 'border-gray-200'"
              :style="{ left: `${ component.position.x }px`, top: `${ component.position.y }px`, minWidth: '160px', minHeight: '48px' }"
              @mousedown="onComponentMouseDown($event, component)"
              @click.stop="onSelect(component)">

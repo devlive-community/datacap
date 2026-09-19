@@ -85,11 +85,12 @@ img,video{max-width:100%;height:auto}
 
 [hidden]:where(:not([hidden=until-found])){display:none}
 
-:root{--background:0 0% 100%;--foreground:222.2 84% 4.9%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--ring:222.2 84% 4.9%;--radius:0.5rem}
+:root{--background:165 24% 98%;--foreground:160 22% 10%;--muted:160 20% 96%;--muted-foreground:160 8% 52%;--popover:0 0% 100%;--popover-foreground:160 22% 10%;--card:0 0% 100%;--card-foreground:160 22% 10%;--border:150 12% 89%;--input:150 12% 89%;--primary:163 87% 30%;--primary-foreground:0 0% 100%;--secondary:163 27% 95%;--secondary-foreground:163 87% 24%;--accent:163 27% 95%;--accent-foreground:163 87% 24%;--destructive:0 72% 60%;--destructive-foreground:0 0% 98%;--ring:163 87% 30%;--radius:0.5rem}
 
 *{border-color:hsl(var(--border))}
 
 body{background-color:hsl(var(--background));color:hsl(var(--foreground))}
+html.dark{--background:165 18% 7%;--foreground:160 20% 93%;--muted:165 12% 14%;--muted-foreground:160 8% 62%;--popover:165 18% 9%;--popover-foreground:160 20% 93%;--card:165 18% 9%;--card-foreground:160 20% 93%;--border:160 12% 20%;--input:160 12% 20%;--primary:163 60% 45%;--primary-foreground:0 0% 100%;--secondary:165 14% 16%;--secondary-foreground:160 20% 90%;--accent:163 30% 16%;--accent-foreground:160 30% 85%;--destructive:0 60% 55%;--destructive-foreground:0 0% 98%;--ring:163 60% 45%}
 
 
 /* ---------- matched utilities ---------- */
@@ -521,3 +522,39 @@ body{background-color:hsl(var(--background));color:hsl(var(--foreground))}
 .anticon svg {
     vertical-align: baseline;
 }
+
+/* ===== 迁移页面补充工具类（无 Tailwind 运行时，按使用手工维护） ===== */
+.items-start{align-items:flex-start}
+.items-end{align-items:flex-end}
+.overflow-x-hidden{overflow-x:hidden}
+.aspect-video{aspect-ratio:16/9}
+.break-all{word-break:break-all}
+.whitespace-pre-wrap{white-space:pre-wrap}
+.leading-relaxed{line-height:1.625}
+.mb-1{margin-bottom:.25rem}
+.mb-3{margin-bottom:.75rem}
+.mt-20{margin-top:5rem}
+.pb-1{padding-bottom:.25rem}
+.pb-2{padding-bottom:.5rem}
+.w-20{width:5rem}
+.h-24{height:6rem}
+.h-\[14px\]{height:14px}
+.h-\[18px\]{height:18px}
+.leading-\[14px\]{line-height:14px}
+.min-h-\[28px\]{min-height:28px}
+.rounded-\[2px\]{border-radius:2px}
+.border-4{border-width:4px}
+.border-gray-200{border-color:hsl(var(--border))}
+.border-red-500{border-color:rgb(239 68 68)}
+.text-gray-900{color:hsl(var(--foreground))}
+.text-\[var\(--dc-primary\)\]{color:var(--dc-primary)}
+.hover\:text-\[var\(--dc-primary\)\]:hover{color:var(--dc-primary)}
+.border-\[var\(--dc-primary\)\]{border-color:var(--dc-primary)}
+.hover\:border-\[var\(--dc-primary\)\]:hover{border-color:var(--dc-primary)}
+.stroke-\[var\(--dc-primary\)\]{stroke:var(--dc-primary)}
+.ring-\[var\(--dc-primary-light\)\]{--tw-ring-color:var(--dc-primary-light)}
+.backdrop-blur-sm{backdrop-filter:blur(4px)}
+.hover\:shadow-sm:hover{box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}
+.bg-background\/80{background-color:hsl(var(--background)/.8)}
+.bg-pink-500\/60{background-color:rgba(236,72,153,.6)}
+.dark .dark\:bg-gray-900{background-color:rgb(17 24 39)}

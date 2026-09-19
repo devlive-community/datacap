@@ -134,7 +134,7 @@ const socials = [
 }
 
 .dc-footer__link:hover {
-    color: #1677ff;
+    color: var(--dc-primary);
 }
 
 .dc-footer__bottom {
