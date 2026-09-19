@@ -9,7 +9,7 @@
 
   <!-- 白底铺满整行：a-layout 默认灰底会在宽屏下从两侧透出来 -->
   <div class="dc-header__bar">
-    <div class="container">
+    <div class="container flex h-full items-center">
       <div class="flex items-center">
         <router-link to="/" class="flex items-center gap-2 shrink-0">
           <a-avatar src="/static/images/logo.png" alt="DataCap Logo" :size="34"/>
@@ -293,6 +293,9 @@ const handleNotificationClick = (msg: any) => {
 }
 
 .dc-header__bar {
+    height: 64px;
+    display: flex;
+    align-items: center;
     background: var(--dc-header);
     backdrop-filter: blur(8px);
 }

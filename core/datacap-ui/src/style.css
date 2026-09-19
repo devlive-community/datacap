@@ -25,3 +25,9 @@
     margin-bottom: 4px;
 }
 
+
+/* 容器：接近全宽 + 固定侧边距（原型比例），替代 1400px 居中限宽 */
+html .container {
+    max-width: 1520px;
+    padding-inline: 40px;
+}
