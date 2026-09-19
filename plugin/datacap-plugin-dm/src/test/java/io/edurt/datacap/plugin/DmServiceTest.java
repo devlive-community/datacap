@@ -7,7 +7,9 @@ import io.edurt.datacap.spi.model.Configure;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.net.URL;
@@ -28,6 +30,28 @@ public class DmServiceTest
     private Plugin plugin;
     private Configure configure;
 
+    @BeforeClass
+    public static void assumeDockerAvailable()
+    {
+        // 本地无 Docker 环境时跳过达梦容器集成测试，CI（带 Docker）仍然执行
+        // Docker Desktop（Engine 29）会以 HTTP 400 拒绝 docker-java 默认 API 版本，钉一个双方都支持的版本
+        if (System.getProperty("api.version") == null && System.getenv("DOCKER_API_VERSION") == null) {
+            System.setProperty("api.version", "1.41");
+        }
+        boolean available;
+        try {
+            available = org.testcontainers.DockerClientFactory.instance().isDockerAvailable();
+        }
+        catch (Throwable ex) {
+            available = false;
+        }
+        Assume.assumeTrue("Docker is not available, skipping Dameng container tests", available);
+        // 镜像 hanyf/damengdb 仅发布 linux/amd64，Apple Silicon 等环境无法运行
+        String arch = System.getProperty("os.arch", "");
+        Assume.assumeTrue("Dameng image is amd64-only, skipping on " + arch,
+                "amd64".equals(arch) || "x86_64".equals(arch));
+    }
+
     @Before
     public void init()
     {
@@ -37,8 +61,12 @@ public class DmServiceTest
     @After
     public void destroy()
     {
-        CONTAINER.stop();
-        pluginManager.destroy();
+        if (CONTAINER.isRunning()) {
+            CONTAINER.stop();
+        }
+        if (pluginManager != null) {
+            pluginManager.destroy();
+        }
     }
 
     private void initPluginManager()

@@ -7,8 +7,11 @@ import io.edurt.datacap.plugin.utils.PluginPathUtils
 import io.edurt.datacap.spi.PluginService
 import io.edurt.datacap.spi.model.Configure
 import org.junit.Assert.assertNotNull
+import org.junit.Assume
+import org.junit.BeforeClass
 import org.junit.Test
 import org.slf4j.LoggerFactory.getLogger
+import org.testcontainers.DockerClientFactory
 import org.testcontainers.containers.Network
 import org.testcontainers.lifecycle.Startables
 import org.testcontainers.shaded.org.awaitility.Awaitility.given
@@ -19,6 +22,25 @@ import java.util.concurrent.TimeUnit
 @SuppressFBWarnings(value = ["RV_RETURN_VALUE_IGNORED_INFERRED", "SA_LOCAL_SELF_ASSIGNMENT"])
 class InfluxdbServiceTest
 {
+    companion object
+    {
+        @BeforeClass
+        @JvmStatic
+        fun assumeDockerAvailable()
+        {
+            // Docker Desktop（Engine 29）会以 HTTP 400 拒绝 docker-java 默认 API 版本，钉一个双方都支持的版本
+            if (System.getProperty("api.version") == null && System.getenv("DOCKER_API_VERSION") == null)
+            {
+                System.setProperty("api.version", "1.41")
+            }
+            // 无 Docker 环境时跳过容器集成测试，CI（带 Docker）仍然执行
+            Assume.assumeTrue(
+                "Docker is not available, skipping Influxdb container tests",
+                DockerClientFactory.instance().isDockerAvailable
+            )
+        }
+    }
+
     private val log = getLogger(this.javaClass)
     private val pluginManager: PluginManager
     private var container: InfluxdbContainer
