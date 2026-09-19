@@ -14,6 +14,7 @@ import io.edurt.datacap.spi.adapter.NativeAdapter;
 import io.edurt.datacap.spi.adapter.RowCallback;
 import io.edurt.datacap.spi.connection.Connection;
 import io.edurt.datacap.spi.connection.JdbcConnection;
+import io.edurt.datacap.spi.connection.JdbcUrlGuard;
 import io.edurt.datacap.spi.generator.DataType;
 import io.edurt.datacap.spi.generator.Filter;
 import io.edurt.datacap.spi.generator.OrderBy;
@@ -125,10 +126,11 @@ public interface PluginService
         buffer.append("jdbc:");
         buffer.append(configure.getType());
         buffer.append("://");
-        buffer.append(configure.getHost());
+        buffer.append(JdbcUrlGuard.validateHost(configure.getHost()));
         buffer.append(":");
         buffer.append(configure.getPort());
         if (configure.getDatabase().isPresent()) {
+            JdbcUrlGuard.validateDatabase(configure.getDatabase().get());
             buffer.append("/");
             buffer.append(configure.getDatabase().get());
         }
@@ -139,7 +141,10 @@ public interface PluginService
             Map<String, Object> env = configure.getEnv().get();
             List<String> flatEnv = env.entrySet()
                     .stream()
-                    .map(value -> String.format("%s=%s", value.getKey(), value.getValue()))
+                    .map(value -> {
+                        JdbcUrlGuard.validateParameter(value.getKey(), String.valueOf(value.getValue()));
+                        return String.format("%s=%s", value.getKey(), value.getValue());
+                    })
                     .collect(Collectors.toList());
             if (configure.getSsl().isEmpty()) {
                 buffer.append("?");
