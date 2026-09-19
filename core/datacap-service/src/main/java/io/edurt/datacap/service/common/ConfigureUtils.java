@@ -294,12 +294,10 @@ public class ConfigureUtils
 
             // Pipeline 条目可能缺少 executor/type 字段（如 Doris 的 YAML 配置），
             // 直接在条目上调用 equals 会抛出 NPE，比较方向必须固定
-            Optional.ofNullable(yamlConfigure.getPipelines())
-                    .orElseGet(ArrayList::new)
-                    .stream()
-                    .filter(v -> Objects.equals(v.getExecutor(), executor) && Objects.equals(v.getType(), pipelineType))
-                    .findFirst()
-                    .ifPresent(iConfigureExecutor -> body.setConfigures(mergeProperties(entity, iConfigureExecutor.getFields(), originProperties)));
+            IConfigureExecutor matchedExecutor = findPipelineExecutor(yamlConfigure, executor, pipelineType);
+            if (matchedExecutor != null) {
+                body.setConfigures(mergeProperties(entity, matchedExecutor.getFields(), originProperties));
+            }
             if (body.getConfigures() == null) {
                 body.setConfigures(new Properties());
             }
@@ -309,6 +307,25 @@ public class ConfigureUtils
             log.error("Failed to convert field body: {}", e.getMessage(), e);
             throw new IllegalArgumentException("Failed to convert field body: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Finds the pipeline executor matching the given executor and pipeline type.
+     * Entries missing executor or type are skipped safely instead of raising NPE.
+     *
+     * @param yamlConfigure YAML 配置 | YAML configuration
+     * @param executor 执行器 | Executor name
+     * @param pipelineType 管道类型 | Pipeline type
+     * @return 匹配的执行器配置，未命中时返回 null | Matched executor configure, or null
+     */
+    static IConfigureExecutor findPipelineExecutor(IConfigure yamlConfigure, String executor, IConfigurePipelineType pipelineType)
+    {
+        return Optional.ofNullable(yamlConfigure.getPipelines())
+                .orElseGet(ArrayList::new)
+                .stream()
+                .filter(v -> Objects.equals(v.getExecutor(), executor) && Objects.equals(v.getType(), pipelineType))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
