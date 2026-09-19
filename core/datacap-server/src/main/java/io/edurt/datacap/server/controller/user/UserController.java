@@ -70,7 +70,7 @@ public class UserController
         return this.service.changePassword(configure);
     }
 
-    @GetMapping(value = "checkUsername")
+    @GetMapping(value = "checkUsername", params = "username")
     public CommonResponse<Boolean> checkUsername(@RequestParam(value = "username") String username)
     {
         return service.checkUsername(username);
