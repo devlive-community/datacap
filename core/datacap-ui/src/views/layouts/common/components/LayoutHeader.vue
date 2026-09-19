@@ -22,14 +22,14 @@
               <a-sub-menu v-if="item.children" :key="item.id">
                 <template #title>
                   <div class="flex items-center space-x-2">
-                    <component v-if="item.icon" :is="menuIcons[item.icon]" :style="{ fontSize: '18px' }"/>
+                    <component v-if="item.icon" :is="menuIcons[item.icon]" :style="{ fontSize: '16px' }"/>
                     <span>{{ item.i18nKey ? $t(item.i18nKey) : 'Unknown' }}</span>
                   </div>
                 </template>
 
                 <a-menu-item v-for="children in item.children" :key="children.url">
                   <router-link :to="children.url" class="flex items-center space-x-2">
-                    <component v-if="children.icon" :is="menuIcons[children.icon]" :style="{ fontSize: '18px' }"/>
+                    <component v-if="children.icon" :is="menuIcons[children.icon]" :style="{ fontSize: '16px' }"/>
                     <span>{{ children.i18nKey ? $t(children.i18nKey) : 'Unknown' }}</span>
                   </router-link>
                 </a-menu-item>
@@ -37,7 +37,7 @@
 
               <a-menu-item v-else :key="item.url">
                 <router-link :to="item.url" class="flex items-center space-x-2">
-                  <component v-if="item.icon" :is="menuIcons[item.icon]" :style="{ fontSize: '18px' }"/>
+                  <component v-if="item.icon" :is="menuIcons[item.icon]" :style="{ fontSize: '16px' }"/>
                   <span>{{ item.i18nKey ? $t(item.i18nKey) : 'Unknown' }}</span>
                 </router-link>
               </a-menu-item>
@@ -307,6 +307,7 @@ const handleNotificationClick = (msg: any) => {
 .dc-header__menu.ant-menu-horizontal {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     flex-wrap: nowrap;
     min-width: 0;
     border-bottom: none;
@@ -314,13 +315,22 @@ const handleNotificationClick = (msg: any) => {
     line-height: normal;
 }
 
+.dc-header__menu :deep(.ant-menu-overflow) {
+    justify-content: flex-start;
+}
+
+.dc-header__menu :deep(.ant-menu-overflow-item) {
+    flex: none !important;
+}
+
 .dc-header__menu :deep(.ant-menu-item),
 .dc-header__menu :deep(.ant-menu-submenu) {
     top: 0;
-    height: 38px;
-    line-height: 38px;
-    margin-inline: 3px;
-    padding-inline: 16px;
+    flex: none !important;
+    height: 36px;
+    line-height: 36px;
+    margin-inline: 2px;
+    padding-inline: 12px;
     border-radius: 999px;
     border-bottom: none !important;
     transition: background-color 0.2s;
