@@ -120,6 +120,22 @@ const items = computed(() => [
     background: transparent;
 }
 
+/* 菜单状态色对齐 design/ui-color-system.md 第 7 节 */
+.dc-profile-sidebar :deep(.ant-menu-item) {
+    color: var(--dc-menu-text);
+}
+
+.dc-profile-sidebar :deep(.ant-menu-item:hover) {
+    background: var(--dc-menu-hover) !important;
+    color: var(--dc-primary-700);
+}
+
+.dc-profile-sidebar :deep(.ant-menu-item-selected) {
+    background: var(--dc-primary-light) !important;
+    color: var(--dc-primary-700) !important;
+    box-shadow: inset 3px 0 0 var(--dc-primary);
+}
+
 .dc-profile-sidebar__link {
     display: flex;
     align-items: center;

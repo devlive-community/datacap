@@ -40,6 +40,10 @@
     --dc-text-disabled: #BDC6C2;
     --dc-text-brand: #0A8F67;
 
+    /* ---- Menu ---- */
+    --dc-menu-hover: #F2F8F5;
+    --dc-menu-text: #40534C;
+
     /* ---- Border / Divider ---- */
     --dc-border: #E3EAE7;
     --dc-border-light: #EDF2F0;
@@ -103,6 +107,8 @@ html.dark {
     --dc-border: rgba(255, 255, 255, 0.1);
     --dc-border-light: rgba(255, 255, 255, 0.06);
     --dc-border-hover: rgba(255, 255, 255, 0.2);
+    --dc-menu-hover: rgba(18, 166, 106, 0.1);
+    --dc-menu-text: #C3D2CB;
 
     --dc-primary-light: rgba(18, 166, 106, 0.16);
     --dc-primary-surface: rgba(18, 166, 106, 0.1);
