@@ -412,7 +412,51 @@ public interface PluginService
                 "    FIELD(type, 'BASE TABLE', 'VIEW', 'FUNCTION', 'PROCEDURE'),\n" +
                 "    object_name;";
 
-        return this.execute(configure, sql.replace("{0}", database));
+        Response response = this.execute(configure, sql.replace("{0}", database));
+        // 达梦等数据源不提供 information_schema，执行失败时回退到 JDBC 元数据
+        if (Boolean.TRUE.equals(response.getIsConnected()) && Boolean.FALSE.equals(response.getIsSuccessful())) {
+            return metadataTables(configure, database);
+        }
+        return response;
+    }
+
+    /**
+     * 通过 JDBC DatabaseMetaData 获取数据表和视图列表
+     * Load tables and views via JDBC DatabaseMetaData, for sources without information_schema
+     *
+     * @param configure 配置信息 | Configuration information
+     * @param database 数据库 | Database
+     * @return 数据表列表 | Table list
+     */
+    default Response metadataTables(Configure configure, String database)
+    {
+        Response response = new Response();
+        response.setHeaders(Lists.newArrayList("type_name", "object_name", "object_comment"));
+        response.setTypes(Lists.newArrayList("String", "String", "String"));
+        List<Object> rows = Lists.newArrayList();
+        response.setColumns(rows);
+        try {
+            DatabaseMetaData metaData = openJdbcConnection(configure).getMetaData();
+            try (ResultSet resultSet = metaData.getTables(null, database, "%", new String[] {"TABLE", "VIEW"})) {
+                while (resultSet.next()) {
+                    String typeName = "VIEW".equals(resultSet.getString("TABLE_TYPE")) ? "view" : "table";
+                    String comment = resultSet.getString("REMARKS");
+                    rows.add(Lists.newArrayList(typeName, resultSet.getString("TABLE_NAME"), comment == null ? "" : comment));
+                }
+            }
+            response.setIsConnected(true);
+            response.setIsSuccessful(true);
+        }
+        catch (Exception ex) {
+            log.error("Failed to load tables via JDBC metadata", ex);
+            response.setIsConnected(Boolean.FALSE);
+            response.setIsSuccessful(Boolean.FALSE);
+            response.setMessage(ex.getMessage());
+        }
+        finally {
+            destroy();
+        }
+        return response;
     }
 
     /**
@@ -523,11 +567,87 @@ public interface PluginService
                 "    object_position,\n" +
                 "    object_name;";
 
-        return this.execute(
+        Response response = this.execute(
                 configure,
                 sql.replace("{0}", database)
                         .replace("{1}", table)
         );
+        // 达梦等数据源不提供 information_schema，执行失败时回退到 JDBC 元数据
+        if (Boolean.TRUE.equals(response.getIsConnected()) && Boolean.FALSE.equals(response.getIsSuccessful())) {
+            return metadataColumns(configure, database, table);
+        }
+        return response;
+    }
+
+    /**
+     * 通过 JDBC DatabaseMetaData 获取列和主键信息
+     * Load columns and primary keys via JDBC DatabaseMetaData, for sources without information_schema
+     *
+     * @param configure 配置信息 | Configuration information
+     * @param database 数据库 | Database
+     * @param table 数据表 | Table
+     * @return 数据列结构 | Column structure
+     */
+    default Response metadataColumns(Configure configure, String database, String table)
+    {
+        Response response = new Response();
+        response.setHeaders(Lists.newArrayList(
+                "type_name",
+                "object_name",
+                "object_data_type",
+                "object_nullable",
+                "object_default_value",
+                "object_comment",
+                "object_position",
+                "object_definition"));
+        response.setTypes(Lists.newArrayList(
+                "String", "String", "String", "String", "String", "String", "Integer", "String"));
+        List<Object> rows = Lists.newArrayList();
+        response.setColumns(rows);
+        try {
+            DatabaseMetaData metaData = openJdbcConnection(configure).getMetaData();
+            try (ResultSet resultSet = metaData.getColumns(null, database, table, "%")) {
+                while (resultSet.next()) {
+                    String defaultValue = resultSet.getString("COLUMN_DEF");
+                    String comment = resultSet.getString("REMARKS");
+                    rows.add(Lists.newArrayList(
+                            "column",
+                            resultSet.getString("COLUMN_NAME"),
+                            resultSet.getString("TYPE_NAME"),
+                            resultSet.getInt("NULLABLE") == java.sql.ResultSetMetaData.columnNullable ? "YES" : "NO",
+                            defaultValue == null ? "" : defaultValue,
+                            comment == null ? "" : comment,
+                            resultSet.getInt("ORDINAL_POSITION"),
+                            ""));
+                }
+            }
+            try (ResultSet resultSet = metaData.getPrimaryKeys(null, database, table)) {
+                List<String> primaryColumns = Lists.newArrayList();
+                while (resultSet.next()) {
+                    primaryColumns.add(resultSet.getString("COLUMN_NAME"));
+                }
+                for (String primaryColumn : primaryColumns) {
+                    rows.add(Lists.newArrayList(
+                            "primary",
+                            primaryColumn,
+                            "", "", "", "",
+                            0,
+                            "PRIMARY KEY on (" + String.join(", ", primaryColumns) + ")"));
+                }
+            }
+            response.setIsConnected(true);
+            response.setIsSuccessful(true);
+        }
+        catch (Exception ex) {
+            log.error("Failed to load columns via JDBC metadata", ex);
+            response.setIsConnected(Boolean.FALSE);
+            response.setIsSuccessful(Boolean.FALSE);
+            response.setMessage(ex.getMessage());
+        }
+        finally {
+            destroy();
+        }
+        return response;
     }
 
     default Response getPrimaryKeys(Configure configure, String database, String table)
