@@ -2,11 +2,11 @@
   <BaseLayout>
     <a-layout>
       <LayoutHeader/>
-      <div class="container my-2 min-h-screen">
-        <LayoutBreadcrumb class="mb-3"/>
+      <div class="container min-h-screen" style="margin-top: 20px; margin-bottom: 24px;">
         <a-layout has-sider :gutter="16">
           <LayoutSidebar/>
           <a-layout-content class="ml-6 min-w-0">
+            <LayoutBreadcrumb style="margin-bottom: 16px;"/>
             <RouterView/>
           </a-layout-content>
         </a-layout>
