@@ -9,8 +9,8 @@
 
   <!-- 白底铺满整行：a-layout 默认灰底会在宽屏下从两侧透出来 -->
   <div class="dc-header__bar">
-    <div class="container flex h-full items-center">
-      <div class="flex items-center">
+    <div class="container flex h-full items-center w-full">
+      <div class="flex items-center w-full">
         <router-link to="/" class="flex items-center gap-2 shrink-0">
           <a-avatar src="/static/images/logo.png" alt="DataCap Logo" :size="34"/>
           <span class="dc-header__wordmark">DataCap</span>
@@ -310,7 +310,8 @@ const handleNotificationClick = (msg: any) => {
 .dc-header__menu.ant-menu-horizontal {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-evenly;
+    width: 100%;
     flex-wrap: nowrap;
     min-width: 0;
     border-bottom: none;
@@ -319,7 +320,7 @@ const handleNotificationClick = (msg: any) => {
 }
 
 .dc-header__menu :deep(.ant-menu-overflow) {
-    justify-content: flex-start;
+    justify-content: space-evenly;
 }
 
 .dc-header__menu :deep(.ant-menu-overflow-item) {
