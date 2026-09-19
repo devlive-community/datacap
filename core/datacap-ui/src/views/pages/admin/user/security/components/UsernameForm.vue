@@ -23,7 +23,6 @@
                   <span class="dc-rename__required">{{ $t('user.common.newUsername') }}</span>
                 </template>
                 <a-input v-model:value="formState.newUsername"
-                         :placeholder="$t('user.auth.oldUsername')"
                          @input="onUsernameInput">
                   <template #suffix>
                     <CheckCircleFilled v-if="checkState === 'success'" class="dc-rename__check--success"/>
@@ -229,11 +228,6 @@ handlerInitialize()
 
 .dc-rename__form :deep(.ant-form-item) {
     margin-bottom: 18px;
-}
-
-.dc-rename__required::before {
-    content: '* ';
-    color: var(--dc-danger);
 }
 
 .dc-rename__check--success {
