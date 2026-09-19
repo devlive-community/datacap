@@ -1,11 +1,5 @@
 <template>
-  <a-card :bordered="false" :title="$t('user.common.notify')">
-    <div class="text-sm text-gray-500">{{ $t('user.tip.notify') }}</div>
-    <a-divider class="my-2"/>
-    <div class="p-3">
-      <NotifyForm/>
-    </div>
-  </a-card>
+  <NotifyForm/>
 </template>
 
 <script setup lang="ts">

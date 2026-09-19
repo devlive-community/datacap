@@ -1,57 +1,196 @@
 <template>
-  <div class="relative min-h-screen">
-    <a-spin :spinning="loading">
-      <a-form :model="formState" @finish="onSubmit">
-        <div class="space-y-2">
-          <div v-for="item in formState.notifyConfigure"
-               :key="item.type"
-               class="flex items-center justify-between w-full">
-            <span class="text-gray-500">
-              {{ $t('notify.text.' + item.type.toLowerCase()) }}
-            </span>
-            <div class="flex items-center space-x-2">
-              <a-switch v-model:checked="item.enabled"/>
-              <a-button type="text" shape="circle" size="small" :disabled="!item.enabled" @click="visibleConfigure(true, item)">
-                <SettingOutlined :style="{ fontSize: '15px' }"/>
+  <div class="dc-notify">
+    <!-- 页头：标题 + 描述 + 标语 -->
+    <div class="dc-notify__pagehead">
+      <div class="min-w-0">
+        <div class="dc-notify__title">{{ $t('user.common.notify') }}</div>
+        <div class="dc-notify__desc">{{ $t('notify.tip.page') }}</div>
+      </div>
+      <div class="dc-notify__slogan">Data for a smarter tomorrow</div>
+    </div>
+
+    <!-- 通知渠道 -->
+    <div class="dc-notify__card">
+      <div class="dc-notify__section-head">
+        <div class="dc-notify__section-icon">
+          <MailOutlined :style="{ fontSize: '16px' }"/>
+        </div>
+        <div>
+          <div class="dc-notify__section-title">{{ $t('notify.common.channels') }}</div>
+          <div class="dc-notify__section-sub">{{ $t('notify.tip.channels') }}</div>
+        </div>
+      </div>
+
+      <a-spin :spinning="loading">
+        <div class="dc-notify__channel-grid">
+          <div v-for="channel in channels"
+               :key="channel.type"
+               class="dc-notify__channel">
+            <div class="flex items-start gap-3">
+              <div class="dc-notify__channel-icon">
+                <component :is="channelIcon(channel.type)" :style="{ fontSize: '18px' }"/>
+              </div>
+              <div class="min-w-0">
+                <div class="dc-notify__channel-name">{{ channelName(channel.type) }}</div>
+                <div class="dc-notify__channel-desc">{{ channelDesc(channel.type) }}</div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-3">
+              <span class="dc-notify__channel-state"
+                    :class="channel.enabled ? 'dc-notify__channel-state--on' : 'dc-notify__channel-state--off'">
+                <CheckCircleFilled v-if="channel.enabled"/>
+                <MinusCircleFilled v-else/>
+                {{ channel.enabled ? $t('notify.state.enabled') : $t('notify.state.disabled') }}
+              </span>
+              <a-button v-if="!channel.enabled"
+                        size="small"
+                        @click="toggleChannel(channel, true)">
+                {{ $t('notify.common.enable') }}
               </a-button>
             </div>
           </div>
         </div>
+      </a-spin>
+    </div>
 
-        <a-button type="primary" html-type="submit" class="mt-3" :loading="submitting" :disabled="submitting">
-          {{ $t('common.save') }}
+    <!-- 通知类型（触发场景） -->
+    <div class="dc-notify__card">
+      <div class="dc-notify__section-head">
+        <div class="dc-notify__section-icon">
+          <NotificationOutlined :style="{ fontSize: '16px' }"/>
+        </div>
+        <div class="min-w-0">
+          <div class="dc-notify__section-title">{{ $t('notify.common.scenarios') }}</div>
+          <div class="dc-notify__section-sub">{{ $t('notify.tip.scenarios') }}</div>
+        </div>
+        <a-button type="primary"
+                  class="ml-auto"
+                  @click="openBatch">
+          <template #icon>
+            <SettingOutlined/>
+          </template>
+          {{ $t('notify.common.batch') }}
         </a-button>
-      </a-form>
-    </a-spin>
+      </div>
 
-    <NotifyConfigure v-if="visible"
-                     :model-value="visible"
-                     :item="info"
-                     @update:model-value="visibleConfigure($event)"
-                     @update:configure="updateConfigure"/>
+      <div class="dc-notify__rows">
+        <div v-for="scenario in scenarios"
+             :key="scenario.key"
+             class="dc-notify__row">
+          <div class="dc-notify__row-icon">
+            <component :is="scenario.icon" :style="{ fontSize: '16px' }"/>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="dc-notify__row-name">{{ $t(scenario.nameKey) }}</div>
+            <div class="dc-notify__row-desc">{{ $t(scenario.tipKey) }}</div>
+          </div>
+          <a-switch :checked="isScenarioOn(scenario.key)"
+                    :disabled="!hasEnabledChannel || saving"
+                    @change="toggleScenario(scenario.key, $event)"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- 批量设置：渠道 × 场景 -->
+    <a-modal v-model:open="batchVisible"
+             :title="$t('notify.common.batch')"
+             :width="480">
+      <div class="dc-notify__batch-section">
+        <div class="dc-notify__batch-label">{{ $t('notify.common.sendChannels') }}</div>
+        <a-checkbox-group v-model:value="batchChannels" class="dc-notify__batch-group">
+          <a-checkbox v-for="channel in channels"
+                      :key="channel.type"
+                      :value="channel.type">
+            {{ channelName(channel.type) }}
+          </a-checkbox>
+        </a-checkbox-group>
+      </div>
+
+      <div class="dc-notify__batch-section">
+        <div class="dc-notify__batch-label">{{ $t('notify.common.scenarios') }}</div>
+        <a-checkbox-group v-model:value="batchScenarios" class="dc-notify__batch-group">
+          <a-checkbox v-for="scenario in scenarios"
+                      :key="scenario.key"
+                      :value="scenario.key">
+            {{ $t(scenario.nameKey) }}
+          </a-checkbox>
+        </a-checkbox-group>
+      </div>
+
+      <div class="dc-notify__batch-tip">{{ $t('notify.tip.batch') }}</div>
+
+      <template #footer>
+        <a-button @click="batchVisible = false">{{ $t('common.cancel') }}</a-button>
+        <a-button type="primary" :loading="saving" @click="applyBatch">{{ $t('notify.common.apply') }}</a-button>
+      </template>
+    </a-modal>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
+import {
+  ApiOutlined,
+  CheckCircleFilled,
+  DeleteOutlined,
+  DingtalkOutlined,
+  EditOutlined,
+  MailOutlined,
+  MinusCircleFilled,
+  NotificationOutlined,
+  PlusCircleOutlined,
+  SettingOutlined,
+  SyncOutlined
+} from '@ant-design/icons-vue'
 import UserService from '@/services/user.ts'
 import PluginService from '@/services/plugin.ts'
 import { HttpUtils } from '@/utils/http.ts'
-import NotifyConfigure from '@/views/pages/admin/user/profile/components/NotifyConfigure.vue'
-import { SettingOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'NotifyForm' })
 
 const { t } = useI18n()
 
-const visible = ref(false)
-const info = ref<any>({})
 const loading = ref(false)
-const submitting = ref(false)
-const plugins = ref<any[]>([])
-const formState = ref<{ notifyConfigure: any[] }>({ notifyConfigure: [] })
+const saving = ref(false)
+const formState = reactive<{ notifyConfigure: any[] }>({ notifyConfigure: [] })
+
+const batchVisible = ref(false)
+const batchChannels = ref<string[]>([])
+const batchScenarios = ref<string[]>([])
+
+/** 触发场景定义（通知枚举：CREATED/UPDATED/DELETED/DYNAMIC/SYNCDATA） */
+const scenarios = [
+  { key: 'CREATED', icon: PlusCircleOutlined, nameKey: 'notify.text.created', tipKey: 'notify.tip.created' },
+  { key: 'UPDATED', icon: EditOutlined, nameKey: 'notify.text.updated', tipKey: 'notify.tip.updated' },
+  { key: 'DELETED', icon: DeleteOutlined, nameKey: 'notify.text.deleted', tipKey: 'notify.tip.deleted' },
+  { key: 'DYNAMIC', icon: NotificationOutlined, nameKey: 'notify.text.dynamic', tipKey: 'notify.tip.dynamic' },
+  { key: 'SYNCDATA', icon: SyncOutlined, nameKey: 'notify.text.syncData', tipKey: 'notify.tip.syncData' }
+]
+
+const channels = computed(() => formState.notifyConfigure)
+const hasEnabledChannel = computed(() => formState.notifyConfigure.some(channel => channel.enabled))
+
+const isScenarioOn = (key: string): boolean => {
+  return formState.notifyConfigure
+      .filter(channel => channel.enabled)
+      .some(channel => (channel.services || []).includes(key))
+}
+
+const channelIcon = (type: string): any => {
+  if (type === 'Internal') {
+    return MailOutlined
+  }
+  if (type === 'DingTalk') {
+    return DingtalkOutlined
+  }
+  return ApiOutlined
+}
+
+const channelName = (type: string): string => t(`notify.text.${ type.toLowerCase() }`)
+const channelDesc = (type: string): string => t(`notify.tip.${ type.toLowerCase() }`)
 
 const handlerInitialize = () => {
   loading.value = true
@@ -59,74 +198,51 @@ const handlerInitialize = () => {
 
   axios.all([UserService.getInfo(), PluginService.getPlugins()])
        .then(axios.spread((infoResponse: any, plugin: any) => {
-         // 初始化默认配置
-         formState.value = {
-           notifyConfigure: [
-             { type: 'Internal', enabled: false, services: [] }
-           ]
-         }
+         formState.notifyConfigure = [{ type: 'Internal', enabled: false, services: [] }]
 
-         // 处理插件数据
          if (plugin.status && plugin.data && Array.isArray(plugin.data)) {
-           plugins.value = plugin.data.filter((v: { type: string }) => v.type === 'NOTIFY')
-           plugins.value.forEach((item: { name: string }) => {
-             if (item && item.name) {
-               formState.value.notifyConfigure.push({ type: item.name, enabled: false, services: [] })
-             }
-           })
-         }
-         else {
-           message.error(plugin.message)
+           plugin.data
+                 .filter((v: { type: string }) => v.type === 'NOTIFY')
+                 .forEach((item: { name: string }) => {
+                   if (item?.name) {
+                     formState.notifyConfigure.push({ type: item.name, enabled: false, services: [] })
+                   }
+                 })
          }
 
-         // 处理用户信息数据：合并服务器配置与本地默认配置
          if (infoResponse.status && infoResponse.data) {
            const serverConfigure = infoResponse.data.notifyConfigure
            if (serverConfigure && Array.isArray(serverConfigure) && serverConfigure.length > 0) {
              const serverConfigMap: Record<string, any> = {}
              serverConfigure.forEach((config: any) => {
-               if (config && config.type) {
+               if (config?.type) {
                  serverConfigMap[config.type] = config
                }
              })
 
-             formState.value.notifyConfigure = formState.value.notifyConfigure.map(localConfig => serverConfigMap[localConfig.type] || localConfig)
+             formState.notifyConfigure = formState.notifyConfigure.map(localConfig => {
+               const server = serverConfigMap[localConfig.type]
+               return server ? { ...server, services: server.services || [] } : localConfig
+             })
 
              serverConfigure.forEach((serverConfig: any) => {
-               if (serverConfig && serverConfig.type) {
-                 const exists = formState.value.notifyConfigure.some(localConfig => localConfig.type === serverConfig.type)
-                 if (!exists) {
-                   formState.value.notifyConfigure.push(serverConfig)
-                 }
+               if (serverConfig?.type && !formState.notifyConfigure.some(c => c.type === serverConfig.type)) {
+                 formState.notifyConfigure.push({ ...serverConfig, services: serverConfig.services || [] })
                }
              })
            }
          }
-         else {
+         else if (infoResponse.message) {
            message.error(infoResponse.message)
          }
        }))
        .finally(() => (loading.value = false))
 }
 
-const visibleConfigure = (opened?: boolean, item?: any) => {
-  visible.value = !!opened
-  info.value = item
-}
-
-const updateConfigure = (updatedItem: any) => {
-  if (updatedItem && updatedItem.type) {
-    const index = formState.value.notifyConfigure.findIndex((item: { type: string }) => item.type === updatedItem.type)
-    if (index !== -1) {
-      formState.value.notifyConfigure[index] = { ...updatedItem }
-    }
-  }
-}
-
-const onSubmit = () => {
-  submitting.value = true
-  UserService.changeNotify(formState.value)
-             .then((response) => {
+const save = () => {
+  saving.value = true
+  UserService.changeNotify(formState)
+             .then(response => {
                if (response.status) {
                  message.success(t('common.successfully') as string)
                }
@@ -134,8 +250,235 @@ const onSubmit = () => {
                  message.error(response.message)
                }
              })
-             .finally(() => (submitting.value = false))
+             .finally(() => (saving.value = false))
+}
+
+const toggleChannel = (channel: any, enabled: boolean) => {
+  channel.enabled = enabled
+  save()
+}
+
+const toggleScenario = (key: string, checked: boolean) => {
+  formState.notifyConfigure
+           .filter(channel => channel.enabled)
+           .forEach(channel => {
+             const services = new Set(channel.services || [])
+             if (checked) {
+               services.add(key)
+             }
+             else {
+               services.delete(key)
+             }
+             channel.services = Array.from(services)
+           })
+  save()
+}
+
+const openBatch = () => {
+  batchChannels.value = formState.notifyConfigure.filter(c => c.enabled).map(c => c.type)
+  batchScenarios.value = scenarios.filter(s => isScenarioOn(s.key)).map(s => s.key)
+  batchVisible.value = true
+}
+
+const applyBatch = () => {
+  formState.notifyConfigure.forEach(channel => {
+    if (batchChannels.value.includes(channel.type)) {
+      channel.enabled = true
+      channel.services = [...batchScenarios.value]
+    }
+  })
+  batchVisible.value = false
+  save()
 }
 
 handlerInitialize()
 </script>
+
+<style scoped>
+.dc-notify__pagehead {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 18px 20px;
+    border-radius: var(--dc-radius-lg);
+    background: var(--dc-gradient-hero);
+    border: 1px solid var(--dc-border-light);
+    margin-bottom: 16px;
+}
+
+.dc-notify__title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+}
+
+.dc-notify__desc {
+    font-size: 13px;
+    color: var(--dc-text-secondary);
+    margin-top: 4px;
+}
+
+.dc-notify__slogan {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--dc-primary);
+    opacity: 0.7;
+    flex-shrink: 0;
+    transform: rotate(-2deg);
+}
+
+.dc-notify__card {
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-lg);
+    box-shadow: var(--dc-shadow-card);
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.dc-notify__section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.dc-notify__section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
+    flex-shrink: 0;
+}
+
+.dc-notify__section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+}
+
+.dc-notify__section-sub {
+    font-size: 12px;
+    color: var(--dc-text-secondary);
+    margin-top: 2px;
+}
+
+.dc-notify__channel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.dc-notify__channel {
+    padding: 14px;
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-bg);
+}
+
+.dc-notify__channel-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
+    flex-shrink: 0;
+}
+
+.dc-notify__channel-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+}
+
+.dc-notify__channel-desc {
+    font-size: 12px;
+    color: var(--dc-text-secondary);
+    margin-top: 4px;
+}
+
+.dc-notify__channel-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+}
+
+.dc-notify__channel-state--on {
+    color: var(--dc-success);
+}
+
+.dc-notify__channel-state--off {
+    color: var(--dc-text-disabled);
+}
+
+.dc-notify__rows {
+    display: flex;
+    flex-direction: column;
+}
+
+.dc-notify__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--dc-border-light);
+}
+
+.dc-notify__row:last-child {
+    border-bottom: none;
+}
+
+.dc-notify__row-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
+    flex-shrink: 0;
+}
+
+.dc-notify__row-name {
+    font-size: 14px;
+    color: var(--dc-text-title);
+}
+
+.dc-notify__row-desc {
+    font-size: 12px;
+    color: var(--dc-text-secondary);
+    margin-top: 2px;
+}
+
+.dc-notify__batch-section {
+    margin-bottom: 14px;
+}
+
+.dc-notify__batch-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+    margin-bottom: 8px;
+}
+
+.dc-notify__batch-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+}
+
+.dc-notify__batch-tip {
+    font-size: 12px;
+    color: var(--dc-text-secondary);
+}
+</style>
