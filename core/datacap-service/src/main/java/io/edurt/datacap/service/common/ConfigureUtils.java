@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
@@ -291,9 +292,12 @@ public class ConfigureUtils
                 throw new IllegalArgumentException("Failed to load YAML configuration");
             }
 
-            yamlConfigure.getPipelines()
+            // Pipeline 条目可能缺少 executor/type 字段（如 Doris 的 YAML 配置），
+            // 直接在条目上调用 equals 会抛出 NPE，比较方向必须固定
+            Optional.ofNullable(yamlConfigure.getPipelines())
+                    .orElseGet(ArrayList::new)
                     .stream()
-                    .filter(v -> v.getExecutor().equals(executor) && v.getType().equals(pipelineType))
+                    .filter(v -> Objects.equals(v.getExecutor(), executor) && Objects.equals(v.getType(), pipelineType))
                     .findFirst()
                     .ifPresent(iConfigureExecutor -> body.setConfigures(mergeProperties(entity, iConfigureExecutor.getFields(), originProperties)));
             if (body.getConfigures() == null) {
