@@ -82,6 +82,12 @@ public class UserController
         return this.service.changeUsername(configure);
     }
 
+    @PostMapping(value = "testChat")
+    public CommonResponse<Boolean> testChat(@RequestBody AiModel configure)
+    {
+        return service.testChat(configure);
+    }
+
     @PutMapping(value = "changeThirdConfigure")
     public CommonResponse<Long> changeThirdConfigure(@Validated @RequestBody AiModel configure)
     {

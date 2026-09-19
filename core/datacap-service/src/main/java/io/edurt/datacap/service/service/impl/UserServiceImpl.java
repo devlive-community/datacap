@@ -43,6 +43,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,6 +55,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -199,6 +205,31 @@ public class UserServiceImpl
             return CommonResponse.failure(ServiceState.USER_NAME_ALREADY_EXISTS);
         }
         return CommonResponse.success(true);
+    }
+
+    @Override
+    public CommonResponse<Boolean> testChat(AiModel configure)
+    {
+        String host = StringUtils.stripEnd(configure.getHost(), "/");
+        String url = host + "/models";
+        try {
+            SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+            factory.setConnectTimeout((int) configure.getTimeout() * 1000);
+            factory.setReadTimeout((int) configure.getTimeout() * 1000);
+            RestTemplate restTemplate = new RestTemplate(factory);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + configure.getToken());
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), String.class);
+            return CommonResponse.success(response.getStatusCode().is2xxSuccessful());
+        }
+        catch (Exception e) {
+            String message = e.getMessage();
+            if (message == null) {
+                message = "connection failed";
+            }
+            return CommonResponse.failure(String.format("Connection failed: %s", StringUtils.abbreviate(message, 200)));
+        }
     }
 
     @Override

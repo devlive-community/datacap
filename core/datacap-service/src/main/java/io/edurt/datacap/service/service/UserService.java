@@ -34,6 +34,12 @@ public interface UserService
      */
     CommonResponse<Boolean> checkUsername(String username);
 
+    /**
+     * Test the connectivity of the AI assistant service:
+     * performs a GET request against {host}/models with the given token.
+     */
+    CommonResponse<Boolean> testChat(AiModel configure);
+
     CommonResponse<Long> changeThirdConfigure(AiModel configure);
 
     CommonResponse<List<Object>> getSugs(Long id);

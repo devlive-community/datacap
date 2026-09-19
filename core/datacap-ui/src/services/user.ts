@@ -111,6 +111,11 @@ class UserService
         return new HttpUtils().put(`${ DEFAULT_PATH_USER }/changeEditorConfigure`, configure)
     }
 
+    testChat(configure: UserChatModel): Promise<ResponseModel>
+    {
+      return new HttpUtils().post(`${ DEFAULT_PATH_USER }/testChat`, configure)
+    }
+
     changeChart(configure: UserChatModel): Promise<ResponseModel>
     {
         return new HttpUtils().put(`${ DEFAULT_PATH_USER }/changeThirdConfigure`, configure)
