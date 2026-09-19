@@ -1,10 +1,7 @@
 <template>
-  <a-card>
-    <template #title>
-      <div class="ml-2 font-normal text-sm">{{ $t('schedule.common.list') }}</div>
-    </template>
 
-    <DataTable :columns="headers"
+    <DataTable :title="$t('schedule.common.list')"
+               :columns="headers"
                :data-source="data"
                :loading="loading"
                :page-index="pageIndex"
@@ -35,7 +32,6 @@
         </template>
       </template>
     </DataTable>
-  </a-card>
 
   <ScheduleHistory v-if="dataHistoryVisible"
                    :is-visible="dataHistoryVisible"

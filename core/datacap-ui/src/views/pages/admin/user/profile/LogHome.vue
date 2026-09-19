@@ -1,9 +1,7 @@
 <template>
-  <a-card :bordered="false" :title="$t('user.common.log')">
-    <div class="text-sm text-gray-500">{{ $t('user.tip.log') }}</div>
-    <a-divider class="my-2"/>
-
-    <DataTable :columns="headers"
+  <DataTable :columns="headers"
+             :title="$t('user.common.log')"
+             :description="$t('user.tip.log')"
                :data-source="data"
                :loading="loading"
                :page-index="pageIndex"
@@ -18,7 +16,6 @@
         </template>
       </template>
     </DataTable>
-  </a-card>
 </template>
 
 <script setup lang="ts">

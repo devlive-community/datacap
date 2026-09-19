@@ -1,10 +1,7 @@
 <template>
-  <a-card>
-    <template #title>
-      <div class="ml-2 font-normal text-sm">{{ $t('dataset.common.list') }}</div>
-    </template>
 
-    <DataTable :columns="headers"
+    <DataTable :title="$t('dataset.common.list')"
+               :columns="headers"
                :data-source="data"
                :loading="loading"
                :page-index="pageIndex"
@@ -107,7 +104,6 @@
         </template>
       </template>
     </DataTable>
-  </a-card>
 
   <DatasetRebuild v-if="rebuildVisible"
                   :is-visible="rebuildVisible"

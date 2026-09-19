@@ -1,10 +1,7 @@
 <template>
-  <a-card>
-    <template #title>
-      <div class="ml-2">{{ $t('source.common.list') }}</div>
-    </template>
 
-    <DataTable :columns="headers"
+    <DataTable :title="$t('source.common.list')"
+               :columns="headers"
                :data-source="data"
                :loading="loading"
                :page-index="pageIndex"
@@ -85,7 +82,6 @@
         </template>
       </template>
     </DataTable>
-  </a-card>
 
   <SourceInfo v-if="dataInfoVisible"
               :is-visible="dataInfoVisible"
