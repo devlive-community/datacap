@@ -97,8 +97,10 @@ jobs:
           echo "QINIU_ENDPOINT is set: ${{ secrets.QINIU_ENDPOINT != '' }}"
           echo "QINIU_ENDPOINT length: ${#QINIU_ENDPOINT}"
 
+      # 对象存储密钥仅通过 -D 系统属性透传（当前无测试消费）。
+      # 注意：step 的 if 中读取不到自身 env 映射，原来的
+      # `if: ${{ env.QINIU_ENDPOINT != '' }}` 恒为空，导致测试被静默跳过。
       - name: Run Tests
-        if: ${{ env.QINIU_ENDPOINT != '' }}
         env:
           QINIU_ACCESS: ${{ secrets.QINIU_ACCESS }}
           QINIU_SECRET: ${{ secrets.QINIU_SECRET }}
