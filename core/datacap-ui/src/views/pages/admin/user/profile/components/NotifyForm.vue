@@ -239,11 +239,13 @@ const handlerInitialize = () => {
        .then(axios.spread((infoResponse: any, plugin: any) => {
          formState.notifyConfigure = [{ type: 'Internal', enabled: false, services: [] }]
 
+         const pluginNames: string[] = []
          if (plugin.status && plugin.data && Array.isArray(plugin.data)) {
            plugin.data
                  .filter((v: { type: string }) => v.type === 'NOTIFY')
                  .forEach((item: { name: string }) => {
-                   if (item?.name && !formState.notifyConfigure.some(c => c.type === item.name)) {
+                   if (item?.name && !pluginNames.includes(item.name)) {
+                     pluginNames.push(item.name)
                      formState.notifyConfigure.push({ type: item.name, enabled: false, services: [] })
                    }
                  })
@@ -266,6 +268,16 @@ const handlerInitialize = () => {
                }
              })
            }
+
+           // 清理历史脏数据：只保留内置渠道与已安装的通知插件
+           const validTypes = new Set(formState.notifyConfigure
+             .filter(channel => channel.type === 'Internal' || pluginNames.includes(channel.type))
+             .map(channel => channel.type))
+           const removed = formState.notifyConfigure.filter(channel => !validTypes.has(channel.type))
+           formState.notifyConfigure = formState.notifyConfigure.filter(channel => validTypes.has(channel.type))
+           if (removed.length > 0) {
+             save(true)
+           }
          }
          else if (infoResponse.message) {
            message.error(infoResponse.message)
@@ -274,12 +286,14 @@ const handlerInitialize = () => {
        .finally(() => (loading.value = false))
 }
 
-const save = () => {
+const save = (silent = false) => {
   saving.value = true
   UserService.changeNotify(formState)
              .then(response => {
                if (response.status) {
-                 message.success(t('common.successfully') as string)
+                 if (!silent) {
+                   message.success(t('common.successfully') as string)
+                 }
                }
                else {
                  message.error(response.message)
