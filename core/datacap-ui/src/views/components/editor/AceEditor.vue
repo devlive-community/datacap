@@ -24,6 +24,16 @@ import { UserEditor } from '@/model/user'
 import { FilterModel } from '@/model/filter.ts'
 import Editor = Ace.Editor
 
+export interface AutoCompleteConfig
+{
+  endpoint: string | (() => string)
+  method?: string
+  trigger?: string[]
+  headers?: Record<string, string>
+  requestParams?: (context: { word: string }) => Record<string, any>
+  transform: (response: any) => Array<{ label: string; insertText?: string; detail?: string; icon?: string }>
+}
+
 export default defineComponent({
   name: 'AceEditor',
   components: {
@@ -40,6 +50,11 @@ export default defineComponent({
     height: {
       type: String,
       default: '300px'
+    },
+    autoComplete: {
+      type: Object as () => AutoCompleteConfig,
+      required: false,
+      default: undefined
     }
   },
   emits: ['update:value'],
@@ -126,6 +141,43 @@ export default defineComponent({
                     }
                   }
                   editor.completers.push(snippetCompleter)
+                }
+                if (that.autoComplete) {
+                  const config = that.autoComplete as AutoCompleteConfig
+                  const cache = new Map<string, any[]>()
+                  const suggestCompleter = {
+                    // @ts-ignore
+                    getCompletions: function (editor, session, pos, prefix, callback) {
+                      const line: string = session.getLine(pos.row) || ''
+                      const word = (line.slice(0, pos.column).match(/[A-Za-z0-9_@.]*$/) || [''])[0]
+                      if (!word) {
+                        return callback(null, [])
+                      }
+                      const cached = cache.get(word)
+                      if (cached) {
+                        return callback(null, cached)
+                      }
+                      const client = new HttpUtils().getAxios()
+                      client({
+                        url: typeof config.endpoint === 'function' ? config.endpoint() : config.endpoint,
+                        method: config.method || 'GET',
+                        headers: config.headers,
+                        params: config.requestParams ? config.requestParams({ word }) : undefined
+                      })
+                                    .then((response) => {
+                                      const items = (config.transform(response) || []).map((item) => ({
+                                        value: item.insertText || item.label,
+                                        caption: item.label,
+                                        meta: item.detail || '',
+                                        score: 1000
+                                      }))
+                                      cache.set(word, items)
+                                      callback(null, items)
+                                    })
+                                    .catch(() => callback(null, []))
+                    }
+                  }
+                  editor.completers.push(suggestCompleter)
                 }
               }))
       }

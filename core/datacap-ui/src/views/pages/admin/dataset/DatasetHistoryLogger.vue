@@ -1,155 +1,117 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="60%"
-               height="60%"
-               :title="$t('dataset.history.logger')"
-               @on-close="onCancel">
-    <ShadcnSpin v-model="loading" fixed/>
+  <a-modal v-model:open="visible"
+           width="60%"
+           :title="$t('dataset.history.logger')"
+           :footer="null"
+           :body-style="{ maxHeight: '60vh', overflow: 'auto' }">
+    <a-spin :spinning="loading">
+      <div class="flex items-center gap-3 pb-2">
+        <a-switch v-model:checked="autoRefresh" :disabled="!isRunning" @change="onAutoRefreshChange"/>
+        <span class="text-xs">{{ $t('dataset.history.autoRefresh') }}</span>
+        <span v-if="isRunning && autoRefresh" class="text-xs text-gray-500">
+          ({{ $t('dataset.history.refreshInterval', { seconds: refreshSeconds }) }})
+        </span>
+      </div>
 
-    <div v-if="!loading" class="flex items-center gap-3 pb-2">
-      <ShadcnSwitch v-model="autoRefresh"
-                    :disabled="!isRunning"
-                    @on-change="onAutoRefreshChange"/>
-      <span class="text-xs">{{ $t('dataset.history.autoRefresh') }}</span>
-      <span class="text-xs text-gray-500" v-if="isRunning && autoRefresh">
-        ({{ $t('dataset.history.refreshInterval', { seconds: refreshSeconds }) }})
-      </span>
-    </div>
-
-    <ShadcnLogger v-if="!loading"
-                  height="380"
-                  toolbar
-                  :items="logs"
-                  :custom-patterns="customPatterns"/>
-
-    <template #footer>
-      <ShadcnButton type="default" @click="onCancel">
-        {{ $t('common.cancel') }}
-      </ShadcnButton>
-    </template>
-  </ShadcnModal>
+      <LogViewer height="380"
+                    toolbar
+                    :items="logs"
+                    :custom-patterns="customPatterns"/>
+    </a-spin>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { message } from 'ant-design-vue'
 import DatasetService from '@/services/dataset'
+import LogViewer from '@/views/components/logger/LogViewer.vue'
 
-export default defineComponent({
-  name: 'DatasetHistoryLogger',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    },
-    isRunning(): boolean
-    {
-      const state = this.info?.state
-      return state === 'RUNNING' || state === 'CREATED' || state === 'QUEUE'
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => any | null
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      logs: Array<string>(),
-      autoRefresh: false,
-      refreshSeconds: 3,
-      timer: null as any,
-      customPatterns: {
-        timestamp: [/^(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d{3})/],
-        level: [/\b(INFO|ERROR|WARN|DEBUG)\b/],
-        thread: [/\[(pool-\d+-thread-\d+)\]/],
-        file: [/\[([^[\]]+\.kt:\d+)\]/, /\[([^[\]]+\.java:\d+)\]/]
-      }
-    }
-  },
-  created()
-  {
-    // RUNNING 任务默认打开自动刷新
-    this.autoRefresh = this.isRunning
-    this.handleInitialize(true)
-  },
-  beforeUnmount()
-  {
-    this.stopTimer()
-  },
-  watch: {
-    isVisible(value: boolean)
-    {
-      if (!value) {
-        this.stopTimer()
-      }
-    }
-  },
-  methods: {
-    handleInitialize(showSpin: boolean)
-    {
-      if (!this.info?.id) {
-        return
-      }
-      if (showSpin) {
-        this.loading = true
-      }
-      DatasetService.getHistoryLog(this.info.id)
-                    .then(response => {
-                      if (response.status) {
-                        this.logs = response.data || []
-                      }
-                      else if (showSpin) {
-                        this.$Message.error({
-                          content: response.message,
-                          showIcon: true
-                        })
-                      }
-                    })
-                    .finally(() => {
-                      this.loading = false
-                      if (this.autoRefresh && this.isRunning) {
-                        this.scheduleNext()
-                      }
-                    })
-    },
+defineOptions({ name: 'DatasetHistoryLogger' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: any | null }>(), {
+  isVisible: false,
+  info: null
+})
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const isRunning = computed<boolean>(() => {
+  const state = props.info?.state
+  return state === 'RUNNING' || state === 'CREATED' || state === 'QUEUE'
+})
+
+const loading = ref(false)
+const logs = ref<string[]>([])
+const autoRefresh = ref(false)
+const refreshSeconds = ref(3)
+let timer: any = null
+const customPatterns = {
+  timestamp: [/^(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d{3})/],
+  level: [/\b(INFO|ERROR|WARN|DEBUG)\b/],
+  thread: [/\[(pool-\d+-thread-\d+)\]/],
+  file: [/\[([^[\]]+\.kt:\d+)\]/, /\[([^[\]]+\.java:\d+)\]/]
+}
+
+const stopTimer = () => {
+  if (timer) {
+    clearTimeout(timer)
+    timer = null
+  }
+}
+
+const scheduleNext = () => {
+  stopTimer()
+  timer = setTimeout(() => handleInitialize(false), refreshSeconds.value * 1000)
+}
+
+const handleInitialize = (showSpin: boolean) => {
+  if (!props.info?.id) {
+    return
+  }
+  if (showSpin) {
+    loading.value = true
+  }
+  DatasetService.getHistoryLog(props.info.id)
+                .then(response => {
+                  if (response.status) {
+                    logs.value = response.data || []
+                  }
+                  else if (showSpin) {
+                    message.error(response.message)
+                  }
+                })
+                .finally(() => {
+                  loading.value = false
+                  if (autoRefresh.value && isRunning.value) {
+                    scheduleNext()
+                  }
+                })
+}
+
+const onAutoRefreshChange = (value: boolean) => {
+  autoRefresh.value = value
+  if (value && isRunning.value) {
     scheduleNext()
-    {
-      this.stopTimer()
-      this.timer = setTimeout(() => this.handleInitialize(false), this.refreshSeconds * 1000)
-    },
+  }
+  else {
     stopTimer()
-    {
-      if (this.timer) {
-        clearTimeout(this.timer)
-        this.timer = null
-      }
-    },
-    onAutoRefreshChange(value: boolean)
-    {
-      this.autoRefresh = value
-      if (value && this.isRunning) {
-        this.scheduleNext()
-      }
-      else {
-        this.stopTimer()
-      }
-    },
-    onCancel()
-    {
-      this.stopTimer()
-      this.visible = false
-    }
+  }
+}
+
+watch(() => props.isVisible, (value) => {
+  if (!value) {
+    stopTimer()
   }
 })
+
+onBeforeUnmount(() => stopTimer())
+
+// RUNNING 任务默认打开自动刷新
+autoRefresh.value = isRunning.value
+handleInitialize(true)
 </script>

@@ -1,37 +1,42 @@
 <template>
-  <ShadcnModal v-model="localVisible"
-               :title="$t('source.common.resetAutoIncrement')"
-               :mask-closable="false"
-               @on-close="onCancel">
-    <ShadcnForm v-model="formState" @on-submit="onSubmit">
-      <ShadcnFormItem name="autoIncrement" :label="$t('source.common.resetTo')">
-        <ShadcnNumber v-model="formState.autoIncrement"
-                      name="autoIncrement"
-                      :min="1"
-                      :placeholder="$t('snippet.placeholder.name')"/>
-      </ShadcnFormItem>
+  <a-modal v-model:open="localVisible"
+           :title="$t('source.common.resetAutoIncrement')"
+           :mask-closable="false"
+           :footer="null"
+           @cancel="onCancel">
+    <a-form :model="formState" layout="vertical" @finish="onSubmit">
+      <a-form-item name="autoIncrement" :label="$t('source.common.resetTo')">
+        <a-input-number v-model:value="formState.autoIncrement"
+                        :min="1"
+                        :style="{ width: '100%' }"
+                        :placeholder="$t('snippet.placeholder.name')"/>
+      </a-form-item>
 
       <div class="flex justify-end">
-        <ShadcnSpace>
-          <ShadcnButton type="default" @click="onCancel">
+        <a-space>
+          <a-button @click="onCancel">
             {{ $t('common.cancel') }}
-          </ShadcnButton>
+          </a-button>
 
-          <ShadcnButton submit type="primary" :loading="loading">
+          <a-button type="primary" html-type="submit" :loading="loading">
             {{ $t('common.apply') }}
-          </ShadcnButton>
-        </ShadcnSpace>
+          </a-button>
+        </a-space>
       </div>
-    </ShadcnForm>
-  </ShadcnModal>
+    </a-form>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, ref } from 'vue'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import MetadataService from '@/services/metadata.ts'
 
 const emit = defineEmits(['close'])
-const { proxy } = getCurrentInstance()!
+const route = useRoute()
+const { t } = useI18n()
 
 const props = withDefaults(defineProps<{
   visible: boolean
@@ -47,36 +52,26 @@ const formState = ref({ autoIncrement: props.info?.object_auto_increment ?? 1 })
 const onCancel = () => emit('close')
 
 const onSubmit = () => {
-
-  const code = proxy.$route?.params.source
-  const database = proxy.$route?.params.database
-  const table = proxy.$route?.params.table
+  const code = route?.params.source as string
+  const database = route?.params.database as string
+  const table = route?.params.table as string
 
   if (props.info && code && database && table) {
     loading.value = true
     const configure = {
       autoIncrement: formState.value.autoIncrement
     }
-    MetadataService.updateAutoIncrement(code as string, database as string, table as string, configure)
-                   .then(response => {
+    MetadataService.updateAutoIncrement(code, database, table, configure)
+                   .then((response) => {
                      if (response.status && response.data && response.data.isSuccessful) {
-                       // @ts-ignore
-                       proxy.$Message.success({
-                         content: proxy.$t('source.tip.resetAutoIncrementSuccess').replace('$VALUE', String(formState.value.autoIncrement)),
-                         showIcon: true
-                       })
-
+                       message.success(t('source.tip.resetAutoIncrementSuccess').replace('$VALUE', String(formState.value.autoIncrement)))
                        onCancel()
                      }
                      else {
-                       // @ts-ignore
-                       proxy.$Message.error({
-                         content: response.message,
-                         showIcon: true
-                       })
+                       message.error(response.message)
                      }
                    })
-                   .finally(() => loading.value = false)
+                   .finally(() => (loading.value = false))
   }
 }
 </script>

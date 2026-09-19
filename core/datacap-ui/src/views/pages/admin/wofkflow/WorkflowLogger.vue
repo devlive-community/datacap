@@ -1,94 +1,73 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="60%"
-               height="60%"
-               :title="$t('workflow.text.logger')"
-               @on-close="onCancel">
-    <ShadcnSpin v-model="loading" fixed/>
-
-    <ShadcnLogger v-if="!loading"
-                  height="380"
-                  toolbar
-                  :items="logs"
-                  :custom-patterns="customPatterns"/>
+  <a-modal v-model:open="visible"
+           width="60%"
+           :title="$t('workflow.text.logger')"
+           :footer="null"
+           @cancel="onCancel">
+    <a-spin :spinning="loading">
+      <LogViewer v-if="!loading"
+                    height="380"
+                    toolbar
+                    :items="logs"
+                    :custom-patterns="customPatterns"/>
+    </a-spin>
 
     <template #footer>
-      <ShadcnButton type="default" @click="onCancel">
+      <a-button @click="onCancel">
         {{ $t('common.cancel') }}
-      </ShadcnButton>
+      </a-button>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { message } from 'ant-design-vue'
 import { WorkflowModel } from '@/model/workflow'
 import WorkflowService from '@/services/workflow'
+import LogViewer from '@/views/components/logger/LogViewer.vue'
 
-export default defineComponent({
-  name: 'WorkflowLogger',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => WorkflowModel | null
-    }
-  },
-  data()
-  {
-    return {
-      title: null as string | null,
-      loading: false,
-      logs: Array<string>(),
-      customPatterns: {
-        timestamp: [/^(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d{3})/],
-        level: [/\b(INFO|ERROR|WARN|DEBUG)\b/],
-        thread: [/\[(pool-\d+-thread-\d+)\]/],
-        file: [/\[([^[\]]+\.java:\d+)\]/]
-      }
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      if (this.info) {
-        this.loading = true
-        WorkflowService.getLogger(this.info.code)
-                       .then(response => {
-                         if (response.status) {
-                           this.logs = response.data
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => this.loading = false)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+defineOptions({ name: 'WorkflowLogger' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: WorkflowModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const logs = ref<string[]>([])
+const customPatterns = {
+  timestamp: [/^(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d{3})/],
+  level: [/\b(INFO|ERROR|WARN|DEBUG)\b/],
+  thread: [/\[(pool-\d+-thread-\d+)\]/],
+  file: [/\[([^[\]]+\.java:\d+)\]/]
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const handleInitialize = () => {
+  if (props.info) {
+    loading.value = true
+    WorkflowService.getLogger(props.info.code)
+                   .then((response) => {
+                     if (response.status) {
+                       logs.value = response.data
+                     }
+                     else {
+                       message.error(response.message)
+                     }
+                   })
+                   .finally(() => (loading.value = false))
+  }
+}
+
+handleInitialize()
 </script>

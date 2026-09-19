@@ -1,111 +1,70 @@
 <template>
-  <ShadcnCard :title="$t('user.common.log')"
-              :description="$t('user.tip.log')"
-              :border="false">
-    <ShadcnDivider class="my-2"/>
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
+  <a-card :bordered="false" :title="$t('user.common.log')">
+    <div class="text-sm text-gray-500">{{ $t('user.tip.log') }}</div>
+    <a-divider class="my-2"/>
 
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #state="{row}">
-          <ShadcnBadge :text="row.state" :type="row.state === 'SUCCESS' ? 'success' : 'error'"/>
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handlerInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'state'">
+          <a-badge :status="record.state === 'SUCCESS' ? 'success' : 'error'" :text="record.state"/>
         </template>
-      </ShadcnTable>
-
-      <ShadcnPagination v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
+      </template>
+    </DataTable>
+  </a-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from './ProfileUtils'
+import DataTable from '@/views/components/table/DataTable.vue'
 import UserService from '@/services/user'
-import Common from '@/utils/common'
 
-export default defineComponent({
-  name: 'LogHome',
-  computed: {
-    Common()
-    {
-      return Common
-    }
-  },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
+defineOptions({ name: 'LogHome' })
 
-    return {
-      filter,
-      headers
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  data()
-  {
-    return {
-      loading: false,
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      data: []
-    }
-  },
-  methods: {
-    handlerInitialize()
-    {
-      this.loading = true
-      UserService.getLogs(this.filter)
-                 .then((response) => {
-                   if (response.status) {
-                     this.data = response.data.content
-                     this.dataCount = response.data.total
-                     this.pageSize = response.data.size
-                     this.pageIndex = response.data.page
-                   }
-                 })
-                 .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handlerInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    }
-  }
-})
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
+
+const loading = ref(false)
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const data = ref<any[]>([])
+
+const handlerInitialize = () => {
+  loading.value = true
+  UserService.getLogs(filter)
+             .then((response) => {
+               if (response.status) {
+                 data.value = response.data.content
+                 dataCount.value = response.data.total
+                 pageSize.value = response.data.size
+                 pageIndex.value = response.data.page
+               }
+             })
+             .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handlerInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+onMounted(() => handlerInitialize())
 </script>

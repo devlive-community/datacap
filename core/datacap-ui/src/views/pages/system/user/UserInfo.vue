@@ -1,57 +1,40 @@
 <template>
-  <ShadcnDrawer v-model="visible" :title="title">
+  <a-drawer v-model:open="visible" :title="title">
     <UserForm class="mt-3" :info="info" @close="handlerCancel"/>
-  </ShadcnDrawer>
+  </a-drawer>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { UserModel } from '@/model/user.ts'
 import UserForm from '@/views/pages/system/user/components/UserForm.vue'
 
-export default defineComponent({
-  name: 'UserInfo',
-  components: { UserForm },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => UserModel | null
-    }
-  },
-  data()
-  {
-    return {
-      title: null as string | null
-    }
-  },
-  created()
-  {
-    if (this.info) {
-      this.title = this.$t('user.common.edit').replace('$VALUE', this.info.username as string)
-    }
-    else {
-      this.title = this.$t('user.common.create')
-    }
-  },
-  methods: {
-    handlerCancel()
-    {
-      this.visible = false
-    }
-  }
+defineOptions({ name: 'UserInfo' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: UserModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const title = ref<string | null>(null)
+
+if (props.info) {
+  title.value = t('user.common.edit').replace('$VALUE', props.info.username as string)
+}
+else {
+  title.value = t('user.common.create')
+}
+
+const handlerCancel = () => {
+  visible.value = false
+}
 </script>

@@ -2,99 +2,98 @@
   <BaseLayout>
     <div class="h-screen flex items-center justify-center">
       <div class="w-full max-w-md px-4 mx-auto">
-        <ShadcnCard class="w-full">
+        <a-card class="w-full">
           <template #title>
             <div class='flex items-center justify-center'>
-              <ShadcnAvatar src="/static/images/logo.png" alt="DataCap"/>
+              <a-avatar src="/static/images/logo.png" alt="DataCap"/>
             </div>
           </template>
 
-          <template #description>
-            <div class="text-center text-gray-600">
-              {{ $t('user.auth.signinTip') }}
-            </div>
-          </template>
+          <div class="text-center text-gray-600 mb-2">
+            {{ $t('user.auth.signinTip') }}
+          </div>
 
           <div class="px-6 py-8 relative">
-            <ShadcnSpin v-if="loading" fixed/>
-            <ShadcnForm v-else
-                        v-model="formState"
-                        ref="formRef"
-                        @on-submit="onSubmit"
-                        @on-error="onError">
-              <ShadcnFormItem name="username"
-                              :label="$t('user.common.username')"
-                              :rules="[
-                                { required: true, message: $t('user.auth.usernameTip') },
-                                { min: 3, message: $t('user.auth.usernameSizeTip') },
-                                { max: 20, message: $t('user.auth.usernameSizeTip') }
-                          ]">
-                <ShadcnInput v-model="formState.username"
-                             name="username"
-                             :placeholder="$t('user.auth.usernameTip')"/>
-              </ShadcnFormItem>
+            <div v-if="loading" class="flex items-center justify-center py-8">
+              <a-spin size="large"/>
+            </div>
+            <a-form v-else
+                    ref="formRef"
+                    :model="formState"
+                    layout="vertical"
+                    @finish="onSubmit"
+                    @finishFailed="onError">
+              <a-form-item name="username"
+                           :label="$t('user.common.username')"
+                           :rules="[
+                             { required: true, message: $t('user.auth.usernameTip') },
+                             { min: 3, message: $t('user.auth.usernameSizeTip') },
+                             { max: 20, message: $t('user.auth.usernameSizeTip') }
+                       ]">
+                <a-input v-model:value="formState.username"
+                         :placeholder="$t('user.auth.usernameTip')"/>
+              </a-form-item>
 
-              <ShadcnFormItem name="password"
-                              :label="$t('user.common.password')"
-                              :rules="[
-                                { required: true, message: $t('user.auth.passwordTip') },
-                                { min: 6, message: $t('user.auth.passwordSizeTip') },
-                                { max: 20, message: $t('user.auth.passwordSizeTip') }
-                          ]">
-                <ShadcnInput v-model="formState.password"
-                             type="password"
-                             name="password"
-                             :placeholder="$t('user.auth.passwordTip')"/>
-              </ShadcnFormItem>
+              <a-form-item name="password"
+                           :label="$t('user.common.password')"
+                           :rules="[
+                             { required: true, message: $t('user.auth.passwordTip') },
+                             { min: 6, message: $t('user.auth.passwordSizeTip') },
+                             { max: 20, message: $t('user.auth.passwordSizeTip') }
+                       ]">
+                <a-input-password v-model:value="formState.password"
+                                  :placeholder="$t('user.auth.passwordTip')"/>
+              </a-form-item>
 
-              <ShadcnFormItem v-if="showCaptcha"
-                              name="captcha"
-                              :label="$t('user.common.captcha')"
-                              :rules="[
-                                { required: true, message: $t('user.auth.captchaTip') },
-                                { min: 1, message: $t('user.auth.captchaSizeTip') },
-                                { max: 6, message: $t('user.auth.captchaSizeTip') }
-                          ]">
+              <a-form-item v-if="showCaptcha"
+                           name="captcha"
+                           :label="$t('user.common.captcha')"
+                           :rules="[
+                             { required: true, message: $t('user.auth.captchaTip') },
+                             { min: 1, message: $t('user.auth.captchaSizeTip') },
+                             { max: 6, message: $t('user.auth.captchaSizeTip') }
+                       ]">
                 <div class="flex items-center gap-2">
-                  <ShadcnInput v-model="formState.captcha"
-                               name="captcha"
-                               :placeholder="$t('user.auth.captchaTip')"/>
-                  <ShadcnButton style="padding: 0"
-                                type="text"
-                                :loading="captchaLoading"
-                                :disabled="captchaLoading"
-                                @click="initCaptcha">
+                  <a-input v-model:value="formState.captcha"
+                           :placeholder="$t('user.auth.captchaTip')"/>
+                  <a-button style="padding: 0"
+                            type="text"
+                            :loading="captchaLoading"
+                            :disabled="captchaLoading"
+                            @click="initCaptcha">
                     <img v-if="!captchaLoading" style="min-width: 120px; height: 100%;" :src="'data:image/png;base64,' + captchaImage"/>
-                  </ShadcnButton>
+                  </a-button>
                 </div>
-              </ShadcnFormItem>
+              </a-form-item>
 
-              <ShadcnSpace wrap>
-                <ShadcnButton class="w-full"
-                              submit
-                              :disabled="submitting"
-                              :loading="submitting">
+              <a-space direction="vertical" :style="{ width: '100%' }">
+                <a-button type="primary"
+                          html-type="submit"
+                          block
+                          :disabled="submitting"
+                          :loading="submitting">
                   {{ $t('user.common.signin') }}
-                </ShadcnButton>
+                </a-button>
 
-                <ShadcnDivider class="text-sm text-gray-400 py-2"
-                               orientation="center"
-                               :text="$t('user.auth.notUserTip')"/>
+                <a-divider class="text-sm text-gray-400 py-2" orientation="center">
+                  {{ $t('user.auth.notUserTip') }}
+                </a-divider>
 
-                <ShadcnButton class="w-full text-center" type="default" to="/auth/signup">
+                <a-button block class="text-center" @click="$router.push('/auth/signup')">
                   {{ $t('user.common.signup') }}
-                </ShadcnButton>
-              </ShadcnSpace>
-            </ShadcnForm>
+                </a-button>
+              </a-space>
+            </a-form>
           </div>
-        </ShadcnCard>
+        </a-card>
       </div>
     </div>
   </BaseLayout>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { message } from 'ant-design-vue'
 import { useUserStore } from '@/stores/user'
 import UserService from '@/services/user'
 import CaptchaService from '@/services/captcha'
@@ -111,101 +110,77 @@ interface Props
   captcha: number
 }
 
-export default defineComponent({
-  name: 'AuthSignin',
-  components: { BaseLayout },
-  setup()
-  {
-    const userStore = useUserStore()
-    return { userStore }
-  },
-  data()
-  {
-    return {
-      formState: {} as Props,
-      submitting: false,
-      loading: false,
-      showCaptcha: false,
-      captchaImage: null,
-      captchaLoading: false
+defineOptions({ name: 'AuthSignin' })
+
+const userStore = useUserStore()
+
+const formState = ref<Props>({} as Props)
+const submitting = ref(false)
+const loading = ref(false)
+const showCaptcha = ref(false)
+const captchaImage = ref<string | null>(null)
+const captchaLoading = ref(false)
+
+const initCaptcha = () => {
+  captchaLoading.value = true
+  formState.value.timestamp = Date.parse(new Date().toString())
+  CaptchaService.getCaptcha(formState.value.timestamp)
+                .then(response => {
+                  if (response.data !== false) {
+                    showCaptcha.value = true
+                    captchaImage.value = response.data.image
+                  }
+                })
+                .finally(() => {
+                  captchaLoading.value = false
+                  loading.value = false
+                })
+}
+
+const onError = (error: any) => {
+  const names = (error?.errorFields || []).map((field: any) => (Array.isArray(field.name) ? field.name.join('.') : field.name))
+  message.error(`Validation error field: [ ${ names.join(', ') } ]`)
+}
+
+const onSubmit = async () => {
+  try {
+    submitting.value = true
+    const loginResponse = await UserService.signin(formState.value as any)
+
+    if (loginResponse.status) {
+      localStorage.setItem(CommonUtils.token, JSON.stringify(loginResponse.data))
+
+      // 获取用户信息和菜单
+      const menuResponse = await UserService.getMenus()
+      if (menuResponse.status) {
+        userStore.updateMenu(menuResponse.data)
+        // 更新路由并跳转
+        createDefaultRouter(router)
+        router.push('/home')
+      }
+      else {
+        if (!menuResponse.status) {
+          message.error(menuResponse.message)
+        }
+        userStore.logout()
+      }
     }
-  },
-  created()
-  {
-    this.loading = true
-    this.initCaptcha()
-  },
-  methods: {
-    initCaptcha()
-    {
-      this.captchaLoading = true
-      this.formState.timestamp = Date.parse(new Date().toString())
-      CaptchaService.getCaptcha(this.formState.timestamp)
-                    .then(response => {
-                      if (response.data !== false) {
-                        this.showCaptcha = true
-                        this.captchaImage = response.data.image
-                      }
-                    })
-                    .finally(() => {
-                      this.captchaLoading = false
-                      this.loading = false
-                    })
-    },
-    onError(errors: any)
-    {
-      this.$Message.error({
-        content: `Validation error field: [ ${ Object.keys(errors).join(', ') } ]`,
-        showIcon: true
-      })
-    },
-    async onSubmit()
-    {
-      try {
-        this.submitting = true
-        const loginResponse = await UserService.signin(this.formState as any)
-
-        if (loginResponse.status) {
-          localStorage.setItem(CommonUtils.token, JSON.stringify(loginResponse.data))
-
-          // 获取用户信息和菜单
-          const menuResponse = await UserService.getMenus()
-          if (menuResponse.status) {
-            this.userStore.updateMenu(menuResponse.data)
-            // 更新路由并跳转
-            createDefaultRouter(router)
-            router.push('/home')
-          }
-          else {
-            if (!menuResponse.status) {
-              this.$Message.error({
-                content: menuResponse.message,
-                showIcon: true
-              })
-            }
-            this.userStore.logout()
-          }
-        }
-        else {
-          this.$Message.error({
-            content: loginResponse.message,
-            showIcon: true
-          })
-          this.initCaptcha()
-        }
-      }
-      catch (error) {
-        console.error('Login error:', error)
-        this.$Message.error({
-          content: 'Login failed',
-          showIcon: true
-        })
-        this.initCaptcha()
-      }
-      finally {
-        this.submitting = false
-      }
+    else {
+      message.error(loginResponse.message)
+      initCaptcha()
     }
   }
-})
+  catch (error) {
+    console.error('Login error:', error)
+    message.error('Login failed')
+    initCaptcha()
+  }
+  finally {
+    submitting.value = false
+  }
+}
+
+// created 等价：setup 阶段立即初始化验证码
+loading.value = true
+initCaptcha()
 </script>

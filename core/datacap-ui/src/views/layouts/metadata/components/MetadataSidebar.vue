@@ -1,53 +1,28 @@
 <template>
-  <ShadcnCard :border="false">
-    <ShadcnSelect v-model="selectDatabase" :loading="loading" @on-change="onChangeDatabase">
-      <template #options>
-        <ShadcnSelectOption v-for="item in databaseArray" :label="item.title" :value="item.code"/>
-      </template>
-    </ShadcnSelect>
+  <a-card :bordered="false">
+    <a-select v-model:value="selectDatabase" :loading="loading" :style="{ width: '100%' }" @change="onChangeDatabase">
+      <a-select-option v-for="item in databaseArray" :key="item.code" :value="item.code">{{ item.title }}</a-select-option>
+    </a-select>
 
     <div class="relative h-screen overflow-x-auto overflow-y-auto">
-      <ShadcnSkeleton v-if="loading" animation class="mt-2"/>
+      <a-skeleton v-if="loading" active class="mt-2"/>
 
-      <ShadcnTree v-else-if="!loading && dataTreeArray.length > 0"
-                  v-model="databaseModel"
-                  :data="dataTreeArray"
-                  :loadData="onLoadData"
-                  @on-node-click="onNodeClick">
-        <template #label="{ node }">
+      <a-tree v-else-if="!loading && dataTreeArray.length > 0"
+              v-model:selectedKeys="selectedKeys"
+              :tree-data="dataTreeArray"
+              :field-names="{ key: 'value', title: 'title', children: 'children' }"
+              :load-data="onLoadData"
+              @select="onSelect">
+        <template #title="node">
           <div class="flex items-center space-x-1" @contextmenu.prevent="visibleContextMenu($event, node)">
-            <ShadcnIcon v-if="node.level === StructureEnum.TYPE && node.type === 'table'"
-                        class="text-xs font-semibold text-gray-500"
-                        size="16"
-                        icon="Table"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'view'"
-                        class="text-xs font-semibold text-gray-500"
-                        size="16"
-                        icon="View"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'function'"
-                        class="text-xs font-semibold text-gray-500"
-                        size="16"
-                        icon="SquareFunction"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'procedure'"
-                        class="text-xs font-semibold text-gray-500"
-                        size="16"
-                        icon="Cpu"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'column'"
-                        class="text-xs font-semibold text-gray-500"
-                        size="16"
-                        icon="Columns"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'index'"
-                        class="text-xs font-semibold text-gray-500"
-                        size="16"
-                        icon="Blinds"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'trigger'"
-                        class="text-xs font-semibold text-gray-500"
-                        size="16"
-                        icon="Tangent"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'primary'"
-                        class="text-xs font-semibold text-gray-500"
-                        size="16"
-                        icon="Key"/>
+            <TableOutlined v-if="node.level === StructureEnum.TYPE && node.type === 'table'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <EyeOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'view'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <FunctionOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'function'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <ApiOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'procedure'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <InsertRowRightOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'column'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <PartitionOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'index'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <ThunderboltOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'trigger'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <KeyOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'primary'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
 
             <span class="text-sm font-normal text-gray-500">
               {{ node.title }}
@@ -58,67 +33,71 @@
             </span>
           </div>
         </template>
-      </ShadcnTree>
+      </a-tree>
 
-      <ShadcnContextMenu v-if="contextmenu.visible && dataInfo" v-model="contextmenu.visible" :position="contextmenu.position">
-        <ShadcnContextMenuSub v-if="dataInfo.level === StructureEnum.TABLE || dataInfo.level === StructureEnum.COLUMN || dataInfo.type === 'table' || dataInfo.type === 'column'"
-                              :label="$t('source.common.menuNew')">
-          <ShadcnContextMenuItem v-if="dataInfo.level === StructureEnum.TABLE || dataInfo.type === 'table'"
-                                 @click="visibleCreateTable(true)">
+      <div v-if="contextmenu.visible && dataInfo"
+           class="dc-ctxmenu"
+           :style="{ left: contextmenu.position.x + 'px', top: contextmenu.position.y + 'px' }"
+           @click.stop>
+        <a-menu mode="vertical" :selectable="false" style="min-width: 180px;">
+          <a-sub-menu v-if="dataInfo.level === StructureEnum.TABLE || dataInfo.level === StructureEnum.COLUMN || dataInfo.type === 'table' || dataInfo.type === 'column'"
+                      key="new"
+                      :title="$t('source.common.menuNew')">
+            <a-menu-item v-if="dataInfo.level === StructureEnum.TABLE || dataInfo.type === 'table'" key="new-table" @click="visibleCreateTable(true)">
+              <div class="flex items-center space-x-1">
+                <TableOutlined :style="{ fontSize: '16px' }"/>
+                <span>{{ $t('source.common.menuNewTable') }}</span>
+              </div>
+            </a-menu-item>
+
+            <a-menu-item v-if="dataInfo.level === StructureEnum.COLUMN || dataInfo.type === 'column' || dataInfo.level === StructureEnum.TABLE" key="new-column" @click="visibleCreateColumn(true)">
+              <div class="flex items-center space-x-1">
+                <InsertRowRightOutlined :style="{ fontSize: '16px' }"/>
+                <span>{{ $t('source.common.newColumn') }}</span>
+              </div>
+            </a-menu-item>
+          </a-sub-menu>
+
+          <a-sub-menu v-if="dataInfo.level === StructureEnum.TABLE" key="export" :title="$t('source.common.menuExport')">
+            <a-menu-item key="export-data" @click="visibleExportData(true)">
+              <div class="flex items-center space-x-1">
+                <VerticalAlignTopOutlined :style="{ fontSize: '16px' }"/>
+                <span>{{ $t('source.common.exportData') }}</span>
+              </div>
+            </a-menu-item>
+          </a-sub-menu>
+
+          <a-menu-item v-if="dataInfo.level === StructureEnum.TABLE" key="truncate" @click="visibleTruncateTable(true)">
             <div class="flex items-center space-x-1">
-              <ShadcnIcon icon="Table" size="15"/>
-              <span>{{ $t('source.common.menuNewTable') }}</span>
+              <DeleteOutlined :style="{ fontSize: '16px' }"/>
+              <span>{{ $t('source.common.truncateTable') }}</span>
             </div>
-          </ShadcnContextMenuItem>
+          </a-menu-item>
 
-          <ShadcnContextMenuItem v-if="dataInfo.level === StructureEnum.COLUMN || dataInfo.type === 'column' || dataInfo.level === StructureEnum.TABLE"
-                                 @click="visibleCreateColumn(true)">
+          <a-menu-item v-if="dataInfo.level === StructureEnum.TABLE" key="drop-table" @click="visibleDropTable(true)">
             <div class="flex items-center space-x-1">
-              <ShadcnIcon icon="Columns" size="15"/>
-              <span>{{ $t('source.common.newColumn') }}</span>
+              <DeleteOutlined :style="{ fontSize: '16px' }"/>
+              <span>{{ $t('source.common.dropTable') }}</span>
             </div>
-          </ShadcnContextMenuItem>
-        </ShadcnContextMenuSub>
+          </a-menu-item>
 
-        <ShadcnContextMenuSub v-if="dataInfo.level === StructureEnum.TABLE" :label="$t('source.common.menuExport')">
-          <ShadcnContextMenuItem @click="visibleExportData(true)">
+          <a-menu-item v-if="dataInfo.level === StructureEnum.COLUMN" key="change-column" @click="visibleChangeColumn(true)">
             <div class="flex items-center space-x-1">
-              <ShadcnIcon icon="ArrowUpFromLine" size="15"/>
-              <span>{{ $t('source.common.exportData') }}</span>
+              <EditOutlined :style="{ fontSize: '16px' }"/>
+              <span>{{ $t('source.common.changeColumn') }}</span>
             </div>
-          </ShadcnContextMenuItem>
-        </ShadcnContextMenuSub>
+          </a-menu-item>
 
-        <ShadcnContextMenuItem v-if="dataInfo.level === StructureEnum.TABLE" @click="visibleTruncateTable(true)">
-          <div class="flex items-center space-x-1">
-            <ShadcnIcon icon="Trash" size="15"/>
-            <span>{{ $t('source.common.truncateTable') }}</span>
-          </div>
-        </ShadcnContextMenuItem>
-
-        <ShadcnContextMenuItem v-if="dataInfo.level === StructureEnum.TABLE" @click="visibleDropTable(true)">
-          <div class="flex items-center space-x-1">
-            <ShadcnIcon icon="Delete" size="15"/>
-            <span>{{ $t('source.common.dropTable') }}</span>
-          </div>
-        </ShadcnContextMenuItem>
-
-        <ShadcnContextMenuItem v-if="dataInfo.level === StructureEnum.COLUMN" @click="visibleChangeColumn(true)">
-          <div class="flex items-center space-x-1">
-            <ShadcnIcon icon="Pencil" size="15"/>
-            <span>{{ $t('source.common.changeColumn') }}</span>
-          </div>
-        </ShadcnContextMenuItem>
-
-        <ShadcnContextMenuItem v-if="dataInfo.level === StructureEnum.COLUMN" @click="visibleDropColumn(true)">
-          <div class="flex items-center space-x-1">
-            <ShadcnIcon icon="Delete" size="15"/>
-            <span>{{ $t('source.common.dropColumn') }}</span>
-          </div>
-        </ShadcnContextMenuItem>
-      </ShadcnContextMenu>
+          <a-menu-item v-if="dataInfo.level === StructureEnum.COLUMN" key="drop-column" @click="visibleDropColumn(true)">
+            <div class="flex items-center space-x-1">
+              <DeleteOutlined :style="{ fontSize: '16px' }"/>
+              <span>{{ $t('source.common.dropColumn') }}</span>
+            </div>
+          </a-menu-item>
+        </a-menu>
+      </div>
     </div>
-  </ShadcnCard>
+  </a-card>
 
   <TableCreate v-if="tableCreateVisible" :is-visible="tableCreateVisible" @close="visibleCreateTable(false)"/>
 
@@ -146,8 +125,11 @@
   </ColumnDrop>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import MetadataService from '@/services/metadata.ts'
 import { StructureEnum, StructureModel } from '@/model/structure.ts'
 import ColumnCreate from '@/views/pages/admin/source/components/ColumnCreate.vue'
@@ -157,264 +139,277 @@ import ColumnChange from '@/views/pages/admin/source/components/ColumnChange.vue
 import TableTruncate from '@/views/pages/admin/source/components/TableTruncate.vue'
 import TableDrop from '@/views/pages/admin/source/components/TableDrop.vue'
 import TableCreate from '@/views/pages/admin/source/components/TableCreate.vue'
+import { ApiOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FunctionOutlined, InsertRowRightOutlined, KeyOutlined, PartitionOutlined, TableOutlined, ThunderboltOutlined, VerticalAlignTopOutlined } from '@ant-design/icons-vue'
 
 interface MenuItem
 {
-  type: string;        // 节点类型（表、视图等）
-  title: string;        // 节点名称
-  comment?: string;    // 注释
-  isLeaf?: boolean;
-  level?: StructureEnum;
-  code?: string;
-  children?: MenuItem[]; // 子节点
+  type: string
+  title: string
+  comment?: string
+  isLeaf?: boolean
+  level?: StructureEnum
+  code?: string
+  children?: MenuItem[]
   value?: string
-  dataType?: string;
-  nullable?: string;
-  defaultValue?: string;
-  position?: number;
-  definition?: string;
-  typeName?: string;
+  dataType?: string
+  nullable?: string
+  defaultValue?: string
+  position?: number
+  definition?: string
+  typeName?: string
   disabled?: boolean
 }
 
 interface SourceData
 {
-  type_name: string;
-  object_name: string;
-  object_comment: string;
-  object_data_type: string;
-  object_nullable: string;
-  object_default_value: string;
-  object_position: number;
-  object_definition: string;
+  type_name: string
+  object_name: string
+  object_comment: string
+  object_data_type: string
+  object_nullable: string
+  object_default_value: string
+  object_position: number
+  object_definition: string
 }
 
-export default defineComponent({
-  name: 'MetadataSidebar',
-  computed: {
-    StructureEnum()
-    {
-      return StructureEnum
+defineOptions({ name: 'MetadataSidebar' })
+
+const route = useRoute()
+const router = useRouter()
+const { t } = useI18n()
+
+const loading = ref(false)
+const selectDatabase = ref<any>(undefined)
+const selectedKeys = ref<any[]>([])
+const originalSource = ref<string | null>(null)
+const databaseArray = ref<StructureModel[]>([])
+const dataTreeArray = ref<any[]>([])
+const dataInfo = ref<StructureModel | null>(null)
+const tableCreateVisible = ref(false)
+const tableExportVisible = ref(false)
+const tableTruncateVisible = ref(false)
+const tableDropVisible = ref(false)
+const columnCreateVisible = ref(false)
+const columnChangeVisible = ref(false)
+const columnDropVisible = ref(false)
+const contextmenu = reactive({
+  visible: false,
+  position: { x: 0, y: 0 }
+})
+
+const convertToTreeData = (flatData: SourceData[], level: StructureEnum = StructureEnum.DATABASE): MenuItem[] => {
+  const groupedData = flatData.reduce((acc, curr) => {
+    if (!acc[curr.type_name]) {
+      acc[curr.type_name] = []
     }
-  },
-  components: { TableCreate, TableDrop, TableTruncate, ColumnChange, TableExport, ColumnDrop, ColumnCreate },
-  data()
-  {
-    return {
-      loading: false,
-      selectDatabase: undefined,
-      databaseModel: '',
-      originalSource: null as string | null,
-      originalDatabase: null as string | null,
-      originalTable: null as string | null,
-      selectNode: null as StructureModel | null,
-      databaseArray: Array<StructureModel>(),
-      dataTreeArray: [] as any[],
-      dataInfo: null as StructureModel | null,
-      tableCreateVisible: false,
-      tableExportVisible: false,
-      tableTruncateVisible: false,
-      tableDropVisible: false,
-      columnCreateVisible: false,
-      columnChangeVisible: false,
-      columnDropVisible: false,
-      contextmenu: {
-        visible: false,
-        position: { x: 0, y: 0 }
-      }
+    acc[curr.type_name].push(curr)
+    return acc
+  }, {} as Record<string, SourceData[]>)
+
+  return Object.entries(groupedData).map(([type, items]) => ({
+    type,
+    title: `${ t('common.' + type) } (${ items.length })`,
+    level: StructureEnum.TYPE,
+    value: `${ type }_${ new Date().getTime() }`,
+    children: items.map(item => ({
+      type: item.object_data_type || item.type_name || '',
+      title: item.object_name,
+      level: level,
+      isLeaf: false,
+      code: item.object_name,
+      value: `${ item.object_name }_${ item.type_name }`,
+      comment: item.object_comment,
+      dataType: item.object_data_type,
+      nullable: item.object_nullable,
+      defaultValue: item.object_default_value,
+      position: item.object_position,
+      definition: item.object_definition,
+      typeName: item.type_name
+    }))
+  }))
+}
+
+const updateTreeChildren = (list: any[], key: string, children: any[]): any[] =>
+  list.map((node) => {
+    if (node.value === key) {
+      return { ...node, children }
     }
-  },
-  created()
-  {
-    this.originalSource = this.$route.params?.source as string
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      const source = this.$route.params?.source as string
-      const database = this.$route.params?.database as string
-      if (source) {
-        this.originalSource = source
-        this.loading = true
-        const table = this.$route.params?.table
-        if (table) {
-          this.databaseModel = [`${ table }_table`]
-        }
-        MetadataService.getDatabaseBySource(source)
-                       .then(response => {
-                         if (response.status) {
-                           response.data.columns.forEach(item => {
-                             const structure: StructureModel = {
-                               title: item.object_name || item.schema_name || item.SCHEMA_NAME,
-                               catalog: item.object_name || item.schema_name || item.SCHEMA_NAME,
-                               code: item.object_name || item.schema_name || item.SCHEMA_NAME
-                             }
-                             this.databaseArray.push(structure)
-                           })
-                           if (database) {
-                             this.originalDatabase = database
-                             this.selectDatabase = database as any
-                             this.onChangeDatabase()
-                           }
-                         }
-                         else {
-                           this.$Message.error({
-                             content: response.message,
-                             showIcon: true
-                           })
-                         }
-                       })
-                       .finally(() => this.loading = false)
-      }
-    },
-    onChangeDatabase()
-    {
-      this.loading = true
-      this.dataTreeArray = []
-      MetadataService.getTablesByDatabase(this.originalSource, this.selectDatabase as string)
-                     .then(response => {
-                       if (response.status) {
-                         this.dataTreeArray = [...this.convertToTreeData(response.data.columns, StructureEnum.TABLE)]
-                       }
-                       else {
-                         this.$Message.error({
-                           content: response.message,
-                           showIcon: true
-                         })
-                       }
-                     })
-                     .finally(() => {
-                       this.loading = false
-                       const table = this.$route.params?.table
-                       if (table) {
-                         const node = this.dataTreeArray.find(item => item.code === table)
-                         if (node) {
-                           node.selected = true
-                           this.handlerSelectNode([node])
-                         }
-                       }
-                       else {
-                         this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.selectDatabase }`)
-                       }
-                     })
-    },
-    onNodeClick(node: any)
-    {
-      if (node.level === StructureEnum.TYPE
-          || node.level === StructureEnum.COLUMN
-      ) {
-        return
-      }
-
-      const type = this.$route.meta.type
-      this.$router.push(`/admin/source/${ this.originalSource }/d/${ this.selectDatabase }/t/${ type ? type : 'info' }/${ node.code }`)
-    },
-    onLoadData(item: StructureModel, callback: any)
-    {
-      let dataChildArray = [] as StructureModel[]
-      if (item.level === StructureEnum.COLUMN) {
-        callback(dataChildArray)
-        return
-      }
-
-      MetadataService.getColumnsByTable(this.originalSource, this.selectDatabase as string, item.code as string)
-                     .then(response => {
-                       if (response.status) {
-                         dataChildArray = [...this.convertToTreeData(response.data.columns, StructureEnum.COLUMN)]
-                       }
-                       else {
-                         this.$Message.error({
-                           content: response.message,
-                           showIcon: true
-                         })
-                       }
-                     })
-                     .finally(() => callback(dataChildArray))
-    },
-    visibleCreateTable(opened: boolean)
-    {
-      this.tableCreateVisible = opened
-
-      if (!opened) {
-        this.onChangeDatabase()
-      }
-    },
-    visibleCreateColumn(opened: boolean)
-    {
-      this.columnCreateVisible = opened
-    },
-    visibleExportData(opened: boolean)
-    {
-      this.tableExportVisible = opened
-    },
-    visibleTruncateTable(opened: boolean)
-    {
-      this.tableTruncateVisible = opened
-    },
-    visibleDropTable(opened: boolean)
-    {
-      this.tableDropVisible = opened
-
-      if (!opened) {
-        this.onChangeDatabase()
-      }
-    },
-    visibleChangeColumn(opened: boolean)
-    {
-      this.columnChangeVisible = opened
-    },
-    visibleDropColumn(opened: boolean)
-    {
-      this.columnDropVisible = opened
-
-      if (!opened) {
-        this.onChangeDatabase()
-      }
-    },
-    visibleContextMenu(event: any, node: any)
-    {
-      this.contextmenu.position = {
-        x: event.clientX,
-        y: event.clientY
-      }
-      this.dataInfo = node
-      this.contextmenu.visible = true
-    },
-    convertToTreeData(flatData: SourceData[], level: StructureEnum = StructureEnum.DATABASE): MenuItem[]
-    {
-      // 按type_name分组
-      const groupedData = flatData.reduce((acc, curr) => {
-        if (!acc[curr.type_name]) {
-          acc[curr.type_name] = []
-        }
-        acc[curr.type_name].push(curr)
-        return acc
-      }, {} as Record<string, SourceData[]>)
-
-      // 转换为树形结构
-      return Object.entries(groupedData).map(([type, items]) => ({
-        type,
-        title: `${ this.$t('common.' + type) } (${ items.length })`,
-        level: StructureEnum.TYPE,
-        value: `${ type }_${ new Date().getTime() }`,
-        children: items.map(item => ({
-          type: item.object_data_type || item.type_name || '',
-          title: item.object_name,
-          level: level,
-          isLeaf: false,
-          code: item.object_name,
-          value: `${ item.object_name }_${ item.type_name }`,
-          comment: item.object_comment,
-          dataType: item.object_data_type,
-          nullable: item.object_nullable,
-          defaultValue: item.object_default_value,
-          position: item.object_position,
-          definition: item.object_definition,
-          typeName: item.type_name
-        }))
-      }))
+    if (node.children) {
+      return { ...node, children: updateTreeChildren(node.children, key, children) }
     }
+    return node
+  })
+
+const handlerSelectNode = (nodes: any[]) => {
+  if (nodes && nodes.length > 0) {
+    selectedKeys.value = [nodes[0].value]
   }
+}
+
+const onChangeDatabase = () => {
+  loading.value = true
+  dataTreeArray.value = []
+  MetadataService.getTablesByDatabase(originalSource.value, selectDatabase.value as string)
+                 .then((response) => {
+                   if (response.status) {
+                     dataTreeArray.value = [...convertToTreeData(response.data.columns, StructureEnum.TABLE)]
+                   }
+                   else {
+                     message.error(response.message)
+                   }
+                 })
+                 .finally(() => {
+                   loading.value = false
+                   const table = route.params?.table
+                   if (table) {
+                     const node = dataTreeArray.value.find((item) => item.code === table)
+                     if (node) {
+                       handlerSelectNode([node])
+                     }
+                   }
+                   else {
+                     router.push(`/admin/source/${ originalSource.value }/d/${ selectDatabase.value }`)
+                   }
+                 })
+}
+
+const handleInitialize = () => {
+  const source = route.params?.source as string
+  const database = route.params?.database as string
+  if (source) {
+    originalSource.value = source
+    loading.value = true
+    const table = route.params?.table
+    if (table) {
+      selectedKeys.value = [`${ table }_table`]
+    }
+    MetadataService.getDatabaseBySource(source)
+                   .then((response) => {
+                     if (response.status) {
+                       response.data.columns.forEach((item: any) => {
+                         const name = item.object_name || item.schema_name || item.SCHEMA_NAME
+                         databaseArray.value.push({ title: name, catalog: name, code: name } as StructureModel)
+                       })
+                       if (database) {
+                         selectDatabase.value = database as any
+                         onChangeDatabase()
+                       }
+                     }
+                     else {
+                       message.error(response.message)
+                     }
+                   })
+                   .finally(() => (loading.value = false))
+  }
+}
+
+const onSelect = (_keys: any[], info: any) => {
+  const node = info.node.dataRef as any
+  if (node.level === StructureEnum.TYPE || node.level === StructureEnum.COLUMN) {
+    return
+  }
+
+  const type = route.meta.type
+  router.push(`/admin/source/${ originalSource.value }/d/${ selectDatabase.value }/t/${ type ? type : 'info' }/${ node.code }`)
+}
+
+const onLoadData = (treeNode: any): Promise<void> => {
+  const item = treeNode.dataRef as any
+  return new Promise<void>((resolve) => {
+    if (item.children && item.children.length > 0 && item.level === StructureEnum.COLUMN) {
+      resolve()
+      return
+    }
+    if (item.level === StructureEnum.COLUMN) {
+      resolve()
+      return
+    }
+
+    MetadataService.getColumnsByTable(originalSource.value, selectDatabase.value as string, item.code as string)
+                   .then((response) => {
+                     if (response.status) {
+                       const children = [...convertToTreeData(response.data.columns, StructureEnum.COLUMN)]
+                       dataTreeArray.value = updateTreeChildren(dataTreeArray.value, item.value, children)
+                     }
+                     else {
+                       message.error(response.message)
+                     }
+                   })
+                   .finally(() => resolve())
+  })
+}
+
+const visibleContextMenu = (event: any, node: any) => {
+  contextmenu.position = { x: event.clientX, y: event.clientY }
+  dataInfo.value = node
+  contextmenu.visible = true
+}
+
+const closeContextMenu = () => {
+  contextmenu.visible = false
+}
+
+const visibleCreateTable = (opened: boolean) => {
+  tableCreateVisible.value = opened
+  closeContextMenu()
+  if (!opened) {
+    onChangeDatabase()
+  }
+}
+
+const visibleCreateColumn = (opened: boolean) => {
+  columnCreateVisible.value = opened
+  closeContextMenu()
+}
+
+const visibleExportData = (opened: boolean) => {
+  tableExportVisible.value = opened
+  closeContextMenu()
+}
+
+const visibleTruncateTable = (opened: boolean) => {
+  tableTruncateVisible.value = opened
+  closeContextMenu()
+}
+
+const visibleDropTable = (opened: boolean) => {
+  tableDropVisible.value = opened
+  closeContextMenu()
+  if (!opened) {
+    onChangeDatabase()
+  }
+}
+
+const visibleChangeColumn = (opened: boolean) => {
+  columnChangeVisible.value = opened
+  closeContextMenu()
+}
+
+const visibleDropColumn = (opened: boolean) => {
+  columnDropVisible.value = opened
+  closeContextMenu()
+  if (!opened) {
+    onChangeDatabase()
+  }
+}
+
+onMounted(() => {
+  originalSource.value = route.params?.source as string
+  handleInitialize()
+  window.addEventListener('click', closeContextMenu)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('click', closeContextMenu)
 })
 </script>
+
+<style scoped>
+.dc-ctxmenu {
+    position: fixed;
+    z-index: 1050;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    background: var(--dc-bg, #fff);
+}
+</style>

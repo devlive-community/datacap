@@ -5,17 +5,18 @@ export function useHeaders()
 {
     const { t } = useI18n()
 
+    // ant-design-vue Table 列格式；active / action 列无 dataIndex，通过 #bodyCell 按 column.key 渲染
     const headers = computed(() => [
-            { key: 'id', label: t('common.id') },
-            { key: 'name', label: t('common.name') },
-            { key: 'description', label: t('common.description') },
-            { key: 'group', label: t('common.group') },
-            { key: 'sorted', label: t('common.sorted') },
-            { key: 'type', label: t('common.type') },
-            { key: 'active', label: t('common.active'), slot: 'active' },
-            { key: 'createTime', label: t('common.createTime') },
-            { key: 'updateTime', label: t('common.updateTime') },
-            { key: 'action', label: t('common.action'), slot: 'action' }
+            { title: t('common.id'), dataIndex: 'id', key: 'id' },
+            { title: t('common.name'), dataIndex: 'name', key: 'name' },
+            { title: t('common.description'), dataIndex: 'description', key: 'description' },
+            { title: t('common.group'), dataIndex: 'group', key: 'group' },
+            { title: t('common.sorted'), dataIndex: 'sorted', key: 'sorted' },
+            { title: t('common.type'), dataIndex: 'type', key: 'type' },
+            { title: t('common.active'), key: 'active' },
+            { title: t('common.createTime'), dataIndex: 'createTime', key: 'createTime' },
+            { title: t('common.updateTime'), dataIndex: 'updateTime', key: 'updateTime' },
+            { title: t('common.action'), key: 'action' }
         ]
     )
 

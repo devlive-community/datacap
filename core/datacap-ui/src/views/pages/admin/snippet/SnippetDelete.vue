@@ -1,114 +1,90 @@
 <template>
-  <ShadcnModal v-model="visible" :title="title" @on-close="onCancel">
-    <ShadcnSpace wrap>
-      <ShadcnAlert type="error" :title="$t('snippet.tip.deleteAlert1')"/>
-      <ShadcnAlert type="error" :title="$t('snippet.tip.deleteAlert2')"/>
-      <ShadcnAlert type="error" :title="$t('snippet.tip.deleteAlert3')"/>
-      <ShadcnAlert :title="$t('snippet.tip.deleteAlert4').replace('$VALUE', info?.name as string)"/>
-    </ShadcnSpace>
+  <a-modal v-model:open="visible" :title="title" :footer="null">
+    <a-space direction="vertical" :style="{ width: '100%' }">
+      <a-alert type="error" :message="$t('snippet.tip.deleteAlert1')"/>
+      <a-alert type="error" :message="$t('snippet.tip.deleteAlert2')"/>
+      <a-alert type="error" :message="$t('snippet.tip.deleteAlert3')"/>
+      <a-alert :message="$t('snippet.tip.deleteAlert4').replace('$VALUE', info?.name as string)"/>
+    </a-space>
 
-    <ShadcnForm v-model="formState" @on-error="console.log($event)" @on-submit="onSubmit">
-      <ShadcnFormItem name="name"
-                      :rules="[
-                            { required: true, message: $t('snippet.validator.name.required') },
-                            { validator: validateMatch }
-                      ]">
-        <ShadcnInput v-model="formState.name" name="name" :placeholder="$t('snippet.placeholder.name')"/>
-      </ShadcnFormItem>
+    <a-form :model="formState" class="mt-3" @finish="onSubmit" @finishFailed="(e: any) => console.log(e)">
+      <a-form-item name="name"
+                   :rules="[
+                     { required: true, message: $t('snippet.validator.name.required') },
+                     { validator: validateMatch }
+                   ]">
+        <a-input v-model:value="formState.name" :placeholder="$t('snippet.placeholder.name')"/>
+      </a-form-item>
 
       <div class="flex justify-end">
-        <ShadcnSpace>
-          <ShadcnButton type="default" @click="onCancel">
+        <a-space>
+          <a-button @click="onCancel">
             {{ $t('common.cancel') }}
-          </ShadcnButton>
-
-          <ShadcnButton submit type="error" :loading="loading">
+          </a-button>
+          <a-button type="primary" danger html-type="submit" :loading="loading">
             {{ $t('snippet.common.delete') }}
-          </ShadcnButton>
-        </ShadcnSpace>
+          </a-button>
+        </a-space>
       </div>
-    </ShadcnForm>
-  </ShadcnModal>
+    </a-form>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import { SnippetModel } from '@/model/snippet'
 import SnippetService from '@/services/snippet'
 
-export default defineComponent({
-  name: 'SnippetDelete',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => SnippetModel | null
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      title: null as string | null,
-      formState: {
-        name: ''
-      }
-    }
-  },
-  created()
-  {
-    if (this.info) {
-      this.title = this.$t('snippet.common.deleteInfo').replace('$VALUE', this.info.name as string)
-    }
-  },
-  methods: {
-    onSubmit()
-    {
-      if (this.info) {
-        this.loading = true
-        SnippetService.deleteByCode(this.info.code!)
-                      .then(response => {
-                        if (response.status) {
-                          this.$Message.success({
-                            content: this.$t('snippet.tip.deleteSuccess').replace('$VALUE', this.info?.name as string),
-                            showIcon: true
-                          })
-                          this.onCancel()
-                        }
-                        else {
-                          this.$Message.error({
-                            content: response.message,
-                            showIcon: true
-                          })
-                        }
-                      })
-                      .finally(() => this.loading = false)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    },
-    validateMatch(value: string)
-    {
-      if (value !== String(this.info?.name)) {
-        return Promise.reject(new Error(this.$t('snippet.validator.name.match').replace('$VALUE', String(this.info?.name))))
-      }
-      return Promise.resolve(true)
-    }
-  }
+defineOptions({ name: 'SnippetDelete' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: SnippetModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const title = ref<string | null>(null)
+const formState = ref<{ name: string }>({ name: '' })
+
+if (props.info) {
+  title.value = t('snippet.common.deleteInfo').replace('$VALUE', props.info.name as string)
+}
+
+const validateMatch = (_rule: any, value: string) => {
+  if (value !== String(props.info?.name)) {
+    return Promise.reject(new Error(t('snippet.validator.name.match').replace('$VALUE', String(props.info?.name))))
+  }
+  return Promise.resolve(true)
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  if (props.info) {
+    loading.value = true
+    SnippetService.deleteByCode(props.info.code!)
+                  .then(response => {
+                    if (response.status) {
+                      message.success(t('snippet.tip.deleteSuccess').replace('$VALUE', props.info?.name as string))
+                      onCancel()
+                    }
+                    else {
+                      message.error(response.message)
+                    }
+                  })
+                  .finally(() => (loading.value = false))
+  }
+}
 </script>

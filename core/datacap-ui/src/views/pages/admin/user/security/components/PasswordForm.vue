@@ -1,104 +1,89 @@
 <template>
   <div class="relative">
-    <ShadcnForm v-model="formState" @on-submit="onSubmit">
-      <ShadcnFormItem name="oldPassword"
-                      class="w-[40%]"
-                      :description="$t('user.tip.oldPassword')"
-                      :label="$t('user.common.oldPassword')"
-                      :rules="[
-                            { required: true, message: $t('user.auth.passwordTip') },
-                            { min: 6, message: $t('user.auth.passwordSizeTip') },
-                            { max: 20, message: $t('user.auth.passwordSizeTip') }
-                      ]">
-        <ShadcnInput v-model="formState.oldPassword"
-                     type="password"
-                     name="oldPassword"
-                     :placeholder="$t('user.auth.passwordTip')"/>
-      </ShadcnFormItem>
+    <a-form :model="formState" layout="vertical" @finish="onSubmit">
+      <a-form-item name="oldPassword"
+                   class="w-[40%]"
+                   :extra="$t('user.tip.oldPassword')"
+                   :label="$t('user.common.oldPassword')"
+                   :rules="[
+                     { required: true, message: $t('user.auth.passwordTip') },
+                     { min: 6, message: $t('user.auth.passwordSizeTip') },
+                     { max: 20, message: $t('user.auth.passwordSizeTip') }
+                   ]">
+        <a-input-password v-model:value="formState.oldPassword" :placeholder="$t('user.auth.passwordTip')"/>
+      </a-form-item>
 
-      <ShadcnFormItem name="newPassword"
-                      class="w-[40%]"
-                      :description="$t('user.tip.newPassword')"
-                      :label="$t('user.common.newPassword')"
-                      :rules="[
-                            { required: true, message: $t('user.auth.newPasswordTip') },
-                            { min: 6, message: $t('user.auth.passwordSizeTip') },
-                            { max: 20, message: $t('user.auth.passwordSizeTip') }
-                      ]">
-        <ShadcnInput v-model="formState.newPassword"
-                     type="password"
-                     name="newPassword"
-                     :placeholder="$t('user.auth.passwordTip')"/>
-      </ShadcnFormItem>
+      <a-form-item name="newPassword"
+                   class="w-[40%]"
+                   :extra="$t('user.tip.newPassword')"
+                   :label="$t('user.common.newPassword')"
+                   :rules="[
+                     { required: true, message: $t('user.auth.newPasswordTip') },
+                     { min: 6, message: $t('user.auth.passwordSizeTip') },
+                     { max: 20, message: $t('user.auth.passwordSizeTip') }
+                   ]">
+        <a-input-password v-model:value="formState.newPassword" :placeholder="$t('user.auth.passwordTip')"/>
+      </a-form-item>
 
-      <ShadcnFormItem name="confirmPassword"
-                      class="w-[40%]"
-                      :description="$t('user.tip.confirmPassword')"
-                      :label="$t('user.common.confirmPassword')"
-                      :rules="[
-                            { required: true, message: $t('user.auth.confirmPasswordTip') },
-                            { validator: validatePassword }
-                      ]">
-        <ShadcnInput v-model="formState.confirmPassword"
-                     type="password"
-                     name="confirmPassword"
-                     :placeholder="$t('user.auth.passwordTip')"/>
-      </ShadcnFormItem>
+      <a-form-item name="confirmPassword"
+                   class="w-[40%]"
+                   :extra="$t('user.tip.confirmPassword')"
+                   :label="$t('user.common.confirmPassword')"
+                   :rules="[
+                     { required: true, message: $t('user.auth.confirmPasswordTip') },
+                     { validator: validatePassword }
+                   ]">
+        <a-input-password v-model:value="formState.confirmPassword" :placeholder="$t('user.auth.passwordTip')"/>
+      </a-form-item>
 
-      <ShadcnButton submit :loading="loading" :disabled="loading">
+      <a-button type="primary" html-type="submit" :loading="loading" :disabled="loading">
         {{ $t('common.save') }}
-      </ShadcnButton>
-    </ShadcnForm>
+      </a-button>
+    </a-form>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import UserService from '@/services/user'
 import { UserPasswordModel } from '@/model/user'
 import Common from '@/utils/common'
 import router from '@/router'
 
-export default defineComponent({
-  name: 'PasswordForm',
-  data()
-  {
-    return {
-      loading: false,
-      formState: { oldPassword: null, newPassword: null, confirmPassword: null }
-    }
-  },
-  methods: {
-    validatePassword(value: string)
-    {
-      if (value !== this.formState.newPassword) {
-        return Promise.reject(new Error(this.$t('user.auth.passwordNotMatchTip')))
-      }
-      return Promise.resolve(true)
-    },
-    async onSubmit()
-    {
-      this.loading = true
-      UserService.changePassword(this.formState as UserPasswordModel)
-                 .then((response) => {
-                   if (response.status) {
-                     this.$Message.success({
-                       content: this.$t('user.tip.changePasswordSuccessfully') as string,
-                       showIcon: true
-                     })
-                     localStorage.removeItem(Common.token)
-                     localStorage.removeItem(Common.menu)
-                     router.push('/auth/signin')
-                   }
-                   else {
-                     this.$Message.error({
-                       content: response.message,
-                       showIcon: true
-                     })
-                   }
-                 })
-                 .finally(() => this.loading = false)
-    }
-  }
+defineOptions({ name: 'PasswordForm' })
+
+const { t } = useI18n()
+
+const loading = ref(false)
+const formState = ref<{ oldPassword: string | null; newPassword: string | null; confirmPassword: string | null }>({
+  oldPassword: null,
+  newPassword: null,
+  confirmPassword: null
 })
+
+const validatePassword = (_rule: any, value: string) => {
+  if (value !== formState.value.newPassword) {
+    return Promise.reject(new Error(t('user.auth.passwordNotMatchTip')))
+  }
+  return Promise.resolve(true)
+}
+
+const onSubmit = () => {
+  loading.value = true
+  UserService.changePassword(formState.value as UserPasswordModel)
+             .then((response) => {
+               if (response.status) {
+                 message.success(t('user.tip.changePasswordSuccessfully') as string)
+                 localStorage.removeItem(Common.token)
+                 localStorage.removeItem(Common.menu)
+                 router.push('/auth/signin')
+               }
+               else {
+                 message.error(response.message)
+               }
+             })
+             .finally(() => (loading.value = false))
+}
 </script>

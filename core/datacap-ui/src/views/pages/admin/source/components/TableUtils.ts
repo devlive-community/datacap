@@ -1,14 +1,15 @@
 import GridOptions from '@/views/components/grid/GridOptions'
 
+// ant-design-vue Table 列格式（SourceTableStructure 已迁 antd）；object_nullable 走 #bodyCell
 const createHeaders = (i18n: any) => {
     return [
-        { key: 'object_name', label: i18n.t('common.name') },
-        { key: 'object_data_type', label: i18n.t('common.type') },
-        { key: 'object_position', label: i18n.t('common.position') },
-        { key: 'object_nullable', label: i18n.t('source.common.isNullable'), slot: 'object_nullable' },
-        { key: 'object_default_value', label: i18n.t('source.common.defaultValue') },
-        { key: 'object_comment', label: i18n.t('source.common.comment') },
-        { key: 'object_definition', label: i18n.t('source.common.extra') }
+        { title: i18n.t('common.name'), dataIndex: 'object_name', key: 'object_name' },
+        { title: i18n.t('common.type'), dataIndex: 'object_data_type', key: 'object_data_type' },
+        { title: i18n.t('common.position'), dataIndex: 'object_position', key: 'object_position' },
+        { title: i18n.t('source.common.isNullable'), dataIndex: 'object_nullable', key: 'object_nullable' },
+        { title: i18n.t('source.common.defaultValue'), dataIndex: 'object_default_value', key: 'object_default_value' },
+        { title: i18n.t('source.common.comment'), dataIndex: 'object_comment', key: 'object_comment' },
+        { title: i18n.t('source.common.extra'), dataIndex: 'object_definition', key: 'object_definition' }
     ]
 }
 

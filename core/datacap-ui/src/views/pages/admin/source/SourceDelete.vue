@@ -1,117 +1,85 @@
 <template>
-  <ShadcnModal v-model="visible" :title="title" @on-close="onCancel">
-    <ShadcnSpace wrap>
-      <ShadcnAlert type="error" :title="$t('source.tip.deleteAlert1')"/>
-      <ShadcnAlert type="error" :title="$t('source.tip.deleteAlert2')"/>
-      <ShadcnAlert :title="$t('source.tip.deleteAlert3').replace('$NAME', String(info?.name))"/>
-    </ShadcnSpace>
+  <a-modal v-model:open="visible" :title="title" :footer="null">
+    <a-space direction="vertical" :style="{ width: '100%' }">
+      <a-alert type="error" :message="$t('source.tip.deleteAlert1')"/>
+      <a-alert type="error" :message="$t('source.tip.deleteAlert2')"/>
+      <a-alert :message="$t('source.tip.deleteAlert3').replace('$NAME', String(info?.name))"/>
+    </a-space>
 
-    <ShadcnForm v-model="formState" @on-submit="onSubmit">
-      <ShadcnFormItem name="name"
-                      :rules="[
-                            { required: true, message: $t('source.validator.name.required') },
-                            { validator: validateMatch }
-                      ]">
-        <ShadcnInput v-model="formState.name" name="name" :placeholder="$t('source.placeholder.name')"/>
-      </ShadcnFormItem>
+    <a-form :model="formState" class="mt-3" @finish="onSubmit">
+      <a-form-item name="name"
+                   :rules="[
+                     { required: true, message: $t('source.validator.name.required') },
+                     { validator: validateMatch }
+                   ]">
+        <a-input v-model:value="formState.name" :placeholder="$t('source.placeholder.name')"/>
+      </a-form-item>
 
       <div class="flex justify-end">
-        <ShadcnSpace>
-          <ShadcnButton type="default" @click="onCancel">
-            {{ $t('common.cancel') }}
-          </ShadcnButton>
-
-          <ShadcnButton submit type="error" :loading="loading">
-            {{ title }}
-          </ShadcnButton>
-        </ShadcnSpace>
+        <a-space>
+          <a-button @click="onCancel">{{ $t('common.cancel') }}</a-button>
+          <a-button type="primary" danger html-type="submit" :loading="loading">{{ title }}</a-button>
+        </a-space>
       </div>
-    </ShadcnForm>
-  </ShadcnModal>
+    </a-form>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import { SourceModel } from '@/model/source'
 import SourceService from '@/services/source'
 
-export default defineComponent({
-  name: 'SourceDelete',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => SourceModel | null
-    }
-  },
-  data()
-  {
-    return {
-      title: null as string | null,
-      loading: false,
-      formState: {
-        name: ''
-      }
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      if (this.info) {
-        this.title = `${ this.$t('source.common.delete').replace('$NAME', String(this.info.name)) }`
-      }
-    },
-    onSubmit()
-    {
-      if (this.info) {
-        this.loading = true
-        SourceService.deleteByCode(this.info.code!)
-                     .then((response) => {
-                       if (response.status) {
-                         this.$Message.success({
-                           content: this.$t('source.tip.deleteSourceSuccess').replace('$NAME', String(this.info?.name)),
-                           showIcon: true
-                         })
-                         this.onCancel()
-                       }
-                       else {
-                         this.$Message.error({
-                           content: response.message,
-                           showIcon: true
-                         })
-                       }
-                     })
-                     .finally(() => this.loading = false)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    },
-    validateMatch(value: string)
-    {
-      if (value !== String(this.info?.name)) {
-        return Promise.reject(new Error(this.$t('source.validator.name.match').replace('$VALUE', String(this.info?.name))))
-      }
-      return Promise.resolve(true)
-    }
-  }
+defineOptions({ name: 'SourceDelete' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: SourceModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const title = ref<string | null>(null)
+const loading = ref(false)
+const formState = ref<{ name: string }>({ name: '' })
+
+if (props.info) {
+  title.value = `${ t('source.common.delete').replace('$NAME', String(props.info.name)) }`
+}
+
+const validateMatch = (_rule: any, value: string) => {
+  if (value !== String(props.info?.name)) {
+    return Promise.reject(new Error(t('source.validator.name.match').replace('$VALUE', String(props.info?.name))))
+  }
+  return Promise.resolve(true)
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  if (props.info) {
+    loading.value = true
+    SourceService.deleteByCode(props.info.code!)
+                 .then((response) => {
+                   if (response.status) {
+                     message.success(t('source.tip.deleteSourceSuccess').replace('$NAME', String(props.info?.name)))
+                     onCancel()
+                   }
+                   else {
+                     message.error(response.message)
+                   }
+                 })
+                 .finally(() => (loading.value = false))
+  }
+}
 </script>

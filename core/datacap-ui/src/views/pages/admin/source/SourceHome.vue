@@ -1,116 +1,96 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2">{{ $t('source.common.list') }}</div>
     </template>
 
-    <template #extra>
-      <ShadcnButton circle size="small" @click="visibleInfo(true, null)">
-        <ShadcnIcon icon="Plus" :size="20"/>
-      </ShadcnButton>
-    </template>
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handlerInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #actions>
+        <a-button type="primary" @click="visibleInfo(true, null)">
+          <template #icon>
+            <PlusOutlined :style="{ fontSize: '16px' }"/>
+          </template>
+          {{ $t('source.common.create') }}
+        </a-button>
+      </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
-
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #type="{row}">
-          <ShadcnTooltip :content="row.type">
-            <ShadcnAvatar class="cursor-pointer"
-                          size="small"
-                          :src="'/static/images/plugin/' + row.type.toLowerCase() + '.svg'"
-                          :alt="row.type"/>
-          </ShadcnTooltip>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'type'">
+          <a-tooltip :title="record.type">
+            <a-avatar class="cursor-pointer" size="small" :src="'/static/images/plugin/' + record.type.toLowerCase() + '.svg'" :alt="record.type"/>
+          </a-tooltip>
         </template>
-
-        <template #public="{row}">
-          <ShadcnSwitch v-model="row.public" disabled size="small"/>
+        <template v-else-if="column.key === 'public'">
+          <a-switch v-model:checked="record.public" disabled size="small"/>
         </template>
-
-        <template #version="{row}">
-          <ShadcnTooltip v-if="row.version" :content="row.version">
-            <ShadcnTag :text="formatVersionText(row.version)" size="default" type="primary" class="cursor-pointer"/>
-          </ShadcnTooltip>
+        <template v-else-if="column.key === 'version'">
+          <a-tooltip v-if="record.version" :title="record.version">
+            <a-tag color="blue" class="cursor-pointer">{{ formatVersionText(record.version) }}</a-tag>
+          </a-tooltip>
         </template>
-
-        <template #available="{row}">
-          <ShadcnTooltip v-if="!row.available" :content="row.message">
-            <ShadcnIcon icon="CircleX" :size="20" class="cursor-pointer text-red-500"/>
-          </ShadcnTooltip>
-          <ShadcnIcon v-else icon="CirclePlay" :size="20" class="text-green-500"/>
+        <template v-else-if="column.key === 'available'">
+          <a-tooltip v-if="!record.available" :title="record.message">
+            <CloseCircleOutlined class="cursor-pointer text-red-500" :style="{ fontSize: '20px' }"/>
+          </a-tooltip>
+          <PlayCircleOutlined v-else="" class="text-green-500" :style="{ fontSize: '20px' }"/>
         </template>
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('source.common.modify').replace('$NAME', record.name)">
+              <a-button type="text" shape="circle" size="small" :disabled="loginUserCode !== record.user.code" @click="visibleInfo(true, record)">
+                <EditOutlined :style="{ fontSize: '15px' }"/>
+              </a-button>
+            </a-tooltip>
 
-        <template #action="{row}">
-          <ShadcnSpace>
-            <ShadcnTooltip :content="$t('source.common.modify').replace('$NAME', row.name)">
-              <ShadcnButton circle
-                            size="small"
-                            :disabled="loginUserCode !== row.user.code"
-                            @click="visibleInfo(true, row)">
-                <ShadcnIcon icon="Pencil" :size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
+            <a-dropdown trigger="click" placement="bottomRight">
+              <a-button type="text" shape="circle" size="small">
+                <SettingOutlined :style="{ fontSize: '15px' }"/>
+              </a-button>
 
-            <ShadcnDropdown trigger="click" position="right">
-              <template #trigger>
-                <ShadcnButton circle size="small">
-                  <ShadcnIcon icon="Cog" :size="15"/>
-                </ShadcnButton>
-              </template>
-
-              <template v-if="(loginUserCode === row.user.code) && row.available && row.isSupportMeta">
-                <ShadcnDropdownItem>
-                  <ShadcnLink :link="`/admin/source/${row?.code}`" target="_blank">
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item v-if="(loginUserCode === record.user.code) && record.available && record.isSupportMeta">
+                    <router-link :to="`/admin/source/${ record?.code }`" target="_blank">
+                      <div class="flex items-center space-x-2">
+                        <SettingOutlined :style="{ fontSize: '15px' }"/>
+                        <span>{{ $t('source.common.manager') }}</span>
+                      </div>
+                    </router-link>
+                  </a-menu-item>
+                  <a-menu-item v-else disabled>
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Cog" size="15"/>
+                      <SettingOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('source.common.manager') }}</span>
                     </div>
-                  </ShadcnLink>
-                </ShadcnDropdownItem>
-              </template>
-              <template v-else>
-                <ShadcnDropdownItem disabled>
-                  <div class="flex items-center space-x-2">
-                    <ShadcnIcon icon="Cog" size="15"/>
-                    <span>{{ $t('source.common.manager') }}</span>
-                  </div>
-                </ShadcnDropdownItem>
-              </template>
+                  </a-menu-item>
 
-              <ShadcnDropdownItem :disabled="loginUserCode !== row.user.code" @on-click="visibleDelete(true, row)">
-                <div class="flex items-center space-x-2">
-                  <ShadcnIcon icon="Trash" size="15"/>
-                  <span>{{ $t('common.deleteData') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-            </ShadcnDropdown>
-          </ShadcnSpace>
+                  <a-menu-item :disabled="loginUserCode !== record.user.code" @click="visibleDelete(true, record)">
+                    <div class="flex items-center space-x-2">
+                      <DeleteOutlined :style="{ fontSize: '15px' }"/>
+                      <span>{{ $t('common.deleteData') }}</span>
+                    </div>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </a-space>
         </template>
-      </ShadcnTable>
-
-      <ShadcnPagination v-if="data.length > 0"
-                        v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange">
-      </ShadcnPagination>
-    </div>
-  </ShadcnCard>
+      </template>
+    </DataTable>
+  </a-card>
 
   <SourceInfo v-if="dataInfoVisible"
               :is-visible="dataInfoVisible"
               :info="dataInfo"
-              @close="visibleInfo(false, null)">
-  </SourceInfo>
+              @close="visibleInfo(false, null)"/>
 
   <SourceDelete v-if="dataDeleteVisible"
                 :is-visible="dataDeleteVisible"
@@ -128,133 +108,101 @@
                  @close="visibleHistory(false, null)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import Common from '@/utils/common'
 import { useHeaders } from '@/views/pages/admin/source/SourceUtils'
 import { FilterModel } from '@/model/filter'
 import { SourceModel } from '@/model/source'
+import DataTable from '@/views/components/table/DataTable.vue'
 import SourceService from '@/services/source'
 import SourceInfo from '@/views/pages/admin/source/SourceInfo.vue'
 import SourceHistory from '@/views/pages/admin/source/SourceHistory.vue'
 import SourceDelete from '@/views/pages/admin/source/SourceDelete.vue'
 import SourceMetadata from '@/views/pages/admin/source/SourceMetadata.vue'
+import { CloseCircleOutlined, DeleteOutlined, EditOutlined, PlayCircleOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
-export default defineComponent({
-  name: 'SourceHome',
-  components: { SourceMetadata, SourceDelete, SourceHistory, SourceInfo },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
-    const loginUserCode = Common.getCurrentUserCode()
+defineOptions({ name: 'SourceHome' })
 
-    return {
-      filter,
-      headers,
-      loginUserCode
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      dataInfoVisible: false,
-      dataInfo: null as SourceModel | null,
-      dataDeleteVisible: false,
-      dataSyncMetadataVisible: false,
-      dataHistoryVisible: false
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
+const loginUserCode = Common.getCurrentUserCode()
+
+const loading = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const dataInfoVisible = ref(false)
+const dataInfo = ref<SourceModel | null>(null)
+const dataDeleteVisible = ref(false)
+const dataSyncMetadataVisible = ref(false)
+const dataHistoryVisible = ref(false)
+
+const handlerInitialize = () => {
+  loading.value = true
+  SourceService.getAll(filter)
+               .then((response) => {
+                 if (response.status) {
+                   data.value = response.data.content
+                   dataCount.value = response.data.total
+                   pageSize.value = response.data.size
+                   pageIndex.value = response.data.page
+                 }
+               })
+               .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handlerInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const visibleInfo = (opened: boolean, value: SourceModel | null) => {
+  dataInfoVisible.value = opened
+  dataInfo.value = value
+  if (!opened) {
     handlerInitialize()
-    {
-      this.loading = true
-      SourceService.getAll(this.filter)
-                   .then((response) => {
-                     if (response.status) {
-                       this.data = response.data.content
-                       this.dataCount = response.data.total
-                       this.pageSize = response.data.size
-                       this.pageIndex = response.data.page
-                     }
-                   })
-                   .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handlerInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    visibleInfo(opened: boolean, value: null | SourceModel)
-    {
-      this.dataInfoVisible = opened
-      this.dataInfo = value
-      if (!opened) {
-        this.handlerInitialize()
-      }
-    },
-    visibleDelete(opened: boolean, value: null | SourceModel)
-    {
-      this.dataDeleteVisible = opened
-      this.dataInfo = value
-      if (!opened) {
-        this.handlerInitialize()
-      }
-    },
-    visibleSyncMetadata(opened: boolean, value: null | SourceModel)
-    {
-      this.dataSyncMetadataVisible = opened
-      this.dataInfo = value
-    },
-    visibleHistory(opened: boolean, value: null | SourceModel)
-    {
-      this.dataHistoryVisible = opened
-      this.dataInfo = value
-    },
-    formatVersionText(version, maxLength = 20)
-    {
-      if (!version) {
-        return '-'
-      }
-
-      if (version.length <= maxLength) {
-        return version
-      }
-
-      // 计算前后保留的字符数
-      // Calculate characters to keep at front and back
-      const frontLength = Math.ceil((maxLength - 3) / 2)
-      const backLength = Math.floor((maxLength - 3) / 2)
-
-      return `${ version.substring(0, frontLength) }...${ version.substring(version.length - backLength) }`
-    }
   }
-})
+}
+
+const visibleDelete = (opened: boolean, value: SourceModel | null) => {
+  dataDeleteVisible.value = opened
+  dataInfo.value = value
+  if (!opened) {
+    handlerInitialize()
+  }
+}
+
+const visibleSyncMetadata = (opened: boolean, value: SourceModel | null) => {
+  dataSyncMetadataVisible.value = opened
+  dataInfo.value = value
+}
+
+const visibleHistory = (opened: boolean, value: SourceModel | null) => {
+  dataHistoryVisible.value = opened
+  dataInfo.value = value
+}
+
+const formatVersionText = (version: string, maxLength = 20) => {
+  if (!version) {
+    return '-'
+  }
+  if (version.length <= maxLength) {
+    return version
+  }
+  const frontLength = Math.ceil((maxLength - 3) / 2)
+  const backLength = Math.floor((maxLength - 3) / 2)
+  return `${ version.substring(0, frontLength) }...${ version.substring(version.length - backLength) }`
+}
+
+onMounted(() => handlerInitialize())
 </script>

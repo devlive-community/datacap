@@ -1,19 +1,17 @@
 <template>
   <BaseLayout>
-    <ShadcnLayout>
+    <a-layout>
       <div class="container my-2 min-h-screen">
-        <ShadcnLayoutWrapper>
-          <ShadcnLayoutSider class="mr-4" width="250">
+        <a-layout has-sider>
+          <a-layout-sider class="mr-4" theme="light" :width="250">
             <MetadataSidebar/>
-          </ShadcnLayoutSider>
-          <ShadcnLayoutMain class="ml-2">
-            <ShadcnLayoutContent>
-              <MetadataContent/>
-            </ShadcnLayoutContent>
-          </ShadcnLayoutMain>
-        </ShadcnLayoutWrapper>
+          </a-layout-sider>
+          <a-layout-content class="ml-2">
+            <MetadataContent/>
+          </a-layout-content>
+        </a-layout>
       </div>
-    </ShadcnLayout>
+    </a-layout>
   </BaseLayout>
 </template>
 

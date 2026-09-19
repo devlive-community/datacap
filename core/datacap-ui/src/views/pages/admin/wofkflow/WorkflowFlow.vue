@@ -1,28 +1,31 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="60%"
-               :title="$t('workflow.text.configure')"
-               @on-close="onCancel">
-    <ShadcnSpin v-if="loading" fixed/>
-
-    <ShadcnWorkflowView v-if="!loading && configuration"
-                        :nodes="configuration.nodes"
-                        :canvas="{ height: 500 }"
-                        :data="data"/>
+  <a-modal v-model:open="visible"
+           width="60%"
+           :title="$t('workflow.text.configure')"
+           :footer="null"
+           @cancel="onCancel">
+    <a-spin :spinning="loading">
+      <WorkflowView v-if="!loading && configuration"
+                          :nodes="configuration.nodes"
+                          :canvas="{ height: 500 }"
+                          :data="data"/>
+    </a-spin>
 
     <template #footer>
-      <ShadcnButton type="default" @click="onCancel">
+      <a-button @click="onCancel">
         {{ $t('common.cancel') }}
-      </ShadcnButton>
+      </a-button>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { message } from 'ant-design-vue'
 import ConfigurationService from '@/services/configure.ts'
 import WorkflowService from '@/services/workflow.ts'
 import HttpUtils from '@/utils/http.ts'
+import WorkflowView from '@/views/components/editor/workflow/WorkflowView.vue'
 
 export interface Configuration
 {
@@ -30,68 +33,43 @@ export interface Configuration
   nodes: any[]
 }
 
-export default defineComponent({
-  name: 'WorkflowFlow',
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    code: {
-      type: String
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      configuration: null as Configuration | null,
-      data: null
-    }
-  },
-  created()
-  {
-    HttpUtils.all([ConfigurationService.getExecutor(), WorkflowService.getByCode(this.code)])
-             .then(HttpUtils.spread((...responses) => {
-               const [executor, workflow] = responses
+defineOptions({ name: 'WorkflowFlow' })
 
-               if (executor.status && executor.data) {
-                 this.configuration = executor.data
-               }
+const props = withDefaults(defineProps<{ isVisible?: boolean; code?: string }>(), { isVisible: false })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
 
-               if (workflow.status && workflow.data) {
-                 this.data = workflow.data.configure
-               }
-               else {
-                 this.$Message.error({ content: workflow.message, showIcon: true })
-               }
-             }))
-             .catch(error => {
-               this.$Message.error({
-                 content: error.message || 'Failed to initialize workflow',
-                 showIcon: true
-               })
-             })
-             .finally(() => {
-               this.loading = false
-             })
-  },
-  methods: {
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
 })
+
+const loading = ref(false)
+const configuration = ref<Configuration | null>(null)
+const data = ref<any>(null)
+
+const onCancel = () => {
+  visible.value = false
+}
+
+HttpUtils.all([ConfigurationService.getExecutor(), WorkflowService.getByCode(props.code)])
+         .then(HttpUtils.spread((...responses: any[]) => {
+           const [executor, workflow] = responses
+
+           if (executor.status && executor.data) {
+             configuration.value = executor.data
+           }
+
+           if (workflow.status && workflow.data) {
+             data.value = workflow.data.configure
+           }
+           else {
+             message.error(workflow.message)
+           }
+         }))
+         .catch((error: any) => {
+           message.error(error.message || 'Failed to initialize workflow')
+         })
+         .finally(() => {
+           loading.value = false
+         })
 </script>

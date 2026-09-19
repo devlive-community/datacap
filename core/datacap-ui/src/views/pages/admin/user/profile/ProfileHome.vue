@@ -1,20 +1,9 @@
 <template>
-  <ShadcnCard :border="false"
-              :title="$t('user.common.profile')"
-              :description="$t('user.tip.profile')">
-    <ShadcnDivider class="my-2"/>
-    <div class="p-3">
-      <ProfileForm/>
-    </div>
-  </ShadcnCard>
+  <ProfileForm/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import ProfileForm from '@/views/pages/admin/user/profile/components/ProfileForm.vue'
 
-export default defineComponent({
-  name: 'ProfileHome',
-  components: { ProfileForm }
-})
+defineOptions({ name: 'ProfileHome' })
 </script>

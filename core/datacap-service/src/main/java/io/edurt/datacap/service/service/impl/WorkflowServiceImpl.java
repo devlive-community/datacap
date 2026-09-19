@@ -6,10 +6,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.common.response.CommonResponse;
 import io.edurt.datacap.common.utils.NullAwareBeanUtils;
 import io.edurt.datacap.executor.ExecutorService;
-import io.edurt.datacap.executor.common.RunEngine;
-import io.edurt.datacap.executor.common.RunMode;
 import io.edurt.datacap.executor.common.RunState;
-import io.edurt.datacap.executor.common.RunWay;
 import io.edurt.datacap.executor.configure.ExecutorConfigure;
 import io.edurt.datacap.executor.configure.ExecutorRequest;
 import io.edurt.datacap.executor.configure.ExecutorResponse;
@@ -155,22 +152,18 @@ public class WorkflowServiceImpl
                                         plugin.getName(),
                                         plugin.configures()
                                 );
-                                String executorHome = executorCfg.get("home");
-                                log.debug("Executor home directory: {}", executorHome);
+                                log.debug("Executor home directory: {}", executorCfg.get("home"));
 
                                 ExecutorRequest request = new ExecutorRequest(
-                                        configure.getWork(),
-                                        executorHome,
                                         configure.getCode(),
                                         user.getUsername(),
                                         form,
-                                        to,
-                                        RunMode.valueOf(executorCfg.getOrDefault("mode", "CLIENT")),
-                                        RunWay.valueOf(executorCfg.getOrDefault("way", "LOCAL")),
-                                        executorCfg.get("startScript"),
-                                        RunEngine.valueOf(executorCfg.getOrDefault("engine", "SPARK")),
-                                        transform
+                                        to
                                 );
+                                request.setWorkHome(configure.getWork());
+                                request.setTransform(transform);
+                                // executor 专属项（home/startScript/way/mode/engine 等）整体作为 options 传入
+                                request.setOptions(executorCfg);
                                 log.info("Created executor request for workflow: {}", configure.getCode());
 
                                 Timestamp start = new Timestamp(System.currentTimeMillis());

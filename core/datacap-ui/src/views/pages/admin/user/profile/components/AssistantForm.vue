@@ -1,107 +1,99 @@
 <template>
   <div class="relative">
-    <ShadcnSpin v-model="loading.default" fixed/>
-    <ShadcnForm v-model="formState" v-if="formState" @on-submit="onSubmit">
-      <ShadcnFormItem name="host"
-                      class="w-[40%]"
-                      :label="$t('user.common.host')"
-                      :description="$t('user.tip.host')">
-        <ShadcnInput v-model="formState.host" name="host"/>
-      </ShadcnFormItem>
+    <a-spin :spinning="loading.default">
+      <a-form v-if="formState" :model="formState" layout="vertical" @finish="onSubmit">
+        <a-form-item name="host"
+                     class="w-[40%]"
+                     :label="$t('user.common.host')"
+                     :extra="$t('user.tip.host')">
+          <a-input v-model:value="formState.host"/>
+        </a-form-item>
 
-      <ShadcnFormItem name="token"
-                      class="w-[40%]"
-                      :label="$t('user.common.token')"
-                      :description="$t('user.tip.token')">
-        <ShadcnInput v-model="formState.token" name="token"/>
-      </ShadcnFormItem>
+        <a-form-item name="token"
+                     class="w-[40%]"
+                     :label="$t('user.common.token')"
+                     :extra="$t('user.tip.token')">
+          <a-input v-model:value="formState.token"/>
+        </a-form-item>
 
-      <ShadcnFormItem name="timeout"
-                      class="w-[40%]"
-                      :label="$t('user.common.timeout')"
-                      :description="$t('user.tip.timeout')"
-                      :rules="[
-                          { pattern: /^[0-9]*$/, message: 'Please enter number!' }
-                      ]">
-        <ShadcnInput v-model="formState.timeout" name="timeout"/>
-      </ShadcnFormItem>
+        <a-form-item name="timeout"
+                     class="w-[40%]"
+                     :label="$t('user.common.timeout')"
+                     :extra="$t('user.tip.timeout')"
+                     :rules="[
+                         { pattern: /^[0-9]*$/, message: 'Please enter number!' }
+                     ]">
+          <a-input v-model:value="formState.timeout"/>
+        </a-form-item>
 
-      <ShadcnFormItem name="contentCount"
-                      class="w-[40%]"
-                      :label="$t('user.common.contentCount')"
-                      :description="$t('user.tip.contentCount')"
-                      :rules="[
-                          { pattern: /^[0-9]*$/, message: 'Please enter number!' }
-                      ]">
-        <ShadcnInput v-model="formState.contentCount" name="contentCount"/>
-      </ShadcnFormItem>
+        <a-form-item name="contentCount"
+                     class="w-[40%]"
+                     :label="$t('user.common.contentCount')"
+                     :extra="$t('user.tip.contentCount')"
+                     :rules="[
+                         { pattern: /^[0-9]*$/, message: 'Please enter number!' }
+                     ]">
+          <a-input v-model:value="formState.contentCount"/>
+        </a-form-item>
 
-      <ShadcnButton submit :loading="loading.submitting" :disabled="loading.submitting">
-        {{ $t('common.save') }}
-      </ShadcnButton>
-    </ShadcnForm>
+        <a-button type="primary" html-type="submit" :loading="loading.submitting" :disabled="loading.submitting">
+          {{ $t('common.save') }}
+        </a-button>
+      </a-form>
+    </a-spin>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import UserService from '@/services/user'
 import { UserChatModel } from '@/model/user'
 import Common from '@/utils/common'
 import { isEmpty } from 'lodash'
 
-export default defineComponent({
-  name: 'AssistantForm',
-  data()
-  {
-    return {
-      loading: {
-        default: false,
-        submitting: false
-      },
-      formState: null as UserChatModel | null
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
-    handlerInitialize()
-    {
-      this.loading.default = true
-      UserService.getInfo()
-                 .then(response => {
-                   if (response.status) {
-                     const configure = response.data.chatConfigure
-                     if (response.data && configure && !isEmpty(configure)) {
-                       this.formState = JSON.parse(configure) as UserChatModel
-                     }
-                     else {
-                       this.formState = { host: undefined, token: undefined, timeout: 60, contentCount: 10 }
-                     }
-                   }
-                 })
-                 .finally(() => this.loading.default = false)
-    },
-    onSubmit()
-    {
-      this.loading.submitting = true
-      UserService.changeChart(this.formState as UserChatModel)
-                 .then((response) => {
-                   if (response.status) {
-                     this.$Message.success({
-                       content: this.$t('common.successfully') as string,
-                       showIcon: true
-                     })
-                     localStorage.setItem(Common.userEditorConfigure, JSON.stringify(this.formState))
-                   }
-                   else {
-                     this.$Message.error({ content: response.message, showIcon: true })
-                   }
-                 })
-                 .finally(() => this.loading.submitting = false)
-    }
-  }
+defineOptions({ name: 'AssistantForm' })
+
+const { t } = useI18n()
+
+const loading = reactive({
+  default: false,
+  submitting: false
 })
+const formState = ref<UserChatModel | null>(null)
+
+const handlerInitialize = () => {
+  loading.default = true
+  UserService.getInfo()
+             .then((response) => {
+               if (response.status) {
+                 const configure = response.data.chatConfigure
+                 if (response.data && configure && !isEmpty(configure)) {
+                   formState.value = JSON.parse(configure) as UserChatModel
+                 }
+                 else {
+                   formState.value = { host: undefined, token: undefined, timeout: 60, contentCount: 10 }
+                 }
+               }
+             })
+             .finally(() => (loading.default = false))
+}
+
+const onSubmit = () => {
+  loading.submitting = true
+  UserService.changeChart(formState.value as UserChatModel)
+             .then((response) => {
+               if (response.status) {
+                 message.success(t('common.successfully') as string)
+                 localStorage.setItem(Common.userEditorConfigure, JSON.stringify(formState.value))
+               }
+               else {
+                 message.error(response.message)
+               }
+             })
+             .finally(() => (loading.submitting = false))
+}
+
+handlerInitialize()
 </script>

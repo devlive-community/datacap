@@ -1,9 +1,8 @@
 <template>
-  <ShadcnModal v-model="visible"
-               width="60%"
-               height="60%"
-               :title="title"
-               @on-close="onCancel">
+  <a-modal v-model:open="visible"
+           width="60%"
+           :title="title"
+           :body-style="{ height: '60vh', overflow: 'auto' }">
     <div class="relative w-full h-full justify-center items-center">
       <div v-if="info">
         <VisualView class="h-full"
@@ -16,62 +15,41 @@
     </div>
 
     <template #footer>
-      <ShadcnButton type="default" @click="onCancel">
+      <a-button @click="onCancel">
         {{ $t('common.cancel') }}
-      </ShadcnButton>
+      </a-button>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { ReportModel } from '@/model/report'
 import VisualView from '@/views/components/visual/VisualView.vue'
 
-export default defineComponent({
-  name: 'ReportView',
-  components: { VisualView },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => ReportModel | null
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      title: null as string | null
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      if (this.info) {
-        this.title = `${ this.$t('report.common.view').replace('$VALUE', String(this.info.name)) }`
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+defineOptions({ name: 'ReportView' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: ReportModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const title = ref<string | null>(null)
+
+if (props.info) {
+  title.value = `${ t('report.common.view').replace('$VALUE', String(props.info.name)) }`
+}
+
+const onCancel = () => {
+  visible.value = false
+}
 </script>

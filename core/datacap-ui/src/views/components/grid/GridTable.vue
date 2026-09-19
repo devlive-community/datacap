@@ -1,31 +1,33 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
-      <ShadcnSpace>
-        <ShadcnButton>
-          <RouterLink :to="`/admin/dataset/info/source/${configure.code}?tempId=${tempId}`" target="_blank">
+      <a-space>
+        <a-button>
+          <router-link :to="`/admin/dataset/info/source/${configure.code}?tempId=${tempId}`" target="_blank">
               <span class="flex items-center">
-                <ShadcnIcon icon="Plus" size="15"/>
+                <PlusOutlined :style="{ fontSize: '15px' }"/>
                 <span>{{ $t('common.dataset') }}</span>
               </span>
-          </RouterLink>
-        </ShadcnButton>
+          </router-link>
+        </a-button>
 
-        <ShadcnButton type="default" @click="visualVisible = true">
-          <ShadcnIcon icon="BarChart" :size="15"/>
+        <a-button @click="visualVisible = true">
+          <BarChartOutlined :style="{ fontSize: '15px' }"/>
           <span>{{ $t('dataset.common.visual') }}</span>
-        </ShadcnButton>
+        </a-button>
 
-        <ShadcnTooltip class="mt-1" :content="$t('query.tip.pageShow')">
-          <ShadcnSwitch v-model="isPage" @on-change="onChange"/>
-        </ShadcnTooltip>
+        <a-tooltip class="mt-1" :title="$t('query.tip.pageShow')">
+          <a-switch v-model:checked="isPage" @change="onChange"/>
+        </a-tooltip>
 
-        <ShadcnTooltip :content="$t('query.tip.smallTips')">
-          <ShadcnButton circle type="default">
-            <ShadcnIcon icon="CircleHelp" :size="15"/>
-          </ShadcnButton>
-        </ShadcnTooltip>
-      </ShadcnSpace>
+        <a-tooltip :title="$t('query.tip.smallTips')">
+          <a-button type="text" shape="circle">
+            <template #icon>
+              <QuestionCircleOutlined :style="{ fontSize: '15px' }"/>
+            </template>
+          </a-button>
+        </a-tooltip>
+      </a-space>
     </template>
 
     <ag-grid-vue v-if="type === 'table'"
@@ -36,13 +38,13 @@
                  :columnDefs="columnDefs"
                  :rowData="configure.columns"
                  :gridOptions="gridOptions as any"/>
-  </ShadcnCard>
+  </a-card>
 
   <GridVisual :is-visible="visualVisible" :configure="configure" @close="visualVisible = $event"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { AgGridVue } from 'ag-grid-vue3'
 import 'ag-grid-community/styles/ag-grid.css'
 import './ag-theme-datacap.css'
@@ -52,60 +54,39 @@ import GridOptions from '@/views/components/grid/GridOptions'
 import { GridColumn } from '@/views/components/grid/GridColumn'
 import { ObjectUtils } from '@/utils/object'
 import GridVisual from '@/views/components/grid/GridVisual.vue'
+import { BarChartOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue'
 
-export default defineComponent({
-  name: 'GridTable',
-  components: { GridVisual, AgGridVue },
-  props: {
-    configure: {
-      type: Object as () => GridConfigure,
-      default: () => null
-    }
-  },
-  setup()
-  {
-    const gridOptions = GridOptions.createDefaultOptions(useI18n())
-    const timestamp = ObjectUtils.getTimestamp()
+defineOptions({ name: 'GridTable' })
 
-    return {
-      gridOptions,
-      timestamp
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  data()
-  {
-    return {
-      columnDrawerVisible: false,
-      visibleColumns: [],
-      columnDefs: [] as GridColumn[],
-      isPage: true,
-      type: 'table',
-      visualVisible: false,
-      tempId: null
-    }
-  },
-  methods: {
-    handleInitialize()
-    {
-      if (this.configure) {
-        const tempId = Math.random().toString(36).substring(2)
-        this.tempId = tempId
-        localStorage.setItem(`QueryContent_${ tempId }`, this.configure.query)
-        this.configure.headers!.forEach((header: string) => {
-          const columnDef: GridColumn = { headerName: header, field: header }
-          this.columnDefs.push(columnDef)
-        })
-      }
-    },
-    onChange(value: boolean)
-    {
-      this.timestamp = ObjectUtils.getTimestamp()
-      this.isPage = value
-    }
-  }
+const props = withDefaults(defineProps<{ configure?: GridConfigure }>(), {
+  configure: () => null as unknown as GridConfigure
 })
+
+const gridOptions = GridOptions.createDefaultOptions(useI18n())
+const timestamp = ref(ObjectUtils.getTimestamp())
+
+const columnDefs = ref<GridColumn[]>([])
+const isPage = ref(true)
+const type = ref('table')
+const visualVisible = ref(false)
+const tempId = ref<string | null>(null)
+
+const handleInitialize = () => {
+  if (props.configure) {
+    const id = Math.random().toString(36).substring(2)
+    tempId.value = id
+    localStorage.setItem(`QueryContent_${ id }`, props.configure.query)
+    props.configure.headers!.forEach((header: string) => {
+      const columnDef: GridColumn = { headerName: header, field: header }
+      columnDefs.value.push(columnDef)
+    })
+  }
+}
+
+const onChange = (value: boolean) => {
+  timestamp.value = ObjectUtils.getTimestamp()
+  isPage.value = value
+}
+
+handleInitialize()
 </script>

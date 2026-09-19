@@ -1,122 +1,128 @@
 <template>
-  <ShadcnDrawer v-model="visible" :title="title" width="40%">
+  <a-drawer v-model:open="visible" :title="title" width="40%">
     <div class="relative min-h-screen">
-      <ShadcnSpin v-if="loading" fixed/>
+      <a-spin :spinning="loading">
+        <a-form v-if="formState" :model="formState" layout="vertical" @finish="onSubmit">
+          <a-alert v-if="testInfo && testInfo.message" type="error" :message="testInfo.message" class="mb-3"/>
 
-      <ShadcnForm v-model="formState" v-if="formState" @on-submit="onSubmit">
+          <a-tabs v-model:activeKey="activeTab" @change="onChangeTab">
+            <a-tab-pane key="source" :tab="$t('source.common.source')">
+              <a-form-item name="type"
+                           :label="$t('source.common.type')"
+                           :rules="[{ required: true, message: $t('function.tip.selectPluginHolder') }]">
+                <a-radio-group v-model:value="formState.type" class="flex flex-wrap gap-3" :disabled="!hasJsonConvert">
+                  <a-radio-button v-for="plugin in plugins" :key="plugin.name" :value="plugin.name" class="p-1">
+                    <a-tooltip :title="plugin.name">
+                      <img class="h-16 w-16 object-contain" :src="'/static/images/plugin/' + plugin.name.toLowerCase() + '.svg'" :alt="plugin.name">
+                    </a-tooltip>
+                  </a-radio-button>
+                </a-radio-group>
+              </a-form-item>
+            </a-tab-pane>
 
-        <ShadcnAlert v-if="testInfo.message" type="error" :title="testInfo.message" class="mb-3"/>
+            <a-tab-pane v-for="tab in configureTabs"
+                        :key="tab"
+                        :tab="$t(`source.common.${ tab }`)"
+                        :disabled="!hasJsonConvert">
+              <a-form-item v-for="configure in pluginTabConfigure"
+                           :key="configure.field"
+                           :name="configure.field"
+                           :label="$t('source.common.' + configure.field)"
+                           :extra="configure.description">
+                <a-input v-if="configure.type === 'String'" v-model:value="configure.value" :disabled="configure.disabled"/>
 
-        <ShadcnTab v-model="activeTab" :key="`tab-${configureTabs.length}`" @on-change="onChangeTab">
-          <ShadcnTabItem value="source" :label="$t('source.common.source')" :key="'source-tab'">
-            <ShadcnFormItem name="type" :label="$t('source.common.type')" :rules="[{ required: true, message: $t('function.tip.selectPluginHolder') }]">
-              <ShadcnToggleGroup v-model="formState.type" class="flex flex-wrap gap-3" name="plugin" :disabled="!hasJsonConvert">
-                <ShadcnToggle v-for="plugin in plugins" class="p-1" :key="plugin.name" :value="plugin.name">
-                  <ShadcnTooltip :content="plugin.name" class="p-1">
-                    <img class="h-16 w-16 object-contain" :src="'/static/images/plugin/' + plugin.name.toLowerCase() + '.svg'" :alt="plugin.name">
-                  </ShadcnTooltip>
-                </ShadcnToggle>
-              </ShadcnToggleGroup>
-            </ShadcnFormItem>
-          </ShadcnTabItem>
+                <a-input-number v-else-if="configure.type === 'Number'"
+                                v-model:value="configure.value"
+                                :disabled="configure.disabled"
+                                :max="configure.max"
+                                :min="configure.min"
+                                :style="{ width: '100%' }"/>
 
-          <ShadcnTabItem v-for="tab in configureTabs"
-                         class="space-y-4"
-                         :key="tab"
-                         :value="tab"
-                         :disabled="!hasJsonConvert"
-                         :label="$t(`source.common.${ tab }`)">
-            <ShadcnFormItem v-for="configure in pluginTabConfigure"
-                            :name="configure.field"
-                            :label="$t('source.common.' + configure.field)"
-                            :description="configure.description">
-              <ShadcnInput v-if="configure.type === 'String'" v-model="configure.value" :disabled="configure.disabled"/>
+                <a-switch v-else-if="configure.type === 'Boolean'" v-model:checked="configure.value" :disabled="configure.disabled"/>
 
-              <ShadcnNumber v-else-if="configure.type === 'Number'"
-                            v-model="configure.value"
-                            :disabled="configure.disabled"
-                            :max="configure.max"
-                            :min="configure.min"/>
-
-              <ShadcnSwitch v-else-if="configure.type === 'Boolean'" v-model="configure.value" :disabled="configure.disabled"/>
-
-              <ShadcnUpload v-else-if="configure.type === 'File'"
-                            action="http://localhost:9096/api/v1/source/uploadFile"
-                            multiple
-                            accept=".xml"
-                            :headers="{'Authorization': auth?.type + ' ' + auth?.token, 'PluginType': (formState.type as string).split(' ')[0]}"
-                            @on-success="handlerUploadSuccess">
-                <Button icon="ios-cloud-upload-outline">{{ $t('common.upload') }}</Button>
-              </ShadcnUpload>
-
-              <div v-else>
-                <ShadcnSpace wrap>
-                  <ShadcnButton circle size="small" @click="onPlusConfigure(configure.value)">
+                <a-upload v-else-if="configure.type === 'File'"
+                          action="http://localhost:9096/api/v1/source/uploadFile"
+                          multiple
+                          accept=".xml"
+                          :headers="{ 'Authorization': auth?.type + ' ' + auth?.token, 'PluginType': (formState.type as string).split(' ')[0] }"
+                          @change="onUploadChange">
+                  <a-button>
                     <template #icon>
-                      <ShadcnIcon icon="Plus"/>
+                      <UploadOutlined/>
                     </template>
-                  </ShadcnButton>
+                    {{ $t('common.upload') }}
+                  </a-button>
+                </a-upload>
 
-                  <ShadcnRow v-for="(element, index) in configure.value" :gutter="10" :key="index">
-                    <ShadcnCol span="5">
-                      <ShadcnFormItem :label="$t('common.field')">
-                        <ShadcnInput v-model="element.field"/>
-                      </ShadcnFormItem>
-                    </ShadcnCol>
+                <div v-else>
+                  <a-space direction="vertical" :style="{ width: '100%' }">
+                    <a-button type="text" shape="circle" size="small" @click="onPlusConfigure(configure.value)">
+                      <template #icon>
+                        <PlusOutlined :style="{ fontSize: '16px' }"/>
+                      </template>
+                    </a-button>
 
-                    <ShadcnCol span="6">
-                      <ShadcnFormItem :label="$t('common.value')">
-                        <ShadcnInput v-model="element.value"/>
-                      </ShadcnFormItem>
-                    </ShadcnCol>
+                    <a-row v-for="(element, index) in configure.value" :key="index" :gutter="10">
+                      <a-col :span="10">
+                        <a-form-item :label="$t('common.field')">
+                          <a-input v-model:value="element.field"/>
+                        </a-form-item>
+                      </a-col>
 
-                    <ShadcnCol span="1">
-                      <ShadcnFormItem>
-                        <ShadcnButton circle
-                                      type="error"
-                                      size="small"
-                                      style="margin-top: 18px;"
-                                      @click="onMinusConfigure(element, configure.value)">
-                          <template #icon>
-                            <ShadcnIcon icon="Minus"/>
-                          </template>
-                        </ShadcnButton>
-                      </ShadcnFormItem>
-                    </ShadcnCol>
-                  </ShadcnRow>
-                </ShadcnSpace>
-              </div>
-            </ShadcnFormItem>
-          </ShadcnTabItem>
-        </ShadcnTab>
+                      <a-col :span="12">
+                        <a-form-item :label="$t('common.value')">
+                          <a-input v-model:value="element.value"/>
+                        </a-form-item>
+                      </a-col>
 
-        <div class="flex justify-end">
-          <ShadcnSpace>
-            <ShadcnButton type="error" @click="onCancel">
-              {{ $t('common.cancel') }}
-            </ShadcnButton>
+                      <a-col :span="2">
+                        <a-form-item :label="' '">
+                          <a-button type="text" shape="circle" danger size="small" @click="onMinusConfigure(element, configure.value)">
+                            <template #icon>
+                              <MinusOutlined :style="{ fontSize: '16px' }"/>
+                            </template>
+                          </a-button>
+                        </a-form-item>
+                      </a-col>
+                    </a-row>
+                  </a-space>
+                </div>
+              </a-form-item>
+            </a-tab-pane>
+          </a-tabs>
 
-            <ShadcnButton ghost
-                          :loading="testing"
-                          :disabled="testing || !formState.type"
-                          @click="onTest()">
-              {{ $t('common.test') }}
-            </ShadcnButton>
+          <div class="flex justify-end">
+            <a-space>
+              <a-button danger @click="onCancel">
+                {{ $t('common.cancel') }}
+              </a-button>
 
-            <ShadcnButton submit :loading="saving" :disabled="!testInfo.connected || saving">
-              {{ $t('common.save') }}
-            </ShadcnButton>
-          </ShadcnSpace>
-        </div>
-      </ShadcnForm>
+              <a-button ghost
+                        :loading="testing"
+                        :disabled="testing || !formState.type"
+                        @click="onTest()">
+                {{ $t('common.test') }}
+              </a-button>
+
+              <a-button type="primary" html-type="submit" :loading="saving" :disabled="!testInfo.connected || saving">
+                {{ $t('common.save') }}
+              </a-button>
+            </a-space>
+          </div>
+        </a-form>
+      </a-spin>
     </div>
-  </ShadcnDrawer>
+  </a-drawer>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { SourceModel, SourceRequest } from '@/model/source'
+<script setup lang="ts">
+import { nextTick, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
+import { MinusOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons-vue'
 import { cloneDeep, pick } from 'lodash'
+import { computed } from 'vue'
+import { SourceModel, SourceRequest } from '@/model/source'
 import SourceService from '@/services/source'
 import PluginService from '@/services/plugin'
 import { TokenUtils } from '@/utils/token'
@@ -124,350 +130,246 @@ import { ResponseModel } from '@/model/response'
 
 interface TestInfo
 {
-  connected: boolean,
-  percent: number,
-  successful: boolean,
+  connected: boolean
+  percent: number
+  successful: boolean
   message?: null | string
 }
 
-export default defineComponent({
-  name: 'SourceInfo',
-  setup()
-  {
-    const auth = TokenUtils.getAuthUser()
-    return { auth }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
+defineOptions({ name: 'SourceInfo' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: SourceModel | null }>(), {
+  isVisible: false,
+  info: null
+})
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+const auth = TokenUtils.getAuthUser()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const formState = ref<SourceModel>(null as unknown as SourceModel)
+const loading = ref(false)
+const saving = ref(false)
+const title = ref<string | null>(null)
+const testing = ref(false)
+const testInfo = ref<TestInfo>({ connected: false, percent: 0, successful: false })
+const configureTabs = ref<any[]>([])
+const activeTab = ref('source')
+const plugins = ref<any[]>([])
+const pluginConfigure = ref<any>(null)
+const pluginTabConfigure = ref<any>(null)
+const applyConfigure = ref<any>(null)
+const originalSchema = ref<any>(null)
+const hasJsonConvert = ref(false)
+
+const resetConfigureTab = () => {
+  if (!pluginConfigure.value || !Array.isArray(pluginConfigure.value)) {
+    configureTabs.value = []
+    return
+  }
+  const validGroups = pluginConfigure.value
+                                     .map((v: { group: string }) => v.group)
+                                     .filter((group: any) => group && typeof group === 'string')
+  configureTabs.value = [...new Set(validGroups)]
+}
+
+const updatePluginTabConfigure = (tabValue: string) => {
+  if (tabValue !== 'source' && pluginConfigure.value) {
+    pluginTabConfigure.value = pluginConfigure.value.filter((field: { group: string }) => field.group === tabValue)
+  }
+}
+
+const onChangeTab = (value: any) => {
+  updatePluginTabConfigure(value)
+}
+
+const handleInitialize = async () => {
+  try {
+    loading.value = true
+    testInfo.value = { connected: false, percent: 0, successful: false }
+    title.value = `${ t('source.common.create') }`
+
+    const pluginsResponse = await PluginService.getPlugins(true)
+    hasJsonConvert.value = pluginsResponse.data.some((value: any) => value.type?.toLowerCase() === 'convert' && value.name === 'JsonConvert')
+
+    if (!hasJsonConvert.value) {
+      testInfo.value.message = t('plugin.text.requiredJsonConvert')
+    }
+
+    if (pluginsResponse.status) {
+      plugins.value = pluginsResponse.data.filter((plugin: { type: string }) => plugin.type?.toLowerCase() === 'connector')
+    }
+
+    if (props.info) {
+      title.value = `${ t('source.common.modify').replace('$NAME', String(props.info.name || '...')) }`
+      const sourceResponse = await SourceService.getByCode(props.info.code)
+      if (sourceResponse.status) {
+        formState.value = cloneDeep(sourceResponse.data)
+        applyConfigure.value = sourceResponse.data?.schema
+        pluginConfigure.value = applyConfigure.value?.configures
+        originalSchema.value = cloneDeep(sourceResponse.data?.schema)
+        if (pluginConfigure.value) {
+          resetConfigureTab()
+          updatePluginTabConfigure('source')
+        }
       }
     }
-  },
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    info: {
-      type: Object as () => SourceModel | null
-    }
-  },
-  data()
-  {
-    return {
-      formState: null as unknown as SourceModel,
-      loading: false,
-      saving: false,
-      title: null as string | null,
-      testing: false,
-      testInfo: null as unknown as TestInfo,
-      configureTabs: [] as any[],
-      activeTab: 'source',
-      plugins: [] as any[],
-      pluginConfigure: null as unknown as any,
-      pluginTabConfigure: null as unknown as any,
-      applyConfigure: null as unknown as any,
-      originalSchema: null as unknown as any,
-      hasJsonConvert: false
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  watch: {
-    'formState.type': {
-      handler(newValue: any)
-      {
-        if (!newValue) {
-          return
-        }
-
-        if (newValue instanceof Array) {
-          this.formState.type = newValue[0]
-        }
-
-        try {
-          this.activeTab = 'source'
-
-          // 找到匹配的插件
-          // Find matching plugin
-          const applyPlugin = this.plugins.find((plugin: { name: string }) =>
-              plugin.name === this.formState.type
-          ) as any
-
-          // 判断是否是修改模式且类型匹配
-          // Determine whether it is a modification mode and whether the type matches
-          const isEditingMatchingType = this.info && this.info.type === this.formState.type
-
-          if (isEditingMatchingType && this.originalSchema) {
-            // 如果是修改模式且类型匹配，使用修改数据的配置
-            // If it is a modification mode and the type matches, use the modified data's configuration
-            this.applyConfigure = cloneDeep(this.originalSchema)
-            this.pluginConfigure = this.applyConfigure?.configures
-          }
-          else {
-            // 如果是新建或者类型不匹配，使用当前插件的配置
-            // If it is a new one or the type does not match, use the current plugin's configuration
-            this.applyConfigure = cloneDeep(applyPlugin?.configure)
-            this.pluginConfigure = this.applyConfigure?.configures
-          }
-
-          // 重置配置标签页
-          // Reset configuration tab
-          this.$nextTick(() => {
-            this.resetConfigureTab()
-
-            if (this.configureTabs.length > 0) {
-              // 更新当前标签页的配置
-              // Update the configuration of the current tab
-              this.updatePluginTabConfigure('source')
-            }
-          })
-        }
-        catch (error) {
-          console.error('Plugin change error:', error)
-        }
-      },
-      immediate: false
-    }
-  },
-  methods: {
-    async handleInitialize()
-    {
-      try {
-        this.loading = true
-        this.testInfo = { connected: false, percent: 0, successful: false }
-        this.title = `${ this.$t('source.common.create') }`
-
-        // 获取插件列表的 Promise
-        // Get plugins promise
-        const getPluginsPromise = PluginService.getPlugins(true)
-
-        const pluginsResponse = await getPluginsPromise
-        this.hasJsonConvert = pluginsResponse.data.some(value =>
-            value.type?.toLowerCase() === 'convert' &&
-            value.name === 'JsonConvert'
-        )
-
-        if (!this.hasJsonConvert) {
-          this.testInfo.message = this.$t('plugin.text.requiredJsonConvert')
-        }
-
-        if (pluginsResponse.status) {
-          this.plugins = pluginsResponse.data.filter((plugin: { type: string }) =>
-              plugin.type?.toLowerCase() === 'connector'
-          )
-        }
-
-        if (this.info) {
-          this.title = `${ this.$t('source.common.modify').replace('$NAME', String(this.info.name || '...')) }`
-
-          // 同时执行获取插件列表和源代码信息的请求
-          // Simultaneously execute requests to get plugin list and source code
-          const sourceResponse = await SourceService.getByCode(this.info.code)
-
-          // 处理源代码信息响应
-          // Handle source code response
-          if (sourceResponse.status) {
-            this.formState = cloneDeep(sourceResponse.data)
-            this.applyConfigure = sourceResponse.data?.schema
-            this.pluginConfigure = this.applyConfigure?.configures
-            this.originalSchema = cloneDeep(sourceResponse.data?.schema)
-
-            if (this.pluginConfigure) {
-              this.resetConfigureTab()
-
-              // 初始化时设置默认标签页的配置
-              // Set default tab config
-              this.updatePluginTabConfigure('source')
-            }
-          }
-        }
-        else {
-          this.formState = SourceRequest.of()
-        }
-      }
-      catch (error) {
-        console.error('Failed to initialize:', error)
-        this.$Message.error({
-          content: 'Failed to initialize the form',
-          showIcon: true
-        })
-      }
-      finally {
-        this.loading = false
-      }
-    },
-    onSubmit()
-    {
-      this.saving = true
-      const { configures } = this.applyConfigure
-      const configure = {
-        code: this.formState.code,
-        name: this.formState.type,
-        configure: {
-          configures: configures.map((item: any) =>
-              pick(item, ['field', 'required', 'type', 'min', 'max', 'message', 'value']))
-        },
-        type: this.formState.type,
-        version: this.formState.version
-      }
-
-      SourceService.saveOrUpdate(configure as any)
-                   .then((response) => {
-                     if (response.status) {
-                       this.$Message.success({
-                         content: 'Create successful',
-                         showIcon: true
-                       })
-
-                       this.onCancel()
-                     }
-                   })
-                   .finally(() => this.saving = false)
-    },
-    onCancel()
-    {
-      this.visible = false
-    },
-    onTest()
-    {
-      this.testing = true
-
-      const { configures } = this.applyConfigure
-      const configure = {
-        type: this.formState.type,
-        configure: {
-          configures: configures.map((item: any) =>
-              pick(item, ['field', 'required', 'type', 'min', 'max', 'message', 'value']))
-        }
-      }
-
-      SourceService.testConnection(configure)
-                   .then((response) => {
-                     this.testInfo.percent = 100
-                     if (response.status) {
-                       this.$Message.success({
-                         content: 'Test successful',
-                         showIcon: true
-                       })
-                       this.testInfo.connected = true
-                       this.testInfo.successful = true
-                       this.testInfo.message = null
-                       this.formState.version = this.extractVersion(response.data)
-                     }
-                     else {
-                       this.testInfo.message = response.message
-                       this.testInfo.connected = false
-                       this.testInfo.successful = false
-                     }
-                   })
-                   .finally(() => this.testing = false)
-    },
-    updatePluginTabConfigure(tabValue: string)
-    {
-      if (tabValue !== 'source' && this.pluginConfigure) {
-        this.pluginTabConfigure = this.pluginConfigure.filter(
-            (field: { group: string }) => field.group === tabValue
-        )
-      }
-    },
-    onChangeTab(value: any)
-    {
-      this.updatePluginTabConfigure(value)
-    },
-    handlerUploadSuccess(response: ResponseModel)
-    {
-      if (response.status) {
-        const configure = this.applyConfigure.configures.filter(
-            (configure: { field: string }) => configure.field === 'file'
-        )
-        configure[0].value.push(response.data)
-      }
-    },
-    handlerUploadRemove(file: any)
-    {
-      const configure = this.applyConfigure.configures.filter(
-          (configure: { field: string }) => configure.field === 'file'
-      )
-      configure[0].value = configure[0].value.filter(
-          (value: string) => !value.endsWith(file.name)
-      )
-    },
-    onPlusConfigure(array: Array<any>)
-    {
-      if (!array) {
-        array = new Array<any>()
-      }
-      const configure = { field: '', value: '' }
-      array.push(configure)
-    },
-    onMinusConfigure(configure: any, array: Array<any>)
-    {
-      const index = array.indexOf(configure)
-      if (index !== -1) {
-        array.splice(index, 1)
-      }
-    },
-    resetConfigureTab()
-    {
-      if (!this.pluginConfigure || !Array.isArray(this.pluginConfigure)) {
-        this.configureTabs = []
-        return
-      }
-
-      const validGroups = this.pluginConfigure
-                              .map((v: { group: string }) => v.group)
-                              .filter(group => group && typeof group === 'string')
-
-      this.configureTabs = [...new Set(validGroups)]
-    },
-    extractVersion(json)
-    {
-      const columnName = json['headers'][0]
-      const column = json['columns'][0]
-
-      // 如果 column 是对象类型（ObjectNode），通过 columnName 获取值
-      // If column is object type (ObjectNode), get value through columnName
-      if (typeof column === 'object' && column !== null && !Array.isArray(column)) {
-        const value = column[columnName]
-        if (value !== undefined) {
-          // 如果值是对象且包含 values 数组，提取第一个元素
-          // If value is object and contains values array, extract first element
-          if (typeof value === 'object' && value.values && Array.isArray(value.values)) {
-            return value.values.length === 1 ? value.values[0] : value.values
-          }
-          // 如果值是对象且包含 string 字段，返回 string 值
-          // If value is object and contains string field, return string value
-          if (typeof value === 'object' && value.string) {
-            return value.string
-          }
-          return value
-        }
-        return column
-      }
-
-      // 如果 column 是字符串类型，直接处理
-      // If column is string type, process directly
-      if (typeof column === 'string') {
-        // 去除字符串两端的引号（如果存在）
-        // Remove quotes from both ends of string (if exists)
-        if (column.startsWith('"') && column.endsWith('"') && column.length > 1) {
-          return column.slice(1, -1)
-        }
-        return column
-      }
-
-      // 其他情况直接返回
-      // Return directly for other cases
-      return column
+    else {
+      formState.value = SourceRequest.of()
     }
   }
+  catch (error) {
+    console.error('Failed to initialize:', error)
+    message.error('Failed to initialize the form')
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+watch(() => formState.value?.type, (newValue: any) => {
+  if (!newValue) {
+    return
+  }
+  if (newValue instanceof Array) {
+    formState.value.type = newValue[0]
+  }
+  try {
+    activeTab.value = 'source'
+    const applyPlugin = plugins.value.find((plugin: { name: string }) => plugin.name === formState.value.type) as any
+    const isEditingMatchingType = props.info && props.info.type === formState.value.type
+
+    if (isEditingMatchingType && originalSchema.value) {
+      applyConfigure.value = cloneDeep(originalSchema.value)
+      pluginConfigure.value = applyConfigure.value?.configures
+    }
+    else {
+      applyConfigure.value = cloneDeep(applyPlugin?.configure)
+      pluginConfigure.value = applyConfigure.value?.configures
+    }
+
+    nextTick(() => {
+      resetConfigureTab()
+      if (configureTabs.value.length > 0) {
+        updatePluginTabConfigure('source')
+      }
+    })
+  }
+  catch (error) {
+    console.error('Plugin change error:', error)
+  }
 })
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onTest = () => {
+  testing.value = true
+  const { configures } = applyConfigure.value
+  const configure = {
+    type: formState.value.type,
+    configure: {
+      configures: configures.map((item: any) => pick(item, ['field', 'required', 'type', 'min', 'max', 'message', 'value']))
+    }
+  }
+  SourceService.testConnection(configure)
+               .then((response) => {
+                 testInfo.value.percent = 100
+                 if (response.status) {
+                   message.success('Test successful')
+                   testInfo.value.connected = true
+                   testInfo.value.successful = true
+                   testInfo.value.message = null
+                   formState.value.version = extractVersion(response.data)
+                 }
+                 else {
+                   testInfo.value.message = response.message
+                   testInfo.value.connected = false
+                   testInfo.value.successful = false
+                 }
+               })
+               .finally(() => (testing.value = false))
+}
+
+const onSubmit = () => {
+  saving.value = true
+  const { configures } = applyConfigure.value
+  const configure = {
+    code: formState.value.code,
+    name: formState.value.type,
+    configure: {
+      configures: configures.map((item: any) => pick(item, ['field', 'required', 'type', 'min', 'max', 'message', 'value']))
+    },
+    type: formState.value.type,
+    version: formState.value.version
+  }
+  SourceService.saveOrUpdate(configure as any)
+               .then((response) => {
+                 if (response.status) {
+                   message.success('Create successful')
+                   onCancel()
+                 }
+               })
+               .finally(() => (saving.value = false))
+}
+
+const onUploadChange = (info: any) => {
+  if (info.file.status === 'done') {
+    handlerUploadSuccess(info.file.response)
+  }
+}
+
+const handlerUploadSuccess = (response: ResponseModel) => {
+  if (response.status) {
+    const configure = applyConfigure.value.configures.filter((configure: { field: string }) => configure.field === 'file')
+    configure[0].value.push(response.data)
+  }
+}
+
+const onPlusConfigure = (array: Array<any>) => {
+  if (!array) {
+    array = new Array<any>()
+  }
+  array.push({ field: '', value: '' })
+}
+
+const onMinusConfigure = (configure: any, array: Array<any>) => {
+  const index = array.indexOf(configure)
+  if (index !== -1) {
+    array.splice(index, 1)
+  }
+}
+
+const extractVersion = (json: any) => {
+  const columnName = json['headers'][0]
+  const column = json['columns'][0]
+  if (typeof column === 'object' && column !== null && !Array.isArray(column)) {
+    const value = column[columnName]
+    if (value !== undefined) {
+      if (typeof value === 'object' && value.values && Array.isArray(value.values)) {
+        return value.values.length === 1 ? value.values[0] : value.values
+      }
+      if (typeof value === 'object' && value.string) {
+        return value.string
+      }
+      return value
+    }
+    return column
+  }
+  if (typeof column === 'string') {
+    if (column.startsWith('"') && column.endsWith('"') && column.length > 1) {
+      return column.slice(1, -1)
+    }
+    return column
+  }
+  return column
+}
+
+handleInitialize()
 </script>

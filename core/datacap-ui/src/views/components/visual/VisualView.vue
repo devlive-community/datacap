@@ -1,95 +1,96 @@
 <template>
   <div class="relative h-full w-full" :style="{ width: width, height: height }">
-    <ShadcnSpin v-model="loading" fixed/>
+    <a-spin :spinning="loading">
+      <div v-if="localConfiguration && !loading">
+        <div v-if="localConfiguration.message" class="p-4">
+          <a-alert type="error" :message="localConfiguration.message"/>
+        </div>
 
-    <div v-if="localConfiguration && !loading">
-      <div v-if="localConfiguration.message" class="p-4">
-        <ShadcnAlert type="error" :title="localConfiguration.message"/>
-      </div>
+        <div v-else-if="hasError && message" class="flex items-center justify-center absolute inset-0">
+          <a-alert type="error" show-icon :message="message"/>
+        </div>
 
-      <div v-else-if="hasError && message" class="flex items-center justify-center absolute inset-0">
-        <ShadcnAlert type="error" show-icon :title="message"/>
-      </div>
-
-      <div v-else>
-        <VisualTable v-if="configuration?.type === Type.TABLE"
-                     :configuration="localConfiguration as any"
-                     :submitted="false"
-                     :width="width"
-                     :height="height"/>
-
-        <VisualLine v-else-if="configuration?.type === Type.LINE"
-                    :configuration="localConfiguration as any"
-                    :submitted="false"
-                    :width="width"
-                    :height="height"/>
-
-        <VisualBar v-else-if="configuration?.type === Type.BAR"
-                   :configuration="localConfiguration as any"
-                   :submitted="false"
-                   :width="width"
-                   :height="height"/>
-
-        <VisualArea v-else-if="configuration?.type === Type.AREA"
-                    :configuration="localConfiguration as any"
-                    :submitted="false"
-                    :width="width"
-                    :height="height"/>
-
-        <VisualPie v-else-if="configuration?.type === Type.PIE"
-                   :configuration="localConfiguration as any"
-                   :submitted="false"
-                   :width="width"
-                   :height="height"/>
-
-        <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM"
-                         :configuration="localConfiguration as any"
-                         :submitted="false"
-                         :width="width"
-                         :height="height"/>
-
-        <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD"
-                         :configuration="localConfiguration as any"
-                         :submitted="false"
-                         :width="width"
-                         :height="height"/>
-
-        <VisualScatter v-else-if="configuration?.type === Type.SCATTER"
+        <div v-else>
+          <VisualTable v-if="configuration?.type === Type.TABLE"
                        :configuration="localConfiguration as any"
                        :submitted="false"
                        :width="width"
                        :height="height"/>
 
-        <VisualRadar v-else-if="configuration?.type === Type.RADAR"
-                     :configuration="localConfiguration as any"
-                     :submitted="false"
-                     :width="width"
-                     :height="height"/>
-
-        <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL"
+          <VisualLine v-else-if="configuration?.type === Type.LINE"
                       :configuration="localConfiguration as any"
                       :submitted="false"
                       :width="width"
                       :height="height"/>
 
-        <VisualGauge v-else-if="configuration?.type === Type.GAUGE"
+          <VisualBar v-else-if="configuration?.type === Type.BAR"
                      :configuration="localConfiguration as any"
                      :submitted="false"
                      :width="width"
                      :height="height"/>
 
-        <VisualRose v-else-if="configuration?.type === Type.ROSE"
-                    :configuration="localConfiguration as any"
-                    :submitted="false"
-                    :width="width"
-                    :height="height"/>
+          <VisualArea v-else-if="configuration?.type === Type.AREA"
+                      :configuration="localConfiguration as any"
+                      :submitted="false"
+                      :width="width"
+                      :height="height"/>
+
+          <VisualPie v-else-if="configuration?.type === Type.PIE"
+                     :configuration="localConfiguration as any"
+                     :submitted="false"
+                     :width="width"
+                     :height="height"/>
+
+          <VisualHistogram v-else-if="configuration?.type === Type.HISTOGRAM"
+                           :configuration="localConfiguration as any"
+                           :submitted="false"
+                           :width="width"
+                           :height="height"/>
+
+          <VisualWordCloud v-else-if="configuration?.type === Type.WORDCLOUD"
+                           :configuration="localConfiguration as any"
+                           :submitted="false"
+                           :width="width"
+                           :height="height"/>
+
+          <VisualScatter v-else-if="configuration?.type === Type.SCATTER"
+                         :configuration="localConfiguration as any"
+                         :submitted="false"
+                         :width="width"
+                         :height="height"/>
+
+          <VisualRadar v-else-if="configuration?.type === Type.RADAR"
+                       :configuration="localConfiguration as any"
+                       :submitted="false"
+                       :width="width"
+                       :height="height"/>
+
+          <VisualFunnel v-else-if="configuration?.type === Type.FUNNEL"
+                        :configuration="localConfiguration as any"
+                        :submitted="false"
+                        :width="width"
+                        :height="height"/>
+
+          <VisualGauge v-else-if="configuration?.type === Type.GAUGE"
+                       :configuration="localConfiguration as any"
+                       :submitted="false"
+                       :width="width"
+                       :height="height"/>
+
+          <VisualRose v-else-if="configuration?.type === Type.ROSE"
+                      :configuration="localConfiguration as any"
+                      :submitted="false"
+                      :width="width"
+                      :height="height"/>
+        </div>
       </div>
-    </div>
+    </a-spin>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { message as antdMessage } from 'ant-design-vue'
 import { cloneDeep } from 'lodash'
 import { Type } from '@/views/components/visual/Type'
 import VisualWordCloud from '@/views/components/visual/components/VisualWordCloud.vue'
@@ -109,109 +110,74 @@ import VisualRose from '@/views/components/visual/components/VisualRose.vue'
 import ExecuteService from '@/services/execute.ts'
 import { ExecuteModel } from '@/model/execute.ts'
 
-export default defineComponent({
-  name: 'VisualView',
-  computed: {
-    Type()
-    {
-      return Type
+defineOptions({ name: 'VisualView' })
+
+const props = withDefaults(defineProps<{
+  configuration?: Configuration | null
+  query?: any
+  code?: string
+  type?: string
+  width?: string
+  height?: string
+  original?: string
+}>(), {
+  width: '100%',
+  height: '400px'
+})
+
+const loading = ref(false)
+const hasError = ref<any>(false)
+const message = ref<string | null>(null)
+const localConfiguration = ref<Configuration | null>(null)
+
+const formatRaw = (response: any) => {
+  if (localConfiguration.value) {
+    if (response.data.isSuccessful) {
+      localConfiguration.value.headers = response.data.headers
+      localConfiguration.value.columns = response.data.columns
+      localConfiguration.value.message = null
     }
-  },
-  components: {
-    VisualRose, VisualGauge, VisualFunnel, VisualScatter, VisualRadar,
-    VisualWordCloud, VisualHistogram, VisualPie, VisualArea, VisualBar, VisualLine, VisualTable
-  },
-  props: {
-    configuration: {
-      type: Object as () => Configuration | null
-    },
-    query: {
-      type: Object
-    },
-    code: {
-      type: String
-    },
-    type: {
-      type: String
-    },
-    width: {
-      type: String,
-      default: () => '100%'
-    },
-    height: {
-      type: String,
-      default: () => '400px'
-    },
-    original: {
-      type: String
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      hasError: false,
-      message: null as string | null,
-      localConfiguration: null as Configuration | null
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      this.localConfiguration = cloneDeep(this.configuration) as Configuration
-      setTimeout(() => {
-        this.loading = true
-        if (this.type === 'QUERY') {
-          const configure: ExecuteModel = { name: this.original as any, content: this.query as any, mode: 'REPORT' }
-          ExecuteService.execute(configure, null)
-                        .then(response => {
-                          if (response.status && response.data.isSuccessful) {
-                            this.formatRaw(response)
-                            this.message = null
-                          }
-                          else {
-                            this.hasError = response.message
-                            this.message = response.message
-                          }
-                        })
-                        .finally(() => this.loading = false)
-        }
-        else {
-          DatasetService.adhoc(this.code!, this.query)
-                        .then(response => {
-                          if (response.status) {
-                            this.formatRaw(response)
-                          }
-                          else {
-                            this.$Message.error({
-                              content: response.message,
-                              showIcon: true
-                            })
-                          }
-                        })
-                        .finally(() => this.loading = false)
-        }
-      })
-    },
-    formatRaw(response: any)
-    {
-      if (this.localConfiguration) {
-        if (response.data.isSuccessful) {
-          this.localConfiguration.headers = response.data.headers
-          this.localConfiguration.columns = response.data.columns
-          this.localConfiguration.message = null
-        }
-        else {
-          this.localConfiguration.headers = []
-          this.localConfiguration.columns = []
-          this.localConfiguration.message = response.data.message
-        }
-      }
+    else {
+      localConfiguration.value.headers = []
+      localConfiguration.value.columns = []
+      localConfiguration.value.message = response.data.message
     }
   }
-})
+}
+
+const handleInitialize = () => {
+  localConfiguration.value = cloneDeep(props.configuration) as Configuration
+  setTimeout(() => {
+    loading.value = true
+    if (props.type === 'QUERY') {
+      const configure: ExecuteModel = { name: props.original as any, content: props.query as any, mode: 'REPORT' }
+      ExecuteService.execute(configure, null)
+                    .then((response) => {
+                      if (response.status && response.data.isSuccessful) {
+                        formatRaw(response)
+                        message.value = null
+                      }
+                      else {
+                        hasError.value = response.message
+                        message.value = response.message
+                      }
+                    })
+                    .finally(() => (loading.value = false))
+    }
+    else {
+      DatasetService.adhoc(props.code!, props.query)
+                    .then((response) => {
+                      if (response.status) {
+                        formatRaw(response)
+                      }
+                      else {
+                        antdMessage.error(response.message)
+                      }
+                    })
+                    .finally(() => (loading.value = false))
+    }
+  })
+}
+
+handleInitialize()
 </script>

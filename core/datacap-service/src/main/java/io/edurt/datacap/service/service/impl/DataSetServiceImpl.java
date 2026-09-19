@@ -13,11 +13,8 @@ import io.edurt.datacap.common.sql.configure.SqlOperator;
 import io.edurt.datacap.common.sql.configure.SqlOrder;
 import io.edurt.datacap.common.sql.configure.SqlType;
 import io.edurt.datacap.executor.ExecutorService;
-import io.edurt.datacap.executor.common.RunEngine;
-import io.edurt.datacap.executor.common.RunMode;
 import io.edurt.datacap.executor.common.RunProtocol;
 import io.edurt.datacap.executor.common.RunState;
-import io.edurt.datacap.executor.common.RunWay;
 import io.edurt.datacap.executor.configure.ExecutorConfigure;
 import io.edurt.datacap.executor.configure.ExecutorRequest;
 import io.edurt.datacap.executor.configure.ExecutorResponse;
@@ -1229,28 +1226,21 @@ public class DataSetServiceImpl
                                                                     log.warn("Serialize effective executor configure failed: {}", ex.getMessage());
                                                                 }
                                                                 historyRepository.save(history);
-                                                                int fetchSize = parseIntOrDefault(executorCfg.get("fetchSize"), 1000);
-                                                                int batchSize = parseIntOrDefault(executorCfg.get("batchSize"), 1000);
-                                                                boolean preCount = Boolean.parseBoolean(executorCfg.getOrDefault("preCount", "false"));
+                                                                // timeout 由各 executor 自己的配置决定：LocalExecutor schema 默认 0（不限时），
+                                                                // 未声明该字段的 executor（如 Seatunnel）回退到 600 秒，保持原有行为
+                                                                int timeout = parseIntOrDefault(executorCfg.get("timeout"), 600);
                                                                 ExecutorRequest request = new ExecutorRequest(
                                                                         taskName,
                                                                         entity.getUser().getUsername(),
                                                                         input,
-                                                                        output,
-                                                                        executorCfg.get("home"),
-                                                                        workHome,
-                                                                        this.pluginManager,
-                                                                        600,
-                                                                        RunWay.valueOf(executorCfg.getOrDefault("way", "LOCAL")),
-                                                                        RunMode.valueOf(executorCfg.getOrDefault("mode", "CLIENT")),
-                                                                        executorCfg.get("startScript"),
-                                                                        RunEngine.valueOf(executorCfg.getOrDefault("engine", "SPARK")),
-                                                                        null,
-                                                                        fetchSize,
-                                                                        batchSize,
-                                                                        preCount,
-                                                                        null
+                                                                        output
                                                                 );
+                                                                request.setWorkHome(workHome);
+                                                                request.setTimeout(timeout);
+                                                                request.setPluginManager(this.pluginManager);
+                                                                // 把该 executor 的 effective 配置整体作为 options，各执行器各取所需：
+                                                                // Local 读 fetchSize/batchSize/preCount；Seatunnel 读 home/startScript/way/mode/engine
+                                                                request.setOptions(executorCfg);
 
                                                                 // 进度回调：每个 batch 写完后更新 datacap_dataset_history 以及数据集自身的 totalRows / totalSize
                                                                 // totalRows 直接用已写入计数；totalSize 必须查 ClickHouse system.parts，开销大且不可控，
@@ -1355,8 +1345,9 @@ public class DataSetServiceImpl
                                                                     history.setProgress(java.math.BigDecimal.valueOf(100.0).setScale(2, java.math.RoundingMode.HALF_UP));
                                                                 }
                                                                 historyRepository.save(history);
-                                                                // STOPPED 是用户主动停止，已经把最终状态写入 history，无需当作异常抛出 / 也不刷 table metadata
-                                                                if (response.getState() == RunState.STOPPED) {
+                                                                // STOPPED（用户主动停止）与 TIMEOUT（超时取消）都是终态：已把最终状态写入 history，
+                                                                // 无需当作异常抛出 / 也不刷 table metadata
+                                                                if (response.getState() == RunState.STOPPED || response.getState() == RunState.TIMEOUT) {
                                                                     return;
                                                                 }
                                                                 Preconditions.checkArgument(response.getSuccessful(), response.getMessage());

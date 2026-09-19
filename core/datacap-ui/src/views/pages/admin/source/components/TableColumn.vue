@@ -1,59 +1,42 @@
 <template>
-  <ShadcnDrawer v-model="visible" width="20%" :title="$t('source.common.visibleColumn')">
-    <ShadcnCheckboxGroup v-model="value">
-      <ShadcnCheckbox v-for="item in columns" :value="item.field">{{ item.field }}</ShadcnCheckbox>
-    </ShadcnCheckboxGroup>
+  <a-drawer v-model:open="visible" width="20%" :title="$t('source.common.visibleColumn')">
+    <a-checkbox-group v-model:value="value">
+      <a-space direction="vertical">
+        <a-checkbox v-for="item in columns" :key="item.field" :value="item.field">{{ item.field }}</a-checkbox>
+      </a-space>
+    </a-checkbox-group>
 
     <template #footer>
-      <ShadcnButton @click="onCancel">
+      <a-button type="primary" @click="onCancel">
         {{ $t('common.apply') }}
-      </ShadcnButton>
+      </a-button>
     </template>
-  </ShadcnDrawer>
+  </a-drawer>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 
-export default defineComponent({
-  name: 'TableColumn',
-  props: {
-    isVisible: {
-      type: Boolean
-    },
-    columns: {
-      type: Array<any>,
-      default: () => [] as any[]
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      value: [] as string[]
-    }
-  },
-  created()
-  {
-    this.value = this.columns.map(item => item.field)
-  },
-  methods: {
-    onCancel()
-    {
-      this.$emit('change', this.value)
-      this.visible = false
-    }
-  }
+defineOptions({ name: 'TableColumn' })
+
+const props = withDefaults(defineProps<{ isVisible?: boolean; columns?: any[] }>(), {
+  isVisible: false,
+  columns: () => []
 })
+const emit = defineEmits<{
+  (e: 'close', value: boolean): void
+  (e: 'change', value: string[]): void
+}>()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const value = ref<string[]>(props.columns.map((item) => item.field))
+
+const onCancel = () => {
+  emit('change', value.value)
+  visible.value = false
+}
 </script>

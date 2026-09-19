@@ -1,6 +1,6 @@
 <template>
-  <ShadcnModal v-model="visible" :title="`[ ${ info?.name } ] ${ $t('dataset.common.syncData') }`" @on-close="onCancel">
-    <ShadcnAlert type="error" :title="$t('dataset.tip.syncData')"/>
+  <a-modal v-model:open="visible" :title="`[ ${ info?.name } ] ${ $t('dataset.common.syncData') }`">
+    <a-alert type="error" :message="$t('dataset.tip.syncData')"/>
 
     <div v-if="loadingFields" class="py-2 text-xs text-gray-500">{{ $t('common.loading') }}</div>
 
@@ -10,32 +10,35 @@
         <label class="text-xs">{{ field.name }}</label>
         <div v-if="field.description" class="text-xs text-gray-500">{{ field.description }}</div>
 
-        <ShadcnInput v-if="field.type === 'STRING'" v-model="overrides[field.name]"/>
-        <ShadcnInputNumber v-else-if="field.type === 'NUMBER'" v-model="overrides[field.name]"/>
-        <ShadcnSwitch v-else-if="field.type === 'BOOLEAN'" v-model="booleanProxies[field.name]"
-                      @on-change="(v: boolean) => onBoolChange(field.name, v)"/>
-        <ShadcnInput v-else-if="field.type === 'PASSWORD'" type="password" v-model="overrides[field.name]"/>
+        <a-input v-if="field.type === 'STRING'" v-model:value="overrides[field.name]"/>
+        <a-input-number v-else-if="field.type === 'NUMBER'" v-model:value="overrides[field.name]" :style="{ width: '100%' }"/>
+        <a-switch v-else-if="field.type === 'BOOLEAN'"
+                  v-model:checked="booleanProxies[field.name]"
+                  @change="(v: boolean) => onBoolChange(field.name, v)"/>
+        <a-input-password v-else-if="field.type === 'PASSWORD'" v-model:value="overrides[field.name]"/>
       </div>
     </div>
 
     <template #footer>
-      <ShadcnSpace>
-        <ShadcnButton type="default" @click="onCancel">{{ $t('common.cancel') }}</ShadcnButton>
-
-        <ShadcnButton :disabled="loading" :loading="loading" @click="onSubmit">
+      <a-space>
+        <a-button @click="onCancel">{{ $t('common.cancel') }}</a-button>
+        <a-button type="primary" :disabled="loading" :loading="loading" @click="onSubmit">
           {{ $t('dataset.common.syncData') }}
-        </ShadcnButton>
-      </ShadcnSpace>
+        </a-button>
+      </a-space>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import DatasetService from '@/services/dataset'
 import { DatasetModel } from '@/model/dataset'
 
-interface PluginConfigureField {
+interface PluginConfigureField
+{
   name: string
   type: 'STRING' | 'NUMBER' | 'BOOLEAN' | 'PASSWORD'
   defaultValue: string
@@ -43,103 +46,76 @@ interface PluginConfigureField {
   tunable: boolean
 }
 
-export default defineComponent({
-  name: 'DatasetSync',
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: () => false
-    },
-    info: {
-      type: Object as () => DatasetModel | null
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      loadingFields: false,
-      fields: [] as PluginConfigureField[],
-      overrides: {} as Record<string, string>,
-      booleanProxies: {} as Record<string, boolean>
-    }
-  },
-  created()
-  {
-    this.handleInitialize()
-  },
-  methods: {
-    handleInitialize()
-    {
-      if (!this.info?.code) {
-        return
-      }
-      this.loadingFields = true
-      DatasetService.getSyncFields(this.info.code)
-                    .then(response => {
-                      if (response.status && Array.isArray(response.data)) {
-                        this.fields = response.data
-                        // 用 effective 值（已通过 defaultValue 字段下发）预填表单
-                        for (const f of this.fields) {
-                          this.overrides[f.name] = f.defaultValue ?? ''
-                          if (f.type === 'BOOLEAN') {
-                            this.booleanProxies[f.name] = (f.defaultValue + '').toLowerCase() === 'true'
-                          }
-                        }
-                      }
-                    })
-                    .finally(() => this.loadingFields = false)
-    },
-    onBoolChange(name: string, value: boolean)
-    {
-      this.overrides[name] = value ? 'true' : 'false'
-    },
-    onSubmit()
-    {
-      if (this.info) {
-        this.loading = true
-        // 把所有 boolean 类型同步从 booleanProxies 落到 overrides
-        for (const f of this.fields) {
-          if (f.type === 'BOOLEAN') {
-            this.overrides[f.name] = this.booleanProxies[f.name] ? 'true' : 'false'
-          }
-        }
-        DatasetService.syncData(this.info.code, this.overrides)
-                      .then(response => {
-                        if (response.status) {
-                          this.$Message.success({
-                            content: `${ this.$t('dataset.common.syncData') } [ ${ this.info?.name } ] ${ this.$t('common.successfully') }`,
-                            showIcon: true
-                          })
+defineOptions({ name: 'DatasetSync' })
 
-                          this.onCancel()
-                        }
-                        else {
-                          this.$Message.error({
-                            content: `${ this.$t('dataset.common.syncData') } [ ${ this.info?.name } ] ${ this.$t('common.fail') }`,
-                            showIcon: true
-                          })
-                        }
-                      })
-                      .finally(() => this.loading = false)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: DatasetModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+const loadingFields = ref(false)
+const fields = ref<PluginConfigureField[]>([])
+const overrides = ref<Record<string, string>>({})
+const booleanProxies = ref<Record<string, boolean>>({})
+
+const handleInitialize = () => {
+  if (!props.info?.code) {
+    return
+  }
+  loadingFields.value = true
+  DatasetService.getSyncFields(props.info.code)
+                .then(response => {
+                  if (response.status && Array.isArray(response.data)) {
+                    fields.value = response.data
+                    for (const f of fields.value) {
+                      overrides.value[f.name] = f.defaultValue ?? ''
+                      if (f.type === 'BOOLEAN') {
+                        booleanProxies.value[f.name] = (f.defaultValue + '').toLowerCase() === 'true'
+                      }
+                    }
+                  }
+                })
+                .finally(() => (loadingFields.value = false))
+}
+
+const onBoolChange = (name: string, value: boolean) => {
+  overrides.value[name] = value ? 'true' : 'false'
+}
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  if (props.info) {
+    loading.value = true
+    for (const f of fields.value) {
+      if (f.type === 'BOOLEAN') {
+        overrides.value[f.name] = booleanProxies.value[f.name] ? 'true' : 'false'
+      }
+    }
+    DatasetService.syncData(props.info.code, overrides.value)
+                  .then(response => {
+                    if (response.status) {
+                      message.success(`${ t('dataset.common.syncData') } [ ${ props.info?.name } ] ${ t('common.successfully') }`)
+                      onCancel()
+                    }
+                    else {
+                      message.error(`${ t('dataset.common.syncData') } [ ${ props.info?.name } ] ${ t('common.fail') }`)
+                    }
+                  })
+                  .finally(() => (loading.value = false))
+  }
+}
+
+handleInitialize()
 </script>

@@ -6,7 +6,10 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.edurt.datacap.executor.ExecutorService;
+import io.edurt.datacap.executor.common.RunEngine;
+import io.edurt.datacap.executor.common.RunMode;
 import io.edurt.datacap.executor.common.RunState;
+import io.edurt.datacap.executor.common.RunWay;
 import io.edurt.datacap.executor.configure.ExecutorConfigure;
 import io.edurt.datacap.executor.configure.ExecutorRequest;
 import io.edurt.datacap.executor.configure.ExecutorResponse;
@@ -38,14 +41,7 @@ public class SeatunnelExecutorService
     public ExecutorResponse start(ExecutorRequest request)
     {
         try {
-            SeaTunnelCommander commander = new SeaTunnelCommander(
-                    request.getExecutorHome() + "/bin",
-                    request.getStartScript(),
-                    request.getRunWay().name().toLowerCase(),
-                    request.getRunMode().name().toLowerCase(),
-                    String.join(File.separator, request.getWorkHome(), request.getTaskName() + ".configure"),
-                    request.getTaskName(),
-                    request.getRunEngine());
+            SeaTunnelCommander commander = buildCommander(request);
 
             LoggerExecutor loggerExecutor = new LogbackExecutor(request.getWorkHome(), request.getTaskName() + ".log");
             String result = before(request, loggerExecutor.getLogger());
@@ -81,6 +77,27 @@ public class SeatunnelExecutorService
     public ExecutorResponse stop(ExecutorRequest request)
     {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * 从请求构造 SeaTunnel 命令。单独抽出以便测试“请求字段 -> 命令行”的映射，
+     * 这是 ExecutorRequest 结构调整时最容易出错、也最需要回归保护的一段。
+     */
+    SeaTunnelCommander buildCommander(ExecutorRequest request)
+    {
+        // Seatunnel 专属项来自 request.options：home / startScript / way / mode / engine
+        Map<String, String> options = request.getOptions();
+        RunWay runWay = RunWay.valueOf(options.getOrDefault("way", RunWay.LOCAL.name()));
+        RunMode runMode = RunMode.valueOf(options.getOrDefault("mode", RunMode.CLIENT.name()));
+        RunEngine runEngine = RunEngine.valueOf(options.getOrDefault("engine", RunEngine.SPARK.name()));
+        return new SeaTunnelCommander(
+                options.get("home") + "/bin",
+                options.get("startScript"),
+                runWay.name().toLowerCase(),
+                runMode.name().toLowerCase(),
+                String.join(File.separator, request.getWorkHome(), request.getTaskName() + ".configure"),
+                request.getTaskName(),
+                runEngine);
     }
 
     /**

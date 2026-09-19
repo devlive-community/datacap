@@ -5,13 +5,15 @@ export function useHeaders()
 {
     const { t } = useI18n()
 
+    // ant-design-vue Table 列格式：title + dataIndex/key；
+    // role / action 列没有 dataIndex，通过 <template #bodyCell> 按 column.key 自定义渲染
     const headers = computed(() => [
-            { key: 'id', label: t('common.id') },
-            { key: 'username', label: t('common.username') },
-            { key: 'createTime', label: t('common.createTime') },
-            { key: 'updateTime', label: t('common.updateTime') },
-            { key: 'role', label: t('common.role'), slot: 'role', width: 100 },
-            { key: 'action', label: t('common.action'), slot: 'action' }
+            { title: t('common.id'), dataIndex: 'id', key: 'id' },
+            { title: t('common.username'), dataIndex: 'username', key: 'username' },
+            { title: t('common.createTime'), dataIndex: 'createTime', key: 'createTime' },
+            { title: t('common.updateTime'), dataIndex: 'updateTime', key: 'updateTime' },
+            { title: t('common.role'), key: 'role', width: 100 },
+            { title: t('common.action'), key: 'action' }
         ]
     )
 

@@ -19,15 +19,17 @@
                 :min-h="3"
                 :is-resizable="false"
                 :min-w="3">
-        <ShadcnCard class="h-full w-full">
+        <a-card class="h-full w-full">
           <template #title>{{ item.title ? item.title : $t('dataset.common.notSpecifiedTitle') }}</template>
 
           <template #extra>
-            <ShadcnTooltip v-if="item.description" :content="item.description">
-              <ShadcnButton circle size="small" type="error">
-                <ShadcnIcon icon="Trash" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
+            <a-tooltip v-if="item.description" :title="item.description">
+              <a-button type="text" shape="circle" size="small" danger>
+                <template #icon>
+                  <DeleteOutlined :style="{ fontSize: '15px' }"/>
+                </template>
+              </a-button>
+            </a-tooltip>
           </template>
 
           <VisualView v-if="item.original"
@@ -45,46 +47,35 @@
                       :code="item.node.code"
                       :configuration="JSON.parse(item.node.configure)"
                       :query="JSON.parse(item.node.query)"/>
-        </ShadcnCard>
+        </a-card>
       </GridItem>
     </GridLayout>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { GridItem, GridLayout } from 'vue3-grid-layout-next'
 import VisualView from '@/views/components/visual/VisualView.vue'
+import { DeleteOutlined } from '@ant-design/icons-vue'
 
-export default defineComponent({
-  name: 'DashboardView',
-  components: { VisualView, GridItem, GridLayout },
-  props: {
-    layouts: {
-      type: Array as () => any[],
-      default: () => []
-    }
-  },
-  data()
-  {
-    return {
-      columnNumber: 12,
-      rowHeight: 70
-    }
-  },
-  methods: {
-    // The method of calculating the width
-    calculateWidth(item: any): string
-    {
-      const widthPercentage = (item.w * (100 / this.columnNumber))
-      return `calc(${ widthPercentage }% - rem)` // Subtract margins
-    },
-    // How to calculate the height
-    calculateHeight(item: any): string
-    {
-      const totalHeight = item.h * this.rowHeight
-      return `${ totalHeight - 48 }px` // Subtract the height of the card head
-    }
-  }
+defineOptions({ name: 'DashboardView' })
+
+withDefaults(defineProps<{ layouts?: any[] }>(), {
+  layouts: () => []
 })
+
+const columnNumber = 12
+const rowHeight = 70
+
+// The method of calculating the width
+const calculateWidth = (item: any): string => {
+  const widthPercentage = (item.w * (100 / columnNumber))
+  return `calc(${ widthPercentage }% - rem)` // Subtract margins
+}
+
+// How to calculate the height
+const calculateHeight = (item: any): string => {
+  const totalHeight = item.h * rowHeight
+  return `${ totalHeight - 48 }px` // Subtract the height of the card head
+}
 </script>

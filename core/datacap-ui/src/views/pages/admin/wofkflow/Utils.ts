@@ -5,15 +5,16 @@ export function useHeaders()
 {
     const { t } = useI18n()
 
+    // ant-design-vue Table 列格式（WorkflowHome 已迁 antd）；executor/state/action 走 #bodyCell
     const headers = computed(() => [
-        { key: 'id', label: t('common.id') },
-        { key: 'name', label: t('common.name'), length: 20 },
-        { key: 'createTime', label: t('common.createTime') },
-        { key: 'updateTime', label: t('common.endTime') },
-        { key: 'elapsed', label: t('common.elapsed') },
-        { key: 'executor', label: t('common.executor'), slot: 'executor' },
-        { key: 'state', label: t('common.state'), slot: 'state' },
-        { key: 'action', label: t('common.action'), slot: 'action' }
+        { title: t('common.id'), dataIndex: 'id', key: 'id' },
+        { title: t('common.name'), dataIndex: 'name', key: 'name' },
+        { title: t('common.createTime'), dataIndex: 'createTime', key: 'createTime' },
+        { title: t('common.endTime'), dataIndex: 'updateTime', key: 'updateTime' },
+        { title: t('common.elapsed'), dataIndex: 'elapsed', key: 'elapsed' },
+        { title: t('common.executor'), key: 'executor' },
+        { title: t('common.state'), key: 'state' },
+        { title: t('common.action'), key: 'action' }
     ])
 
     return {

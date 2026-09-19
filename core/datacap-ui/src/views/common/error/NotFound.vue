@@ -1,29 +1,25 @@
 <template>
   <BaseLayout>
     <div class="h-screen">
-      <ShadcnException type="404"
-                       :title="$t('common.pageNotFound')"
-                       :description="$t('common.pageNotFoundTip')">
-        <template #actions>
-          <ShadcnButton v-if="$route.redirectedFrom" type="default"
-                        :to="$route.redirectedFrom.fullPath">
+      <a-result status="404"
+                :title="$t('common.pageNotFound')"
+                :sub-title="$t('common.pageNotFoundTip')">
+        <template #extra>
+          <a-button v-if="$route.redirectedFrom"
+                    @click="$router.push($route.redirectedFrom.fullPath)">
             {{ $t('common.backTo') }}
-          </ShadcnButton>
-          <ShadcnButton type="primary" to="/">
+          </a-button>
+          <a-button type="primary" @click="$router.push('/')">
             {{ $t('common.backToHome') }}
-          </ShadcnButton>
+          </a-button>
         </template>
-      </ShadcnException>
+      </a-result>
     </div>
   </BaseLayout>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import BaseLayout from '@/views/layouts/base/BaseLayout.vue'
 
-export default defineComponent({
-  name: 'NotFound',
-  components: { BaseLayout }
-})
+defineOptions({ name: 'NotFound' })
 </script>

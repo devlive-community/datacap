@@ -1,22 +1,19 @@
 <template>
   <div>
-    <ShadcnButton class="p-0 w-full">
+    <a-button class="p-0 w-full">
       <input ref="uploadInput" type="file" accept="image/jpg, image/jpeg, image/png, image/gif" @change="selectFile"/>
-    </ShadcnButton>
+    </a-button>
   </div>
 
   <div v-if="result.blobURL || pic" class="mt-2.5 flex justify-center">
-    <ShadcnAvatar square
-                  style="width: 10rem; height: 10rem;"
-                  class="bg-transparent"
-                  :src="result.blobURL ? result.blobURL : pic">
-    </ShadcnAvatar>
+    <a-avatar shape="square"
+              :size="160"
+              class="bg-transparent"
+              :src="result.blobURL ? result.blobURL : propPic">
+    </a-avatar>
   </div>
 
-  <ShadcnModal v-if="isShowModal"
-               v-model="isShowModal"
-               :title="$t('common.cropper')"
-               @close="isShowModal = $event">
+  <a-modal v-if="isShowModal" v-model:open="isShowModal" :title="$t('common.cropper')" :footer="null">
     <div class="p-0">
       <VuePictureCropper style="max-height: 400px"
                          :boxStyle="{ width: '100%', height: '100%', backgroundColor: '#f8f8f8', margin: 'auto' }"
@@ -26,116 +23,99 @@
     </div>
     <template #footer>
       <div class="space-x-2">
-        <ShadcnButton size="small" @click="isShowModal = false">
+        <a-button size="small" @click="isShowModal = false">
           {{ $t('common.cancel') }}
-        </ShadcnButton>
+        </a-button>
 
-        <ShadcnButton size="small" type="error" @click="clear">
+        <a-button size="small" danger @click="clear">
           {{ $t('common.clear') }}
-        </ShadcnButton>
+        </a-button>
 
-        <ShadcnButton size="small" type="error" @click="reset">
+        <a-button size="small" danger @click="reset">
           {{ $t('common.reset') }}
-        </ShadcnButton>
+        </a-button>
 
-        <ShadcnButton size="small" @click="getResult">
+        <a-button size="small" type="primary" @click="getResult">
           {{ $t('common.cropper') }}
-        </ShadcnButton>
+        </a-button>
       </div>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
 import VuePictureCropper, { cropper } from 'vue-picture-cropper'
 
-export default defineComponent({
-  components: { VuePictureCropper },
-  props: {
-    pic: {
-      type: String
-    }
-  },
-  setup(props, { emit })
-  {
-    const isShowModal = ref<boolean>(false)
-    const uploadInput = ref<HTMLInputElement | null>(null)
-    const pic = ref<string>(props.pic as string)
-    const result = reactive({
-      blobURL: ''
-    })
+defineOptions({ name: 'CropperHome' })
 
-    function selectFile(e: Event)
-    {
-      pic.value = ''
-      result.blobURL = ''
+const props = defineProps<{ pic?: string }>()
+const emit = defineEmits<{ (e: 'update:value', value: any): void }>()
 
-      const { files } = e.target as HTMLInputElement
-      if (!files || !files.length) {
-        return
-      }
-
-      const file = files[0]
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => {
-        pic.value = String(reader.result)
-        isShowModal.value = true
-        if (!uploadInput.value) {
-          return
-        }
-        uploadInput.value.value = ''
-      }
-    }
-
-    async function getResult()
-    {
-      if (!cropper) {
-        return
-      }
-      const blob: Blob | null = await cropper.getBlob()
-      if (!blob) {
-        return
-      }
-      result.blobURL = URL.createObjectURL(blob)
-      isShowModal.value = false
-      const file = await cropper.getFile()
-      emit('update:value', file)
-    }
-
-    function clear()
-    {
-      if (!cropper) {
-        return
-      }
-      cropper.clear()
-    }
-
-    function reset()
-    {
-      if (!cropper) {
-        return
-      }
-      cropper.reset()
-    }
-
-    function ready()
-    {
-      console.log('Cropper is ready.')
-    }
-
-    return {
-      uploadInput,
-      pic,
-      result,
-      isShowModal,
-      selectFile,
-      getResult,
-      clear,
-      reset,
-      ready
-    }
-  }
+const propPic = props.pic
+const isShowModal = ref<boolean>(false)
+const uploadInput = ref<HTMLInputElement | null>(null)
+const pic = ref<string>(props.pic as string)
+const result = reactive({
+  blobURL: ''
 })
+
+function selectFile(e: Event)
+{
+  pic.value = ''
+  result.blobURL = ''
+
+  const { files } = e.target as HTMLInputElement
+  if (!files || !files.length) {
+    return
+  }
+
+  const file = files[0]
+  const reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onload = () => {
+    pic.value = String(reader.result)
+    isShowModal.value = true
+    if (!uploadInput.value) {
+      return
+    }
+    uploadInput.value.value = ''
+  }
+}
+
+async function getResult()
+{
+  if (!cropper) {
+    return
+  }
+  const blob: Blob | null = await cropper.getBlob()
+  if (!blob) {
+    return
+  }
+  result.blobURL = URL.createObjectURL(blob)
+  isShowModal.value = false
+  const file = await cropper.getFile()
+  emit('update:value', file)
+}
+
+function clear()
+{
+  if (!cropper) {
+    return
+  }
+  cropper.clear()
+}
+
+function reset()
+{
+  if (!cropper) {
+    return
+  }
+  cropper.reset()
+}
+
+function ready()
+{
+  console.log('Cropper is ready.')
+}
 </script>

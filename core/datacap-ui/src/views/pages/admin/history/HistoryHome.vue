@@ -1,106 +1,98 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2 font-normal text-sm">{{ $t('source.common.list') }}</div>
     </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
-
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #source="{ row }">
-          <span>{{ row?.source?.name }}</span>
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handlerInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'source'">
+          <span>{{ record?.source?.name }}</span>
         </template>
-
-        <template #type="{row}">
-          <ShadcnTooltip :content="row?.source?.type">
-            <ShadcnAvatar size="small"
-                          :src="'/static/images/plugin/' + row?.source?.type.toLowerCase() + '.svg'"
-                          :alt="row?.source?.type" class="cursor-pointer"/>
-          </ShadcnTooltip>
+        <template v-else-if="column.key === 'type'">
+          <a-tooltip :title="record?.source?.type">
+            <a-avatar size="small"
+                      :src="'/static/images/plugin/' + record?.source?.type.toLowerCase() + '.svg'"
+                      :alt="record?.source?.type"
+                      class="cursor-pointer"/>
+          </a-tooltip>
         </template>
-
-        <template #mode="{ row }">
-          <ShadcnTag v-if="row.mode === 'ADHOC'">{{ $t('common.adhoc') }}</ShadcnTag>
-          <ShadcnTag v-else-if="row.mode === 'HISTORY'">{{ $t('common.history') }}</ShadcnTag>
-          <ShadcnTag v-else-if="row.mode === 'REPORT'">{{ $t('common.report') }}</ShadcnTag>
-          <ShadcnTag v-else-if="row.mode === 'SNIPPET'">{{ $t('common.snippet') }}</ShadcnTag>
-          <ShadcnTag v-else-if="row.mode === 'DATASET'">{{ $t('common.dataset') }}</ShadcnTag>
-          <ShadcnTag v-else>{{ row.mode }}</ShadcnTag>
+        <template v-else-if="column.key === 'mode'">
+          <a-tag v-if="record.mode === 'ADHOC'">{{ $t('common.adhoc') }}</a-tag>
+          <a-tag v-else-if="record.mode === 'HISTORY'">{{ $t('common.history') }}</a-tag>
+          <a-tag v-else-if="record.mode === 'REPORT'">{{ $t('common.report') }}</a-tag>
+          <a-tag v-else-if="record.mode === 'SNIPPET'">{{ $t('common.snippet') }}</a-tag>
+          <a-tag v-else-if="record.mode === 'DATASET'">{{ $t('common.dataset') }}</a-tag>
+          <a-tag v-else>{{ record.mode }}</a-tag>
         </template>
-
-        <template #state="{ row }">
-          <ShadcnTag :type="row.state === 'SUCCESS' ? 'success' : 'error'">{{ row.state }}</ShadcnTag>
+        <template v-else-if="column.key === 'state'">
+          <a-tag :color="record.state === 'SUCCESS' ? 'success' : 'error'">{{ record.state }}</a-tag>
         </template>
-
-        <template #format="{row}">
-          <ShadcnTooltip :content="row?.format">
-            <ShadcnAvatar size="small"
-                          :src="'/static/images/convert/' + row?.format.replace('Convert', '').toLowerCase() + '.svg'"
-                          :alt="row?.source?.type" class="cursor-pointer"/>
-          </ShadcnTooltip>
+        <template v-else-if="column.key === 'format'">
+          <a-tooltip :title="record?.format">
+            <a-avatar size="small"
+                      :src="'/static/images/convert/' + record?.format.replace('Convert', '').toLowerCase() + '.svg'"
+                      :alt="record?.source?.type"
+                      class="cursor-pointer"/>
+          </a-tooltip>
         </template>
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('common.error')">
+              <a-button type="text" danger
+                        shape="circle"
+                        size="small"
+                        :disabled="record.state === 'SUCCESS'"
+                        @click="handlerShowContent(true, record?.message)">
+                <WarningOutlined :style="{ fontSize: '15px' }"/>
+              </a-button>
+            </a-tooltip>
 
-        <template #action="{row}">
-          <ShadcnSpace>
-            <ShadcnTooltip :content="$t('common.error')">
-              <ShadcnButton color="#ed4014"
-                            circle
-                            size="small"
-                            :disabled="row.state === 'SUCCESS'"
-                            @click="handlerShowContent(true, row?.message)">
-                <ShadcnIcon icon="TriangleAlert" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
-            <ShadcnDropdown position="right">
-              <template #trigger>
-                <ShadcnButton circle size="small">
-                  <ShadcnIcon icon="EllipsisVertical" size="15"/>
-                </ShadcnButton>
+            <a-dropdown trigger="click" placement="bottomRight">
+              <a-button type="text" shape="circle" size="small">
+                <MoreOutlined :style="{ fontSize: '15px' }"/>
+              </a-button>
+
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item>
+                    <router-link :to="`/admin/query/history/${ record?.code }`" target="_blank">
+                      <div class="flex items-center space-x-2">
+                        <SnippetsOutlined :style="{ fontSize: '15px' }"/>
+                        <span>{{ $t('query.common.quoteRecord') }}</span>
+                      </div>
+                    </router-link>
+                  </a-menu-item>
+
+                  <a-menu-item @click="handlerShowContent(true, record?.content)">
+                    <div class="flex items-center space-x-2">
+                      <RightOutlined :style="{ fontSize: '15px' }"/>
+                      <span>{{ $t('query.common.showSql') }}</span>
+                    </div>
+                  </a-menu-item>
+
+                  <a-menu-item @click="handlerShowData(true, record)">
+                    <div class="flex items-center space-x-2">
+                      <TableOutlined :style="{ fontSize: '15px' }"/>
+                      <span>{{ $t('query.common.historyData') }}</span>
+                    </div>
+                  </a-menu-item>
+                </a-menu>
               </template>
-
-              <ShadcnDropdownItem>
-                <ShadcnLink :link="`/admin/query/history/${row?.code}`" target="_blank">
-                  <div class="flex items-center space-x-2">
-                    <ShadcnIcon icon="Quote" size="15"/>
-                    <span>{{ $t('query.common.quoteRecord') }}</span>
-                  </div>
-                </ShadcnLink>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem>
-                <div class="flex items-center space-x-2" @click="handlerShowContent(true, row?.content)">
-                  <ShadcnIcon icon="SquareChevronRight" size="15"/>
-                  <span>{{ $t('query.common.showSql') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-
-              <ShadcnDropdownItem>
-                <div class="flex items-center space-x-2" @click="handlerShowData(true, row)">
-                  <ShadcnIcon icon="Table" size="15"/>
-                  <span>{{ $t('query.common.historyData') }}</span>
-                </div>
-              </ShadcnDropdownItem>
-            </ShadcnDropdown>
-          </ShadcnSpace>
+            </a-dropdown>
+          </a-space>
         </template>
-      </ShadcnTable>
-
-      <ShadcnPagination v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
+      </template>
+    </DataTable>
+  </a-card>
 
   <SqlInfo v-if="contentVisible && content"
            :is-visible="contentVisible"
@@ -113,97 +105,68 @@
                @close="handlerShowData(false, null)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter.ts'
 import AuditService from '@/services/audit'
 import { useHeaders } from '@/views/pages/admin/history/HistoryUtils'
-import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import { HistoryModel } from '@/model/history'
+import DataTable from '@/views/components/table/DataTable.vue'
+import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import HistoryData from '@/views/pages/admin/history/HistoryData.vue'
+import { MoreOutlined, RightOutlined, SnippetsOutlined, TableOutlined, WarningOutlined } from '@ant-design/icons-vue'
 
-export default defineComponent({
-  name: 'HistoryHome',
-  components: {
-    HistoryData,
-    SqlInfo
-  },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
+defineOptions({ name: 'HistoryHome' })
 
-    return {
-      filter,
-      headers
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      contentVisible: false,
-      dataInfo: null as HistoryModel | null,
-      dataVisible: false,
-      content: null as string | null
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
-    handlerInitialize()
-    {
-      this.loading = true
-      AuditService.getAll(this.filter)
-                  .then((response) => {
-                    if (response.status) {
-                      this.data = response.data.content
-                      this.dataCount = response.data.total
-                      this.pageSize = response.data.size
-                      this.pageIndex = response.data.page
-                    }
-                  })
-                  .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handlerInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    handlerShowContent(opened: boolean, value: string | null)
-    {
-      this.contentVisible = opened
-      this.content = value
-    },
-    handlerShowData(opened: boolean, value: HistoryModel | null)
-    {
-      this.dataVisible = opened
-      this.dataInfo = value
-    }
-  }
-})
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
+
+const loading = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const contentVisible = ref(false)
+const dataInfo = ref<HistoryModel | null>(null)
+const dataVisible = ref(false)
+const content = ref<string | null>(null)
+
+const handlerInitialize = () => {
+  loading.value = true
+  AuditService.getAll(filter)
+              .then((response) => {
+                if (response.status) {
+                  data.value = response.data.content
+                  dataCount.value = response.data.total
+                  pageSize.value = response.data.size
+                  pageIndex.value = response.data.page
+                }
+              })
+              .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handlerInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const handlerShowContent = (opened: boolean, value: string | null) => {
+  contentVisible.value = opened
+  content.value = value
+}
+
+const handlerShowData = (opened: boolean, value: HistoryModel | null) => {
+  dataVisible.value = opened
+  dataInfo.value = value
+}
+
+onMounted(() => handlerInitialize())
 </script>

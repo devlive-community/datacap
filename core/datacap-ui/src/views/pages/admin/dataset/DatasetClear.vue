@@ -1,99 +1,74 @@
 <template>
-  <ShadcnModal v-model="visible" :title="`[ ${ info?.name } ] ${ $t('dataset.common.clearData') }`" @on-close="onCancel">
-    <ShadcnAlert :title="$t('dataset.tip.clearData')"/>
+  <a-modal v-model:open="visible" :title="`[ ${ info?.name } ] ${ $t('dataset.common.clearData') }`">
+    <a-alert :message="$t('dataset.tip.clearData')"/>
 
-    <ShadcnRow class="mt-2.5" gutter="8">
-      <ShadcnCol span="6">
-        <ShadcnCard :title="$t('dataset.common.totalRows')">
+    <a-row class="mt-2.5" :gutter="8">
+      <a-col :span="12">
+        <a-card :title="$t('dataset.common.totalRows')">
           <div class="mt-3 flex items-center p-4 text-center">{{ info?.totalRows }}</div>
-        </ShadcnCard>
-      </ShadcnCol>
+        </a-card>
+      </a-col>
 
-      <ShadcnCol span="6">
-        <ShadcnCard :title="$t('dataset.common.totalSize')">
+      <a-col :span="12">
+        <a-card :title="$t('dataset.common.totalSize')">
           <div class="mt-3 flex items-center p-4 text-center">{{ info?.totalSize }}</div>
-        </ShadcnCard>
-      </ShadcnCol>
-    </ShadcnRow>
+        </a-card>
+      </a-col>
+    </a-row>
 
     <template #footer>
-      <ShadcnSpace>
-        <ShadcnButton type="default" @click="onCancel">{{ $t('common.cancel') }}</ShadcnButton>
-
-        <ShadcnButton type="error"
-                      :disabled="loading"
-                      :loading="loading"
-                      @click="onSubmit">
+      <a-space>
+        <a-button @click="onCancel">{{ $t('common.cancel') }}</a-button>
+        <a-button type="primary" danger :disabled="loading" :loading="loading" @click="onSubmit">
           {{ $t('dataset.common.clearData') }}
-        </ShadcnButton>
-      </ShadcnSpace>
+        </a-button>
+      </a-space>
     </template>
-  </ShadcnModal>
+  </a-modal>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { message } from 'ant-design-vue'
 import DatasetService from '@/services/dataset'
 import { DatasetModel } from '@/model/dataset'
 
-export default defineComponent({
-  name: 'DatasetClear',
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: () => false
-    },
-    info: {
-      type: Object as () => DatasetModel | null
-    }
-  },
-  computed: {
-    visible: {
-      get(): boolean
-      {
-        return this.isVisible
-      },
-      set(value: boolean)
-      {
-        this.$emit('close', value)
-      }
-    }
-  },
-  data()
-  {
-    return {
-      loading: false
-    }
-  },
-  methods: {
-    onSubmit()
-    {
-      if (this.info) {
-        this.loading = true
-        DatasetService.clearData(this.info.code)
-                      .then((response: { status: boolean; }) => {
-                        if (response.status) {
-                          this.$Message.success({
-                            content: `${ this.$t('dataset.common.clearData') } [ ${ this.info?.name } ] ${ this.$t('common.successfully') }`,
-                            showIcon: true
-                          })
+defineOptions({ name: 'DatasetClear' })
 
-                          this.onCancel()
-                        }
-                        else {
-                          this.$Message.error({
-                            content: `${ this.$t('dataset.common.clearData') } [ ${ this.info?.name } ] ${ this.$t('common.fail') }`,
-                            showIcon: true
-                          })
-                        }
-                      })
-                      .finally(() => this.loading = false)
-      }
-    },
-    onCancel()
-    {
-      this.visible = false
-    }
-  }
+const props = withDefaults(defineProps<{ isVisible?: boolean; info?: DatasetModel | null }>(), {
+  isVisible: false,
+  info: null
 })
+const emit = defineEmits<{ (e: 'close', value: boolean): void }>()
+
+const { t } = useI18n()
+
+const visible = computed({
+  get: () => props.isVisible,
+  set: (value: boolean) => emit('close', value)
+})
+
+const loading = ref(false)
+
+const onCancel = () => {
+  visible.value = false
+}
+
+const onSubmit = () => {
+  if (props.info) {
+    loading.value = true
+    DatasetService.clearData(props.info.code)
+                  .then((response: { status: boolean }) => {
+                    if (response.status) {
+                      message.success(`${ t('dataset.common.clearData') } [ ${ props.info?.name } ] ${ t('common.successfully') }`)
+                      onCancel()
+                    }
+                    else {
+                      message.error(`${ t('dataset.common.clearData') } [ ${ props.info?.name } ] ${ t('common.fail') }`)
+                    }
+                  })
+                  .finally(() => (loading.value = false))
+  }
+}
 </script>

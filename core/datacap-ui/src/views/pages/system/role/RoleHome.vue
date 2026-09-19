@@ -1,150 +1,121 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2 font-normal text-sm">{{ $t('role.common.list') }}</div>
     </template>
 
-    <template #extra>
-      <ShadcnTooltip :content="$t('role.common.create')">
-        <ShadcnButton size="small" circle @click="handlerChangeInfo(true, null)">
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handlerInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #actions>
+        <a-button type="primary" @click="handlerChangeInfo(true, null)">
           <template #icon>
-            <ShadcnIcon icon="Plus"/>
+            <PlusOutlined :style="{ fontSize: '16px' }"/>
           </template>
-        </ShadcnButton>
-      </ShadcnTooltip>
-    </template>
+          {{ $t('role.common.create') }}
+        </a-button>
+      </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('common.editData')">
+              <a-button type="text" size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+                <EditOutlined :style="{ fontSize: '15px' }"/>
+              </a-button>
+            </a-tooltip>
 
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #action="{ row }">
-          <ShadcnSpace>
-            <ShadcnTooltip :content="$t('common.editData')">
-              <ShadcnButton size="small" circle @click="handlerChangeInfo(true, row)">
-                <ShadcnIcon icon="Pencil" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
-
-            <ShadcnTooltip :content="$t('role.common.assignMenu').replace('$NAME', row?.name)">
-              <ShadcnButton size="small" circle @click="handlerAssignMenu(true, row)">
-                <ShadcnIcon icon="Menu" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
-          </ShadcnSpace>
+            <a-tooltip :title="$t('role.common.assignMenu').replace('$NAME', record?.name)">
+              <a-button type="text" size="small" shape="circle" @click="handlerAssignMenu(true, record)">
+                <MenuOutlined :style="{ fontSize: '15px' }"/>
+              </a-button>
+            </a-tooltip>
+          </a-space>
         </template>
-      </ShadcnTable>
+      </template>
+    </DataTable>
+  </a-card>
 
-      <ShadcnPagination v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
-
-  <RoleInfo v-if="dataInfoVisible" :is-visible="dataInfoVisible" :info="dataInfo" @close="handlerChangeInfo(false, null)"/>
-  <RoleMenu v-if="dataAllocationVisible" :is-visible="dataAllocationVisible" :info="dataInfo" @close="handlerAssignMenu(false, null)"/>
+  <RoleInfo v-if="dataInfoVisible"
+            :is-visible="dataInfoVisible"
+            :info="dataInfo"
+            @close="handlerChangeInfo(false, null)"/>
+  <RoleMenu v-if="dataAllocationVisible"
+            :is-visible="dataAllocationVisible"
+            :info="dataInfo"
+            @close="handlerAssignMenu(false, null)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from '@/views/pages/system/role/RoleUtils'
-import RoleService from '@/services/role'
 import { RoleModel } from '@/model/role'
+import DataTable from '@/views/components/table/DataTable.vue'
 import RoleInfo from '@/views/pages/system/role/RoleInfo.vue'
 import RoleMenu from '@/views/pages/system/role/RoleMenu.vue'
+import RoleService from '@/services/role'
+import { EditOutlined, MenuOutlined, PlusOutlined } from '@ant-design/icons-vue'
 
-export default defineComponent({
-  name: 'RoleHome',
-  components: { RoleMenu, RoleInfo },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
+defineOptions({ name: 'RoleHome' })
 
-    return {
-      filter,
-      headers
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      dataInfoVisible: false,
-      dataAllocationVisible: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      dataInfo: null as RoleModel | null
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
+
+const loading = ref(false)
+const dataInfoVisible = ref(false)
+const dataAllocationVisible = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const dataInfo = ref<RoleModel | null>(null)
+
+const handlerInitialize = () => {
+  loading.value = true
+  RoleService.getAll(filter)
+             .then((response) => {
+               if (response.status) {
+                 data.value = response.data.content
+                 dataCount.value = response.data.total
+                 pageSize.value = response.data.size
+                 pageIndex.value = response.data.page
+               }
+             })
+             .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handlerInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const handlerChangeInfo = (isOpen: boolean, info: RoleModel | null) => {
+  dataInfoVisible.value = isOpen
+  dataInfo.value = info
+  if (!isOpen) {
     handlerInitialize()
-    {
-      this.loading = true
-      RoleService.getAll(this.filter)
-                 .then((response) => {
-                   if (response.status) {
-                     this.data = response.data.content
-                     this.dataCount = response.data.total
-                     this.pageSize = response.data.size
-                     this.pageIndex = response.data.page
-                   }
-                 })
-                 .finally(() => this.loading = false)
-    },
-    handlerChangeInfo(isOpen: boolean, dataInfo: any)
-    {
-      this.dataInfoVisible = isOpen
-      this.dataInfo = dataInfo
-      if (!isOpen) {
-        this.handlerInitialize()
-      }
-    },
-    handlerAssignMenu(opened: boolean, dataInfo: RoleModel | null)
-    {
-      this.dataAllocationVisible = opened
-      this.dataInfo = dataInfo
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handlerInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    }
   }
-})
+}
+
+const handlerAssignMenu = (opened: boolean, info: RoleModel | null) => {
+  dataAllocationVisible.value = opened
+  dataInfo.value = info
+}
+
+onMounted(() => handlerInitialize())
 </script>

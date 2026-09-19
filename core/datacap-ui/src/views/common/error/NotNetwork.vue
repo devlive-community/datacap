@@ -1,31 +1,28 @@
 <template>
   <BaseLayout>
     <div class="h-screen">
-      <ShadcnException type="500"
-                       :title="$t('common.pageNotNetwork')"
-                       :description="$t('common.tip.pageNotNetwork')">
+      <a-result status="500"
+                :title="$t('common.pageNotNetwork')"
+                :sub-title="$t('common.tip.pageNotNetwork')">
         <template #icon>
-          <ShadcnIcon icon="TriangleAlert" class="text-gray-400" :size="80"/>
+          <warning-outlined :style="{ fontSize: '80px', color: '#9ca3af' }"/>
         </template>
-        <template #actions>
-          <ShadcnButton type="default" :to="String($route.query.redirect)">
+        <template #extra>
+          <a-button @click="$router.push(String($route.query.redirect || '/'))">
             {{ $t('common.backTo') }}
-          </ShadcnButton>
-          <ShadcnButton type="primary" :to="String($route.query.redirect)">
+          </a-button>
+          <a-button type="primary" @click="$router.push(String($route.query.redirect || '/'))">
             {{ $t('common.backToHome') }}
-          </ShadcnButton>
+          </a-button>
         </template>
-      </ShadcnException>
+      </a-result>
     </div>
   </BaseLayout>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { WarningOutlined } from '@ant-design/icons-vue'
 import BaseLayout from '@/views/layouts/base/BaseLayout.vue'
 
-export default defineComponent({
-  name: 'NotNetwork',
-  components: { BaseLayout }
-})
+defineOptions({ name: 'NotNetwork' })
 </script>

@@ -1,19 +1,19 @@
 <template>
-  <ShadcnBreadcrumb>
-    <ShadcnBreadcrumbItem>
-      <ShadcnLink link="/">{{ $t('common.home') }}</ShadcnLink>
-    </ShadcnBreadcrumbItem>
-    <ShadcnBreadcrumbItem v-if="breadcrumbs.length > 0"
-                          v-for="item in breadcrumbs">
-      <ShadcnLink :link="item.path">
+  <a-breadcrumb>
+    <a-breadcrumb-item>
+      <router-link to="/">{{ $t('common.home') }}</router-link>
+    </a-breadcrumb-item>
+    <a-breadcrumb-item v-for="item in breadcrumbs" :key="item.path">
+      <router-link :to="item.path">
         {{ $t(`${ item.meta.title }`) }}
-      </ShadcnLink>
-    </ShadcnBreadcrumbItem>
-  </ShadcnBreadcrumb>
+      </router-link>
+    </a-breadcrumb-item>
+  </a-breadcrumb>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 interface BreadcrumbModel
 {
@@ -24,41 +24,27 @@ interface BreadcrumbModel
   }
 }
 
-export default defineComponent({
-  name: 'LayoutBreadcrumb',
-  watch: {
-    $route()
-    {
-      this.getBreadcrumb()
-    }
-  },
-  data()
-  {
-    return {
-      breadcrumbs: [] as BreadcrumbModel[]
-    }
-  },
-  created()
-  {
-    this.getBreadcrumb()
-  },
-  methods: {
-    getBreadcrumb()
-    {
-      this.breadcrumbs = []
-      this.$route['matched']
-          .filter(route => route.meta.title)
-          .forEach(item => {
-            const breadcrumb: BreadcrumbModel = {
-              path: item.path,
-              meta: {
-                title: item.meta.title as string,
-                isRoot: item.meta.isRoot as boolean
-              }
-            }
-            this.breadcrumbs?.push(breadcrumb)
-          })
-    }
-  }
-})
+defineOptions({ name: 'LayoutBreadcrumb' })
+
+const route = useRoute()
+const breadcrumbs = ref<BreadcrumbModel[]>([])
+
+const getBreadcrumb = () => {
+  breadcrumbs.value = []
+  route.matched
+       .filter(item => item.meta.title)
+       .forEach(item => {
+         breadcrumbs.value.push({
+           path: item.path,
+           meta: {
+             title: item.meta.title as string,
+             isRoot: item.meta.isRoot as boolean
+           }
+         })
+       })
+}
+
+watch(() => route.path, () => getBreadcrumb())
+
+getBreadcrumb()
 </script>

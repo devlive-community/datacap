@@ -1,53 +1,45 @@
 <template>
-  <ShadcnCard>
+  <a-card>
     <template #title>
       <div class="ml-2 font-normal text-sm">{{ $t('menu.common.list') }}</div>
     </template>
 
-    <template #extra>
-      <ShadcnTooltip :content="$t('menu.common.create')">
-        <ShadcnButton size="small" circle @click="handlerChangeInfo(true, null)">
-          <template #icon>
-            <ShadcnIcon icon="Plus"/>
-          </template>
-        </ShadcnButton>
-      </ShadcnTooltip>
-    </template>
+    <DataTable :columns="headers"
+               :data-source="data"
+               :loading="loading"
+               :page-index="pageIndex"
+               :page-size="pageSize"
+               :total="dataCount"
+               @refresh="handlerInitialize"
+               @page-change="onPageChange"
+               @size-change="onSizeChange">
+      <template #actions>
+        <a-tooltip :title="$t('menu.common.create')">
+          <a-button type="primary" @click="handlerChangeInfo(true, null)">
+            <template #icon>
+              <PlusOutlined :style="{ fontSize: '16px' }"/>
+            </template>
+            {{ $t('menu.common.create') }}
+          </a-button>
+        </a-tooltip>
+      </template>
 
-    <div class="relative">
-      <ShadcnSpin v-if="loading" fixed/>
-
-      <ShadcnTable size="small" :columns="headers" :data="data">
-        <template #active="{ row }">
-          <ShadcnSwitch v-model="row.active" :disabled="row.active"/>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'active'">
+          <a-switch v-model:checked="record.active" :disabled="record.active"/>
         </template>
-
-        <template #action="{ row }">
-          <ShadcnSpace>
-            <ShadcnTooltip :content="$t('common.editData')">
-              <ShadcnButton size="small" circle @click="handlerChangeInfo(true, row)">
-                <ShadcnIcon icon="Pencil" size="15"/>
-              </ShadcnButton>
-            </ShadcnTooltip>
-          </ShadcnSpace>
+        <template v-else-if="column.key === 'action'">
+          <a-space>
+            <a-tooltip :title="$t('common.editData')">
+              <a-button type="text" size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+                <EditOutlined :style="{ fontSize: '15px' }"/>
+              </a-button>
+            </a-tooltip>
+          </a-space>
         </template>
-      </ShadcnTable>
-
-      <ShadcnPagination v-model="pageIndex"
-                        class="py-2"
-                        show-total
-                        show-sizer
-                        :page-size="pageSize"
-                        :total="dataCount"
-                        :sizerOptions="[10, 20, 50]"
-                        :prevText="$t('source.common.previousPage')"
-                        :nextText="$t('source.common.nextPage')"
-                        @on-change="onPageChange"
-                        @on-prev="onPrevChange"
-                        @on-next="onNextChange"
-                        @on-change-size="onSizeChange"/>
-    </div>
-  </ShadcnCard>
+      </template>
+    </DataTable>
+  </a-card>
 
   <MenuInfo v-if="dataInfoVisible"
             :is-visible="dataInfoVisible"
@@ -55,89 +47,63 @@
             @close="handlerChangeInfo(false, null)"/>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { FilterModel } from '@/model/filter'
 import { useHeaders } from '@/views/pages/system/menu/MenuUtils'
 import { MenuModel } from '@/model/menu'
-import MenuService from '@/services/menu'
+import DataTable from '@/views/components/table/DataTable.vue'
 import MenuInfo from '@/views/pages/system/menu/MenuInfo.vue'
+import MenuService from '@/services/menu'
+import { EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 
-export default defineComponent({
-  name: 'MenuHome',
-  components: { MenuInfo },
-  setup()
-  {
-    const filter: FilterModel = new FilterModel()
-    const { headers } = useHeaders()
+defineOptions({ name: 'MenuHome' })
 
-    return {
-      filter,
-      headers
-    }
-  },
-  data()
-  {
-    return {
-      loading: false,
-      dataInfoVisible: false,
-      data: [],
-      pageIndex: 1,
-      pageSize: 10,
-      dataCount: 0,
-      dataInfo: null as MenuModel | null
-    }
-  },
-  created()
-  {
-    this.handlerInitialize()
-  },
-  methods: {
+const filter: FilterModel = new FilterModel()
+const { headers } = useHeaders()
+
+const loading = ref(false)
+const dataInfoVisible = ref(false)
+const data = ref<any[]>([])
+const pageIndex = ref(1)
+const pageSize = ref(10)
+const dataCount = ref(0)
+const dataInfo = ref<MenuModel | null>(null)
+
+const handlerInitialize = () => {
+  loading.value = true
+  MenuService.getAll(filter)
+             .then((response) => {
+               if (response.status) {
+                 data.value = response.data.content
+                 dataCount.value = response.data.total
+                 pageSize.value = response.data.size
+                 pageIndex.value = response.data.page
+               }
+             })
+             .finally(() => (loading.value = false))
+}
+
+const fetchData = (value: number) => {
+  filter.page = value
+  filter.size = pageSize.value
+  handlerInitialize()
+}
+
+const onPageChange = (value: number) => fetchData(value)
+
+const onSizeChange = (_current: number, size: number) => {
+  pageSize.value = size
+  fetchData(pageIndex.value)
+}
+
+const handlerChangeInfo = (isOpen: boolean, info: MenuModel | null) => {
+  dataInfoVisible.value = isOpen
+  dataInfo.value = info
+  if (!isOpen) {
     handlerInitialize()
-    {
-      this.loading = true
-      MenuService.getAll(this.filter)
-                 .then((response) => {
-                   if (response.status) {
-                     this.data = response.data.content
-                     this.dataCount = response.data.total
-                     this.pageSize = response.data.size
-                     this.pageIndex = response.data.page
-                   }
-                 })
-                 .finally(() => this.loading = false)
-    },
-    fetchData(value: number)
-    {
-      this.filter.page = value
-      this.filter.size = this.pageSize
-      this.handlerInitialize()
-    },
-    onPageChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onPrevChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onNextChange(value: number)
-    {
-      this.fetchData(value)
-    },
-    onSizeChange(value: number)
-    {
-      this.pageSize = value
-      this.fetchData(this.pageIndex)
-    },
-    handlerChangeInfo(isOpen: boolean, dataInfo: any)
-    {
-      this.dataInfoVisible = isOpen
-      this.dataInfo = dataInfo
-      if (!isOpen) {
-        this.handlerInitialize()
-      }
-    }
   }
-})
+}
+
+onMounted(() => handlerInitialize())
 </script>

@@ -1,15 +1,15 @@
 <template>
   <div class="relative">
     <div class="relative" v-if="loadingState" style="height: 100vh;">
-      <ShadcnSpin v-model="loadingState" fixed>
-        {{ loadingText }}
-      </ShadcnSpin>
+      <a-spin :spinning="loadingState" :tip="loadingText" class="w-full">
+        <div style="height: 100vh;"></div>
+      </a-spin>
     </div>
 
     <div v-show="!loadingState">
-      <ShadcnLayout>
+      <a-layout>
         <LayoutHeader/>
-      </ShadcnLayout>
+      </a-layout>
 
       <div class="container my-2 min-h-screen">
         <LayoutBreadcrumb class="mb-2"/>
@@ -23,8 +23,6 @@
 
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
-// @ts-ignore
-import { setLocale } from 'view-shadcn-ui'
 import LayoutHeader from '@/views/layouts/common/components/LayoutHeader.vue'
 import LayoutFooter from '@/views/layouts/common/components/LayoutFooter.vue'
 import LayoutBreadcrumb from '@/views/layouts/common/components/LayoutBreadcrumb.vue'
@@ -36,7 +34,6 @@ onBeforeMount(async () => {
   try {
     const locale = localStorage.getItem('locale') || 'zh-CN'
     await loadLocale(locale)
-    await setLocale(locale)
   }
   catch (error) {
     console.error('Failed to load locale:', error)
