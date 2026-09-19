@@ -28,14 +28,14 @@
         <template v-else-if="column.key === 'action'">
           <a-space>
             <a-tooltip :title="$t('report.common.view').replace('$VALUE', record.name)">
-              <a-button shape="circle" size="small" @click="visibleView(true, record)">
-                <ShadcnIcon icon="Eye" size="15"/>
+              <a-button type="text" shape="circle" size="small" @click="visibleView(true, record)">
+                <EyeOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
 
             <a-dropdown trigger="click">
-              <a-button shape="circle" size="small">
-                <ShadcnIcon icon="Cog" size="15"/>
+              <a-button type="text" shape="circle" size="small">
+                <SettingOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
 
               <template #overlay>
@@ -45,19 +45,19 @@
                                  :to="`/admin/dataset/adhoc/${ record.dataset?.code }/${ record.code }`"
                                  target="_blank">
                       <div class="flex items-center space-x-2">
-                        <ShadcnIcon icon="Pencil" size="15"/>
+                        <EditOutlined :style="{ fontSize: '15px' }"/>
                         <span>{{ $t('report.common.modify') }}</span>
                       </div>
                     </router-link>
                     <div v-else class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Pencil" size="15"/>
+                      <EditOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('report.common.modify') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item @click="visibleDelete(true, record)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Delete" size="15"/>
+                      <DeleteOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('report.common.delete') }}</span>
                     </div>
                   </a-menu-item>
@@ -91,6 +91,7 @@ import DataTable from '@/views/components/table/DataTable.vue'
 import ReportService from '@/services/report'
 import ReportView from '@/views/pages/admin/report/ReportView.vue'
 import ReportDelete from '@/views/pages/admin/report/ReportDelete.vue'
+import { DeleteOutlined, EditOutlined, EyeOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'ReportHome' })
 

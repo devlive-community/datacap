@@ -56,9 +56,9 @@
 
                 <div v-else>
                   <a-space direction="vertical" :style="{ width: '100%' }">
-                    <a-button shape="circle" size="small" @click="onPlusConfigure(configure.value)">
+                    <a-button type="text" shape="circle" size="small" @click="onPlusConfigure(configure.value)">
                       <template #icon>
-                        <ShadcnIcon icon="Plus"/>
+                        <PlusOutlined :style="{ fontSize: '16px' }"/>
                       </template>
                     </a-button>
 
@@ -77,9 +77,9 @@
 
                       <a-col :span="2">
                         <a-form-item :label="' '">
-                          <a-button shape="circle" danger size="small" @click="onMinusConfigure(element, configure.value)">
+                          <a-button type="text" shape="circle" danger size="small" @click="onMinusConfigure(element, configure.value)">
                             <template #icon>
-                              <ShadcnIcon icon="Minus"/>
+                              <MinusOutlined :style="{ fontSize: '16px' }"/>
                             </template>
                           </a-button>
                         </a-form-item>
@@ -119,7 +119,7 @@
 import { nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
-import { UploadOutlined } from '@ant-design/icons-vue'
+import { MinusOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons-vue'
 import { cloneDeep, pick } from 'lodash'
 import { computed } from 'vue'
 import { SourceModel, SourceRequest } from '@/model/source'

@@ -5,7 +5,7 @@
         <router-link to="/admin/dashboard/info" target="_blank">
           <a-button type="primary" shape="circle" size="small">
             <template #icon>
-              <ShadcnIcon icon="Plus" :size="15"/>
+              <PlusOutlined :style="{ fontSize: '15px' }"/>
             </template>
           </a-button>
         </router-link>
@@ -25,14 +25,14 @@
                 <a-space class="items-center">
                   <div v-if="item.description" class="cursor-pointer mt-1">
                     <a-tooltip :title="item.description">
-                      <ShadcnIcon icon="Info" :size="20"/>
+                      <InfoCircleOutlined :style="{ fontSize: '20px' }"/>
                     </a-tooltip>
                   </div>
 
                   <a-dropdown trigger="click" placement="bottomRight">
-                    <a-button shape="circle" size="small">
+                    <a-button type="text" shape="circle" size="small">
                       <template #icon>
-                        <ShadcnIcon icon="Cog" :size="18"/>
+                        <SettingOutlined :style="{ fontSize: '18px' }"/>
                       </template>
                     </a-button>
 
@@ -40,14 +40,14 @@
                       <a-menu>
                         <a-menu-item>
                           <router-link :to="`/admin/dashboard/info/${item.code}`" target="_blank" class="flex items-center space-x-2">
-                            <ShadcnIcon icon="Pencil" :size="15"/>
+                            <EditOutlined :style="{ fontSize: '15px' }"/>
                             <span>{{ $t('dashboard.common.modify') }}</span>
                           </router-link>
                         </a-menu-item>
 
                         <a-menu-item @click="visibleDelete(true, item)">
                           <div class="flex items-center space-x-2">
-                            <ShadcnIcon icon="Trash" :size="15"/>
+                            <DeleteOutlined :style="{ fontSize: '15px' }"/>
                             <span>{{ $t('dashboard.common.delete') }}</span>
                           </div>
                         </a-menu-item>
@@ -101,6 +101,7 @@ import DashboardService from '@/services/dashboard'
 import { FilterModel } from '@/model/filter'
 import { DashboardModel } from '@/model/dashboard'
 import DashboardDelete from '@/views/pages/admin/dashboard/DashboardDelete.vue'
+import { DeleteOutlined, EditOutlined, InfoCircleOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'DashboardHome' })
 

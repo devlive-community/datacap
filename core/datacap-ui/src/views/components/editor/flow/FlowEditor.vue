@@ -16,17 +16,17 @@
           <Panel position="top-right">
             <div class="space-x-2">
               <a-tooltip :title="$t('pipeline.common.resetTransform')">
-                <a-button shape="circle" @click="resetTransform">
+                <a-button type="text" shape="circle" @click="resetTransform">
                   <template #icon>
-                    <ShadcnIcon icon="RefreshCcw"/>
+                    <SyncOutlined :style="{ fontSize: '16px' }"/>
                   </template>
                 </a-button>
               </a-tooltip>
 
               <a-tooltip :title="$t('common.save')">
-                <a-button shape="circle" @click="saveConfigure(configure)">
+                <a-button type="text" shape="circle" @click="saveConfigure(configure)">
                   <template #icon>
-                    <ShadcnIcon icon="Save"/>
+                    <SaveOutlined :style="{ fontSize: '16px' }"/>
                   </template>
                 </a-button>
               </a-tooltip>
@@ -55,6 +55,7 @@ import { message } from 'ant-design-vue'
 import { Configuration } from '@/views/components/editor/flow/Configuration.ts'
 import FlowSider from '@/views/components/editor/flow/components/FlowSider.vue'
 import FlowConfigure from '@/views/components/editor/flow/components/FlowConfigure.vue'
+import { SaveOutlined, SyncOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'FlowEditor' })
 

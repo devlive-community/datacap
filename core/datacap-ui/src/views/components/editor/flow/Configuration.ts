@@ -1,6 +1,7 @@
 export interface Configuration
 {
     id?: number
+    code?: string
     name?: string
     type?: string
     protocol?: string

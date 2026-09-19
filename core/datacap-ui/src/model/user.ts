@@ -5,6 +5,7 @@ export interface UserModel
     id?: number
     username?: string
     code?: string
+    avatar?: string
     chatConfigure?: UserChatModel
     system?: boolean
     editorConfigure?: string

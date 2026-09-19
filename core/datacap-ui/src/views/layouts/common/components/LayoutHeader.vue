@@ -22,14 +22,14 @@
               <a-sub-menu v-if="item.children" :key="item.id">
                 <template #title>
                   <div class="flex items-center space-x-2">
-                    <ShadcnIcon v-if="item.icon" :icon="item.icon" :size="18"/>
+                    <component v-if="item.icon" :is="menuIcons[item.icon]" :style="{ fontSize: '18px' }"/>
                     <span>{{ item.i18nKey ? $t(item.i18nKey) : 'Unknown' }}</span>
                   </div>
                 </template>
 
                 <a-menu-item v-for="children in item.children" :key="children.url">
                   <router-link :to="children.url" class="flex items-center space-x-2">
-                    <ShadcnIcon v-if="children.icon" :icon="children.icon" :size="18"/>
+                    <component v-if="children.icon" :is="menuIcons[children.icon]" :style="{ fontSize: '18px' }"/>
                     <span>{{ children.i18nKey ? $t(children.i18nKey) : 'Unknown' }}</span>
                   </router-link>
                 </a-menu-item>
@@ -37,7 +37,7 @@
 
               <a-menu-item v-else :key="item.url">
                 <router-link :to="item.url" class="flex items-center space-x-2">
-                  <ShadcnIcon v-if="item.icon" :icon="item.icon" :size="18"/>
+                  <component v-if="item.icon" :is="menuIcons[item.icon]" :style="{ fontSize: '18px' }"/>
                   <span>{{ item.i18nKey ? $t(item.i18nKey) : 'Unknown' }}</span>
                 </router-link>
               </a-menu-item>
@@ -50,7 +50,7 @@
           <div class="mt-2.5 items-center">
             <a-tooltip :title="$t('common.feedback')">
               <a href="https://github.com/devlive-community/datacap" target="_blank" rel="noopener noreferrer">
-                <ShadcnIcon icon="CircleHelp" :size="20"/>
+                <QuestionCircleOutlined :style="{ fontSize: '20px' }"/>
               </a>
             </a-tooltip>
           </div>
@@ -97,7 +97,7 @@
               </template>
 
               <a-badge :count="userInfo?.unreadCount || 0">
-                <ShadcnIcon icon="Bell" class="hover:text-blue-400 cursor-pointer" :size="20"/>
+                <BellOutlined class="hover:text-blue-400 cursor-pointer" :style="{ fontSize: '20px' }"/>
               </a-badge>
             </a-popover>
           </div>
@@ -131,14 +131,14 @@
 
                   <a-menu-item>
                     <router-link to="/admin/user" class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Settings"/>
+                      <SettingOutlined :style="{ fontSize: '16px' }"/>
                       <span>{{ $t('user.common.setting') }}</span>
                     </router-link>
                   </a-menu-item>
 
                   <a-menu-item @click="logout">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="LogOut"/>
+                      <LogoutOutlined :style="{ fontSize: '16px' }"/>
                       <span>{{ $t('user.common.signout') }}</span>
                     </div>
                   </a-menu-item>
@@ -164,8 +164,22 @@ import { createDefaultRouter } from '@/router/default'
 import LanguageSwitcher from '@/views/layouts/common/components/components/LanguageSwitcher.vue'
 import NotificationService from '@/services/notification'
 import { FilterModel } from '@/model/filter.ts'
+import { BellOutlined, BgColorsOutlined, CodeOutlined, DashboardOutlined, HistoryOutlined, HomeOutlined, LogoutOutlined, ProjectOutlined, QuestionCircleOutlined, RightOutlined, SettingOutlined, ToolOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'LayoutHeader' })
+
+// 后端菜单返回的是图标名字符串，这里映射到 antd 图标组件
+const menuIcons: Record<string, any> = {
+    Contrast: BgColorsOutlined,
+    Gauge: DashboardOutlined,
+    Hammer: ToolOutlined,
+    History: HistoryOutlined,
+    Home: HomeOutlined,
+    List: UnorderedListOutlined,
+    SquareChevronRight: RightOutlined,
+    SquareDashedBottomCode: CodeOutlined,
+    SquareKanban: ProjectOutlined
+}
 
 const route = useRoute()
 const userStore = useUserStore()

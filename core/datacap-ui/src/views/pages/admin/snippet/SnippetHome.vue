@@ -22,14 +22,14 @@
         <template v-else-if="column.key === 'action'">
           <a-space>
             <a-tooltip :title="$t('snippet.common.modify').replace('$VALUE', record.name)">
-              <a-button size="small" shape="circle" @click="visibleInfo(true, record)">
-                <ShadcnIcon icon="Pencil" size="15"/>
+              <a-button type="text" size="small" shape="circle" @click="visibleInfo(true, record)">
+                <EditOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
 
             <a-dropdown trigger="click">
-              <a-button size="small" shape="circle">
-                <ShadcnIcon icon="Cog" size="15"/>
+              <a-button type="text" size="small" shape="circle">
+                <SettingOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
 
               <template #overlay>
@@ -37,7 +37,7 @@
                   <a-menu-item>
                     <router-link :to="`/admin/query/snippet/${ record?.code }`" target="_blank">
                       <div class="flex items-center space-x-2">
-                        <ShadcnIcon icon="Quote" size="15"/>
+                        <SnippetsOutlined :style="{ fontSize: '15px' }"/>
                         <span>{{ $t('query.common.quoteRecord') }}</span>
                       </div>
                     </router-link>
@@ -45,14 +45,14 @@
 
                   <a-menu-item @click="visibleContent(true, record?.context)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="SquareChevronRight" size="15"/>
+                      <RightOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('query.common.showSql') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item @click="visibleDelete(true, record)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Delete" size="15"/>
+                      <DeleteOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('snippet.common.delete') }}</span>
                     </div>
                   </a-menu-item>
@@ -92,6 +92,7 @@ import SnippetService from '@/services/snippet'
 import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import SnippetDelete from '@/views/pages/admin/snippet/SnippetDelete.vue'
+import { DeleteOutlined, EditOutlined, RightOutlined, SettingOutlined, SnippetsOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'SnippetHome' })
 

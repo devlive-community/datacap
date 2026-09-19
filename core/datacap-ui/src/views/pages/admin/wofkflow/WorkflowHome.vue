@@ -18,7 +18,7 @@
           <router-link to="/admin/workflow/info" target="_blank">
             <a-button type="primary" shape="circle" size="small">
               <template #icon>
-                <ShadcnIcon icon="Plus" :size="15"/>
+                <PlusOutlined :style="{ fontSize: '15px' }"/>
               </template>
             </a-button>
           </router-link>
@@ -41,21 +41,21 @@
         <template v-else-if="column.key === 'action'">
           <a-space>
             <a-tooltip :title="$t('common.error')">
-              <a-button shape="circle"
+              <a-button type="text" shape="circle"
                         size="small"
                         danger
                         :disabled="record.state !== 'FAILURE' && !(record.state == 'STOPPED' && record.message)"
                         @click="visibleShowMessage(true, record)">
                 <template #icon>
-                  <ShadcnIcon icon="TriangleAlert" :size="15"/>
+                  <WarningOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-dropdown trigger="click" placement="bottomRight">
-              <a-button shape="circle" size="small">
+              <a-button type="text" shape="circle" size="small">
                 <template #icon>
-                  <ShadcnIcon icon="Cog" :size="15"/>
+                  <SettingOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
 
@@ -64,47 +64,47 @@
                   <a-menu-item :disabled="record.state === 'RUNNING'">
                     <template v-if="record.state !== 'RUNNING'">
                       <router-link :to="`/admin/workflow/info/${record.code}`" target="_blank" class="flex items-center">
-                        <ShadcnIcon icon="Info" :size="15"/>
+                        <InfoCircleOutlined :style="{ fontSize: '15px' }"/>
                         <span class="ml-2">{{ $t('workflow.text.modify') }}</span>
                       </router-link>
                     </template>
                     <div v-else class="flex items-center">
-                      <ShadcnIcon icon="Info" :size="15"/>
+                      <InfoCircleOutlined :style="{ fontSize: '15px' }"/>
                       <span class="ml-2">{{ $t('workflow.text.modify') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item :disabled="record.state !== 'RUNNING'" @click="visibleStop(true, record)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="CircleStop" :size="15"/>
+                      <PauseCircleOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('workflow.text.stop') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item :disabled="record.state === 'RUNNING'" @click="visibleRestart(true, record)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="CirclePlay" :size="15"/>
+                      <PlayCircleOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('workflow.text.restart') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item @click="visibleLogger(true, record)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Rss" :size="15"/>
+                      <DeploymentUnitOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('workflow.text.logger') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item :disabled="record.state === 'RUNNING'" @click="visibleDelete(true, record)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Delete" :size="15"/>
+                      <DeleteOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('workflow.text.delete') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item @click="visibleFlow(true, record)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Flower" :size="15"/>
+                      <ClusterOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('workflow.text.flow') }}</span>
                     </div>
                   </a-menu-item>
@@ -162,6 +162,7 @@ import WorkflowDelete from '@/views/pages/admin/wofkflow/WorkflowDelete.vue'
 import WorkflowStop from '@/views/pages/admin/wofkflow/WorkflowStop.vue'
 import WorkflowLogger from '@/views/pages/admin/wofkflow/WorkflowLogger.vue'
 import WorkflowRestart from '@/views/pages/admin/wofkflow/WorkflowRestart.vue'
+import { ClusterOutlined, DeleteOutlined, DeploymentUnitOutlined, InfoCircleOutlined, PauseCircleOutlined, PlayCircleOutlined, PlusOutlined, SettingOutlined, WarningOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'PipelineHome' })
 

@@ -36,67 +36,67 @@
           <a-space>
             <a-tooltip :title="$t('dataset.common.adhoc')">
               <router-link v-if="isSuccess(record?.state)" :to="`/admin/dataset/adhoc/${ record?.code }`" target="_blank">
-                <a-button shape="circle" size="small">
-                  <ShadcnIcon icon="BarChart2" size="15"/>
+                <a-button type="text" shape="circle" size="small">
+                  <BarChartOutlined :style="{ fontSize: '15px' }"/>
                 </a-button>
               </router-link>
-              <a-button v-else shape="circle" size="small" disabled>
-                <ShadcnIcon icon="BarChart2" size="15"/>
+              <a-button type="text" v-else shape="circle" size="small" disabled>
+                <BarChartOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
 
             <a-dropdown trigger="click" placement="bottomRight">
-              <a-button shape="circle" size="small">
-                <ShadcnIcon icon="Cog" size="15"/>
+              <a-button type="text" shape="circle" size="small">
+                <SettingOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
 
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
                     <router-link :to="`/admin/dataset/info/${ record?.code }`" target="_blank" class="flex items-center">
-                      <ShadcnIcon icon="Info" size="15"/>
+                      <InfoCircleOutlined :style="{ fontSize: '15px' }"/>
                       <span class="ml-2">{{ $t('dataset.common.info') }}</span>
                     </router-link>
                   </a-menu-item>
 
                   <a-menu-item :disabled="!isSuccess(record?.state)" @click="visibleSyncData(record, true)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="RefreshCcw" size="15"/>
+                      <SyncOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('dataset.common.syncData') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item @click="visibleHistory(record, true)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="History" size="15"/>
+                      <HistoryOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('dataset.common.history') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item :disabled="isSuccess(record?.state)" @click="visibleError(record, true)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="TriangleAlert" size="15"/>
+                      <WarningOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('dataset.common.error') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item :disabled="isSuccess(record?.state)" @click="visibleRebuild(record, true)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon :icon="record?.state === 'SUCCESS' ? 'CirclePlay' : 'CircleStop'" size="15"/>
+                      <component :is="record?.state === 'SUCCESS' ? PlayCircleOutlined : PauseCircleOutlined" :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('dataset.common.rebuild') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item :disabled="!(record?.totalRows > 0)" @click="visibleClearData(record, true)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="SquareX" size="15"/>
+                      <CloseSquareOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('dataset.common.clearData') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item @click="visibleDelete(record, true)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Delete" size="15"/>
+                      <DeleteOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('dataset.common.delete') }}</span>
                     </div>
                   </a-menu-item>
@@ -155,6 +155,7 @@ import MarkdownPreview from '@/views/components/markdown/MarkdownView.vue'
 import DatasetRebuild from '@/views/pages/admin/dataset/DatasetRebuild.vue'
 import DatasetClear from '@/views/pages/admin/dataset/DatasetClear.vue'
 import DatasetDelete from '@/views/pages/admin/dataset/DatasetDelete.vue'
+import { BarChartOutlined, CloseSquareOutlined, DeleteOutlined, HistoryOutlined, InfoCircleOutlined, PauseCircleOutlined, PlayCircleOutlined, SettingOutlined, SyncOutlined, WarningOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'DatasetHome' })
 

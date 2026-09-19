@@ -16,7 +16,7 @@
               <a-space v-if="selectSource.code">
                 <a-button type="primary" :loading="loading.running" :disabled="(!selectSource.id && !loading.running) || loading.running" @click="onRun()">
                   <template #icon>
-                    <ShadcnIcon icon="Play" :size="15"/>
+                    <CaretRightOutlined :style="{ fontSize: '15px' }"/>
                   </template>
                   {{ $t('query.common.execute') }}
                 </a-button>
@@ -25,7 +25,7 @@
                           :disabled="(!selectSource.id && !loading.formatting) || loading.formatting"
                           @click="onFormat()">
                   <template #icon>
-                    <ShadcnIcon icon="RemoveFormatting" :size="15"/>
+                    <ClearOutlined :style="{ fontSize: '15px' }"/>
                   </template>
                   {{ $t('query.common.format') }}
                 </a-button>
@@ -35,14 +35,14 @@
                           :disabled="!selectSource.id || !loading.running"
                           @click="onCancel()">
                   <template #icon>
-                    <ShadcnIcon icon="Ban" :size="15"/>
+                    <StopOutlined :style="{ fontSize: '15px' }"/>
                   </template>
                   {{ $t('common.cancel') }}
                 </a-button>
 
                 <a-button v-if="responseConfigure.response" type="primary" @click="visibleSnippet(true)">
                   <template #icon>
-                    <ShadcnIcon icon="Plus" :size="15"/>
+                    <PlusOutlined :style="{ fontSize: '15px' }"/>
                   </template>
                   {{ $t('common.snippet') }}
                 </a-button>
@@ -64,7 +64,7 @@
                     </template>
 
                     <a-button>
-                      <ShadcnIcon icon="Clock" :size="15"/>
+                      <ClockCircleOutlined :style="{ fontSize: '15px' }"/>
                       {{ responseConfigure.response.data.processor.elapsed }} ms
                     </a-button>
                   </a-tooltip>
@@ -73,7 +73,7 @@
                 <a-button v-if="selectSource.id && (responseConfigure.response?.data || !responseConfigure.response?.status)"
                           type="primary" @click="visibleQueryHelp(true)">
                   <template #icon>
-                    <ShadcnIcon icon="Bot" :size="15"/>
+                    <RobotOutlined :style="{ fontSize: '15px' }"/>
                   </template>
 
                   {{ $t('query.common.help') }}
@@ -81,7 +81,7 @@
 
                 <a-button :disabled="!selectSource.code" @click="onPlusEditor">
                   <template #icon>
-                    <ShadcnIcon icon="Pencil" :size="15"/>
+                    <EditOutlined :style="{ fontSize: '15px' }"/>
                   </template>
 
                   {{ $t('common.createEditor') }}
@@ -104,26 +104,26 @@
                           :key="item.key"
                           :tab="item.title"
                           :closable="Object.keys(editors).length > 1">
-                <ShadcnCodeEditor v-model="item.content"
-                                  :config="{language: 'sql', ...editorConfig}"
-                                  :auto-complete-config="{
-                                      endpoint: `${baseUrl ? baseUrl : ''}/api/v1/metadata/${selectSource.code}/suggests`,
-                                      method: 'GET',
-                                      trigger: ['.', '@'],
-                                      headers: { 'Authorization': auth?.type + ' ' + auth?.token },
-                                      requestParams: (context) => ({
-                                          keyword: context.word
-                                      }),
-                                      transform: (response: any) => {
-                                        return response[0].data.columns.map((item: any) => ({
-                                          label: item.object_name,
-                                          insertText: item.object_name,
-                                          detail: $t(item.object_key),
-                                          icon: item.object_type
-                                        }))
-                                      }
-                                  }">
-                </ShadcnCodeEditor>
+                <AceEditor v-model="item.content"
+                           height="320px"
+                           :auto-complete="{
+                               endpoint: () => `${ baseUrl ? baseUrl : '' }/api/v1/metadata/${ selectSource.code }/suggests`,
+                               method: 'GET',
+                               trigger: ['.', '@'],
+                               headers: { 'Authorization': auth?.type + ' ' + auth?.token },
+                               requestParams: (context) => ({
+                                   keyword: context.word
+                               }),
+                               transform: (response: any) => {
+                                 return response[0].data.columns.map((item: any) => ({
+                                   label: item.object_name,
+                                   insertText: item.object_name,
+                                   detail: $t(item.object_key),
+                                   icon: item.object_type
+                                 }))
+                               }
+                           }">
+                </AceEditor>
               </a-tab-pane>
             </a-tabs>
           </a-card>
@@ -168,10 +168,12 @@ import FormatService from '@/services/format'
 import { HelpType } from '@/views/pages/admin/query/HelpType'
 import QueryHelp from '@/views/pages/admin/query/QueryHelp.vue'
 import MetadataTree from '@/views/components/tree/MetadataTree.vue'
+import AceEditor from '@/views/components/editor/AceEditor.vue'
 import { SnippetModel, SnippetRequest } from '@/model/snippet'
 import SnippetInfo from '@/views/pages/admin/snippet/SnippetInfo.vue'
 import { TokenUtils } from '@/utils/token.ts'
 import axios from 'axios'
+import { CaretRightOutlined, ClearOutlined, ClockCircleOutlined, EditOutlined, PlusOutlined, RobotOutlined, StopOutlined } from '@ant-design/icons-vue'
 
 interface EditorInstance
 {
@@ -204,10 +206,6 @@ const selectSource = reactive({
 })
 const editors = ref<Record<string, EditorInstance>>({})
 const activeEditor = ref<string | null>(null)
-const editorConfig = {
-  fontSize: 12,
-  theme: 'chrome'
-}
 const queryConfigure = reactive({
   configure: null as ExecuteModel | null,
   cancelToken: null as any | null,

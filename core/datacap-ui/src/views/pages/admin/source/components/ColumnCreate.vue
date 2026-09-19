@@ -3,9 +3,9 @@
     <a-form v-if="formState" :model="formState" layout="vertical" @finish="onSubmit">
       <a-row :gutter="16">
         <a-col :span="24" class="mb-2">
-          <a-button shape="circle" size="small" @click="onAdd">
+          <a-button type="text" shape="circle" size="small" @click="onAdd">
             <template #icon>
-              <ShadcnIcon icon="Plus" :size="15"/>
+              <PlusOutlined :style="{ fontSize: '15px' }"/>
             </template>
           </a-button>
         </a-col>
@@ -13,9 +13,9 @@
         <a-col v-for="(item, index) in formState.columns" :key="index" :span="24">
           <a-divider orientation="left">{{ item.name }}</a-divider>
 
-          <a-button shape="circle" size="small" danger :disabled="item.removed" class="mb-2" @click="onRemove(index)">
+          <a-button type="text" shape="circle" size="small" danger :disabled="item.removed" class="mb-2" @click="onRemove(index)">
             <template #icon>
-              <ShadcnIcon icon="Minus" :size="15"/>
+              <MinusOutlined :style="{ fontSize: '15px' }"/>
             </template>
           </a-button>
 
@@ -109,6 +109,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
 import MetadataService from '@/services/metadata'
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'ColumnCreate' })
 

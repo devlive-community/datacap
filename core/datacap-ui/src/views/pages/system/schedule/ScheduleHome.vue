@@ -25,9 +25,9 @@
         <template v-else-if="column.key === 'action'">
           <a-space>
             <a-tooltip :title="$t('schedule.common.history')">
-              <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+              <a-button type="text" size="small" shape="circle" @click="handlerChangeInfo(true, record)">
                 <template #icon>
-                  <ShadcnIcon icon="History" :size="15"/>
+                  <HistoryOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
@@ -51,6 +51,7 @@ import ScheduleService from '@/services/schedule'
 import DataTable from '@/views/components/table/DataTable.vue'
 import ScheduleHistory from '@/views/pages/system/schedule/ScheduleHistory.vue'
 import { ScheduleModel } from '@/model/schedule'
+import { HistoryOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'ScheduleHome' })
 

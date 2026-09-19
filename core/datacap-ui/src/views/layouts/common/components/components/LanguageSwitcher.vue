@@ -30,8 +30,7 @@ const changeLanguage = async (value: string) => {
   if (typeof value === 'string' && value.startsWith(prefix)) {
     const locale = value.substring(prefix.length)
     await loadLocale(locale)
-    // antd 内置组件文案通过 <a-config-provider :locale> 跟随 vue-i18n，
-    // 不再需要 view-shadcn-ui 的 setLocale
+    // antd 内置组件文案通过 <a-config-provider :locale> 跟随 vue-i18n
     language.value = value
   }
 }

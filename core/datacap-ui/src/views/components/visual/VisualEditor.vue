@@ -34,7 +34,7 @@
                 <a-space class="items-center" wrap>
                   <a-radio-button :disabled="configuration.headers.length === 0" :value="Type.TABLE">
                     <a-tooltip :title="$t('dataset.common.visualTypeTable')">
-                      <ShadcnIcon icon="Table" :size="20"/>
+                      <TableOutlined :style="{ fontSize: '20px' }"/>
                     </a-tooltip>
                   </a-radio-button>
 
@@ -247,6 +247,7 @@ import VisualFunnel from '@/views/components/visual/components/VisualFunnel.vue'
 import VisualGauge from '@/views/components/visual/components/VisualGauge.vue'
 import { createdConfigure } from '@/views/components/visual/Utils.ts'
 import VisualRose from '@/views/components/visual/components/VisualRose.vue'
+import { TableOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'VisualEditor' })
 

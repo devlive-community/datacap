@@ -14,7 +14,7 @@
                   <a-card :title="item.name">
                     <template #extra>
                       <a-tooltip v-if="item.description" :title="item.description">
-                        <ShadcnIcon icon="Info" :size="20"/>
+                        <InfoCircleOutlined :style="{ fontSize: '20px' }"/>
                       </a-tooltip>
                     </template>
 
@@ -67,6 +67,7 @@ import ReportService from '@/services/report.ts'
 import { FilterModel } from '@/model/filter.ts'
 import { ReportModel } from '@/model/report.ts'
 import VisualView from '@/views/components/visual/VisualView.vue'
+import { InfoCircleOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'ChartContainer' })
 

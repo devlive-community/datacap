@@ -27,13 +27,13 @@
 
       <div class="relative h-screen">
         <a-spin :spinning="loading">
-          <ShadcnWorkflowEditor v-if="configuration && !loading"
+          <WorkflowEditor v-if="configuration && !loading"
                                 v-model="workflowState"
                                 :categories="configuration.categories"
                                 :nodes="configuration.nodes"
                                 :connections="[]"
                                 :configureWidth="380">
-          </ShadcnWorkflowEditor>
+          </WorkflowEditor>
         </a-spin>
       </div>
     </a-card>
@@ -66,6 +66,7 @@ import WorkflowService from '@/services/workflow'
 import PluginService from '@/services/plugin'
 import HttpUtils from '@/utils/http.ts'
 import { RouterUtils } from '@/utils/route.ts'
+import WorkflowEditor from '@/views/components/editor/workflow/WorkflowEditor.vue'
 
 export interface Configuration
 {

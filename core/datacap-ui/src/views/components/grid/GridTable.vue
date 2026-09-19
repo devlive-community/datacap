@@ -5,14 +5,14 @@
         <a-button>
           <router-link :to="`/admin/dataset/info/source/${configure.code}?tempId=${tempId}`" target="_blank">
               <span class="flex items-center">
-                <ShadcnIcon icon="Plus" :size="15"/>
+                <PlusOutlined :style="{ fontSize: '15px' }"/>
                 <span>{{ $t('common.dataset') }}</span>
               </span>
           </router-link>
         </a-button>
 
         <a-button @click="visualVisible = true">
-          <ShadcnIcon icon="BarChart" :size="15"/>
+          <BarChartOutlined :style="{ fontSize: '15px' }"/>
           <span>{{ $t('dataset.common.visual') }}</span>
         </a-button>
 
@@ -21,9 +21,9 @@
         </a-tooltip>
 
         <a-tooltip :title="$t('query.tip.smallTips')">
-          <a-button shape="circle">
+          <a-button type="text" shape="circle">
             <template #icon>
-              <ShadcnIcon icon="CircleHelp" :size="15"/>
+              <QuestionCircleOutlined :style="{ fontSize: '15px' }"/>
             </template>
           </a-button>
         </a-tooltip>
@@ -54,6 +54,7 @@ import GridOptions from '@/views/components/grid/GridOptions'
 import { GridColumn } from '@/views/components/grid/GridColumn'
 import { ObjectUtils } from '@/utils/object'
 import GridVisual from '@/views/components/grid/GridVisual.vue'
+import { BarChartOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'GridTable' })
 

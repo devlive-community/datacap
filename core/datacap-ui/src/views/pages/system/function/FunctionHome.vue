@@ -16,13 +16,13 @@
       <template #actions>
         <a-button type="primary" @click="handlerInfo(true, null)">
           <template #icon>
-            <ShadcnIcon icon="Plus"/>
+            <PlusOutlined :style="{ fontSize: '16px' }"/>
           </template>
           {{ $t('function.common.create') }}
         </a-button>
         <a-button @click="handlerImport(true)">
           <template #icon>
-            <ShadcnIcon icon="Import" size="16"/>
+            <ImportOutlined :style="{ fontSize: '16px' }"/>
           </template>
           {{ $t('function.common.import') }}
         </a-button>
@@ -39,8 +39,8 @@
         </template>
         <template v-else-if="column.key === 'action'">
           <a-tooltip :title="$t('common.editData')">
-            <a-button size="small" shape="circle" @click="handlerInfo(true, record)">
-              <ShadcnIcon icon="Pencil" size="15"/>
+            <a-button type="text" size="small" shape="circle" @click="handlerInfo(true, record)">
+              <EditOutlined :style="{ fontSize: '15px' }"/>
             </a-button>
           </a-tooltip>
         </template>
@@ -65,6 +65,7 @@ import DataTable from '@/views/components/table/DataTable.vue'
 import FunctionService from '@/services/function'
 import FunctionInfo from '@/views/pages/system/function/FunctionInfo.vue'
 import FunctionImport from '@/views/pages/system/function/FunctionImport.vue'
+import { EditOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'FunctionHome' })
 

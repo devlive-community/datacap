@@ -54,7 +54,7 @@
 
       <template #footer>
         <a-button type="primary" @click="onSubmit()">
-          <ShadcnIcon icon="Save"/>
+          <SaveOutlined :style="{ fontSize: '16px' }"/>
           <span>{{ $t('common.save') }}</span>
         </a-button>
       </template>
@@ -65,6 +65,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Configuration } from '@/views/components/editor/flow/Configuration.ts'
+import { SaveOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'FlowConfigure' })
 

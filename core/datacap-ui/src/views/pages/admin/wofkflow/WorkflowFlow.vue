@@ -5,7 +5,7 @@
            :footer="null"
            @cancel="onCancel">
     <a-spin :spinning="loading">
-      <ShadcnWorkflowView v-if="!loading && configuration"
+      <WorkflowView v-if="!loading && configuration"
                           :nodes="configuration.nodes"
                           :canvas="{ height: 500 }"
                           :data="data"/>
@@ -25,6 +25,7 @@ import { message } from 'ant-design-vue'
 import ConfigurationService from '@/services/configure.ts'
 import WorkflowService from '@/services/workflow.ts'
 import HttpUtils from '@/utils/http.ts'
+import WorkflowView from '@/views/components/editor/workflow/WorkflowView.vue'
 
 export interface Configuration
 {

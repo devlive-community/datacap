@@ -13,7 +13,7 @@
         </span>
       </div>
 
-      <ShadcnLogger height="380"
+      <LogViewer height="380"
                     toolbar
                     :items="logs"
                     :custom-patterns="customPatterns"/>
@@ -25,6 +25,7 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
 import DatasetService from '@/services/dataset'
+import LogViewer from '@/views/components/logger/LogViewer.vue'
 
 defineOptions({ name: 'DatasetHistoryLogger' })
 

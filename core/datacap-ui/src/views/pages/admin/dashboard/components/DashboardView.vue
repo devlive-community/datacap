@@ -24,9 +24,9 @@
 
           <template #extra>
             <a-tooltip v-if="item.description" :title="item.description">
-              <a-button shape="circle" size="small" danger>
+              <a-button type="text" shape="circle" size="small" danger>
                 <template #icon>
-                  <ShadcnIcon icon="Trash" :size="15"/>
+                  <DeleteOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
@@ -56,6 +56,7 @@
 <script setup lang="ts">
 import { GridItem, GridLayout } from 'vue3-grid-layout-next'
 import VisualView from '@/views/components/visual/VisualView.vue'
+import { DeleteOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'DashboardView' })
 

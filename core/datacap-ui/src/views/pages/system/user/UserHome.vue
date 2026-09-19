@@ -16,7 +16,7 @@
       <template #actions>
         <a-button type="primary" @click="handlerChangeInfo(true, null)">
           <template #icon>
-            <ShadcnIcon icon="Plus"/>
+            <PlusOutlined :style="{ fontSize: '16px' }"/>
           </template>
           {{ $t('user.common.create') }}
         </a-button>
@@ -29,14 +29,14 @@
         <template v-else-if="column.key === 'action'">
           <a-space>
             <a-tooltip :title="$t('user.common.assignRole')">
-              <a-button size="small" shape="circle" @click="handlerChangeRole(true, record)">
-                <ShadcnIcon icon="SquareArrowUp" size="15"/>
+              <a-button type="text" size="small" shape="circle" @click="handlerChangeRole(true, record)">
+                <ArrowUpOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('common.editData')">
-              <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
-                <ShadcnIcon icon="Pencil" size="15"/>
+              <a-button type="text" size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+                <EditOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
           </a-space>
@@ -65,6 +65,7 @@ import DataTable from '@/views/components/table/DataTable.vue'
 import UserInfo from '@/views/pages/system/user/UserInfo.vue'
 import UserRole from '@/views/pages/system/user/components/UserRole.vue'
 import UserService from '@/services/user'
+import { ArrowUpOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'UserHome' })
 

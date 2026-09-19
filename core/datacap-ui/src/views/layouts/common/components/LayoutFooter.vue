@@ -32,7 +32,7 @@
            :href="social.href"
            target="_blank"
            rel="noopener noreferrer">
-          <ShadcnIcon :icon="social.icon" :size="18"/>
+          <GithubOutlined :style="{ fontSize: '18px' }"/>
         </a>
       </div>
       <p class="dc-footer__copyright">Copyright &copy; 2022 DataCap. All rights reserved.</p>
@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { GithubOutlined } from '@ant-design/icons-vue'
 defineOptions({ name: 'LayoutFooter' })
 
 const links = [
@@ -67,7 +68,6 @@ const links = [
     links: [
       { label: 'Database Tools', href: 'https://dbm.devlive.org' },
       { label: 'Open AI Java SDK', href: 'https://openai-java-sdk.devlive.org' },
-      { label: 'View Shadcn UI', href: 'https://shadcn.vue.devlive.org' },
       { label: 'InfoSphere', href: 'https://infosphere.devlive.org' }
     ]
   }

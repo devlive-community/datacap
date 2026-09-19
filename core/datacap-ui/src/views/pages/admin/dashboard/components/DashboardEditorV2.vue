@@ -1,6 +1,6 @@
 <template>
   <div style="height: 1080px;">
-    <ShadcnDataBuilderEditor show-guidelines :panelWidth="150" :items="panels">
+    <DataBuilderEditor show-guidelines :panelWidth="150" :items="panels">
       <template #panel-label="{ item }">
         {{ item.label }}
       </template>
@@ -10,13 +10,14 @@
           {{ getConfigValue(configure, 'text', $t('builder.component.basic.text')) }}
         </div>
       </template>
-    </ShadcnDataBuilderEditor>
+    </DataBuilderEditor>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import DataBuilderEditor from '@/views/components/editor/builder/DataBuilderEditor.vue'
 
 const { t } = useI18n()
 

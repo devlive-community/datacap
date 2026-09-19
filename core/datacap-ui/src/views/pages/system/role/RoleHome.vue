@@ -16,7 +16,7 @@
       <template #actions>
         <a-button type="primary" @click="handlerChangeInfo(true, null)">
           <template #icon>
-            <ShadcnIcon icon="Plus"/>
+            <PlusOutlined :style="{ fontSize: '16px' }"/>
           </template>
           {{ $t('role.common.create') }}
         </a-button>
@@ -26,14 +26,14 @@
         <template v-if="column.key === 'action'">
           <a-space>
             <a-tooltip :title="$t('common.editData')">
-              <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
-                <ShadcnIcon icon="Pencil" size="15"/>
+              <a-button type="text" size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+                <EditOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('role.common.assignMenu').replace('$NAME', record?.name)">
-              <a-button size="small" shape="circle" @click="handlerAssignMenu(true, record)">
-                <ShadcnIcon icon="Menu" size="15"/>
+              <a-button type="text" size="small" shape="circle" @click="handlerAssignMenu(true, record)">
+                <MenuOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
           </a-space>
@@ -61,6 +61,7 @@ import DataTable from '@/views/components/table/DataTable.vue'
 import RoleInfo from '@/views/pages/system/role/RoleInfo.vue'
 import RoleMenu from '@/views/pages/system/role/RoleMenu.vue'
 import RoleService from '@/services/role'
+import { EditOutlined, MenuOutlined, PlusOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'RoleHome' })
 

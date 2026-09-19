@@ -21,9 +21,9 @@
               </div>
             </template>
 
-            <a-button shape="circle" size="small">
+            <a-button type="text" shape="circle" size="small">
               <template #icon>
-                <ShadcnIcon icon="Cog" :size="15"/>
+                <SettingOutlined :style="{ fontSize: '15px' }"/>
               </template>
             </a-button>
           </a-popover>
@@ -121,7 +121,7 @@
                               :loading="plugin.loading"
                               @click="plugin.installed ? onUninstall(plugin) : onInstall(plugin)">
                       <template #icon>
-                        <ShadcnIcon :icon="plugin.installed ? 'Trash' : 'Plus'" :size="15"/>
+                        <component :is="plugin.installed ? DeleteOutlined : PlusOutlined" :style="{ fontSize: '15px' }"/>
                       </template>
                       {{ plugin.installed ? $t('common.uninstall') : $t('common.install') }}
                     </a-button>
@@ -150,6 +150,7 @@ import { useI18nHandler } from '@/i18n/I18n'
 import { PackageUtils } from '@/utils/package.ts'
 import PluginService from '@/services/plugin.ts'
 import PluginInfo from '@/views/pages/store/components/PluginInfo.vue'
+import { DeleteOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
 interface MetadataItem
 {

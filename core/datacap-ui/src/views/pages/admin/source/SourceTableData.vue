@@ -5,53 +5,53 @@
         <template #title>
           <a-space class="items-center">
             <a-tooltip :title="$t('source.common.firstPage')">
-              <a-button shape="circle"
+              <a-button type="text" shape="circle"
                         size="small"
                         :disabled="!configure.pagination.hasPrevious"
                         @click="onApplyPagination(configure.operator.FIRST)">
                 <template #icon>
-                  <ShadcnIcon icon="ArrowLeftToLine" :size="15"/>
+                  <MenuFoldOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('source.common.previousPage')">
-              <a-button shape="circle"
+              <a-button type="text" shape="circle"
                         size="small"
                         :disabled="!configure.pagination.hasPrevious"
                         @click="onApplyPagination(configure.operator.PREVIOUS)">
                 <template #icon>
-                  <ShadcnIcon icon="ArrowLeft" :size="15"/>
+                  <ArrowLeftOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('source.common.nextPage')">
-              <a-button shape="circle"
+              <a-button type="text" shape="circle"
                         size="small"
                         :disabled="!configure.pagination.hasNext"
                         @click="onApplyPagination(configure.operator.NEXT)">
                 <template #icon>
-                  <ShadcnIcon icon="ArrowRight" :size="15"/>
+                  <ArrowRightOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('source.common.lastPage')">
-              <a-button shape="circle"
+              <a-button type="text" shape="circle"
                         size="small"
                         :disabled="!configure.pagination.hasNext"
                         @click="onApplyPagination(configure.operator.LAST)">
                 <template #icon>
-                  <ShadcnIcon icon="ArrowRightToLine" :size="15"/>
+                  <MenuUnfoldOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('user.common.setting')">
-              <a-button shape="circle" size="small" @click="visibleSettings(true)">
+              <a-button type="text" shape="circle" size="small" @click="visibleSettings(true)">
                 <template #icon>
-                  <ShadcnIcon icon="Cog" :size="15"/>
+                  <SettingOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
@@ -64,58 +64,58 @@
             </div>
 
             <a-tooltip :title="$t('source.common.addRows')">
-              <a-button shape="circle" size="small" @click="onAddOrCloneRow(false)">
+              <a-button type="text" shape="circle" size="small" @click="onAddOrCloneRow(false)">
                 <template #icon>
-                  <ShadcnIcon icon="Plus" :size="15"/>
+                  <PlusOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('source.common.copyRows')">
-              <a-button shape="circle"
+              <a-button type="text" shape="circle"
                         size="small"
                         :disabled="dataSelectedChanged.columns.length === 0"
                         @click="onAddOrCloneRow(true)">
                 <template #icon>
-                  <ShadcnIcon icon="Copy" :size="15"/>
+                  <CopyOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('source.common.deleteRows')">
-              <a-button shape="circle"
+              <a-button type="text" shape="circle"
                         size="small"
                         :disabled="!dataSelectedChanged.changed"
                         @click="visibleChanged(true)">
                 <template #icon>
-                  <ShadcnIcon icon="Minus" :size="15"/>
+                  <MinusOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('source.common.previewPendingChanges')">
-              <a-button shape="circle"
+              <a-button type="text" shape="circle"
                         size="small"
                         :disabled="!dataCellChanged.changed && dataCellChanged.columns.length === 0"
                         @click="visibleCellChanged(true)">
                 <template #icon>
-                  <ShadcnIcon icon="RectangleEllipsis" :size="15"/>
+                  <EllipsisOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('common.preview')">
-              <a-button shape="circle" size="small" @click="visibleContents(true)">
+              <a-button type="text" shape="circle" size="small" @click="visibleContents(true)">
                 <template #icon>
-                  <ShadcnIcon icon="Eye" :size="15"/>
+                  <EyeOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('common.refresh')">
-              <a-button shape="circle" size="small" @click="onRefresh">
+              <a-button type="text" shape="circle" size="small" @click="onRefresh">
                 <template #icon>
-                  <ShadcnIcon icon="RefreshCw" :size="15"/>
+                  <ReloadOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
@@ -125,17 +125,17 @@
         <template #extra>
           <a-space class="items-center">
             <a-tooltip :title="$t('source.common.visibleColumn')">
-              <a-button shape="circle" size="small" @click="visibleColumns(null, true)">
+              <a-button type="text" shape="circle" size="small" @click="visibleColumns(null, true)">
                 <template #icon>
-                  <ShadcnIcon icon="Columns" :size="15"/>
+                  <InsertRowRightOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
 
             <a-tooltip :title="$t('source.common.filterData')">
-              <a-button shape="circle" size="small" @click="onFilterConfigure(true)">
+              <a-button type="text" shape="circle" size="small" @click="onFilterConfigure(true)">
                 <template #icon>
-                  <ShadcnIcon icon="Filter" :size="15"/>
+                  <FilterOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
@@ -227,6 +227,7 @@ import TableRowFilter from '@/views/pages/admin/source/components/TableRowFilter
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import TablePagination from '@/views/pages/admin/source/components/TablePagination.vue'
 import MetadataService from '@/services/metadata'
+import { ArrowLeftOutlined, ArrowRightOutlined, CopyOutlined, EllipsisOutlined, EyeOutlined, FilterOutlined, InsertRowRightOutlined, MenuFoldOutlined, MenuUnfoldOutlined, MinusOutlined, PlusOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'SourceTableData' })
 

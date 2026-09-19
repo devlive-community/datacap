@@ -71,17 +71,11 @@
 
                     <span class="ml-2 flex items-center space-x-1">
                       <a-tooltip :title="$t('common.configure')">
-                        <ShadcnIcon class="cursor-pointer hover:text-primary"
-                                    icon="Cog"
-                                    :size="15"
-                                    @click="onColumnConfigure(true, element, ColumnType.METRIC)"/>
+                        <SettingOutlined class="cursor-pointer hover:text-primary" @click="onColumnConfigure(true, element, ColumnType.METRIC)" :style="{ fontSize: '15px' }"/>
                       </a-tooltip>
 
                       <a-tooltip :title="$t('common.remove')">
-                        <ShadcnIcon class="cursor-pointer text-red-400 hover:text-red-500"
-                                    icon="Trash"
-                                    :size="15"
-                                    @click="onRemove(index, metrics)"/>
+                        <DeleteOutlined class="cursor-pointer text-red-400 hover:text-red-500" @click="onRemove(index, metrics)" :style="{ fontSize: '15px' }"/>
                       </a-tooltip>
                     </span>
                   </a-tag>
@@ -110,17 +104,11 @@
 
                     <span class="ml-2 flex items-center space-x-1">
                       <a-tooltip :title="$t('common.configure')">
-                        <ShadcnIcon class="cursor-pointer hover:text-primary"
-                                    icon="Cog"
-                                    :size="15"
-                                    @click="onColumnConfigure(true, element, ColumnType.DIMENSION)"/>
+                        <SettingOutlined class="cursor-pointer hover:text-primary" @click="onColumnConfigure(true, element, ColumnType.DIMENSION)" :style="{ fontSize: '15px' }"/>
                       </a-tooltip>
 
                       <a-tooltip :title="$t('common.remove')">
-                        <ShadcnIcon class="cursor-pointer text-red-400 hover:text-red-500"
-                                    icon="Trash"
-                                    :size="15"
-                                    @click="onRemove(index, dimensions)"/>
+                        <DeleteOutlined class="cursor-pointer text-red-400 hover:text-red-500" @click="onRemove(index, dimensions)" :style="{ fontSize: '15px' }"/>
                       </a-tooltip>
                     </span>
                   </a-tag>
@@ -149,17 +137,11 @@
 
                     <span class="ml-2 flex items-center space-x-1">
                       <a-tooltip :title="$t('common.configure')">
-                        <ShadcnIcon class="cursor-pointer hover:text-primary"
-                                    icon="Cog"
-                                    :size="15"
-                                    @click="onColumnConfigure(true, element, ColumnType.FILTER)"/>
+                        <SettingOutlined class="cursor-pointer hover:text-primary" @click="onColumnConfigure(true, element, ColumnType.FILTER)" :style="{ fontSize: '15px' }"/>
                       </a-tooltip>
 
                       <a-tooltip :title="$t('common.remove')">
-                        <ShadcnIcon class="cursor-pointer text-red-400 hover:text-red-500"
-                                    icon="Trash"
-                                    :size="15"
-                                    @click="onRemove(index, filters)"/>
+                        <DeleteOutlined class="cursor-pointer text-red-400 hover:text-red-500" @click="onRemove(index, filters)" :style="{ fontSize: '15px' }"/>
                       </a-tooltip>
                     </span>
                   </a-tag>
@@ -179,13 +161,13 @@
             <div class="flex items-center space-x-4 text-sm">
               <a-button type="primary" :disabled="loading" :loading="loading" @click="onApplyAdhoc">
                 <template #icon>
-                  <ShadcnIcon icon="CirclePlay"/>
+                  <PlayCircleOutlined :style="{ fontSize: '16px' }"/>
                 </template>
               </a-button>
 
               <a-button :disabled="!showSql.content || loading" @click="visibleShowSql(true)">
                 <template #icon>
-                  <ShadcnIcon icon="Eye"/>
+                  <EyeOutlined :style="{ fontSize: '16px' }"/>
                 </template>
               </a-button>
 
@@ -242,6 +224,7 @@ import DatasetColumnConfigure from '@/views/pages/admin/dataset/components/adhoc
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import { cn } from '@/lib/utils.ts'
 import DatasetReport from '@/views/pages/admin/dataset/components/DatasetReport.vue'
+import { DeleteOutlined, EyeOutlined, PlayCircleOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'DatasetAdhoc' })
 

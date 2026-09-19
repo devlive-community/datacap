@@ -17,7 +17,7 @@
         <a-tooltip :title="$t('menu.common.create')">
           <a-button type="primary" @click="handlerChangeInfo(true, null)">
             <template #icon>
-              <ShadcnIcon icon="Plus"/>
+              <PlusOutlined :style="{ fontSize: '16px' }"/>
             </template>
             {{ $t('menu.common.create') }}
           </a-button>
@@ -31,8 +31,8 @@
         <template v-else-if="column.key === 'action'">
           <a-space>
             <a-tooltip :title="$t('common.editData')">
-              <a-button size="small" shape="circle" @click="handlerChangeInfo(true, record)">
-                <ShadcnIcon icon="Pencil" size="15"/>
+              <a-button type="text" size="small" shape="circle" @click="handlerChangeInfo(true, record)">
+                <EditOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
           </a-space>
@@ -55,6 +55,7 @@ import { MenuModel } from '@/model/menu'
 import DataTable from '@/views/components/table/DataTable.vue'
 import MenuInfo from '@/views/pages/system/menu/MenuInfo.vue'
 import MenuService from '@/services/menu'
+import { EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'MenuHome' })
 

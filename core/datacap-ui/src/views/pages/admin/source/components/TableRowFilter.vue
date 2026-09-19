@@ -27,9 +27,9 @@
         </a-form-item>
 
         <a-form-item>
-          <a-button shape="circle" size="small" danger @click="onRemoveFilter(index)">
+          <a-button type="text" shape="circle" size="small" danger @click="onRemoveFilter(index)">
             <template #icon>
-              <ShadcnIcon icon="Minus"/>
+              <MinusOutlined :style="{ fontSize: '16px' }"/>
             </template>
           </a-button>
         </a-form-item>
@@ -58,6 +58,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { cloneDeep } from 'lodash'
+import { MinusOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'TableRowFilter' })
 

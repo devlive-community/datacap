@@ -15,14 +15,14 @@
               @select="onSelect">
         <template #title="node">
           <div class="flex items-center space-x-1" @contextmenu.prevent="visibleContextMenu($event, node)">
-            <ShadcnIcon v-if="node.level === StructureEnum.TYPE && node.type === 'table'" class="text-xs font-semibold text-gray-500" :size="16" icon="Table"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'view'" class="text-xs font-semibold text-gray-500" :size="16" icon="View"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'function'" class="text-xs font-semibold text-gray-500" :size="16" icon="SquareFunction"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'procedure'" class="text-xs font-semibold text-gray-500" :size="16" icon="Cpu"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'column'" class="text-xs font-semibold text-gray-500" :size="16" icon="Columns"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'index'" class="text-xs font-semibold text-gray-500" :size="16" icon="Blinds"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'trigger'" class="text-xs font-semibold text-gray-500" :size="16" icon="Tangent"/>
-            <ShadcnIcon v-else-if="node.level === StructureEnum.TYPE && node.type === 'primary'" class="text-xs font-semibold text-gray-500" :size="16" icon="Key"/>
+            <TableOutlined v-if="node.level === StructureEnum.TYPE && node.type === 'table'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <EyeOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'view'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <FunctionOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'function'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <ApiOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'procedure'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <InsertRowRightOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'column'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <PartitionOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'index'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <ThunderboltOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'trigger'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
+            <KeyOutlined v-else-if="node.level === StructureEnum.TYPE && node.type === 'primary'" class="text-xs font-semibold text-gray-500" :style="{ fontSize: '16px' }"/>
 
             <span class="text-sm font-normal text-gray-500">
               {{ node.title }}
@@ -45,14 +45,14 @@
                       :title="$t('source.common.menuNew')">
             <a-menu-item v-if="dataInfo.level === StructureEnum.TABLE || dataInfo.type === 'table'" key="new-table" @click="visibleCreateTable(true)">
               <div class="flex items-center space-x-1">
-                <ShadcnIcon icon="Table" :size="15"/>
+                <TableOutlined :style="{ fontSize: '16px' }"/>
                 <span>{{ $t('source.common.menuNewTable') }}</span>
               </div>
             </a-menu-item>
 
             <a-menu-item v-if="dataInfo.level === StructureEnum.COLUMN || dataInfo.type === 'column' || dataInfo.level === StructureEnum.TABLE" key="new-column" @click="visibleCreateColumn(true)">
               <div class="flex items-center space-x-1">
-                <ShadcnIcon icon="Columns" :size="15"/>
+                <InsertRowRightOutlined :style="{ fontSize: '16px' }"/>
                 <span>{{ $t('source.common.newColumn') }}</span>
               </div>
             </a-menu-item>
@@ -61,7 +61,7 @@
           <a-sub-menu v-if="dataInfo.level === StructureEnum.TABLE" key="export" :title="$t('source.common.menuExport')">
             <a-menu-item key="export-data" @click="visibleExportData(true)">
               <div class="flex items-center space-x-1">
-                <ShadcnIcon icon="ArrowUpFromLine" :size="15"/>
+                <VerticalAlignTopOutlined :style="{ fontSize: '16px' }"/>
                 <span>{{ $t('source.common.exportData') }}</span>
               </div>
             </a-menu-item>
@@ -69,28 +69,28 @@
 
           <a-menu-item v-if="dataInfo.level === StructureEnum.TABLE" key="truncate" @click="visibleTruncateTable(true)">
             <div class="flex items-center space-x-1">
-              <ShadcnIcon icon="Trash" :size="15"/>
+              <DeleteOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ $t('source.common.truncateTable') }}</span>
             </div>
           </a-menu-item>
 
           <a-menu-item v-if="dataInfo.level === StructureEnum.TABLE" key="drop-table" @click="visibleDropTable(true)">
             <div class="flex items-center space-x-1">
-              <ShadcnIcon icon="Delete" :size="15"/>
+              <DeleteOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ $t('source.common.dropTable') }}</span>
             </div>
           </a-menu-item>
 
           <a-menu-item v-if="dataInfo.level === StructureEnum.COLUMN" key="change-column" @click="visibleChangeColumn(true)">
             <div class="flex items-center space-x-1">
-              <ShadcnIcon icon="Pencil" :size="15"/>
+              <EditOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ $t('source.common.changeColumn') }}</span>
             </div>
           </a-menu-item>
 
           <a-menu-item v-if="dataInfo.level === StructureEnum.COLUMN" key="drop-column" @click="visibleDropColumn(true)">
             <div class="flex items-center space-x-1">
-              <ShadcnIcon icon="Delete" :size="15"/>
+              <DeleteOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ $t('source.common.dropColumn') }}</span>
             </div>
           </a-menu-item>
@@ -139,6 +139,7 @@ import ColumnChange from '@/views/pages/admin/source/components/ColumnChange.vue
 import TableTruncate from '@/views/pages/admin/source/components/TableTruncate.vue'
 import TableDrop from '@/views/pages/admin/source/components/TableDrop.vue'
 import TableCreate from '@/views/pages/admin/source/components/TableCreate.vue'
+import { ApiOutlined, DeleteOutlined, EditOutlined, EyeOutlined, FunctionOutlined, InsertRowRightOutlined, KeyOutlined, PartitionOutlined, TableOutlined, ThunderboltOutlined, VerticalAlignTopOutlined } from '@ant-design/icons-vue'
 
 interface MenuItem
 {

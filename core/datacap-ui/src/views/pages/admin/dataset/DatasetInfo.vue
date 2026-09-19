@@ -150,26 +150,26 @@
                     </div>
                   </template>
 
-                  <a-button shape="circle" size="small">
+                  <a-button type="text" shape="circle" size="small">
                     <template #icon>
-                      <ShadcnIcon icon="Pencil" :size="10"/>
+                      <EditOutlined :style="{ fontSize: '10px' }"/>
                     </template>
                   </a-button>
                 </a-popover>
 
-                <a-button shape="circle"
+                <a-button type="text" shape="circle"
                           danger
                           size="small"
                           :disabled="!item.customColumn"
                           @click="onRemoveColumn(index)">
                   <template #icon>
-                    <ShadcnIcon icon="Trash" :size="10"/>
+                    <DeleteOutlined :style="{ fontSize: '10px' }"/>
                   </template>
                 </a-button>
 
-                <a-button shape="circle" size="small" @click="onAddColumn(index)">
+                <a-button type="text" shape="circle" size="small" @click="onAddColumn(index)">
                   <template #icon>
-                    <ShadcnIcon icon="Plus" :size="10"/>
+                    <PlusOutlined :style="{ fontSize: '10px' }"/>
                   </template>
                 </a-button>
               </a-col>
@@ -292,6 +292,7 @@ import ExecuteService from '@/services/execute'
 import { ExecuteModel } from '@/model/execute.ts'
 import { ArrayUtils } from '@/utils/array.ts'
 import { join } from 'lodash'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'DatasetInfo' })
 

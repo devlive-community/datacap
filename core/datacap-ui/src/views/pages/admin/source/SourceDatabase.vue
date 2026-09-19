@@ -5,7 +5,7 @@
         <a-row class="mt-4" :gutter="20">
           <a-col :span="8">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="Database"/>
+              <DatabaseOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_name || dataInfo.schema_name || dataInfo.SCHEMA_NAME }}</span>
             </div>
           </a-col>
@@ -13,7 +13,7 @@
           <a-col :span="8">
             <a-tooltip :title="$t('common.createTime')">
               <div class="flex items-center space-x-2">
-                <ShadcnIcon icon="Clock"/>
+                <ClockCircleOutlined :style="{ fontSize: '16px' }"/>
                 <span>{{ dataInfo.object_create_time === null ? $t('source.common.notSpecified') : dataInfo.object_create_time }}</span>
               </div>
             </a-tooltip>
@@ -22,7 +22,7 @@
           <a-col :span="8">
             <a-tooltip :title="$t('common.updateTime')">
               <div class="flex items-center space-x-2">
-                <ShadcnIcon icon="Clock"/>
+                <ClockCircleOutlined :style="{ fontSize: '16px' }"/>
                 <span>{{ dataInfo.object_update_time === null ? $t('source.common.notUpdated') : dataInfo.object_update_time }}</span>
               </div>
             </a-tooltip>
@@ -129,6 +129,7 @@ import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import MetadataService from '@/services/metadata.ts'
+import { ClockCircleOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'SourceDatabase' })
 

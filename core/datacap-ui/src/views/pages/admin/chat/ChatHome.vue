@@ -4,9 +4,9 @@
       <a-layout-sider theme="light" :width="280">
         <a-card :title="$t('common.chat')">
           <template #extra>
-            <a-button shape="circle" size="small" @click="visibleInfo(true)">
+            <a-button type="text" shape="circle" size="small" @click="visibleInfo(true)">
               <template #icon>
-                <ShadcnIcon icon="Plus" :size="15"/>
+                <PlusOutlined :style="{ fontSize: '15px' }"/>
               </template>
             </a-button>
           </template>
@@ -66,8 +66,9 @@
               <a-spin :spinning="loadingMessages">
                 <div class="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col">
                   <div ref="messagesContainer" class="w-full overflow-y-auto overflow-x-hidden flex flex-col" style="height: 550px;">
-                    <template v-for="(item, index) in messages" :key="index">
-                      <div :class="cn('flex flex-col gap-2 p-4 whitespace-pre-wrap',
+                    <div v-for="(item, index) in messages"
+                         :key="`msg-${ index }`"
+                         :class="cn('flex flex-col gap-2 p-4 whitespace-pre-wrap',
                                   item.type === 'question' ? 'items-end' : 'items-start'
                             )">
                         <div class="flex gap-3 items-center">
@@ -83,8 +84,7 @@
                           <a-divider type="vertical"/>
                           <div>Total Tokens: {{ item.totalTokens }}</div>
                         </div>
-                      </div>
-                    </template>
+                    </div>
                   </div>
                 </div>
               </a-spin>
@@ -96,7 +96,7 @@
 
                 <a-button type="primary" :loading="submitting" :disabled="!inputValue || submitting" @click="onSubmit">
                   <template #icon>
-                    <ShadcnIcon icon="Send" :size="18"/>
+                    <SendOutlined :style="{ fontSize: '18px' }"/>
                   </template>
                 </a-button>
               </div>
@@ -121,6 +121,7 @@ import { toNumber } from 'lodash'
 import { cn } from '@/lib/utils.ts'
 import { MessageModel } from '@/model/message.ts'
 import MessageService from '@/services/message.ts'
+import { PlusOutlined, SendOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'ChatHome' })
 

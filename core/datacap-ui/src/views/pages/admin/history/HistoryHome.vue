@@ -47,18 +47,18 @@
         <template v-else-if="column.key === 'action'">
           <a-space>
             <a-tooltip :title="$t('common.error')">
-              <a-button danger
+              <a-button type="text" danger
                         shape="circle"
                         size="small"
                         :disabled="record.state === 'SUCCESS'"
                         @click="handlerShowContent(true, record?.message)">
-                <ShadcnIcon icon="TriangleAlert" size="15"/>
+                <WarningOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
 
             <a-dropdown trigger="click" placement="bottomRight">
-              <a-button shape="circle" size="small">
-                <ShadcnIcon icon="EllipsisVertical" size="15"/>
+              <a-button type="text" shape="circle" size="small">
+                <MoreOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
 
               <template #overlay>
@@ -66,7 +66,7 @@
                   <a-menu-item>
                     <router-link :to="`/admin/query/history/${ record?.code }`" target="_blank">
                       <div class="flex items-center space-x-2">
-                        <ShadcnIcon icon="Quote" size="15"/>
+                        <SnippetsOutlined :style="{ fontSize: '15px' }"/>
                         <span>{{ $t('query.common.quoteRecord') }}</span>
                       </div>
                     </router-link>
@@ -74,14 +74,14 @@
 
                   <a-menu-item @click="handlerShowContent(true, record?.content)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="SquareChevronRight" size="15"/>
+                      <RightOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('query.common.showSql') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item @click="handlerShowData(true, record)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Table" size="15"/>
+                      <TableOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('query.common.historyData') }}</span>
                     </div>
                   </a-menu-item>
@@ -114,6 +114,7 @@ import { HistoryModel } from '@/model/history'
 import DataTable from '@/views/components/table/DataTable.vue'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
 import HistoryData from '@/views/pages/admin/history/HistoryData.vue'
+import { MoreOutlined, RightOutlined, SnippetsOutlined, TableOutlined, WarningOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'HistoryHome' })
 

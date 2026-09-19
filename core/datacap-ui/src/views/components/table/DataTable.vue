@@ -15,7 +15,7 @@
         <slot name="tools"/>
 
         <a-tooltip :title="t('common.refresh')">
-          <a-button size="small" @click="emit('refresh')">
+          <a-button type="text" size="small" @click="emit('refresh')">
             <template #icon>
               <ReloadOutlined/>
             </template>
@@ -34,7 +34,7 @@
             </div>
           </template>
           <a-tooltip :title="columnsText">
-            <a-button size="small">
+            <a-button type="text" size="small">
               <template #icon>
                 <SettingOutlined/>
               </template>
@@ -43,7 +43,7 @@
         </a-popover>
 
         <a-tooltip :title="downloadText">
-          <a-button size="small" @click="onDownload">
+          <a-button type="text" size="small" @click="onDownload">
             <template #icon>
               <ExportOutlined/>
             </template>
@@ -183,7 +183,7 @@ const onDownload = () => {
 </script>
 
 <style scoped>
-/* 自带布局样式，不依赖 Tailwind 工具类（view-shadcn-ui 移除后也不塌） */
+/* 自带布局样式，不依赖工具类样式文件 */
 .dc-table__filter {
     margin-bottom: 12px;
 }

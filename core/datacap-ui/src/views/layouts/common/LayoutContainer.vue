@@ -23,8 +23,6 @@
 
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
-// @ts-ignore
-import { setLocale } from 'view-shadcn-ui'
 import LayoutHeader from '@/views/layouts/common/components/LayoutHeader.vue'
 import LayoutFooter from '@/views/layouts/common/components/LayoutFooter.vue'
 import LayoutBreadcrumb from '@/views/layouts/common/components/LayoutBreadcrumb.vue'
@@ -36,7 +34,6 @@ onBeforeMount(async () => {
   try {
     const locale = localStorage.getItem('locale') || 'zh-CN'
     await loadLocale(locale)
-    await setLocale(locale)
   }
   catch (error) {
     console.error('Failed to load locale:', error)

@@ -37,9 +37,9 @@
             <template #title>{{ item.title ? item.title : $t('dataset.common.notSpecifiedTitle') }}</template>
 
             <template #extra>
-              <a-button shape="circle" size="small" danger @click="onRemove(item.i)">
+              <a-button type="text" shape="circle" size="small" danger @click="onRemove(item.i)">
                 <template #icon>
-                  <ShadcnIcon icon="Trash" :size="15"/>
+                  <DeleteOutlined :style="{ fontSize: '15px' }"/>
                 </template>
               </a-button>
             </template>
@@ -114,6 +114,7 @@ import { DashboardModel, DashboardRequest } from '@/model/dashboard.ts'
 import CropperHome from '@/views/components/cropper/CropperHome.vue'
 import UploadService from '@/services/upload'
 import ChartContainer from '@/views/pages/admin/dashboard/components/ChartContainer.vue'
+import { DeleteOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'DashboardEditor' })
 

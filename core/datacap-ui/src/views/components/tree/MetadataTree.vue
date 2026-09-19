@@ -11,14 +11,11 @@
             @select="onSelect">
       <template #title="node">
         <div class="flex items-center space-x-1">
-          <ShadcnIcon class="text-xs font-semibold text-gray-500"
-                      :size="13"
-                      :icon="node.level === 2 ? 'Database' :
-                              node.level === 3 ? 'Table' :
-                              node.level === 4 ? 'Columns' :
-                              'Database'
-                      ">
-          </ShadcnIcon>
+          <component :is="node.level === 2 ? DatabaseOutlined :
+                          node.level === 3 ? TableOutlined :
+                          node.level === 4 ? InsertRowRightOutlined :
+                          DatabaseOutlined
+                     " class="text-xs font-semibold text-gray-500" :style="{ fontSize: '13px' }"/>
           <span class="text-sm font-normal text-gray-500">{{ node.title }}</span>
         </div>
       </template>
@@ -32,6 +29,7 @@ import { message } from 'ant-design-vue'
 import { StructureEnum, StructureModel } from '@/model/structure'
 import MetadataService from '@/services/metadata.ts'
 import { ObjectUtils } from '@/utils/object'
+import { DatabaseOutlined, InsertRowRightOutlined, TableOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'MetadataTree' })
 

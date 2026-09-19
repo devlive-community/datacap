@@ -5,7 +5,7 @@
            :footer="null"
            @cancel="onCancel">
     <a-spin :spinning="loading">
-      <ShadcnLogger v-if="!loading"
+      <LogViewer v-if="!loading"
                     height="380"
                     toolbar
                     :items="logs"
@@ -25,6 +25,7 @@ import { computed, ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { WorkflowModel } from '@/model/workflow'
 import WorkflowService from '@/services/workflow'
+import LogViewer from '@/views/components/logger/LogViewer.vue'
 
 defineOptions({ name: 'WorkflowLogger' })
 

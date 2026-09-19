@@ -6,14 +6,14 @@
       <a-row class="mt-4" :gutter="20">
         <a-col :span="8">
           <div class="flex items-center space-x-2">
-            <ShadcnIcon icon="Type"/>
+            <FontSizeOutlined :style="{ fontSize: '16px' }"/>
             <span>{{ $t('common.'+ dataInfo.type_name) }}</span>
           </div>
         </a-col>
 
         <a-col :span="8">
           <div class="flex items-center space-x-2">
-            <ShadcnIcon icon="Table"/>
+            <TableOutlined :style="{ fontSize: '16px' }"/>
             <span>{{ dataInfo.object_name }}</span>
           </div>
         </a-col>
@@ -21,7 +21,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('common.createTime')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="Clock"/>
+              <ClockCircleOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo?.object_create_time === null ? $t('source.common.notSpecified') : dataInfo.object_create_time }}</span>
             </div>
           </a-tooltip>
@@ -30,7 +30,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('common.updateTime')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="Clock"/>
+              <ClockCircleOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo?.object_update_time === null ? $t('source.common.notUpdated') : dataInfo.object_update_time }}</span>
             </div>
           </a-tooltip>
@@ -39,7 +39,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('source.common.engine')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="CalendarHeart"/>
+              <CalendarOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_engine === null ? $t('source.common.notSpecifiedEngine') : dataInfo.object_engine }}</span>
             </div>
           </a-tooltip>
@@ -48,7 +48,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('source.common.collation')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="ArrowUpDown"/>
+              <ColumnHeightOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_collation === null ? $t('source.common.notSpecifiedCollation') : dataInfo.object_collation }}</span>
             </div>
           </a-tooltip>
@@ -57,7 +57,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('source.common.totalRows')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="TableCellsMerge"/>
+              <SplitCellsOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_rows }}</span>
             </div>
           </a-tooltip>
@@ -66,7 +66,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('source.common.format')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="RemoveFormatting"/>
+              <ClearOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_format === null ? $t('source.common.notSpecifiedFormat') : dataInfo.object_format }}</span>
             </div>
           </a-tooltip>
@@ -75,7 +75,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('source.common.avgRowLength')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="ArrowUp10"/>
+              <SortAscendingOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_avg_row_length === null ? 0 : dataInfo.object_avg_row_length }}</span>
             </div>
           </a-tooltip>
@@ -84,7 +84,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('source.common.dataSize')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="ArrowUpDown"/>
+              <ColumnHeightOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_data_size === null ? 0 : dataInfo.object_data_size }} MB</span>
             </div>
           </a-tooltip>
@@ -93,7 +93,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('source.common.indexSize')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="Search"/>
+              <SearchOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_index_size === null ? $t('source.common.notSpecifiedIndex') : dataInfo.object_index_size }}</span>
             </div>
           </a-tooltip>
@@ -102,7 +102,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('common.columnCount')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="Columns"/>
+              <InsertRowRightOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_column_count === null ? $t('source.common.notSpecifiedIndex') : dataInfo.object_column_count }}</span>
             </div>
           </a-tooltip>
@@ -111,7 +111,7 @@
         <a-col :span="8">
           <a-tooltip :title="$t('common.indexCount')">
             <div class="flex items-center space-x-2">
-              <ShadcnIcon icon="Search"/>
+              <SearchOutlined :style="{ fontSize: '16px' }"/>
               <span>{{ dataInfo.object_index_count === null ? $t('source.common.notSpecifiedIndex') : dataInfo.object_index_count }}</span>
             </div>
           </a-tooltip>
@@ -121,15 +121,15 @@
           <div class="flex items-center space-x-4 justify-between">
             <a-tooltip :title="$t('source.common.autoIncrement')">
               <div class="flex items-center space-x-2">
-                <ShadcnIcon icon="ArrowUpDown"/>
+                <ColumnHeightOutlined :style="{ fontSize: '16px' }"/>
                 <span>{{ dataInfo.object_auto_increment === null ? $t('source.common.notSpecifiedPrimaryKey') : dataInfo.object_auto_increment }}</span>
               </div>
             </a-tooltip>
             <div>
               <a-tooltip :title="$t('source.common.resetAutoIncrement')">
-                <a-button shape="circle" size="small" :disabled="dataInfo.object_auto_increment === null" @click="autoIncrement = true">
+                <a-button type="text" shape="circle" size="small" :disabled="dataInfo.object_auto_increment === null" @click="autoIncrement = true">
                   <template #icon>
-                    <ShadcnIcon icon="Cog" :size="16"/>
+                    <SettingOutlined :style="{ fontSize: '16px' }"/>
                   </template>
                 </a-button>
               </a-tooltip>
@@ -160,6 +160,7 @@ import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import MetadataService from '@/services/metadata.ts'
 import TableAutoIncrement from '@/views/pages/admin/source/components/TableAutoIncrement.vue'
+import { CalendarOutlined, ClearOutlined, ClockCircleOutlined, ColumnHeightOutlined, FontSizeOutlined, InsertRowRightOutlined, SearchOutlined, SettingOutlined, SortAscendingOutlined, SplitCellsOutlined, TableOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'SourceTableInfo' })
 

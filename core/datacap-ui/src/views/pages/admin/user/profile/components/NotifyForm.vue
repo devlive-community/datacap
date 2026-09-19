@@ -11,8 +11,8 @@
             </span>
             <div class="flex items-center space-x-2">
               <a-switch v-model:checked="item.enabled"/>
-              <a-button shape="circle" size="small" :disabled="!item.enabled" @click="visibleConfigure(true, item)">
-                <ShadcnIcon icon="Cog" size="15"/>
+              <a-button type="text" shape="circle" size="small" :disabled="!item.enabled" @click="visibleConfigure(true, item)">
+                <SettingOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </div>
           </div>
@@ -40,6 +40,7 @@ import UserService from '@/services/user.ts'
 import PluginService from '@/services/plugin.ts'
 import { HttpUtils } from '@/utils/http.ts'
 import NotifyConfigure from '@/views/pages/admin/user/profile/components/NotifyConfigure.vue'
+import { SettingOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'NotifyForm' })
 

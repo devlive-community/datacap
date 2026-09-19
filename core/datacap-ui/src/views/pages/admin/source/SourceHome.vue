@@ -16,7 +16,7 @@
       <template #actions>
         <a-button type="primary" @click="visibleInfo(true, null)">
           <template #icon>
-            <ShadcnIcon icon="Plus"/>
+            <PlusOutlined :style="{ fontSize: '16px' }"/>
           </template>
           {{ $t('source.common.create') }}
         </a-button>
@@ -38,21 +38,21 @@
         </template>
         <template v-else-if="column.key === 'available'">
           <a-tooltip v-if="!record.available" :title="record.message">
-            <ShadcnIcon icon="CircleX" :size="20" class="cursor-pointer text-red-500"/>
+            <CloseCircleOutlined class="cursor-pointer text-red-500" :style="{ fontSize: '20px' }"/>
           </a-tooltip>
-          <ShadcnIcon v-else icon="CirclePlay" :size="20" class="text-green-500"/>
+          <PlayCircleOutlined v-else="" class="text-green-500" :style="{ fontSize: '20px' }"/>
         </template>
         <template v-else-if="column.key === 'action'">
           <a-space>
             <a-tooltip :title="$t('source.common.modify').replace('$NAME', record.name)">
-              <a-button shape="circle" size="small" :disabled="loginUserCode !== record.user.code" @click="visibleInfo(true, record)">
-                <ShadcnIcon icon="Pencil" size="15"/>
+              <a-button type="text" shape="circle" size="small" :disabled="loginUserCode !== record.user.code" @click="visibleInfo(true, record)">
+                <EditOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
             </a-tooltip>
 
             <a-dropdown trigger="click" placement="bottomRight">
-              <a-button shape="circle" size="small">
-                <ShadcnIcon icon="Cog" size="15"/>
+              <a-button type="text" shape="circle" size="small">
+                <SettingOutlined :style="{ fontSize: '15px' }"/>
               </a-button>
 
               <template #overlay>
@@ -60,21 +60,21 @@
                   <a-menu-item v-if="(loginUserCode === record.user.code) && record.available && record.isSupportMeta">
                     <router-link :to="`/admin/source/${ record?.code }`" target="_blank">
                       <div class="flex items-center space-x-2">
-                        <ShadcnIcon icon="Cog" size="15"/>
+                        <SettingOutlined :style="{ fontSize: '15px' }"/>
                         <span>{{ $t('source.common.manager') }}</span>
                       </div>
                     </router-link>
                   </a-menu-item>
                   <a-menu-item v-else disabled>
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Cog" size="15"/>
+                      <SettingOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('source.common.manager') }}</span>
                     </div>
                   </a-menu-item>
 
                   <a-menu-item :disabled="loginUserCode !== record.user.code" @click="visibleDelete(true, record)">
                     <div class="flex items-center space-x-2">
-                      <ShadcnIcon icon="Trash" size="15"/>
+                      <DeleteOutlined :style="{ fontSize: '15px' }"/>
                       <span>{{ $t('common.deleteData') }}</span>
                     </div>
                   </a-menu-item>
@@ -120,6 +120,7 @@ import SourceInfo from '@/views/pages/admin/source/SourceInfo.vue'
 import SourceHistory from '@/views/pages/admin/source/SourceHistory.vue'
 import SourceDelete from '@/views/pages/admin/source/SourceDelete.vue'
 import SourceMetadata from '@/views/pages/admin/source/SourceMetadata.vue'
+import { CloseCircleOutlined, DeleteOutlined, EditOutlined, PlayCircleOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'SourceHome' })
 

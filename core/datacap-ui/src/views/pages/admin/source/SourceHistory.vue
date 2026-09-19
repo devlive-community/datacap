@@ -27,9 +27,9 @@
               <template #title>
                 <MdPreview :modelValue="toMarkdown(record.info)" style="padding: 0"/>
               </template>
-              <a-button shape="circle" size="small">
+              <a-button type="text" shape="circle" size="small">
                 <template #icon>
-                  <ShadcnIcon icon="Eye" :size="20"/>
+                  <EyeOutlined :style="{ fontSize: '20px' }"/>
                 </template>
               </a-button>
             </a-tooltip>
@@ -59,6 +59,7 @@ import Common, { useUtil } from '@/utils/common'
 import SourceService from '@/services/source'
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
+import { EyeOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'SourceHistory' })
 

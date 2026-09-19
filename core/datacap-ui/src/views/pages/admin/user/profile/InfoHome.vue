@@ -8,7 +8,7 @@
         <a-card :title="$t('user.common.contribution')" :loading="loading">
           <div class="text-sm text-gray-500">{{ $t('user.tip.contribution') }}</div>
           <div class="p-2">
-            <ShadcnContribution :data="heatmap.data"/>
+            <Contribution :data="heatmap.data"/>
           </div>
         </a-card>
       </a-col>
@@ -31,6 +31,7 @@ import UserService from '@/services/user'
 import { Configuration } from '@/views/components/visual/Configuration'
 import VisualPie from '@/views/components/visual/components/VisualPie.vue'
 import { DateUtils } from '@/utils/date'
+import Contribution from '@/views/components/contribution/Contribution.vue'
 
 defineOptions({ name: 'InfoHome' })
 
