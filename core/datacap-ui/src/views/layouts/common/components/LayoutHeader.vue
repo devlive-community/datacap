@@ -9,14 +9,14 @@
 
   <!-- 白底铺满整行：a-layout 默认灰底会在宽屏下从两侧透出来 -->
   <div class="dc-header__bar">
-    <div class="container flex h-full items-center w-full">
-      <div class="flex items-center w-full">
+    <div class="container flex h-full items-center justify-between w-full">
+      <div class="flex items-center">
         <router-link to="/" class="flex items-center gap-2 shrink-0">
           <a-avatar src="/static/images/logo.png" alt="DataCap Logo" :size="34"/>
           <span class="dc-header__wordmark">DataCap</span>
         </router-link>
 
-        <div class="ml-6 flex-1">
+        <div class="ml-6">
           <a-menu mode="horizontal" class="dc-header__menu" :selectedKeys="selectedKeys">
             <template v-for="item in activeMenus" :key="item.id">
               <a-sub-menu v-if="item.children" :key="item.url || item.id">
@@ -330,8 +330,7 @@ const handleNotificationClick = (msg: any) => {
 .dc-header__menu.ant-menu-horizontal {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
+    justify-content: flex-start;
     flex-wrap: nowrap;
     min-width: 0;
     border-bottom: none;
@@ -340,7 +339,7 @@ const handleNotificationClick = (msg: any) => {
 }
 
 .dc-header__menu :deep(.ant-menu-overflow) {
-    justify-content: space-evenly;
+    justify-content: flex-start;
 }
 
 .dc-header__menu :deep(.ant-menu-overflow-item) {
