@@ -12,17 +12,34 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 import java.util.Date;
 
 @Slf4j
 @Component
 public class JwtService
 {
+    private static final String DEFAULT_SECRET = "DataCapSecretKey";
+
     @Value("${datacap.security.secret}")
-    private String jwtSecret = "DataCapSecretKey";
+    private String jwtSecret = DEFAULT_SECRET;
 
     @Value("${datacap.security.expiration}")
     private int jwtExpirationMs = 86400000;
+
+    @PostConstruct
+    public void warnOnDefaultSecret()
+    {
+        // 默认密钥是公开已知的，攻击者可以直接伪造任意用户的合法令牌
+        if (DEFAULT_SECRET.equals(jwtSecret)) {
+            log.warn("==================================================================================");
+            log.warn("DataCap is running with the well-known default JWT secret (DataCapSecretKey).");
+            log.warn("Anyone can forge a valid token for any user, including admin. Configure a unique");
+            log.warn("random value for 'datacap.security.secret' before exposing this server.");
+            log.warn("==================================================================================");
+        }
+    }
 
     public String generateJwtToken(Authentication authentication)
     {

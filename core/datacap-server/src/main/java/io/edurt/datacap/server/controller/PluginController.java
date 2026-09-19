@@ -8,6 +8,7 @@ import io.edurt.datacap.plugin.PluginType;
 import io.edurt.datacap.service.common.PluginUtils;
 import lombok.Data;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,12 +51,15 @@ public class PluginController
         return CommonResponse.success(pluginManager.getPluginInfos());
     }
 
+    // 安装/卸载插件会向运行中的 JVM 加载任意外部代码，必须仅限管理员操作
+    @PreAuthorize(value = "hasAuthority('ADMIN')")
     @PostMapping(value = "install")
     public CommonResponse<Boolean> installPlugin(@RequestBody PluginInstallRequest request)
     {
         return CommonResponse.success(pluginManager.installPlugin(Path.of(request.url), request.name));
     }
 
+    @PreAuthorize(value = "hasAuthority('ADMIN')")
     @DeleteMapping(value = "uninstall/{name}")
     public CommonResponse<Boolean> uninstallPlugin(@PathVariable(value = "name") String name)
     {
