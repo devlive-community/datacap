@@ -76,7 +76,10 @@
     --dc-gradient-hero: linear-gradient(120deg, #F4FCF9 0%, #E8F9F2 46%, #DDF5EC 100%);
     --dc-gradient-promo: linear-gradient(135deg, var(--dc-primary-300), var(--dc-primary-600));
 
-    /* ---- Body ambience（第 12 节：渐变环境光替代整张背景图） ---- */
+    /* ---- Body ambience（第 12 节：渐变环境光）+ 品牌波浪背景图 ----
+       图片仅浅色主题使用；暗色回退到纯渐变。URL 抽成变量，
+       后续用户偏好中的背景切换只需覆盖 --dc-body-image */
+    --dc-body-image: url('/static/images/bg-main.png');
     --dc-body-background:
         radial-gradient(circle at 90% 5%, rgba(87, 211, 167, 0.08), transparent 25%),
         radial-gradient(circle at 0% 90%, rgba(10, 143, 103, 0.04), transparent 24%),
@@ -113,16 +116,24 @@ html.dark {
     --dc-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.35);
     --dc-shadow-card-hover: 0 4px 10px rgba(0, 0, 0, 0.3), 0 12px 30px rgba(0, 0, 0, 0.4);
 
+    --dc-body-image: none;
     --dc-body-background:
         radial-gradient(circle at 90% 5%, rgba(87, 211, 167, 0.06), transparent 25%),
         radial-gradient(circle at 0% 90%, rgba(10, 143, 103, 0.05), transparent 24%),
         var(--dc-bg);
 }
 
-/* ---- Body ambience ---- */
+/* ---- Body ambience：波浪背景图（浅色）/ 环境光渐变（暗色） ---- */
 html body {
     background: var(--dc-body-background);
     background-attachment: fixed;
+}
+
+html:not(.dark) body {
+    background-image: var(--dc-body-image);
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
 }
 
 /* ---- 通用卡片：白底 + 极浅边框 + 很轻的阴影 ---- */
