@@ -36,3 +36,8 @@ html body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+
+/* antd 布局层默认灰底（#f5f5f5）会盖住 body 的背景图，置为透明 */
+html .ant-layout {
+    background: transparent;
+}
