@@ -1,6 +1,6 @@
 <template>
   <div class="dc-profile">
-    <!-- 页头：标题 + 描述 + 标语 -->
+    <!-- 页头：品牌渐变横幅 + 标题 + 标语 -->
     <div class="dc-profile__pagehead">
       <div class="min-w-0">
         <div class="dc-profile__title">{{ $t('user.common.profile') }}</div>
@@ -28,15 +28,14 @@
       <div class="dc-profile__hero-meta min-w-0">
         <div class="flex items-center flex-wrap gap-2">
           <span class="dc-profile__hero-name">{{ formState?.username }}</span>
-          <a-tag v-for="role in formState?.roles || []"
-                 :key="role.id"
-                 color="blue"
-                 class="dc-profile__tag">
+          <span v-for="role in formState?.roles || []"
+                :key="role.id"
+                class="dc-tag dc-tag--info">
             {{ role.name }}
-          </a-tag>
-          <a-tag color="success" class="dc-profile__tag">
+          </span>
+          <span class="dc-tag dc-tag--success">
             {{ $t('user.common.stateNormal') }}
-          </a-tag>
+          </span>
         </div>
         <div class="dc-profile__hero-sub">
           {{ formState?.roles?.[0]?.description || $t('user.tip.accountRoleDefault') }}
@@ -58,7 +57,7 @@
       <a-col :span="14">
         <div class="dc-profile__card dc-profile__section">
           <div class="dc-profile__section-head">
-            <div class="dc-profile__section-icon dc-profile__section-icon--blue">
+            <div class="dc-profile__section-icon dc-profile__section-icon--primary">
               <UserOutlined :style="{ fontSize: '16px' }"/>
             </div>
             <div>
@@ -91,7 +90,7 @@
       <a-col :span="10">
         <div class="dc-profile__card dc-profile__section">
           <div class="dc-profile__section-head">
-            <div class="dc-profile__section-icon dc-profile__section-icon--green">
+            <div class="dc-profile__section-icon dc-profile__section-icon--primary">
               <SafetyCertificateOutlined :style="{ fontSize: '16px' }"/>
             </div>
             <div>
@@ -117,7 +116,7 @@
 
         <div class="dc-profile__card dc-profile__section">
           <div class="dc-profile__section-head">
-            <div class="dc-profile__section-icon dc-profile__section-icon--purple">
+            <div class="dc-profile__section-icon dc-profile__section-icon--primary">
               <BarChartOutlined :style="{ fontSize: '16px' }"/>
             </div>
             <div>
@@ -128,7 +127,7 @@
 
           <div class="dc-profile__tiles">
             <div class="dc-profile__tile">
-              <div class="dc-profile__tile-icon dc-profile__tile-icon--blue">
+              <div class="dc-profile__tile-icon dc-profile__tile-icon--info">
                 <CrownOutlined/>
               </div>
               <div class="min-w-0">
@@ -139,7 +138,7 @@
             </div>
 
             <div class="dc-profile__tile">
-              <div class="dc-profile__tile-icon dc-profile__tile-icon--green">
+              <div class="dc-profile__tile-icon dc-profile__tile-icon--success">
                 <SafetyCertificateOutlined/>
               </div>
               <div class="min-w-0">
@@ -152,7 +151,7 @@
             </div>
 
             <div class="dc-profile__tile">
-              <div class="dc-profile__tile-icon dc-profile__tile-icon--purple">
+              <div class="dc-profile__tile-icon dc-profile__tile-icon--primary">
                 <CalendarOutlined/>
               </div>
               <div class="min-w-0">
@@ -165,7 +164,7 @@
             </div>
 
             <div class="dc-profile__tile">
-              <div class="dc-profile__tile-icon dc-profile__tile-icon--cyan">
+              <div class="dc-profile__tile-icon dc-profile__tile-icon--neutral">
                 <ClockCircleOutlined/>
               </div>
               <div class="min-w-0">
@@ -350,39 +349,44 @@ handlerInitialize()
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
-    margin-bottom: 14px;
+    padding: 18px 20px;
+    border-radius: var(--dc-radius-lg);
+    background: var(--dc-gradient-hero);
+    border: 1px solid var(--dc-border-light);
+    margin-bottom: 16px;
 }
 
 .dc-profile__title {
     font-size: 22px;
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-title);
 }
 
 .dc-profile__desc {
     font-size: 13px;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
     margin-top: 4px;
 }
 
 .dc-profile__slogan {
     text-align: right;
     font-size: 12px;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
     flex-shrink: 0;
 }
 
 .dc-profile__slogan-strong {
     font-size: 14px;
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-title);
     margin-top: 2px;
 }
 
 .dc-profile__card {
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 12px;
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-lg);
+    box-shadow: var(--dc-shadow-card);
     padding: 20px;
     margin-bottom: 16px;
 }
@@ -400,8 +404,9 @@ handlerInitialize()
 }
 
 .dc-profile__avatar {
-    background: #1677ff;
-    box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.15);
+    background: var(--dc-gradient-avatar);
+    border: 3px solid var(--dc-surface);
+    box-shadow: var(--dc-shadow-avatar);
 }
 
 .dc-profile__avatar-badge {
@@ -414,10 +419,10 @@ handlerInitialize()
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #fff;
-    color: #1677ff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    background: var(--dc-surface);
+    color: var(--dc-primary);
+    border: 1px solid var(--dc-border);
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
 }
 
 .dc-profile__hero-meta {
@@ -427,17 +432,21 @@ handlerInitialize()
 .dc-profile__hero-name {
     font-size: 20px;
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-title);
 }
 
-.dc-profile__tag {
+.dc-tag {
     margin-inline-end: 0;
 }
 
 .dc-profile__hero-sub {
     font-size: 13px;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
     margin-top: 6px;
+}
+
+.dc-profile__hero-actions {
+    flex-shrink: 0;
 }
 
 .dc-profile__section-head {
@@ -453,34 +462,24 @@ handlerInitialize()
     justify-content: center;
     width: 34px;
     height: 34px;
-    border-radius: 9px;
+    border-radius: var(--dc-radius-md);
     flex-shrink: 0;
 }
 
-.dc-profile__section-icon--blue {
-    background: rgba(22, 119, 255, 0.1);
-    color: #1677ff;
-}
-
-.dc-profile__section-icon--green {
-    background: rgba(82, 196, 26, 0.12);
-    color: #52c41a;
-}
-
-.dc-profile__section-icon--purple {
-    background: rgba(114, 46, 209, 0.1);
-    color: #722ed1;
+.dc-profile__section-icon--primary {
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
 }
 
 .dc-profile__section-title {
     font-size: 15px;
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-title);
 }
 
 .dc-profile__section-sub {
     font-size: 12px;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
     margin-top: 2px;
 }
 
@@ -500,11 +499,11 @@ handlerInitialize()
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-primary);
 }
 
 .dc-profile__pref-icon {
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
 }
 
 .dc-profile__pref-control {
@@ -513,7 +512,7 @@ handlerInitialize()
 
 .dc-profile__pref-tip {
     font-size: 12px;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
     margin-top: 8px;
 }
 
@@ -527,9 +526,9 @@ handlerInitialize()
     display: flex;
     gap: 10px;
     padding: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.01);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-bg);
     min-width: 0;
 }
 
@@ -539,40 +538,40 @@ handlerInitialize()
     justify-content: center;
     width: 34px;
     height: 34px;
-    border-radius: 9px;
+    border-radius: var(--dc-radius-md);
     font-size: 15px;
     flex-shrink: 0;
 }
 
-.dc-profile__tile-icon--blue {
-    background: rgba(22, 119, 255, 0.1);
-    color: #1677ff;
+.dc-profile__tile-icon--primary {
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
 }
 
-.dc-profile__tile-icon--green {
-    background: rgba(82, 196, 26, 0.12);
-    color: #52c41a;
+.dc-profile__tile-icon--success {
+    background: var(--dc-success-bg);
+    color: var(--dc-success);
 }
 
-.dc-profile__tile-icon--purple {
-    background: rgba(114, 46, 209, 0.1);
-    color: #722ed1;
+.dc-profile__tile-icon--info {
+    background: var(--dc-info-bg);
+    color: var(--dc-info);
 }
 
-.dc-profile__tile-icon--cyan {
-    background: rgba(19, 194, 194, 0.12);
-    color: #13c2c2;
+.dc-profile__tile-icon--neutral {
+    background: var(--dc-border-light);
+    color: var(--dc-text-secondary);
 }
 
 .dc-profile__tile-label {
     font-size: 12px;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
 }
 
 .dc-profile__tile-value {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-title);
     margin-top: 2px;
     white-space: nowrap;
     overflow: hidden;
@@ -580,12 +579,12 @@ handlerInitialize()
 }
 
 .dc-profile__tile-value--success {
-    color: #52c41a;
+    color: var(--dc-success);
 }
 
 .dc-profile__tile-tip {
     font-size: 11px;
-    color: rgba(0, 0, 0, 0.4);
+    color: var(--dc-text-secondary);
     margin-top: 2px;
     white-space: nowrap;
     overflow: hidden;

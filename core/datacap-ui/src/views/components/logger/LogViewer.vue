@@ -98,10 +98,10 @@ export default defineComponent({
     highlightConfig: {
       type: Object as PropType<Record<string, string>>,
       default: () => ({
-        WARN: 'rgb(234 179 8)',
-        ERROR: 'rgb(239 68 68)',
-        DEBUG: 'rgb(107 114 128)',
-        TRACE: 'rgb(156 163 175)'
+        WARN: 'var(--dc-warning)',
+        ERROR: 'var(--dc-danger)',
+        DEBUG: 'var(--dc-text-secondary)',
+        TRACE: 'var(--dc-text-placeholder)'
       })
     },
     height: {

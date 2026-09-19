@@ -8,7 +8,7 @@
   </a-alert>
 
   <!-- 白底铺满整行：a-layout 默认灰底会在宽屏下从两侧透出来 -->
-  <div class="border-b bg-white">
+  <div class="dc-header__bar">
     <div class="container">
       <div class="flex items-center">
         <router-link to="/" class="flex items-center gap-2 shrink-0">
@@ -292,10 +292,15 @@ const handleNotificationClick = (msg: any) => {
     background-color: rgba(0, 0, 0, 0.04);
 }
 
+.dc-header__bar {
+    background: var(--dc-header);
+    backdrop-filter: blur(8px);
+}
+
 .dc-header__wordmark {
     font-size: 18px;
     font-weight: 700;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-title);
     letter-spacing: 0.2px;
 }
 
@@ -321,6 +326,10 @@ const handleNotificationClick = (msg: any) => {
     transition: background-color 0.2s;
 }
 
+.dc-header__bar :deep(.ant-menu-horizontal) {
+    border-bottom: none;
+}
+
 .dc-header__menu :deep(.ant-menu-item::after),
 .dc-header__menu :deep(.ant-menu-submenu::after) {
     display: none !important;
@@ -334,8 +343,8 @@ const handleNotificationClick = (msg: any) => {
 
 .dc-header__menu :deep(.ant-menu-item-selected),
 .dc-header__menu :deep(.ant-menu-submenu-selected) {
-    background: rgba(22, 119, 255, 0.1) !important;
-    color: #1677ff !important;
+    background: var(--dc-primary-light) !important;
+    color: var(--dc-primary-700) !important;
 }
 
 .dc-header__help {
@@ -343,20 +352,21 @@ const handleNotificationClick = (msg: any) => {
     align-items: center;
     gap: 6px;
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.65);
+    color: var(--dc-text-secondary);
+    transition: color 0.2s;
 }
 
 .dc-header__help:hover {
-    color: #1677ff;
+    color: var(--dc-primary);
 }
 
 .dc-header__username {
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-primary);
 }
 
 .dc-header__chevron {
     font-size: 11px;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
 }
 </style>

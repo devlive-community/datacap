@@ -67,7 +67,7 @@ export default defineComponent({
     },
     colorScheme: {
       type: Array as PropType<string[]>,
-      default: () => ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']
+      default: () => ['#EDF2F0', '#B9EAD9', '#87D9BE', '#49C399', '#0A8F67']
     },
     yearCount: {
       type: Number,

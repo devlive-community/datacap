@@ -75,9 +75,10 @@ const items = computed(() => [
     display: flex;
     flex-direction: column;
     width: 264px;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 12px;
+    background: var(--dc-sidebar);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-lg);
+    box-shadow: var(--dc-shadow-card);
     padding: 16px 12px;
     min-height: calc(100vh - 220px);
 }
@@ -95,21 +96,21 @@ const items = computed(() => [
     justify-content: center;
     width: 38px;
     height: 38px;
-    border-radius: 10px;
-    background: rgba(22, 119, 255, 0.1);
-    color: #1677ff;
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
     flex-shrink: 0;
 }
 
 .dc-profile-sidebar__title {
     font-size: 15px;
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-title);
 }
 
 .dc-profile-sidebar__subtitle {
     font-size: 12px;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
     margin-top: 2px;
 }
 
@@ -133,8 +134,9 @@ const items = computed(() => [
     position: relative;
     margin: 12px 4px 4px;
     padding: 16px 14px 14px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(22, 119, 255, 0.08), rgba(82, 196, 26, 0.1));
+    border-radius: var(--dc-radius-lg);
+    background: var(--dc-primary-surface);
+    border: 1px solid var(--dc-border-light);
     overflow: hidden;
 }
 
@@ -144,20 +146,20 @@ const items = computed(() => [
     justify-content: center;
     width: 44px;
     height: 44px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #1677ff, #36cfc9);
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-gradient-promo);
     margin-bottom: 10px;
 }
 
 .dc-profile-sidebar__promo-title {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.88);
+    color: var(--dc-text-title);
 }
 
 .dc-profile-sidebar__promo-desc {
     font-size: 11px;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--dc-text-secondary);
     margin-top: 4px;
     padding-right: 24px;
     line-height: 1.5;
@@ -173,7 +175,7 @@ const items = computed(() => [
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: rgba(22, 119, 255, 0.12);
-    color: #1677ff;
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
 }
 </style>
