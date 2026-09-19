@@ -1,69 +1,103 @@
 <template>
-  <a-card>
-    <template #title>
-      <div class="ml-2 font-normal text-sm">{{ $t('configure.runtime.title') }}</div>
-    </template>
-
-    <div class="grid grid-cols-12 gap-3">
-      <!-- left: category + rows -->
-      <div class="col-span-3 border-r pr-2 space-y-2">
-        <div v-for="cat in categories" :key="cat.value">
-          <div class="text-xs font-medium text-gray-500 mb-1">{{ cat.label }}</div>
-          <div v-for="row in (groupedRows[cat.value] || [])" :key="row.id"
-               class="px-2 py-1 rounded text-xs cursor-pointer"
-               :class="selected && selected.name === row.name && selected.category === cat.value
-                       ? 'bg-blue-100 dark:bg-blue-900'
-                       : 'hover:bg-gray-100 dark:hover:bg-gray-800'"
-               @click="onSelect(cat.value, row.name)">
-            {{ row.name }}
-          </div>
-          <div v-if="!(groupedRows[cat.value] || []).length" class="text-xs text-gray-400 italic ml-1">
-            {{ $t('configure.runtime.empty') }}
-          </div>
-        </div>
+  <div class="dc-rt">
+    <!-- 页头：标题 + 描述 + 配置说明 -->
+    <div class="dc-rt__pagehead">
+      <div>
+        <div class="dc-rt__title">{{ $t('configure.runtime.title') }}</div>
+        <div class="dc-rt__desc">{{ $t('configure.runtime.desc') }}</div>
       </div>
-
-      <!-- right: detail form -->
-      <div class="col-span-9 pl-2">
-        <a-spin :spinning="loading">
-          <div v-if="!selected" class="text-xs text-gray-500 italic">
-            {{ $t('configure.runtime.selectHint') }}
-          </div>
-
-          <div v-else class="space-y-3">
-            <div class="text-sm font-medium">{{ selected.category }} / {{ selected.name }}</div>
-
-            <div v-for="field in schema" :key="field.name" class="space-y-1">
-              <label class="text-xs">
-                <span>{{ field.name }}</span>
-                <span v-if="!field.tunable" class="ml-1 text-xs text-orange-500">[{{ $t('configure.runtime.adminOnly') }}]</span>
-              </label>
-              <div v-if="field.description" class="text-xs text-gray-500">{{ field.description }}</div>
-
-              <a-input v-if="field.type === 'STRING'" v-model:value="form[field.name]"/>
-              <a-input-number v-else-if="field.type === 'NUMBER'" v-model:value="form[field.name]" :style="{ width: '100%' }"/>
-              <a-switch v-else-if="field.type === 'BOOLEAN'"
-                        v-model:checked="booleanProxies[field.name]"
-                        @change="(v: boolean) => onBoolChange(field.name, v)"/>
-              <a-input-password v-else-if="field.type === 'PASSWORD'" v-model:value="form[field.name]"/>
-            </div>
-
-            <div class="pt-2">
-              <a-button type="primary" :loading="saving" @click="onSave">
-                {{ $t('common.save') }}
-              </a-button>
-            </div>
-          </div>
-        </a-spin>
-      </div>
+      <a-popover placement="bottomRight">
+        <template #content>
+          <div class="dc-rt__guide-pop">{{ $t('configure.runtime.bandTip') }}</div>
+        </template>
+        <a-button class="dc-rt__guide-btn">
+          <template #icon>
+            <QuestionCircleOutlined/>
+          </template>
+          {{ $t('configure.runtime.guide') }}
+        </a-button>
+      </a-popover>
     </div>
-  </a-card>
+
+    <a-row :gutter="16">
+      <!-- 左侧：分类 tab + 配置项列表 -->
+      <a-col :span="8">
+        <div class="dc-rt__sidebar">
+          <a-tabs v-model:activeKey="activeCategory" class="dc-rt__tabs">
+            <a-tab-pane key="EXECUTOR" :tab="$t('configure.runtime.categoryExecutor')"/>
+            <a-tab-pane key="DATASET" :tab="$t('configure.runtime.categoryDataset')"/>
+          </a-tabs>
+
+          <a-spin :spinning="loading">
+            <div class="dc-rt__rows">
+              <div v-for="row in (groupedRows[activeCategory] || [])"
+                   :key="row.id"
+                   class="dc-rt__row"
+                   :class="{ 'dc-rt__row--active': selected && selected.category === activeCategory && selected.name === row.name }"
+                   @click="onSelect(activeCategory, row.name)">
+                <span class="dc-rt__row-name">{{ row.name }}</span>
+                <a-button type="text" size="small" class="dc-rt__row-test" @click.stop="onTestConfig(activeCategory, row.name)">
+                  {{ $t('configure.runtime.testConfig') }}
+                </a-button>
+              </div>
+              <div v-if="!(groupedRows[activeCategory] || []).length" class="dc-rt__empty">
+                {{ $t('configure.runtime.empty') }}
+              </div>
+            </div>
+          </a-spin>
+        </div>
+      </a-col>
+
+      <!-- 右侧：选中项参数 -->
+      <a-col :span="16">
+        <div class="dc-rt__content">
+          <a-spin :spinning="loading">
+            <div v-if="!selected" class="dc-rt__placeholder">
+              {{ $t('configure.runtime.selectHint') }}
+            </div>
+
+            <template v-else>
+              <div class="dc-rt__content-title">
+                {{ selected.category }} / {{ selected.name }}
+              </div>
+
+              <div class="dc-rt__fields">
+                <div v-for="field in schema" :key="field.name" class="dc-rt__field">
+                  <div class="dc-rt__field-label">
+                    <span>{{ field.name }}</span>
+                    <a-tooltip v-if="field.description" :title="field.description">
+                      <QuestionCircleOutlined class="dc-rt__field-q"/>
+                    </a-tooltip>
+                    <span v-if="!field.tunable" class="dc-rt__field-admin">[{{ $t('configure.runtime.adminOnly') }}]</span>
+                  </div>
+
+                  <a-input v-if="field.type === 'STRING'" v-model:value="form[field.name]"/>
+                  <a-input-number v-else-if="field.type === 'NUMBER'" v-model:value="form[field.name]" class="w-full"/>
+                  <a-switch v-else-if="field.type === 'BOOLEAN'"
+                            v-model:checked="booleanProxies[field.name]"
+                            @change="(v: boolean) => onBoolChange(field.name, v)"/>
+                  <a-input-password v-else-if="field.type === 'PASSWORD'" v-model:value="form[field.name]"/>
+                </div>
+              </div>
+
+              <div class="dc-rt__actions">
+                <a-button type="primary" :loading="saving" @click="onSave">
+                  {{ $t('configure.runtime.save') }}
+                </a-button>
+              </div>
+            </template>
+          </a-spin>
+        </div>
+      </a-col>
+    </a-row>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import RuntimeConfigureService from '@/services/runtimeConfigure'
 
 interface PluginConfigureField
@@ -88,13 +122,9 @@ const { t } = useI18n()
 
 const CATEGORY_KEYS = ['EXECUTOR', 'DATASET']
 
-const categories = computed(() => [
-  { value: 'EXECUTOR', label: t('configure.runtime.categoryExecutor') as string },
-  { value: 'DATASET', label: t('configure.runtime.categoryDataset') as string }
-])
-
 const loading = ref(false)
 const saving = ref(false)
+const activeCategory = ref('EXECUTOR')
 const groupedRows = ref<Record<string, ConfigureRow[]>>({})
 const selected = ref<{ category: string; name: string } | null>(null)
 const schema = ref<PluginConfigureField[]>([])
@@ -108,16 +138,21 @@ const loadAll = async () => {
       const response = await RuntimeConfigureService.list(c)
       groupedRows.value[c] = response.status ? (response.data || []) : []
     }
+    // 默认选中当前分类的第一项
+    const first = (groupedRows.value[activeCategory.value] || [])[0]
+    if (first && (!selected.value || selected.value.category !== activeCategory.value)) {
+      await onSelect(activeCategory.value, first.name)
+    }
   }
   finally {
     loading.value = false
   }
 }
 
-const onSelect = (category: string, name: string) => {
+const onSelect = async (category: string, name: string) => {
   selected.value = { category, name }
   loading.value = true
-  RuntimeConfigureService.detail(category, name)
+  await RuntimeConfigureService.detail(category, name)
                          .then(response => {
                            if (response.status && response.data) {
                              schema.value = response.data.schema || []
@@ -142,11 +177,36 @@ const onBoolChange = (name: string, value: boolean) => {
   form.value[name] = value ? 'true' : 'false'
 }
 
+const onTestConfig = (category: string, name: string) => {
+  loading.value = true
+  RuntimeConfigureService.detail(category, name)
+                         .then(response => {
+                           if (response.status && response.data) {
+                             const values = response.data.values || {}
+                             const missing = (response.data.schema || [])
+                                 .filter((f: PluginConfigureField) => {
+                                   const v = values[f.name] ?? f.defaultValue ?? ''
+                                   return v === '' || v === null || v === undefined
+                                 })
+                                 .map((f: PluginConfigureField) => f.name)
+                             if (missing.length === 0) {
+                               message.success(t('configure.runtime.testOk'))
+                             }
+                             else {
+                               message.error(`${ t('configure.runtime.testMissing', { count: missing.length }) }: ${ missing.join(', ') }`)
+                             }
+                           }
+                           else {
+                             message.error(response.message)
+                           }
+                         })
+                         .finally(() => (loading.value = false))
+}
+
 const onSave = () => {
   if (!selected.value) {
     return
   }
-  // sync booleans
   for (const f of schema.value) {
     if (f.type === 'BOOLEAN') {
       form.value[f.name] = booleanProxies.value[f.name] ? 'true' : 'false'
@@ -157,7 +217,6 @@ const onSave = () => {
                          .then(response => {
                            if (response.status) {
                              message.success(t('common.successfully'))
-                             loadAll()
                            }
                            else {
                              message.error(response.message)
@@ -166,5 +225,166 @@ const onSave = () => {
                          .finally(() => (saving.value = false))
 }
 
+// 切换左侧 tab 时自动选中该分类的第一项
+watch(activeCategory, (category) => {
+  const first = (groupedRows.value[category] || [])[0]
+  if (first) {
+    onSelect(category, first.name)
+  }
+})
+
 loadAll()
 </script>
+
+<style scoped>
+.dc-rt__pagehead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 18px 20px;
+    border-radius: var(--dc-radius-lg);
+    background: var(--dc-gradient-hero);
+    border: 1px solid var(--dc-border-light);
+    margin-bottom: 16px;
+}
+
+.dc-rt__title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+}
+
+.dc-rt__desc {
+    font-size: 13px;
+    color: var(--dc-text-secondary);
+    margin-top: 4px;
+}
+
+.dc-rt__guide-btn {
+    border-radius: var(--dc-radius-md);
+    color: var(--dc-text-primary);
+}
+
+.dc-rt__sidebar {
+    background: var(--dc-sidebar);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-lg);
+    padding: 12px;
+    min-height: calc(100vh - 260px);
+}
+
+.dc-rt__tabs {
+    margin-bottom: 8px;
+}
+
+.dc-rt__tabs :deep(.ant-tabs-nav) {
+    margin-bottom: 8px;
+}
+
+.dc-rt__tabs :deep(.ant-tabs-tab) {
+    padding: 6px 0;
+}
+
+.dc-rt__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dc-rt__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 12px;
+    border-radius: var(--dc-radius-md);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dc-rt__row:hover {
+    background: var(--dc-menu-hover);
+}
+
+.dc-rt__row--active {
+    background: var(--dc-primary-light);
+}
+
+.dc-rt__row--active .dc-rt__row-name {
+    color: var(--dc-primary-700);
+    font-weight: 600;
+}
+
+.dc-rt__row-name {
+    font-size: 13px;
+    color: var(--dc-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dc-rt__row-test {
+    flex-shrink: 0;
+    font-size: 12px;
+}
+
+.dc-rt__empty {
+    font-size: 12px;
+    color: var(--dc-text-placeholder);
+    padding: 8px;
+}
+
+.dc-rt__content {
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-lg);
+    box-shadow: var(--dc-shadow-card);
+    padding: 20px;
+    min-height: 300px;
+}
+
+.dc-rt__content-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+    margin-bottom: 16px;
+}
+
+.dc-rt__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.dc-rt__field-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--dc-text-title);
+    margin-bottom: 6px;
+}
+
+.dc-rt__field-q {
+    color: var(--dc-text-placeholder);
+    cursor: help;
+}
+
+.dc-rt__field-admin {
+    font-size: 11px;
+    color: var(--dc-warning);
+}
+
+.dc-rt__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.dc-rt__guide-pop {
+    max-width: 320px;
+    font-size: 12px;
+    color: var(--dc-text-secondary);
+}
+</style>
