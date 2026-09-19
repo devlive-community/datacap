@@ -11,14 +11,13 @@
   <div class="border-b bg-white">
     <div class="container">
       <div class="flex items-center">
-        <div class="flex items-center shrink-0 mt-1">
-          <router-link to="/" class="block">
-            <a-avatar src="/static/images/logo.png" alt="DataCap Logo"/>
-          </router-link>
-        </div>
+        <router-link to="/" class="flex items-center gap-2 shrink-0">
+          <a-avatar src="/static/images/logo.png" alt="DataCap Logo" :size="34"/>
+          <span class="dc-header__wordmark">DataCap</span>
+        </router-link>
 
         <div class="ml-6 flex-1">
-          <a-menu mode="horizontal" :selectedKeys="[route.path]">
+          <a-menu mode="horizontal" class="dc-header__menu" :selectedKeys="selectedKeys">
             <template v-for="item in activeMenus" :key="item.id">
               <a-sub-menu v-if="item.children" :key="item.id">
                 <template #title>
@@ -48,18 +47,16 @@
 
         <a-space :size="16">
           <!-- Language Switcher -->
-          <div class="mt-2.5 items-center">
-            <a-tooltip :title="$t('common.feedback')">
-              <a href="https://github.com/devlive-community/datacap" target="_blank" rel="noopener noreferrer">
-                <QuestionCircleOutlined :style="{ fontSize: '20px' }"/>
-              </a>
-            </a-tooltip>
-          </div>
-          <div class="mt-1">
-            <LanguageSwitcher @changeLanguage="onChangeLanguage"/>
-          </div>
+          <a-tooltip :title="$t('common.feedback')">
+            <a href="https://github.com/devlive-community/datacap" target="_blank" rel="noopener noreferrer"
+               class="dc-header__help">
+              <QuestionCircleOutlined :style="{ fontSize: '17px' }"/>
+              <span>{{ $t('common.help') }}</span>
+            </a>
+          </a-tooltip>
+          <LanguageSwitcher @changeLanguage="onChangeLanguage"/>
 
-          <div v-if="userInfo" class="mt-2.5">
+          <div v-if="userInfo">
             <a-popover trigger="click" placement="bottomRight">
               <template #content>
                 <div class="dc-notify" style="width: 340px; max-height: 300px; overflow-y: auto;" @scroll="onNotifyScroll">
@@ -114,11 +111,14 @@
           </a-space>
           <div v-else>
             <a-dropdown placement="bottomRight">
-              <a-avatar class="mt-1"
-                        :size="32"
-                        :src="userInfo?.avatarConfigure?.path"
-                        :alt="userInfo?.username">
-              </a-avatar>
+              <div class="flex items-center gap-2 cursor-pointer">
+                <a-avatar :size="32"
+                          :src="userInfo?.avatarConfigure?.path"
+                          :alt="userInfo?.username">
+                </a-avatar>
+                <span class="dc-header__username">{{ userInfo?.username }}</span>
+                <DownOutlined class="dc-header__chevron"/>
+              </div>
 
               <template #overlay>
                 <a-menu>
@@ -154,7 +154,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { useUserStore } from '@/stores/user'
@@ -165,9 +165,27 @@ import { createDefaultRouter } from '@/router/default'
 import LanguageSwitcher from '@/views/layouts/common/components/components/LanguageSwitcher.vue'
 import NotificationService from '@/services/notification'
 import { FilterModel } from '@/model/filter.ts'
-import { BellOutlined, BgColorsOutlined, CodeOutlined, DashboardOutlined, HistoryOutlined, HomeOutlined, LogoutOutlined, ProjectOutlined, QuestionCircleOutlined, RightOutlined, SettingOutlined, ToolOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
+import { BellOutlined, BgColorsOutlined, DownOutlined, CodeOutlined, DashboardOutlined, HistoryOutlined, HomeOutlined, LogoutOutlined, ProjectOutlined, QuestionCircleOutlined, RightOutlined, SettingOutlined, ToolOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'LayoutHeader' })
+
+/**
+ * 顶级菜单高亮：按路径前缀匹配（子页面如 /admin/user/profile 也命中所属菜单）
+ */
+const selectedKeys = computed(() => {
+    const urls: string[] = []
+    ;(activeMenus.value || []).forEach((item: any) => {
+        if (item.children?.length) {
+            item.children.forEach((child: any) => urls.push(child.url))
+        }
+        else if (item.url) {
+            urls.push(item.url)
+        }
+    })
+    const matched = urls.filter(url => route.path.startsWith(url))
+                        .sort((a, b) => b.length - a.length)[0]
+    return matched ? [matched] : []
+})
 
 // 后端菜单返回的是图标名字符串，这里映射到 antd 图标组件
 const menuIcons: Record<string, any> = {
@@ -272,5 +290,73 @@ const handleNotificationClick = (msg: any) => {
 
 .dc-notify__item:hover {
     background-color: rgba(0, 0, 0, 0.04);
+}
+
+.dc-header__wordmark {
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.88);
+    letter-spacing: 0.2px;
+}
+
+.dc-header__menu.ant-menu-horizontal {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    min-width: 0;
+    border-bottom: none;
+    background: transparent;
+    line-height: normal;
+}
+
+.dc-header__menu :deep(.ant-menu-item),
+.dc-header__menu :deep(.ant-menu-submenu) {
+    top: 0;
+    height: 38px;
+    line-height: 38px;
+    margin-inline: 3px;
+    padding-inline: 16px;
+    border-radius: 999px;
+    border-bottom: none !important;
+    transition: background-color 0.2s;
+}
+
+.dc-header__menu :deep(.ant-menu-item::after),
+.dc-header__menu :deep(.ant-menu-submenu::after) {
+    display: none !important;
+}
+
+.dc-header__menu :deep(.ant-menu-item:hover),
+.dc-header__menu :deep(.ant-menu-submenu:hover),
+.dc-header__menu :deep(.ant-menu-submenu-active) {
+    background: rgba(0, 0, 0, 0.04) !important;
+}
+
+.dc-header__menu :deep(.ant-menu-item-selected),
+.dc-header__menu :deep(.ant-menu-submenu-selected) {
+    background: rgba(22, 119, 255, 0.1) !important;
+    color: #1677ff !important;
+}
+
+.dc-header__help {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.dc-header__help:hover {
+    color: #1677ff;
+}
+
+.dc-header__username {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.88);
+}
+
+.dc-header__chevron {
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.45);
 }
 </style>
