@@ -44,6 +44,7 @@
             </template>
           </a-menu>
         </div>
+      </div>
 
         <a-space :size="16">
           <!-- 全局搜索 -->
@@ -159,7 +160,6 @@
         </a-space>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
