@@ -36,7 +36,8 @@ const changeLanguage = async (value: string) => {
 }
 
 onMounted(() => {
-  const currentLocale = localStorage.getItem('locale')
+  // 历史存储值可能是 zh_cn 下划线格式，归一化为下拉选项的 language_zh-cn
+  const currentLocale = (localStorage.getItem('locale') || '').replace('_', '-')
   if (currentLocale) {
     language.value = `language_${ currentLocale }`
   }
