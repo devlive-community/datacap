@@ -37,6 +37,8 @@ import io.edurt.datacap.spi.model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -275,7 +277,73 @@ public interface PluginService
                 "    'DATABASE' AS object_type,\n" +
                 "    '' AS object_comment\n" +
                 "FROM information_schema.SCHEMATA;";
-        return this.execute(configure, sql);
+        Response response = this.execute(configure, sql);
+        // Hive、达梦等数据源不提供 information_schema，执行失败时回退到 JDBC 元数据
+        if (Boolean.TRUE.equals(response.getIsConnected()) && Boolean.FALSE.equals(response.getIsSuccessful())) {
+            return metadataDatabases(configure);
+        }
+        return response;
+    }
+
+    /**
+     * 通过 JDBC DatabaseMetaData 获取数据库列表
+     * Load databases via JDBC DatabaseMetaData, for sources without information_schema
+     *
+     * @param configure 配置信息 | Configuration information
+     * @return 数据库列表 | Database list
+     */
+    default Response metadataDatabases(Configure configure)
+    {
+        Response response = new Response();
+        response.setHeaders(Lists.newArrayList("object_name", "object_type", "object_comment"));
+        response.setTypes(Lists.newArrayList("String", "String", "String"));
+        List<Object> rows = Lists.newArrayList();
+        response.setColumns(rows);
+        try {
+            DatabaseMetaData metaData = openJdbcConnection(configure).getMetaData();
+            try (ResultSet resultSet = metaData.getSchemas()) {
+                while (resultSet.next()) {
+                    rows.add(Lists.newArrayList(resultSet.getString("TABLE_SCHEM"), "DATABASE", ""));
+                }
+            }
+            // 个别驱动只暴露 catalog 而没有 schema（如部分 MySQL 系）
+            if (rows.isEmpty()) {
+                try (ResultSet resultSet = metaData.getCatalogs()) {
+                    while (resultSet.next()) {
+                        rows.add(Lists.newArrayList(resultSet.getString("TABLE_CAT"), "DATABASE", ""));
+                    }
+                }
+            }
+            response.setIsConnected(true);
+            response.setIsSuccessful(true);
+        }
+        catch (Exception ex) {
+            log.error("Failed to load databases via JDBC metadata", ex);
+            response.setIsConnected(Boolean.FALSE);
+            response.setIsSuccessful(Boolean.FALSE);
+            response.setMessage(ex.getMessage());
+        }
+        finally {
+            destroy();
+        }
+        return response;
+    }
+
+    /**
+     * 打开 JDBC 连接并返回原生连接对象，仅供元数据回退使用
+     * Open a JDBC connection and expose the native connection for metadata fallbacks
+     *
+     * @param configure 配置信息 | Configuration information
+     * @return 原生 JDBC 连接 | Native JDBC connection
+     */
+    private java.sql.Connection openJdbcConnection(Configure configure)
+    {
+        this.connect(configure);
+        Connection connection = local.get();
+        if (connection == null || !(connection.getConnection() instanceof java.sql.Connection)) {
+            throw new IllegalStateException("Connection is not available or not a JDBC connection");
+        }
+        return (java.sql.Connection) connection.getConnection();
     }
 
     /**
