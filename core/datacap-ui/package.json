@@ -53,5 +53,6 @@
       "vue-demi",
       "core-js"
     ]
-  }
+  },
+  "packageManager": "pnpm@9.13.2"
 }
