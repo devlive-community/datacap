@@ -28,6 +28,19 @@ public class CaptchaUtils
     }
 
     /**
+     * Generates a random dark color that stays readable on the light background.
+     *
+     * @return a Color object whose channels are dark enough for foreground text
+     */
+    public static Color getForegroundColor()
+    {
+        int rColor = RANDOM.nextInt(128);
+        int gColor = RANDOM.nextInt(128);
+        int bColor = RANDOM.nextInt(128);
+        return new Color(rColor, gColor, bColor);
+    }
+
+    /**
      * Generates a CaptchaEntity object with random calculation numbers.
      *
      * @return A CaptchaEntity object with randomly generated firstNumber, lastNumber,

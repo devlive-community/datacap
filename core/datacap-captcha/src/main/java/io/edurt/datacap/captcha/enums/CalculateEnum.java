@@ -4,7 +4,7 @@ public enum CalculateEnum
 {
     ADD("+", "加"),
     SUBTRACT("-", "减"),
-    MULTIPLY("*", "乘"),
+    MULTIPLY("\u00d7", "乘"),
     DIVIDE("÷", "除"),
     EQUAL("=", "等");
 
