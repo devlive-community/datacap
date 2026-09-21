@@ -26,6 +26,8 @@ public enum ServiceState
     USER_PASSWORD_INCORRECT(4006, "The user password is incorrect"),
     USER_PASSWORD_DIFFERENT(4007, "Two passwords are different"),
     USER_NAME_EQUALS(4008, "Cannot be the same as the old user name"),
+    USER_NAME_FORMAT_INVALID(4026, "Invalid username: 4-20 characters, letters, numbers and underscores, cannot start with a digit"),
+    USER_NAME_ALREADY_EXISTS(4027, "The username already exists"),
     REQUEST_EXCEPTION(5000, "The request is abnormal"),
     INVALID_PARAMETER(5001, "Invalid parameter");
 

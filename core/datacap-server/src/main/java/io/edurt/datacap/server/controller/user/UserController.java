@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -69,10 +70,22 @@ public class UserController
         return this.service.changePassword(configure);
     }
 
+    @GetMapping(value = "checkUsername", params = "username")
+    public CommonResponse<Boolean> checkUsername(@RequestParam(value = "username") String username)
+    {
+        return service.checkUsername(username);
+    }
+
     @PutMapping(value = "changeUsername")
     public CommonResponse<Long> changeUsername(@Validated @RequestBody UserNameBody configure)
     {
         return this.service.changeUsername(configure);
+    }
+
+    @PostMapping(value = "testChat")
+    public CommonResponse<Boolean> testChat(@RequestBody AiModel configure)
+    {
+        return service.testChat(configure);
     }
 
     @PutMapping(value = "changeThirdConfigure")

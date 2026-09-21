@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -31,18 +32,18 @@ public class CalculateUtils
     {
         BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = image.getGraphics(); // Create a graphics class
-//        graphics.setColor(CaptchaUtils.getBackgroundColor()); // The background color should be lighter
+        graphics.setColor(Color.WHITE); // The background color should be light
         graphics.fillRect(0, 0, WIDTH, HEIGHT); // Painted background
-        graphics.setColor(CaptchaUtils.getBackgroundColor()); // Border color
-//        graphics.drawRect(0, 0, WIDTH - 1, HEIGHT - 1); // Draw border
         ResultEntity entity = CaptchaUtils.generateCalculateImage();
         String[] result = entity.getExpression();
         int length = result.length; // The number of verification codes generated
-        Font font = new Font("YaHei", Font.ITALIC, 20); // Create a font, the size of the font should be determined according to the height of the picture
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 22); // Bold sans-serif keeps every operator legible
         graphics.setFont(font); // Set font
         for (int i = 0; i < length; i++) {
             String string = String.valueOf(result[i]);
-            graphics.drawString(string, 30 * i + 30, 25);
+            // Dark randomized foreground stays readable on the light background
+            graphics.setColor(CaptchaUtils.getForegroundColor());
+            graphics.drawString(string, 30 * i + 30, 27);
         }
         graphics.dispose(); // Image takes effect
         String base64 = null;

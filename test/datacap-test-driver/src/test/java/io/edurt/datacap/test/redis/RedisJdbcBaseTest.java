@@ -1,8 +1,9 @@
 package io.edurt.datacap.test.redis;
 
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.redisson.Redisson;
@@ -26,7 +27,6 @@ import java.util.Properties;
 public abstract class RedisJdbcBaseTest
 {
     private static final Logger log = LoggerFactory.getLogger(RedisJdbcBaseTest.class);
-    @ClassRule
     public static final GenericContainer<?> REDIS_CONTAINER = new GenericContainer<>(DockerImageName.parse("redis:7-alpine"))
             .withExposedPorts(6379)
             .waitingFor(Wait.forListeningPort()
@@ -35,6 +35,14 @@ public abstract class RedisJdbcBaseTest
     protected Statement statement;
     protected Connection connection;
     protected RedissonClient redissonClient;
+
+    @BeforeClass
+    public static void assumeDockerAvailable()
+    {
+        // 本地无 Docker 环境时跳过容器集成测试，CI（带 Docker）仍然执行
+        Assume.assumeTrue("Docker is not available, skipping Redis container tests",
+                REDIS_CONTAINER.isRunning());
+    }
 
     @Before
     public void init()
@@ -108,7 +116,23 @@ public abstract class RedisJdbcBaseTest
     }
 
     static {
-        REDIS_CONTAINER.setPortBindings(List.of("6379:6379"));
-        REDIS_CONTAINER.start();
+        // 无 Docker 时跳过启动，交由 assumeDockerAvailable 标记跳过
+        if (isDockerAvailable()) {
+            REDIS_CONTAINER.start();
+        }
+    }
+
+    private static boolean isDockerAvailable()
+    {
+        // Docker Desktop（Engine 29）会以 HTTP 400 拒绝 docker-java 默认 API 版本，钉一个双方都支持的版本
+        if (System.getProperty("api.version") == null && System.getenv("DOCKER_API_VERSION") == null) {
+            System.setProperty("api.version", "1.41");
+        }
+        try {
+            return org.testcontainers.DockerClientFactory.instance().isDockerAvailable();
+        }
+        catch (Throwable ex) {
+            return false;
+        }
     }
 }

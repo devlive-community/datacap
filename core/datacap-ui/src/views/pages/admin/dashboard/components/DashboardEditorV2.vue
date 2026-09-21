@@ -6,7 +6,7 @@
       </template>
 
       <template #text="{ configure, isSelected }">
-        <div type="h1" :class="isSelected ? 'text-blue-600' : 'text-gray-900'">
+        <div type="h1" :class="isSelected ? 'text-[var(--dc-primary)]' : 'text-gray-900'">
           {{ getConfigValue(configure, 'text', $t('builder.component.basic.text')) }}
         </div>
       </template>

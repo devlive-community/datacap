@@ -18,7 +18,7 @@
         <h2.version>2.1.214</h2.version>
         <findbugs.version>3.0.1</findbugs.version>
         <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
-        <node.version>v18.18.2</node.version>
+        <node.version>v20.18.1</node.version>
         <pnpm.version>9.13.2</pnpm.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <jaxb-impl.version>2.3.1</jaxb-impl.version>

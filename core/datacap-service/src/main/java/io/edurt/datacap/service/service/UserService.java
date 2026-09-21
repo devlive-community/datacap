@@ -27,6 +27,19 @@ public interface UserService
 
     CommonResponse<Long> changeUsername(UserNameBody configure);
 
+    /**
+     * Check whether the given username can be used for renaming:
+     * format valid (4-20 chars, letters/numbers/underscores, not starting
+     * with a digit) and not taken by another account.
+     */
+    CommonResponse<Boolean> checkUsername(String username);
+
+    /**
+     * Test the connectivity of the AI assistant service:
+     * performs a GET request against {host}/models with the given token.
+     */
+    CommonResponse<Boolean> testChat(AiModel configure);
+
     CommonResponse<Long> changeThirdConfigure(AiModel configure);
 
     CommonResponse<List<Object>> getSugs(Long id);

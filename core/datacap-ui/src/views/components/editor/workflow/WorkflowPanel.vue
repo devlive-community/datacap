@@ -19,7 +19,7 @@
 
         <div v-for="node in nodesByCategory(category.value)"
              :key="node.id"
-             class="dc-workflow-panel__node flex items-center gap-2 px-2 py-1.5 mb-1 rounded border bg-white cursor-grab hover:border-blue-400 hover:shadow-sm text-sm"
+             class="dc-workflow-panel__node flex items-center gap-2 px-2 py-1.5 mb-1 rounded border bg-white cursor-grab hover:border-[var(--dc-primary)] hover:shadow-sm text-sm"
              draggable="true"
              @dragstart="onDragStart($event, node)">
           <component :is="categoryIcon(category.value)" :style="{ fontSize: '14px' }"/>

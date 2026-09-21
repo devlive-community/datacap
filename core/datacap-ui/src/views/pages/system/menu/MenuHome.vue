@@ -1,10 +1,7 @@
 <template>
-  <a-card>
-    <template #title>
-      <div class="ml-2 font-normal text-sm">{{ $t('menu.common.list') }}</div>
-    </template>
 
-    <DataTable :columns="headers"
+    <DataTable :title="$t('menu.common.list')"
+               :columns="headers"
                :data-source="data"
                :loading="loading"
                :page-index="pageIndex"
@@ -39,7 +36,6 @@
         </template>
       </template>
     </DataTable>
-  </a-card>
 
   <MenuInfo v-if="dataInfoVisible"
             :is-visible="dataInfoVisible"

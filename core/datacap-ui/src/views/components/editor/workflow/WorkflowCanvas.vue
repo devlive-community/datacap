@@ -23,8 +23,9 @@
               stroke-width="2"/>
         <path v-if="pendingConnection"
               :d="pendingPath"
-              class="stroke-blue-400 stroke-dasharray"
+              class="stroke-[var(--dc-primary)]"
               fill="none"
+              stroke-dasharray="6 4"
               stroke-width="2"/>
       </svg>
 
@@ -33,7 +34,7 @@
            :key="node.id"
            :data-node-id="node.id"
            class="absolute bg-white rounded-lg shadow-md border select-none"
-           :class="selectedNodeId === node.id ? 'border-blue-500 ring-1 ring-blue-300' : 'border-gray-200'"
+           :class="selectedNodeId === node.id ? 'border-[var(--dc-primary)] ring-1 ring-[var(--dc-primary-light)]' : 'border-gray-200'"
            :style="{ transform: `translate(${ node.position.x }px, ${ node.position.y }px)`, width: `${ nodeWidth }px` }"
            @mousedown="onNodeMouseDown($event, node)">
         <div class="px-2 pt-1.5 pb-1.5">

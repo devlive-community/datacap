@@ -14,6 +14,7 @@ import io.edurt.datacap.spi.adapter.NativeAdapter;
 import io.edurt.datacap.spi.adapter.RowCallback;
 import io.edurt.datacap.spi.connection.Connection;
 import io.edurt.datacap.spi.connection.JdbcConnection;
+import io.edurt.datacap.spi.connection.JdbcUrlGuard;
 import io.edurt.datacap.spi.generator.DataType;
 import io.edurt.datacap.spi.generator.Filter;
 import io.edurt.datacap.spi.generator.OrderBy;
@@ -37,6 +38,8 @@ import io.edurt.datacap.spi.model.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -123,10 +126,11 @@ public interface PluginService
         buffer.append("jdbc:");
         buffer.append(configure.getType());
         buffer.append("://");
-        buffer.append(configure.getHost());
+        buffer.append(JdbcUrlGuard.validateHost(configure.getHost()));
         buffer.append(":");
         buffer.append(configure.getPort());
         if (configure.getDatabase().isPresent()) {
+            JdbcUrlGuard.validateDatabase(configure.getDatabase().get());
             buffer.append("/");
             buffer.append(configure.getDatabase().get());
         }
@@ -137,7 +141,10 @@ public interface PluginService
             Map<String, Object> env = configure.getEnv().get();
             List<String> flatEnv = env.entrySet()
                     .stream()
-                    .map(value -> String.format("%s=%s", value.getKey(), value.getValue()))
+                    .map(value -> {
+                        JdbcUrlGuard.validateParameter(value.getKey(), String.valueOf(value.getValue()));
+                        return String.format("%s=%s", value.getKey(), value.getValue());
+                    })
                     .collect(Collectors.toList());
             if (configure.getSsl().isEmpty()) {
                 buffer.append("?");
@@ -275,7 +282,73 @@ public interface PluginService
                 "    'DATABASE' AS object_type,\n" +
                 "    '' AS object_comment\n" +
                 "FROM information_schema.SCHEMATA;";
-        return this.execute(configure, sql);
+        Response response = this.execute(configure, sql);
+        // Hive、达梦等数据源不提供 information_schema，执行失败时回退到 JDBC 元数据
+        if (Boolean.TRUE.equals(response.getIsConnected()) && Boolean.FALSE.equals(response.getIsSuccessful())) {
+            return metadataDatabases(configure);
+        }
+        return response;
+    }
+
+    /**
+     * 通过 JDBC DatabaseMetaData 获取数据库列表
+     * Load databases via JDBC DatabaseMetaData, for sources without information_schema
+     *
+     * @param configure 配置信息 | Configuration information
+     * @return 数据库列表 | Database list
+     */
+    default Response metadataDatabases(Configure configure)
+    {
+        Response response = new Response();
+        response.setHeaders(Lists.newArrayList("object_name", "object_type", "object_comment"));
+        response.setTypes(Lists.newArrayList("String", "String", "String"));
+        List<Object> rows = Lists.newArrayList();
+        response.setColumns(rows);
+        try {
+            DatabaseMetaData metaData = openJdbcConnection(configure).getMetaData();
+            try (ResultSet resultSet = metaData.getSchemas()) {
+                while (resultSet.next()) {
+                    rows.add(Lists.newArrayList(resultSet.getString("TABLE_SCHEM"), "DATABASE", ""));
+                }
+            }
+            // 个别驱动只暴露 catalog 而没有 schema（如部分 MySQL 系）
+            if (rows.isEmpty()) {
+                try (ResultSet resultSet = metaData.getCatalogs()) {
+                    while (resultSet.next()) {
+                        rows.add(Lists.newArrayList(resultSet.getString("TABLE_CAT"), "DATABASE", ""));
+                    }
+                }
+            }
+            response.setIsConnected(true);
+            response.setIsSuccessful(true);
+        }
+        catch (Exception ex) {
+            log.error("Failed to load databases via JDBC metadata", ex);
+            response.setIsConnected(Boolean.FALSE);
+            response.setIsSuccessful(Boolean.FALSE);
+            response.setMessage(ex.getMessage());
+        }
+        finally {
+            destroy();
+        }
+        return response;
+    }
+
+    /**
+     * 打开 JDBC 连接并返回原生连接对象，仅供元数据回退使用
+     * Open a JDBC connection and expose the native connection for metadata fallbacks
+     *
+     * @param configure 配置信息 | Configuration information
+     * @return 原生 JDBC 连接 | Native JDBC connection
+     */
+    private java.sql.Connection openJdbcConnection(Configure configure)
+    {
+        this.connect(configure);
+        Connection connection = local.get();
+        if (connection == null || !(connection.getConnection() instanceof java.sql.Connection)) {
+            throw new IllegalStateException("Connection is not available or not a JDBC connection");
+        }
+        return (java.sql.Connection) connection.getConnection();
     }
 
     /**
@@ -344,7 +417,51 @@ public interface PluginService
                 "    FIELD(type, 'BASE TABLE', 'VIEW', 'FUNCTION', 'PROCEDURE'),\n" +
                 "    object_name;";
 
-        return this.execute(configure, sql.replace("{0}", database));
+        Response response = this.execute(configure, sql.replace("{0}", database));
+        // 达梦等数据源不提供 information_schema，执行失败时回退到 JDBC 元数据
+        if (Boolean.TRUE.equals(response.getIsConnected()) && Boolean.FALSE.equals(response.getIsSuccessful())) {
+            return metadataTables(configure, database);
+        }
+        return response;
+    }
+
+    /**
+     * 通过 JDBC DatabaseMetaData 获取数据表和视图列表
+     * Load tables and views via JDBC DatabaseMetaData, for sources without information_schema
+     *
+     * @param configure 配置信息 | Configuration information
+     * @param database 数据库 | Database
+     * @return 数据表列表 | Table list
+     */
+    default Response metadataTables(Configure configure, String database)
+    {
+        Response response = new Response();
+        response.setHeaders(Lists.newArrayList("type_name", "object_name", "object_comment"));
+        response.setTypes(Lists.newArrayList("String", "String", "String"));
+        List<Object> rows = Lists.newArrayList();
+        response.setColumns(rows);
+        try {
+            DatabaseMetaData metaData = openJdbcConnection(configure).getMetaData();
+            try (ResultSet resultSet = metaData.getTables(null, database, "%", new String[] {"TABLE", "VIEW"})) {
+                while (resultSet.next()) {
+                    String typeName = "VIEW".equals(resultSet.getString("TABLE_TYPE")) ? "view" : "table";
+                    String comment = resultSet.getString("REMARKS");
+                    rows.add(Lists.newArrayList(typeName, resultSet.getString("TABLE_NAME"), comment == null ? "" : comment));
+                }
+            }
+            response.setIsConnected(true);
+            response.setIsSuccessful(true);
+        }
+        catch (Exception ex) {
+            log.error("Failed to load tables via JDBC metadata", ex);
+            response.setIsConnected(Boolean.FALSE);
+            response.setIsSuccessful(Boolean.FALSE);
+            response.setMessage(ex.getMessage());
+        }
+        finally {
+            destroy();
+        }
+        return response;
     }
 
     /**
@@ -455,11 +572,87 @@ public interface PluginService
                 "    object_position,\n" +
                 "    object_name;";
 
-        return this.execute(
+        Response response = this.execute(
                 configure,
                 sql.replace("{0}", database)
                         .replace("{1}", table)
         );
+        // 达梦等数据源不提供 information_schema，执行失败时回退到 JDBC 元数据
+        if (Boolean.TRUE.equals(response.getIsConnected()) && Boolean.FALSE.equals(response.getIsSuccessful())) {
+            return metadataColumns(configure, database, table);
+        }
+        return response;
+    }
+
+    /**
+     * 通过 JDBC DatabaseMetaData 获取列和主键信息
+     * Load columns and primary keys via JDBC DatabaseMetaData, for sources without information_schema
+     *
+     * @param configure 配置信息 | Configuration information
+     * @param database 数据库 | Database
+     * @param table 数据表 | Table
+     * @return 数据列结构 | Column structure
+     */
+    default Response metadataColumns(Configure configure, String database, String table)
+    {
+        Response response = new Response();
+        response.setHeaders(Lists.newArrayList(
+                "type_name",
+                "object_name",
+                "object_data_type",
+                "object_nullable",
+                "object_default_value",
+                "object_comment",
+                "object_position",
+                "object_definition"));
+        response.setTypes(Lists.newArrayList(
+                "String", "String", "String", "String", "String", "String", "Integer", "String"));
+        List<Object> rows = Lists.newArrayList();
+        response.setColumns(rows);
+        try {
+            DatabaseMetaData metaData = openJdbcConnection(configure).getMetaData();
+            try (ResultSet resultSet = metaData.getColumns(null, database, table, "%")) {
+                while (resultSet.next()) {
+                    String defaultValue = resultSet.getString("COLUMN_DEF");
+                    String comment = resultSet.getString("REMARKS");
+                    rows.add(Lists.newArrayList(
+                            "column",
+                            resultSet.getString("COLUMN_NAME"),
+                            resultSet.getString("TYPE_NAME"),
+                            resultSet.getInt("NULLABLE") == java.sql.ResultSetMetaData.columnNullable ? "YES" : "NO",
+                            defaultValue == null ? "" : defaultValue,
+                            comment == null ? "" : comment,
+                            resultSet.getInt("ORDINAL_POSITION"),
+                            ""));
+                }
+            }
+            try (ResultSet resultSet = metaData.getPrimaryKeys(null, database, table)) {
+                List<String> primaryColumns = Lists.newArrayList();
+                while (resultSet.next()) {
+                    primaryColumns.add(resultSet.getString("COLUMN_NAME"));
+                }
+                for (String primaryColumn : primaryColumns) {
+                    rows.add(Lists.newArrayList(
+                            "primary",
+                            primaryColumn,
+                            "", "", "", "",
+                            0,
+                            "PRIMARY KEY on (" + String.join(", ", primaryColumns) + ")"));
+                }
+            }
+            response.setIsConnected(true);
+            response.setIsSuccessful(true);
+        }
+        catch (Exception ex) {
+            log.error("Failed to load columns via JDBC metadata", ex);
+            response.setIsConnected(Boolean.FALSE);
+            response.setIsSuccessful(Boolean.FALSE);
+            response.setMessage(ex.getMessage());
+        }
+        finally {
+            destroy();
+        }
+        return response;
     }
 
     default Response getPrimaryKeys(Configure configure, String database, String table)

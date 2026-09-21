@@ -1,10 +1,7 @@
 <template>
-  <a-card>
-    <template #title>
-      <div class="ml-2">{{ $t('workflow.text.list') }}</div>
-    </template>
 
-    <DataTable :columns="headers"
+    <DataTable :title="$t('workflow.text.list')"
+               :columns="headers"
                :data-source="data"
                :loading="loading"
                :page-index="pageIndex"
@@ -115,7 +112,6 @@
         </template>
       </template>
     </DataTable>
-  </a-card>
 
   <MarkdownPreview v-if="dataMessageVisible && dataInfo"
                    :is-visible="dataMessageVisible"

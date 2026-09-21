@@ -1,216 +1,253 @@
 <template>
   <a-row :gutter="8">
     <a-col :span="4">
-      <a-space direction="vertical" :style="{ width: '100%' }">
-        <a-card class="w-full h-full">
-          <template #title>
-            <span class="text-sm font-semibold">{{ $t('dataset.common.columnModeMetric') }}</span>
-          </template>
-
-          <div class="relative p-1" style="min-height: 200px;">
-            <a-spin :spinning="initialize">
-              <div v-if="!initialize">
-                <Draggable item-key="id"
-                           :group="{ name: 'metrics', pull: 'clone', put: false }"
-                           :list="originalMetrics"
-                           :clone="onClone"
-                           @start="visibleHighlight(true, ColumnType.METRIC)"
-                           @end="visibleHighlight(false, ColumnType.METRIC)">
-                  <template #item="{ element }">
-                    <a-tag class="my-1 mx-0.5 cursor-pointer" @dblclick="onClone(element)">{{ element.aliasName ? element.aliasName : element.name }}</a-tag>
-                  </template>
-                </Draggable>
-              </div>
-            </a-spin>
+      <div class="dc-adhoc__side">
+        <div class="dc-adhoc__dataset">
+          <div class="dc-adhoc__dataset-icon">
+            <DatabaseOutlined :style="{ fontSize: '18px', color: 'var(--dc-primary)' }"/>
           </div>
-        </a-card>
-
-        <a-card class="w-full">
-          <template #title>
-            <span class="text-sm font-semibold">{{ $t('dataset.common.columnModeDimension') }}</span>
-          </template>
-
-          <div class="relative p-1" style="min-height: 200px;">
-            <a-spin :spinning="initialize">
-              <div v-if="!initialize">
-                <Draggable item-key="id"
-                           :group="{ name: 'dimensions', pull: 'clone', put: false }"
-                           :list="originalDimensions"
-                           :clone="onClone"
-                           @start="visibleHighlight(true, ColumnType.DIMENSION)"
-                           @end="visibleHighlight(false, ColumnType.DIMENSION)">
-                  <template #item="{ element }">
-                    <a-tag class="my-1 mx-0.5 cursor-pointer" @dblclick="onClone(element)">{{ element.aliasName ? element.aliasName : element.name }}</a-tag>
-                  </template>
-                </Draggable>
-              </div>
-            </a-spin>
+          <div class="min-w-0 flex-1">
+            <div class="dc-adhoc__dataset-name">{{ dataInfo.name || code }}</div>
+            <div class="dc-adhoc__dataset-state">数据源 · 已连接</div>
           </div>
-        </a-card>
-      </a-space>
+        </div>
+
+        <a-input v-model:value="fieldSearch" class="dc-adhoc__search" :placeholder="$t('dataset.search.fields')">
+          <template #prefix>
+            <SearchOutlined :style="{ fontSize: '13px', color: 'var(--dc-text-secondary)' }"/>
+          </template>
+        </a-input>
+
+        <div class="dc-adhoc__field-tabs">
+          <span class="dc-adhoc__field-tab"
+                :class="{ 'dc-adhoc__field-tab--active': fieldTab === 'all' }"
+                @click="fieldTab = 'all'">
+            {{ $t('dataset.adhoc.all') }} ({{ originalMetrics.length + originalDimensions.length }})
+          </span>
+          <span class="dc-adhoc__field-tab"
+                :class="{ 'dc-adhoc__field-tab--active': fieldTab === 'dimension' }"
+                @click="fieldTab = 'dimension'">
+            {{ $t('dataset.adhoc.dimensions') }} ({{ originalDimensions.length }})
+          </span>
+          <span class="dc-adhoc__field-tab"
+                :class="{ 'dc-adhoc__field-tab--active': fieldTab === 'metric' }"
+                @click="fieldTab = 'metric'">
+            {{ $t('dataset.adhoc.measures') }} ({{ originalMetrics.length }})
+          </span>
+        </div>
+
+        <a-spin :spinning="initialize">
+          <div v-if="!initialize && showMetrics" class="dc-adhoc__group">
+            <div class="dc-adhoc__group-title">
+              <BarChartOutlined class="dc-adhoc__group-icon"/>
+              <span>{{ $t('dataset.common.columnModeMetric') }}</span>
+            </div>
+            <Draggable item-key="id"
+                       :group="{ name: 'metrics', pull: 'clone', put: false }"
+                       :list="visibleMetrics"
+                       :clone="onClone"
+                       @start="visibleHighlight(true, ColumnType.METRIC)"
+                       @end="visibleHighlight(false, ColumnType.METRIC)">
+              <template #item="{ element }">
+                <div class="dc-adhoc__field">
+                  <span class="dc-adhoc__field-badge">#</span>
+                  <span class="dc-adhoc__field-name">{{ element.aliasName ? element.aliasName : element.name }}</span>
+                </div>
+              </template>
+            </Draggable>
+            <div v-if="!visibleMetrics.length" class="dc-adhoc__field-empty">{{ $t('common.noData') }}</div>
+          </div>
+
+          <div v-if="!initialize && showDimensions" class="dc-adhoc__group">
+            <div class="dc-adhoc__group-title">
+              <AppstoreOutlined class="dc-adhoc__group-icon"/>
+              <span>{{ $t('dataset.common.columnModeDimension') }}</span>
+            </div>
+            <Draggable item-key="id"
+                       :group="{ name: 'dimensions', pull: 'clone', put: false }"
+                       :list="visibleDimensions"
+                       :clone="onClone"
+                       @start="visibleHighlight(true, ColumnType.DIMENSION)"
+                       @end="visibleHighlight(false, ColumnType.DIMENSION)">
+              <template #item="{ element }">
+                <div class="dc-adhoc__field">
+                  <span class="dc-adhoc__field-badge dc-adhoc__field-badge--text">Aa</span>
+                  <span class="dc-adhoc__field-name">{{ element.aliasName ? element.aliasName : element.name }}</span>
+                </div>
+              </template>
+            </Draggable>
+            <div v-if="!visibleDimensions.length" class="dc-adhoc__field-empty">{{ $t('common.noData') }}</div>
+          </div>
+        </a-spin>
+      </div>
     </a-col>
 
     <a-col :span="20">
-      <div class="relative">
-        <a-spin :spinning="loading">
-          <div class="flex items-center space-x-2 text-sm">
-            <div>{{ $t('dataset.common.columnModeMetric') }}:</div>
-
-            <div :class="cn('w-full flex-1 p-1',
-                        (highlight.active && highlight.type === ColumnType.METRIC) && 'border-2 border-green-400 rounded-sm min-h-8'
-                 )">
-              <Draggable group="metrics"
-                         item-key="id"
-                         :list="metrics"
-                         class="flex flex-wrap gap-2">
-                <template #item="{ element, index }">
-                  <a-tag class="inline-flex items-center whitespace-nowrap">
-                    <span class="flex items-center">
-                      <DatasetColumnMetric :element="element"/>
-                    </span>
-
-                    <span class="ml-2 flex items-center space-x-1">
-                      <a-tooltip :title="$t('common.configure')">
-                        <SettingOutlined class="cursor-pointer hover:text-primary" @click="onColumnConfigure(true, element, ColumnType.METRIC)" :style="{ fontSize: '15px' }"/>
-                      </a-tooltip>
-
-                      <a-tooltip :title="$t('common.remove')">
-                        <DeleteOutlined class="cursor-pointer text-red-400 hover:text-red-500" @click="onRemove(index, metrics)" :style="{ fontSize: '15px' }"/>
-                      </a-tooltip>
-                    </span>
-                  </a-tag>
-                </template>
-              </Draggable>
+        <div class="dc-adhoc__main">
+          <div class="dc-adhoc__head">
+            <div class="min-w-0">
+              <div class="dc-adhoc__title">{{ $t('dataset.adhoc.title') }}</div>
+              <div class="dc-adhoc__desc">{{ $t('dataset.adhoc.desc') }}</div>
             </div>
-          </div>
-
-          <a-divider class="my-2"/>
-
-          <div class="flex items-center space-x-2 text-sm">
-            <div>{{ $t('dataset.common.columnModeDimension') }}:</div>
-
-            <div :class="cn('w-full flex-1 p-1',
-                         (highlight.active && highlight.type === ColumnType.DIMENSION) && 'border-2 border-blue-400 rounded-sm min-h-8')
-                 ">
-              <Draggable group="dimensions"
-                         item-key="id"
-                         :list="dimensions"
-                         class="flex flex-wrap gap-2">
-                <template #item="{ element, index}">
-                  <a-tag class="inline-flex items-center whitespace-nowrap">
-                    <span class="flex items-center">
-                        {{ element.aliasName ? element.aliasName : element.name }}
-                    </span>
-
-                    <span class="ml-2 flex items-center space-x-1">
-                      <a-tooltip :title="$t('common.configure')">
-                        <SettingOutlined class="cursor-pointer hover:text-primary" @click="onColumnConfigure(true, element, ColumnType.DIMENSION)" :style="{ fontSize: '15px' }"/>
-                      </a-tooltip>
-
-                      <a-tooltip :title="$t('common.remove')">
-                        <DeleteOutlined class="cursor-pointer text-red-400 hover:text-red-500" @click="onRemove(index, dimensions)" :style="{ fontSize: '15px' }"/>
-                      </a-tooltip>
-                    </span>
-                  </a-tag>
-                </template>
-              </Draggable>
-            </div>
-          </div>
-
-          <a-divider class="my-2"/>
-
-          <div class="flex items-center space-x-2 text-sm">
-            <div>{{ $t('dataset.common.columnModeFilter') }}:</div>
-
-            <div :class="cn('w-full flex-1 p-1',
-                        (highlight.active && highlight.type === ColumnType.DIMENSION) && 'border-2 border-yellow-400 rounded-sm min-h-8')
-                 ">
-              <Draggable group="dimensions"
-                         item-key="id"
-                         :list="filters"
-                         class="flex flex-wrap gap-2">
-                <template #item="{ element, index}">
-                  <a-tag class="inline-flex items-center whitespace-nowrap">
-                    <span class="flex items-center">
-                        {{ element.aliasName ? element.aliasName : element.name }}
-                    </span>
-
-                    <span class="ml-2 flex items-center space-x-1">
-                      <a-tooltip :title="$t('common.configure')">
-                        <SettingOutlined class="cursor-pointer hover:text-primary" @click="onColumnConfigure(true, element, ColumnType.FILTER)" :style="{ fontSize: '15px' }"/>
-                      </a-tooltip>
-
-                      <a-tooltip :title="$t('common.remove')">
-                        <DeleteOutlined class="cursor-pointer text-red-400 hover:text-red-500" @click="onRemove(index, filters)" :style="{ fontSize: '15px' }"/>
-                      </a-tooltip>
-                    </span>
-                  </a-tag>
-                </template>
-              </Draggable>
-            </div>
-          </div>
-
-          <a-divider class="my-2"/>
-
-          <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-              <span>{{ $t('dataset.common.showPageSize') }}</span>
-              <a-input-number v-model:value="configure.limit" :min="1"/>
-            </div>
-
-            <div class="flex items-center space-x-4 text-sm">
-              <a-button type="primary" :disabled="loading" :loading="loading" @click="onApplyAdhoc">
-                <template #icon>
-                  <PlayCircleOutlined :style="{ fontSize: '16px' }"/>
-                </template>
+            <div class="dc-adhoc__head-actions">
+              <a-button @click="onClear">
+                <template #icon><ClearOutlined/></template>
+                {{ $t('dataset.adhoc.clear') }}
               </a-button>
-
               <a-button :disabled="!showSql.content || loading" @click="visibleShowSql(true)">
-                <template #icon>
-                  <EyeOutlined :style="{ fontSize: '16px' }"/>
+                <template #icon><EyeOutlined/></template>
+                {{ $t('dataset.adhoc.preview') }}
+              </a-button>
+              <a-button type="primary" :disabled="loading" :loading="loading" @click="onApplyAdhoc">
+                <template #icon><PlayCircleOutlined/></template>
+                {{ $t('dataset.adhoc.query') }}
+              </a-button>
+              <a-dropdown>
+                <a-button><EllipsisOutlined/></a-button>
+                <template #overlay>
+                  <a-menu>
+                    <a-menu-item @click="publishVisible = true">{{ $t('common.publish') }}</a-menu-item>
+                    <a-menu-item>
+                      <div class="flex items-center gap-2" @click.stop>
+                        <span>{{ $t('dataset.common.showPageSize') }}</span>
+                        <a-input-number v-model:value="configure.limit" :min="1" size="small" style="width: 90px;"/>
+                      </div>
+                    </a-menu-item>
+                  </a-menu>
                 </template>
-              </a-button>
-
-              <a-button type="primary" @click="publishVisible = true">
-                {{ $t('common.publish') }}
-              </a-button>
+              </a-dropdown>
             </div>
           </div>
 
-          <a-divider class="my-2"/>
-        </a-spin>
-      </div>
+          <a-spin :spinning="loading">
+            <div class="dc-adhoc__zone dc-adhoc__zone--metric"
+                 :class="{ 'dc-adhoc__zone--highlight': highlight.active && highlight.type === ColumnType.METRIC }">
+              <div class="dc-adhoc__zone-head dc-adhoc__zone-head--green">
+                <BarChartOutlined class="dc-adhoc__zone-icon"/>
+                <span class="dc-adhoc__zone-label">{{ $t('dataset.common.columnModeMetric') }} (Measures)</span>
+                <span class="dc-adhoc__zone-hint">{{ $t('dataset.adhoc.dropMetric') }}</span>
+              </div>
+              <div class="dc-adhoc__zone-body">
+                <Draggable group="metrics" item-key="id" :list="metrics" class="flex flex-wrap gap-2">
+                  <template #item="{ element, index }">
+                    <a-tag class="dc-adhoc__chip">
+                      <span class="flex items-center">
+                        <DatasetColumnMetric :element="element"/>
+                      </span>
+                      <span class="ml-2 flex items-center space-x-1">
+                        <a-tooltip :title="$t('common.configure')">
+                          <SettingOutlined class="cursor-pointer hover:text-primary" @click="onColumnConfigure(true, element, ColumnType.METRIC)" :style="{ fontSize: '13px' }"/>
+                        </a-tooltip>
+                        <CloseOutlined class="cursor-pointer text-red-400 hover:text-red-500" @click="onRemove(index, metrics)" :style="{ fontSize: '11px' }"/>
+                      </span>
+                    </a-tag>
+                  </template>
+                </Draggable>
+              </div>
+            </div>
 
-      <VisualEditor :loading="loading" :configuration="configuration as any" @commitOptions="visibleCommitOptions"/>
-    </a-col>
-  </a-row>
+            <div class="dc-adhoc__zone dc-adhoc__zone--dimension"
+                 :class="{ 'dc-adhoc__zone--highlight': highlight.active && highlight.type === ColumnType.DIMENSION }">
+              <div class="dc-adhoc__zone-head dc-adhoc__zone-head--blue">
+                <AppstoreOutlined class="dc-adhoc__zone-icon"/>
+                <span class="dc-adhoc__zone-label">{{ $t('dataset.common.columnModeDimension') }} (Dimensions)</span>
+                <span class="dc-adhoc__zone-hint">{{ $t('dataset.adhoc.dropDimension') }}</span>
+              </div>
+              <div class="dc-adhoc__zone-body">
+                <Draggable group="dimensions" item-key="id" :list="dimensions" class="flex flex-wrap gap-2">
+                  <template #item="{ element, index }">
+                    <a-tag class="dc-adhoc__chip">
+                      <span class="flex items-center">
+                        {{ element.aliasName ? element.aliasName : element.name }}
+                      </span>
+                      <span class="ml-2 flex items-center space-x-1">
+                        <a-tooltip :title="$t('common.configure')">
+                          <SettingOutlined class="cursor-pointer hover:text-primary" @click="onColumnConfigure(true, element, ColumnType.DIMENSION)" :style="{ fontSize: '13px' }"/>
+                        </a-tooltip>
+                        <CloseOutlined class="cursor-pointer text-red-400 hover:text-red-500" @click="onRemove(index, dimensions)" :style="{ fontSize: '11px' }"/>
+                      </span>
+                    </a-tag>
+                  </template>
+                </Draggable>
+              </div>
+            </div>
 
-  <SqlInfo v-if="showSql.visible"
-           :is-visible="showSql.visible"
-           :content="showSql.content"
-           @close="visibleShowSql(false)"/>
+            <div class="dc-adhoc__zone dc-adhoc__zone--filter"
+                 :class="{ 'dc-adhoc__zone--highlight': highlight.active && highlight.type === ColumnType.FILTER }">
+              <div class="dc-adhoc__zone-head dc-adhoc__zone-head--purple">
+                <FilterOutlined class="dc-adhoc__zone-icon"/>
+                <span class="dc-adhoc__zone-label">{{ $t('dataset.common.columnModeFilter') }} (Filters)</span>
+                <span class="dc-adhoc__zone-hint">{{ $t('dataset.adhoc.dropFilter') }}</span>
+              </div>
+              <div class="dc-adhoc__zone-body">
+                <Draggable group="dimensions" item-key="id" :list="filters" class="flex flex-wrap gap-2">
+                  <template #item="{ element, index }">
+                    <a-tag class="dc-adhoc__chip">
+                      <span class="flex items-center">
+                        {{ element.aliasName ? element.aliasName : element.name }}
+                      </span>
+                      <span class="ml-2 flex items-center space-x-1">
+                        <a-tooltip :title="$t('common.configure')">
+                          <SettingOutlined class="cursor-pointer hover:text-primary" @click="onColumnConfigure(true, element, ColumnType.FILTER)" :style="{ fontSize: '13px' }"/>
+                        </a-tooltip>
+                        <CloseOutlined class="cursor-pointer text-red-400 hover:text-red-500" @click="onRemove(index, filters)" :style="{ fontSize: '11px' }"/>
+                      </span>
+                    </a-tag>
+                  </template>
+                </Draggable>
+              </div>
+            </div>
+          </a-spin>
 
-  <DatasetColumnConfigure v-if="columnContent.visible"
-                          :is-visible="columnContent.visible"
-                          :column-type="columnContent.type"
-                          :content="columnContent.content"
-                          :configure="columnContent.configure"
-                          @close="onColumnConfigure(false, null, null)"
-                          @commit="onCommitColumnConfigure"/>
+          <div class="dc-adhoc__result">
+            <a-tabs v-model:activeKey="resultTab" class="dc-adhoc__result-tabs">
+              <a-tab-pane key="result" :tab="$t('dataset.adhoc.resultTab')">
+                <VisualEditor :loading="loading" :configuration="configuration as any" @commitOptions="visibleCommitOptions"/>
+              </a-tab-pane>
+              <a-tab-pane key="log" :tab="$t('dataset.adhoc.logTab')">
+                <pre class="dc-adhoc__log">{{ showSql.content || $t('common.noData') }}</pre>
+              </a-tab-pane>
+            </a-tabs>
 
-  <DatasetReport v-if="publishVisible"
-                 :info="dataInfo as any"
-                 :code="reportCode"
-                 :dimension="originalDimensions[0] as any"
-                 :visible="publishVisible"
-                 :commit-options="commitOptions as any"
-                 :configure="configure as any"
-                 @close="visiblePublish(false)"/>
+            <div class="dc-adhoc__result-footer">
+              <span class="dc-adhoc__result-total">{{ $t('dataset.adhoc.totalRows', { limit: configure.limit }) }}</span>
+              <a-button size="small" @click="exportResults">
+                <template #icon><DownloadOutlined/></template>
+                {{ $t('dataset.adhoc.export') }}
+              </a-button>
+            </div>
+          </div>
+        </div>
+      </a-col>
+    </a-row>
+
+    <SqlInfo v-if="showSql.visible"
+             :is-visible="showSql.visible"
+             :content="showSql.content"
+             @close="visibleShowSql(false)"/>
+
+    <DatasetColumnConfigure v-if="columnContent.visible"
+                            :is-visible="columnContent.visible"
+                            :column-type="columnContent.type"
+                            :content="columnContent.content"
+                            :configure="columnContent.configure"
+                            @close="onColumnConfigure(false, null, null)"
+                            @commit="onCommitColumnConfigure"/>
+
+    <DatasetReport v-if="publishVisible"
+                   :info="dataInfo as any"
+                   :code="reportCode"
+                   :dimension="originalDimensions[0] as any"
+                   :visible="publishVisible"
+                   :commit-options="commitOptions as any"
+                   :configure="configure as any"
+                   @close="visiblePublish(false)"/>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
 import Draggable from 'vuedraggable'
 import DatasetService from '@/services/dataset'
@@ -222,11 +259,25 @@ import VisualEditor from '@/views/components/visual/VisualEditor.vue'
 import DatasetColumnMetric from '@/views/pages/admin/dataset/components/adhoc/DatasetColumnMetric.vue'
 import DatasetColumnConfigure from '@/views/pages/admin/dataset/components/adhoc/DatasetColumnConfigure.vue'
 import SqlInfo from '@/views/components/sql/SqlInfo.vue'
-import { cn } from '@/lib/utils.ts'
 import DatasetReport from '@/views/pages/admin/dataset/components/DatasetReport.vue'
-import { DeleteOutlined, EyeOutlined, PlayCircleOutlined, SettingOutlined } from '@ant-design/icons-vue'
+import {
+  AppstoreOutlined,
+  BarChartOutlined,
+  ClearOutlined,
+  CloseOutlined,
+  DatabaseOutlined,
+  DownloadOutlined,
+  EllipsisOutlined,
+  EyeOutlined,
+  FilterOutlined,
+  PlayCircleOutlined,
+  SearchOutlined,
+  SettingOutlined
+} from '@ant-design/icons-vue'
 
 defineOptions({ name: 'DatasetAdhoc' })
+
+const { t } = useI18n()
 
 const route = useRoute()
 
@@ -239,6 +290,8 @@ const originalData = ref<any[]>([])
 const metrics = ref<any[]>([])
 const dimensions = ref<any[]>([])
 const filters = ref<any[]>([])
+const fieldSearch = ref('')
+const fieldTab = ref<'all' | 'dimension' | 'metric'>('all')
 const configure = reactive({
   columns: [] as any[],
   limit: 1000
@@ -262,6 +315,21 @@ const highlight = reactive({
   type: 'METRIC' as any
 })
 const dataInfo = reactive({ name: null as string | null, description: null as string | null })
+const resultTab = ref('result')
+
+const matchesSearch = (item: any): boolean => {
+  const keyword = fieldSearch.value?.toLowerCase() || ''
+  if (!keyword) {
+    return true
+  }
+  return (item.aliasName || '').toLowerCase().includes(keyword)
+      || (item.name || '').toLowerCase().includes(keyword)
+}
+
+const visibleMetrics = computed(() => originalMetrics.value.filter(matchesSearch))
+const visibleDimensions = computed(() => originalDimensions.value.filter(matchesSearch))
+const showMetrics = computed(() => fieldTab.value === 'all' || fieldTab.value === 'metric')
+const showDimensions = computed(() => fieldTab.value === 'all' || fieldTab.value === 'dimension')
 
 const splitColumns = (original: any[]): any[] => {
   const array: any[] = []
@@ -305,7 +373,6 @@ const onAdhoc = () => {
 }
 
 const onApplyAdhoc = () => {
-  // Set the mode to: FILTER
   filters.value.forEach((item: any) => (item.mode = ColumnType.FILTER))
   configure.columns = [...splitColumns(metrics.value), ...splitColumns(dimensions.value), ...splitColumns(filters.value)]
   onAdhoc()
@@ -432,6 +499,295 @@ const visiblePublish = (opened: boolean) => {
   publishVisible.value = opened
 }
 
+const onClear = () => {
+  metrics.value = []
+  dimensions.value = []
+  filters.value = []
+}
+
+const exportResults = () => {
+  if (!configuration.value || !configuration.value.headers.length) {
+    message.error(t('common.noData') as string)
+    return
+  }
+  const headers = configuration.value.headers
+  const columns = configuration.value.columns
+  const escape = (v: any) => {
+    const s = v === null || v === undefined ? '' : String(v)
+    return /[",\n]/.test(s) ? `"${ s.replace(/"/g, '""') }"` : s
+  }
+  const csv = [headers.map((h: any) => escape(h)).join(','), ...columns.map((row: any) => headers.map((_header: any, index: number) => escape(row[index])).join(','))].join('\n')
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `adhoc-${ Date.now() }.csv`
+  link.click()
+  URL.revokeObjectURL(url)
+}
+
 configuration.value = new Configuration()
 handleInitialize()
 </script>
+
+<style scoped>
+.dc-adhoc__side {
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-lg);
+    padding: 14px;
+    min-height: calc(100vh - 200px);
+}
+
+.dc-adhoc__dataset {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-primary-surface);
+    border: 1px solid var(--dc-border-light);
+    margin-bottom: 10px;
+}
+
+.dc-adhoc__dataset-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-surface);
+    flex-shrink: 0;
+}
+
+.dc-adhoc__dataset-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+}
+
+.dc-adhoc__dataset-state {
+    font-size: 11px;
+    color: var(--dc-success);
+}
+
+.dc-adhoc__search {
+    margin-bottom: 10px;
+    border-radius: var(--dc-radius-sm);
+}
+
+.dc-adhoc__field-tabs {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid var(--dc-border-light);
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+}
+
+.dc-adhoc__field-tab {
+    font-size: 12px;
+    color: var(--dc-text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.dc-adhoc__field-tab--active {
+    color: var(--dc-primary);
+    font-weight: 600;
+}
+
+.dc-adhoc__group {
+    margin-bottom: 10px;
+}
+
+.dc-adhoc__group-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+    padding: 4px 0;
+}
+
+.dc-adhoc__group-icon {
+    color: var(--dc-text-secondary);
+}
+
+.dc-adhoc__field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: var(--dc-radius-sm);
+    cursor: grab;
+    font-size: 12px;
+    color: var(--dc-text-primary);
+}
+
+.dc-adhoc__field:hover {
+    background: var(--dc-menu-hover);
+}
+
+.dc-adhoc__field-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 16px;
+    border-radius: 3px;
+    background: var(--dc-info-bg);
+    color: var(--dc-info);
+    font-size: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.dc-adhoc__field-badge--text {
+    font-size: 9px;
+}
+
+.dc-adhoc__field-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dc-adhoc__field-empty {
+    font-size: 11px;
+    color: var(--dc-text-placeholder);
+    padding: 4px 6px;
+}
+
+.dc-adhoc__main {
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-lg);
+    box-shadow: var(--dc-shadow-card);
+    padding: 20px;
+}
+
+.dc-adhoc__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.dc-adhoc__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+}
+
+.dc-adhoc__desc {
+    font-size: 12px;
+    color: var(--dc-text-secondary);
+    margin-top: 4px;
+}
+
+.dc-adhoc__head-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.dc-adhoc__zone {
+    border: 1px solid var(--dc-border-light);
+    border-left: 3px solid var(--dc-border);
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-bg);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+}
+
+.dc-adhoc__zone--metric {
+    border-left-color: var(--dc-success);
+}
+
+.dc-adhoc__zone--dimension {
+    border-left-color: var(--dc-info);
+}
+
+.dc-adhoc__zone--filter {
+    border-left-color: var(--dc-primary);
+}
+
+.dc-adhoc__zone--highlight {
+    box-shadow: var(--dc-shadow-focus);
+}
+
+.dc-adhoc__zone-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.dc-adhoc__zone-icon {
+    color: var(--dc-text-secondary);
+    font-size: 14px;
+}
+
+.dc-adhoc__zone-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+}
+
+.dc-adhoc__zone-hint {
+    font-size: 11px;
+    color: var(--dc-text-placeholder);
+}
+
+.dc-adhoc__zone-body {
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.dc-adhoc__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--dc-radius-sm);
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border);
+    font-size: 12px;
+    color: var(--dc-text-primary);
+    margin-inline-end: 0;
+}
+
+.dc-adhoc__result-tabs {
+    margin-bottom: 8px;
+}
+
+.dc-adhoc__result-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 10px;
+}
+
+.dc-adhoc__result-total {
+    font-size: 12px;
+    color: var(--dc-text-secondary);
+}
+
+.dc-adhoc__log {
+    background: var(--dc-bg);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-md);
+    padding: 12px;
+    font-size: 12px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 400px;
+    overflow: auto;
+}
+</style>

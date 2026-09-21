@@ -9,17 +9,17 @@
 
   <!-- 白底铺满整行：a-layout 默认灰底会在宽屏下从两侧透出来 -->
   <div class="dc-header__bar">
-    <div class="container flex h-full items-center">
+    <div class="container flex h-full items-center justify-between w-full">
       <div class="flex items-center">
         <router-link to="/" class="flex items-center gap-2 shrink-0">
           <a-avatar src="/static/images/logo.png" alt="DataCap Logo" :size="34"/>
           <span class="dc-header__wordmark">DataCap</span>
         </router-link>
 
-        <div class="ml-6 flex-1">
+        <div class="ml-6">
           <a-menu mode="horizontal" class="dc-header__menu" :selectedKeys="selectedKeys">
             <template v-for="item in activeMenus" :key="item.id">
-              <a-sub-menu v-if="item.children" :key="item.id">
+              <a-sub-menu v-if="item.children" :key="item.url || item.id">
                 <template #title>
                   <div class="flex items-center space-x-2">
                     <component v-if="item.icon" :is="menuIcons[item.icon]" :style="{ fontSize: '16px' }"/>
@@ -44,17 +44,29 @@
             </template>
           </a-menu>
         </div>
+      </div>
 
         <a-space :size="16">
-          <!-- Language Switcher -->
+          <!-- 全局搜索 -->
+          <a-input ref="searchInputRef"
+                   v-model:value="searchText"
+                   class="dc-header__search"
+                   :placeholder="$t('common.searchPlaceholder')">
+            <template #prefix>
+              <SearchOutlined :style="{ fontSize: '14px', color: 'var(--dc-text-secondary)' }"/>
+            </template>
+            <template #suffix>
+              <span class="dc-header__kbd">⌘K</span>
+            </template>
+          </a-input>
+
+          <!-- 帮助 -->
           <a-tooltip :title="$t('common.feedback')">
             <a href="https://github.com/devlive-community/datacap" target="_blank" rel="noopener noreferrer"
                class="dc-header__help">
-              <QuestionCircleOutlined :style="{ fontSize: '17px' }"/>
-              <span>{{ $t('common.help') }}</span>
+              <QuestionCircleOutlined :style="{ fontSize: '18px' }"/>
             </a>
           </a-tooltip>
-          <LanguageSwitcher @changeLanguage="onChangeLanguage"/>
 
           <div v-if="userInfo">
             <a-popover trigger="click" placement="bottomRight">
@@ -73,13 +85,13 @@
                         <span>{{ $t(`common.${ item.entityType?.toLowerCase() || '' }`) }}</span>
 
                         <template v-if="item.entityType === 'DATASET'">
-                          <router-link :to="`/admin/dataset/info/${item.entityCode}`" target="_blank" class="hover:text-blue-400 flex items-center">
+                          <router-link :to="`/admin/dataset/info/${item.entityCode}`" target="_blank" class="hover:text-[var(--dc-primary)] flex items-center">
                             [ {{ item.entityName }} ]
                           </router-link>
                         </template>
 
                         <template v-else>
-                          <router-link class="hover:text-blue-400" :to="'/' + item.entityType + '/' + item.entityCode">[ {{ item.entityName }} ]</router-link>
+                          <router-link class="hover:text-[var(--dc-primary)]" :to="'/' + item.entityType + '/' + item.entityCode">[ {{ item.entityName }} ]</router-link>
                         </template>
 
                         <span>{{ $t(`common.${ item.type?.toLowerCase() || '' }`) }}</span>
@@ -95,7 +107,7 @@
               </template>
 
               <a-badge :count="userInfo?.unreadCount || 0">
-                <BellOutlined class="hover:text-blue-400 cursor-pointer" :style="{ fontSize: '20px' }"/>
+                <BellOutlined class="dc-header__bell cursor-pointer" :style="{ fontSize: '20px' }"/>
               </a-badge>
             </a-popover>
           </div>
@@ -111,14 +123,12 @@
           </a-space>
           <div v-else>
             <a-dropdown placement="bottomRight">
-              <div class="flex items-center gap-2 cursor-pointer">
-                <a-avatar :size="32"
-                          :src="userInfo?.avatarConfigure?.path"
-                          :alt="userInfo?.username">
-                </a-avatar>
-                <span class="dc-header__username">{{ userInfo?.username }}</span>
-                <DownOutlined class="dc-header__chevron"/>
-              </div>
+              <a-avatar class="dc-header__avatar cursor-pointer"
+                        :size="34"
+                        :src="userInfo?.avatarConfigure?.path"
+                        :alt="userInfo?.username">
+                {{ (userInfo?.username || '?').charAt(0).toUpperCase() }}
+              </a-avatar>
 
               <template #overlay>
                 <a-menu>
@@ -150,11 +160,10 @@
         </a-space>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { useUserStore } from '@/stores/user'
@@ -162,10 +171,9 @@ import { storeToRefs } from 'pinia'
 import { TokenUtils } from '@/utils/token'
 import router from '@/router'
 import { createDefaultRouter } from '@/router/default'
-import LanguageSwitcher from '@/views/layouts/common/components/components/LanguageSwitcher.vue'
 import NotificationService from '@/services/notification'
 import { FilterModel } from '@/model/filter.ts'
-import { BellOutlined, BgColorsOutlined, DownOutlined, CodeOutlined, DashboardOutlined, HistoryOutlined, HomeOutlined, LogoutOutlined, ProjectOutlined, QuestionCircleOutlined, RightOutlined, SettingOutlined, ToolOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
+import { BellOutlined, BgColorsOutlined, SearchOutlined, CodeOutlined, DashboardOutlined, HistoryOutlined, HomeOutlined, LogoutOutlined, ProjectOutlined, QuestionCircleOutlined, RightOutlined, SettingOutlined, ToolOutlined, UnorderedListOutlined } from '@ant-design/icons-vue'
 
 defineOptions({ name: 'LayoutHeader' })
 
@@ -176,6 +184,9 @@ const selectedKeys = computed(() => {
     const urls: string[] = []
     ;(activeMenus.value || []).forEach((item: any) => {
         if (item.children?.length) {
+            if (item.url) {
+                urls.push(item.url)
+            }
             item.children.forEach((child: any) => urls.push(child.url))
         }
         else if (item.url) {
@@ -209,10 +220,6 @@ const hasMoreData = ref(true)
 const loading = ref(false)
 
 const { userInfo, isLoggedIn, menu: activeMenus } = storeToRefs(userStore)
-
-const emit = defineEmits<{
-  changeLanguage: [language: string]
-}>()
 
 const fetchMessages = async (value: number = 1, append = false) => {
   filter.page = value
@@ -253,16 +260,29 @@ onMounted(async () => {
     await userStore.fetchUserInfo()
     await fetchMessages()
   }
+  window.addEventListener('keydown', onGlobalKeydown)
 })
+
+onBeforeUnmount(() => window.removeEventListener('keydown', onGlobalKeydown))
+
+const searchText = ref('')
+const searchInputRef = ref<HTMLInputElement | null>(null)
+
+const focusSearch = () => {
+  searchInputRef.value?.focus()
+}
+
+const onGlobalKeydown = (event: KeyboardEvent) => {
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+    event.preventDefault()
+    focusSearch()
+  }
+}
 
 const logout = () => {
   userStore.logout()
   createDefaultRouter(router)
   router.push('/auth/signin')
-}
-
-const onChangeLanguage = (language: string) => {
-  emit('changeLanguage', language)
 }
 
 const handleNotificationClick = (msg: any) => {
@@ -360,11 +380,18 @@ const handleNotificationClick = (msg: any) => {
     color: var(--dc-primary-700) !important;
 }
 
+.dc-header__bell {
+    color: var(--dc-text-primary);
+    transition: color 0.2s;
+}
+
+.dc-header__bell:hover {
+    color: var(--dc-primary);
+}
+
 .dc-header__help {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 14px;
     color: var(--dc-text-secondary);
     transition: color 0.2s;
 }
@@ -373,13 +400,28 @@ const handleNotificationClick = (msg: any) => {
     color: var(--dc-primary);
 }
 
-.dc-header__username {
-    font-size: 14px;
-    color: var(--dc-text-primary);
+.dc-header__search {
+    width: 240px;
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border);
 }
 
-.dc-header__chevron {
+.dc-header__kbd {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 5px;
+    border: 1px solid var(--dc-border);
+    border-radius: 4px;
     font-size: 11px;
+    line-height: 16px;
     color: var(--dc-text-secondary);
+    background: var(--dc-bg);
+}
+
+.dc-header__avatar {
+    background: var(--dc-gradient-avatar);
+    box-shadow: var(--dc-shadow-avatar);
+    font-weight: 600;
 }
 </style>

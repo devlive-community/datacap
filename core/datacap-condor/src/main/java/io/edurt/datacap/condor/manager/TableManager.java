@@ -205,11 +205,13 @@ public class TableManager
             int deletedCount = 0;
 
             for (RowDefinition row : rows) {
-                if (whereCondition == null || !whereCondition.evaluate(row)) {
-                    remainingRows.add(row);
+                // 无条件（null）表示删除全部行；有条件时仅删除命中的行
+                boolean matched = whereCondition == null || whereCondition.evaluate(row);
+                if (matched) {
+                    deletedCount++;
                 }
                 else {
-                    deletedCount++;
+                    remainingRows.add(row);
                 }
             }
 

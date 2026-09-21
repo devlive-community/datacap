@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import io.edurt.datacap.fs.FsRequest
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assume
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Test
@@ -28,6 +29,12 @@ abstract class BaseIOUtilsTest(
     @Before
     fun before()
     {
+        // 云存储测试需要真实凭据（CI 通过 -Ds3.* / -Dcos.* / -Dalioss.* 注入），
+        // 未配置对应 endpoint 时跳过，而不是让整个测试套件失败
+        Assume.assumeTrue(
+            "Cloud storage credentials for [$pluginPrefix] are not configured, skipping",
+            System.getProperty("$pluginPrefix.endpoint") != null
+        )
         request.apply {
             access = System.getProperty("$pluginPrefix.access")
             secret = System.getProperty("$pluginPrefix.secret")

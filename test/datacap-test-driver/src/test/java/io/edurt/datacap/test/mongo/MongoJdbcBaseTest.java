@@ -6,8 +6,9 @@ import com.mongodb.client.MongoDatabase;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.BeforeClass;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
@@ -23,7 +24,6 @@ import java.util.Properties;
 public abstract class MongoJdbcBaseTest
 {
     // Static container instance shared by all test classes
-    @ClassRule
     public static final GenericContainer<?> MONGO_CONTAINER = new GenericContainer(DockerImageName.parse("mongo"))
             .withExposedPorts(27017)
             .withEnv("MONGO_INITDB_ROOT_USERNAME", "mongoadmin")
@@ -35,6 +35,14 @@ public abstract class MongoJdbcBaseTest
     protected Statement statement;
     protected Connection connection;
     protected MongoClient mongoClient;
+
+    @BeforeClass
+    public static void assumeDockerAvailable()
+    {
+        // 本地无 Docker 环境时跳过容器集成测试，CI（带 Docker）仍然执行
+        Assume.assumeTrue("Docker is not available, skipping Mongo container tests",
+                MONGO_CONTAINER.isRunning());
+    }
 
     @Before
     public void init()
@@ -112,7 +120,23 @@ public abstract class MongoJdbcBaseTest
     }
 
     static {
-        MONGO_CONTAINER.setPortBindings(List.of("27017:27017"));
-        MONGO_CONTAINER.start();
+        // 无 Docker 时跳过启动，交由 assumeDockerAvailable 标记跳过
+        if (isDockerAvailable()) {
+            MONGO_CONTAINER.start();
+        }
+    }
+
+    private static boolean isDockerAvailable()
+    {
+        // Docker Desktop（Engine 29）会以 HTTP 400 拒绝 docker-java 默认 API 版本，钉一个双方都支持的版本
+        if (System.getProperty("api.version") == null && System.getenv("DOCKER_API_VERSION") == null) {
+            System.setProperty("api.version", "1.41");
+        }
+        try {
+            return org.testcontainers.DockerClientFactory.instance().isDockerAvailable();
+        }
+        catch (Throwable ex) {
+            return false;
+        }
     }
 }

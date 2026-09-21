@@ -1,41 +1,84 @@
 <template>
-  <div class="relative">
-    <a-form v-if="formState" :model="formState" layout="vertical" @finish="onSubmit">
-      <a-form-item name="oldUsername"
-                   class="w-[40%]"
-                   :extra="$t('user.tip.oldUsername')"
-                   :label="$t('user.common.oldUsername')">
-        <a-input v-model:value="formState.oldUsername" disabled :placeholder="$t('user.auth.oldUsername')"/>
-      </a-form-item>
+  <div class="dc-rename">
+    <!-- 页头：标题 + 描述 -->
+    <div class="dc-rename__pagehead">
+      <div>
+        <div class="dc-rename__title">{{ $t('user.common.modifyUsername') }}</div>
+        <div class="dc-rename__desc">{{ $t('user.tip.modifyUsernamePage') }}</div>
+      </div>
+    </div>
 
-      <a-form-item name="newUsername"
-                   class="w-[40%]"
-                   :extra="$t('user.tip.newUsername')"
-                   :label="$t('user.common.newUsername')"
-                   :rules="[
-                     { required: true, message: $t('user.auth.usernameTip') },
-                     { min: 3, message: $t('user.auth.usernameSizeTip') },
-                     { max: 20, message: $t('user.auth.usernameSizeTip') }
-                   ]">
-        <a-input v-model:value="formState.newUsername" :placeholder="$t('user.auth.usernameTip')"/>
-      </a-form-item>
+    <a-row :gutter="16">
+      <!-- 表单区 -->
+      <a-col :span="16">
+        <div class="dc-rename__card">
+          <a-spin :spinning="defaultLoading">
+            <a-form v-if="formState" layout="vertical" class="dc-rename__form">
+              <a-form-item :label="$t('user.common.currentUsername')">
+                <a-input :value="formState.oldUsername" disabled/>
+              </a-form-item>
 
-      <a-form-item name="password"
-                   class="w-[40%]"
-                   :label="$t('user.common.password')"
-                   :extra="$t('user.tip.password')"
-                   :rules="[
-                     { required: true, message: $t('user.auth.passwordTip') },
-                     { min: 6, message: $t('user.auth.passwordSizeTip') },
-                     { max: 20, message: $t('user.auth.passwordSizeTip') }
-                   ]">
-        <a-input-password v-model:value="formState.password" :placeholder="$t('user.auth.passwordTip')"/>
-      </a-form-item>
+              <a-form-item :required="true">
+                <template #label>
+                  <span class="dc-rename__required">{{ $t('user.common.newUsername') }}</span>
+                </template>
+                <a-input v-model:value="formState.newUsername"
+                         @input="onUsernameInput">
+                  <template #suffix>
+                    <CheckCircleFilled v-if="checkState === 'success'" class="dc-rename__check--success"/>
+                    <CloseCircleFilled v-else-if="checkState === 'error'" class="dc-rename__check--error"/>
+                    <LoadingOutlined v-else-if="checkState === 'loading'" class="dc-rename__check--loading"/>
+                  </template>
+                </a-input>
+                <div v-if="checkState === 'error'" class="dc-rename__field-error">{{ checkMessage }}</div>
+                <div v-else class="dc-rename__field-hint">{{ $t('user.tip.newUsernameFormat') }}</div>
+              </a-form-item>
 
-      <a-button type="primary" html-type="submit" :loading="submitting" :disabled="submitting">
-        {{ $t('common.save') }}
-      </a-button>
-    </a-form>
+              <a-form-item :required="true">
+                <template #label>
+                  <span class="dc-rename__required">{{ $t('user.common.currentPassword') }}</span>
+                </template>
+                <a-input-password v-model:value="formState.password"/>
+                <div class="dc-rename__field-hint">{{ $t('user.tip.passwordConfirm') }}</div>
+              </a-form-item>
+            </a-form>
+
+            <div class="dc-rename__actions">
+              <a-button type="primary"
+                        :loading="submitting"
+                        :disabled="checkState !== 'success' || !formState?.password"
+                        @click="onSubmit">
+                {{ $t('user.common.saveChanges') }}
+              </a-button>
+              <a-button :disabled="submitting" @click="onReset">
+                {{ $t('common.cancel') }}
+              </a-button>
+            </div>
+          </a-spin>
+        </div>
+      </a-col>
+
+      <!-- 说明卡 -->
+      <a-col :span="8">
+        <div class="dc-rename__card dc-rename__info">
+          <div class="dc-rename__info-head">
+            <div class="dc-rename__info-icon">
+              <SafetyCertificateOutlined :style="{ fontSize: '16px' }"/>
+            </div>
+            <div class="dc-rename__info-title">{{ $t('user.common.modifyUsernameTip') }}</div>
+          </div>
+
+          <div class="dc-rename__info-list">
+            <div v-for="(tip, index) in infoTips"
+                 :key="index"
+                 class="dc-rename__info-item">
+              <span class="dc-rename__info-index">{{ index + 1 }}</span>
+              <span>{{ $t(tip) }}</span>
+            </div>
+          </div>
+        </div>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
@@ -44,6 +87,12 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
+import {
+  CheckCircleFilled,
+  CloseCircleFilled,
+  LoadingOutlined,
+  SafetyCertificateOutlined
+} from '@ant-design/icons-vue'
 import UserService from '@/services/user'
 import { UsernameModel } from '@/model/user'
 import Common from '@/utils/common'
@@ -57,6 +106,17 @@ const defaultLoading = ref(false)
 const submitting = ref(false)
 const formState = ref<UsernameModel | null>(null)
 
+const checkState = ref<'idle' | 'loading' | 'success' | 'error'>('idle')
+const checkMessage = ref('')
+let checkTimer: ReturnType<typeof setTimeout> | null = null
+
+const infoTips = [
+  'user.tip.renameInfo1',
+  'user.tip.renameInfo2',
+  'user.tip.renameInfo3',
+  'user.tip.renameInfo4'
+]
+
 const handlerInitialize = () => {
   defaultLoading.value = true
   UserService.getInfo()
@@ -66,6 +126,46 @@ const handlerInitialize = () => {
                }
              })
              .finally(() => (defaultLoading.value = false))
+}
+
+const onUsernameInput = () => {
+  checkState.value = 'idle'
+  checkMessage.value = ''
+  const username = formState.value?.newUsername?.trim()
+
+  if (checkTimer) {
+    clearTimeout(checkTimer)
+  }
+
+  if (!username) {
+    return
+  }
+
+  checkState.value = 'loading'
+  checkTimer = setTimeout(() => validateUsername(username), 500)
+}
+
+const validateUsername = (username: string) => {
+  checkState.value = 'loading'
+  UserService.checkUsername(username)
+             .then(response => {
+               // 输入可能已变化，丢弃过期结果
+               if (formState.value?.newUsername?.trim() !== username) {
+                 return
+               }
+               if (response.status && response.data === true) {
+                 checkState.value = 'success'
+                 checkMessage.value = ''
+               }
+               else {
+                 checkState.value = 'error'
+                 checkMessage.value = response.message || t('user.tip.renameFailed')
+               }
+             })
+             .catch(() => {
+               checkState.value = 'error'
+               checkMessage.value = t('common.networkError')
+             })
 }
 
 const onSubmit = () => {
@@ -85,5 +185,139 @@ const onSubmit = () => {
              .finally(() => (submitting.value = false))
 }
 
+const onReset = () => {
+  if (formState.value) {
+    formState.value.newUsername = undefined
+    formState.value.password = undefined
+  }
+  checkState.value = 'idle'
+  checkMessage.value = ''
+}
+
 handlerInitialize()
 </script>
+
+<style scoped>
+.dc-rename__pagehead {
+    padding: 18px 20px;
+    border-radius: var(--dc-radius-lg);
+    background: var(--dc-gradient-hero);
+    border: 1px solid var(--dc-border-light);
+    margin-bottom: 16px;
+}
+
+.dc-rename__title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+}
+
+.dc-rename__desc {
+    font-size: 13px;
+    color: var(--dc-text-secondary);
+    margin-top: 4px;
+}
+
+.dc-rename__card {
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border-light);
+    border-radius: var(--dc-radius-lg);
+    box-shadow: var(--dc-shadow-card);
+    padding: 20px;
+}
+
+.dc-rename__form :deep(.ant-form-item) {
+    margin-bottom: 18px;
+}
+
+.dc-rename__check--success {
+    color: var(--dc-success);
+}
+
+.dc-rename__check--error {
+    color: var(--dc-danger);
+}
+
+.dc-rename__check--loading {
+    color: var(--dc-text-secondary);
+}
+
+.dc-rename__field-hint {
+    font-size: 12px;
+    color: var(--dc-text-secondary);
+    margin-top: 6px;
+}
+
+.dc-rename__field-error {
+    font-size: 12px;
+    color: var(--dc-danger);
+    margin-top: 6px;
+}
+
+.dc-rename__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.dc-rename__info {
+    background: var(--dc-primary-surface);
+    border: 1px solid var(--dc-border-light);
+    box-shadow: none;
+}
+
+.dc-rename__info-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.dc-rename__info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--dc-radius-md);
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
+    flex-shrink: 0;
+}
+
+.dc-rename__info-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--dc-text-title);
+}
+
+.dc-rename__info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.dc-rename__info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--dc-text-primary);
+    line-height: 1.6;
+}
+
+.dc-rename__info-index {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--dc-primary-light);
+    color: var(--dc-primary);
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+</style>
